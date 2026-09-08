@@ -37,6 +37,18 @@ The original package includes gameplay notes, learnset lists, and Sacred Gold / 
 
 Our download keeps that familiar layout. Start with **Readme + Changelog.txt**. **Game Info + Learnset Changes.txt** includes 284 level-up entries for the seven added Fairy moves, checked against Plus 1.03 and all four 1.04 game outputs. **Extras/SGSS Original Documentation** contains five original PDF guides and the credited trainer reference. Read **Extras/READ ME FIRST.txt** for their limitations. No cheat database is automatically installed.
 
+| Looking for | Where to start |
+| --- | --- |
+| Pokémon locations and encounters | **Pokemon Locations.pdf** in the download's Extras folder |
+| Evolution methods | **Evolution Changes.pdf** in Extras |
+| Items and TMs | **Important Item Locations.pdf** in Extras |
+| Events and special encounters | **Special Event Guide.pdf** in Extras |
+| Earlier Pokémon changes | **Pokemon Changes.pdf** in Extras |
+| Fairy moves and checked level-up lists | **Game Info + Learnset Changes.txt** in the download |
+| Earlier Action Replay and cheat notes | [Historical cheat references](guides/historical-cheats/README.md) in this repository |
+
+The two historical cheat documents are preserved from the original 1.03 package. They are **not a verified 1.04 cheat collection**: read the compatibility notes before using any code. They are available separately here and have not been added to or substituted into the existing Preview 2 ZIPs.
+
 - [Original release post and download](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
 - [Author's features and learnset document](https://docs.google.com/document/d/1IbXXpWf9HUO7uCwn1tOxgd8MpsNa2FNiZxpxTmBXYJA/edit)
 - [Install our current patch](PLAY.md) — use this guide for 1.04; the original package's instructions apply to its older patch.

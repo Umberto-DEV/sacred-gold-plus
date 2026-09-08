@@ -41,4 +41,4 @@ Do not upload ROMs, BIOS, firmware, saves, save states, memory dumps or raw devi
 
 AI assistance must be disclosed when it materially contributes to a change or its explanation. The contributor remains responsible for understanding the change, checking its output and accurately describing the tests. Do not claim another person's approval or testing that did not happen.
 
-Run the local checks in the source guide before opening a PR. They help catch unexpected files and packaging errors. Passing them does not replace human review or in-game testing. There is no active GitHub Actions workflow in this initial repository.
+Run the local checks in the source guide before opening a PR. The **Public checks** GitHub Actions workflow also checks public files, patch fingerprints and synthetic source tests on PRs and pushes to main, without game files. Passing it does not replace human review or in-game testing. A first contribution from a fork may need maintainer approval before the workflow runs.
