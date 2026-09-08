@@ -27,6 +27,10 @@ These downloads are **patches**, not complete games. All four use the same **Sac
 
 ## See the game
 
+| Title screen | Exploring New Bark Town |
+| --- | --- |
+| ![The title screen of the English 1.04 preview](images/06-title-screen.png) | ![Exploring New Bark Town in the English 1.04 preview](images/01-new-bark-town.png) |
+
 The same scene and player position, with the two camera options:
 
 | Normal Angle | New Angle |
