@@ -5,6 +5,7 @@
 !*.json
 !*.yml
 !*.xdelta
+!/sacred-gold-plus-logo.webp
 !LICENSE
 !CODEOWNERS
 !requirements.txt

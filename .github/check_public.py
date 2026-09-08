@@ -24,7 +24,10 @@ def check(root=ROOT):
         if p.is_symlink() or any(x.is_symlink() for x in p.parents if x != root.parent):
             raise ValueError('Symbolic links are not public artifacts')
         data = p.read_bytes()
-        if name.endswith('.xdelta'):
+        if name == 'sacred-gold-plus-logo.webp':
+            if hashlib.sha256(data).hexdigest() != '6e9d416eb4b3c87f5fcb893da6772283eb116988f189b6d25fe25c10342a53d2':
+                raise ValueError('Logo differs from the reviewed original')
+        elif name.endswith('.xdelta'):
             if data[:4] != bytes([0xD6, 0xC3, 0xC4, 0]):
                 raise ValueError('Patch has an unexpected format')
             if data[4] & 4:

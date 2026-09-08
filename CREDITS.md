@@ -2,9 +2,13 @@
 
 **Drayano** created Sacred Gold and Storm Silver. **mikelan / Mikelan98** contributed the Fairy-type implementation used by this line of projects. **NefariousnessNo3436** created Sacred Gold Plus and its 1.03 additions.
 
+Thank you to NefariousnessNo3436 for making this work available to players and other developers, and to everyone who contributed to Sacred Gold and Storm Silver. This continuation would not exist without that foundation.
+
 The [original Sacred Gold Plus release post](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) describes that work and includes the author's reply permitting reuse with credit. This repository is an independent continuation, not an official handover or endorsement by those authors. Its 1.04 numbering refers to this continuation.
 
-The original project's logo is shown in that release post. It is not claimed as artwork made by this continuation.
+The logo displayed on our home page is the original image from that release post, reproduced without changing the artwork. It is not artwork made by this continuation. The [game guide](GAME-GUIDE.md) summarizes the original package's `Readme + Changelog.txt` and `Game Info + Learnset Changes.txt`, with links to the author's own references. Their 1.03 changes remain credited to the earlier project.
+
+The author also mentioned separate follow-up work by DeadSkullzJr on GBAtemp in a later reply. This repository does not claim to be the only continuation, or to include that separate work.
 
 The text tools use knowledge from [pret/pokeheartgold](https://github.com/pret/pokeheartgold) and [ndspy](https://github.com/RoadrunnerWMC/ndspy). The source guide identifies the required reference revision. Patching instructions refer to [Rom Patcher JS](https://github.com/marcrobledo/RomPatcher.js) and [Delta Patcher](https://github.com/marco-calautti/DeltaPatcher).
 
