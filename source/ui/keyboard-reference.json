@@ -1,0 +1,41 @@
+{
+  "status": "implemented; runtime scope documented in proofs/runtime-validation.json",
+  "purpose": "Italian UI keyboard; keep English game/save identity",
+  "arm9_section0_sha256": "d9f2d93ecd444a70413f7ed443b6f43f3567665ea3fff90e16bfd8d663087c70",
+  "identity_guard": {
+    "runtime_address": "0x020F5670",
+    "expected_byte": 2,
+    "must_remain": 2
+  },
+  "edits": [
+    {
+      "name": "Upper",
+      "section_ram_address": "0x02000000",
+      "section_offset": "0x101e2c",
+      "runtime_address": "0x2101e2c",
+      "replacement_length": 28,
+      "preimage_hex": "de01de01de01de01de01de01de01de01de01de01de01de01de01ffff",
+      "postimage_hex": "5f01680167016b0171017801de01de01de01de01de01de01de01ffff",
+      "source_it_runtime_address": "0x2101da4",
+      "pointer_guard_address": "0x2110504",
+      "pointer_guard_value": "0x2101e2c",
+      "changed_bytes": 6,
+      "characters": "\u00c0\u00c9\u00c8\u00cc\u00d2\u00d9       {0xffff}"
+    },
+    {
+      "name": "Lower",
+      "section_ram_address": "0x02000000",
+      "section_offset": "0x101f60",
+      "runtime_address": "0x2101f60",
+      "replacement_length": 28,
+      "preimage_hex": "de01de01de01de01de01de01de01de01de01de01de01de01de01ffff",
+      "postimage_hex": "7f01880187018b0191019801de01de01de01de01de01de01de01ffff",
+      "source_it_runtime_address": "0x2101ed8",
+      "pointer_guard_address": "0x2110518",
+      "pointer_guard_value": "0x2101f60",
+      "changed_bytes": 6,
+      "characters": "\u00e0\u00e9\u00e8\u00ec\u00f2\u00f9       {0xffff}"
+    }
+  ],
+  "data_asset_note": "a/0/3/1 member 10 supplies localized naming-screen object graphics; member 16 (keyboard glyph atlas) is identical US/IT/Plus."
+}

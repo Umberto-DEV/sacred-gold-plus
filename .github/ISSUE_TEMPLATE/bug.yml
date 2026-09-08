@@ -1,0 +1,40 @@
+name: Report a bug
+description: Tell us what happened and how to try it again.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: dropdown
+    id: version
+    attributes:
+      label: Game version
+      options: [1.04 Preview 1]
+    validations:
+      required: true
+  - type: dropdown
+    id: variant
+    attributes:
+      label: Language and camera
+      options: [IT — Normal Angle, IT — New Angle, US — Normal Angle, US — New Angle]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps and result
+      description: Where were you? What did you do? What did you expect, and what happened?
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: What have you checked?
+      description: Does it happen after starting normally with cheats off? Is it repeatable? You may name the emulator and version; do not include device identifiers or personal logs.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked existing issues and removed private information, game files, saves and raw logs.
+          required: true

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Help, translation suggestions and ideas
+    url: https://github.com/Umberto-DEV/sacred-gold-plus/discussions
+    about: Start here for a question or a proposal that is not a reproducible bug.
