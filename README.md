@@ -25,6 +25,20 @@ These downloads are **patches**, not complete games. All four use the same **Sac
 
 [What changed in 1.04](CHANGELOG.md) · [Plans for 1.05](ROADMAP.md) · [All releases](https://github.com/Umberto-DEV/sacred-gold-plus/releases)
 
+## See the game
+
+| Title screen | Exploring New Bark Town |
+| --- | --- |
+| ![The title screen of the English 1.04 preview](images/06-title-screen.png) | ![Exploring New Bark Town in the English 1.04 preview](images/01-new-bark-town.png) |
+
+The same scene and player position, with the two camera options:
+
+| Normal Angle | New Angle |
+| --- | --- |
+| ![Normal Angle: the original HeartGold camera](images/02-normal-angle.png) | ![New Angle: the wider Plus camera](images/03-new-angle.png) |
+
+[More screenshots: exploring New Bark Town, Italian dialogue and the accented keyboard](SCREENSHOTS.md). These are unedited captures from the 1.04 preview; the wider view is a visual choice, not a performance claim.
+
 ## Help improve the game
 
 [Report a problem](https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose), [share an idea or ask a question](https://github.com/Umberto-DEV/sacred-gold-plus/discussions), or [contribute a fix or translation](CONTRIBUTING.md). A clear report from a player is useful even without programming experience.

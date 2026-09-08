@@ -10,6 +10,8 @@ The logo displayed on our home page is the original image from that release post
 
 The original Sacred Gold / Storm Silver PDF guides included in the player downloads remain credited to **Drayano and the original contributors**. **@JD48096761** compiled the included trainer reference, with inspiration credited there to **u/ittapubas**. These original documents are preserved as references; the current package adds separate explanations of the differences in Plus and a checked Fairy-move level-up list.
 
+The separately linked [historical cheat documents](guides/historical-cheats/README.md) are unchanged originals from the Plus 1.03 package. Their original credits remain intact; individual codes are not automatically covered by our tools' licence. The [screenshots](SCREENSHOTS.md) are unedited captures of the preview using a test character. The underlying artwork remains credited to the original game and hack creators.
+
 The author also mentioned separate follow-up work by DeadSkullzJr on GBAtemp in a later reply. This repository does not claim to be the only continuation, or to include that separate work.
 
 The text tools use knowledge from [pret/pokeheartgold](https://github.com/pret/pokeheartgold) and [ndspy](https://github.com/RoadrunnerWMC/ndspy). The source guide identifies the required reference revision. Patching instructions refer to [Rom Patcher JS](https://github.com/marcrobledo/RomPatcher.js) and [Delta Patcher](https://github.com/marco-calautti/DeltaPatcher).

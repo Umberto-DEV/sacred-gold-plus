@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def check(root=ROOT):
     allowed = set(json.loads((root/'.github/public-files.json').read_text()))
+    reviewed_media = json.loads((root/'.github/reviewed-media.json').read_text())
     r = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
     if r.returncode == 0 and Path(r.stdout.strip()).resolve() == root.resolve():
         actual = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().rstrip('\0').split('\0'))
@@ -24,7 +25,10 @@ def check(root=ROOT):
         if p.is_symlink() or any(x.is_symlink() for x in p.parents if x != root.parent):
             raise ValueError('Symbolic links are not public artifacts')
         data = p.read_bytes()
-        if name == 'sacred-gold-plus-logo.webp':
+        if name in reviewed_media:
+            if hashlib.sha256(data).hexdigest() != reviewed_media[name]:
+                raise ValueError('Public media differs from the reviewed original')
+        elif name == 'sacred-gold-plus-logo.webp':
             if hashlib.sha256(data).hexdigest() != '6e9d416eb4b3c87f5fcb893da6772283eb116988f189b6d25fe25c10342a53d2':
                 raise ValueError('Logo differs from the reviewed original')
         elif name.endswith('.xdelta'):
