@@ -4072,11 +4072,11 @@
       }
     ]
   },
-  "presentation_overrides": "presentation-overrides.json",
+  "presentation_overrides": "No separate override file is used by this public build; selected resource changes are listed in edits.",
   "guards": "Require current member SHA256==SG preimage and donor SHA256==selected donor. Retain member order/count and all unlisted bytes. Apply every atomic_group as one set.",
   "not_covered": [
     "No executable code or gameplay data; no 3D maps/textures or PBR resources.",
-    "Not an in-game regression proof. Unit value formatting is separately documented in UI_LOCALIZATION_NOTES.md.",
+    "Not an in-game regression proof. Pokédex height/weight search filters retain US units; Italian species pages can use metric units.",
     "NCGR atlases use diagnostic colors; NCER cells reconstruct actual cell geometry."
   ],
   "deferred": [

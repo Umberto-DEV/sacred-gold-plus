@@ -1,5 +1,5 @@
 {
-  "status": "implemented; runtime scope documented in proofs/runtime-validation.json",
+  "status": "Implemented Italian accented-character keyboard with targeted checks; broader in-game review remains open.",
   "purpose": "Italian UI keyboard; keep English game/save identity",
   "arm9_section0_sha256": "d9f2d93ecd444a70413f7ed443b6f43f3567665ea3fff90e16bfd8d663087c70",
   "identity_guard": {

@@ -16,15 +16,36 @@ Open **Settings → Collaborators → Add people**, enter their GitHub username 
 
 ## Publish an update
 
+### What happens automatically?
+
+| Action | Result in this repository today |
+| --- | --- |
+| Push a commit or merge a PR | Updates the repository files. It does not build patches or publish a release. |
+| Add a version tag | Marks a commit. It does not run a build or create our four download packages. |
+| Open a release page | GitHub offers **Source code (zip)** and **Source code (tar.gz)** archives of the tagged repository. These are not the player packages. |
+| Publish a prepared release | Makes the attached patch packages and release notes available for players. |
+
+There are currently no GitHub Actions workflows in this repository. Automated release notes, source archives, automated tests and building downloadable patches are separate features. [About GitHub releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+
+### Prepare and publish the packages
+
 Use a dedicated checkout of this public repository. Never push the history of a private development workspace into it. Import only the reviewed source changes; game files, private notes and test recordings stay outside this checkout.
 
 Run the source tests and `python3 .github/check_public.py`. Review the exact staged files with `git diff --cached` and check commit names and email addresses before committing. Use your public GitHub identity and its private noreply email, not a personal email or local computer name. Check every new commit, not only the final file tree.
 
-Rebuild each advertised variant using the exact inputs, verify its output fingerprint and test the affected behaviour. Prepare one ZIP per language and camera containing only the patch, plain instructions, credits and file checks. Check the contents of each ZIP and the patch metadata. Never upload a ROM or an entire build directory.
+Rebuild each advertised variant using the exact inputs, verify its output fingerprint and test the affected behaviour. Prepare one ZIP per language and camera containing the patch, Readme and Game Info files, credits, licence, file checks and the reviewed Extras references. The Preview 2 layout has 16 files per package; treat that as the current release format, not a fixed requirement for every future version. Check the contents and metadata of each ZIP, including PDFs and other attachments. Never upload a ROM or an entire build directory.
 
 Create a draft under **Releases → Draft a new release**. Use a new version tag, attach the reviewed packages and write what changed, what remains unresolved and which input/save paths were checked. Mark previews as **pre-release**. Publish when the actual package has passed review, then download the uploaded assets and verify them again.
 
 Never overwrite a released asset with different bytes. A correction needs a new release. Keep `README.md`, `PLAY.md`, `CHANGELOG.md` and the patch manifest consistent with the downloads.
+
+### A future automation path
+
+Start with automatic file checks and synthetic source tests on pushes and pull requests. These can run without game files. Keep the game build and playtesting in an isolated local environment with the required private inputs.
+
+A separate, manually started packaging workflow could later validate approved patch files, assemble the guides and create a **draft** release for review. Publishing that draft would remain a deliberate maintainer action. Such a workflow would package already prepared patches; it would not build a new game from source. Full patch generation still needs the exact game inputs and is not implemented on GitHub here. Do not attach a personal development machine as a runner for untrusted pull requests.
+
+Before enabling any workflow, review its permissions and outputs, verify a successful run and then update this guide to describe the behaviour actually available. [GitHub workflow triggers](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
 ## Community settings
 
