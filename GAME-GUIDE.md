@@ -6,7 +6,7 @@ Sacred Gold Plus builds on Drayano's Sacred Gold, a HeartGold hack. The notes be
 
 - **Fairy typing:** Pokémon that gained the Fairy type in Generation 6 receive it here too.
 - **Fairy moves:** seven moves replace older moves, and several existing moves become Fairy type. The original 1.03 notes describe updated ways for Pokémon to learn the new moves.
-- **Trainer battles:** Sacred Gold's teams and levels remain, but Plus 1.03 uses default moves for the Pokémon's level instead of Drayano's custom battle movesets. This changes some battle strategies.
+- **Trainer battles:** Sacred Gold's teams and levels remain, but Plus 1.03 generally uses moves from the Pokémon's level-up learnset instead of Drayano's custom battle movesets. This changes some battle strategies; it is not a claim that every trainer follows one universal rule.
 - **Camera:** Plus introduced a wider, Black/White-inspired view. Our **New Angle** download keeps it; **Normal Angle** uses HeartGold's original camera settings.
 
 ## Move changes in the original notes
@@ -34,6 +34,8 @@ These are earlier authors' changes, not new fixes made by this continuation. Ori
 ## Original references
 
 The original package includes gameplay notes, learnset lists, and Sacred Gold / Storm Silver guides for encounters, events, evolutions and items. Keep them as useful references; the older guides are not a verified walkthrough for every 1.04 situation.
+
+Our download keeps that familiar layout. Start with **Readme + Changelog.txt**. **Game Info + Learnset Changes.txt** includes 284 level-up entries for the seven added Fairy moves, checked against Plus 1.03 and all four 1.04 game outputs. **Extras/SGSS Original Documentation** contains five original PDF guides and the credited trainer reference. Read **Extras/READ ME FIRST.txt** for their limitations. No cheat database is automatically installed.
 
 - [Original release post and download](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
 - [Author's features and learnset document](https://docs.google.com/document/d/1IbXXpWf9HUO7uCwn1tOxgd8MpsNa2FNiZxpxTmBXYJA/edit)

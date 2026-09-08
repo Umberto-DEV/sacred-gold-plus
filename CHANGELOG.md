@@ -1,5 +1,17 @@
 # What changed
 
+## 1.04 Preview 2 — 8 September 2026
+
+This is a packaging and documentation update. The four patches produce exactly the same games as Preview 1; it adds no new gameplay fixes and requires no save migration for existing Preview 1 players.
+
+- Restored the familiar original download layout: **Readme + Changelog.txt**, **Game Info + Learnset Changes.txt**, one clearly named patch and **Extras**.
+- Updated installation, save backup, language and camera instructions.
+- Checked and refreshed 284 level-up entries for the seven added Fairy moves against the actual 1.03 and 1.04 game data.
+- Included five original Sacred Gold / Storm Silver PDF guides and the credited trainer reference, clearly marked as historical references where Plus differs.
+- Added the original project logo and fuller acknowledgements on the home page.
+
+Original ROMs, emulator software, old Windows patching executables and unverified cheat databases are not included. Extras explains where to find patching tools and earlier releases. Preview 1 remains available as a historical download.
+
 ## 1.04 Preview 1 — 8 September 2026
 
 This is the first public preview of our independent continuation of Sacred Gold Plus 1.03. It packages the existing tested candidate; the version label does not introduce additional gameplay changes.

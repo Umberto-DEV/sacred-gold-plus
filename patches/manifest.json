@@ -1,5 +1,5 @@
 {
-  "version": "1.04-rc1",
+  "version": "1.04-rc2",
   "status": "preview",
   "base": "Sacred Gold Plus 1.03 English",
   "base_sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
@@ -9,41 +9,41 @@
       "id": "it-classic",
       "language": "IT",
       "camera": "Normal Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC1-Normal-Angle-IT.xdelta",
+      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.xdelta",
       "patch_bytes": 4122353,
       "patch_sha256": "f877a4d23d13d13837a5df6be5a711c776bd6f81da0e21f4b95f1fb80dd27f34",
       "output_sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
-      "asset": "Sacred-Gold-Plus-1.04-RC1-Normal-Angle-IT.zip"
+      "asset": "Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.zip"
     },
     {
       "id": "it-plus",
       "language": "IT",
       "camera": "New Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC1-New-Angle-IT.xdelta",
+      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.xdelta",
       "patch_bytes": 4118902,
       "patch_sha256": "3a220f309adf0c7ce2a8271ddd661c0d4e6c1a3bca586ebcdb1c1c3b6b42b371",
       "output_sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
-      "asset": "Sacred-Gold-Plus-1.04-RC1-New-Angle-IT.zip"
+      "asset": "Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.zip"
     },
     {
       "id": "en-classic",
       "language": "US",
       "camera": "Normal Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC1-Normal-Angle-US.xdelta",
+      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.xdelta",
       "patch_bytes": 65216,
       "patch_sha256": "5e9bd859957c21fce83c8c4ffd72ab4159df5788357ac22a1ab8d718a1797293",
       "output_sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
-      "asset": "Sacred-Gold-Plus-1.04-RC1-Normal-Angle-US.zip"
+      "asset": "Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.zip"
     },
     {
       "id": "en-plus",
       "language": "US",
       "camera": "New Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC1-New-Angle-US.xdelta",
+      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-New-Angle-US.xdelta",
       "patch_bytes": 61763,
       "patch_sha256": "40aa6275c2e06bc692f9ca7e36611b7b88801d55393aca6fd09923ab21ccdad0",
       "output_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
-      "asset": "Sacred-Gold-Plus-1.04-RC1-New-Angle-US.zip"
+      "asset": "Sacred-Gold-Plus-1.04-RC2-New-Angle-US.zip"
     }
   ]
 }

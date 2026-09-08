@@ -4,7 +4,9 @@
 
 Use the [four download links on the home page](README.md#download-104). IT means Italian; US means English. Normal Angle uses the original camera settings, while New Angle keeps the wider Sacred Gold Plus view. The language and camera choices do not change the story or battles.
 
-Each ZIP contains one `.xdelta` patch, instructions and file checks. Open the ZIP to extract it. On macOS, Finder can open ZIP files; **The Unarchiver extracts archives but does not apply a game patch**.
+Each ZIP follows the original package layout. Open **Readme + Changelog.txt** first, use the single `.xdelta` patch, and consult **Game Info + Learnset Changes.txt** and **Extras** when needed. **FILE-CHECKS.txt** identifies the exact game files. On macOS, Finder can open ZIP files; **The Unarchiver extracts archives but does not apply a game patch**.
+
+Preview 2 updates the download layout and documentation. If you already use the matching Preview 1 game, you do not need to patch it again: the resulting ROM is identical.
 
 ## 2. Prepare the required game
 

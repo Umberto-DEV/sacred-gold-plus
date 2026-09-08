@@ -10,14 +10,14 @@ Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to
 
 ## Download 1.04
 
-**1.04 Preview 1 is available for testing.** It includes the existing fixes and Italian translation. It is not yet a fully tested stable release. Keep a backup of your game and save before trying it.
+**1.04 Preview 2 is available for testing.** It includes the existing fixes and Italian translation. It is not yet a fully tested stable release. Keep a backup of your game and save before trying it.
 
-Choose **one** download:
+Choose **one** download. Each ZIP contains the patch, updated Readme and Game Info files, and the original reference guides in Extras:
 
 | Language | Normal Angle | New Angle |
 | --- | --- | --- |
-| Italian (IT) | [Download IT — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc1/Sacred-Gold-Plus-1.04-RC1-Normal-Angle-IT.zip) | [Download IT — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc1/Sacred-Gold-Plus-1.04-RC1-New-Angle-IT.zip) |
-| English (US) | [Download US — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc1/Sacred-Gold-Plus-1.04-RC1-Normal-Angle-US.zip) | [Download US — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc1/Sacred-Gold-Plus-1.04-RC1-New-Angle-US.zip) |
+| Italian (IT) | [Download IT — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.zip) | [Download IT — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.zip) |
+| English (US) | [Download US — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.zip) | [Download US — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-New-Angle-US.zip) |
 
 **Normal Angle** uses the original HeartGold camera settings. **New Angle** keeps the wider, Black/White-inspired view from Sacred Gold Plus. Both have the same gameplay and fixes; neither is advertised as faster.
 
