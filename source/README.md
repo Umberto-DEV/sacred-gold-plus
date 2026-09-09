@@ -12,7 +12,7 @@ The source build recreates the released patch outputs from three locally supplie
 | `Pokemon - HeartGold Version.nds` — US reference | `65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105` |
 | `Pokemon - Versione Oro HeartGold.nds` — Italian reference | `013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1` |
 
-The builder currently needs all three inputs, including for English. Players applying a downloaded delta need only the matching 1.03 English input.
+The source builder still needs all three inputs, including for English: it applies this project's recipes to the Plus 1.03 base using the US and Italian references. Players applying a current cumulative 1.04 patch need only the matching **unmodified US HeartGold** file listed above. They do not need Plus 1.03 or the Italian reference. Building the final game and encoding the downloadable patch are separate steps.
 
 Use Python 3.9 or newer and install `ndspy` from `source/requirements.txt` in an isolated environment. Obtain the character mapping from the official reference source:
 
@@ -53,4 +53,4 @@ python3 .github/check_public.py
 
 The synthetic tests do not require ROMs. They check building blocks; gameplay, save compatibility and performance require separate, described tests. Generated `.build.json` reports are private outputs and must not be committed.
 
-For a new release, the maintainer generates deltas from the exact supported input using xdelta3 with application-header filenames disabled (`-A`), decodes each result and compares the full output hash. [Release procedure](../MAINTAINING.md).
+For the cumulative 1.04 packages, encode each delta from the exact unmodified US HeartGold file to its completed 1.04 build using xdelta3 with application-header filenames disabled (`-A`). Decode all four deltas with that US input and compare each complete output hash with its source build and the release manifest before publishing. The Plus 1.03 recipe input remains unchanged; it is not the player's patch input. [Release procedure](../MAINTAINING.md).

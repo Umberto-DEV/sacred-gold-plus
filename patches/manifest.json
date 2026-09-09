@@ -1,49 +1,270 @@
 {
-  "version": "1.04-rc2",
-  "status": "preview",
-  "base": "Sacred Gold Plus 1.03 English",
-  "base_sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
-  "base_bytes": 126979552,
+  "version": "1.04",
+  "status": "released",
+  "base": "Pokemon HeartGold (USA)",
+  "base_sha256": "65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105",
+  "base_bytes": 134217728,
+  "patch_kind": "cumulative-from-clean-us",
   "variants": [
     {
       "id": "it-classic",
       "language": "IT",
       "camera": "Normal Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.xdelta",
-      "patch_bytes": 4122353,
-      "patch_sha256": "f877a4d23d13d13837a5df6be5a711c776bd6f81da0e21f4b95f1fb80dd27f34",
+      "patch": "patches/Sacred-Gold-Plus-Normal-Angle-IT.xdelta",
+      "patch_bytes": 9812117,
+      "patch_sha256": "3263d7cf91e1d1d19d4fe1de015730d2fe1a1ae976bd00c46a396819fd662758",
       "output_sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
-      "asset": "Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.zip"
+      "output_bytes": 131840584,
+      "asset": "Sacred-Gold-Plus-Normal-Angle-IT.zip",
+      "archive_members": {
+        "Cheats/Sacred Gold Plus - Normal Angle - IT.mch": {
+          "size": 2811,
+          "sha256": "bf9e918640a5f220ccb79d607fd9908b7b95473ecaf0945e8c2203c9c09e226b"
+        },
+        "Cheats/Sacred Gold Plus - Normal Angle - IT.xml": {
+          "size": 3453,
+          "sha256": "4d98e1b1962de84755a7b1b43dd9922be1f9807bc6592f4ba860e29b1d4c67d6"
+        },
+        "LICENSE": {
+          "size": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "size": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "size": 10044,
+          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "size": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "size": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "size": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/Project Notes.txt": {
+          "size": 10668,
+          "sha256": "c6c0ebd9c4d86bcf986ea6b24e1867a995a3f9dbe657190a58fd1d6216f850dc"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "size": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "size": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "README.txt": {
+          "size": 9311,
+          "sha256": "c422c3cfce964b959771b21027abb5b3d1df8a579415a77f46d04d8866c0dd62"
+        },
+        "Sacred-Gold-Plus-Normal-Angle-IT.xdelta": {
+          "size": 9812117,
+          "sha256": "3263d7cf91e1d1d19d4fe1de015730d2fe1a1ae976bd00c46a396819fd662758"
+        }
+      }
     },
     {
       "id": "it-plus",
       "language": "IT",
       "camera": "New Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.xdelta",
-      "patch_bytes": 4118902,
-      "patch_sha256": "3a220f309adf0c7ce2a8271ddd661c0d4e6c1a3bca586ebcdb1c1c3b6b42b371",
+      "patch": "patches/Sacred-Gold-Plus-New-Angle-IT.xdelta",
+      "patch_bytes": 9812105,
+      "patch_sha256": "d5c78b4e91bdbc4f94ee65a4151db9368ed13344ca4973eaab57c03941a5854c",
       "output_sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
-      "asset": "Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.zip"
+      "output_bytes": 131840584,
+      "asset": "Sacred-Gold-Plus-New-Angle-IT.zip",
+      "archive_members": {
+        "Cheats/Sacred Gold Plus - New Angle - IT.mch": {
+          "size": 2808,
+          "sha256": "acd1c8e90cb0ccc73127bb2d3de3f52304285ab7c5b1565233ab23c83d100ea2"
+        },
+        "Cheats/Sacred Gold Plus - New Angle - IT.xml": {
+          "size": 3450,
+          "sha256": "ad776ffd1adb15fb1a18ecb2a262febc105aa7fd477d14d58e01c519980fb76b"
+        },
+        "LICENSE": {
+          "size": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "size": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "size": 10044,
+          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "size": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "size": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "size": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/Project Notes.txt": {
+          "size": 10665,
+          "sha256": "47c6c479dac005016d320cc646b507e6bea21bebfd797e55fe88b3798201ca42"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "size": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "size": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "README.txt": {
+          "size": 9308,
+          "sha256": "fb5eb44b18f31d48af9483ff903655747f2de84bfaa422540ab7af2a133fa057"
+        },
+        "Sacred-Gold-Plus-New-Angle-IT.xdelta": {
+          "size": 9812105,
+          "sha256": "d5c78b4e91bdbc4f94ee65a4151db9368ed13344ca4973eaab57c03941a5854c"
+        }
+      }
     },
     {
       "id": "en-classic",
       "language": "US",
       "camera": "Normal Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.xdelta",
-      "patch_bytes": 65216,
-      "patch_sha256": "5e9bd859957c21fce83c8c4ffd72ab4159df5788357ac22a1ab8d718a1797293",
+      "patch": "patches/Sacred-Gold-Plus-Normal-Angle-US.xdelta",
+      "patch_bytes": 5728918,
+      "patch_sha256": "3ad2fe62751de1843efda7b23c9d3195631cd3f490c73547c5226e69ac6ffffb",
       "output_sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
-      "asset": "Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.zip"
+      "output_bytes": 127038608,
+      "asset": "Sacred-Gold-Plus-Normal-Angle-US.zip",
+      "archive_members": {
+        "Cheats/Sacred Gold Plus - Normal Angle - US.mch": {
+          "size": 2750,
+          "sha256": "96bf9c6bd3bff5560be24fa562eab1709ff4c61898a9ad59fcbbb96a7ecba97e"
+        },
+        "Cheats/Sacred Gold Plus - Normal Angle - US.xml": {
+          "size": 3392,
+          "sha256": "5c1f99af4984b1767d3bc789a97f6fbfe320d6db69d2589097cbccd5fd830f66"
+        },
+        "LICENSE": {
+          "size": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "size": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "size": 10044,
+          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "size": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "size": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "size": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/Project Notes.txt": {
+          "size": 10668,
+          "sha256": "3121f5bd57a868838a2e4d11f2a496e725be140d969adc4b8ecdecb96cbbfa20"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "size": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "size": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "README.txt": {
+          "size": 8897,
+          "sha256": "50013d09892724f72c099cb68e65b4d6a8196c0f52d1ec9b8c97428d567ebbde"
+        },
+        "Sacred-Gold-Plus-Normal-Angle-US.xdelta": {
+          "size": 5728918,
+          "sha256": "3ad2fe62751de1843efda7b23c9d3195631cd3f490c73547c5226e69ac6ffffb"
+        }
+      }
     },
     {
       "id": "en-plus",
       "language": "US",
       "camera": "New Angle",
-      "patch": "patches/Sacred-Gold-Plus-1.04-RC2-New-Angle-US.xdelta",
-      "patch_bytes": 61763,
-      "patch_sha256": "40aa6275c2e06bc692f9ca7e36611b7b88801d55393aca6fd09923ab21ccdad0",
+      "patch": "patches/Sacred-Gold-Plus-New-Angle-US.xdelta",
+      "patch_bytes": 5728906,
+      "patch_sha256": "c91c3b2248fdac59f9a67a5bc4bddf0a51acc9787a8ec8d0b070d205742bcce2",
       "output_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
-      "asset": "Sacred-Gold-Plus-1.04-RC2-New-Angle-US.zip"
+      "output_bytes": 127038608,
+      "asset": "Sacred-Gold-Plus-New-Angle-US.zip",
+      "archive_members": {
+        "Cheats/Sacred Gold Plus - New Angle - US.mch": {
+          "size": 2747,
+          "sha256": "00d3b3c953d1ed6a427e269bff311cc7d97296ce38cc7a1341d63b34068fd155"
+        },
+        "Cheats/Sacred Gold Plus - New Angle - US.xml": {
+          "size": 3389,
+          "sha256": "1f5e6caa3ee21e52f94087313db055ed727cc4881b3eaf86bf44529b630c0062"
+        },
+        "LICENSE": {
+          "size": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "size": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "size": 10044,
+          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "size": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "size": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "size": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/Project Notes.txt": {
+          "size": 10665,
+          "sha256": "473ee0932a7fbeb6aca03478fd8770454e4409c0659854ee92a0ee84ad1bff64"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "size": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "size": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "README.txt": {
+          "size": 8894,
+          "sha256": "535163ea2b4f78f8a3d9c1304b31fcb4da9dccd4d7f9d33a2268bf637b79114b"
+        },
+        "Sacred-Gold-Plus-New-Angle-US.xdelta": {
+          "size": 5728906,
+          "sha256": "c91c3b2248fdac59f9a67a5bc4bddf0a51acc9787a8ec8d0b070d205742bcce2"
+        }
+      }
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 # Sacred Gold Plus
 
-An independent continuation of Sacred Gold Plus 1.03, made for the community. The aim is to keep the game enjoyable, fix problems carefully and make it available in more languages. Developers, translators and players are welcome to help.
+An independent continuation of Sacred Gold Plus 1.03, maintained by one fan. I started this to keep a game I enjoy alive, bring it to Italian and give others a place to help improve it. I'm one person learning as I go, and anyone who wants to join in is very welcome: players, testers, translators, artists and developers.
 
 [Download](#download-104) · [How to play](PLAY.md) · [Game guide](GAME-GUIDE.md) · [Contribute](CONTRIBUTING.md)
 
@@ -10,18 +10,18 @@ Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to
 
 ## Download 1.04
 
-**1.04 Preview 2 is available for testing.** It includes the existing fixes and Italian translation. It is not yet a fully tested stable release. Keep a backup of your game and save before trying it.
+**Version 1.04 is available.** Choose your language and camera below. Keep a backup of your game and save when updating; [the release notes](CHANGELOG.md#known-limits) explain what has been checked and what still needs testing.
 
-Choose **one** download. Each ZIP contains the patch, updated Readme and Game Info files, and the original reference guides in Extras:
+Choose **one** download. Each ZIP contains one patch, a README, a **Manual** folder with the game guides, and optional **Cheats** in the selected language:
 
 | Language | Normal Angle | New Angle |
 | --- | --- | --- |
-| Italian (IT) | [Download IT — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-IT.zip) | [Download IT — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-New-Angle-IT.zip) |
-| English (US) | [Download US — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-Normal-Angle-US.zip) | [Download US — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04-rc2/Sacred-Gold-Plus-1.04-RC2-New-Angle-US.zip) |
+| Italian (IT) | [Download IT — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-Normal-Angle-IT.zip) | [Download IT — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-New-Angle-IT.zip) |
+| English (US) | [Download US — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-Normal-Angle-US.zip) | [Download US — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-New-Angle-US.zip) |
 
 **Normal Angle** uses the original HeartGold camera settings. **New Angle** keeps the wider, Black/White-inspired view from Sacred Gold Plus. Both have the same gameplay and fixes; neither is advertised as faster.
 
-These downloads are **patches**, not complete games. All four use the same **Sacred Gold Plus 1.03 English** input, including the Italian versions. [Follow the short installation guide](PLAY.md) to create your updated game. You do not need to browse the source folders or download GitHub's “Source code” ZIP to play.
+These downloads are **cumulative patches**, not complete games. Apply one directly to the exact **unmodified US HeartGold** game listed in the [installation guide](PLAY.md). It includes the earlier Sacred Gold and Plus changes retained in 1.04, together with this continuation's fixes. No earlier patch is required. IT and US select the output language; both start from the same US game. You do not need to browse the source folders or download GitHub's “Source code” ZIP to play.
 
 [What changed in 1.04](CHANGELOG.md) · [Plans for 1.05](ROADMAP.md) · [All releases](https://github.com/Umberto-DEV/sacred-gold-plus/releases)
 
@@ -29,7 +29,7 @@ These downloads are **patches**, not complete games. All four use the same **Sac
 
 | Title screen | Exploring New Bark Town |
 | --- | --- |
-| ![The title screen of the English 1.04 preview](images/06-title-screen.png) | ![Exploring New Bark Town in the English 1.04 preview](images/01-new-bark-town.png) |
+| ![The title screen of the English 1.04 game](images/06-title-screen.png) | ![Exploring New Bark Town in the English 1.04 game](images/01-new-bark-town.png) |
 
 The same scene and player position, with the two camera options:
 
@@ -37,11 +37,23 @@ The same scene and player position, with the two camera options:
 | --- | --- |
 | ![Normal Angle: the original HeartGold camera](images/02-normal-angle.png) | ![New Angle: the wider Plus camera](images/03-new-angle.png) |
 
-[More screenshots: exploring New Bark Town, Italian dialogue and the accented keyboard](SCREENSHOTS.md). These are unedited captures from the 1.04 preview; the wider view is a visual choice, not a performance claim.
+[More screenshots: exploring New Bark Town, Italian dialogue and the accented keyboard](SCREENSHOTS.md). These are unedited captures from the 1.04 game.
+
+## Development: 1.05 and beyond
+
+These are candidates for future work, not a promise that everything will be included in one release:
+
+- **1.05:** measured city performance improvements, remaining fixes, finishing the EV/IV stat display and in-game guide prototypes, English and Italian polish, and an initial scaling improvement that preserves the original graphics at 1×.
+- **Later releases:** optional difficulty with smarter opponents and more demanding training, more languages and possibly an in-game language selector, Gen 5-inspired Pokémon battle animations, broader graphical improvements, and new areas and events.
+- **Throughout development:** preserve saves and Nintendo DS compatibility, use repeatable tests, keep instructions simple, and make patches check the exact game version they start from.
+
+[Read the development plan](ROADMAP.md). There is no release date yet.
 
 ## Help improve the game
 
 [Report a problem](https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose), [share an idea or ask a question](https://github.com/Umberto-DEV/sacred-gold-plus/discussions), or [contribute a fix or translation](CONTRIBUTING.md). A clear report from a player is useful even without programming experience.
+
+AI tools help me investigate bugs, work on code and translations, write test scripts and prepare documentation. Further human review and playtesting are welcome. If future updates add new areas or artwork, the plan is to create those visuals by hand, with help from artists who want to contribute.
 
 <details>
 <summary>For contributors: what is in the folders?</summary>
