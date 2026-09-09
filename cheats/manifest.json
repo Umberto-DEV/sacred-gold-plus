@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "version": "1.04",
+  "description": "Seven optional cheats, with English or Italian labels. All codes initially off. Full-ROM hashes identify the supported files; header IDs alone do not.",
+  "variants": {
+    "en-plus": {
+      "directory": "us-new",
+      "language": "US",
+      "basename": "Sacred Gold Plus - New Angle - US",
+      "gameid": "IPKE F38C0335",
+      "rom_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "count": 7,
+      "enabled_count": 0,
+      "files": [
+        {
+          "path": "us-new/Sacred Gold Plus - New Angle - US.mch",
+          "format": "mch",
+          "bytes": 2747,
+          "sha256": "00d3b3c953d1ed6a427e269bff311cc7d97296ce38cc7a1341d63b34068fd155"
+        },
+        {
+          "path": "us-new/Sacred Gold Plus - New Angle - US.xml",
+          "format": "xml",
+          "bytes": 3389,
+          "sha256": "1f5e6caa3ee21e52f94087313db055ed727cc4881b3eaf86bf44529b630c0062"
+        }
+      ]
+    },
+    "en-classic": {
+      "directory": "us-normal",
+      "language": "US",
+      "basename": "Sacred Gold Plus - Normal Angle - US",
+      "gameid": "IPKE F38C0335",
+      "rom_sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
+      "count": 7,
+      "enabled_count": 0,
+      "files": [
+        {
+          "path": "us-normal/Sacred Gold Plus - Normal Angle - US.mch",
+          "format": "mch",
+          "bytes": 2750,
+          "sha256": "96bf9c6bd3bff5560be24fa562eab1709ff4c61898a9ad59fcbbb96a7ecba97e"
+        },
+        {
+          "path": "us-normal/Sacred Gold Plus - Normal Angle - US.xml",
+          "format": "xml",
+          "bytes": 3392,
+          "sha256": "5c1f99af4984b1767d3bc789a97f6fbfe320d6db69d2589097cbccd5fd830f66"
+        }
+      ]
+    },
+    "it-plus": {
+      "directory": "it-new",
+      "language": "IT",
+      "basename": "Sacred Gold Plus - New Angle - IT",
+      "gameid": "IPKE D0186E6D",
+      "rom_sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
+      "count": 7,
+      "enabled_count": 0,
+      "files": [
+        {
+          "path": "it-new/Sacred Gold Plus - New Angle - IT.mch",
+          "format": "mch",
+          "bytes": 2808,
+          "sha256": "acd1c8e90cb0ccc73127bb2d3de3f52304285ab7c5b1565233ab23c83d100ea2"
+        },
+        {
+          "path": "it-new/Sacred Gold Plus - New Angle - IT.xml",
+          "format": "xml",
+          "bytes": 3450,
+          "sha256": "ad776ffd1adb15fb1a18ecb2a262febc105aa7fd477d14d58e01c519980fb76b"
+        }
+      ]
+    },
+    "it-classic": {
+      "directory": "it-normal",
+      "language": "IT",
+      "basename": "Sacred Gold Plus - Normal Angle - IT",
+      "gameid": "IPKE D0186E6D",
+      "rom_sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
+      "count": 7,
+      "enabled_count": 0,
+      "files": [
+        {
+          "path": "it-normal/Sacred Gold Plus - Normal Angle - IT.mch",
+          "format": "mch",
+          "bytes": 2811,
+          "sha256": "bf9e918640a5f220ccb79d607fd9908b7b95473ecaf0945e8c2203c9c09e226b"
+        },
+        {
+          "path": "it-normal/Sacred Gold Plus - Normal Angle - IT.xml",
+          "format": "xml",
+          "bytes": 3453,
+          "sha256": "4d98e1b1962de84755a7b1b43dd9922be1f9807bc6592f4ba860e29b1d4c67d6"
+        }
+      ]
+    }
+  }
+}

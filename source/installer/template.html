@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="__LANG__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; worker-src blob:; child-src blob:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>__TITLE__</title>
+<style>
+:root{color-scheme:light;--ink:#18251f;--green:#16553f;--line:#cbd6ce;--muted:#46564d}
+*{box-sizing:border-box}body{margin:0;background:#f4f6f2;color:var(--ink);font:17px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:5vh auto;padding:0 20px}article{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(22px,5vw,42px);box-shadow:0 8px 32px #183f2310}
+.brand{text-transform:uppercase;letter-spacing:.13em;font-size:.8rem;font-weight:750;color:var(--green)}h1{font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.2;margin:.5em 0}.intro{font-size:1.1rem}
+p{margin:.8em 0}label{display:block;font-weight:700;margin-top:1.6em}input{display:block;width:100%;font:inherit;margin:.6em 0 1.2em;padding:.6em;border:1px solid var(--line);border-radius:8px}
+button,.download{display:inline-block;font:inherit;font-weight:650;border:0;border-radius:9px;background:var(--green);color:#fff;padding:.8em 1.1em;text-decoration:none;cursor:pointer}button:disabled{opacity:.55;cursor:default}
+:focus-visible{outline:3px solid #b47100;outline-offset:4px}[hidden]{display:none!important}.hint,small{color:var(--muted);font-size:.91rem}.status{border-left:4px solid var(--green);padding:.65em 1em;background:#edf4ee;min-height:3.2em;overflow-wrap:anywhere;margin-top:1.4em}progress{width:100%;height:8px;margin:.8em 0}.save{border-top:1px solid var(--line);padding-top:1em;margin-top:1.5em}details{margin:1.5em 0 3em;font-size:.86rem;color:var(--muted)}summary{cursor:pointer;font-weight:650}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+@media(max-width:420px){main{margin:16px auto;padding:0 12px}button,.download{display:block;width:100%;text-align:center}input{font-size:.9rem}}
+</style>
+</head>
+<body>
+<main>
+<article id="installer" aria-busy="false">
+<div class="brand">Sacred Gold Plus · 1.04</div>
+<h1>__TITLE__</h1>
+<p class="intro" data-i18n="intro">Install or update this version offline.</p>
+<p data-i18n="privacy">Your original game and saves are preserved.</p>
+<label for="game-file" data-i18n="choose">Choose your game file (.nds)</label>
+<input id="game-file" type="file" accept=".nds,application/octet-stream" aria-describedby="file-help">
+<p id="file-help" class="hint" data-i18n="help">Use a supported original game file.</p>
+<button id="install" type="button" data-i18n="action" disabled>Check and create game</button>
+<p id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
+<progress id="progress" hidden aria-label="Processing"></progress>
+<a id="download" class="download" data-i18n="download" hidden>Download the verified game</a>
+<p class="save hint" data-i18n="save">Keep the original game and a backup of your normal save.</p>
+<noscript><p>JavaScript is required. Enable it for this local file. / JavaScript è necessario: abilitalo per questo file locale.</p></noscript>
+</article>
+<details><summary data-i18n="credits">Decoder credits and MIT license</summary>
+<p>RomPatcher.js by Marc Robledo — github.com/marcrobledo/RomPatcher.js<br>Commit 3183884086825c3a57c72026234debcef1e2240c. BinFile.js, HashCalculator.js and VCDIFF module preserved unchanged.</p>
+<pre>MIT License
+
+Copyright (c) 2017-2024 Marc Robledo
+
+This project incorporates components from Octicons
+(https://github.com/primer/octicons/) Copyright (c) 2024 GitHub Inc.,
+also released under MIT license.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
+</details>
+</main>
+<script id="release-data" type="application/json">__DATA_JSON__</script>
+<script id="worker-source" type="application/json">__WORKER_JSON__</script>
+<script>__APP_JS__</script>
+</body>
+</html>

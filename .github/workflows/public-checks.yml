@@ -36,3 +36,11 @@ jobs:
 
       - name: Run synthetic tests
         run: python -m unittest discover -s source/translation -p 'test_*.py' -v
+
+      - name: Set up Node for the offline installer tests
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.14.0'
+
+      - name: Test the offline installer without game files
+        run: node --test source/installer/test_worker.cjs

@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/marcrobledo/RomPatcher.js",
+  "commit": "3183884086825c3a57c72026234debcef1e2240c",
+  "files": [
+    {
+      "path": "vendor/HashCalculator.js",
+      "upstream_path": "rom-patcher-js/modules/HashCalculator.js",
+      "sha256": "9d3a437aa3a75706533a44745f0201f773718be276d4e60bc2d7613ec01ab95a",
+      "bytes": 9027
+    },
+    {
+      "path": "vendor/BinFile.js",
+      "upstream_path": "rom-patcher-js/modules/BinFile.js",
+      "sha256": "3856e2f30bb8f105796a0371231a9b2aa37266148ac496711f07fd1e80fef688",
+      "bytes": 14745
+    },
+    {
+      "path": "vendor/RomPatcher.format.vcdiff.js",
+      "upstream_path": "rom-patcher-js/modules/RomPatcher.format.vcdiff.js",
+      "sha256": "c395b1121a6b1c03f1df7ca68ba2681b007d630b17ddac20bcf6252e5742de1b",
+      "bytes": 10556
+    },
+    {
+      "path": "vendor/LICENSE",
+      "upstream_path": "LICENSE",
+      "sha256": "a379dd012587a2fbe434ea6fcef30f502f32077738c2bd36e9e20cce621162bb",
+      "bytes": 1229
+    }
+  ]
+}

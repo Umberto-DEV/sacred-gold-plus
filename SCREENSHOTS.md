@@ -1,16 +1,16 @@
 # See Sacred Gold Plus
 
-These are real captures from the 1.04 preview, at the Nintendo DS's native resolution with both screens visible. They use a test character and contain no personal save information. Preview 2 produces the same game as Preview 1.
+These are real captures from 1.04, at the Nintendo DS's native resolution with both screens visible. They use a test character and contain no personal save information. The current packages produce the same game bytes shown in these images.
 
 ## Title screen
 
-![The title screen of the English 1.04 preview](images/06-title-screen.png)
+![The title screen of the English 1.04 game](images/06-title-screen.png)
 
-The existing title screen, captured from the preview. This is not new artwork made for 1.04.
+The existing title screen, captured from 1.04. This is not new artwork made for 1.04.
 
 ## Exploring New Bark Town
 
-![Exploring New Bark Town in the English 1.04 preview](images/01-new-bark-town.png)
+![Exploring New Bark Town in the English 1.04 game](images/01-new-bark-town.png)
 
 The English version, using the wider New Angle camera. This is an existing town, not a new area added in 1.04.
 

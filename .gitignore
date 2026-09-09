@@ -14,6 +14,21 @@
 !/images/06-title-screen.png
 !/guides/historical-cheats/Action Replay Codes.pdf
 !/guides/historical-cheats/Cheat Codes.txt
+!/cheats/us-new/Sacred Gold Plus - New Angle - US.mch
+!/cheats/us-new/Sacred Gold Plus - New Angle - US.xml
+!/cheats/us-normal/Sacred Gold Plus - Normal Angle - US.mch
+!/cheats/us-normal/Sacred Gold Plus - Normal Angle - US.xml
+!/cheats/it-new/Sacred Gold Plus - New Angle - IT.mch
+!/cheats/it-new/Sacred Gold Plus - New Angle - IT.xml
+!/cheats/it-normal/Sacred Gold Plus - Normal Angle - IT.mch
+!/cheats/it-normal/Sacred Gold Plus - Normal Angle - IT.xml
+!/source/installer/template.html
+!/source/installer/app.js
+!/source/installer/worker.js
+!/source/installer/test_worker.cjs
+!/source/installer/vendor/BinFile.js
+!/source/installer/vendor/HashCalculator.js
+!/source/installer/vendor/RomPatcher.format.vcdiff.js
 !LICENSE
 !CODEOWNERS
 !requirements.txt

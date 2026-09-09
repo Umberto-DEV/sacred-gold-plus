@@ -12,7 +12,7 @@ The source build recreates the released patch outputs from three locally supplie
 | `Pokemon - HeartGold Version.nds` — US reference | `65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105` |
 | `Pokemon - Versione Oro HeartGold.nds` — Italian reference | `013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1` |
 
-The builder currently needs all three inputs, including for English. Players applying a downloaded delta need only the matching 1.03 English input.
+The source builder still needs all three inputs, including for English: it applies this project's recipes to the English Plus 1.03 base using the US and Italian references. Players using a current 1.04 HTML installer supply only one recognized file: the supported unmodified US HeartGold or English Plus 1.01, 1.02 or 1.03. They do not supply all three builder inputs. Building the final game and encoding the distribution routes are separate steps.
 
 Use Python 3.9 or newer and install `ndspy` from `source/requirements.txt` in an isolated environment. Obtain the character mapping from the official reference source:
 
@@ -53,4 +53,8 @@ python3 .github/check_public.py
 
 The synthetic tests do not require ROMs. They check building blocks; gameplay, save compatibility and performance require separate, described tests. Generated `.build.json` reports are private outputs and must not be committed.
 
-For a new release, the maintainer generates deltas from the exact supported input using xdelta3 with application-header filenames disabled (`-A`), decodes each result and compares the full output hash. [Release procedure](../MAINTAINING.md).
+For the current 1.04 distribution, encode and verify all 16 routes from the four recognized source files to the four finished builds. Use xdelta3 without application-header filenames (`-A`) and with settings supported by the bundled browser decoder. Decode every route and compare the complete output SHA-256 and size with the source build and the release manifest before publishing. The Plus 1.03 recipe input remains unchanged.
+
+The [release manifest](../patches/manifest.json) uses `patch_kind: recognized-inputs`. Its `sources` records list `id`, `label`, `sha256` and `bytes`. Each variant records its output fingerprint and size, its `routes`, asset, installer and exact archive members. A route identifies its `source_id`, patch path, patch fingerprint and size. Source IDs are `clean-us`, `plus-1.01`, `plus-1.02` and `plus-1.03`; target IDs remain `it-classic`, `it-plus`, `en-classic` and `en-plus`. The public delta filenames follow `patches/from-{source_id}-to-{target_id}.xdelta`.
+
+Each player ZIP embeds the four routes for its fixed target inside one offline HTML installer. Check recognition, route selection, already-current handling, refusal of unknown files and verification before download in addition to the delta tests. Keep browser GUI and Android checks distinct from synthetic and decoder tests. [Release procedure](../MAINTAINING.md).
