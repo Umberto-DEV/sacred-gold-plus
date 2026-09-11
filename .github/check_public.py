@@ -9,16 +9,24 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 CUMULATIVE_BASE = {
-    'version': '1.04', 'base': 'Pokemon HeartGold (USA)',
+    'version': '1.1', 'base': 'Pokemon HeartGold (USA)',
     'base_sha256': '65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105',
     'base_bytes': 134217728, 'patch_kind': 'cumulative-from-clean-us',
 }
+# One release per language, camera Plus. Third copy of the variant identities:
+# this file is the exported gate and must stay standalone, so it repeats them.
 CUMULATIVE_VARIANTS = {
-    'it-classic': ('IT', 'Normal Angle', '9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a', 131840584),
-    'it-plus': ('IT', 'New Angle', '217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4', 131840584),
-    'en-classic': ('US', 'Normal Angle', 'ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760', 127038608),
-    'en-plus': ('US', 'New Angle', '3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248', 127038608),
+    'it-plus': ('IT', 'Plus', '7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077', 131906120),
+    'en-plus': ('US', 'Plus', '281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d', 127104144),
 }
+# The camera never forms a name. The US game keeps the EN suffix; its ZIP keeps US.
+GAME_STEM = {'IT': 'Sacred Gold Plus 1.1 IT', 'US': 'Sacred Gold Plus 1.1 EN'}
+ASSET_NAME = {'IT': 'Sacred-Gold-Plus-1.1-IT.zip', 'US': 'Sacred-Gold-Plus-1.1-US.zip'}
+
+
+def cheat_names(stem):
+    """melonDS pairs the desktop .mch with the game by base name."""
+    return {stem+'.mch', stem+' - cheat.xml'}
 
 
 RECOGNIZED_SOURCES = {
@@ -26,6 +34,10 @@ RECOGNIZED_SOURCES = {
     'plus-1.01': ('Sacred Gold Plus 1.01 English', 'f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6', 126978016),
     'plus-1.02': ('Sacred Gold Plus 1.02 English', '020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b', 126976992),
     'plus-1.03': ('Sacred Gold Plus 1.03 English', '78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1', 126979552),
+    'plus-1.04-en-plus': ('Sacred Gold Plus 1.04 US New Angle', '3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248', 127038608),
+    'plus-1.04-en-classic': ('Sacred Gold Plus 1.04 US Normal Angle', 'ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760', 127038608),
+    'plus-1.04-it-plus': ('Sacred Gold Plus 1.04 IT New Angle', '217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4', 131840584),
+    'plus-1.04-it-classic': ('Sacred Gold Plus 1.04 IT Normal Angle', '9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a', 131840584),
 }
 INSTALLER_MANUAL_NAMES = {
     'Evolution Changes.pdf', 'Important Item Locations.pdf', 'Pokemon Changes.pdf',
@@ -47,8 +59,8 @@ def validate_cumulative_manifest(manifest):
             for key, value in CUMULATIVE_BASE.items()):
         raise ValueError('Unexpected or missing cumulative base contract')
     rows = manifest.get('variants')
-    if not isinstance(rows, list) or len(rows) != 4:
-        raise ValueError('Expected four cumulative release variants')
+    if not isinstance(rows, list) or len(rows) != len(CUMULATIVE_VARIANTS):
+        raise ValueError('Expected two cumulative release variants')
     seen = set()
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get('id'), str):
@@ -74,12 +86,12 @@ def validate_recognized_manifest(manifest):
     if (not isinstance(manifest, dict) or
             set(manifest) != {'schema', 'version', 'status', 'patch_kind', 'sources', 'variants'} or
             type(manifest.get('schema')) is not int or manifest['schema'] != 2 or
-            manifest.get('version') != '1.04' or manifest.get('status') != 'released' or
+            manifest.get('version') != '1.1' or manifest.get('status') != 'released' or
             manifest.get('patch_kind') != 'recognized-inputs'):
         raise ValueError('Unexpected recognized-input release contract')
     sources = manifest.get('sources')
-    if not isinstance(sources, list) or len(sources) != 4:
-        raise ValueError('Expected four recognized sources')
+    if not isinstance(sources, list) or len(sources) != len(RECOGNIZED_SOURCES):
+        raise ValueError('Expected eight recognized sources')
     seen = set()
     for source in sources:
         if (not isinstance(source, dict) or set(source) != {'id', 'label', 'sha256', 'bytes'} or
@@ -89,8 +101,8 @@ def validate_recognized_manifest(manifest):
             raise ValueError('Unknown, altered or duplicate recognized source')
         seen.add(source['id'])
     variants = manifest.get('variants')
-    if not isinstance(variants, list) or len(variants) != 4:
-        raise ValueError('Expected four recognized-input release variants')
+    if not isinstance(variants, list) or len(variants) != len(CUMULATIVE_VARIANTS):
+        raise ValueError('Expected two recognized-input release variants')
     seen = set()
     for row in variants:
         if (not isinstance(row, dict) or
@@ -100,16 +112,16 @@ def validate_recognized_manifest(manifest):
             raise ValueError('Unexpected or duplicate recognized-input variant')
         ident = row['id']
         language, camera, output, size = CUMULATIVE_VARIANTS[ident]
-        stem = 'Sacred Gold Plus - '+camera+' - '+language
+        stem = GAME_STEM[language]
         if (tuple(row.get(key) for key in ('language', 'camera', 'output_sha256', 'output_bytes')) !=
                 (language, camera, output, size) or type(row.get('output_bytes')) is not int or
                 row.get('output_name') != stem+'.nds' or row.get('installer') != 'Install-or-update.html' or
-                row.get('asset') != 'Sacred-Gold-Plus-'+camera.replace(' ', '-')+'-'+language+'.zip'):
+                row.get('asset') != ASSET_NAME[language]):
             raise ValueError('Recognized-input variant differs from reviewed output or download')
         seen.add(ident)
         routes = row.get('routes')
-        if not isinstance(routes, list) or len(routes) != 4:
-            raise ValueError('Expected four recognized routes per variant')
+        if not isinstance(routes, list) or len(routes) != len(RECOGNIZED_SOURCES):
+            raise ValueError('Expected eight recognized routes per variant')
         route_sources = set()
         for route in routes:
             if (not isinstance(route, dict) or set(route) != {'source_id', 'patch', 'patch_sha256', 'patch_bytes'} or
@@ -119,8 +131,8 @@ def validate_recognized_manifest(manifest):
                     not _fingerprint(route, 'patch_bytes', 'patch_sha256') or route['patch_bytes'] < 5):
                 raise ValueError('Unexpected, altered or duplicate recognized route')
             route_sources.add(route['source_id'])
-        expected_members = ({'README.txt', 'LICENSE', 'Install-or-update.html',
-                             'Cheats/'+stem+'.mch', 'Cheats/'+stem+'.xml'} |
+        expected_members = ({'README.txt', 'LICENSE', 'Install-or-update.html'} |
+                            {'Cheats/'+name for name in cheat_names(stem)} |
                             {'Manual/'+name for name in INSTALLER_MANUAL_NAMES})
         members = row.get('archive_members')
         if (not isinstance(members, dict) or set(members) != expected_members or
@@ -231,8 +243,16 @@ def check(root=ROOT):
         game = variants[variant]
         if catalog['language'] != game['language'] or catalog['rom_sha256'] != game['output_sha256']:
             raise ValueError('Cheats target a different language or game')
-        if catalog['count'] != 7 or catalog['enabled_count'] != 0 or {f['format'] for f in catalog['files']} != {'mch', 'xml'} or len(catalog['files']) != 2:
-            raise ValueError('Expected seven optional codes in two formats')
+        # The code count is a package datum, not a constant, and the two formats no
+        # longer carry the same set: the desktop MCH holds the project codes, the
+        # Android XML also holds the third-party catalogue. What stays invariant is
+        # that nothing is enabled and that both files name this exact game.
+        counts = catalog.get('counts')
+        if (not isinstance(counts, dict) or set(counts) != {'mch', 'xml'} or
+                any(type(value) is not int or value < 1 for value in counts.values()) or
+                catalog['enabled_count'] != 0 or
+                {f['format'] for f in catalog['files']} != {'mch', 'xml'} or len(catalog['files']) != 2):
+            raise ValueError('Expected one MCH and one XML with declared code counts, none enabled')
         for entry in catalog['files']:
             name = 'cheats/'+entry['path']
             expected_cheats.add(name)
@@ -241,11 +261,12 @@ def check(root=ROOT):
                 raise ValueError('Cheat fingerprint differs from the reviewed manifest')
             if entry['format'] == 'mch':
                 codes = re.findall(r'^CODE (\d+) ', data.decode(), re.M)
-                if codes != ['0'] * 7 or catalog['rom_sha256'] not in data.decode():
+                if codes != ['0'] * counts['mch'] or catalog['rom_sha256'] not in data.decode():
                     raise ValueError('Desktop cheats must be off and match this game')
             else:
                 tree = ET.fromstring(data)
-                if tree.findtext('game/gameid') != catalog['gameid'] or len(tree.findall('.//cheat')) != 7 or tree.findall('.//enabled'):
+                if (tree.findtext('game/gameid') != catalog['gameid'] or
+                        len(tree.findall('.//cheat')) != counts['xml'] or tree.findall('.//enabled')):
                     raise ValueError('Android cheat identity or selection differs')
     if {n for n in actual if n.endswith(('.mch', '.xml'))} != expected_cheats:
         raise ValueError('Unexpected or missing cheat files')

@@ -10,8 +10,9 @@ const hash = b => createHash('sha256').update(b).digest('hex');
 const array = b => Uint8Array.from(b).buffer;
 const original = Buffer.from(Array.from({length:8192}, (_,i)=>i%251));
 const targetBytes = Buffer.concat([original.subarray(0,2500),Buffer.from('new synthetic game'.repeat(180))]);
+const SOURCE_IDS = ['clean-us','plus-1.01','plus-1.02','plus-1.03','plus-1.04-en-plus','plus-1.04-en-classic','plus-1.04-it-plus','plus-1.04-it-classic'];
 function release() {
-  return {schema:1,version:'1.04',target:{id:'en-plus',language:'US',camera:'New Angle',sha256:hash(targetBytes),bytes:targetBytes.length,output_name:'Sacred Gold Plus - New Angle - US.nds'},sources:Array.from({length:4},(_,i)=>({id:['clean-us','plus-1.01','plus-1.02','plus-1.03'][i],label:'Source '+i,sha256:hash(i?Buffer.concat([original,Buffer.from([i])]):original),bytes:original.length+(i?1:0),patch:{sha256:'a'.repeat(64),bytes:6,data:'1sPEAAAA'}}))};
+  return {schema:1,version:'1.1',target:{id:'en-plus',language:'US',camera:'Plus',sha256:hash(targetBytes),bytes:targetBytes.length,output_name:'Sacred Gold Plus 1.1 EN.nds'},sources:Array.from({length:SOURCE_IDS.length},(_,i)=>({id:SOURCE_IDS[i],label:'Source '+i,sha256:hash(i?Buffer.concat([original,Buffer.from([i])]):original),bytes:original.length+(i?1:0),patch:{sha256:'a'.repeat(64),bytes:6,data:'1sPEAAAA'}}))};
 }
 function file(b) { return {size:b.length,arrayBuffer:async()=>array(b)}; }
 test('unknown size is refused before reading any bytes',async()=>{
@@ -79,14 +80,22 @@ test('invalid VCDIFF header is refused without a result',async()=>{
   assert.equal(messages.at(-1).type,'error');assert.equal(messages.some(m=>m.type==='ready'),false);
 });
 
-test('all four source identities are selected by hash, not label',async()=>{
+test('all eight source identities are selected by hash, not label',async()=>{
   const r=release();
-  for(let i=0;i<4;i++) {
+  for(let i=0;i<SOURCE_IDS.length;i++) {
     const input=i?Buffer.concat([original,Buffer.from([i])]):original;
     r.sources[i].label='Identical misleading label';
     const result=await app.classifyFile(file(input),r);
-    assert.equal(result.source.id,['clean-us','plus-1.01','plus-1.02','plus-1.03'][i]);
+    assert.equal(result.source.id,SOURCE_IDS[i]);
   }
+});
+test('a release that still declares four sources is refused',async()=>{
+  const r=release(); r.sources=r.sources.slice(0,4);
+  await assert.rejects(app.classifyFile(file(original),r),/MANIFEST/);
+});
+test('a camera in the game name is refused',async()=>{
+  const r=release(); r.target.output_name='Sacred Gold Plus - New Angle - US.nds';
+  await assert.rejects(app.classifyFile(file(original),r),/MANIFEST/);
 });
 test('missing native crypto refuses before reading supported file',async()=>{
   const descriptor=Object.getOwnPropertyDescriptor(globalThis,'crypto');
@@ -197,7 +206,7 @@ test('old worker progress, result and errors cannot replace a newer operation',a
   assert.equal(ui.elements.install.disabled,true);
   current.onmessage({data:{type:'ready',buffer:array(targetBytes)}});
   assert.equal(ui.elements.download.hidden,false);
-  assert.equal(ui.elements.download.download,'Sacred Gold Plus - New Angle - US.nds');
+  assert.equal(ui.elements.download.download,'Sacred Gold Plus 1.1 EN.nds');
 });
 
 test('pagehide revokes completed download and pageshow does not claim it is ready',async()=>{

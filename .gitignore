@@ -14,14 +14,10 @@
 !/images/06-title-screen.png
 !/guides/historical-cheats/Action Replay Codes.pdf
 !/guides/historical-cheats/Cheat Codes.txt
-!/cheats/us-new/Sacred Gold Plus - New Angle - US.mch
-!/cheats/us-new/Sacred Gold Plus - New Angle - US.xml
-!/cheats/us-normal/Sacred Gold Plus - Normal Angle - US.mch
-!/cheats/us-normal/Sacred Gold Plus - Normal Angle - US.xml
-!/cheats/it-new/Sacred Gold Plus - New Angle - IT.mch
-!/cheats/it-new/Sacred Gold Plus - New Angle - IT.xml
-!/cheats/it-normal/Sacred Gold Plus - Normal Angle - IT.mch
-!/cheats/it-normal/Sacred Gold Plus - Normal Angle - IT.xml
+!/cheats/Sacred Gold Plus 1.1 EN - cheat.xml
+!/cheats/Sacred Gold Plus 1.1 EN.mch
+!/cheats/Sacred Gold Plus 1.1 IT - cheat.xml
+!/cheats/Sacred Gold Plus 1.1 IT.mch
 !/source/installer/template.html
 !/source/installer/app.js
 !/source/installer/worker.js
@@ -41,3 +37,7 @@ local/
 inputs/
 outputs/
 *.build.json
+
+# strumenti locali di Claude Code (mai pubblici)
+.claude/
+CLAUDE.local.md

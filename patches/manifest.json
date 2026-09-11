@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "version": "1.04",
+  "version": "1.1",
   "status": "released",
   "patch_kind": "recognized-inputs",
   "sources": [
@@ -27,146 +27,104 @@
       "label": "Sacred Gold Plus 1.03 English",
       "sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
       "bytes": 126979552
+    },
+    {
+      "id": "plus-1.04-en-plus",
+      "label": "Sacred Gold Plus 1.04 US New Angle",
+      "sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-en-classic",
+      "label": "Sacred Gold Plus 1.04 US Normal Angle",
+      "sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-it-plus",
+      "label": "Sacred Gold Plus 1.04 IT New Angle",
+      "sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
+      "bytes": 131840584
+    },
+    {
+      "id": "plus-1.04-it-classic",
+      "label": "Sacred Gold Plus 1.04 IT Normal Angle",
+      "sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
+      "bytes": 131840584
     }
   ],
   "variants": [
     {
-      "id": "it-classic",
-      "language": "IT",
-      "camera": "Normal Angle",
-      "routes": [
-        {
-          "source_id": "clean-us",
-          "patch": "patches/from-clean-us-to-it-classic.xdelta",
-          "patch_sha256": "3263d7cf91e1d1d19d4fe1de015730d2fe1a1ae976bd00c46a396819fd662758",
-          "patch_bytes": 9812117
-        },
-        {
-          "source_id": "plus-1.01",
-          "patch": "patches/from-plus-1.01-to-it-classic.xdelta",
-          "patch_sha256": "7de2965f4a0112f0cfc8f593bcdfe7e2ae505732ec2c5f75d7e392a425ff44dd",
-          "patch_bytes": 4171551
-        },
-        {
-          "source_id": "plus-1.02",
-          "patch": "patches/from-plus-1.02-to-it-classic.xdelta",
-          "patch_sha256": "618edca799333011b753d424bc1ee4da320cf50668c6630dd8e9336e1ac38b97",
-          "patch_bytes": 4143133
-        },
-        {
-          "source_id": "plus-1.03",
-          "patch": "patches/from-plus-1.03-to-it-classic.xdelta",
-          "patch_sha256": "f877a4d23d13d13837a5df6be5a711c776bd6f81da0e21f4b95f1fb80dd27f34",
-          "patch_bytes": 4122353
-        }
-      ],
-      "output_sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
-      "output_bytes": 131840584,
-      "output_name": "Sacred Gold Plus - Normal Angle - IT.nds",
-      "installer": "Install-or-update.html",
-      "asset": "Sacred-Gold-Plus-Normal-Angle-IT.zip",
-      "archive_members": {
-        "Cheats/Sacred Gold Plus - Normal Angle - IT.mch": {
-          "size": 2811,
-          "sha256": "bf9e918640a5f220ccb79d607fd9908b7b95473ecaf0945e8c2203c9c09e226b"
-        },
-        "Cheats/Sacred Gold Plus - Normal Angle - IT.xml": {
-          "size": 3453,
-          "sha256": "4d98e1b1962de84755a7b1b43dd9922be1f9807bc6592f4ba860e29b1d4c67d6"
-        },
-        "Install-or-update.html": {
-          "size": 29725599,
-          "sha256": "99f5d89df8057d0e839c1c6f0f12716504f902497885e1ff16c0c087b0e7b6d9"
-        },
-        "LICENSE": {
-          "size": 35147,
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
-        },
-        "Manual/Evolution Changes.pdf": {
-          "size": 87217,
-          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
-        },
-        "Manual/Game Guide.txt": {
-          "size": 10044,
-          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
-        },
-        "Manual/Important Item Locations.pdf": {
-          "size": 154315,
-          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
-        },
-        "Manual/Pokemon Changes.pdf": {
-          "size": 309462,
-          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
-        },
-        "Manual/Pokemon Locations.pdf": {
-          "size": 1510542,
-          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
-        },
-        "Manual/Project Notes.txt": {
-          "size": 12308,
-          "sha256": "0fd07f3011fb404aef7e15716d79779c02ae15e2fe3873be49d530c3b3a3592f"
-        },
-        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
-          "size": 98420,
-          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
-        },
-        "Manual/Special Event Guide.pdf": {
-          "size": 674044,
-          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
-        },
-        "README.txt": {
-          "size": 11723,
-          "sha256": "8c58ae57464282ee603cc8db86793100fcc6f19676b9bb46eadb59986f253fb9"
-        }
-      }
-    },
-    {
       "id": "it-plus",
       "language": "IT",
-      "camera": "New Angle",
+      "camera": "Plus",
       "routes": [
         {
           "source_id": "clean-us",
           "patch": "patches/from-clean-us-to-it-plus.xdelta",
-          "patch_sha256": "d5c78b4e91bdbc4f94ee65a4151db9368ed13344ca4973eaab57c03941a5854c",
-          "patch_bytes": 9812105
+          "patch_sha256": "e8e431a39871d89d26d0b59a041554aacc266e94d271ce434abbf0959ded1041",
+          "patch_bytes": 9817251
         },
         {
           "source_id": "plus-1.01",
           "patch": "patches/from-plus-1.01-to-it-plus.xdelta",
-          "patch_sha256": "41c5deb2a582db15a3c17225e2c7faecbe2325271d71da5fc79c1cb2c9e6c7d6",
-          "patch_bytes": 4168145
+          "patch_sha256": "0a9a5a12927b335856f4df3c351533a3e084ceb13903f350184b7ff4bf78c69e",
+          "patch_bytes": 4183404
         },
         {
           "source_id": "plus-1.02",
           "patch": "patches/from-plus-1.02-to-it-plus.xdelta",
-          "patch_sha256": "f76826ba504de53310657690ea9f62e8e3c6fb523f5cf9acb8adfc3a027b191f",
-          "patch_bytes": 4139726
+          "patch_sha256": "1adde8aacec88e824491e3e63b2490cd80af84569182ad425e1286418819a2db",
+          "patch_bytes": 4155042
         },
         {
           "source_id": "plus-1.03",
           "patch": "patches/from-plus-1.03-to-it-plus.xdelta",
-          "patch_sha256": "3a220f309adf0c7ce2a8271ddd661c0d4e6c1a3bca586ebcdb1c1c3b6b42b371",
-          "patch_bytes": 4118902
+          "patch_sha256": "f6aad7d517781a6936523f57e79ec3055064b6c9000a948f71c778118288319d",
+          "patch_bytes": 4136862
+        },
+        {
+          "source_id": "plus-1.04-en-plus",
+          "patch": "patches/from-plus-1.04-en-plus-to-it-plus.xdelta",
+          "patch_sha256": "52df7745269c89db3c52336f2ec0d504f899377871a6d08b8005bdf6875cf96d",
+          "patch_bytes": 4150938
+        },
+        {
+          "source_id": "plus-1.04-en-classic",
+          "patch": "patches/from-plus-1.04-en-classic-to-it-plus.xdelta",
+          "patch_sha256": "ce40f534dfdf127880284cbe94f2615c27875b57e5e433227dbec731025bb6ce",
+          "patch_bytes": 4147445
+        },
+        {
+          "source_id": "plus-1.04-it-plus",
+          "patch": "patches/from-plus-1.04-it-plus-to-it-plus.xdelta",
+          "patch_sha256": "6d2b462c1b1f525b20f6249562a1ad8ad73be6c932d03222b4eeec29e4e7b594",
+          "patch_bytes": 52193
+        },
+        {
+          "source_id": "plus-1.04-it-classic",
+          "patch": "patches/from-plus-1.04-it-classic-to-it-plus.xdelta",
+          "patch_sha256": "2f6517519ed415d98daa85dbcdb62206c42a21c677aa62e6deecf078dd52ce60",
+          "patch_bytes": 48730
         }
       ],
-      "output_sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
-      "output_bytes": 131840584,
-      "output_name": "Sacred Gold Plus - New Angle - IT.nds",
+      "output_sha256": "7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077",
+      "output_bytes": 131906120,
+      "output_name": "Sacred Gold Plus 1.1 IT.nds",
       "installer": "Install-or-update.html",
-      "asset": "Sacred-Gold-Plus-New-Angle-IT.zip",
+      "asset": "Sacred-Gold-Plus-1.1-IT.zip",
       "archive_members": {
-        "Cheats/Sacred Gold Plus - New Angle - IT.mch": {
-          "size": 2808,
-          "sha256": "acd1c8e90cb0ccc73127bb2d3de3f52304285ab7c5b1565233ab23c83d100ea2"
+        "Cheats/Sacred Gold Plus 1.1 IT - cheat.xml": {
+          "size": 355429,
+          "sha256": "260d494ba23abed3a69a588f5e08e3828dca7393e4a78c336b22fcf5de2ec645"
         },
-        "Cheats/Sacred Gold Plus - New Angle - IT.xml": {
-          "size": 3450,
-          "sha256": "ad776ffd1adb15fb1a18ecb2a262febc105aa7fd477d14d58e01c519980fb76b"
+        "Cheats/Sacred Gold Plus 1.1 IT.mch": {
+          "size": 2990,
+          "sha256": "4d22a89653f24a3b1891a2c07ddd7493164261bf93c3f5fb5958ec33ba963c5f"
         },
         "Install-or-update.html": {
-          "size": 29711884,
-          "sha256": "7f54e2191c38ed01e615a36d874f0b9a9ccc054ee8e3f038fcf9cc1445aa6497"
+          "size": 40983881,
+          "sha256": "60751ffd7c140573e972939b65cf9b64a2f7f6c858b16c9b0c7d5d2f944af1ad"
         },
         "LICENSE": {
           "size": 35147,
@@ -177,8 +135,8 @@
           "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
         },
         "Manual/Game Guide.txt": {
-          "size": 10044,
-          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+          "size": 10462,
+          "sha256": "4e387dbd77ece0b4ee1599c74078702435e6acec77e97759fc759b5d577fec97"
         },
         "Manual/Important Item Locations.pdf": {
           "size": 154315,
@@ -193,8 +151,8 @@
           "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
         },
         "Manual/Project Notes.txt": {
-          "size": 12305,
-          "sha256": "0621ba6d0f74212a51ac97053fae84fd4d58f8afd58fb499ddace0903ac310ba"
+          "size": 13253,
+          "sha256": "a4e39a2d38a60538355bfe2dabf4c92827d5d15d989b1f28259f91f733dea43e"
         },
         "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
           "size": 98420,
@@ -205,148 +163,82 @@
           "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
         },
         "README.txt": {
-          "size": 11720,
-          "sha256": "d0c17dd15461118a6a54dc66fa03133b523782c33e459cdec29bb3869d25d6a6"
-        }
-      }
-    },
-    {
-      "id": "en-classic",
-      "language": "US",
-      "camera": "Normal Angle",
-      "routes": [
-        {
-          "source_id": "clean-us",
-          "patch": "patches/from-clean-us-to-en-classic.xdelta",
-          "patch_sha256": "3ad2fe62751de1843efda7b23c9d3195631cd3f490c73547c5226e69ac6ffffb",
-          "patch_bytes": 5728918
-        },
-        {
-          "source_id": "plus-1.01",
-          "patch": "patches/from-plus-1.01-to-en-classic.xdelta",
-          "patch_sha256": "90d95691f27d032dc2b3e28f1193f591c39918a1007b4f2e87c07bea8fddc683",
-          "patch_bytes": 111752
-        },
-        {
-          "source_id": "plus-1.02",
-          "patch": "patches/from-plus-1.02-to-en-classic.xdelta",
-          "patch_sha256": "cbc1cf34dbc593a928b511d7854e339aa6be8a93586704c276396e288340876a",
-          "patch_bytes": 85628
-        },
-        {
-          "source_id": "plus-1.03",
-          "patch": "patches/from-plus-1.03-to-en-classic.xdelta",
-          "patch_sha256": "5e9bd859957c21fce83c8c4ffd72ab4159df5788357ac22a1ab8d718a1797293",
-          "patch_bytes": 65216
-        }
-      ],
-      "output_sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
-      "output_bytes": 127038608,
-      "output_name": "Sacred Gold Plus - Normal Angle - US.nds",
-      "installer": "Install-or-update.html",
-      "asset": "Sacred-Gold-Plus-Normal-Angle-US.zip",
-      "archive_members": {
-        "Cheats/Sacred Gold Plus - Normal Angle - US.mch": {
-          "size": 2750,
-          "sha256": "96bf9c6bd3bff5560be24fa562eab1709ff4c61898a9ad59fcbbb96a7ecba97e"
-        },
-        "Cheats/Sacred Gold Plus - Normal Angle - US.xml": {
-          "size": 3392,
-          "sha256": "5c1f99af4984b1767d3bc789a97f6fbfe320d6db69d2589097cbccd5fd830f66"
-        },
-        "Install-or-update.html": {
-          "size": 8048742,
-          "sha256": "59b88c23147b9be1c34b3ec334c212ccf734e0c4ee886c8f825181bfaa339b28"
-        },
-        "LICENSE": {
-          "size": 35147,
-          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
-        },
-        "Manual/Evolution Changes.pdf": {
-          "size": 87217,
-          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
-        },
-        "Manual/Game Guide.txt": {
-          "size": 10044,
-          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
-        },
-        "Manual/Important Item Locations.pdf": {
-          "size": 154315,
-          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
-        },
-        "Manual/Pokemon Changes.pdf": {
-          "size": 309462,
-          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
-        },
-        "Manual/Pokemon Locations.pdf": {
-          "size": 1510542,
-          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
-        },
-        "Manual/Project Notes.txt": {
-          "size": 12308,
-          "sha256": "7a9d112e2dd71f701f7a16b5a0b8b997928251f4156a7b54259ce060e34a81e1"
-        },
-        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
-          "size": 98420,
-          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
-        },
-        "Manual/Special Event Guide.pdf": {
-          "size": 674044,
-          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
-        },
-        "README.txt": {
-          "size": 11151,
-          "sha256": "8a0347027a7f67b56cf42cc9e97176b2ab95f0210f57c42c5b3ef8edf1421cbf"
+          "size": 11234,
+          "sha256": "07b1211076fe27a817d5a440e838ad5d47c81094ece7762cf14bd86297bc8a03"
         }
       }
     },
     {
       "id": "en-plus",
       "language": "US",
-      "camera": "New Angle",
+      "camera": "Plus",
       "routes": [
         {
           "source_id": "clean-us",
           "patch": "patches/from-clean-us-to-en-plus.xdelta",
-          "patch_sha256": "c91c3b2248fdac59f9a67a5bc4bddf0a51acc9787a8ec8d0b070d205742bcce2",
-          "patch_bytes": 5728906
+          "patch_sha256": "0bd20d17c8b18ee0a369d812b01facd83b00b3179d5fdca2ab149274b8248fc0",
+          "patch_bytes": 5747714
         },
         {
           "source_id": "plus-1.01",
           "patch": "patches/from-plus-1.01-to-en-plus.xdelta",
-          "patch_sha256": "0c4d423f50ae0ac042f61227db15753b035de4e1c074487ee83ba19875b9e2ed",
-          "patch_bytes": 108346
+          "patch_sha256": "6eb35b09657158a46f62d350c2565fed97415f8e7c566b8ceaa5a83754a1c90e",
+          "patch_bytes": 140318
         },
         {
           "source_id": "plus-1.02",
           "patch": "patches/from-plus-1.02-to-en-plus.xdelta",
-          "patch_sha256": "43093e0952f5b71927dc74ee91a0202b022e6d0db96e1c2f975df209949dc825",
-          "patch_bytes": 82221
+          "patch_sha256": "0612f8e38ca19bd6ab966e5adae3904d623e4b133855993256f43f7bc1120ad4",
+          "patch_bytes": 116491
         },
         {
           "source_id": "plus-1.03",
           "patch": "patches/from-plus-1.03-to-en-plus.xdelta",
-          "patch_sha256": "40aa6275c2e06bc692f9ca7e36611b7b88801d55393aca6fd09923ab21ccdad0",
-          "patch_bytes": 61763
+          "patch_sha256": "91fe5f9a6b205614cabb7cebc2bd2a9123f682263b753938a4a3981cae0d2811",
+          "patch_bytes": 98867
+        },
+        {
+          "source_id": "plus-1.04-en-plus",
+          "patch": "patches/from-plus-1.04-en-plus-to-en-plus.xdelta",
+          "patch_sha256": "bd0b47c7a4bde92f5c25d78c05ec9aa2d62ab78a5227905f1aad9367399dc89f",
+          "patch_bytes": 40419
+        },
+        {
+          "source_id": "plus-1.04-en-classic",
+          "patch": "patches/from-plus-1.04-en-classic-to-en-plus.xdelta",
+          "patch_sha256": "1ddcc2b68ad9fe3f7eb4d7ea0e30760adf9a289845da24b4b78db878c6ca9757",
+          "patch_bytes": 36928
+        },
+        {
+          "source_id": "plus-1.04-it-plus",
+          "patch": "patches/from-plus-1.04-it-plus-to-en-plus.xdelta",
+          "patch_sha256": "7bce1745b71984a28ca17fd3b03c67df6c57e76f98be41a5f7c2f91c635d043f",
+          "patch_bytes": 185222
+        },
+        {
+          "source_id": "plus-1.04-it-classic",
+          "patch": "patches/from-plus-1.04-it-classic-to-en-plus.xdelta",
+          "patch_sha256": "465a9959408d76a897a619423c09b5017a331985c399ff9a47eaece9da1d3642",
+          "patch_bytes": 181761
         }
       ],
-      "output_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
-      "output_bytes": 127038608,
-      "output_name": "Sacred Gold Plus - New Angle - US.nds",
+      "output_sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
+      "output_bytes": 127104144,
+      "output_name": "Sacred Gold Plus 1.1 EN.nds",
       "installer": "Install-or-update.html",
-      "asset": "Sacred-Gold-Plus-New-Angle-US.zip",
+      "asset": "Sacred-Gold-Plus-1.1-US.zip",
       "archive_members": {
-        "Cheats/Sacred Gold Plus - New Angle - US.mch": {
-          "size": 2747,
-          "sha256": "00d3b3c953d1ed6a427e269bff311cc7d97296ce38cc7a1341d63b34068fd155"
+        "Cheats/Sacred Gold Plus 1.1 EN - cheat.xml": {
+          "size": 355284,
+          "sha256": "1362550ffcd61d2e11b0a3f4c2aa8b02365f5bb76320ac7a8f4f6273558a08f7"
         },
-        "Cheats/Sacred Gold Plus - New Angle - US.xml": {
-          "size": 3389,
-          "sha256": "1f5e6caa3ee21e52f94087313db055ed727cc4881b3eaf86bf44529b630c0062"
+        "Cheats/Sacred Gold Plus 1.1 EN.mch": {
+          "size": 2810,
+          "sha256": "860e8fe00dead331a0c66acabc25e18bd68ff6a4ecb1612165a367e40a1cddd3"
         },
         "Install-or-update.html": {
-          "size": 8035023,
-          "sha256": "4e964f7170cfe8dffea5e3641c515f43ab165297938ef4c24f083c905c9bf842"
+          "size": 8791687,
+          "sha256": "3099b8f675a66d1b545ef4c0143706460876c116131a2f9a38feeddf380df0ca"
         },
         "LICENSE": {
           "size": 35147,
@@ -357,8 +249,8 @@
           "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
         },
         "Manual/Game Guide.txt": {
-          "size": 10044,
-          "sha256": "3dc5f945a6748801efd01bd624794cf7de9be9936230784b467f4fee43132577"
+          "size": 10462,
+          "sha256": "4e387dbd77ece0b4ee1599c74078702435e6acec77e97759fc759b5d577fec97"
         },
         "Manual/Important Item Locations.pdf": {
           "size": 154315,
@@ -373,8 +265,8 @@
           "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
         },
         "Manual/Project Notes.txt": {
-          "size": 12305,
-          "sha256": "92b0416b197de95915c608fb6ffc3b080564ea1600ac020db6349b779a26a25d"
+          "size": 13253,
+          "sha256": "09c4014231650600697b597631f8116450911ba1fa0e1d611be03c7723a64f96"
         },
         "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
           "size": 98420,
@@ -385,8 +277,8 @@
           "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
         },
         "README.txt": {
-          "size": 11148,
-          "sha256": "866fb1f1592d3a20792de1d59ac8fa0c80b87d46287eb4d497057847a35882b3"
+          "size": 10525,
+          "sha256": "3865e8f05e0b10b5e2901e3ffed585b6948ebe3fa29ba31bc2ebc57ba2fa65fb"
         }
       }
     }
