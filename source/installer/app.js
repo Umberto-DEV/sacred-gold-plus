@@ -2,18 +2,23 @@
 ;(function () {
   'use strict';
   const MAX_BYTES = 256 * 1024 * 1024;
-  const SOURCE_IDS = ['clean-us', 'plus-1.01', 'plus-1.02', 'plus-1.03'];
+  const SOURCE_IDS = ['clean-us', 'plus-1.01', 'plus-1.02', 'plus-1.03',
+                     'plus-1.04-en-plus', 'plus-1.04-en-classic',
+                     'plus-1.04-it-plus', 'plus-1.04-it-classic'];
+  /* One release per language, camera Plus: the camera never forms a name. */
+  const GAME_NAME = {IT: 'Sacred Gold Plus 1.1 IT.nds', US: 'Sacred Gold Plus 1.1 EN.nds'};
   function validRecord(record) {
     return record && /^[a-f0-9]{64}$/.test(record.sha256) &&
       Number.isSafeInteger(record.bytes) && record.bytes > 0 && record.bytes <= MAX_BYTES;
   }
   function validateRelease(release) {
     const target = release && release.target;
-    if (!release || release.schema !== 1 || release.version !== '1.04' || !validRecord(target) ||
-        !['IT', 'US'].includes(target.language) || !['Normal Angle', 'New Angle'].includes(target.camera) ||
-        target.id !== (target.language === 'IT' ? 'it' : 'en') + (target.camera === 'New Angle' ? '-plus' : '-classic') ||
-        target.output_name !== 'Sacred Gold Plus - ' + target.camera + ' - ' + target.language + '.nds' ||
-        !Array.isArray(release.sources) || release.sources.length !== 4) throw new Error('MANIFEST');
+    if (!release || release.schema !== 1 || release.version !== '1.1' || !validRecord(target) ||
+        !['IT', 'US'].includes(target.language) || target.camera !== 'Plus' ||
+        target.id !== (target.language === 'IT' ? 'it' : 'en') + '-plus' ||
+        target.output_name !== GAME_NAME[target.language] ||
+        !Array.isArray(release.sources) ||
+        release.sources.length !== SOURCE_IDS.length) throw new Error('MANIFEST');
     const ids = new Set(), hashes = new Set();
     for (const source of release.sources) {
       if (!validRecord(source) || !SOURCE_IDS.includes(source.id) || ids.has(source.id) || hashes.has(source.sha256) ||
@@ -50,7 +55,7 @@
       intro: 'Install or update this version. Everything happens offline in your browser.',
       privacy: 'Your game stays on this device. This tool creates a new file; it does not change your original game or open your saves.',
       choose: 'Choose your game file (.nds)', action: 'Check and create game', download: 'Download the verified game',
-      help: 'Use original US HeartGold or the supported English Plus 1.01, 1.02 or 1.03. Unknown or differently patched files are refused.',
+      help: 'Use original US HeartGold, a supported English Plus 1.01, 1.02 or 1.03, or any of the four 1.04 releases. Unknown or differently patched files are refused.',
       idle: 'Choose a game file to begin.', cancelled: 'The operation was interrupted. You can try again.', checking: 'Checking the complete game file…',
       working: 'Recognized: ', patch: 'Checking the included update…', decoding: 'Creating the updated game…',
       verifying: 'Checking the complete result…', ready: 'Verified. Download your new game below.',
@@ -72,7 +77,7 @@
       intro: 'Installa o aggiorna questa versione. Tutto avviene offline nel browser.',
       privacy: 'Il gioco resta su questo dispositivo. Lo strumento crea un nuovo file: non modifica il gioco originale e non apre i salvataggi.',
       choose: 'Scegli il file del gioco (.nds)', action: 'Controlla e crea il gioco', download: 'Scarica il gioco verificato',
-      help: 'Usa HeartGold USA originale oppure le versioni inglesi supportate di Plus 1.01, 1.02 o 1.03. I file sconosciuti o modificati diversamente vengono rifiutati.',
+      help: 'Usa HeartGold USA originale, una versione inglese supportata di Plus 1.01, 1.02 o 1.03, oppure una delle quattro uscite 1.04. I file sconosciuti o modificati diversamente vengono rifiutati.',
       idle: 'Scegli un gioco per iniziare.', cancelled: 'Operazione interrotta. Puoi riprovare.', checking: 'Controllo del file completo…',
       working: 'Riconosciuto: ', patch: 'Controllo dell’aggiornamento incluso…', decoding: 'Creazione del gioco aggiornato…',
       verifying: 'Controllo del risultato completo…', ready: 'Verificato. Scarica il nuovo gioco qui sotto.',
