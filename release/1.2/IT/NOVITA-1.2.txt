@@ -1,0 +1,213 @@
+LE NOVITA' DELLA 1.2 — ITALIANO
+
+
+La 1.2 e' costruita sulla 1.1 finita: tutto quello che c'era prima c'e'
+ancora. Qui sotto c'e' solo quello che la 1.2 aggiunge, spiegato per chi
+gioca. Ogni voce dice anche quanto e' stata provata davvero: dove non e'
+stata vista funzionare a schermo, c'e' scritto.
+
+
+LA PAGINA OPZIONI: PREMI SELECT
+
+La novita' piu' grande della 1.2 e' che il gioco ha una pagina di
+opzioni tutta sua. Premi SELECT durante la partita e si apre.
+
+Le scelte vengono scritte nel salvataggio, quindi restano quando chiudi
+l'emulatore e quando riaccendi da freddo. La prima volta che premi
+Continua, il gioco ti chiede una volta se vuoi rivederle.
+
+Per queste impostazioni non esiste nessun cheat, e non serve: fanno parte
+del gioco. Non cercare un codice "difficolta' Plus" o "Pokemon
+animati" nella cartella Cheats. Non c'e', ed e' voluto.
+
+La pagina ha cinque impostazioni. In fondo, la riga dei comandi: A a
+sinistra salva e chiude, B a destra annulla e chiude.
+
+    1. Difficolta' Plus
+       Allenatori piu' duri. E' la difficolta' che questa linea di
+       progetti ha sempre avuto, ora accendibile e spegnibile senza
+       cambiare gioco. Il tetto di livello in questa versione resta
+       100, come nella 1.1: un tetto piu' alto e' un candidato per una
+       versione futura, non c'e' ancora.
+
+    2. Livelli selvatici
+       I Pokemon selvatici crescono di livello insieme ai tuoi
+       progressi, invece di restare fermi ai livelli della zona.
+       Osservato: un incontro e' passato dal livello 34 al 36 con
+       l'opzione accesa.
+
+    3. Pokemon animati
+       Movimento dei combattenti durante la lotta. ARRIVA SPENTA.
+       Con l'interruttore spento il gioco e' identico, byte per byte,
+       alla versione che questa aggiunta non ce l'ha: e' stato
+       controllato su oltre trentamila fotogrammi. E' spenta di serie
+       perche' l'effetto non e' stato giudicato abbastanza buono da
+       meritare di esserlo.
+
+    4. Personaggi
+       Limita quanti personaggi non giocanti il gioco carica in un
+       singolo fotogramma, e riduce gli scatti in citta'. ARRIVA
+       FLUIDI, cioe' accesa. Gli scatti venivano proprio dal
+       caricamento dei modelli; il limite viene riletto a ogni
+       passaggio.
+
+    5. Server online
+       Quale delle tre connessioni di rete configurate nel firmware
+       viene usata dai servizi in linea. Vedi la sezione apposita piu'
+       avanti.
+
+Osservato: su dieci avvii su dieci la pagina si e' aperta, le scelte
+sono sopravvissute a un salvataggio e a un riavvio a freddo, e il menu
+Opzioni originale del gioco e' rimasto identico byte per byte.
+
+Ancora da guardare: il livello dell'allenatore mostrato a schermo con la
+difficolta' Plus accesa, in una lotta non ancora combattuta.
+
+
+LA CAMERA NEGLI INTERNI
+
+In otto mappe interne la camera Plus e' ora nativa: non serve nessun
+cheat e non c'e' niente da accendere. Fuori, la camera Plus non cambia
+rispetto a prima.
+
+Il cambiamento viene letto quando entri in una mappa nuova. Restare
+fermi non fa vedere niente: bisogna attraversare una porta.
+
+Se preferisci la camera originale di HeartGold ovunque, accendi il cheat
+della camera: si chiama "Camera Classic" nel file .xml e "Classic
+camera" nel file .mch. E' lo stesso codice con due etichette.
+
+Stato: le otto mappe sono presenti nel file e verificate sulla tabella
+interna del gioco; il risultato a schermo e' stato guardato su una mappa
+sola, nel gioco inglese. Le altre sette e il gioco italiano sono stati
+controllati solo sulla tabella. L'effetto del cheat della camera classica
+non e' mai stato guardato in partita.
+
+
+SERVIZI IN LINEA: I TRE SLOT E I DNS
+
+La 1.2 non cambia nessun indirizzo di server. Sceglie soltanto quale
+delle tre connessioni di rete del firmware viene usata da quale
+servizio:
+
+    - Il Dono Segreto usa sempre la connessione 1, in automatico.
+    - GTS, lotte e scambi usano la connessione indicata alla riga
+      "Server online" della pagina Opzioni.
+
+Se la connessione designata non e' configurata, il gioco usa la prima
+che trova configurata; se non ne e' configurata nessuna, si comporta
+esattamente come prima.
+
+I server ufficiali di Nintendo per il DS sono chiusi da anni. Quello che
+resta sono server tenuti da appassionati, che si raggiungono indicando
+un DNS diverso. Il DNS si imposta dentro il gioco, non
+nell'emulatore: dalla schermata di configurazione Nintendo WFC,
+scegliendo una delle tre connessioni e inserendo a mano l'indirizzo.
+
+Questi sono i tre indirizzi con cui la 1.2 e' stata pensata, verificati
+il 12 settembre 2026:
+
+    Connessione 1   5.161.56.11       (WiiLink — Dono Segreto)
+    Connessione 2   178.62.43.212     (Kaeru — GTS, lotte, scambi)
+    Connessione 3   172.104.88.237    (AltWFC — alternativa)
+
+Come si arriva a quella schermata: in melonDS, avvia il gioco, apri dal
+gioco le impostazioni di connessione Nintendo WFC, scegli una delle tre
+connessioni, imposta l'indirizzo IP a mano e scrivi il DNS primario
+scelto qui sopra. Nel menu dell'emulatore serve una rete configurata;
+non serve nessun'altra impostazione particolare.
+
+AVVERTENZA, LEGGILA. Un DNS di terzi vede passare il tuo nome, il tuo
+codice amico, la tua squadra e i tuoi scambi. Sono server tenuti da
+appassionati, non da Nintendo, e non sono sotto il controllo di questo
+progetto. Usali sapendolo, oppure non usarli.
+
+Questa uscita non contiene un emulatore e non gestisce nessun server.
+
+Stato: tre dei cinque casi di ripiego sono stati visti dal vivo
+attraverso il Dono Segreto; i due che richiedono un servizio in linea
+attivo sono stati controllati solo su un processore emulato, senza
+blocchi.
+
+
+CORREZIONI AI TESTI
+
+Duecentododici testi inglesi e due italiani corretti: termini della
+quarta generazione allineati e correzioni tipografiche. Presenti nel
+file e riletti.
+
+
+IL TUO SALVATAGGIO 1.1 CONTINUA
+
+Un salvataggio 1.1 si apre nella 1.2, e un salvataggio 1.2 si apre nella
+1.1. I due file sono stati confrontati byte per byte e sono risultati
+identici; la 1.2 tiene le proprie impostazioni in un blocco che le
+versioni precedenti ignorano.
+
+Quello che non e' stato provato e' una partita intera a cavallo del
+cambio. COME-INSTALLARE.txt spiega come rinominare il salvataggio e cosa
+controllare subito dopo.
+
+
+I CHEAT DELLA 1.1 NON VALGONO PIU'
+
+melonDS abbina un catalogo di cheat a un gioco usando il codice del gioco
+e un numero di controllo ricavato dalla sua intestazione. La 1.2 ha
+un'intestazione diversa dalla 1.1: un catalogo 1.1 non comparira' mai per
+un gioco 1.2.
+
+Importa i file 1.2 che trovi nella cartella Cheats, e togli quelli della
+1.1 se non giochi piu' alla 1.1. Le istruzioni sono in
+Cheats/LEGGIMI-CHEAT.txt.
+
+
+DENTRO IL GIOCO, PER CHI SE LO CHIEDE
+
+Le aggiunte della 1.2 vivono in un'area riservata di 32.768 byte
+aggiunta al codice caricato. Come la riserva della 1.1, costa memoria di
+lavoro in ogni scena, sempre, e quel costo non e' stato misurato in
+condizioni di memoria scarsa. La riserva della 1.1 e il suo contenuto non
+sono stati spostati.
+
+
+COSA NON E' ENTRATO NELLA 1.2
+
+- Le animazioni di lotta della quinta generazione. Misurate e
+  abbandonate: quegli elementi sono pupazzi snodati con trasformazioni,
+  non sequenze di immagini. Portarli qui vorrebbe dire riscrivere il
+  motore, e riprodurrebbe proprio la sfocatura che non si voleva. Il
+  movimento procedurale della riga "Pokémon animati" e' quello che resta di
+  quel lavoro.
+- L'aumento di risoluzione della grafica bidimensionale nell'emulatore:
+  misurato come inutile su questo gioco e rimandato.
+- Una domanda posta durante una sessione in linea: rimandata, la scelta
+  vive nella pagina Opzioni.
+- Correzioni di testo che non si e' riusciti a confermare su una fonte
+  pubblicata: rimandate.
+
+
+LIMITI NOTI
+
+- Niente della 1.2 e' stato provato su un Nintendo DS vero. Tutti i
+  risultati vengono dalla lettura dei byte del gioco o da un emulatore,
+  su Mac o su un dispositivo Android.
+- La compatibilita' con un salvataggio esistente non e' stata provata
+  dall'inizio alla fine.
+- Il livello dell'allenatore a schermo con la difficolta' Plus accesa non
+  e' ancora stato guardato in una lotta non combattuta.
+- La camera nativa negli interni e' stata guardata su una mappa sola,
+  nel gioco inglese.
+- Due dei cinque casi di ripiego delle connessioni sono stati
+  controllati solo su un processore emulato.
+- L'uso ripetuto di un oggetto dalla borsa continua a non funzionare,
+  come gia' detto per la 1.1.
+- Il catalogo di cheat di terze parti non e' stato provato su questo
+  gioco.
+- Su un dispositivo che fa girare melonDS, un gioco impostato in modo
+  DSi smette di rispondere dopo una quindicina di secondi: e'
+  un'impostazione dell'emulatore, non un difetto del gioco.
+- Restano i limiti ereditati dalla 1.1 e dalla 1.04: i filtri di altezza
+  e peso del Pokedex italiano usano le unita' originali, alcune mosse
+  Folletto nuove possono usare l'animazione della mossa che hanno
+  sostituito, e nei pannelli della guida in gioco in italiano mancano 41
+  caratteri.

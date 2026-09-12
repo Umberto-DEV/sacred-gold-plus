@@ -1,0 +1,222 @@
+{
+  "schema": 1,
+  "version": "1.2",
+  "note": "Written by local/publishing/build_zip_1_2.py --esporta. Every file below is verified by release/1.2/build_zip.py before it goes into a ZIP.",
+  "packages": [
+    {
+      "id": "it-plus",
+      "language": "IT",
+      "folder": "IT",
+      "zip": "Sacred-Gold-Plus-1.2-IT.zip",
+      "game": {
+        "name": "Sacred Gold Plus 1.2 IT.nds",
+        "sha256": "d099d71785285c8be9da2d6384130f562a90ec0104226a8a7323d3fdae81478c",
+        "bytes": 131906120,
+        "melonds_id": "IPKE 1C1F741C"
+      },
+      "missing_guides": [],
+      "files": {
+        "COME-INSTALLARE.txt": {
+          "bytes": 9876,
+          "sha256": "f48c66e08f3347a492b1e96f83041abe27bcd242b0f59d18070f9ada145d0333"
+        },
+        "Cheats/LEGGIMI-CHEAT.txt": {
+          "bytes": 3146,
+          "sha256": "752fc147abc5d6861d9ccfe90c5ccf22aaf5961012e6176ceab84b00c0bdc156"
+        },
+        "Cheats/Sacred Gold Plus 1.2 IT - cheat.xml": {
+          "bytes": 356041,
+          "sha256": "ff4b74c4c75cfa6a6dd29a34b5bced15657f68585052dee0faae31d74f62575d"
+        },
+        "Cheats/Sacred Gold Plus 1.2 IT.mch": {
+          "bytes": 3951,
+          "sha256": "f6a893db1ea2ef3277ee5f48486cd22eca1942c438b4d241566a53e978eb5e60"
+        },
+        "LEGGIMI.txt": {
+          "bytes": 4880,
+          "sha256": "0d8da7eb5600266b9914c74020ecb6303b5595b94a9041309a592cd27972056f"
+        },
+        "LICENZA.txt": {
+          "bytes": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/Come-installare-IT.pdf": {
+          "bytes": 420439,
+          "sha256": "dae53fd7057067ea7521771ea93b84135e0e969e00924ab2a70ca02c3124f5c6"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "bytes": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "bytes": 10463,
+          "sha256": "3f3d046acf84a2d7792961a8b569dc7c197c4a2f246c41d091d4e8b86ba0ff9a"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "bytes": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/LEGGIMI-MANUALI.txt": {
+          "bytes": 2121,
+          "sha256": "251681ad46b64e746ac2cc64c272637f98f9177e0b714d449203db7ba1a6ce0f"
+        },
+        "Manual/Novita-1.2-IT.pdf": {
+          "bytes": 819718,
+          "sha256": "63d4dd6b2f53dcf13d1dbc366e76075da08807125fd5f24b6762ba408c2cd185"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "bytes": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "bytes": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "bytes": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "bytes": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "NOVITA-1.2.txt": {
+          "bytes": 9010,
+          "sha256": "8f1f85962ca4e1f475bb01dc27bdc8bcba51699daf39c26857ec0774120c526e"
+        },
+        "Patch/Da-HeartGold-Italia.xdelta": {
+          "bytes": 16202880,
+          "sha256": "62470b5da9384b79483e5cced6789a966a2a1ef1a7accbb09b7a1bef9e856c95"
+        },
+        "Patch/Da-Plus-1.03.xdelta": {
+          "bytes": 4440030,
+          "sha256": "0d112dfc003dfd4cba4b27aaf313859cf824ef1dd340d0e7f1614208d5cd8f9c"
+        },
+        "Patch/Da-Plus-1.04-IT-camera-classica.xdelta": {
+          "bytes": 351934,
+          "sha256": "a7fd8d10363078d7f7e84137a4af64122c3e2143c8e3003a9160f1d0d99ca364"
+        },
+        "Patch/Da-Plus-1.04-IT.xdelta": {
+          "bytes": 355396,
+          "sha256": "fe3e4e6aa24fa048d447a3ee9ef2cdcf95cc22b50d331724ba38b9e7119b1bfb"
+        },
+        "Patch/Da-Plus-1.1-IT.xdelta": {
+          "bytes": 303937,
+          "sha256": "301aaea6ea016b2091792f881d0ddf6bcfab6c2355dc945c371e2a905cc1a362"
+        },
+        "Patch/manifest.json": {
+          "bytes": 2164,
+          "sha256": "9c276983bd7a3ab9aebecaf9e6d5ccfcc5deeefe4d6da66dd6dc704679068d8e"
+        }
+      }
+    },
+    {
+      "id": "en-plus",
+      "language": "US",
+      "folder": "EN",
+      "zip": "Sacred-Gold-Plus-1.2-US.zip",
+      "game": {
+        "name": "Sacred Gold Plus 1.2 EN.nds",
+        "sha256": "f024dbb5fa91724b9d8ee59585d81d50521180152ba20ce7e15646294d1ee421",
+        "bytes": 127104144,
+        "melonds_id": "IPKE 19D1EEBB"
+      },
+      "missing_guides": [],
+      "files": {
+        "Cheats/ABOUT-CHEATS.txt": {
+          "bytes": 2821,
+          "sha256": "d2430b910d545b9959aff67046f984e972a15b47a32d47a6fc58f76c1a8d5c22"
+        },
+        "Cheats/Sacred Gold Plus 1.2 EN - cheat.xml": {
+          "bytes": 355834,
+          "sha256": "86915c1a7ce36dcba1fc1cc2f6a3c798a92dd88e18cf114bbfaef1b928f295cc"
+        },
+        "Cheats/Sacred Gold Plus 1.2 EN.mch": {
+          "bytes": 3644,
+          "sha256": "72af04f17c9ce4ec032c86673fcd4c62d8b457543741cd115c4e8809c4d842f4"
+        },
+        "HOW-TO-INSTALL.txt": {
+          "bytes": 9111,
+          "sha256": "4bdbe01161f42fdc519ea9106de37e0af94e7fd26da18119b75b46fa08ad8b76"
+        },
+        "LICENSE.txt": {
+          "bytes": 35147,
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+        },
+        "Manual/ABOUT-THESE-GUIDES.txt": {
+          "bytes": 1632,
+          "sha256": "6886246dde9c725279ce36d5153e797656dfb7cfed66a15e072edac6cfcf7cd2"
+        },
+        "Manual/Evolution Changes.pdf": {
+          "bytes": 87217,
+          "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+        },
+        "Manual/Game Guide.txt": {
+          "bytes": 10463,
+          "sha256": "3f3d046acf84a2d7792961a8b569dc7c197c4a2f246c41d091d4e8b86ba0ff9a"
+        },
+        "Manual/How-to-install-EN.pdf": {
+          "bytes": 430051,
+          "sha256": "00a2cba3e89b7357119f7d66dae6f298d0e10856787a92b0af594354018b66de"
+        },
+        "Manual/Important Item Locations.pdf": {
+          "bytes": 154315,
+          "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+        },
+        "Manual/Pokemon Changes.pdf": {
+          "bytes": 309462,
+          "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+        },
+        "Manual/Pokemon Locations.pdf": {
+          "bytes": 1510542,
+          "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+        },
+        "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
+          "bytes": 98420,
+          "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05"
+        },
+        "Manual/Special Event Guide.pdf": {
+          "bytes": 674044,
+          "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+        },
+        "Manual/Whats-New-1.2-EN.pdf": {
+          "bytes": 795143,
+          "sha256": "78b524185c6aa5951b80839ae5fe3fa0083d5b207abd75ff44bd2572f85a032d"
+        },
+        "Patch/From-HeartGold-USA.xdelta": {
+          "bytes": 5909505,
+          "sha256": "320a1b5d4876df62ee8acd0379a52875ce11446b7d1c80ff31ebcc363c9745cd"
+        },
+        "Patch/From-Plus-1.03.xdelta": {
+          "bytes": 405522,
+          "sha256": "23ae10eda578c0e7225cd435aa64a99865492571817457ba278ab85e119e69bf"
+        },
+        "Patch/From-Plus-1.04-US-classic-camera.xdelta": {
+          "bytes": 343785,
+          "sha256": "98e4361ffea366f0aac4304601232041e7bea5041dc9463ed37d03b7e1af86ff"
+        },
+        "Patch/From-Plus-1.04-US.xdelta": {
+          "bytes": 347275,
+          "sha256": "23d8d963068eb23b870a01863bc4089e942a480c134b5fff862a8c3e2bc1cca3"
+        },
+        "Patch/From-Plus-1.1-EN.xdelta": {
+          "bytes": 309790,
+          "sha256": "a83022336724a9e3a888317068a7089ddfed7e8524a91cd2c4ef24b9db463a45"
+        },
+        "Patch/manifest.json": {
+          "bytes": 2152,
+          "sha256": "4374ff722870c9c2d1566081eac9da0c8e21763b274defee5957075e9ff23618"
+        },
+        "README.txt": {
+          "bytes": 4386,
+          "sha256": "13408f2aabc6d993484273c311fb5e8ab43f896fa44828def39435cfbfd6ccea"
+        },
+        "WHATS-NEW-1.2.txt": {
+          "bytes": 8099,
+          "sha256": "73a2cc7ca955a50ff9c6798f792d63390b781ef081713a2175685bd8b895b0ce"
+        }
+      }
+    }
+  ],
+  "stale": []
+}

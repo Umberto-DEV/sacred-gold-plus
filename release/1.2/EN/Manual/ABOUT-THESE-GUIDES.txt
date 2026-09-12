@@ -1,0 +1,46 @@
+THE MANUALS — ENGLISH
+
+
+This folder holds documents by other authors, plus a game guide kept by
+this project.
+
+
+HOW FAR THEY CAN BE TRUSTED FOR 1.2
+
+They are historical references, useful for encounters, items, evolutions
+and events. They are not a claim that every entry has been retested on
+1.2, and in several places they describe Sacred Gold before Plus changed
+it: trainer teams and some move information may therefore differ.
+
+In the trainer reference, the heading "v1.05" refers to an older Sacred
+Gold guide, not to this continuation's 1.05.
+
+The five PDF guides and the trainer reference are the original Sacred
+Gold / Storm Silver documents, shipped exactly as their authors wrote
+them. They are kept in English in both language downloads, with the
+original credits intact: translating them would mean rewriting somebody
+else's work and losing the exact match with the originals.
+
+
+THE FILES
+
+Game Guide.txt
+    A game guide kept by this project: what Sacred Gold Plus changes
+    compared with HeartGold, and the level-up lists for the seven added
+    Fairy moves. Those lists were checked against 1.03 and the four 1.04
+    outputs; the reading was not repeated on 1.2.
+
+Evolution Changes.pdf
+Important Item Locations.pdf
+Pokemon Changes.pdf
+Pokemon Locations.pdf
+Special Event Guide.pdf
+    The five original guides, unchanged, credited to Drayano and the
+    original contributors.
+
+SS_SG Trainer Pokemon by @JD48096761.txt
+    The list of trainer teams, compiled by @JD48096761, crediting
+    u/ittapubas inside the document itself.
+
+The 1.2 changes are not here: they are in WHATS-NEW-1.2.txt, in the main
+folder.

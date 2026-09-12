@@ -1,0 +1,56 @@
+I MANUALI — ITALIANO
+
+
+In questa cartella ci sono documenti di altri autori, piu' una guida di
+gioco tenuta da questo progetto. Sono tutti in inglese.
+
+PERCHE' NON SONO TRADOTTI
+
+Le cinque guide PDF e il riferimento sugli allenatori sono i documenti
+originali di Sacred Gold / Storm Silver, spediti esattamente come sono
+stati scritti dai loro autori. Tradurli vorrebbe dire riscriverli: si
+perderebbe la corrispondenza esatta con gli originali, e sarebbe una
+modifica del lavoro di qualcun altro fatta senza il suo controllo.
+Restano quindi in inglese in tutte e due le lingue del pacchetto, con i
+crediti originali intatti.
+
+I testi di questo progetto — LEGGIMI, COME-INSTALLARE, NOVITA-1.2 e la
+nota sui cheat — sono invece scritti in italiano nel pacchetto italiano e
+in inglese in quello inglese.
+
+
+QUANTO SONO ATTENDIBILI PER LA 1.2
+
+Sono riferimenti storici, utili per incontri, oggetti, evoluzioni ed
+eventi. Non sono la dichiarazione che ogni voce sia stata riprovata sulla
+1.2, e in diversi punti descrivono Sacred Gold prima che Plus lo
+cambiasse: le squadre degli allenatori e alcune informazioni sulle mosse
+possono quindi non corrispondere.
+
+Nel riferimento sugli allenatori l'intestazione "v1.05" indica una
+vecchia guida di Sacred Gold, non la 1.05 di questa continuazione.
+
+
+I FILE
+
+Game Guide.txt
+    Guida di gioco tenuta da questo progetto: che cosa cambia Sacred
+    Gold Plus rispetto a HeartGold, e le liste dei livelli a cui si
+    imparano le sette mosse Folletto aggiunte. Quelle liste sono state
+    controllate sulla 1.03 e sulle quattro uscite 1.04; la lettura non
+    e' stata ripetuta sulla 1.2.
+
+Evolution Changes.pdf
+Important Item Locations.pdf
+Pokemon Changes.pdf
+Pokemon Locations.pdf
+Special Event Guide.pdf
+    Le cinque guide originali, non modificate, accreditate a Drayano e
+    ai contributori originali.
+
+SS_SG Trainer Pokemon by @JD48096761.txt
+    L'elenco delle squadre degli allenatori, compilato da @JD48096761,
+    con il credito a u/ittapubas indicato nel documento stesso.
+
+Le novita' della 1.2 non stanno qui: stanno in NOVITA-1.2.txt, nella
+cartella principale.

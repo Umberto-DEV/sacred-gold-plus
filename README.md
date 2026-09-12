@@ -4,47 +4,55 @@
 
 An independent continuation of Sacred Gold Plus 1.03, maintained by one fan. I started this to keep a game I enjoy alive, bring it to Italian and give others a place to help improve it. I'm one person learning as I go, and anyone who wants to join in is very welcome: players, testers, translators, artists and developers.
 
-[Download](#download-104) · [How to play](PLAY.md) · [Game guide](GAME-GUIDE.md) · [Contribute](CONTRIBUTING.md)
+[Download](#download-12) · [How to play](PLAY.md) · [Game guide](GAME-GUIDE.md) · [Contribute](CONTRIBUTING.md)
 
 Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's Sacred Gold. The original trainer teams and levels are retained, while their moves follow the Plus learnsets. The [game guide](GAME-GUIDE.md) explains these inherited changes and links to the original documentation.
 
-## Download 1.04
+## Download 1.2
 
-**Version 1.04 is available.** Choose your language and camera below. Keep a backup of your game and save when updating; [the release notes](CHANGELOG.md#known-limits) explain what has been checked and what still needs testing.
+**Version 1.2 is available.** It is built from the finished 1.1, so it carries everything 1.1 had. There is now **one build per language**: the camera is the Plus wide view everywhere outdoors, with the original HeartGold view restored natively in eight indoor maps and still available everywhere as the optional camera cheat. Keep a backup of your game and save before updating; [the changelog](CHANGELOG.md#known-limits) explains what has been checked and what still needs testing.
 
-Choose **one** download. Each ZIP contains **Install-or-update.html**, a README, a **Manual** folder with the game guides, and optional **Cheats** in the selected language:
+| Language | Download |
+| --- | --- |
+| Italian (IT) | [Download IT](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2/Sacred-Gold-Plus-1.2-IT.zip) |
+| English (US) | [Download US](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2/Sacred-Gold-Plus-1.2-US.zip) |
 
-| Language | Normal Angle | New Angle |
-| --- | --- | --- |
-| Italian (IT) | [Download IT — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-Normal-Angle-IT.zip) | [Download IT — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-New-Angle-IT.zip) |
-| English (US) | [Download US — Normal Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-Normal-Angle-US.zip) | [Download US — New Angle](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.04/Sacred-Gold-Plus-New-Angle-US.zip) |
+**What 1.2 adds**, on top of everything 1.1 already had:
 
-**Normal Angle** uses the original HeartGold camera settings. **New Angle** keeps the wider, Black/White-inspired view from Sacred Gold Plus. Both have the same gameplay and fixes; neither is advertised as faster.
+- **Plus difficulty** and **Wild levels**, two separate in-game options: tougher trainers and, independently, wild Pokémon that scale with your progress, both capped at level 100 in this release. Leave them off and the game plays byte-identical to 1.1.
+- **Native camera in eight indoor maps** (Mahogany Town's souvenir shop and Team Rocket hideout, and Mt. Mortar): no cheat needed. The classic HeartGold camera stays available everywhere as an optional cheat.
+- **Smoother towns**: fewer non-player characters loaded in a single frame at a town/route border, which measurably reduces the worst stutter there.
+- **Optional animated Pokémon**: Pokémon can move gently in battle instead of standing still. Off by default.
+- **A Sacred Gold Plus options page**: press SELECT during play. Your choices save with your game, and the game asks once, on Continue, whether you want to look at them.
+- **A choice of online connection**: pick which of your emulator's three WFC firmware slots handles GTS, battles and trades. Mystery Gift always uses the first slot automatically. No server address is changed by the game itself.
+- **214 text corrections** in English and Italian, mostly repairing words broken by an old global text replacement.
 
-Extract your ZIP and open **Install-or-update.html** in your browser. Select your own game and click **Check and create game** (**Controlla e crea il gioco** in Italian). It recognizes the supported **unmodified US HeartGold** and **English Plus 1.01, 1.02 or 1.03** versions, chooses the correct update and offers the verified game for download. It works offline without installing a program or uploading your ROM. No older patches are needed. Each download produces its chosen language and camera, including the earlier Sacred Gold and Plus changes retained in 1.04. [Installation, supported files and saves](PLAY.md). You do not need the source folders or GitHub's “Source code” ZIP to play.
+Extract your ZIP and open the installation guide included inside it: it walks through picking the right patch for your file and applying it with one of three free tools (a desktop program, an Android app, or a page that runs in your browser). It recognizes the supported **unmodified US and Italian HeartGold** and **English Sacred Gold Plus 1.01, 1.02, 1.03, 1.04 (both cameras) and 1.1** as starting files; no older patches are needed first. [Installation, supported files and saves](PLAY.md). You do not need the source folders or GitHub's “Source code” ZIP to play.
 
-[What changed in 1.04](CHANGELOG.md) · [Plans for 1.05](ROADMAP.md) · [All releases](https://github.com/Umberto-DEV/sacred-gold-plus/releases)
+[What changed in 1.2](CHANGELOG.md) · [Plans beyond 1.2](ROADMAP.md) · [All releases](https://github.com/Umberto-DEV/sacred-gold-plus/releases)
+
+**Emulator:** [melonDS](https://melonds.kuribo64.net/) Android 2.1 or newer is recommended; it is the build the new options page and the online-connection choice were checked against. If you use the three WFC connection slots, remember they are configured inside melonDS' own Wi-Fi settings, one address per slot — 1.2 only chooses which configured slot a given online service uses, it does not add or change any address itself.
+
+**Cheats:** your 1.1 cheat files do not carry over. melonDS matches a cheat catalogue to a game by its header, and 1.2's header is different from 1.1's. Re-import the cheat files from the 1.2 package; all codes start switched off.
+
+**Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte on the save file. What is not yet checked is a full playthrough across the change; keep your previous game file and an untouched save until you are satisfied. [Full details](PLAY.md).
+
+Tested so far on emulator: melonDS on desktop and on Android. Testing on real Nintendo DS hardware is in progress; [known limits](CHANGELOG.md#known-limits) says exactly what has and has not been watched running yet.
 
 ## See the game
 
 | Title screen | Exploring New Bark Town |
 | --- | --- |
-| ![The title screen of the English 1.04 game](images/06-title-screen.png) | ![Exploring New Bark Town in the English 1.04 game](images/01-new-bark-town.png) |
+| ![The title screen of the English game](images/06-title-screen.png) | ![Exploring New Bark Town in the English game](images/01-new-bark-town.png) |
 
-The same scene and player position, with the two camera options:
+[More screenshots, including 1.2's native indoor camera and options page](SCREENSHOTS.md).
 
-| Normal Angle | New Angle |
-| --- | --- |
-| ![Normal Angle: the original HeartGold camera](images/02-normal-angle.png) | ![New Angle: the wider Plus camera](images/03-new-angle.png) |
-
-[More screenshots: exploring New Bark Town, Italian dialogue and the accented keyboard](SCREENSHOTS.md). These are unedited captures from the 1.04 game.
-
-## Development: 1.05 and beyond
+## Development: beyond 1.2
 
 These are candidates for future work, not a promise that everything will be included in one release:
 
-- **1.05:** measured city performance improvements, remaining fixes, finishing the EV/IV stat display and in-game guide prototypes, English and Italian polish, and an initial scaling improvement that preserves the original graphics at 1×.
-- **Later releases:** optional difficulty with smarter opponents and more demanding training, more languages and possibly an in-game language selector, Gen 5-inspired Pokémon battle animations, broader graphical improvements, and new areas and events.
+- **1.2b:** raising the level cap further, to 150, with a per-stat ceiling instead of one global stop.
+- **1.3:** asking which online server to use from inside the Pokémon Center clerk's own dialogue, instead of only in the options page; more complete translations for other languages.
 - **Throughout development:** preserve saves and Nintendo DS compatibility, use repeatable tests, keep instructions simple, and make patches check the exact game version they start from.
 
 [Read the development plan](ROADMAP.md). There is no release date yet.

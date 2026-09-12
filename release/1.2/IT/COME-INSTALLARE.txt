@@ -1,0 +1,249 @@
+COME INSTALLARE SACRED GOLD PLUS 1.2 — ITALIANO
+
+
+Una patch non e' un gioco. E' l'elenco delle differenze fra il gioco che
+hai gia' e quello che vuoi ottenere. Un programma di patch legge i due e
+scrive un file nuovo: il tuo file di partenza non viene toccato.
+
+Serve mezz'ora la prima volta, cinque minuti le volte successive.
+
+
+PRIMA DI TUTTO: LE COPIE DI SCORTA
+
+1. Salva da dentro il gioco, dalla schermata del menu, non con un
+   savestate.
+2. Copia il file di gioco attuale e il suo file di salvataggio (.sav) in
+   una cartella separata, che non tocchi piu'.
+3. Solo adesso comincia.
+
+Non lavorare mai sull'unica copia che hai.
+
+
+PASSO 1 — SCEGLI LA PATCH GIUSTA
+
+Nella cartella Patch ci sono cinque file. Ognuno parte da una versione
+diversa e arriva sempre allo stesso risultato: Sacred Gold Plus 1.2 IT.
+
+Se hai: Pokemon Versione Oro HeartGold (Italia), originale
+    134.217.728 byte, impronta di partenza
+        013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1
+Usa: Patch/Da-HeartGold-Italia.xdelta
+    16.202.880 byte, SHA-256
+        62470b5da9384b79483e5cced6789a966a2a1ef1a7accbb09b7a1bef9e856c95
+
+Se hai: Sacred Gold Plus 1.03 (inglese, dell autore originale)
+    126.979.552 byte, impronta di partenza
+        78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
+Usa: Patch/Da-Plus-1.03.xdelta
+    4.440.030 byte, SHA-256
+        0d112dfc003dfd4cba4b27aaf313859cf824ef1dd340d0e7f1614208d5cd8f9c
+
+Se hai: Sacred Gold Plus 1.04 IT, camera Plus (New Angle)
+    131.840.584 byte, impronta di partenza
+        217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4
+Usa: Patch/Da-Plus-1.04-IT.xdelta
+    355.396 byte, SHA-256
+        fe3e4e6aa24fa048d447a3ee9ef2cdcf95cc22b50d331724ba38b9e7119b1bfb
+
+Se hai: Sacred Gold Plus 1.04 IT, camera classica (Normal Angle)
+    131.840.584 byte, impronta di partenza
+        9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a
+Usa: Patch/Da-Plus-1.04-IT-camera-classica.xdelta
+    351.934 byte, SHA-256
+        a7fd8d10363078d7f7e84137a4af64122c3e2143c8e3003a9160f1d0d99ca364
+
+Se hai: Sacred Gold Plus 1.1 IT
+    131.906.120 byte, impronta di partenza
+        7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077
+Usa: Patch/Da-Plus-1.1-IT.xdelta
+    303.937 byte, SHA-256
+        301aaea6ea016b2091792f881d0ddf6bcfab6c2355dc945c371e2a905cc1a362
+
+Come si riconosce la versione che hai: non dal nome del file, che
+chiunque puo' cambiare, ma dall'impronta SHA-256 dell'intero file. I
+programmi consigliati piu' avanti la mostrano, oppure puoi calcolarla
+tu:
+
+    su macOS o Linux, dal Terminale:
+        shasum -a 256 "il tuo file.nds"
+
+    su Windows, da PowerShell:
+        Get-FileHash "il tuo file.nds" -Algorithm SHA256
+
+Confronta il risultato con la colonna "impronta di partenza" qui sopra.
+Se non corrisponde a nessuna riga, la tua versione non e' fra quelle
+riconosciute: vedi "SE QUALCOSA NON TORNA" in fondo.
+
+Nota per chi arriva dalla 1.04 con la camera classica (Normal Angle):
+la patch esiste, ma il risultato ha la camera Plus. La camera classica
+torna accendendo il cheat, vedi NOVITA-1.2.txt.
+
+
+PASSO 2 — UNISCI LA PATCH AL GIOCO
+
+Scegli una delle tre strade. Il risultato e' identico: cambia solo il
+programma.
+
+
+STRADA A — DELTA PATCHER (Windows, macOS, Linux)
+
+Delta Patcher e' un programma con finestra, di Marco Calautti. Applica
+patch xdelta e non richiede altri programmi installati.
+
+Scaricalo solo dalle sue pagine ufficiali:
+    https://github.com/marco-calautti/DeltaPatcher/releases
+    (su Linux e' anche su Flathub)
+
+Poi:
+    1. Apri Delta Patcher e resta nella scheda di applicazione della
+       patch ("Apply patch").
+    2. Nel campo del file originale ("Original file") scegli il tuo
+       file .nds di partenza.
+    3. Nel campo della patch ("XDelta patch") scegli il file .xdelta che
+       hai selezionato al passo 1.
+    4. Lascia acceso il controllo dell'integrita' ("Checksum
+       validation") se l'opzione c'e'.
+    5. Premi "Apply patch" e aspetta. Su un file da oltre 120 MB ci
+       vogliono da pochi secondi a un paio di minuti.
+    6. Rinomina il file che esce in: Sacred Gold Plus 1.2 IT.nds
+
+
+STRADA B — UNIPATCHER (Android)
+
+UniPatcher e' un programma per Android di btimofeev. Applica patch
+xdelta3 direttamente sul telefono o sulla console portatile.
+
+Scaricalo solo dalle sue pagine ufficiali:
+    https://f-droid.org/en/packages/org.emunix.unipatcher/
+    https://github.com/btimofeev/UniPatcher
+
+Poi:
+    1. Estrai questo ZIP in una cartella del dispositivo. Android non
+       legge dentro gli ZIP: l'estrazione va fatta prima.
+    2. Apri UniPatcher e scegli l'applicazione di una patch.
+    3. Nella riga della patch ("Patch file") scegli il file .xdelta.
+    4. Nella riga del gioco ("ROM file") scegli il tuo file .nds.
+    5. Nella riga dell'uscita ("Output file") scegli la cartella dove
+       salvare il risultato.
+    6. Tocca il pulsante di conferma in basso a destra e aspetta.
+    7. Rinomina il file che esce in: Sacred Gold Plus 1.2 IT.nds
+
+
+STRADA C — ROM PATCHER JS (browser, anche da telefono)
+
+Rom Patcher JS e' una pagina web di Marc Robledo che applica le patch
+dentro il browser. Non carica niente da nessuna parte: i file restano
+sul tuo dispositivo.
+
+    https://www.marcrobledo.com/RomPatcher.js/
+
+Poi:
+    1. Apri la pagina con un browser recente.
+    2. Nel primo campo scegli il tuo file .nds.
+    3. Nel secondo campo scegli il file .xdelta.
+    4. Premi il pulsante di applicazione della patch ("Apply patch") e
+       aspetta senza chiudere la scheda.
+    5. Salva il file che ti viene proposto e rinominalo in:
+       Sacred Gold Plus 1.2 IT.nds
+
+Avvertenza: il gioco supera i 120 MB e il browser deve tenerne piu' di
+una copia in memoria. Su un telefono con poca memoria la scheda puo'
+chiudersi da sola. Se succede, usa la strada A o la strada B.
+
+Se in questo pacchetto trovi un file Install-or-update.html, e' la
+stessa idea ma gia' pronta: porta dentro le patch, riconosce da solo la
+versione che hai e controlla il risultato. In quel caso basta aprirlo
+con un browser, scegliere il file di gioco e seguire la pagina.
+
+
+PASSO 3 — CONTROLLA IL RISULTATO
+
+Il gioco che deve uscire e' esattamente questo:
+
+    Sacred Gold Plus 1.2 IT.nds
+    131.906.120 byte
+    SHA-256 d099d71785285c8be9da2d6384130f562a90ec0104226a8a7323d3fdae81478c
+    identita' melonDS IPKE 1C1F741C
+
+Calcola l'impronta del file che ti e' uscito con uno dei comandi del
+passo 1. Se corrisponde, l'operazione e' riuscita al byte. Se non
+corrisponde, il file non e' la 1.2: non giocarci sopra, rifai
+l'operazione partendo dalla copia di scorta.
+
+
+PASSO 4 — IL SALVATAGGIO
+
+Il salvataggio non e' dentro il gioco: e' un file a parte, di solito con
+lo stesso nome e l'estensione .sav.
+
+    1. Fai una copia del tuo file .sav.
+    2. Dai alla copia lo stesso nome di base del gioco nuovo, nella
+       cartella dei salvataggi che il tuo emulatore usa:
+
+           Sacred Gold Plus 1.2 IT.nds
+           Sacred Gold Plus 1.2 IT.sav
+
+    3. Apri il gioco nuovo e scegli Continua dalla schermata del titolo.
+       Se Continua non compare, controlla nome e cartella prima di
+       iniziare una partita nuova.
+
+Non caricare un savestate fatto con una versione precedente. Un
+savestate e' l'istantanea della memoria dell'emulatore, non e' il
+salvataggio che scrive il gioco: con un gioco cambiato non e' valido.
+
+Dopo l'aggiornamento controlla posizione, squadra e borsa, gioca un
+tratto breve, salva normalmente, chiudi il gioco e riaprilo. Tieni i
+cheat spenti durante questo controllo.
+
+Riserva onesta: un salvataggio 1.1 aperto nella 1.2 e uno 1.2 aperto
+nella 1.1 sono stati confrontati byte per byte e sono risultati
+identici, e la 1.2 tiene le proprie impostazioni in un blocco che le
+versioni precedenti ignorano. Quello che non e' stato provato e' una
+partita intera a cavallo del cambio. Conserva il gioco precedente e un
+salvataggio intatto finche' non sei soddisfatto.
+
+
+COSA NON FARE
+
+- Non applicare due patch una dopo l'altra. Si sceglie una sola riga
+  della tabella, quella che corrisponde al file che hai.
+- Non applicare una patch a un gioco gia' 1.2. Non serve, e il risultato
+  non sarebbe giocabile.
+- Non rinominare un file per farlo sembrare una versione riconosciuta.
+  Il riconoscimento legge il contenuto, non il nome.
+- Non usare xdelta.exe o xdeltaUI.exe trovati in vecchi pacchetti. Sono
+  eseguibili di terzi, non aggiornati e non firmati: questo pacchetto
+  non li include di proposito. Usa i programmi ufficiali indicati sopra.
+- Non applicare la patch sopra l'unica copia che hai.
+- Non chiedere aiuto allegando il tuo salvataggio o il file di gioco:
+  non vanno condivisi.
+
+
+SE QUALCOSA NON TORNA
+
+L'impronta del mio gioco non e' in tabella
+    La tua versione non e' fra quelle riconosciute. Puo' essere una
+    versione mai rilasciata, un file gia' modificato da qualcun altro,
+    oppure un file danneggiato. Riparti da un file di cui conosci la
+    provenienza.
+
+Il programma di patch dice che la sorgente e' sbagliata
+    Hai preso la riga sbagliata della tabella. Ricontrolla l'impronta di
+    partenza.
+
+L'impronta del risultato non corrisponde
+    Rifai l'operazione partendo dalla copia di scorta. Se succede di
+    nuovo, prova un altro dei tre programmi: due risultati diversi
+    indicano un problema del programma o del disco, non della patch.
+
+Continua non compare
+    Il salvataggio non ha il nome giusto o non e' nella cartella giusta.
+    Non iniziare una partita nuova prima di aver controllato.
+
+Il gioco si blocca dopo pochi secondi su una console Android
+    E' un'impostazione dell'emulatore, non un difetto del gioco: metti
+    il sistema su DS e l'impostazione della console per questo gioco su
+    Default.
+
+Se resta un problema che sai riprodurre, segnalalo qui:
+https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose

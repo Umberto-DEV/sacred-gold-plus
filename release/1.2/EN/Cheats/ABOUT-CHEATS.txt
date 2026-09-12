@@ -1,0 +1,75 @@
+THE 1.2 CHEATS — ENGLISH
+
+
+Cheats are optional. The game is complete without them. Every code in
+this folder starts off.
+
+The 1.2 settings — Plus difficulty, wild levels, animated Pokemon,
+characters, the online server — have NO cheat.
+They open in game by pressing SELECT. Do not look for them here: they
+are not, and that is deliberate.
+
+
+THE 1.1 FILES NO LONGER APPLY
+
+melonDS pairs a cheat catalogue with a game using the game code and a
+check number taken from its header. 1.2's header differs from 1.1's, so
+a 1.1 catalogue will never appear for a 1.2 game. Import the files in
+this folder, and remove the 1.1 ones if you no longer play 1.1.
+
+
+WHICH FILE TO USE
+
+melonDS on Android
+    Use the .xml file. Go to Settings, then Cheats, then Import cheats,
+    and choose the file. While playing, codes are switched on from
+    Pause, then Cheats.
+
+melonDS on a computer
+    Use the .mch file. Give it the same base name as your .nds file and
+    put it in the cheat folder configured in the emulator. Then open the
+    cheat editor to switch a code on.
+
+Do not rename a .mch to .xml or the other way round: they are different
+formats and do not carry the same list.
+
+For RetroArch with the melonDS DS core, follow that core's own
+documentation on saves and cheats. These files are not RetroArch imports
+and no RetroArch testing is claimed.
+https://docs.libretro.com/library/melonds_ds/
+
+
+WHAT IS INSIDE THE .XML FILE
+
+Folder 00
+    Seven codes kept by this project, the same seven as in 1.1. Every
+    guard address was re-read from the 1.2 code on 12 September 2026 and
+    matches. That establishes that the codes can fire on this game; it
+    is not a claim that their effect was watched on screen. Two guards
+    live in areas loaded only with certain maps and cannot be checked
+    that way: their notes say so. Unless a code's note says otherwise,
+    its in-game testing was done on 1.04 and was not repeated on 1.2.
+
+Folders 01 to 56
+    A third-party catalogue of about fifteen hundred Action Replay
+    codes, kept at the owner's request. None of them has been tested on
+    this game. Some can overwrite items or ruin a save. Treat it as
+    untested material and never use it on a save you care about.
+
+    The labels of those folders are mostly in Italian, in the English
+    download too: the catalogue was put together that way at the owner's
+    request and has not been translated.
+
+The .mch file for computers carries the same seven codes as folder 00:
+no code differs between the two formats.
+
+
+GOLDEN RULES
+
+- Keep a backup of the save before switching any code on.
+- Try one code at a time.
+- Read a code's note before using it.
+- Switching a code off does not undo what it has already written into
+  the save.
+- Keep all cheats off while checking that an updated game and its save
+  work.

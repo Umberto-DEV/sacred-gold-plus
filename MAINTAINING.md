@@ -21,11 +21,24 @@ Open **Settings → Collaborators → Add people**, enter their GitHub username 
 | Action | Result in this repository today |
 | --- | --- |
 | Push to main or open/update a PR targeting main | Runs **Public checks** on the public files and synthetic tests. It does not build patches or publish a release. |
-| Add a version tag | Marks a commit. It does not run a build or create our four download packages. |
+| Add a version tag | Marks a commit. It does not run a build or create our download packages. |
 | Open a release page | GitHub offers **Source code (zip)** and **Source code (tar.gz)** archives of the tagged repository. These are not the player packages. |
 | Publish a prepared release | Makes the attached patch packages and release notes available for players. |
 
 Automated release notes, source archives, the **Public checks** tests and building downloadable patches are separate features. [About GitHub releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+
+### Rebuild the 1.2 game and packages
+
+The private lab this project is developed in (`local/`, not part of this public repository) keeps its own build tools. `local/rom-tools/sgp12/costruisci.py` rebuilds the 1.2 game from the finished, unchanging 1.1 game: same recipe every time, checked against the fingerprints already declared for 1.2, so a rebuild either reproduces the same bytes or the build stops. It never starts from source assets directly; 1.2 is 1.1 plus the reviewed 1.2 changes applied in place.
+
+Once the 1.2 game is rebuilt (or has not changed), one command regenerates the player-facing patches and the two ZIPs from it:
+
+```sh
+python3 -B local/publishing/matrice-1.2/rigenera.py
+python3 -B local/publishing/build_zip_1_2.py --destination local/releases/1.2-zip-<new folder>
+```
+
+`rigenera.py` runs the local publishing test suite as part of regenerating the patch matrix and stops before producing anything if a check fails; always give `build_zip_1_2.py` a destination folder that does not exist yet, since it never overwrites or deletes. Only the output of this command — the patches, the ZIPs and the package texts — is meant to leave the private lab; the game files it was built from never do.
 
 ### Prepare and publish the packages
 
@@ -33,9 +46,9 @@ Use a dedicated checkout of this public repository. Never push the history of a 
 
 Run the translation tests, `node --test source/installer/test_worker.cjs`, and `python3 .github/check_public.py`. The installer tests use synthetic files and require no ROMs or extra Node packages. Review the exact staged files with `git diff --cached` and check commit names and email addresses before committing. Use your public GitHub identity and its private noreply email, not a personal email or local computer name. Check every new commit, not only the final file tree.
 
-Rebuild each advertised variant using the exact inputs, verify its output fingerprint and test the affected behaviour. The [source builder](source/README.md) still uses English Plus 1.03 and the US/Italian references. The player installer selects from four exact supported inputs: unmodified US HeartGold and English Plus 1.01, 1.02 and 1.03. Its language and camera are fixed by the chosen ZIP. Changing or adding an input requires a verified route and manifest fingerprints even when the resulting games stay identical. Before publishing, decode all 16 routes and require complete output hashes and sizes to match the existing four 1.04 builds. Verify file recognition, automatic route selection, already-current handling, refusal of unknown inputs, and output validation before download. Test the actual generated HTML offline, preserving the distinction between automated logic tests, browser GUI checks and Android tests.
+Rebuild each advertised target using the exact inputs, verify its output fingerprint and test the affected behaviour. The [source builder](source/README.md) still uses English Plus 1.03 and the US/Italian references for the parts of the game that predate 1.2; 1.2 itself is rebuilt from 1.1 as described above. The 1.2 installer selects from 11 exact recognized inputs — unmodified US and Italian HeartGold, and English Plus 1.01 through 1.1 — and produces one of two outputs, IT or EN; there is no separate camera choice at this stage, since 1.2 has one camera scheme per language. Changing or adding an input requires a verified route and manifest fingerprints even when the resulting game stays identical. Before publishing, decode every recognized route and require the complete output hash and size to match the declared 1.2 fingerprint for that language. Verify file recognition, already-current handling, refusal of unknown inputs, and output validation before download.
 
-Prepare one ZIP per language and camera with one **Install-or-update.html**, README.txt, LICENSE, Manual and Cheats. The HTML contains the four verified routes for that target, the required browser decoder components and their licence. It must process files locally without network requests or ROM uploads. Keep the 16 individual deltas in the public repository for advanced manual use, not as extra ZIP members. The 1.04 layout has 13 files: six unchanged original references plus Game Guide.txt and Project Notes.txt in Manual, and two files for the same seven optional cheats in Cheats (MCH and XML). Project Notes combines credits, the changelog and file checks. Check the language, game identity, exact member list and fingerprints against the release manifest. A documentation-only revision can reuse already reviewed patch bytes when their input and output fingerprints remain unchanged; it does not establish new gameplay test results. Check the contents and metadata of each ZIP, including PDFs and other attachments. Never upload a ROM or an entire build directory.
+Prepare one ZIP per language with the real patch files for that language, an installation guide, a document describing what 1.2 changes, README.txt, LICENSE, Manual and Cheats — no embedded browser installer. Check the language, game identity, exact member list and fingerprints against the release manifest before publishing. A documentation-only revision can reuse already reviewed patch bytes when their input and output fingerprints remain unchanged; it does not establish new gameplay test results. Check the contents and metadata of each ZIP, including PDFs and other attachments. Never upload a ROM or an entire build directory.
 
 Create a draft under **Releases → Draft a new release**. Use a new version tag, attach the reviewed packages and write what changed, what remains unresolved and which input/save paths were checked. Mark previews as **pre-release**. Publish when the actual package has passed review, then download the uploaded assets and verify them again.
 
