@@ -1,0 +1,133 @@
+SACRED GOLD PLUS 1.2 — ITALIANO
+
+
+Questo e' il pacchetto italiano della versione 1.2. Contiene la patch, i
+cheat consigliati, i manuali, la licenza e le istruzioni. Non contiene il
+gioco: la patch va unita al tuo file di gioco, che devi procurarti per
+vie lecite.
+
+C'e' una sola versione della 1.2 per lingua. La camera e' quella Plus, e
+negli interni e' nativa in otto mappe. La camera originale di HeartGold
+resta disponibile ovunque come cheat facoltativo.
+
+La 1.2 contiene tutto quello che conteneva la 1.1: e' costruita a partire
+dalla 1.1 finita, non accanto a lei.
+
+
+DA DOVE SI COMINCIA
+
+Apri COME-INSTALLARE.txt e segui i passi. In due parole: fai una copia
+di scorta del gioco e del salvataggio, scegli dalla cartella Patch il
+file che corrisponde alla versione che hai gia', e uniscilo al gioco con
+uno dei programmi indicati.
+
+Poi leggi NOVITA-1.2.txt: spiega le cinque funzioni nuove della pagina
+Opzioni e come si accendono.
+
+
+COSA C'E' IN QUESTO PACCHETTO
+
+LEGGIMI.txt
+    Questo file.
+
+COME-INSTALLARE.txt
+    Come unire la patch al gioco, con tre programmi diversi. Contiene le
+    impronte dei file da controllare e l'elenco delle cose da non fare.
+
+NOVITA-1.2.txt
+    Che cosa cambia rispetto alla 1.1 e alla 1.04, spiegato per chi
+    gioca: la pagina Opzioni, la camera negli interni, i servizi in
+    linea, le correzioni ai testi, i salvataggi, i cheat.
+
+Patch/
+    Le differenze fra il tuo gioco e la 1.2 italiana. Cinque file, uno
+    per ogni versione di partenza riconosciuta, piu' manifest.json con
+    dimensioni e impronte. Non sono giochi e non si aprono
+    nell'emulatore.
+
+Cheats/
+    I codici facoltativi per melonDS, nei due formati, piu' una nota che
+    spiega quando servono e quando no. Arrivano tutti spenti.
+
+Manual/
+    Le cinque guide PDF originali di Sacred Gold / Storm Silver, il
+    riferimento sugli allenatori e la guida di gioco. Sono documenti
+    degli autori originali, in inglese: LEGGIMI-MANUALI.txt dice perche'
+    non sono stati tradotti e quanto vanno considerati attendibili per
+    la 1.2.
+
+LICENZA.txt
+    Le condizioni degli strumenti di questo progetto (GPL-3.0-or-later).
+    Il testo ufficiale della licenza esiste solo in inglese: una
+    traduzione non avrebbe valore legale, per scelta di chi la licenza
+    l'ha scritta. I diritti di terzi sono indicati nei crediti qui
+    sotto.
+
+Lo ZIP non e' un gioco giocabile e aprirlo non applica nessuna patch.
+
+
+COSA NON C'E'
+
+- Il gioco. Nessuna ROM viene distribuita da questo progetto.
+- Un emulatore. melonDS si scarica e si aggiorna per conto proprio.
+- Le patch verso le versioni vecchie (1.03, 1.04, 1.1). Restano sulle
+  pagine di rilascio precedenti. Qui c'e' solo la 1.2.
+- I programmi per applicare le patch. Sono di altri autori e vanno presi
+  dai loro siti ufficiali: gli indirizzi sono in COME-INSTALLARE.txt.
+
+
+COSA QUESTA USCITA NON DICHIARA
+
+- Non dichiara una partita completata. Le prove sono limitate e quasi
+  tutte fatte al computer con un emulatore, non su hardware.
+- Non dichiara che un salvataggio di una versione precedente regga per
+  una partita intera.
+- Non dichiara niente su un Nintendo DS vero.
+- Non dichiara che il catalogo di cheat di terze parti funzioni.
+- Non dichiara che ogni aggiunta della 1.2 sia stata vista funzionare a
+  schermo: NOVITA-1.2.txt dice, voce per voce, quali lo sono.
+
+
+PROBLEMI
+
+Segnala un problema che sai riprodurre, con i passi che hai fatto.
+
+https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose
+
+Per domande e aiuto:
+
+https://github.com/Umberto-DEV/sacred-gold-plus/discussions
+
+
+CREDITI
+
+Drayano, che ha fatto Sacred Gold e Storm Silver.
+
+mikelan (Mikelan98), sul cui lavoro sul tipo Folletto si appoggia questa
+linea di progetti.
+
+NefariousnessNo3436, che ha fatto Sacred Gold Plus e le aggiunte della
+1.03, e che ha dato il permesso di continuare questo lavoro con credito.
+
+@JD48096761, che ha compilato il riferimento sugli allenatori incluso in
+Manual, con il credito a u/ittapubas indicato li'.
+
+Marc Robledo, autore di Rom Patcher JS, uno dei programmi consigliati per
+applicare la patch.
+
+Le cinque guide PDF in Manual sono originali non modificati e restano
+accreditate a Drayano e ai contributori originali.
+
+Il catalogo storico di codici Action Replay tenuto nella cartella Cheats
+e' materiale di terze parti. I crediti originali restano validi. Questo
+progetto non ne rivendica la paternita' e non lo ha verificato.
+
+I nomi dei Pokemon, il materiale del gioco originale e i contributi di
+terzi restano dei rispettivi titolari. La citazione non trasferisce quei
+diritti.
+
+Questa continuazione e' curata da un solo appassionato, con l'aiuto di
+strumenti di intelligenza artificiale per indagine, traduzione, script di
+prova e documentazione. Non e' un passaggio di consegne ufficiale e non
+e' avallata dagli autori qui sopra. Il numero 1.2 appartiene a questa
+continuazione.

@@ -1,0 +1,195 @@
+WHAT IS NEW IN 1.2 — ENGLISH
+
+
+1.2 is built on the finished 1.1: everything that was there before is
+still there. Below is only what 1.2 adds, written for players. Each item
+also says how far it was actually tested: where it has not been watched
+running, that is stated.
+
+
+THE OPTIONS PAGE: PRESS SELECT
+
+The biggest change in 1.2 is that the game now has an options page of
+its own. Press SELECT while playing and it opens.
+
+The choices are written into the save, so they survive closing the
+emulator and a cold start. The first time you press Continue, the game
+asks once whether you want to look at them.
+
+None of these settings has a cheat, and none needs one: they are part of
+the game. Do not look for a "Plus difficulty" or "Animated Pokemon"
+code in the Cheats folder. It is not there, and that is deliberate.
+
+The page has five settings. At the bottom, the command row: A on the
+left saves and closes, B on the right cancels and closes.
+
+    1. Plus difficulty
+       Harder trainers. It is the difficulty this line of projects
+       always had, now switchable without changing game. The level cap
+       in this release stays at 100, as in 1.1: a higher cap is a
+       candidate for a future release, not here yet.
+
+    2. Wild levels
+       Wild Pokemon grow in level along with your progress, instead of
+       staying at the levels of the area. Observed: one encounter went
+       from level 34 to 36 with the setting on.
+
+    3. Animated Pokemon
+       Movement of the battlers during a battle. SHIPPED OFF.
+       With the switch off the game is byte-identical to the version
+       without this addition: that was checked over more than thirty
+       thousand frames. It is off by default because the effect was not
+       judged good enough to be on.
+
+    4. Characters
+       Limits how many non-player characters the game loads in a single
+       frame, and reduces town stutter. SHIPPED AS SMOOTH, meaning on.
+       The stutter came precisely from the model loading task; the cap
+       is re-read on every pass.
+
+    5. Online server
+       Which of the three network connections configured in the
+       firmware the online services use. See the section below.
+
+Observed: on ten starts out of ten the page opened, the choices survived
+a save and a cold start, and the game's original Options menu stayed
+byte-identical.
+
+Still to be watched: the trainer level shown on screen with Plus
+difficulty on, in a battle that has not been fought.
+
+
+THE CAMERA INDOORS
+
+In eight interior maps the Plus camera is now native: no cheat, nothing
+to switch on. Outdoors the Plus camera is unchanged.
+
+The change is read when you enter a new map. Standing still shows
+nothing: you have to walk through a door.
+
+If you prefer HeartGold's original camera everywhere, switch on the
+camera cheat: it is called "Camera Classic" in the .xml file and
+"Classic camera" in the .mch file. It is the same code with two labels.
+
+Status: the eight maps are present in the file and were checked against
+the game's own table; the on-screen result was watched on one map only,
+in the English game. The other seven and the Italian game were checked
+against the table alone. The classic-camera cheat's effect has never
+been watched in play.
+
+
+ONLINE SERVICES: THE THREE SLOTS AND THE DNS
+
+1.2 changes no server address. It only chooses which of the firmware's
+three network connections is used by which service:
+
+    - Mystery Gift always uses connection 1, automatically.
+    - GTS, battles and trades use the connection named on the "Online
+      server" row of the options page.
+
+If the designated connection is not configured, the game uses the first
+configured one; if none is configured, it behaves exactly as before.
+
+Nintendo's official DS servers have been closed for years. What remains
+are servers kept by fans, reached by pointing at a different DNS. The
+DNS is set inside the game, not in the emulator: from the Nintendo WFC
+configuration screen, by choosing one of the three connections and
+typing the address by hand.
+
+These are the three addresses 1.2 was designed around, checked on 12
+September 2026:
+
+    Connection 1   5.161.56.11       (WiiLink — Mystery Gift)
+    Connection 2   178.62.43.212     (Kaeru — GTS, battles, trades)
+    Connection 3   172.104.88.237    (AltWFC — alternative)
+
+How to reach that screen: in melonDS, start the game, open the Nintendo
+WFC connection settings from inside the game, choose one of the three
+connections, set the IP address manually and type the primary DNS from
+the list above. The emulator menu needs a configured network; nothing
+else special is required.
+
+WARNING, PLEASE READ. A third-party DNS sees your name, your friend
+code, your party and your trades go past. These are servers kept by
+fans, not by Nintendo, and they are not under this project's control.
+Use them knowing that, or do not use them.
+
+This download contains no emulator and runs no server.
+
+Status: three of the five fallback cases were seen live through Mystery
+Gift; the two that need a live online service were only checked on an
+emulated processor, with no crash.
+
+
+TEXT CORRECTIONS
+
+Two hundred and twelve English strings and two Italian ones corrected:
+fourth-generation glossary terms aligned and typographical fixes.
+Present in the file and read back.
+
+
+YOUR 1.1 SAVE CARRIES ON
+
+A 1.1 save opens in 1.2, and a 1.2 save opens in 1.1. The two files were
+compared byte for byte and came out identical; 1.2 keeps its own
+settings in a block earlier versions ignore.
+
+What has not been tested is a whole playthrough across the change.
+HOW-TO-INSTALL.txt explains how to rename the save and what to check
+straight afterwards.
+
+
+THE 1.1 CHEATS NO LONGER APPLY
+
+melonDS pairs a cheat catalogue with a game using the game code and a
+check number taken from its header. 1.2 has a different header from 1.1:
+a 1.1 catalogue will never appear for a 1.2 game.
+
+Import the 1.2 files from the Cheats folder, and remove the 1.1 ones if
+you no longer play 1.1. The instructions are in Cheats/ABOUT-CHEATS.txt.
+
+
+INSIDE THE GAME, FOR THOSE WHO WONDER
+
+The 1.2 additions live in a reserved area of 32,768 bytes added to the
+loaded code. Like the 1.1 reserve, it costs working memory in every
+scene, permanently, and that cost has not been measured under memory
+pressure. The 1.1 reserve and its contents were not moved.
+
+
+WHAT DID NOT GO INTO 1.2
+
+- Generation 5 battle animations. Measured and abandoned: those assets
+  are jointed puppets with transforms, not sequences of frames. Porting
+  them would mean a new engine, and it would reproduce the very blur the
+  project did not want. The procedural movement on the "Animated Pokémon" row
+  is what remains of that work.
+- Higher-resolution 2D graphics in the emulator: measured as having
+  nothing to do on this game, and postponed.
+- A question asked during an online session: deferred, the choice lives
+  in the options page instead.
+- Text corrections that could not be confirmed against a published
+  source: deferred.
+
+
+KNOWN LIMITS
+
+- Nothing in 1.2 has been checked on real Nintendo DS hardware. Every
+  result comes from reading the game's bytes or from an emulator, on a
+  Mac or on an Android device.
+- Compatibility with an existing save has not been tested end to end.
+- The trainer level shown on screen with Plus difficulty on has not yet
+  been watched in an unfought battle.
+- The native indoor camera was watched on one map only, in English.
+- Two of the five connection fallback cases were only checked on an
+  emulated processor.
+- Repeat use of an item from the bag still does not work, as the 1.1
+  notes said.
+- The third-party cheat catalogue has not been tested on this game.
+- On a device running melonDS, a game set to DSi mode stops responding
+  after about fifteen seconds: that is an emulator setting, not a fault
+  in the game.
+- Earlier limits from 1.1 and 1.04 still stand: the Italian Pokedex
+  height and weight filters use the original units, some new Fairy moves
+  can play the animation of the move they replaced, and 41 characters
+  are cut from the Italian in-game guide panels.

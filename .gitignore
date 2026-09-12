@@ -31,6 +31,15 @@
 !.gitignore
 !.gitattributes
 !source/.public-files.json
+
+# release/<versione>: il pacchetto scaricabile, cartella per lingua. I file sono
+# scritti da local/publishing/build_zip_1_2.py --esporta e impacchettati da
+# release/<versione>/build_zip.py. Gli ZIP prodotti (dist/) restano fuori da git.
+!/release/*/**/*.txt
+!/release/*/**/*.pdf
+!/release/*/**/*.xml
+!/release/*/**/*.mch
+/release/*/dist/
 __pycache__/
 .venv/
 local/

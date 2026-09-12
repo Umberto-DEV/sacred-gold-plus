@@ -1,0 +1,362 @@
+SACRED GOLD PLUS 1.2 - GAME GUIDE
+
+This guide accompanies both 1.2 downloads. Instructions and references are in English; IT selects Italian game text and US selects English game text. The lists further down were checked against Plus 1.03 and the four 1.04 game outputs; that check has not been repeated on 1.2.
+
+Game guide
+
+Sacred Gold Plus builds on Drayano's Sacred Gold, a HeartGold hack. The notes below summarize the original author's 1.03 documentation. They describe the game we started from; our own changes, up to and including 1.2, are listed separately in Manual/Project Notes.txt and in the changelog (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md).
+
+What Plus changes
+
+- Fairy typing: Pokémon that gained the Fairy type in Generation 6 receive it here too.
+- Fairy moves: seven moves replace older moves, and several existing moves become Fairy type. The original 1.03 notes describe updated ways for Pokémon to learn the new moves.
+- Trainer battles: Sacred Gold's teams and levels remain, but Plus 1.03 generally uses moves from the Pokémon's level-up learnset instead of Drayano's custom battle movesets. This changes some battle strategies; it is not a claim that every trainer follows one universal rule.
+- Camera: Plus introduced a wider, Black/White-inspired view. 1.2 uses it by default. HeartGold's original camera is no longer a separate download; switch on the "Classic camera" cheat and change map to get it back.
+
+Move changes in the original notes
+
+| Added move | Replaces |
+| --- | --- |
+| Baby-Doll Eyes | Pay Day |
+| Dazzling Gleam | Barrage |
+| Disarming Voice | Rolling Kick |
+| Draining Kiss | Kinesis |
+| Fairy Wind | Spider Web |
+| Moonblast | Conversion |
+| Play Rough | Conversion 2 |
+
+Charm, Moonlight, Sweet Kiss, Comet Punch, Dizzy Punch and Covet become Fairy type. Curse becomes Ghost type.
+
+Some new moves still use the animations of the moves they replaced. The original author reported this limitation; 1.2 does not claim to fix it. Turning battle animations off is an optional workaround.
+
+Earlier fixes and balance changes
+
+The author's 1.02 changelog reports fixes for Garchomp's Rough Skin, Claydol's ability to learn Fly, Scizor's Night Slash, Ledyba's intended stat change, some names and descriptions, and the names shown for new moves in battle. Version 1.03 then revised how the new Fairy moves are learned and adjusted trainer movesets.
+
+These are earlier authors' changes, not new fixes made by this continuation. Original documents can also describe Sacred Gold before Plus changed it, so their trainer movesets and some move information may differ from Plus.
+
+Original references
+
+The original package includes gameplay notes, learnset lists, and Sacred Gold / Storm Silver guides for encounters, events, evolutions and items. Keep them as useful references; the older guides are not a verified walkthrough for every 1.2 situation.
+
+Start with README.txt in the package root. Manual/Game Guide.txt includes 284 level-up entries for the seven added Fairy moves, checked against Plus 1.03 and the four 1.04 game outputs. Those entries were not re-read from the 1.2 game. Manual also contains five unchanged original PDF guides and the credited trainer reference. They describe earlier Sacred Gold / Storm Silver versions and may differ from Plus in trainer movesets, move changes and other details. Cheats contains the optional codes, all off: seven kept by this project, and a third-party catalogue that has not been tested on this game. README.txt explains the difference. Historical Action Replay documents remain available on GitHub as references; they are not a verified 1.2 catalogue.
+
+- Original release post and download (https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
+- Author's features and learnset document (https://docs.google.com/document/d/1IbXXpWf9HUO7uCwn1tOxgd8MpsNa2FNiZxpxTmBXYJA/edit)
+- Install our current patch (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/PLAY.md) - use this guide for 1.2; the original package's instructions apply to its older patch.
+
+Thank you to NefariousnessNo3436, Drayano, mikelan / Mikelan98 and the original contributors for the game, patches and documentation. Full credits (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CREDITS.md).
+
+
+LEVEL-UP LISTS FOR THE SEVEN ADDED FAIRY MOVES
+
+The lists below were checked directly against the level-up data in Plus 1.03 and the four published 1.04 game outputs. These data are identical across those versions. The same reading has not been repeated on the 1.2 game. This is a reference list; it does not change the game.
+
+The table covers level-up entries for the standard forms of the first 493 species. It does not list eggs, tutors, TMs or every alternate form. A level 1 entry is a starting/relearnable move entry; availability in your party also depends on evolution and the game's move reminder.
+
+Baby-Doll Eyes
+--------------
+Clefairy: Level 9
+Clefable: Level 9
+Vulpix: Level 9
+Meowth: Level 30
+Chansey: Level 11
+Eevee: Level 10
+Vaporeon: Level 9
+Jolteon: Level 9
+Flareon: Level 9
+Sentret: Level 10
+Cleffa: Level 9
+Togepi: Level 17
+Togetic: Level 17
+Espeon: Level 9
+Umbreon: Level 9
+Teddiursa: Level 1
+Delibird: Level 1
+Blissey: Level 11
+Zigzagoon: Level 11
+Linoone: Level 11
+Skitty: Level 6
+Delcatty: Level 6
+Luvdisc: Level 20
+Shinx: Level 11
+Pachirisu: Level 7
+Buneary: Level 10
+Happiny: Level 11
+Togekiss: Level 17
+Leafeon: Level 9
+Glaceon: Level 9
+
+Dazzling Gleam
+--------------
+Clefairy: Level 30
+Clefable: Level 33
+Jigglypuff: Level 30
+Wigglytuff: Level 33
+Oddish: Level 35
+Gloom: Level 38
+Vileplume: Level 41
+Abra: Level 33
+Kadabra: Level 35
+Alakazam: Level 38
+Tentacool: Level 38
+Tentacruel: Level 44
+Gastly: Level 31
+Haunter: Level 34
+Gengar: Level 37
+Drowzee: Level 33
+Hypno: Level 37
+Exeggutor: Level 1
+Chansey: Level 30
+Staryu: Level 35
+Starmie: Level 40
+Mr. Mime: Level 34
+Chinchou: Level 36
+Lanturn: Level 42
+Cleffa: Level 30
+Igglybuff: Level 33
+Togepi: Level 31
+Togetic: Level 35
+Natu: Level 41
+Xatu: Level 49
+Mareep: Level 39
+Flaaffy: Level 44
+Ampharos: Level 49
+Bellossom: Level 33
+Hoppip: Level 30
+Skiploom: Level 33
+Jumpluff: Level 37
+Sunflora: Level 51
+Espeon: Level 35
+Misdreavus: Level 31
+Girafarig: Level 31
+Snubbull: Level 30
+Granbull: Level 34
+Celebi: Level 41
+Ralts: Level 30
+Kirlia: Level 33
+Gardevoir: Level 36
+Nosepass: Level 33
+Sableye: Level 33
+Volbeat: Level 35
+Illumise: Level 35
+Roselia: Level 45
+Spoink: Level 38
+Grumpig: Level 44
+Swablu: Level 31
+Altaria: Level 34
+Baltoy: Level 40
+Claydol: Level 46
+Shuppet: Level 33
+Banette: Level 37
+Chimecho: Level 35
+Jirachi: Level 35
+Budew: Level 37
+Roserade: Level 51
+Cherubi: Level 34
+Cherrim: Level 39
+Mismagius: Level 36
+Chingling: Level 31
+Mime Jr.: Level 30
+Finneon: Level 36
+Lumineon: Level 40
+Togekiss: Level 39
+Gallade: Level 36
+Probopass: Level 36
+Uxie: Level 35
+Mesprit: Level 35
+Azelf: Level 35
+Cresselia: Level 43
+Phione: Level 35
+Manaphy: Level 35
+Shaymin: Level 35
+Arceus: Level 45
+
+Disarming Voice
+---------------
+Pikachu: Level 15
+Raichu: Level 18
+Clefairy: Level 1
+Clefable: Level 1
+Jigglypuff: Level 11
+Lapras: Level 12
+Pichu: Level 11
+Marill: Level 12
+Azumarill: Level 12
+Lotad: Level 13
+Lombre: Level 13
+Ludicolo: Level 16
+Ralts: Level 11
+Kirlia: Level 11
+Gardevoir: Level 11
+Whismur: Level 13
+Skitty: Level 13
+Illumise: Level 12
+Swablu: Level 11
+Altaria: Level 11
+Milotic: Level 11
+Chimecho: Level 11
+Piplup: Level 13
+Prinplup: Level 13
+Empoleon: Level 13
+Phione: Level 12
+Manaphy: Level 12
+Shaymin: Level 14
+
+Draining Kiss
+-------------
+Butterfree: Level 14
+Pikachu: Level 22
+Raichu: Level 22
+Clefairy: Level 20
+Clefable: Level 20
+Jigglypuff: Level 23
+Wigglytuff: Level 23
+Drowzee: Level 23
+Hypno: Level 25
+Chansey: Level 25
+Jynx: Level 23
+Cleffa: Level 17
+Igglybuff: Level 19
+Togepi: Level 19
+Togetic: Level 19
+Marill: Level 29
+Azumarill: Level 29
+Espeon: Level 25
+Misdreavus: Level 26
+Smoochum: Level 19
+Blissey: Level 25
+Ralts: Level 22
+Kirlia: Level 23
+Gardevoir: Level 27
+Azurill: Level 23
+Mawile: Level 28
+Illumise: Level 27
+Milotic: Level 27
+Chimecho: Level 27
+Gorebyss: Level 13
+Luvdisc: Level 12
+Latias: Level 27
+Cherubi: Level 25
+Cherrim: Level 28
+Buneary: Level 31
+Lopunny: Level 31
+Mismagius: Level 28
+Happiny: Level 23
+Togekiss: Level 19
+Gallade: Level 23
+Froslass: Level 25
+Uxie: Level 25
+Mesprit: Level 25
+Azelf: Level 25
+
+Fairy Wind
+----------
+Clefairy: Level 15
+Clefable: Level 14
+Chansey: Level 7
+Mr. Mime: Level 15
+Cleffa: Level 11
+Togepi: Level 13
+Togetic: Level 15
+Hoppip: Level 10
+Skiploom: Level 10
+Jumpluff: Level 10
+Blissey: Level 7
+Ralts: Level 5
+Mawile: Level 1
+Mime Jr.: Level 13
+Happiny: Level 7
+Togekiss: Level 15
+
+Moonblast
+---------
+Clefairy: Level 46
+Clefable: Level 52
+Oddish: Level 43
+Gloom: Level 49
+Vileplume: Level 55
+Muk: Level 60
+Hoothoot: Level 40
+Noctowl: Level 47
+Cleffa: Level 37
+Togepi: Level 43
+Togetic: Level 43
+Bellossom: Level 47
+Gardevoir: Level 55
+Swablu: Level 46
+Altaria: Level 52
+Lunatone: Level 50
+Togekiss: Level 49
+Cresselia: Level 60
+
+Play Rough
+----------
+Pikachu: Level 40
+Raichu: Level 40
+Clefairy: Level 39
+Clefable: Level 45
+Jigglypuff: Level 30
+Wigglytuff: Level 38
+Meowth: Level 35
+Persian: Level 40
+Growlithe: Level 37
+Arcanine: Level 42
+Ponyta: Level 39
+Rapidash: Level 44
+Dewgong: Level 45
+Cyndaquil: Level 35
+Quilava: Level 40
+Typhlosion: Level 44
+Sentret: Level 34
+Furret: Level 39
+Pichu: Level 35
+Cleffa: Level 33
+Igglybuff: Level 27
+Togepi: Level 33
+Togetic: Level 33
+Bellossom: Level 42
+Marill: Level 33
+Azumarill: Level 35
+Snubbull: Level 35
+Granbull: Level 39
+Teddiursa: Level 33
+Ursaring: Level 42
+Phanpy: Level 40
+Donphan: Level 49
+Miltank: Level 44
+Poochyena: Level 35
+Mightyena: Level 45
+Linoone: Level 43
+Slakoth: Level 33
+Vigoroth: Level 35
+Slaking: Level 40
+Skitty: Level 44
+Delcatty: Level 51
+Mawile: Level 49
+Plusle: Level 46
+Minun: Level 46
+Volbeat: Level 43
+Illumise: Level 43
+Swablu: Level 38
+Altaria: Level 43
+Absol: Level 39
+Jirachi: Level 43
+Shinx: Level 35
+Luxio: Level 40
+Luxray: Level 45
+Pachirisu: Level 43
+Cherrim: Level 53
+Buneary: Level 41
+Lopunny: Level 48
+Glameow: Level 35
+Purugly: Level 41
+Stunky: Level 35
+Skuntank: Level 46
+Chatot: Level 47
+Uxie: Level 41
+Mesprit: Level 41
+Azelf: Level 41
+Shaymin: Level 41
+
+Checked from game data; full playthrough and individual move-effect tests are not implied. Please report a mismatch with the species, move, game version and how the move was learned.

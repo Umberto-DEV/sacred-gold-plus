@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "version": "1.2",
+  "language": "US",
+  "note": "Each patch turns one recognized game into the game below. Apply exactly one of them. Recognition is by whole-file SHA-256, never by name.",
+  "game": {
+    "name": "Sacred Gold Plus 1.2 EN.nds",
+    "bytes": 127104144,
+    "sha256": "f024dbb5fa91724b9d8ee59585d81d50521180152ba20ce7e15646294d1ee421",
+    "melonds_id": "IPKE 19D1EEBB"
+  },
+  "patches": [
+    {
+      "file": "From-HeartGold-USA.xdelta",
+      "from": "Pokemon HeartGold (USA), original",
+      "from_bytes": 134217728,
+      "from_sha256": "65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105",
+      "bytes": 5909505,
+      "sha256": "320a1b5d4876df62ee8acd0379a52875ce11446b7d1c80ff31ebcc363c9745cd"
+    },
+    {
+      "file": "From-Plus-1.03.xdelta",
+      "from": "Sacred Gold Plus 1.03 (the original author release)",
+      "from_bytes": 126979552,
+      "from_sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
+      "bytes": 405522,
+      "sha256": "23ae10eda578c0e7225cd435aa64a99865492571817457ba278ab85e119e69bf"
+    },
+    {
+      "file": "From-Plus-1.04-US.xdelta",
+      "from": "Sacred Gold Plus 1.04 US, Plus camera (New Angle)",
+      "from_bytes": 127038608,
+      "from_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "bytes": 347275,
+      "sha256": "23d8d963068eb23b870a01863bc4089e942a480c134b5fff862a8c3e2bc1cca3"
+    },
+    {
+      "file": "From-Plus-1.04-US-classic-camera.xdelta",
+      "from": "Sacred Gold Plus 1.04 US, classic camera (Normal Angle)",
+      "from_bytes": 127038608,
+      "from_sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
+      "bytes": 343785,
+      "sha256": "98e4361ffea366f0aac4304601232041e7bea5041dc9463ed37d03b7e1af86ff"
+    },
+    {
+      "file": "From-Plus-1.1-EN.xdelta",
+      "from": "Sacred Gold Plus 1.1 English",
+      "from_bytes": 127104144,
+      "from_sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
+      "bytes": 309790,
+      "sha256": "a83022336724a9e3a888317068a7089ddfed7e8524a91cd2c4ef24b9db463a45"
+    }
+  ]
+}

@@ -2,3 +2,10 @@
 "guides/historical-cheats/Cheat Codes.txt" -text
 *.xdelta -text
 *.png -text
+# Third-party original document; must ship with its own CRLF line endings,
+# byte for byte, and never be normalized by `* text=auto` on `git add`.
+"SS_SG Trainer Pokemon by @JD48096761.txt" -text
+# Explicit alongside the `* text=auto` heuristic: these are always binary,
+# regardless of how git's content-based detection classifies a given file.
+*.pdf binary
+*.nds binary

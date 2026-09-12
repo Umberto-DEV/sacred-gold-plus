@@ -187,7 +187,8 @@ def validate_release_files(root, manifest):
     rows = ([route for row in manifest['variants'] for route in row['routes']]
             if recognized else manifest['variants'])
     if recognized:
-        actual = {str(p.relative_to(root)) for p in root.rglob('*.xdelta') if p.is_file()}
+        actual = {str(p.relative_to(root)) for p in root.rglob('*.xdelta')
+                  if p.is_file() and p.relative_to(root).parts[0] != 'release'}
         if actual != {row['patch'] for row in rows}:
             raise ValueError('Unexpected or missing recognized route patch files')
     for row in rows:
@@ -200,6 +201,65 @@ def validate_release_files(root, manifest):
         validate_installer_vendor(root)
 
 
+def validate_release_folder(root):
+    """Check every downloadable release folder against its own two manifests.
+
+    `release/<version>/contenuto.json` pins the size and SHA-256 of every file a
+    download carries, and `release/<version>/<language>/Patch/manifest.json`
+    repeats the patch fingerprints for the player. Both must agree with the
+    bytes on disk and with each other, and no file may sit in a language folder
+    that neither declares. Returns the paths verified here, so the caller knows
+    which files it has already accounted for.
+    """
+    owned = set()
+    base = root/'release'
+    if not base.is_dir():
+        return owned
+    for version in sorted(p for p in base.iterdir() if p.is_dir()):
+        census = json.loads((version/'contenuto.json').read_text())
+        if (not isinstance(census, dict) or census.get('schema') != 1 or
+                census.get('version') != version.name or
+                not isinstance(census.get('packages'), list) or not census['packages']):
+            raise ValueError('Release census declares an unexpected contract')
+        for package in census['packages']:
+            folder = version/package['folder']
+            files = package['files']
+            if not isinstance(files, dict) or not files:
+                raise ValueError('Release census lists no files')
+            present = {str(p.relative_to(folder)) for p in folder.rglob('*') if p.is_file()}
+            if present != set(files):
+                raise ValueError('Release folder differs from its census')
+            for name, pin in sorted(files.items()):
+                path = folder/name
+                if path.is_symlink():
+                    raise ValueError('Symbolic links are not public artifacts')
+                data = path.read_bytes()
+                if (not _fingerprint(pin, 'bytes', 'sha256') or len(data) != pin['bytes'] or
+                        hashlib.sha256(data).hexdigest() != pin['sha256']):
+                    raise ValueError('Release file differs from the reviewed census')
+                owned.add(str(path.relative_to(root)))
+            patches = json.loads((folder/'Patch/manifest.json').read_text())
+            if (patches.get('version') != version.name or
+                    patches.get('language') != package['language'] or
+                    patches['game']['sha256'] != package['game']['sha256'] or
+                    patches['game']['bytes'] != package['game']['bytes']):
+                raise ValueError('Release patch manifest names another game')
+            declared = {row['file'] for row in patches['patches']}
+            if declared != {n[len('Patch/'):] for n in files if n.endswith('.xdelta')}:
+                raise ValueError('Release patch manifest and folder disagree')
+            for row in patches['patches']:
+                data = (folder/'Patch'/row['file']).read_bytes()
+                if (len(data) != row['bytes'] or
+                        hashlib.sha256(data).hexdigest() != row['sha256']):
+                    raise ValueError('Release patch fingerprint differs from its manifest')
+                if data[:4] != bytes([0xD6, 0xC3, 0xC4, 0]) or data[4] & 4:
+                    raise ValueError('Release patch has an unexpected format')
+        for name in ('contenuto.json', 'build_zip.py'):
+            if (version/name).is_file():
+                owned.add(str((version/name).relative_to(root)))
+    return owned
+
+
 def check(root=ROOT):
     allowed = set(json.loads((root/'.github/public-files.json').read_text()))
     reviewed_media = json.loads((root/'.github/reviewed-media.json').read_text())
@@ -210,6 +270,7 @@ def check(root=ROOT):
         actual = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts}
     if actual != allowed:
         raise ValueError('Unexpected or missing public files; review the public file list')
+    owned = validate_release_folder(root)
     bad_text = re.compile(r'/(?:Users|home)/|/private/(?:tmp|var)/|(?:192\.168\.|10\.0\.)\d|\b[A-Za-z0-9._%+-]+@(?:gmail|outlook|icloud|hotmail)\.com\b', re.I)
     for name in sorted(actual):
         p = root/name
@@ -228,7 +289,14 @@ def check(root=ROOT):
             if data[4] & 4:
                 raise ValueError('Patch contains an application header; regenerate with -A')
         else:
-            text = data.decode('utf-8')
+            try:
+                text = data.decode('utf-8')
+            except UnicodeDecodeError:
+                # Reviewed binary documents shipped inside a release folder are
+                # pinned by size and SHA-256 above; anything else is unexpected.
+                if name not in owned:
+                    raise ValueError('Unexpected binary public file') from None
+                continue
             if bad_text.search(text):
                 raise ValueError('Possible private information: review locally before publication')
     manifest = json.loads((root/'patches/manifest.json').read_text())
@@ -268,7 +336,7 @@ def check(root=ROOT):
                 if (tree.findtext('game/gameid') != catalog['gameid'] or
                         len(tree.findall('.//cheat')) != counts['xml'] or tree.findall('.//enabled')):
                     raise ValueError('Android cheat identity or selection differs')
-    if {n for n in actual if n.endswith(('.mch', '.xml'))} != expected_cheats:
+    if {n for n in actual if n.endswith(('.mch', '.xml'))} - owned != expected_cheats:
         raise ValueError('Unexpected or missing cheat files')
     return len(actual)
 

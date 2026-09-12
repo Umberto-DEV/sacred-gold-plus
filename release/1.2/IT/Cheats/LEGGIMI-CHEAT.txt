@@ -1,0 +1,80 @@
+I CHEAT DELLA 1.2 — ITALIANO
+
+
+I cheat sono facoltativi. Il gioco e' completo senza. Tutti i codici di
+questa cartella arrivano spenti.
+
+Le impostazioni della 1.2 — difficolta' Plus, livelli selvatici, Pokemon
+animati, personaggi, server online — NON hanno un cheat.
+Si aprono in gioco premendo SELECT. Non cercarle qui: non ci sono, ed e'
+voluto.
+
+
+I FILE DELLA 1.1 NON VALGONO PIU'
+
+melonDS abbina un catalogo di cheat a un gioco usando il codice del gioco
+e un numero di controllo ricavato dalla sua intestazione. L'intestazione
+della 1.2 e' diversa da quella della 1.1, quindi un catalogo 1.1 non
+comparira' mai per un gioco 1.2. Importa i file di questa cartella, e
+togli quelli della 1.1 se non giochi piu' alla 1.1.
+
+
+QUALE FILE USARE
+
+melonDS su Android
+    Usa il file .xml. Vai in Impostazioni, poi Cheat, poi Importa cheat,
+    e scegli il file. Durante la partita i codici si accendono da Pausa,
+    poi Cheat.
+
+melonDS su computer
+    Usa il file .mch. Dagli lo stesso nome di base del tuo file .nds e
+    mettilo nella cartella dei cheat configurata nell'emulatore. Poi
+    apri l'editor dei cheat per accendere un codice.
+
+Non rinominare un .mch in .xml o viceversa: sono formati diversi e non
+portano la stessa lista.
+
+Per RetroArch con il core melonDS DS, segui la documentazione di quel
+core su salvataggi e cheat. Questi file non sono importazioni RetroArch
+e non si dichiara nessuna prova su RetroArch.
+https://docs.libretro.com/library/melonds_ds/
+
+
+COSA C'E' DENTRO IL FILE .XML
+
+Cartella 00
+    Sette codici tenuti da questo progetto, gli stessi sette della 1.1.
+    Ogni indirizzo di guardia e' stato riletto dal codice della 1.2 il
+    12 settembre 2026 e combacia. Questo stabilisce che i codici possono
+    scattare su questo gioco; non e' la dichiarazione che il loro effetto
+    sia stato guardato a schermo. Due guardie stanno in aree caricate
+    solo con certe mappe e non sono verificabili in quel modo: le loro
+    note lo dicono. Se una nota non dice diversamente, la prova in gioco
+    dietro a un codice e' stata fatta sulla 1.04 e non e' stata ripetuta
+    sulla 1.2.
+
+Cartelle da 01 a 56
+    Un catalogo di terze parti di circa millecinquecento codici Action
+    Replay, conservato su richiesta del proprietario. Nessuno di essi e'
+    stato provato su questo gioco. Alcuni possono sovrascrivere oggetti o
+    rovinare un salvataggio. Trattalo come materiale non provato e non
+    usarlo mai su un salvataggio a cui tieni.
+
+    Le etichette di quelle cartelle sono in gran parte in italiano anche
+    nel pacchetto inglese: il catalogo e' stato messo insieme cosi' su
+    richiesta del proprietario e non e' stato tradotto.
+
+Il file .mch per computer porta gli stessi sette codici della cartella
+00: nessun codice differisce fra i due formati.
+
+
+REGOLE D'ORO
+
+- Tieni una copia di scorta del salvataggio prima di accendere
+  qualsiasi codice.
+- Prova un codice alla volta.
+- Leggi la nota del codice prima di usarlo.
+- Spegnere un codice non annulla quello che ha gia' scritto nel
+  salvataggio.
+- Tieni tutti i cheat spenti mentre controlli che un gioco aggiornato e
+  il suo salvataggio funzionino.
