@@ -116,15 +116,15 @@
       "archive_members": {
         "Cheats/Sacred Gold Plus 1.1 IT - cheat.xml": {
           "size": 355429,
-          "sha256": "260d494ba23abed3a69a588f5e08e3828dca7393e4a78c336b22fcf5de2ec645"
+          "sha256": "0298c1356d4e803e657d292e75ff85a370d90fd27631879803ed3c532222076d"
         },
         "Cheats/Sacred Gold Plus 1.1 IT.mch": {
           "size": 2990,
-          "sha256": "4d22a89653f24a3b1891a2c07ddd7493164261bf93c3f5fb5958ec33ba963c5f"
+          "sha256": "dbbce729ddbfaf9c05f4ad0c2134b73c7ad22814aab1812322e62f828a1d3cb1"
         },
         "Install-or-update.html": {
-          "size": 40983881,
-          "sha256": "60751ffd7c140573e972939b65cf9b64a2f7f6c858b16c9b0c7d5d2f944af1ad"
+          "size": 40983880,
+          "sha256": "543c2d14407381406eac9faafc16766753c2e962bdbcc6be21e3b4f766708eb2"
         },
         "LICENSE": {
           "size": 35147,
@@ -151,8 +151,8 @@
           "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
         },
         "Manual/Project Notes.txt": {
-          "size": 13253,
-          "sha256": "a4e39a2d38a60538355bfe2dabf4c92827d5d15d989b1f28259f91f733dea43e"
+          "size": 13363,
+          "sha256": "067f76ec5e1e8515d15838a3a7abff1883ff768eb0e5f62e76832a85e533be94"
         },
         "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
           "size": 98420,
@@ -163,8 +163,8 @@
           "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
         },
         "README.txt": {
-          "size": 11234,
-          "sha256": "07b1211076fe27a817d5a440e838ad5d47c81094ece7762cf14bd86297bc8a03"
+          "size": 11386,
+          "sha256": "e4a604ba19ef1789b59ba1152107837383eaf6fac8c9022fa2741ae01501e5a6"
         }
       }
     },
@@ -230,15 +230,15 @@
       "archive_members": {
         "Cheats/Sacred Gold Plus 1.1 EN - cheat.xml": {
           "size": 355284,
-          "sha256": "1362550ffcd61d2e11b0a3f4c2aa8b02365f5bb76320ac7a8f4f6273558a08f7"
+          "sha256": "0b668addaf24c3c52b444f70b91dc4bd8fee68ac9766b6a5cb9a85c45caba937"
         },
         "Cheats/Sacred Gold Plus 1.1 EN.mch": {
           "size": 2810,
-          "sha256": "860e8fe00dead331a0c66acabc25e18bd68ff6a4ecb1612165a367e40a1cddd3"
+          "sha256": "43cd9fa35f4ffd7c74804a5f42a6ecc2c2de592a1d8352bca19ff99e07470a6c"
         },
         "Install-or-update.html": {
-          "size": 8791687,
-          "sha256": "3099b8f675a66d1b545ef4c0143706460876c116131a2f9a38feeddf380df0ca"
+          "size": 8791686,
+          "sha256": "f7db26d686353c655412393ce87671c6274bc1ce245b1abce377882c2526073e"
         },
         "LICENSE": {
           "size": 35147,
@@ -265,8 +265,8 @@
           "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
         },
         "Manual/Project Notes.txt": {
-          "size": 13253,
-          "sha256": "09c4014231650600697b597631f8116450911ba1fa0e1d611be03c7723a64f96"
+          "size": 13363,
+          "sha256": "33e91f40e03f026a9780eaf4e0ec7d47341716bbc4bad74f3a93aa863fa30c1d"
         },
         "Manual/SS_SG Trainer Pokemon by @JD48096761.txt": {
           "size": 98420,
@@ -277,8 +277,8 @@
           "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
         },
         "README.txt": {
-          "size": 10525,
-          "sha256": "3865e8f05e0b10b5e2901e3ffed585b6948ebe3fa29ba31bc2ebc57ba2fa65fb"
+          "size": 10654,
+          "sha256": "6cf9346aa8a8741939ecf4df3d5944d44caf3786b884e2e59cde483e0b43dc26"
         }
       }
     }

@@ -2,63 +2,7 @@
   "schema": 2,
   "version": "1.1",
   "description": "One optional cheat catalogue per language, two files each. Every code starts off. The two formats no longer carry the same set: the desktop MCH holds the project codes, the Android XML also holds the third-party catalogue, so the count is declared per format. Full-ROM hashes identify the supported game; header IDs alone do not.",
-  "BLOCCO": {
-    "stato": "non pubblicabile",
-    "rilevato": "2026-09-11, rigenerando la matrice 1.1 sulle ROM radice",
-    "problema": "gameid e rom_sha256 qui sopra sono quelli delle ROM radice del 11 settembre 2026. I file in 1.1/Cheats/ non li portano ancora tutti: i due .mch dichiarano il lignaggio superato (9c35516d... EN, 90c5cc12... IT, e gli identificativi melonDS IPKE 7E87255D / IPKE 7B49BFFA), mentre i due .xml hanno gia il gameid giusto ma conservano lo sha superato nella riga <name>.",
-    "osservato_nei_file": {
-      "en-plus": {
-        "mch": {
-          "rom_sha256": [
-            "9c35516db454f8c404e374c4547a41e1898019750a6d2e0d1e8c552a5de040ec"
-          ],
-          "melonds_id": [
-            "IPKE 7E87255D"
-          ],
-          "carries_release_sha256": false
-        },
-        "xml": {
-          "gameid": "IPKE EF03EF96",
-          "name_line_sha256": [
-            "9c35516db454f8c404e374c4547a41e1898019750a6d2e0d1e8c552a5de040ec"
-          ],
-          "enabled_elements": 0,
-          "gameid_matches_release": true
-        }
-      },
-      "it-plus": {
-        "mch": {
-          "rom_sha256": [
-            "90c5cc128bd3f0ed49d26644bf3b53b8567e849b6d7969d6ccc23a5fb5f2ded5"
-          ],
-          "melonds_id": [
-            "IPKE 7B49BFFA"
-          ],
-          "carries_release_sha256": false
-        },
-        "xml": {
-          "gameid": "IPKE EACD7531",
-          "name_line_sha256": [
-            "90c5cc128bd3f0ed49d26644bf3b53b8567e849b6d7969d6ccc23a5fb5f2ded5"
-          ],
-          "enabled_elements": 0,
-          "gameid_matches_release": true
-        }
-      }
-    },
-    "conseguenza": "prepare_public.export e check_public rifiutano la pubblicazione finche i file non portano l identita del gioco. Il rifiuto e voluto: non va aggirato riscrivendo qui i valori vecchi.",
-    "proprietario": "chi lavora su 1.1/Cheats/ (1.1/LEGGIMI-CARTELLA.txt, punti 3 e 4)",
-    "identita_da_scrivere": {
-      "en-plus": {
-        "rom_sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
-        "gameid": "IPKE 09697109"
-      },
-      "it-plus": {
-        "rom_sha256": "7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077",
-        "gameid": "IPKE 0CA7EBAE"
-      }
-    }
-  },
+  "status": "pubblicabile",
   "variants": {
     "en-plus": {
       "language": "US",
@@ -75,13 +19,13 @@
           "path": "Sacred Gold Plus 1.1 EN.mch",
           "format": "mch",
           "bytes": 2810,
-          "sha256": "860e8fe00dead331a0c66acabc25e18bd68ff6a4ecb1612165a367e40a1cddd3"
+          "sha256": "43cd9fa35f4ffd7c74804a5f42a6ecc2c2de592a1d8352bca19ff99e07470a6c"
         },
         {
           "path": "Sacred Gold Plus 1.1 EN - cheat.xml",
           "format": "xml",
           "bytes": 355284,
-          "sha256": "1362550ffcd61d2e11b0a3f4c2aa8b02365f5bb76320ac7a8f4f6273558a08f7"
+          "sha256": "0b668addaf24c3c52b444f70b91dc4bd8fee68ac9766b6a5cb9a85c45caba937"
         }
       ]
     },
@@ -100,13 +44,13 @@
           "path": "Sacred Gold Plus 1.1 IT.mch",
           "format": "mch",
           "bytes": 2990,
-          "sha256": "4d22a89653f24a3b1891a2c07ddd7493164261bf93c3f5fb5958ec33ba963c5f"
+          "sha256": "dbbce729ddbfaf9c05f4ad0c2134b73c7ad22814aab1812322e62f828a1d3cb1"
         },
         {
           "path": "Sacred Gold Plus 1.1 IT - cheat.xml",
           "format": "xml",
           "bytes": 355429,
-          "sha256": "260d494ba23abed3a69a588f5e08e3828dca7393e4a78c336b22fcf5de2ec645"
+          "sha256": "0298c1356d4e803e657d292e75ff85a370d90fd27631879803ed3c532222076d"
         }
       ]
     }

@@ -60,6 +60,6 @@ D2000000 00000000
 
 CODE 0 Camera Classic
 DESC Riporta la telecamera agli angoli originali di HeartGold. Sostituisce la vecchia build 'Normal Angle'. Si applica al prossimo cambio di mappa. La guardia controlla la firma del modulo 1.1 prima di scrivere: su una ROM diversa il codice non scrive nulla. Compatibile per indirizzi (bit OSSERVATO a 0x023DFFFC, valore 1 nella ROM 1.1); l'effetto a video non e' ancora stato provato in gioco.
-523DEE60 002EB570
+523DEBE0 002EB570
 223DFFFC 00000000
 D2000000 00000000
