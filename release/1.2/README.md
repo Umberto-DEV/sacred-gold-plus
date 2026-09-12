@@ -7,7 +7,7 @@ of them into a ZIP.
 ```sh
 python3 -B release/1.2/build_zip.py
 # -> release/1.2/dist/Sacred-Gold-Plus-1.2-IT.zip
-# -> release/1.2/dist/Sacred-Gold-Plus-1.2-US.zip
+# -> release/1.2/dist/Sacred-Gold-Plus-1.2-EN.zip
 ```
 
 `dist/` is not tracked: the ZIPs are rebuilt from the files next to them, so
@@ -39,12 +39,8 @@ three programs that can apply it.
 check (`.github/check_public.py`) verifies the same record plus each patch
 manifest on every run.
 
-The folders themselves are written by the laboratory, from the reviewed 1.2
-package and the verified deltas:
-
-```sh
-python3 -B local/publishing/build_zip_1_2.py --esporta release/1.2
-```
+The folders themselves are generated and reviewed internally before each
+release; only the reviewed output is published in this repository.
 
 Older downloads are not here: only 1.2. Previous versions keep their own
 release pages.

@@ -4,7 +4,7 @@ This guide accompanies both 1.2 downloads. Instructions and references are in En
 
 Game guide
 
-Sacred Gold Plus builds on Drayano's Sacred Gold, a HeartGold hack. The notes below summarize the original author's 1.03 documentation. They describe the game we started from; our own changes, up to and including 1.2, are listed separately in Manual/Project Notes.txt and in the changelog (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md).
+Sacred Gold Plus builds on Drayano's Sacred Gold, a HeartGold hack. The notes below summarize the original author's 1.03 documentation. They describe the game we started from; our own changes, up to and including 1.2, are listed in this package's WHATS-NEW-1.2.txt (English) or NOVITA-1.2.txt (Italian).
 
 What Plus changes
 
@@ -43,9 +43,9 @@ Start with README.txt in the package root. Manual/Game Guide.txt includes 284 le
 
 - Original release post and download (https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
 - Author's features and learnset document (https://docs.google.com/document/d/1IbXXpWf9HUO7uCwn1tOxgd8MpsNa2FNiZxpxTmBXYJA/edit)
-- Install our current patch (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/PLAY.md) - use this guide for 1.2; the original package's instructions apply to its older patch.
+- Install our current patch: see HOW-TO-INSTALL.txt (English) or COME-INSTALLARE.txt (Italian) in this package; the original package's instructions apply to its older patch.
 
-Thank you to NefariousnessNo3436, Drayano, mikelan / Mikelan98 and the original contributors for the game, patches and documentation. Full credits (https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CREDITS.md).
+Thank you to NefariousnessNo3436, Drayano, mikelan / Mikelan98 and the original contributors for the game, patches and documentation. Full credits: see README.txt (English) or LEGGIMI.txt (Italian) in this package.
 
 
 LEVEL-UP LISTS FOR THE SEVEN ADDED FAIRY MOVES
