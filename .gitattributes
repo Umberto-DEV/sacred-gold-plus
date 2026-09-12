@@ -1,5 +1,4 @@
 * text=auto
-"guides/historical-cheats/Cheat Codes.txt" -text
 *.xdelta -text
 *.png -text
 # Third-party original document; must ship with its own CRLF line endings,

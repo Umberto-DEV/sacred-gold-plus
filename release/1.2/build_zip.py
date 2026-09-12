@@ -6,7 +6,7 @@
 `IT/` and `EN/` hold exactly what a player gets; `contenuto.json` records the
 size and SHA-256 of every one of those files. This script verifies each file
 against that record, refuses to run if anything is missing, extra or altered,
-and writes `dist/Sacred-Gold-Plus-1.2-IT.zip` and `-US.zip`.
+and writes `dist/Sacred-Gold-Plus-1.2-IT.zip` and `-EN.zip`.
 
 Nothing here needs a game file, a ROM or any private input, so anyone who
 clones this repository can rebuild the downloads and compare them byte for

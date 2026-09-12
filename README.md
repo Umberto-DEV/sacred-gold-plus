@@ -1,77 +1,90 @@
-![Sacred Gold Plus — original project logo](sacred-gold-plus-logo.webp)
+<!-- Sacred Gold Plus 1.2 — public player README (draft) -->
 
 # Sacred Gold Plus
 
-An independent continuation of Sacred Gold Plus 1.03, maintained by one fan. I started this to keep a game I enjoy alive, bring it to Italian and give others a place to help improve it. I'm one person learning as I go, and anyone who wants to join in is very welcome: players, testers, translators, artists and developers.
+**A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
 
-[Download](#download-12) · [How to play](PLAY.md) · [Game guide](GAME-GUIDE.md) · [Contribute](CONTRIBUTING.md)
+**Version 1.2** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
 
-Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's Sacred Gold. The original trainer teams and levels are retained, while their moves follow the Plus learnsets. The [game guide](GAME-GUIDE.md) explains these inherited changes and links to the original documentation.
+Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
 
-## Download 1.2
+This is a **patch**, not a ROM: you apply it to your own legally obtained game file. No game file is distributed here.
 
-**Version 1.2 is available.** It is built from the finished 1.1, so it carries everything 1.1 had. There is now **one build per language**: the camera is the Plus wide view everywhere outdoors, with the original HeartGold view restored natively in eight indoor maps and still available everywhere as the optional camera cheat. Keep a backup of your game and save before updating; [the changelog](CHANGELOG.md#known-limits) explains what has been checked and what still needs testing.
+## Screenshots
 
-| Language | Download |
+| | |
 | --- | --- |
-| Italian (IT) | [Download IT](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2/Sacred-Gold-Plus-1.2-IT.zip) |
-| English (US) | [Download US](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2/Sacred-Gold-Plus-1.2-US.zip) |
+| ![Title screen](images/01-title-screen.png)<br>Title screen | ![Cherrygrove City](images/02-overworld-cherrygrove.png)<br>Exploring Cherrygrove City |
+| ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
+| ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>The classic camera, restored natively indoors |
 
-**What 1.2 adds**, on top of everything 1.1 already had:
+## What's new (1.04 → 1.2)
 
-- **Plus difficulty** and **Wild levels**, two separate in-game options: tougher trainers and, independently, wild Pokémon that scale with your progress, both capped at level 100 in this release. Leave them off and the game plays byte-identical to 1.1.
-- **Native camera in eight indoor maps** (Mahogany Town's souvenir shop and Team Rocket hideout, and Mt. Mortar): no cheat needed. The classic HeartGold camera stays available everywhere as an optional cheat.
-- **Smoother towns**: fewer non-player characters loaded in a single frame at a town/route border, which measurably reduces the worst stutter there.
-- **Optional animated Pokémon**: Pokémon can move gently in battle instead of standing still. Off by default.
-- **A Sacred Gold Plus options page**: press SELECT during play. Your choices save with your game, and the game asks once, on Continue, whether you want to look at them.
-- **A choice of online connection**: pick which of your emulator's three WFC firmware slots handles GTS, battles and trades. Mystery Gift always uses the first slot automatically. No server address is changed by the game itself.
-- **214 text corrections** in English and Italian, mostly repairing words broken by an old global text replacement.
+- **Plus difficulty** extended to levels: tougher trainers and, separately, scaling wild Pokémon — both optional, both capped at level 100.
+- A **Sacred Gold Plus options page** (press SELECT during play); the game asks once, on Continue, whether you want to look at it.
+- The **classic HeartGold camera**, restored natively in eight indoor maps (Mahogany Town, Mt. Mortar) — no cheat needed.
+- **Smoother towns**: fewer characters loaded at once when entering or leaving one.
+- **Optional animated Pokémon** in battle (off by default).
+- **Online server choice**: pick which Wi-Fi connection slot handles GTS and battles; Mystery Gift connects automatically.
+- **200+ text corrections** in English and Italian.
+- A cleaner **title screen**, with a single credit line.
+- **Bug fixes.**
+- **Saves from 1.1 are compatible.**
 
-Extract your ZIP and open the installation guide included inside it: it walks through picking the right patch for your file and applying it with one of three free tools (a desktop program, an Android app, or a page that runs in your browser). It recognizes the supported **unmodified US and Italian HeartGold** and **English Sacred Gold Plus 1.01, 1.02, 1.03, 1.04 (both cameras) and 1.1** as starting files; no older patches are needed first. [Installation, supported files and saves](PLAY.md). You do not need the source folders or GitHub's “Source code” ZIP to play.
+## Download
 
-[What changed in 1.2](CHANGELOG.md) · [Plans beyond 1.2](ROADMAP.md) · [All releases](https://github.com/Umberto-DEV/sacred-gold-plus/releases)
+Get the ZIP for your language from the [**1.2 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2):
 
-**Emulator:** [melonDS](https://melonds.kuribo64.net/) Android 2.1 or newer is recommended; it is the build the new options page and the online-connection choice were checked against. If you use the three WFC connection slots, remember they are configured inside melonDS' own Wi-Fi settings, one address per slot — 1.2 only chooses which configured slot a given online service uses, it does not add or change any address itself.
-
-**Cheats:** your 1.1 cheat files do not carry over. melonDS matches a cheat catalogue to a game by its header, and 1.2's header is different from 1.1's. Re-import the cheat files from the 1.2 package; all codes start switched off.
-
-**Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte on the save file. What is not yet checked is a full playthrough across the change; keep your previous game file and an untouched save until you are satisfied. [Full details](PLAY.md).
-
-Tested so far on emulator: melonDS on desktop and on Android. Testing on real Nintendo DS hardware is in progress; [known limits](CHANGELOG.md#known-limits) says exactly what has and has not been watched running yet.
-
-## See the game
-
-| Title screen | Exploring New Bark Town |
+| Language | File |
 | --- | --- |
-| ![The title screen of the English game](images/06-title-screen.png) | ![Exploring New Bark Town in the English game](images/01-new-bark-town.png) |
+| Italian | `Sacred-Gold-Plus-1.2-IT.zip` |
+| English | `Sacred-Gold-Plus-1.2-EN.zip` |
 
-[More screenshots, including 1.2's native indoor camera and options page](SCREENSHOTS.md).
+Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
 
-## Development: beyond 1.2
+## Requirements
 
-These are candidates for future work, not a promise that everything will be included in one release:
+- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04 or 1.1** ROM (any camera) — you must obtain this yourself.
+- A DS patching tool: a desktop program, an Android app, or a browser page (all free; links are in the package guide).
+- An emulator or a flashcart. **[melonDS](https://melonds.kuribo64.net/) for Android, version 2.1 or newer, is recommended.**
 
-- **1.2b:** raising the level cap further, to 150, with a per-stat ceiling instead of one global stop.
-- **1.3:** asking which online server to use from inside the Pokémon Center clerk's own dialogue, instead of only in the options page; more complete translations for other languages.
-- **Throughout development:** preserve saves and Nintendo DS compatibility, use repeatable tests, keep instructions simple, and make patches check the exact game version they start from.
+## Install
 
-[Read the development plan](ROADMAP.md). There is no release date yet.
+1. Back up your game file and your save.
+2. Open the ZIP, pick the patch matching your current file from its `Patch` folder, and apply it with one of the supported tools.
+3. Follow `HOW-TO-INSTALL.txt` (English) or `COME-INSTALLARE.txt` (Italian) inside the package for the full step-by-step guide.
 
-## Help improve the game
+## Compatibility
 
-[Report a problem](https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose), [share an idea or ask a question](https://github.com/Umberto-DEV/sacred-gold-plus/discussions), or [contribute a fix or translation](CONTRIBUTING.md). A clear report from a player is useful even without programming experience.
+- **Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte.
+- **Cheats:** 1.1 cheat files do not carry over, because 1.2 has a different game header. Re-import the cheat files from the 1.2 package; every code starts switched off.
 
-AI tools help me investigate bugs, work on code and translations, write test scripts and prepare documentation. Further human review and playtesting are welcome. If future updates add new areas or artwork, the plan is to create those visuals by hand, with help from artists who want to contribute.
+## Credits
 
-<details>
-<summary>For contributors: what is in the folders?</summary>
+Built on **Drayano**'s *Sacred Gold*, continuing **Sacred Gold Plus** with credit to its original community. Developed by a fan, with community contributions.
 
-`patches` contains the downloadable changes and file checks; `source` contains the tools and recipes used to build them; `.github` provides contribution forms, review rules and a file-checking script. Players only need the download links and installation guide above.
+## License
 
-</details>
+This project's own tools are licensed under [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights; full credits are in each package's `README.txt` / `LEGGIMI.txt`.
 
-## Thanks to the original creators
+---
 
-Thank you to **NefariousnessNo3436** for creating Sacred Gold Plus, sharing its patches and documentation, and allowing others to build on it with credit. Thank you to **Drayano** for Sacred Gold and Storm Silver, and **mikelan / Mikelan98** for the Fairy-type work that made Plus possible.
+## In italiano
 
-The logo above comes from the [original Sacred Gold Plus post](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/). This is an independent community project, not an official release or endorsement by the earlier authors. [Full credits](CREDITS.md).
+**Sacred Gold Plus** è una continuazione amatoriale di Sacred Gold Plus per Nintendo DS: tipo Folletto, nuove mosse Folletto e camera panoramica, con in più traduzione italiana, camera originale negli interni, difficoltà regolabile e correzioni.
+
+Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
+
+**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; correzioni varie; **i salvataggi della 1.1 sono compatibili**.
+
+**Download:** dalla [release 1.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2), `Sacred-Gold-Plus-1.2-IT.zip` o `-EN.zip`.
+
+**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); melonDS per Android 2.1 o successivo consigliato.
+
+**Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
+
+**Compatibilità:** i salvataggi 1.1↔1.2 sono stati verificati byte per byte; i cheat della 1.1 non funzionano sulla 1.2 (intestazione diversa) — reimporta quelli del pacchetto 1.2, tutti spenti di default.
+
+**Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
+
+**Licenza:** strumenti di questo progetto sotto [GPL-3.0-or-later](LICENSE); Pokémon, il gioco originale e i contributi di terzi restano dei rispettivi proprietari — crediti completi in `LEGGIMI.txt` nel pacchetto.
