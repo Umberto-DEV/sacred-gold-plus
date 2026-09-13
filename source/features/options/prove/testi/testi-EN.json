@@ -1,0 +1,76 @@
+{
+ "lingua": "EN",
+ "charmap": "<pret checkout>/charmap.txt",
+ "id": [
+  "p_titolo",
+  "p_aiuto_a",
+  "p_aiuto_b",
+  "p_bloccato",
+  "p_rifiutato",
+  "p_suggerimento",
+  "v0_nome",
+  "v1_nome",
+  "v2_nome",
+  "v3_nome",
+  "v4_nome",
+  "x_off",
+  "x_on",
+  "x_normale",
+  "x_plus",
+  "n_norm",
+  "n_fluido",
+  "w_0",
+  "w_1",
+  "w_2",
+  "c_titolo",
+  "c_riga1",
+  "c_riga2",
+  "c_riga1n",
+  "c_riga2n",
+  "c_nota",
+  "c_aiuto",
+  "@cursore",
+  "@vuoto"
+ ],
+ "testi_byte": 882,
+ "testi_sha256": "730b58295597ca78458a3e26853732013f2e5b90f75b8ad0e19a2043c46bedfe",
+ "voci_byte": 24,
+ "voci_sha256": "6177f93d248fd01c7d9a05af1c366a44a1869e746dfbf54794d256fbdbb9e6eb",
+ "voci": [
+  {
+   "nome": "v0_nome",
+   "val0": "x_normale",
+   "nval": 2,
+   "quale": 0,
+   "nascondi": 0
+  },
+  {
+   "nome": "v1_nome",
+   "val0": "x_normale",
+   "nval": 2,
+   "quale": 1,
+   "nascondi": 0
+  },
+  {
+   "nome": "v2_nome",
+   "val0": "x_off",
+   "nval": 2,
+   "quale": 2,
+   "nascondi": 1
+  },
+  {
+   "nome": "v3_nome",
+   "val0": "n_norm",
+   "nval": 2,
+   "quale": 3,
+   "nascondi": 0
+  },
+  {
+   "nome": "v4_nome",
+   "val0": "w_0",
+   "nval": 3,
+   "quale": 4,
+   "nascondi": 0
+  }
+ ]
+}

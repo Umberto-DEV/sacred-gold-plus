@@ -1,0 +1,71 @@
+{
+  "pacchetto": "SGP-1.2-PLUS-01",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-DSGP_STATE_ADDR=0x23d8700u",
+    "-DSGP_TAB_TRAINER_ADDR=0x23d8500u",
+    "-DSGP_TAB_WILD_ADDR=0x23d8600u",
+    "-c",
+    "<private>/work-1.2/SGP-1.2-PLUS-01/sorgenti/plus_blob.c",
+    "-o",
+    "the private PLUS-02 build"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "indirizzi": {
+    "codice": "0x23d8100",
+    "stato": "0x23d8700",
+    "tab_trainer": "0x23d8500",
+    "tab_wild": "0x23d8600",
+    "provvisori": true,
+    "nota": "da riallineare a docs/arm9-reserve-map.json (cantiere F0)",
+    "codice_salva": "0x23d8220",
+    "canarino": "0x23d8720"
+  },
+  "blob": {
+    "byte": 256,
+    "sha256": "6392b5b8a1e67727ec4ea2af7ea8ee4f29219fb3161f8f9b8b0fae2d96216b56"
+  },
+  "tabelle": {
+    "tab_trainer": {
+      "byte": 256,
+      "sha256": "dcbcaf243fbe29c5b8eced0b0102bddf034fde66977912d32da28484fc42144e"
+    },
+    "tab_wild": {
+      "byte": 256,
+      "sha256": "91f96578c08a363a9e800e22b66830f3584878a3a615d25658ff0e5c63179807"
+    }
+  },
+  "occupazione_totale_byte": 1136,
+  "simboli": {
+    "$d": "0x23d8334",
+    "$t": "0x23d8340",
+    "sgp_group_max": "0x23d824b",
+    "sgp_state_load": "0x23d8131",
+    "sgp_state_reset": "0x23d8101",
+    "sgp_state_set_plus": "0x23d81f5",
+    "sgp_state_set_wild": "0x23d821d",
+    "sgp_state_store": "0x23d81d5",
+    "sgp_trainer_hook": "0x23d8195",
+    "sgp_trainer_level": "0x23d8195",
+    "sgp_trpoke_stride": "0x23d823d",
+    "sgp_wild_hook": "0x23d81f1",
+    "sgp_wild_level": "0x23d8305",
+    "sgp_gancio_carica": "0x23d8221",
+    "sgp_gancio_salva": "0x23d8331"
+  },
+  "cap": 100,
+  "blob_salva": {
+    "byte": 500,
+    "sha256": "f408c76327aeefaf0f994b9d47f694930f47588e5e8290084516dfb8dcef167d"
+  }
+}

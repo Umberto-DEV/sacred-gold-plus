@@ -1,5 +1,3 @@
-<!-- Sacred Gold Plus 1.2 — public player README (draft) -->
-
 # Sacred Gold Plus
 
 **A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
@@ -60,9 +58,19 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 - **Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte.
 - **Cheats:** 1.1 cheat files do not carry over, because 1.2 has a different game header. Re-import the cheat files from the 1.2 package; every code starts switched off.
 
+## For developers
+
+The sources, tools and tests that build and check this game are in this repository, and contributions are welcome.
+
+- [DEVELOPMENT.md](DEVELOPMENT.md) — branching model, release cycle, the two classes of test and how the repository is laid out.
+- [source/README.md](source/README.md) — build the game from your own game file and run the tests.
+- [CONTRIBUTING.md](CONTRIBUTING.md) — how to propose a change.
+
+`main` is the development trunk and is always green: every push and every pull request runs the tests that need no game file. Building the game itself needs your own copy of it, so that step happens on your machine, never on GitHub.
+
 ## Credits
 
-Built on **Drayano**'s *Sacred Gold*, continuing **Sacred Gold Plus** with credit to its original community. Developed by a fan, with community contributions.
+Built on **Drayano**'s *Sacred Gold*, continuing **Sacred Gold Plus** with credit to its original community. Developed by a fan, with community contributions. Full acknowledgements and third-party terms: [CREDITS.md](CREDITS.md).
 
 ## License
 
@@ -85,6 +93,8 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 **Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
 
 **Compatibilità:** i salvataggi 1.1↔1.2 sono stati verificati byte per byte; i cheat della 1.1 non funzionano sulla 1.2 (intestazione diversa) — reimporta quelli del pacchetto 1.2, tutti spenti di default.
+
+**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in questo repository — [DEVELOPMENT.md](DEVELOPMENT.md) e [source/README.md](source/README.md). `main` e' il tronco di sviluppo, sempre verde; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub.
 
 **Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
 

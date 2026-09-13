@@ -1,0 +1,63 @@
+diff --git a/src/ARM.cpp b/src/ARM.cpp
+index 3937a99..6a92154 100644
+--- a/src/ARM.cpp
++++ b/src/ARM.cpp
+@@ -28,6 +28,9 @@
+ #include "Platform.h"
+ #include "GPU.h"
+ #include "ARMJIT_Memory.h"
++#ifdef HG_RUNTIME_TRACE
++#include "hg_trace.h"
++#endif
+ 
+ namespace melonDS
+ {
+@@ -685,6 +688,13 @@ void ARMv5::Execute()
+                 NextInstr[1] = CodeRead32(R[15], false);
+ 
+                 // actually execute
++#ifdef HG_RUNTIME_TRACE
++                const u32 hgAddress = R[15] - 8;
++                const bool hgTrace = HGTrace::Enabled &&
++                    (hgAddress == 0x020D3FA8 || hgAddress == 0x020DE16C);
++                const u32 hgR10Before = hgTrace ? R[10] : 0;
++                const bool hgCondition = hgTrace && CheckCondition(CurInstr >> 28);
++#endif
+                 if (CheckCondition(CurInstr >> 28))
+                 {
+                     u32 icode = ((CurInstr >> 4) & 0xF) | ((CurInstr >> 16) & 0xFF0);
+@@ -696,6 +706,10 @@ void ARMv5::Execute()
+                 }
+                 else
+                     AddCycles_C();
++#ifdef HG_RUNTIME_TRACE
++                if (hgTrace)
++                    HGTrace::Record(hgAddress, hgCondition, hgR10Before, R[10], CurInstr);
++#endif
+             }
+ 
+             // TODO optimize this shit!!!
+diff --git a/src/NDS.cpp b/src/NDS.cpp
+index c6dc85f..898a997 100644
+--- a/src/NDS.cpp
++++ b/src/NDS.cpp
+@@ -44,6 +44,9 @@
+ #include "DSi_DSP.h"
+ #include "ARMJIT.h"
+ #include "ARMJIT_Memory.h"
++#ifdef HG_RUNTIME_TRACE
++#include "hg_trace.h"
++#endif
+ 
+ namespace melonDS
+ {
+@@ -1633,6 +1636,9 @@ void NDS::NocashPrint(u32 ncpu, u32 addr, bool appendNewline)
+ 
+ void NDS::MonitorARM9Jump(u32 addr)
+ {
++#ifdef HG_RUNTIME_TRACE
++    if (HGTrace::Enabled && (addr & ~1u) == 0x02000DAC) ++HGTrace::MainLoopJumps;
++#endif
+     // checkme: can the entrypoint addr be THUMB?
+     // also TODO: make it work in DSi mode
+ 

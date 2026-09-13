@@ -1,0 +1,11 @@
+{
+  "indirizzi": {
+    "codice": "0x23d8b00",
+    "stato": "0x23d8e40",
+    "canarino": "0x23d8df0"
+  },
+  "simboli": {
+    "sgp_idle_task2": "0x23d8be5",
+    "sgp_idle_stop": "0x23d8bd3"
+  }
+}

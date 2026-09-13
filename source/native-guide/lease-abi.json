@@ -1,0 +1,37 @@
+{
+  "NNS_FndAllocFromExpHeapEx": {
+    "address": 34296736,
+    "bytes": 48,
+    "sha256": "a14db1696b85f30d2d84cf68bd866264dc33645aa780f691b9ff17512ebdad65"
+  },
+  "NNS_FndFreeToExpHeap": {
+    "address": 34297136,
+    "bytes": 60,
+    "sha256": "90138c6a90eb6dc5c9596294f11506eefcd68ae6c475ba863045505bc4b9aed3"
+  },
+  "OS_DisableInterrupts": {
+    "address": 34421304,
+    "bytes": 20,
+    "sha256": "a8cdb747f9936730571b220bb9570615892665b120713ffc59b1cb2d7dee76ff"
+  },
+  "OS_RestoreInterrupts": {
+    "address": 34421324,
+    "bytes": 24,
+    "sha256": "46b5111b6fad094dfff177dca974d33b477cb72772ecfe95b74b1c7f656bc4fd"
+  },
+  "AllocFromHead": {
+    "address": 34296072,
+    "bytes": 180,
+    "sha256": "77c1ccc6472d962fc69635f962d2fcc66c94ffb63e2852ef87726ec706151903"
+  },
+  "NNSi_FndInitHeapHead": {
+    "address": 34295248,
+    "bytes": 128,
+    "sha256": "3b64c5eb8eea52237cd7bf585fb82699d2da7e4248efbd243db733e3206b4043"
+  },
+  "InitExpHeap": {
+    "address": 34295572,
+    "bytes": 116,
+    "sha256": "d289cc1deb3630f570ce6dae2e5e560d963bbeaaf55ddcfd64cda343035a0337"
+  }
+}

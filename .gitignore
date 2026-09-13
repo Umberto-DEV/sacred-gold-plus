@@ -9,9 +9,22 @@
 !*.xml
 !*.mch
 !*.xdelta
+# Sources and payloads under source/: C and assembly we wrote, the shell and
+# emulator scripts, the melonDS harness, and the small blobs we compiled.
+!*.c
+!*.h
+!*.cpp
+!*.tsv
+!*.patch
+!*.script
+!/source/**/*.bin
+!/source/**/SHA256SUMS
+!/source/runtime/CMakeLists.txt
+!/source/runtime/LICENSE
 !LICENSE
 !.gitignore
 !.gitattributes
+!/.github/CODEOWNERS
 
 # images/: only the reviewed 1.2 gallery screenshots.
 !/images/*.png
@@ -24,6 +37,6 @@ inputs/
 outputs/
 *.build.json
 
-# Claude Code local tooling (never public)
+# Local agent tooling (never public)
 .claude/
 CLAUDE.local.md

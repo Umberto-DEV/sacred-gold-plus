@@ -1,0 +1,9 @@
+anim_idle2b.c / sgp_anim2b.h / anim_blob2b.c
+    COPIA NON MODIFICATA dei sorgenti della v3 (SGP-1.2-ANIM-B-03/sorgenti/),
+    tenuta qui solo per poterla RICOMPILARE e mostrare i test che falliscono
+    prima della correzione (regola V7 di CRITERI.md). Non finisce in ROM.
+sgp_chunk.h
+    copia non modificata di SGP-1.2-QUALITA-NATIVO-01/sorgenti-v-finale/sgp_chunk.h:
+    la fonte unica della pianta del chunk e dell'accessore `sgp_chunk_opzione`.
+sgp_anim4.h / anim_idle4.c / anim_blob4.c
+    la v4 di questo cantiere.

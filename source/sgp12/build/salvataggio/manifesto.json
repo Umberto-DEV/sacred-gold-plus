@@ -1,0 +1,41 @@
+{
+  "pacchetto": "SGP-1.2-PLUS-03",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-DSGP_STATO_ADDR=0x23d8700u",
+    "-DSGP_BUF_ADDR=0x23d8f00u",
+    "-c",
+    "<private>/work-1.2/SGP-1.2-PLUS-03/sorgenti/salva_blob.c",
+    "-o",
+    "prove/build/salva_blob.o"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "indirizzi": {
+    "codice": "0x23d8730",
+    "stato": "0x23d8700",
+    "buffer": "0x23d8f00",
+    "base": "0x23d8f00",
+    "canarino": "0x23d8ff0"
+  },
+  "blob": {
+    "byte": 460,
+    "sha256": "35cccda383f33275036c40eee2a4ee8894a136838a48350d2f4db243514171b3",
+    "spazio_riservato": 464
+  },
+  "simboli": {
+    "$d": "0x23d88e0",
+    "$t": "0x23d8858",
+    "sgp_gancio_carica": "0x23d8221",
+    "sgp_gancio_salva": "0x23d8331"
+  }
+}

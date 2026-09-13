@@ -1,0 +1,39 @@
+{
+  "pacchetto": "SGP-1.2-PRESTAZIONI-NPC-02",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-DSGP_NPC_STATO_ADDR=0x23d89e0u",
+    "-c",
+    "<private>/work-1.2/SGP-1.2-PRESTAZIONI-NPC-02/sorgenti/npc_tetto.c",
+    "-o",
+    "<private>/work-1.2/SGP-1.2-PRESTAZIONI-NPC-02/prove/build/npc_tetto.o"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "indirizzi": {
+    "codice": "0x23d8900",
+    "stato": "0x23d89e0",
+    "blocco": "sgp.npc, 0x023D8900, 256 B (prove/riserva-VOCE-NPC.json)"
+  },
+  "blob": {
+    "byte": 128,
+    "sha256": "bda5f6de73a486c68a77be7e88f6e097c978fc4965b2abde95cf1a13d5f1a6a2"
+  },
+  "stato_byte": 16,
+  "occupazione_totale_byte": 144,
+  "simboli": {
+    "$d": "0x23d8964",
+    "$t": "0x23d8970",
+    "sgp_npc_hook": "0x23d8971",
+    "sgp_npc_tetto": "0x23d8901"
+  }
+}
