@@ -27,10 +27,19 @@ docs/arm9-reserve-map.json (registro della riserva ARM9; STATO-1.2.md §b (ex 04
       sha dell'INTERO manifest - che cambia a ogni blocco registrato - e nessun cancello
       lo controllava affatto: un mutante che azzerava quei 16 B usciva VERDE).
 
-Senza una ROM, T2/T3/T4/T5 SALTANO con motivo esplicito (02-COME-LAVORARE.md §7:
-"non trovato" si dichiara, non si finge). Se SGP_RISERVA_COMPLETA=1 e' impostata (uso
-raccomandato in CI) e SGP_RISERVA_ROM manca, la suite FALLISCE invece di saltare in
-silenzio (REVISIONE 02, C18: D10 della revisione privata).
+CLASSE: T1 e' di classe A e gira sempre, anche in CI. **T2, T3, T4 e T5 sono di classe
+B**: aprono un file di gioco, quindi non possono girare in CI, dove nessuna ROM esiste
+ne' puo' esistere. Senza una ROM saltano con motivo esplicito (02-COME-LAVORARE.md §7:
+"non trovato" si dichiara, non si finge).
+
+Perche' questo non e' un buco silenzioso: `SGP_RISERVA_COMPLETA=1` trasforma l'assenza
+della ROM in un FALLIMENTO invece che in otto skip. Quella variabile non era impostata da
+nessuno — ne' da `run_tests.py` ne' dalla CI — quindi la guardia non era mai armata (E3
+della revisione R3). Ora la arma:
+  * `sgp12/verifica.py`, che una ROM ce l'ha per definizione: li' T2-T5 non possono piu'
+    saltare senza far fallire il comando;
+  * `run_tests.py`, quando trova `SGP_RISERVA_ROM` nell'ambiente.
+(REVISIONE 02, C18: D10 della revisione privata.)
 
 Uso:
     python3 -m unittest verifiche.test_riserva -v          # da source/
@@ -51,7 +60,10 @@ REPO = QUI.parents[1]
 MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "source/docs/arm9-reserve-map.json"))
 # I file di cheat spediti stanno nel pacchetto ZIP della release (non nel repo):
 # indicare la cartella scompattata con SGP_CHEATS, altrimenti T3 viene saltato.
-CHEATS_DIR = Path(os.environ.get("SGP_CHEATS", REPO / "release/1.2"))
+# Il default segue la versione in corso: e' la cartella che `build_zip.py --esporta`
+# produce prima di impacchettare. Se esiste ma non contiene i file di cheat, T3
+# FALLISCE apposta: vuol dire che l'esportazione e' incompleta.
+CHEATS_DIR = Path(os.environ.get("SGP_CHEATS", REPO / "release/1.2.1"))
 
 
 def carica_mappa():

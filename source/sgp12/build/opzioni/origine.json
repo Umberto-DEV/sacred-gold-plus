@@ -12,5 +12,16 @@
     "sha256": "f69154ccd0a929fa1a5fb9e8f8d024740bf94757fc869b29d7b6e1fe09f4ee8e",
     "bytes": 131906120,
     "estratto_il": "2026-09-13"
+  },
+  "testi": {
+    "nota": "1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (c_titolo = \"Sacred Gold Plus 1.2.1\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica.",
+    "costruito_il": "2026-09-13",
+    "charmap": "<pret checkout>/charmap.txt",
+    "contenuto_bytes": {
+      "testi-EN.bin": 886,
+      "testi-IT.bin": 944,
+      "voci-EN.bin": 24,
+      "voci-IT.bin": 24
+    }
   }
 }

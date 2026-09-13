@@ -5,9 +5,14 @@
  * (fonte unica). Qui restano solo le cose che riguardano il SALVATAGGIO: dove
  * stanno i byte sulla cartuccia, il footer e le funzioni del gioco.
  *
- * Pianta:
- *   sgp.plus +0x630 = 0x023D8730, 460 B   questo codice
+ * Pianta (v-finale, misurata sulla ROM spedita — M3 della revisione R2: il
+ * commento diceva ancora +0x630/460 B, cioè la posizione v2, e con quei numeri
+ * i due blob di sgp.plus si sovrapponevano sulla carta):
+ *   sgp.plus +0x000 = 0x023D8100, 256 B   blob PLUS
+ *   sgp.plus +0x120 = 0x023D8220, 500 B   QUESTO codice (era +0x630 nella v2)
+ *   sgp.plus +0x630 = 0x023D8730, 464 B   a zero: qui viveva la v2 di questo blob
  *   sgp.salvataggio 0x023D8F00, 256 B     +0x00 buffer 32 B · +0xF0 canarino 16 B
+ * Il registro unico degli indirizzi resta `source/docs/arm9-reserve-map.json`.
  */
 #ifndef SGP_SALVA_H
 #define SGP_SALVA_H

@@ -330,5 +330,44 @@ class TestRilettore(unittest.TestCase):
                          struct.unpack_from("<H", self.d, 0x15E)[0])
 
 
+class TestFlagCompresso(unittest.TestCase):
+    """A1 della revisione R1: il bit «compresso» della voce y9 deve descrivere
+    i byte scritti. Su un overlay NON compresso un giro a vuoto accendeva il
+    bit e lasciava il gioco a decomprimere codice in chiaro."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.d = carica(BASE_EN)
+        cls.rom = OP.Rom(cls.d)
+        cls.non_compressi = [i for i in range(cls.rom.n_overlay)
+                             if not cls.rom.voce_overlay(i)["compresso"]]
+
+    def test_giro_a_vuoto_su_overlay_non_compresso_non_accende_il_bit(self):
+        self.assertTrue(self.non_compressi,
+                        "la base non ha overlay non compressi: il caso non e' piu' esercitabile")
+        oid = self.non_compressi[0]
+        v = self.rom.voce_overlay(oid)
+        _, _, img = self.rom.immagine_overlay(oid)
+        # una patch a vuoto: stessi byte prima e dopo, quindi corpo originale
+        pre = bytes(img[:4])
+        out, ric = OP.applica(self.d, oid, [], [{"addr": v["ram"], "pre": pre, "post": pre}],
+                              strategia="auto")
+        dopo = OP.Rom(out).voce_overlay(oid)
+        self.assertEqual(ric["strategia"]["usata"], "a-corpo-originale (immagine invariata)")
+        self.assertFalse(dopo["compresso"],
+                         "ov%03d non era compresso: la voce y9 non deve dichiararlo compresso" % oid)
+        self.assertEqual(dopo["flag"], v["flag"])
+        self.assertEqual(out, self.d, "un giro a vuoto deve essere identico al byte")
+
+    def test_overlay_compresso_resta_dichiarato_compresso(self):
+        v = self.rom.voce_overlay(12)
+        self.assertTrue(v["compresso"])
+        _, _, img = self.rom.immagine_overlay(12)
+        pre = bytes(img[:4])
+        out, _ = OP.applica(self.d, 12, [], [{"addr": v["ram"], "pre": pre, "post": pre}],
+                            strategia="auto")
+        self.assertTrue(OP.Rom(out).voce_overlay(12)["compresso"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

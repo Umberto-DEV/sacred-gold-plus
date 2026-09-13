@@ -1,11 +1,96 @@
 {
+  "pacchetto": "SGP-1.2-ANIM-SOLIDO-01 (v4), applicato in luogo da SGP-1.2-INTEGRAZIONE-FINALE-02",
+  "origine": "estratto dalla ROM canonica con sgp12/estrai_build.py: gli indirizzi sono decodificati, non ricompilati",
   "indirizzi": {
     "codice": "0x23d8b00",
     "stato": "0x23d8e40",
-    "canarino": "0x23d8df0"
+    "canarino": "0x23d8df0",
+    "tabelle": "0x23d8e00",
+    "slot": "0x23d8e80"
+  },
+  "pianta": {
+    "+0x000": "blob Thumb v4, 752 B su 752 (scomparto PIENO)",
+    "+0x2F0": "canarino, 16 B",
+    "+0x300": "tab_u, 32 B",
+    "+0x320": "par, 32 B",
+    "+0x340": "stato, 64 B",
+    "+0x380": "quattro voci da 32 B (una per lottatore), 128 B"
+  },
+  "blob": {
+    "byte": 752,
+    "sha256": "06a031fd71b3225409845bea7abeca77c66227d0c266ba8dbfbca38eba3eb18b"
   },
   "simboli": {
     "sgp_idle_task2": "0x23d8be5",
     "sgp_idle_stop": "0x23d8bd3"
+  },
+  "tabelle_bin": {
+    "tab_u": {
+      "byte": 32,
+      "sha256": "7e5c57b8166f5339985c0c5e1ffd109038d2121aff2f178227af44cb78060c17",
+      "valori": [
+        0,
+        5,
+        9,
+        13,
+        16,
+        16,
+        13,
+        9,
+        5,
+        0,
+        251,
+        247,
+        243,
+        240,
+        240,
+        243,
+        247,
+        251,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "origine": "tavola v3 di SGP-1.2-RIFINITURA-01 §B, riletta dai byte spediti"
+    },
+    "par": {
+      "byte": 32,
+      "sha256": "50a8d07863905336360769277389bec8e25c01a3e72687761b81f529bd6d21e8",
+      "amp": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "sca": [
+        4,
+        6,
+        6,
+        6
+      ],
+      "fase": [
+        0,
+        9,
+        5,
+        14
+      ],
+      "blink_min": 70,
+      "blink_mask": 63,
+      "blink_dur": 2,
+      "raro_ogni": 3,
+      "raro_piu": 3,
+      "origine": "decodificato da par.bin con la pianta di features/anim/tools/compila_anim4.py::par_bin; ri-codificando si riottengono gli stessi 32 byte"
+    }
   }
 }

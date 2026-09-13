@@ -8,7 +8,7 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 
 | Folder | What it is |
 | --- | --- |
-| `sgp12/` | The library. One command builds 1.2 from a 1.1 base, one command checks the result. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
+| `sgp12/` | The library. One command builds 1.2.1 from a 1.1 base, one command checks the result. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -47,8 +47,8 @@ From this folder:
 
 ```sh
 python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/base-1.1-EN.nds" \
-        --uscita /tmp/sgp-1.2-EN.nds --lingua EN
-python3 -m sgp12.verifica /tmp/sgp-1.2-EN.nds \
+        --uscita /tmp/sgp-1.2.1-EN.nds --lingua EN
+python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
         --base "$SGP_ROM_DIR/base-1.1-EN.nds" --lingua EN
 ```
 
@@ -68,12 +68,27 @@ Class B — with your own game file:
 
 ```sh
 cd source
-SGP_ROM_DIR=/path/to/private/roms python3 -m unittest sgp12.test_lib -v
+SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokeheartgold \
+    python3 -m unittest sgp12.test_lib -v
 SGP_ROM_DIR=/path/to/private/roms python3 -m unittest discover -s features/overlay/test -v
-SGP_RISERVA_ROM=/tmp/sgp-1.2-EN.nds python3 -m unittest verifiche.test_riserva -v
+SGP_ROM_DIR=/path/to/private/roms python3 -m unittest discover -s features/caramelle/test -v
+SGP_RISERVA_ROM=/tmp/sgp-1.2.1-EN.nds SGP_RISERVA_COMPLETA=1 \
+    python3 -m unittest verifiche.test_riserva -v
 ```
 
-The battle-animation suite (`features/anim/test/`) also needs the overlay modules extracted from your ROM; its tools do that, and the suite skips without them. The runtime runs on the headless emulator are described in [docs/test-bench.md](docs/test-bench.md).
+`SGP_PRET_SOURCE` is a checkout of `pret/pokeheartgold` at commit
+`0985e8718df4f25e64d6507d89c0c97c0d288981`: the text block reads `charmap.txt` from it, and
+that file is not redistributed here. Without it the affected tests skip and say so.
+
+`SGP_RISERVA_COMPLETA=1` turns "no ROM, so T2–T5 skipped" into a failure. Use it whenever you
+mean to run the reserve register in full: eight skipped tests and eight passing tests print
+almost the same summary. `sgp12/verifica.py` sets it for you.
+
+The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.1-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
+
+The native-code suite recompiles the shipped C sources and compares them with the blobs that go into the ROM. Those bytes are only reproducible on the toolchain that produced them, which each `build/*/manifesto.json` names; on a different compiler (vendor or major version) the byte-for-byte tests **skip with the two identities printed**, and what stays is the claim that holds anywhere: the blob compiles, fits its compartment and has no external symbols. That is why the Ubuntu CI is green — not because the check was softened.
+
+The battle-animation suite (`features/anim/test/`) also needs the overlay modules extracted from your ROM; its tools do that, and the suite skips with an explicit reason without them. The runtime runs on the headless emulator are described in [docs/test-bench.md](docs/test-bench.md).
 
 ## Make a change
 
@@ -83,7 +98,7 @@ If the change needs space in the ARM9 reserve, claim it in [docs/arm9-reserve-re
 
 ## What must never be committed
 
-Game files, saves, save states, BIOS, firmware and memory dumps. Game text, game code, extracted tables, archives and graphics. Anything with a personal path or name in it. `.github/check_public.py` refuses a tracked `.nds`, `.sav`, `.bin` dump or `.dump`, any tracked file over 2 MB that is not declared, and any binary outside the screenshot gallery and our own small compiled blobs.
+Game files, saves, save states, BIOS, firmware and memory dumps. Game text, game code, extracted tables, archives and graphics. Anything with a personal path or name in it. `.github/check_public.py` refuses a tracked `.nds`, `.sav`, `.bin` dump or `.dump` — the extension anywhere in the name, not only at the end — any tracked file over 2 MB that is not declared, any binary outside the screenshot gallery and our own small compiled blobs, any undeclared hidden folder, a blob that starts with a cartridge or game-container header, a personal path inside a binary, and a long unbroken base64 run inside a text file.
 
 Where a tool needs game data, it reads it from your file at build time. The text corrections are the clearest case: `sgp12/build/testi/REGOLE.json` records, for each correction, the message it belongs to, the SHA-256 the current text must have and the minimal edits — no sentence of the game. `features/texts/genera_correzioni.py` rebuilds the table the applier consumes from your own ROM, and the builder does it automatically when the table is absent.
 

@@ -24,15 +24,59 @@ Esempio:
 
 GPL-3.0-or-later.
 """
+import atexit
 import os
+import shutil
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
+SOURCE = QUI.parents[2]
 sys.path.insert(0, str(QUI))
 
-BUILD = Path(os.environ.get("SGP_BUILD", QUI.parent / "work" / "build"))
+# M8 della revisione R2: il default era `features/anim/work/build`, una cartella
+# di cantiere che non esiste in questo repository — 26 errori su una copia
+# pulita. Il blob v4 SPEDITO sta in `source/sgp12/build/anim/`, ed e' quello che
+# la suite deve esercitare. Ci si lavora su una COPIA temporanea, perche'
+# `Banco4` deposita accanto al blob una copia chiamata `blob2.bin` e la
+# cartella pubblica non si tocca.
+BUILD_SPEDITO = SOURCE / "sgp12/build/anim"
+
+
+def _build_di_prova():
+    dalla_variabile = os.environ.get("SGP_BUILD")
+    if dalla_variabile:
+        return Path(dalla_variabile)
+    tmp = Path(tempfile.mkdtemp(prefix="sgp-anim-build-"))
+    atexit.register(shutil.rmtree, tmp, True)
+    for f in sorted(BUILD_SPEDITO.iterdir()):
+        if f.is_file():
+            shutil.copy2(f, tmp / f.name)
+    return tmp
+
+
+BUILD = _build_di_prova()
+
+# Classe B dichiarata: il banco esegue il VERO ARM9 e il VERO ov012 della base
+# 1.1, estratti da una ROM. Quei moduli sono byte di gioco e non stanno in
+# questo repository: senza, la suite SALTA con il motivo scritto, invece di
+# dare venticinque tracce di `FileNotFoundError`.
+
+# `banco2` importa unicorn: fuori dalla guardia, su una macchina senza unicorn
+# questo `import` non faceva saltare la suite, la faceva **non raccogliere** —
+# un errore di importazione a tempo di discovery, cioe' 25 test spariti dal
+# conteggio invece di 25 test saltati con un motivo. Sta dentro la stessa
+# guardia di `banco4`, che dipende dalla stessa libreria.
+try:
+    import banco2 as _banco2_per_moduli                          # noqa: E402
+    MODULI_PRESENTI = (_banco2_per_moduli.MODULI / "moduli.json").is_file()
+except ImportError:                                              # pragma: no cover
+    MODULI_PRESENTI = False
+MOTIVO_MODULI = ("classe B: servono i moduli estratti da una ROM 1.1 "
+                 "(SGP_MODULI=<dir con arm9.bin, ov012.bin, moduli.json>); "
+                 "non stanno nel repository")
 
 try:
     from banco4 import (Banco4, OD0, OD1, PIC0, PIC1, PP_AFFINEW, PP_AFFINEH,
@@ -55,6 +99,7 @@ PIC2, PIC3 = 0x02312000, 0x02313000
 
 
 @unittest.skipUnless(UNICORN, "serve unicorn")
+@unittest.skipUnless(MODULI_PRESENTI, MOTIVO_MODULI)
 class Base(unittest.TestCase):
     def banco(self, blob="blob.bin", build=None):
         return Banco4(build or BUILD, CODICE, TABELLE, STATO, SLOT, blob=blob)
@@ -72,6 +117,7 @@ class Base(unittest.TestCase):
 # R — riproduzione dei difetti sulla v3 (il blob che sta in ROM oggi)
 # ===========================================================================
 @unittest.skipUnless(UNICORN, "serve unicorn")
+@unittest.skipUnless(MODULI_PRESENTI, MOTIVO_MODULI)
 class RiproduzioneV3(unittest.TestCase):
     """Gira sul blob v3 ricompilato dai sorgenti di `SGP-1.2-ANIM-B-03`
     (sha256 86a4e132…, lo stesso che il rilettore trova in ROM)."""

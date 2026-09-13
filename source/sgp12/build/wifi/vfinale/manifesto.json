@@ -6,6 +6,8 @@
     "dati": "0x23da040",
     "stato_w1": "0x23da240"
   },
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "compilatore_nota": "NON e' la provenienza: questo manifesto e' un ESTRATTO dalla ROM (`sgp12/estrai_build.py`), che il compilatore non lo vede. E' la toolchain sotto la quale `features/native-core/tools/compila_tutti.py --solo wifi` riproduce `blob.bin` byte per byte, misurata il 13/09/2026, e serve a `compila_tutti.py` per sapere quando il confronto byte per byte e' una pretesa sul sorgente e quando lo sarebbe sul compilatore. Senza questa riga il confronto veniva saltato SEMPRE, anche sulla macchina giusta.",
   "simboli": {
     "sgp_wfc_trampolino": "0x23da47d"
   },

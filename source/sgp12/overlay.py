@@ -62,6 +62,30 @@ def scegli_overlay(rom: Rom, guardie, oid=None):
     return oid, candidati
 
 
+def flag_uscita(flag_ingresso: int, compresso_in_ingresso: bool, modo: str) -> int:
+    """Il flag della voce y9 (bit 0 del byte alto = «questo corpo e' un flusso
+    BLZ») deve descrivere i byte che si stanno SCRIVENDO, non la strategia.
+
+    Tre casi, e sono tutti reali:
+      * `a-ricompresso`   — il corpo scritto e' un flusso BLZ: bit acceso;
+      * `a-corpo-originale` — si riscrivono i byte originali del file, quindi
+        il bit resta quello che era: se l'overlay NON era compresso (su
+        base-1.1 ce ne sono due su 129), accenderlo farebbe chiamare
+        `MIi_UncompressBackward` su codice in chiaro, cioe' un overlay
+        corrotto al caricamento;
+      * `b-decompresso`   — corpo in chiaro: bit spento.
+
+    Funzione pura apposta: e' il cancello che `test_lib.TestOverlayFlag`
+    esegue in classe A, senza ROM (difetto A1 della revisione R1)."""
+    if modo == "b-decompresso":
+        return flag_ingresso & ~1 & 0xFF
+    if modo == "a-ricompresso":
+        return (flag_ingresso | 1) & 0xFF
+    if modo == "a-corpo-originale":
+        return ((flag_ingresso | 1) if compresso_in_ingresso else (flag_ingresso & ~1)) & 0xFF
+    raise Rifiuto("modo di scrittura sconosciuto: %r" % modo)
+
+
 def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
             forza_ricompressione=False, consenti_riloco=False):
     """Ritorna (byte della ROM di uscita, ricevuta dict).
@@ -132,7 +156,7 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
     if strategia in ("a", "auto"):
         if invariato and not forza_ricompressione:
             corpo = bytes(crudo)
-            modo = "a-corpo-originale (immagine invariata)"
+            modo = "a-corpo-originale"
         else:
             corpo = blz_comprimi_ottimo(bytes(nuova), bersaglio=len(crudo))
             esigi(blz_decomprimi(corpo) == bytes(nuova),
@@ -144,11 +168,11 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
                 "identico": True,
                 "bersaglio": len(crudo), "bersaglio_centrato": len(corpo) == len(crudo)}
             modo = "a-ricompresso"
-        nuovo_flag = (v["flag"] | 1) & 0xFF
+        nuovo_flag = flag_uscita(v["flag"], v["compresso"], modo)
     elif strategia == "b":
         corpo = bytes(nuova)
-        nuovo_flag = v["flag"] & ~1 & 0xFF
         modo = "b-decompresso"
+        nuovo_flag = flag_uscita(v["flag"], v["compresso"], modo)
     else:
         raise Rifiuto("strategia sconosciuta: %r" % strategia)
 

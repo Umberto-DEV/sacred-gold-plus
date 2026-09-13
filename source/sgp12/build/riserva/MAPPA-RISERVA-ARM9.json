@@ -163,28 +163,30 @@
       "sha256_atteso_a_zero": "38723a2e5e8a17aa7950dc008209944e898f69a7bd10a23c839d341e935fd5ca",
       "nota": "scarto fra la fine del canarino di C1 (0x023D8080) e l'inizio allineato a 0x100 del blocco di D1 (0x023D8100). Esiste solo perche' D1 chiede un blocco allineato a 0x100; non e' assegnabile.",
       "ancore": [],
-      "pubblico": false
+      "pubblico": false,
+      "assegnabile": false
     },
     {
       "nome": "sgp.plus",
       "base": "0x023D8100",
       "bytes": 2048,
-      "proprietario": "SGP-1.2-PLUS-01 (prenotato) / SGP-1.2-PLUS-02 (blob PLUS) / SGP-1.2-PLUS-03 (blob salvataggio + gancio ov002 in luogo)",
+      "proprietario": "SGP-1.2-PLUS-01 (prenotato) / SGP-1.2-PLUS-02 (blob PLUS) / SGP-1.2-PLUS-03 (blob salvataggio + gancio ov002 in luogo) / SGP-1.2-QUALITA-NATIVO-01 (v-finale, applicata in luogo 12/09/2026)",
       "tipo": "dati",
       "zona": "1.2",
       "sha256_atteso_a_zero": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
-      "nota": "SCRITTO da SGP-1.2-PLUS-02 su sgp-1.2-{EN,IT}.nds. 'puo_essere_ancora_zero' perche' resta a zero su base-1.1-*, candidata-C1-02-* e ogni altra derivata non ancora passata per questo applicatore. Indirizzo (0x023D8100) RIASSEGNATO rispetto a CONTRATTO-D1.md (che citava ancora 0x023D8040, oggi occupato da camera.eccezioni.1.2 di C1): il blob e' stato RICOMPILATO per il nuovo indirizzo (i letterali assoluti del pool si spostano di +0xC0; stesse istruzioni, stesse tabelle, sha256 tabelle invariato rispetto a CONTRATTO-D1 §2.1). Overlay scelto per GUARDIA (0x28038800 a 0x02246C94), mai per indirizzo: 8 overlay diversi contengono l'indirizzo 0x02247D3A. Dettagli, mutanti e corse in the private PLUS-02 report. I 5 ganci NON sono in 'ancore' perche' T3 (test_riserva.py) sa leggere solo puntatori a 4 byte dentro arm9/autoload: sono BL Thumb, e uno vive in un overlay (ov002), fuori dalle sezioni che T3 ispeziona. Elencati per intero in 'ganci_non_verificati_da_T3'; verificati davvero da SGP-1.2-PLUS-02/tools/rileggi_plus.py (cancello R2).",
+      "nota": "SCRITTO da SGP-1.2-PLUS-02 su sgp-1.2-{EN,IT}.nds. 'puo_essere_ancora_zero' perche' resta a zero su base-1.1-*, candidata-C1-02-* e ogni altra derivata non ancora passata per questo applicatore. Indirizzo (0x023D8100) RIASSEGNATO rispetto a CONTRATTO-D1.md (che citava ancora 0x023D8040, oggi occupato da camera.eccezioni.1.2 di C1): il blob e' stato RICOMPILATO per il nuovo indirizzo (i letterali assoluti del pool si spostano di +0xC0; stesse istruzioni, stesse tabelle, sha256 tabelle invariato rispetto a CONTRATTO-D1 §2.1). Overlay scelto per GUARDIA (0x28038800 a 0x02246C94), mai per indirizzo: 8 overlay diversi contengono l'indirizzo 0x02247D3A. Dettagli, mutanti e corse in the private PLUS-02 report. I 5 ganci NON sono in 'ancore' perche' T3 (test_riserva.py) sa leggere solo puntatori a 4 byte dentro arm9/autoload: sono BL Thumb, e uno vive in un overlay (ov002), fuori dalle sezioni che T3 ispeziona. Elencati per intero in 'ganci_non_verificati_da_T3'; verificati davvero da source/features/plus-chunk/tools/rileggi_plus.py (cancello R2). AGGIORNATO 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01: applicato il codice nativo v-finale di SGP-1.2-QUALITA-NATIVO-01 (9 difetti corretti: B1 pianta SgpExtra v1 morta tolta, B2 default NPC spostato in D1/sgp_chunk_leggi, B3 campi altrui riportati nel dominio prima di scrivere il chunk, B4 contratti registri corretti, B7 magic azzerato prima di ogni lettura, B9 versione stretta a SGP_VERSIONE, B8 DC_FlushRange/IC_InvalidateRange sul veneer WiFi -- vedi B5/B6 nel blocco sgp.wifi). Il blob del salvataggio si e' spostato DENTRO lo spazio di codice (+0x120): il blocco sgp.salvataggio (0x023D8F00) ora ospita SOLO il buffer dati e il canarino, come dichiarato fin da PLUS-03. Dettagli, cancelli e byte prima/dopo in the private QUALITA-NATIVO-01 report §4-5.",
       "pubblico": false,
-      "sha256": "3b29e1f74e1096cf2dc5d73a409ea343a03ae1fc6c94255f258a462d6015fe1a",
+      "sha256": "2d7ed76bc014d98e3256fc80a7b28286a57d35a67e9ad0daafeacfe70faa58f0",
       "puo_essere_ancora_zero": true,
       "formato": {
-        "+0x000": "blob Thumb PLUS, 592 B (sgp_trainer_hook/sgp_wild_hook/sgp_*level/sgp_state_*)",
-        "+0x250": "riempimento a zero, 432 B (margine di crescita del blob PLUS)",
-        "+0x400": "tab_trainer, 256 B: A(M) = min(cap, R(M, p_plus(M)))",
-        "+0x500": "tab_wild, 256 B: max(B, min(cap, R(B, p_wild(B))))",
-        "+0x600": "stato, 32 B (active_plus/active_wild/cap/load_status/guard/hits_trainer/hits_wild/chunk)",
-        "+0x620": "canarino di PLUS-02, 16 B, motivo 0xCA5A1200|i",
-        "+0x630": "blob Thumb SALVATAGGIO, 460 B (sgp_gancio_carica/sgp_gancio_salva), SGP-1.2-PLUS-03",
+        "+0x000": "blob Thumb PLUS v-finale, 256 B (sgp_trainer_hook/sgp_wild_hook/sgp_*level/sgp_group_max; plus_state.c tolto, B1)",
+        "+0x120": "blob Thumb SALVATAGGIO v-finale, 500 B (sgp_gancio_carica/sgp_gancio_salva; B3/B7/B9)",
+        "+0x314..+0x400": "riempimento a zero, 236 B (margine di crescita)",
+        "+0x400": "tab_trainer, 256 B: A(M) = min(cap, R(M, p_plus(M))) -- INVARIATA",
+        "+0x500": "tab_wild, 256 B: max(B, min(cap, R(B, p_wild(B)))) -- INVARIATA",
+        "+0x600": "stato, 32 B (active_plus/active_wild/cap/load_status/guard/hits_trainer/hits_wild/chunk) -- INVARIATO",
+        "+0x620": "canarino di PLUS-02, 16 B, motivo 0xCA5A1200|i -- INVARIATO",
+        "+0x630..+0x7FC": "azzerato: il blob salvataggio v2 (460 B) che stava qui e' stato tolto, ora e' spazio libero vero (464 B, corregge S1 di the private QUALITA-NATIVO-01 report §6)",
         "+0x7FC": "riempimento a zero, 4 B"
       },
       "ganci_non_verificati_da_T3": [
@@ -239,6 +241,7 @@
         }
       ],
       "sha256_precedenti": [
+        "3b29e1f74e1096cf2dc5d73a409ea343a03ae1fc6c94255f258a462d6015fe1a",
         "180775ce80f69a60f9533e1f989261779fa85634cfac40895e7bf537231ba534"
       ],
       "sha256_precedenti_nota": "180775ce… = SGP-1.2-PLUS-02, blocco senza il blob del salvataggio a +0x630.",
@@ -248,32 +251,37 @@
           "modulo": "ov002",
           "ram": "0x02247D3A",
           "pre": "04a80078",
-          "post": "90f101fb",
+          "post": "90f159fa",
           "guardia": [
             "0x02246C94:00880328",
             "0x02247D3A:04a80078"
           ],
           "thumb": true,
-          "bersaglio": "0x023D8340 (sgp_wild_hook)",
+          "bersaglio": "0x023D81F0 (sgp_wild_hook, v-finale; era 0x023D8340 nel blob v2)",
           "immagine_decompressa_sha256_prima": "9f48747ec40c000c8eb20829f15526a4d37ee16b5b4bde4619be4dd8e92df229",
-          "immagine_decompressa_sha256_dopo": "5762f3a8a134160f590b1d8cd4160c04e6938d48a20dfb3f683dd60768d91911",
-          "nota": "gancio selvatici, scritto IN LUOGO da SGP-1.2-PLUS-03 (niente rilocazione in coda). Verificato VIVO a freddo: leggendo 0x02247D3A a ROM avviata da cartuccia si trova 90f101fb, non la preimmagine."
+          "immagine_decompressa_sha256_dopo": "ca1c8645a3f2069c1f05e38ffa56ebd79485b189c7dbd50d96cd1caaa4e47cfe",
+          "nota": "gancio selvatici, scritto IN LUOGO da SGP-1.2-PLUS-03 (niente rilocazione in coda). Verificato VIVO a freddo: leggendo 0x02247D3A a ROM avviata da cartuccia si trova 90f101fb, non la preimmagine. AGGIORNATO 12/09/2026: bersaglio ripuntato al blob v-finale da SGP-1.2-QUALITA-NATIVO-01 (il simbolo si e' spostato per via del blob PLUS ricompilato piu' corto).",
+          "sha256_precedenti": {
+            "post": "90f101fb",
+            "immagine_decompressa_sha256_dopo": "5762f3a8a134160f590b1d8cd4160c04e6938d48a20dfb3f683dd60768d91911"
+          }
         }
       ],
       "ancore": [],
-      "patch_overlay_nota": "SGP-1.2-OVERLAY-01 RAPPORTO §7 regola 2 chiede di registrare una patch di overlay dentro `ancore` del blocco a cui punta. Qui sta in un campo a parte per la stessa ragione per cui ci stanno i cinque ganci BL (vedi `ganci_non_verificati_da_T3`): T3 di test_riserva.py sa leggere solo puntatori di 4 byte con `dove` esadecimale dentro arm9/autoload, e questa è una patch di codice dentro un overlay compresso. La verifica vera la fanno SGP-1.2-OVERLAY-01/tools/overlay_rileggi.py (cancello sulla postimmagine) e la sonda a freddo di SGP-1.2-PLUS-03 (prove/gancio-ov002-a-freddo.json)."
+      "patch_overlay_nota": "SGP-1.2-OVERLAY-01 RAPPORTO §7 regola 2 chiede di registrare una patch di overlay dentro `ancore` del blocco a cui punta. Qui sta in un campo a parte per la stessa ragione per cui ci stanno i cinque ganci BL (vedi `ganci_non_verificati_da_T3`): T3 di test_riserva.py sa leggere solo puntatori di 4 byte con `dove` esadecimale dentro arm9/autoload, e questa è una patch di codice dentro un overlay compresso. La verifica vera la fanno source/features/overlay/tools/overlay_rileggi.py (cancello sulla postimmagine) e la sonda a freddo di SGP-1.2-PLUS-03 (prove/gancio-ov002-a-freddo.json)."
     },
     {
       "nome": "libero.1.2",
       "base": "0x023D8A10",
       "bytes": 240,
       "proprietario": "(nessuno)",
-      "tipo": "padding",
+      "tipo": "libero",
       "zona": "1.2",
       "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "nota": "ridotto a 240 B dopo sgp.anim (SGP-1.2-ANIM-B-03, applicazione in luogo, 12/09/2026); prima era 1264 B (prenotato ad A1-B)."
+      "nota": "ridotto a 240 B dopo sgp.anim (SGP-1.2-ANIM-B-03, applicazione in luogo, 12/09/2026); prima era 1264 B (prenotato ad A1-B). Tipizzato 'padding' fino alla revisione R3 (J3): cosi' `verifiche/riserva_arm9.py`, che somma i soli blocchi 'libero' assegnabili, riportava 0 B liberi mentre i documenti annunciavano 16 192 B contigui. E' il registro a essere stato corretto: questi due blocchi SONO il serbatoio da cui si prenota.",
+      "assegnabile": true
     },
     {
       "nome": "sgp.salvataggio",
@@ -291,39 +299,39 @@
       },
       "ancore": [],
       "pubblico": false,
-      "nota": "Blocco prenotato a D1 da PRENOTAZIONI-RISERVA.md («riserva D1 per il chunk se non ci sta in sgp.plus»). Il CODICE del chunk sta in sgp.plus a +0x630 (460 B, ci sta); qui stanno i DATI, che nel blocco di PLUS-02 non ci sarebbero stati. Il chunk vive nei settori 47 e 111 del salvataggio (0x2F000 e 0x6F000): misurati liberi (tutto 0xFF) su sei salvataggi reali, vedi SGP-1.2-PLUS-03/prove/settori-liberi.json."
+      "nota": "Blocco prenotato a D1 da PRENOTAZIONI-RISERVA.md («riserva D1 per il chunk se non ci sta in sgp.plus»). Il CODICE del chunk sta in sgp.plus a +0x630 (460 B, ci sta); qui stanno i DATI, che nel blocco di PLUS-02 non ci sarebbero stati. Il chunk vive nei settori 47 e 111 del salvataggio (0x2F000 e 0x6F000): misurati liberi (tutto 0xFF) su sei salvataggi reali, vedi the private PLUS-03 free-sector measurements. AGGIORNATO 12/09/2026: il blob di CODICE (carica/salva) e' stato spostato DENTRO sgp.plus (+0x120, 500 B) da SGP-1.2-QUALITA-NATIVO-01; questo blocco resta solo buffer dati (32 B) + canarino, invariato byte per byte."
     },
     {
       "nome": "sgp.opzioni",
       "base": "0x023D9000",
       "bytes": 4096,
-      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026)",
+      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (v4, A1 della revisione R2, 13/09/2026)",
       "tipo": "codice+dati",
       "zona": "1.2",
       "pubblico": false,
       "pianta": {
-        "+0x000": "codice Thumb, 3348 B su 3584",
-        "+0xE00": "risorse grafiche da ov054, 84 B su 96",
-        "+0xE60": "tabella delle voci, 24 B su 64",
-        "+0xEA0": "due OverlayManagerTemplate, 32 B su 32",
-        "+0xEC0": "stato dell'interfaccia, 0 B scritti su 96 (azzerato all'iniezione, per costruzione)",
-        "+0xF20": "margine libero, 208 B",
-        "+0xFF0": "canarino 0xCA5A1400|i, 16 B, DENTRO il blocco"
+        "+0x000": "codice Thumb v4, 3632 B su 3776 (v3: 3628; v2: 3348). La v4 (1.2.1, A1 della revisione R2) applica in `opz_presente` la precondizione del chunk di D1 a OGNI voce, non solo alle due di D1: +4 B, e tutti i simboli dopo `opz_presente` si spostano di 4.",
+        "+0xEC0": "risorse grafiche da ov054, 84 B su 96",
+        "+0xF20": "tabella delle voci, 24 B su 32",
+        "+0xF40": "due OverlayManagerTemplate, 32 B su 32",
+        "+0xF60": "stato dell'interfaccia, 0 B scritti su 96 (azzerato all'iniezione)",
+        "+0xFC0": "margine libero, 48 B",
+        "+0xFF0": "canarino 0xCA5A1400|i, 16 B, DENTRO il blocco -- INVARIATO"
       },
       "ancore": [],
-      "nota": "pagina Opzioni SGP (SELECT, 7 righe) e schermata al primo avvio; consumatore del chunk pubblico di SGP-1.2-PLUS-03 a 0x023D8710 (non possiede stato di gioco). Applicata in luogo da SGP-1.2-OPZIONI-05 con applica_opzioni_v2.py; rilettore rileggi_opzioni_v2.py verde (13/13) su EN e IT il 12/09/2026. impronte_parziali coprono +0x000..+0xEC0 e il canarino a +0xFF0; lo stato (+0xEC0, 96 B) e il margine (+0xF20, 208 B) sono dinamici/non assegnati e restano fuori.",
+      "nota": "pagina Opzioni SGP (SELECT, 7 righe) e schermata al primo avvio; consumatore del chunk pubblico di SGP-1.2-PLUS-03 a 0x023D8710 (non possiede stato di gioco). Applicata in luogo da SGP-1.2-OPZIONI-05 con applica_opzioni_v2.py; rilettore rileggi_opzioni_v2.py verde (13/13) su EN e IT il 12/09/2026. impronte_parziali coprono +0x000..+0xEC0 e il canarino a +0xFF0; lo stato (+0xEC0, 96 B) e il margine (+0xF20, 208 B) sono dinamici/non assegnati e restano fuori. AGGIORNATO 12/09/2026: sostituita in luogo con la v3 di SGP-1.2-RIFINITURA-01 (applica_opzioni_v3.py --sostituisci, cancelli S1-S4/A0-A7 verdi EN+IT; rileggi_opzioni_v3.py L1-L9 verdi EN+IT). Gancio A (ov054 0x021E6820) ora punta a 0x023D9950 (era 0x023D9838 in v2); template B1/B2 (ov036) ora a 0x023D9F40/0x023D9F50 (erano 0x023D9EA0/0x023D9EB0 in v2): il codice v3 e' piu' lungo, i simboli si sono spostati. Dettagli in the private RIFINITURA-01 report §1. AGGIORNATO 13/09/2026 (1.2.1): blob v4, `opz_presente` con la precondizione unica del chunk (guardia di D1 e load_status ASSENTE o VALIDO) su tutte e cinque le voci. Gancio A (ov054 0x021E6820) ora punta a 0x023D9954 (era 0x023D9950 in v3); i due template B1/B2 (ov036) restano a 0x023D9F40/0x023D9F50, ma il loro CONTENUTO cambia perche' le sei funzioni di servizio si sono spostate di 4 B.",
       "impronte_parziali": [
         {
           "offset": 0,
           "bytes": 3776,
-          "sha256": "630672a1205a4ae358254f7cc45f3a580c939cb0cb2b37700024bd16006063d1",
-          "nota": "codice+risorse+tabella+template (+0x000..+0xEC0), identico EN/IT"
+          "sha256": "904ca1e7e5257c18b967441b9f161d75a3e087089f58f64bc4f445d43d52402a",
+          "nota": "scomparto del codice (+0x000..+0xEC0): blob v4 di 3632 B piu' 144 B di margine a zero, identico EN/IT. Era ca88ded7... con il blob v3 da 3628 B."
         },
         {
           "offset": 4080,
           "bytes": 16,
           "sha256": "190b3b7c31ed232dad8f91b7954c4d03eba6ee8aa32152b34dbc475aedaea11c",
-          "nota": "canarino 0xCA5A1400|i a +0xFF0, identico EN/IT"
+          "nota": "canarino 0xCA5A1400|i a +0xFF0, identico EN/IT -- INVARIATO"
         }
       ],
       "patch_overlay": [
@@ -332,9 +340,9 @@
           "modulo": "ov054",
           "ram": "0x021E6820",
           "pre": "041c898c",
-          "post": "BL sgp_opz_hook (bersaglio 0x023D9838/+0x839 thumb)",
+          "post": "BL sgp_opz_hook (bersaglio 0x023D9954/+0x955 thumb, v4 1.2.1; era 0x023D9950 in v3)",
           "thumb": true,
-          "bersaglio": "sgp_opz_hook (+0x839 nel blocco sgp.opzioni)",
+          "bersaglio": "sgp_opz_hook (+0x955 nel blocco sgp.opzioni, v4 1.2.1)",
           "nota": "gancio A, patchato con overlay_patch.py (ricompressione BLZ in luogo). Verificato: rileggi_opzioni_v2.py L1/L6a/L8."
         },
         {
@@ -342,8 +350,8 @@
           "modulo": "ov036",
           "ram": "0x021E5A34",
           "pre_u32": "0x020FA16C",
-          "post_u32": "0x023D9EA0",
-          "bersaglio": "template SGP Continua (+0xEA0 nel blocco sgp.opzioni)",
+          "post_u32": "0x023D9F40",
+          "bersaglio": "template SGP Continua (+0xF40 nel blocco sgp.opzioni, v3)",
           "nota": "gancio B1. Verificato: rileggi_opzioni_v2.py L2/L6b."
         },
         {
@@ -351,18 +359,18 @@
           "modulo": "ov036",
           "ram": "0x021E5998",
           "pre_u32": "0x020FA15C",
-          "post_u32": "0x023D9EB0",
-          "bersaglio": "template SGP Nuova partita (+0xEB0 nel blocco sgp.opzioni)",
+          "post_u32": "0x023D9F50",
+          "bersaglio": "template SGP Nuova partita (+0xF50 nel blocco sgp.opzioni, v3)",
           "nota": "gancio B2. Verificato: rileggi_opzioni_v2.py L2/L6b."
         }
       ],
-      "patch_overlay_nota": "T3 legge solo puntatori dentro arm9/autoload: questi tre ganci sono dentro overlay compressi (ov054, ov036), stessa ragione per cui stanno qui e non in 'ancore' (vedi nota identica su sgp.npc). Verifica vera: SGP-1.2-OPZIONI-04/tools/rileggi_opzioni_v2.py (L1/L2/L6a/L6b/L8)."
+      "patch_overlay_nota": "T3 legge solo puntatori dentro arm9/autoload: questi tre ganci sono dentro overlay compressi (ov054, ov036), stessa ragione per cui stanno qui e non in 'ancore' (vedi nota identica su sgp.npc). Verifica vera: source/features/options/tools/rileggi_opzioni_v2.py (L1/L2/L6a/L6b/L8)."
     },
     {
       "nome": "sgp.wifi",
       "base": "0x023DA000",
       "bytes": 2048,
-      "proprietario": "SGP-1.2-WIFI-01 (prenotato) / SGP-1.2-WIFI-02 (preparazione + 02b sincronizzazione col chunk) / SGP-1.2-WIFI-03 (applicazione in luogo, 12/09/2026) / SGP-1.2-WIFI-05 (fallback al primo slot configurato, riapplicazione in luogo, 12/09/2026)",
+      "proprietario": "SGP-1.2-WIFI-01 (prenotato) / SGP-1.2-WIFI-02 (preparazione + 02b sincronizzazione col chunk) / SGP-1.2-WIFI-03 (applicazione in luogo, 12/09/2026) / SGP-1.2-WIFI-05 (fallback al primo slot configurato, riapplicazione in luogo, 12/09/2026) / SGP-1.2-QUALITA-NATIVO-01 (v-finale wifi_slot4 corretto, B5/B6/B8, applicata in luogo 12/09/2026)",
       "tipo": "codice+dati+stato",
       "zona": "1.2",
       "pubblico": false,
@@ -380,20 +388,20 @@
         {
           "offset": 0,
           "bytes": 24,
-          "sha256": "f08374fee23c3e816385386ce45a010c8da22810518527441e984fd068c8d301",
-          "nota": "veneer G2 ARM (+0x000, 24 B)"
+          "sha256": "b23d1462abd4606421b859821c53e40d7c3b706155f8ecd60fd5400ad255c72f",
+          "nota": "veneer G2 ARM v-finale (+0x000, 24 B): DC_FlushRange/IC_InvalidateRange aggiunti (B8)"
         },
         {
           "offset": 32,
           "bytes": 28,
-          "sha256": "4d97ae7c091e2f527513ec95eb498f12fe8d138714f61152429d14585c50881b",
-          "nota": "veneer G3 ARM (+0x020, 28 B)"
+          "sha256": "4108baa396e07b6bdb35a321efae4693e37eb5629c822ac35f1f9c7ac5bddf25",
+          "nota": "veneer G3 ARM v-finale (+0x020, 28 B): B5, lr sconosciuto non azzera piu' pending"
         },
         {
           "offset": 592,
-          "bytes": 660,
-          "sha256": "13a2d94f6260779667f960bc469b2951c6d7ac688b53d6ee0291bae3ff782ac1",
-          "nota": "blob Thumb wifi_slot4 (+0x250, 660 B, WIFI-05, sostituisce wifi_slot3/WIFI-02b-03): il resto del blocco (dati di runtime, stato dinamico, margine, canarino) non ha impronta fissa, coperto dal rilettore L1/L2/L3/L4"
+          "bytes": 572,
+          "sha256": "d275bc783f587c382d7ffd71bc7488241b3199fed2fc68861c5edcfb1e9f1153",
+          "nota": "blob Thumb wifi_slot4 v-finale (+0x250, 572 B, era 660: B6 accessore unico sgp_chunk_opzione, codice morto tolto). Il resto del blocco non ha impronta fissa, coperto dal rilettore."
         }
       ],
       "ancore": [],
@@ -401,7 +409,7 @@
         {
           "dove": "ARM9 0x020070A8 (G1, epilogo Overlay_Load)",
           "pre": "0120f8bd",
-          "post": "BL Thumb verso sgp_wfc_trampolino (+0x2B5 nel blocco sgp.wifi, 0x023DA4B5)",
+          "post": "BL Thumb verso sgp_wfc_trampolino (+0x47C nel blocco sgp.wifi, 0x023DA47C; v-finale)",
           "nota": "unica scrittura in ARM9 statico fuori dal blocco stesso: e' un BL Thumb, non un puntatore a 4 byte, quindi T3 (test_riserva.py) non lo verifica direttamente (stessa ragione dei 5 ganci di sgp.plus). Verifica vera: rileggi_wifi.py L5."
         },
         {
@@ -414,32 +422,74 @@
       "nome": "sgp.opzioni.testi",
       "base": "0x023DA800",
       "bytes": 1024,
-      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026)",
+      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (13/09/2026: la schermata al Continua dice «Sacred Gold Plus 1.2.1»)",
       "tipo": "dati",
       "zona": "1.2",
       "pubblico": false,
       "pianta": {
-        "+0x000": "blob dei testi della lingua della ROM, 858 B (EN) / 914 B (IT) su 1008",
-        "+0x3F0": "canarino 0xCA5A1500|i, 16 B, DENTRO il blocco"
+        "+0x000": "blob dei testi della lingua della ROM, v3 con la versione 1.2.1: 886 B (EN) / 944 B (IT) su 1008 (via il gergo NPC/SLOT)",
+        "+0x3F0": "canarino 0xCA5A1500|i, 16 B, DENTRO il blocco -- INVARIATO"
       },
       "ancore": [],
-      "nota": "blob dei testi della lingua della ROM per sgp.opzioni; non entra in sgp.opzioni perche' sgp.wifi e' fermo a 0x023DA000. Applicata in luogo da SGP-1.2-OPZIONI-05, stesso rilettore di sgp.opzioni. sha256 del blocco intero (1024 B, testo+canarino): il valore in 'sha256' e' la ROM EN, quello in 'sha256_precedenti' e' la ROM IT (non e' una revisione storica: T2 verifica un solo file alla volta e i due sono varianti di lingua, non versioni).",
-      "sha256": "8749ad326c594959335b5ef00575f4282278a7255e94fd64405bcc71ac14e2e9",
+      "nota": "v3: 'sha256' e' la ROM EN 1.2.1, il PRIMO 'sha256_precedenti' e' la IT 1.2.1 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). Aggiornato 13/09/2026 per la 1.2.1; prima 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
+      "sha256": "1d55f090946557a45d68cb88c2bcf002ebef27de28c6f3bf3c0e3a61e2470732",
       "sha256_precedenti": [
+        "426deff48db0922902516aa576c732d04627bf363174965c57c5c98a774803cf",
+        "bb5f639953e45e2aa316935dff4f0044c04116922c2fb3c100fad04043438222",
+        "8749ad326c594959335b5ef00575f4282278a7255e94fd64405bcc71ac14e2e9",
+        "7290205181a42dd1bd6f1450f8523f198542fad06f44a5e4963451a1a3cf9db9",
         "32a3da0343e0db8c0da95268f8e1f49dbd946db18158be1f5bb3765da4345640"
       ]
     },
     {
-      "nome": "libero.1.2.finale",
+      "nome": "sgp.caramelle",
       "base": "0x023DAC00",
-      "bytes": 16192,
+      "bytes": 256,
+      "proprietario": "SGP-1.2-CARAMELLE-01 (integrato nella 1.2.1, 13/09/2026)",
+      "tipo": "codice",
+      "zona": "1.2",
+      "pubblico": false,
+      "formato": {
+        "+0x000": "blob Thumb sgp_caramelle, 192 B su 240 (sgp_caramelle_gancio in testa, sgp_caramelle_decidi a +0x0C)",
+        "+0x0F0": "canarino 0xCA5A1600|i, 16 B, DENTRO il blocco"
+      },
+      "nota": "Riuso della Caramella Rara dal menu squadra (opzione (a) di M-borsa-riuso-caramelle.md). Un solo gancio nell'ARM9 statico, 0x02081E96, in coda al sotto-stato 6 di PartyMenu_ItemUseFunc_LevelUpLearnMovesLoop: la routine decide fra restare nel menu (stato 4, PARTY_MENU_STATE_USE_ITEM_SELECT_MON) e l'uscita vanilla (stato 0x20, BEGIN_EXIT, con selectedAction 9 se c'e' un'evoluzione in coda e 0 altrimenti). NON tocca borsa.text, che resta congelato dalla regola della zona 1.1: la sequenza di rientro e' la stessa di UX105_BAG_Tail (0x023DFC80) ma con letterali propri, cosi' le due funzioni possono morire separatamente. Ancoraggio al capo BASSO del serbatoio libero: la regola dell'ancoraggio alto vale per cio' che un artefatto visibile all'utente nomina (cheat, letterali citati fuori), e qui non c'e' nulla di simile. Il serbatoio libero.1.2.finale e' stato scalato di 256 B nella stessa occasione.",
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 192,
+          "sha256": "9acfd1fdbcb72f0f9d28efc0042e0ca46fac4229ce569ad786eadfd2ad2f264f",
+          "nota": "blob Thumb sgp_caramelle, identico EN/IT (un solo blob: gli indirizzi ARM9 statici coincidono nelle due lingue)"
+        },
+        {
+          "offset": 240,
+          "bytes": 16,
+          "sha256": "48a048560342109e90bec8a240cee637125e9375b81511cc8491eacb0e82e51d",
+          "nota": "canarino 0xCA5A1600|i a +0x0F0, identico EN/IT"
+        }
+      ],
+      "ancore": [],
+      "ganci_non_verificati_da_T3": [
+        {
+          "dove": "ARM9 0x02081E96 (coda del sotto-stato 6 di LevelUpLearnMovesLoop)",
+          "pre": "002801d00920",
+          "post": "<BL Thumb verso sgp_caramelle_gancio, 0x023DAC01> + 38bd (pop {r3,r4,r5,pc})",
+          "nota": "6 byte: la BL (4) sostituisce `cmp r0,#0 ; beq 0x02081E9E` e il `movs r0,#9`; il pop chiude la funzione. I 10 byte 0x02081E9A..0x02081EA3 restano scritti come erano ma diventano irraggiungibili. T3 legge solo puntatori di 4 byte: una BL non la verifica, come per sgp.plus e sgp.wifi. Verifica vera: sgp12/blocchi/caramelle.py::rileggi L1/L2 e features/caramelle/tools/rileggi_caramelle.py."
+        }
+      ]
+    },
+    {
+      "nome": "libero.1.2.finale",
+      "base": "0x023DAD00",
+      "bytes": 15936,
       "proprietario": "(nessuno)",
-      "tipo": "padding",
+      "tipo": "libero",
       "zona": "1.2",
       "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "nota": "libero fino al canarino 1.1 (0x023DEB40)"
+      "nota": "libero fino al canarino 1.1 (0x023DEB40) Tipizzato 'padding' fino alla revisione R3 (J3): cosi' `verifiche/riserva_arm9.py`, che somma i soli blocchi 'libero' assegnabili, riportava 0 B liberi mentre i documenti annunciavano 16 192 B contigui. E' il registro a essere stato corretto: questi due blocchi SONO il serbatoio da cui si prenota. RIDOTTO il 13/09/2026 di 256 B (era 0x023DAC00 / 16 192 B): la prenotazione di sgp.caramelle e' stata scalata da qui, come la regola pretende.",
+      "assegnabile": true
     },
     {
       "nome": "canarino",
@@ -464,7 +514,8 @@
       "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b"
+      "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+      "assegnabile": false
     },
     {
       "nome": "camera.eccezioni.dismessa",
@@ -536,10 +587,32 @@
       "proprietario": "AGISCE-01",
       "tipo": "codice",
       "zona": "1.1",
-      "nota": "porta pool ASSOLUTI: spostarlo di un byte lo rompe. Sito d'istruzione 0x023DFB10 (g_facts.buttons = 0).",
+      "nota": "porta pool ASSOLUTI: spostarlo di un byte lo rompe. Sito d'istruzione 0x023DFB10 (g_facts.buttons = 0). AGGIUNTO il 13/09/2026: i quattro `bl` dell'ARM9 statico che chiamano questo blocco erano assenti dal registro (ancore vuote, nessun gancio dichiarato), mentre sono cio' che tiene in piedi la funzione della 1.1. Misurati identici su base-1.1 e 1.2, EN e IT; verificati a ogni corsa dal cancello G5 di sgp12/blocchi/caramelle.py e da L5 del suo rilettore.",
       "ancore": [],
       "pubblico": false,
-      "sha256": "61e648a5c4d1de4235f1228331012487458b53e65c71d9d6f86ad5c6c817a331"
+      "sha256": "61e648a5c4d1de4235f1228331012487458b53e65c71d9d6f86ad5c6c817a331",
+      "ganci_non_verificati_da_T3": [
+        {
+          "dove": "ARM9 0x0207C39A",
+          "post": "BL 0x023DFD58",
+          "nota": "Borsa 1.1: uno dei quattro bl storici dell'ARM9 statico verso borsa.text"
+        },
+        {
+          "dove": "ARM9 0x0207C3A6",
+          "post": "BL 0x023DFD24",
+          "nota": "Borsa 1.1: idem"
+        },
+        {
+          "dove": "ARM9 0x02081380",
+          "post": "BL 0x023DFD3C",
+          "nota": "Borsa 1.1: idem"
+        },
+        {
+          "dove": "ARM9 0x02081396",
+          "post": "BL 0x023DFD6C",
+          "nota": "Borsa 1.1: idem"
+        }
+      ]
     },
     {
       "nome": "borsa.bss",
@@ -599,24 +672,24 @@
       "nome": "sgp.npc",
       "base": "0x023D8900",
       "bytes": 256,
-      "proprietario": "SGP-1.2-PRESTAZIONI-NPC-02 (preparazione) / SGP-1.2-PRESTAZIONI-NPC-03 (applicazione in luogo)",
+      "proprietario": "SGP-1.2-PRESTAZIONI-NPC-02 (preparazione) / SGP-1.2-PRESTAZIONI-NPC-03 (applicazione in luogo) / SGP-1.2-QUALITA-NATIVO-01 (v-finale, applicata in luogo 12/09/2026) / 1.2.1 (M2 della revisione R2, 13/09/2026)",
       "tipo": "codice+stato",
       "zona": "1.2",
       "pubblico": false,
       "formato": {
-        "+0x000": "blob Thumb, 100 B (sgp_npc_tetto 84 B + trampolina sgp_npc_hook 16 B)",
-        "+0x064..+0x0DF": "margine libero (188 B), a zero, non assegnato",
+        "+0x000": "blob Thumb, 144 B (sgp_npc_tetto 100 B + trampolina sgp_npc_hook 16 B + pool); era 128 B fino alla 1.2",
         "+0x0E0": "stato, 16 B: +0 attivo(u8) +1 tetto(u8) +2 guardia(u8, 0x5A) +3 riservato +4 salvato(s16) +6 clamp(u16) +8 giri(u32) +0xC riservato2(u32)",
-        "+0x0F0..+0x0FF": "margine libero (16 B), a zero, non assegnato"
+        "+0x0F0..+0x0FF": "margine libero (16 B), a zero, non assegnato",
+        "+0x090..+0x0DF": "margine libero (80 B), a zero, non assegnato"
       },
-      "nota": "sha256 diverso da quello di CONTRATTO-P2.md (5825c7c2...) perche' il blob e' ricompilato per l'indirizzo VERO 0x023D8900 (i letterali assoluti del pool cambiano): stessa sorgente C, stessa logica, provata in SGP-1.2-PRESTAZIONI-NPC-01. Il flag 'attivo' e' scritto ACCESO (1) di default dall'applicatore: il chunk D1 (SgpExtra, CONTRATTO-D1.md §3.2) non espone ancora un campo/bit 'prestazioni', quindi il flag vive nello stato in RAM di questo blocco, non nel salvataggio (decisione dell'orchestratore, 12/09).",
+      "nota": "sha256 diverso da quello di CONTRATTO-P2.md (5825c7c2...) perche' il blob e' ricompilato per l'indirizzo VERO 0x023D8900 (i letterali assoluti del pool cambiano): stessa sorgente C, stessa logica, provata in SGP-1.2-PRESTAZIONI-NPC-01. Il flag 'attivo' e' scritto ACCESO (1) di default dall'applicatore: il chunk D1 (SgpExtra, CONTRATTO-D1.md §3.2) non espone ancora un campo/bit 'prestazioni', quindi il flag vive nello stato in RAM di questo blocco, non nel salvataggio (decisione dell'orchestratore, 12/09). AGGIORNATO 12/09/2026: blob v-finale applicato (SGP-1.2-QUALITA-NATIVO-01, B2/B4); il gancio in ov001 0x021FA570 NON si era spostato (stesso bersaglio 0x023D8970). AGGIORNATO 13/09/2026 (1.2.1): blob ricompilato da features/native-core/sorgenti-v-finale/npc_tetto.c con la correzione M2 (spegnere la fluidita' restituisce il tetto originale senza aspettare il cambio di mappa). `sgp_npc_hook` passa da 0x023D8971 a 0x023D8981 e la BL in ov001 0x021FA570 e' stata riscritta di conseguenza.",
       "ancore": [],
       "impronte_parziali": [
         {
           "offset": 0,
-          "bytes": 128,
-          "sha256": "bda5f6de73a486c68a77be7e88f6e097c978fc4965b2abde95cf1a13d5f1a6a2",
-          "nota": "blob Thumb 02b (128 B): il resto del blocco (margine + stato dinamico) non ha impronta fissa, coperto dal rilettore L2/L4/L4b/L5"
+          "bytes": 144,
+          "sha256": "8345243c3f3de6fd5771910fecb32899cc66140c5b99aa8783c58d7f65cc8eee",
+          "nota": "blob Thumb 1.2.1 (144 B): il ramo «spento» restituisce al gioco il tetto che gli aveva tolto (M2 della revisione R2). Era 86f876ea..., 128 B, nella 1.2. Il resto del blocco non ha impronta fissa, coperto dal rilettore."
         }
       ],
       "patch_overlay": [
@@ -634,7 +707,7 @@
           "nota": "gancio nel drenaggio della lista di caricamento modelli NPC (CONTRATTO-P2.md §2), overlay 1 byte-identico EN/IT (sha256 70ad543419e7d43bbf2b470b386d322492b66fbe37cd1dbfae7eb40b5306df37, riverificato su sgp-1.2-{EN,IT}.nds del 12/09). Patchato con source/features/overlay/tools/overlay_patch.py: ricompressione BLZ ottima IN LUOGO, mai riloco."
         }
       ],
-      "patch_overlay_nota": "T3 di test_riserva.py sa leggere solo puntatori di 4 byte con 'dove' esadecimale dentro arm9/autoload: questa e' una BL dentro un overlay compresso (ov001), stessa ragione per cui il gancio selvatici di sgp.plus sta in 'patch_overlay' e non in 'ancore'. Verifica vera: SGP-1.2-PRESTAZIONI-NPC-02/tools/rileggi_npc.py (L1 bersaglio, L3 preimmagine in trampolina, L6 unico cambio nell'overlay decompresso)."
+      "patch_overlay_nota": "T3 di test_riserva.py sa leggere solo puntatori di 4 byte con 'dove' esadecimale dentro arm9/autoload: questa e' una BL dentro un overlay compresso (ov001), stessa ragione per cui il gancio selvatici di sgp.plus sta in 'patch_overlay' e non in 'ancore'. Verifica vera: source/features/npc/tools/rileggi_npc.py (L1 bersaglio, L3 preimmagine in trampolina, L6 unico cambio nell'overlay decompresso)."
     },
     {
       "nome": "canarino.npc",
@@ -654,24 +727,42 @@
       "nome": "sgp.anim",
       "base": "0x023D8B00",
       "bytes": 1024,
-      "proprietario": "SGP-1.2-ANIM-B-02 (preparazione fase 2b) / SGP-1.2-ANIM-B-03 (applicazione in luogo)",
+      "proprietario": "SGP-1.2-ANIM-B-02 (preparazione fase 2b) / SGP-1.2-ANIM-B-03 (applicazione in luogo) / SGP-1.2-RIFINITURA-01 (v3, taratura tavola, applicata in luogo 12/09/2026) / SGP-1.2-ANIM-SOLIDO-01 (v4, secondo gancio ov012 0x02262032, applicata in luogo il 13/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-02)",
       "tipo": "codice+dati+stato",
       "zona": "1.2",
       "pubblico": false,
       "formato": {
-        "+0x000": "blob Thumb sgp_idle_task2b, fase 2b (600 B su 752): abilitazione letta dal chunk PLUS-03 (0x023D8716), non piu' dallo stato locale scritto dall'iniettore",
+        "+0x000": "blob Thumb v4: sgp_pulisci, scala_nostra, sgp_idle_stop, sgp_idle_task2 (752 B su 752, scomparto PIENO)",
         "+0x2F0": "canarino 16 B, motivo 0xCA5A1400|i",
-        "+0x300": "tab_u 32 B (seno x 16) + par 32 B",
-        "+0x340": "stato 64 B (flags a offset 0, ora DIAGNOSTICO: ricalcolato dal chunk a ogni esecuzione, non piu' ingresso)",
-        "+0x380": "4 voci per lottatore da 32 B"
+        "+0x300": "tab_u 32 B (tavola v3 lisciata) + par 32 B",
+        "+0x340": "stato 64 B (flags a offset 0: zero = comportamento 1.1; +0x20 stop_visti, +0x24 puliti)",
+        "+0x380": "4 voci per lottatore da 32 B, liberate da sgp_pulisci"
       },
-      "nota": "Default SPENTO: a ROM applicata il gioco resta byte-identico alla base finche' il chunk PLUS-03 (0x023D8716) non porta anim!=0. Applicato in luogo su sgp-1.2-{EN,IT}.nds il 12/09/2026 (SGP-1.2-ANIM-B-03).",
+      "nota": "Blocco ORA PIENO (1024/1024 B): niente margine, D4 (classe di taglia inerte) resta aperto per questo motivo (the private ANIM-SOLIDO-01 report §10.1). Passato da v3 (SGP-1.2-RIFINITURA-01, 12/09/2026) a v4 il 13/09/2026 (SGP-1.2-ANIM-SOLIDO-01, applicato in luogo da SGP-1.2-INTEGRAZIONE-FINALE-02): risolve D1, il moto che restava addosso allo sprite dopo la fermata (affineW/H 257/255 e shadow.yOffset -1 misurati per 1235 fotogrammi/20,6 s), con un secondo gancio in coda a ov12_02262014 (0x02262032) che ripulisce i tre canali e libera la voce del lottatore, ripetendo le due istruzioni sostituite prima di tornare. Default resta SPENTO: flag letto dal chunk pubblico PLUS-03 (0x023D8716), byte-identico alla base finche' anim==0. Ampiezza portata da 2 a 3 px.",
       "impronte_parziali": [
         {
           "offset": 0,
-          "bytes": 600,
-          "sha256": "86a4e1323f3046403b1267d2ad92383c1f59c654447154d1f0ed54ef55248f83",
-          "nota": "blob Thumb fase 2b (600 B): il resto del blocco (margine + stato dinamico) non ha impronta fissa, coperto dal rilettore L2/L4/L4b/L5"
+          "bytes": 752,
+          "sha256": "06a031fd71b3225409845bea7abeca77c66227d0c266ba8dbfbca38eba3eb18b",
+          "nota": "blob Thumb v4 completo (752 B su 752, scomparto PIENO): sgp_pulisci, scala_nostra, sgp_idle_stop, sgp_idle_task2 (ANIM-SOLIDO-01, sostituisce l'impronta v3 86a4e1323f30... del blob da 600 B)"
+        },
+        {
+          "offset": 752,
+          "bytes": 16,
+          "sha256": "190b3b7c31ed232dad8f91b7954c4d03eba6ee8aa32152b34dbc475aedaea11c",
+          "nota": "canarino v4 a +0x2F0, motivo 0xCA5A1400|i"
+        },
+        {
+          "offset": 768,
+          "bytes": 64,
+          "sha256": "8b2733e7d64e9700a3ca1713a894a7c0c525b663746205cb2fb940ca92389de4",
+          "nota": "tab_u[18] (32 B, sha 7e5c57b8166f5339985c0c5e1ffd109038d2121aff2f178227af44cb78060c17, INVARIATA rispetto a v3/RIFINITURA-01) + par (32 B, parametri di ampiezza/scala) insieme: e' L'IMPRONTA DELLA TAVOLA nuova di v4, che copre anche `par` -- prima nessuna impronta lo faceva (ANIM-SOLIDO-01 RAPPORTO.md §9). Verificata con test_riserva.py T2."
+        },
+        {
+          "offset": 0,
+          "bytes": 1024,
+          "sha256": "565460511dd0d8e24b90cc6ab563d976a0ba6e3ecef1f321664c642b2a24b9c2",
+          "nota": "impronta dell'intero blocco 1024 B (blob 752 B + canarino + tavola + margine di stato a riposo), letta dal rilettore applica_anim4.py"
         }
       ],
       "ancore": [],
@@ -681,17 +772,31 @@
           "modulo": "ov012",
           "ram": "0x0226200C",
           "pre": "3d202602",
-          "post": "018b3d02",
+          "post": "e58b3d02",
           "guardia": [
             "0x0226200C:3d202602",
             "0x0226203C:38b50c1c67218900605a14306052081c625a3438824203d3081c3438101a605267208000205abdf5a9fd0622c1179202002390f66cec0a1c0421051c206a00244b02eb18624112051b0b1343da12120d9a181213a6f588fb38bd"
           ],
           "thumb": true,
-          "bersaglio": "sgp_idle_task2b (blob a 0x023D8B00|1)",
-          "nota": "letterale (non istruzione) passato a CreateSysTask da ov12_02261FD4; overlay scelto SOLO per guardia (5 overlay contengono lo stesso indirizzo, CONTRATTO-A1B.md §1.2). Patchato con SGP-1.2-OVERLAY-01/tools/overlay_patch.py: ricompressione BLZ ottima in luogo, mai riloco."
+          "bersaglio": "sgp_idle_task2 (blob v4 a 0x023D8B00|1, +0xE5 -> 0x023D8BE5; in v3 era sgp_idle_task2b)",
+          "nota": "letterale del task passato a CreateSysTask da ov12_02261FD4 (avviato da un solo sito, 0x0225DC8A). v3->v4: post passa da 018b3d02 a e58b3d02. Patchato con source/features/overlay/tools/overlay_patch.py: ricompressione BLZ ottima in luogo, mai riloco. Overlay scelto SOLO per guardia (5 overlay contengono lo stesso indirizzo, CONTRATTO-A1B.md §1.2)."
+        },
+        {
+          "dove": "ov012 0x02262032",
+          "modulo": "ov012",
+          "ram": "0x02262032",
+          "pre": "206a0421",
+          "post": "76f1cefd",
+          "guardia": [
+            "0x02262032:206a0421",
+            "0x0226203C:38b50c1c67218900605a14306052081c625a3438824203d3081c3438101a605267208000205abdf5a9fd0622c1179202002390f66cec0a1c0421051c206a00244b02eb18624112051b0b1343da12120d9a181213a6f588fb38bd"
+          ],
+          "thumb": true,
+          "bersaglio": "sgp_idle_stop (blob v4 a 0x023D8B00|1, +0xD3 -> 0x023D8BD3), via BL",
+          "nota": "secondo gancio, introdotto in v4 (assente in v3): coda di ov12_02262014 (che ferma il task da nove siti diversi). BL sgp_idle_stop, che ripete le due istruzioni sostituite (206a0421) prima di tornare -- chiude D1 (the private ANIM-SOLIDO-01 report §2/§9). Applicato in luogo da SGP-1.2-INTEGRAZIONE-FINALE-02 (13/09/2026)."
         }
       ],
-      "patch_overlay_nota": "T3 di test_riserva.py verifica solo puntatori a 4 byte con 'dove' esadecimale dentro arm9/autoload: questo e' un letterale dentro un overlay compresso (ov012), stessa ragione di sgp.npc/sgp.plus. Verifica vera: rilettore L1 (bersaglio) e L6 (unico cambio nell'overlay decompresso)."
+      "patch_overlay_nota": "T3 di test_riserva.py verifica solo puntatori a 4 byte con 'dove' esadecimale dentro arm9/autoload: questi sono letterali dentro un overlay compresso (ov012), stessa ragione di sgp.npc/sgp.plus. Verifica vera: rilettore L1/S2 (bersagli) e L6/S3 (unico cambio nell'overlay decompresso, a parte i due ganci)."
     }
   ],
   "via_di_espansione": [

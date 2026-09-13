@@ -31,7 +31,7 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, sha
+from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, esigi_manifesto_descrive, sha
 
 BLOCK_BASE, BLOCK_N = 0x023DA000, 2048
 OFF_VENEER2, N_VENEER2 = 0x000, 24
@@ -54,6 +54,12 @@ def _carica_build(build_dir):
     v2 = (build / "veneer-g2.bin").read_bytes()
     v3 = (build / "veneer-g3.bin").read_bytes()
     esigi(len(blob) <= MAX_CODICE, "BUILD: blob non entra nello slot")
+    # Questi tre controlli QUI NON C'ERANO: il manifesto dichiara `blob`,
+    # `veneer_g2` e `veneer_g3` con byte e sha256, e nessuno li confrontava con
+    # i file accanto. Regola unica in `sgp12/rom.py`.
+    esigi_manifesto_descrive(man, blob, blocco="sgp.wifi")
+    esigi_manifesto_descrive(man, v2, "veneer_g2", "veneer-g2.bin", "sgp.wifi")
+    esigi_manifesto_descrive(man, v3, "veneer_g3", "veneer-g3.bin", "sgp.wifi")
     esigi(len(v2) == N_VENEER2, "BUILD: veneer G2 di dimensione sbagliata")
     esigi(len(v3) == N_VENEER3, "BUILD: veneer G3 di dimensione sbagliata")
     for nome in ENTRATE_ATTESE:

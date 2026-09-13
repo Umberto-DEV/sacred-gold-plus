@@ -70,6 +70,32 @@ MAIN heap overflow meets after the base was lowered. Zone 1.1 keeps its own cana
 Checking the canaries after a run is part of applying a change: if a `0xCA5A….` word has
 changed, something overflowed, and the check reports *which* block it was.
 
+### Known limit: two pairs of canaries share a pattern
+
+Measured on the shipped blobs (review R1, M9):
+
+| region | address | pattern |
+|---|---|---|
+| `canarino.npc` | `0x023D8A00` | `0xCA5A1300` |
+| `sgp.salvataggio +0xF0` | `0x023D8FF0` | **`0xCA5A1300`** |
+| `sgp.anim +0x2F0` | `0x023D8DF0` | `0xCA5A1400` |
+| `sgp.opzioni +0xFF0` | `0x023D9FF0` | **`0xCA5A1400`** |
+
+The two patterns allocated since then are distinct: `sgp.opzioni.testi +0x3F0` uses
+`0xCA5A1500` and `sgp.caramelle +0x0F0` uses `0xCA5A1600`.
+
+Two guards with the same pattern cannot tell their two regions apart: `npc.rileggi` L5 and
+`plus_chunk.rileggi` L6 would both stay green if the two 16 B guards were swapped, or each
+written at the other's address; the same holds for anim and options. The guards still do their
+main job — an overflow changes the words and the check names a block — but they do not
+identify *which* of the two, and a check that reads only one of the pair cannot prove the other
+is intact.
+
+This is not a typo: it is a collision that stayed. Fixing it means changing sixteen bytes at
+four addresses inside the reserve, so it changes the ROM: it belongs to 1.3, together with the
+review of the patterns, not to a patch release that must rebuild byte for byte. Until then,
+treat the two pairs as one guard each.
+
 ## Blocks allocated in 1.2
 
 Zone 1.2 (`0x023D8000` upward):
@@ -82,15 +108,16 @@ Zone 1.2 (`0x023D8000` upward):
 | `0x023D8070` | 16 | `canarino.camera` | canary | no |
 | `0x023D8080` | 128 | `padding.allineamento.d1` | alignment padding, not assignable | no |
 | `0x023D8100` | 2 048 | `sgp.plus` | Plus difficulty code and tables, plus the save-chunk code blob; 756 B used | no |
-| `0x023D8900` | 256 | `sgp.npc` | NPC model cap | no |
+| `0x023D8900` | 256 | `sgp.npc` | NPC model cap; 160 B used (blob 144 B from 1.2.1, state 16 B) | no |
 | `0x023D8A00` | 16 | `canarino.npc` | canary | no |
 | `0x023D8A10` | 240 | `libero.1.2` | gap | no |
 | `0x023D8B00` | 1 024 | `sgp.anim` | procedural battle animation (v4); block **full**, 1024/1024 | no |
 | `0x023D8F00` | 256 | `sgp.salvataggio` | save chunk 32 B buffer plus canary (zero in ROM); 48 B used | no |
-| `0x023D9000` | 4 096 | `sgp.opzioni` | Options page and the Continue prompt (v3); 4048 B used | no |
+| `0x023D9000` | 4 096 | `sgp.opzioni` | Options page and the Continue prompt (v4); 4052 B used | no |
 | `0x023DA000` | 2 048 | `sgp.wifi` | Wi-Fi per-service slot; 704 B used | no |
 | `0x023DA800` | 1 024 | `sgp.opzioni.testi` | EN/IT text for the Options page (882 B EN, 940 B IT) | no |
-| `0x023DAC00` | 16 192 | `libero.1.2.finale` | free | no |
+| `0x023DAC00` | 256 | `sgp.caramelle` | Rare Candy stays in the party menu; blob 192 B plus a canary at `+0x0F0`. Also owns 6 bytes of static ARM9 at `0x02081E96` | no |
+| `0x023DAD00` | 15 936 | `libero.1.2.finale` | free | no |
 
 Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 
@@ -109,8 +136,10 @@ Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 The zone 1.1 blocks hold the two public addresses in the project. They never move, and the
 anchors their public consumers use are never touched.
 
-Free space left in zone 1.2: 16 192 B contiguous at `0x023DAC00`, plus a 240 B gap at
-`0x023D8A10`. Reservation procedure and the per-block internal headroom are in
+Free space left in zone 1.2: 15 936 B contiguous at `0x023DAD00`, plus a 240 B gap at
+`0x023D8A10`. It was 16 192 B until 1.2.1, when `sgp.caramelle` took the first 256 B from the
+low end of the pool — anchoring low is allowed because nothing a user can see names that
+address (no cheat, no literal quoted outside). Reservation procedure and the per-block internal headroom are in
 `docs/arm9-reserve-reservations.md`.
 
 Features that are *not* in the reserve — the title screen, the credit line and the guide
@@ -178,10 +207,17 @@ Reads the autoload section out of a ROM and prints the three numbers that get co
 Blocks that are zero at rest but are state, padding or guard space are *not* free, and a
 `libero` block the register marks `assegnabile: false` is excluded too.
 
+Run from `source/`:
+
 ```sh
 python3 verifiche/riserva_arm9.py <your rom.nds>
-python3 verifiche/riserva_arm9.py <your rom.nds> --manifest ../docs/arm9-reserve-map.json
+python3 verifiche/riserva_arm9.py <your rom.nds> --manifest docs/arm9-reserve-map.json
 ```
+
+The path used to be written `../docs/arm9-reserve-map.json`, which from `source/` is the
+repository root, where there is no `docs/` folder: the command ended in a traceback. On the
+shipped 1.2.1 EN ROM the corrected command reports **16 176 B assignable** — the 15 936 B
+contiguous block plus the 240 B gap — and exits 0.
 
 Without `--manifest` the tool prints the zeroed tail and states explicitly that the true free
 space is unknown, rather than printing a zero that looks like a verdict. It exits non-zero if

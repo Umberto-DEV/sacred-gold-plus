@@ -1,5 +1,6 @@
 {
-  "pacchetto": "SGP-1.2-PLUS-01",
+  "pacchetto": "SGP-1.2-QUALITA-NATIVO-01 (v-finale, applicata in luogo il 12/09/2026)",
+  "origine": "estratto dalla ROM canonica con sgp12/estrai_build.py: i quattro simboli sono DECODIFICATI dalle BL dei siti (quattro allenatore in ARM9, L0, S0 in ARM9, selvatici in ov002), non ricompilati",
   "comando": [
     "clang",
     "--target=armv5te-none-eabi",
@@ -16,24 +17,35 @@
     "-DSGP_TAB_TRAINER_ADDR=0x23d8500u",
     "-DSGP_TAB_WILD_ADDR=0x23d8600u",
     "-c",
-    "<private>/work-1.2/SGP-1.2-PLUS-01/sorgenti/plus_blob.c",
-    "-o",
-    "the private PLUS-02 build"
+    "sorgenti-v-finale/plus_party.c",
+    "sorgenti-v-finale/plus_wild.c",
+    "sorgenti-v-finale/salva_blob.c"
   ],
   "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
   "indirizzi": {
     "codice": "0x23d8100",
-    "stato": "0x23d8700",
+    "codice_salva": "0x23d8220",
     "tab_trainer": "0x23d8500",
     "tab_wild": "0x23d8600",
-    "provvisori": true,
-    "nota": "da riallineare a source/docs/arm9-reserve-map.json (cantiere F0)",
-    "codice_salva": "0x23d8220",
+    "stato": "0x23d8700",
     "canarino": "0x23d8720"
+  },
+  "pianta": {
+    "+0x000": "blob Thumb PLUS, 256 B (capienza 288 B fino a +0x120)",
+    "+0x120": "blob Thumb SALVATAGGIO, 500 B (capienza 736 B fino a +0x400)",
+    "+0x400": "tab_trainer, 256 B",
+    "+0x500": "tab_wild, 256 B",
+    "+0x600": "stato, 32 B",
+    "+0x620": "canarino, 16 B",
+    "+0x630": "a zero, 464 B (qui viveva il blob salvataggio v2)"
   },
   "blob": {
     "byte": 256,
     "sha256": "6392b5b8a1e67727ec4ea2af7ea8ee4f29219fb3161f8f9b8b0fae2d96216b56"
+  },
+  "blob_salva": {
+    "byte": 500,
+    "sha256": "f408c76327aeefaf0f994b9d47f694930f47588e5e8290084516dfb8dcef167d"
   },
   "tabelle": {
     "tab_trainer": {
@@ -46,26 +58,14 @@
     }
   },
   "occupazione_totale_byte": 1136,
+  "cap": 100,
   "simboli": {
-    "$d": "0x23d8334",
-    "$t": "0x23d8340",
-    "sgp_group_max": "0x23d824b",
-    "sgp_state_load": "0x23d8131",
-    "sgp_state_reset": "0x23d8101",
-    "sgp_state_set_plus": "0x23d81f5",
-    "sgp_state_set_wild": "0x23d821d",
-    "sgp_state_store": "0x23d81d5",
     "sgp_trainer_hook": "0x23d8195",
-    "sgp_trainer_level": "0x23d8195",
-    "sgp_trpoke_stride": "0x23d823d",
     "sgp_wild_hook": "0x23d81f1",
-    "sgp_wild_level": "0x23d8305",
     "sgp_gancio_carica": "0x23d8221",
     "sgp_gancio_salva": "0x23d8331"
   },
-  "cap": 100,
-  "blob_salva": {
-    "byte": 500,
-    "sha256": "f408c76327aeefaf0f994b9d47f694930f47588e5e8290084516dfb8dcef167d"
+  "simboli_tolti": {
+    "nota": "M4 della revisione R2. Il manifesto portava anche $d, $t, sgp_group_max, sgp_trainer_level, sgp_wild_level, sgp_trpoke_stride e cinque sgp_state_*: erano i simboli della pianta PLUS-01 da 592 B, cioe' di un binario che non e' piu' quello spedito (sgp_trainer_level duplicava l'indirizzo del gancio, sgp_trpoke_stride e' inlinato e non esiste piu', nessun sorgente spedito definisce sgp_state_*). Nessuno li consumava: sono stati tolti invece di essere conservati come valori che nulla verifica. I quattro rimasti sono quelli che applica() scrive nelle BL e che rileggi() decodifica dalla ROM, e blocchi/plus_chunk.py ne verifica ora indirizzo e contenuto."
   }
 }

@@ -2,7 +2,7 @@
 
 **A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
 
-**Version 1.2** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
+**Version 1.2.1** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
 
 Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
 
@@ -16,6 +16,16 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
 | ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
 | ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
+
+## What's new in 1.2.1
+
+- **Typhlosion's base stats raised** to 88 HP / 135 Attack / 89 Defense / 129 Sp. Atk / 95 Sp. Def / 114 Speed (650 total, up from 534). Nothing else in the game changes. A Typhlosion already in your party keeps its old numbers until the game recalculates them — deposit it in the PC and take it straight back out is the quickest way.
+- **The cheat catalogue is reordered and grown**: 67 folders and 2113 codes, the wild-encounter family included, and an instruction on every code that needs a button.
+- **A Rare Candy no longer closes the party menu.** Use one and the menu stays open on the same Pokémon, ready for the next. It closes exactly as before when the game has something of its own to do: an evolution, a move to replace, or the last candy in the bag.
+- **Turning NPC smoothing off takes effect immediately**, instead of at the next map change.
+- **The options page stops offering settings that would not stick.** With a missing or rejected save block all five entries are shown as unavailable, not just the two difficulty ones.
+- **Cheat files from 1.2 keep working** and **1.2 saves open in 1.2.1** (and the other way round). The game header did not change.
+- The screen shown at Continue now reads "Sacred Gold Plus 1.2.1".
 
 ## What's new (1.04 → 1.2)
 
@@ -33,12 +43,12 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 ## Download
 
-Get the ZIP for your language from the [**1.2 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2):
+Get the ZIP for your language from the [**1.2.1 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1):
 
 | Language | File |
 | --- | --- |
-| Italian | `Sacred-Gold-Plus-1.2-IT.zip` |
-| English | `Sacred-Gold-Plus-1.2-US.zip` |
+| Italian | `Sacred-Gold-Plus-1.2.1-IT.zip` |
+| English | `Sacred-Gold-Plus-1.2.1-US.zip` |
 
 Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
 
@@ -56,16 +66,16 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 ## Compatibility
 
-- **Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte.
-- **Cheats:** 1.1 cheat files do not carry over, because 1.2 has a different game header. Re-import the cheat files from the 1.2 package; every code starts switched off.
+- **Saves:** a 1.2 save opens in 1.2.1 and a 1.2.1 save opens in 1.2 — the save format did not change. A 1.1 save also opens in 1.2, and a 1.2 save in 1.1.
+- **Cheats:** cheat files from **1.2 keep working** in 1.2.1: the game header is unchanged. Importing the ones in the package is still worth it, because the catalogue is reordered and much larger. Cheat files from **1.1** do not carry over, because 1.2 changed the game header. Every code ships switched off.
 
 ## Source code and contributing
 
-Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2 from a 1.1 ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/).
+Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.1 from a 1.1 ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/).
 
 - `main` is the development trunk. Fork, create a `feature/…` or `fix/…` branch, open a pull request.
 - Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
-- Finished versions are tags (`v1.2`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
+- Finished versions are tags (`v1.2.1`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
 - Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
 
 ## Credits
@@ -86,15 +96,17 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
+**Novità della 1.2.1:** Typhlosion (specie 157) ha le statistiche base alzate — PS 88, Att. 135, Dif. 89, Att.Sp. 129, Dif.Sp. 95, Vel. 114 (totale 650, erano 534). Nient'altro cambia nel gioco. Un Typhlosion già in squadra vede i numeri nuovi al primo ricalcolo: il modo più rapido è depositarlo nel PC e riprenderlo subito (vanno bene anche una salita di livello, una vitamina o un'evoluzione); i PS attuali salgono quanto i PS massimi. Il catalogo dei cheat è riordinato e cresciuto a 2113 codici in 67 cartelle, con la famiglia degli incontri selvatici. La schermata al Continua dice «Sacred Gold Plus 1.2.1». **Le Caramelle Rare si usano una dopo l'altra**: il menu squadra resta aperto sullo stesso Pokémon, e si chiude come prima solo quando il gioco ha qualcosa di suo da fare (un'evoluzione, una mossa da sostituire, l'ultima caramella). Spegnere la fluidità dei personaggi dalla pagina Opzioni ha effetto subito, non al prossimo cambio mappa; e con un salvataggio senza il blocco Sacred Gold Plus, o con il blocco rifiutato, tutte e cinque le voci della pagina si mostrano non disponibili invece di lasciarsi cambiare a vuoto.
+
 **Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
-**Download:** dalla [release 1.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2), `Sacred-Gold-Plus-1.2-IT.zip` o `-US.zip`.
+**Download:** dalla [release 1.2.1](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), `Sacred-Gold-Plus-1.2.1-IT.zip` o `-US.zip`.
 
 **Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); melonDS per Android 2.1 o successivo consigliato.
 
 **Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
 
-**Compatibilità:** i salvataggi 1.1↔1.2 sono stati verificati byte per byte; i cheat della 1.1 non funzionano sulla 1.2 (intestazione diversa) — reimporta quelli del pacchetto 1.2, tutti spenti di default.
+**Compatibilità:** i salvataggi 1.2↔1.2.1 sono intercambiabili (il formato non cambia), e così quelli 1.1↔1.2; **i cheat della 1.2 continuano a funzionare sulla 1.2.1**, perché l'intestazione del gioco non cambia — vale comunque la pena importare quelli del pacchetto, che sono riordinati e molto più numerosi. I cheat della 1.1 restano inutilizzabili, come nella 1.2. Tutti i codici sono spenti di default.
 
 **Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il tronco di sviluppo; si lavora su un branch e si apre una pull request; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub.
 

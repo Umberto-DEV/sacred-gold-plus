@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Blocco OPZIONI — pagina Opzioni v3 (blocchi `sgp.opzioni` 0x023D9000/4096 B
+"""Blocco OPZIONI — pagina Opzioni v4 (blocchi `sgp.opzioni` 0x023D9000/4096 B
 e `sgp.opzioni.testi` 0x023DA800/1024 B) + ganci in ov054/ov036. Scrive
 direttamente la pianta v3 di `SGP-1.2-RIFINITURA-01` (applicata in luogo
-12/09/2026: codice 3628 B, era 3348; ris/tab/tpl/stato spostati in avanti,
-canarino invariato a +0xFF0 — vedi `PIANTA` e MAPPA-RISERVA-ARM9.json).
+12/09/2026: ris/tab/tpl/stato spostati in avanti, canarino invariato a +0xFF0 —
+vedi `PIANTA` e MAPPA-RISERVA-ARM9.json). Gli SCOMPARTI non cambiano con la v4:
+cambia il blob, che dalla 1.2.1 e' 3632 B (v3 3628, v2 3348) perche'
+`opz_presente` applica a ogni voce la precondizione del chunk di D1 (A1 della
+revisione R2). Il codice qui dentro non cabla nessuna lunghezza di blob: la
+legge dal manifesto e la confronta con lo scomparto.
 
 `rileggi()` e' un adattatore: richiama per sottoprocesso `rileggi_opzioni_v3.py`
 originale di SGP-1.2-RIFINITURA-01 (invariato, indipendente da questo
@@ -16,7 +20,7 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_thumb, esigi, sha
+from ..rom import Arm9, Rifiuto, bl_thumb, esigi, esigi_manifesto_descrive, sha
 from .. import overlay as ovp
 
 OV_A, SITO_A, PRE_A = 54, 0x021E6820, bytes.fromhex("041c898c")
@@ -37,8 +41,9 @@ TESTI_CANARY_MOTIVO = 0xCA5A1500
 
 # v3 (SGP-1.2-RIFINITURA-01, applicata in luogo 12/09/2026): il codice cresce
 # da 3348 a 3628 B (tocco dello stilo, righe comandi, default chunk) e sposta
-# ris/tab/tpl/stato in avanti; il canarino a +0xFF0 resta DOVE ERA. Pianta
-# esatta: source/docs/arm9-reserve-map.json, voce "sgp.opzioni".
+# ris/tab/tpl/stato in avanti; il canarino a +0xFF0 resta DOVE ERA. La v4 della
+# 1.2.1 porta il codice a 3632 B e non muove nessuno scomparto. Pianta esatta:
+# source/docs/arm9-reserve-map.json, voce "sgp.opzioni".
 PIANTA = {"codice": (0x000, 0xEC0), "ris": (0xEC0, 0x60), "tab": (0xF20, 0x20),
           "tpl": (0xF40, 0x20), "stato": (0xF60, 0x60)}
 PIANTA_TESTI = {"testi": (0x000, 0x3F0)}
@@ -64,13 +69,30 @@ def _carica_build(build_dir, lingua):
     ind = {k: int(v, 16) for k, v in man["indirizzi"].items()}
     esigi(ind["codice"] == BLOCK_BASE, "M1: manifesto compilato per un altro indirizzo di codice")
     esigi(ind["testi"] == TESTI_BASE, "M1b: manifesto compilato per un altro indirizzo di testi")
+    # M4 della revisione R1: `tpl` e' l'UNICO valore del manifesto che finisce
+    # scritto dentro ov036 (i due letterali SITO_B1/SITO_B2), e non era
+    # controllato. Il rilettore `rileggi_opzioni_v3.py` confronta i byte
+    # patchati con lo STESSO `ind["tpl"]`: un valore stantio (la v2 aveva
+    # +0xEA0) sarebbe stato scritto in ROM e riletto verde. Le altre voci di
+    # `indirizzi` in questo manifesto erano davvero rimaste alla v2, quindi
+    # l'ipotesi non era teorica.
+    esigi(ind["tpl"] == BLOCK_BASE + PIANTA["tpl"][0],
+          "M1c: manifesto compilato per un altro indirizzo di template (%#x, atteso %#x)"
+          % (ind["tpl"], BLOCK_BASE + PIANTA["tpl"][0]))
+    # ris/tab/stato non sono scritti in ROM da qui (la pianta la decide
+    # `PIANTA`), ma se il manifesto li dichiara devono dire la stessa cosa:
+    # sono gli indirizzi con cui il blob e' compilato.
+    for chiave in ("ris", "tab", "stato"):
+        if chiave in ind:
+            esigi(ind[chiave] == BLOCK_BASE + PIANTA[chiave][0],
+                  "M1d: manifesto: '%s' = %#x, la pianta v3 dice %#x"
+                  % (chiave, ind[chiave], BLOCK_BASE + PIANTA[chiave][0]))
     for nome in ENTRATE_ATTESE:
         esigi(nome in man["simboli"], "BUILD: simbolo mancante: %s" % nome)
     blob = (build / "ui_blob.bin").read_bytes()
     testi = (build / f"testi-{lingua}.bin").read_bytes()
     tab = (build / f"voci-{lingua}.bin").read_bytes()
-    esigi(len(blob) == man["blob"]["byte"] and sha(blob) == man["blob"]["sha256"],
-          "BUILD: ui_blob.bin non corrisponde al manifesto")
+    esigi_manifesto_descrive(man, blob, "blob", "ui_blob.bin", "sgp.opzioni")
     for nome, dato in (("codice", blob), ("testi", testi), ("tab", tab)):
         cap = PIANTA[nome][1] if nome in PIANTA else PIANTA_TESTI[nome][1]
         esigi(len(dato) <= cap, "BUILD: %s troppo grande" % nome)

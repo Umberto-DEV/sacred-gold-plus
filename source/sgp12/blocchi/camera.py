@@ -284,44 +284,42 @@ def rileggi(base: bytes, candidata: bytes, attese: dict | None = None) -> dict:
     R("R0", len(b.raw) == len(c.raw) and len(c.sez) == 3 and ris == atteso_ris and modo != "IGNOTO",
       "dimensioni/sezioni/riserva")
 
-    esigi_capstone = True
+    # M1 della revisione R1: senza capstone R1/R2/R9 diventavano "SALTATO" e il
+    # verdetto restava VERDE — cioe' l'unico cancello che vede un letterale di
+    # pool sbagliato (R2) spariva in silenzio. capstone e' in
+    # `source/requirements.txt`: la sua assenza e' un ambiente incompleto, non
+    # una modalita' ridotta del rilettore. Si RIFIUTA di dare un verdetto.
     try:
         from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB
-    except ImportError:
-        esigi_capstone = False
+    except ImportError as e:
+        raise Rifiuto("rilettore CAMERA: serve capstone (source/requirements.txt) per "
+                      "R1/R2/R9; senza, il verdetto sarebbe VERDE senza aver letto il "
+                      "codice. Dettaglio: %s" % e)
 
-    if esigi_capstone:
-        md = Cs(CS_ARCH_ARM, CS_MODE_THUMB)
-        ist = [(i.mnemonic, i.op_str) for i in md.disasm(c.b(SITO, 4), SITO)]
-        R("R1", ist == [("ldr", "r3, [pc, #0x14]"), ("bx", "r3")] and c.w(LIT_SITO) == (COD | 1), "sito+letterale")
+    md = Cs(CS_ARCH_ARM, CS_MODE_THUMB)
+    ist = [(i.mnemonic, i.op_str) for i in md.disasm(c.b(SITO, 4), SITO)]
+    R("R1", ist == [("ldr", "r3, [pc, #0x14]"), ("bx", "r3")] and c.w(LIT_SITO) == (COD | 1), "sito+letterale")
 
-        COD_TESTO = 62
-        cod_c, cod_b = c.b(COD, COD_N), b.b(COD, COD_N)
-        pool = [struct.unpack_from("<I", cod_c, COD_TESTO + 2 + 4 * i)[0] for i in range(5)]
-        fine = ecc + (ECC12_N if modo == "zona-1.2" else 48)
-        pool_atteso = [0x0203B269, STATO, ecc, fine, MAPHDR]
-        n_ist = sum(1 for _ in md.disasm(cod_c[:COD_TESTO], COD))
-        dive = [COD + i for i in range(COD_N) if cod_c[i] != cod_b[i]]
-        ammessi = set(range(LIT_EXC, LIT_EXC + 4)) | (set(range(LIT_EXC_END, LIT_EXC_END + 4))
-                                                       if modo == "zona-1.2" else set())
-        R("R2", pool == pool_atteso and n_ist == 31 and bool(dive) and set(dive) <= ammessi, "pool/istruzioni")
+    COD_TESTO = 62
+    cod_c, cod_b = c.b(COD, COD_N), b.b(COD, COD_N)
+    pool = [struct.unpack_from("<I", cod_c, COD_TESTO + 2 + 4 * i)[0] for i in range(5)]
+    fine = ecc + (ECC12_N if modo == "zona-1.2" else 48)
+    pool_atteso = [0x0203B269, STATO, ecc, fine, MAPHDR]
+    n_ist = sum(1 for _ in md.disasm(cod_c[:COD_TESTO], COD))
+    dive = [COD + i for i in range(COD_N) if cod_c[i] != cod_b[i]]
+    ammessi = set(range(LIT_EXC, LIT_EXC + 4)) | (set(range(LIT_EXC_END, LIT_EXC_END + 4))
+                                                   if modo == "zona-1.2" else set())
+    R("R2", pool == pool_atteso and n_ist == 31 and bool(dive) and set(dive) <= ammessi, "pool/istruzioni")
 
-        tab = c.b(ecc, fine - ecc)
-        dec, voci = tabella_decodifica(tab)
-        cresc = all(voci[i] < voci[i + 1] for i in range(len(voci) - 1))
-        R("R3", dec == attese and cresc and len(voci) == 24, "tabella")
+    tab = c.b(ecc, fine - ecc)
+    dec, voci = tabella_decodifica(tab)
+    cresc = all(voci[i] < voci[i + 1] for i in range(len(voci) - 1))
+    R("R3", dec == attese and cresc and len(voci) == 24, "tabella")
 
-        testo = list(md.disasm(cod_c[:COD_TESTO], COD))
-        prima_del_salto = [i for i in testo if i.address < 0x023DEBBA]
-        legge_header = any(i.mnemonic.startswith("ldr") and "#0x14]" in i.op_str for i in prima_del_salto)
-        R("R9", not legge_header, "il ramo Plus non legge i map header")
-    else:
-        fine = ecc + (ECC12_N if modo == "zona-1.2" else 48)
-        dec, voci = tabella_decodifica(c.b(ecc, fine - ecc))
-        for nome in ("R1", "R2", "R9"):
-            esiti.append({"cancello": nome, "esito": "SALTATO", "nota": "capstone non disponibile"})
-        R("R3", dec == attese, "tabella (senza controllo del codice: capstone assente)")
-
+    testo = list(md.disasm(cod_c[:COD_TESTO], COD))
+    prima_del_salto = [i for i in testo if i.address < 0x023DEBBA]
+    legge_header = any(i.mnemonic.startswith("ldr") and "#0x14]" in i.op_str for i in prima_del_salto)
+    R("R9", not legge_header, "il ramo Plus non legge i map header")
     if modo == "zona-1.2":
         ok4 = (c.b(CAN12, CAN12_N) == canarino(0xCA5A1000, 8)
                and c.b(CAN11, 32) == canarino(0xCA5A0000, 8)

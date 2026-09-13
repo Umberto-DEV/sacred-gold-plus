@@ -54,6 +54,47 @@ GITHUB_ACCOUNT = re.compile(r'(?:@|github\.com/)Umberto-DEV\b')
 # This file spells the forbidden patterns out, so it cannot scan itself.
 SELF = '.github/check_public.py'
 
+# Hidden folders are where a dump or a private workspace hides in plain sight.
+# Only these may appear in a tracked path; anything else is refused even if it
+# was added to the public file list.
+HIDDEN_DIRS_ALLOWED = {'.github'}
+
+# Signatures of game containers. A payload of ours is a few hundred bytes of
+# Thumb code or a small table; none of these can legitimately start one.
+CONTAINER_MAGICS = (b'NARC', b'BTAF', b'SDAT', b'RGCN', b'RLCN', b'RECN',
+                    b'RNAN', b'RCSN', b'BMD0', b'BTX0', b'CRAG')
+# The Nintendo logo in an NDS header at 0x0C0, and the constant CRC16 of that
+# logo at 0x15C. Either one identifies a cartridge image, header included.
+NDS_LOGO_PREFIX = bytes.fromhex('24FFAE51699AA221')
+NDS_LOGO_CRC = 0xCF56
+
+# Long unbroken runs of base64 are how a binary travels inside a text file: a
+# megabyte of ROM re-encoded as ASCII passes every extension and every decode
+# check. Our own text never does this — the longest legitimate run measured in
+# the tree is far below the threshold.
+B64_ALPHABET = set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')
+B64_RUN_LIMIT = 1024
+
+
+def longest_base64_run(text):
+    best = run = 0
+    for ch in text:
+        run = run + 1 if ch in B64_ALPHABET else 0
+        if run > best:
+            best = run
+    return best
+
+
+def looks_like_game_bytes(data):
+    """Is this the beginning of a cartridge image or a game container?"""
+    if data[:4] in CONTAINER_MAGICS:
+        return 'a game container header (%r)' % data[:4].decode('ascii', 'replace')
+    if len(data) >= 0xC8 and data[0xC0:0xC0 + 8] == NDS_LOGO_PREFIX:
+        return 'the Nintendo logo of an NDS header at 0x0C0'
+    if len(data) >= 0x15E and int.from_bytes(data[0x15C:0x15E], 'little') == NDS_LOGO_CRC:
+        return 'the NDS header logo CRC at 0x15C'
+    return None
+
 
 def check(root=ROOT):
     allowed = set(json.loads((root/'.github/public-files.json').read_text()))
@@ -68,8 +109,13 @@ def check(root=ROOT):
         p = root/name
         if p.is_symlink() or any(x.is_symlink() for x in p.parents if x != root.parent):
             raise ValueError('Symbolic links are not public artifacts')
-        if name.lower().endswith(FORBIDDEN_SUFFIXES):
+        basso = name.lower()
+        # Anywhere in the name, not only at the end: `rom.nds.txt` used to pass.
+        if any(s in basso for s in FORBIDDEN_SUFFIXES):
             raise ValueError('A game file, save or dump must never be tracked: ' + name)
+        nascoste = [c for c in Path(name).parts[:-1] if c.startswith('.')]
+        if any(c not in HIDDEN_DIRS_ALLOWED for c in nascoste):
+            raise ValueError('Undeclared hidden folder in a public path: ' + name)
         data = p.read_bytes()
         if len(data) > SIZE_LIMIT and name not in SIZE_EXCEPTIONS:
             raise ValueError('Tracked file over the size limit; declare it or keep it out: ' + name)
@@ -88,9 +134,23 @@ def check(root=ROOT):
                     and len(data) <= OUR_BLOB_MAX)
             if not name.startswith('images/') and not ours:
                 raise ValueError('Unexpected binary public file: ' + name) from None
+            # Being small and living under source/ was the whole allowance: an
+            # 8 KiB slice of a cartridge satisfied it. Now the bytes are read.
+            perche = looks_like_game_bytes(data)
+            if perche:
+                raise ValueError('This binary carries %s: it is game data, not one of our '
+                                 'payloads: %s' % (perche, name)) from None
+            # Binaries never went through the private-text scan, so a personal
+            # path inside a blob was invisible. Latin-1 never fails to decode.
+            if PRIVATE_TEXT.search(GITHUB_ACCOUNT.sub('', data.decode('latin-1'))):
+                raise ValueError('Possible private information inside a binary: ' + name) from None
             continue
         if name != SELF and PRIVATE_TEXT.search(GITHUB_ACCOUNT.sub('', text)):
             raise ValueError('Possible private information: review locally before publication: ' + name)
+        corsa = longest_base64_run(text)
+        if corsa > B64_RUN_LIMIT:
+            raise ValueError('A %d-character unbroken base64 run: this text file is carrying a '
+                             'binary, not text: %s' % (corsa, name))
     return len(actual)
 
 

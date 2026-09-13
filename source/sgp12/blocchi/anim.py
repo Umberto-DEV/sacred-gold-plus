@@ -24,7 +24,7 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, sha
+from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, esigi_manifesto_descrive, sha
 from .. import overlay as ovp
 
 OV_CAMPO = 12
@@ -44,9 +44,20 @@ assert hashlib.sha256(PRE_GUARDIA_CORPO).hexdigest() == \
 BLOCK_BASE, BLOCK_N = 0x023D8B00, 0x400
 OFF_CODICE, MAX_CODICE = 0x000, 0x2F0
 OFF_CANARINO, N_CANARINO = 0x2F0, 16
-OFF_TABELLE = 0x300
+OFF_TABELLE, N_TABELLE = 0x300, 64          # tab_u (32 B) + par (32 B)
 OFF_STATO, N_STATO = 0x340, 64
-CANARINO_MOTIVO = 0xCA5A1400
+# M6 della revisione R2: le quattro voci da 32 B con cui il blob tiene lo stato
+# per lottatore. Il blob e' compilato con -DSGP_ANIM2_SLOT_ADDR su QUESTO
+# indirizzo; non essendo dichiarato da nessuna parte, un blob compilato per un
+# altro indirizzo veniva accettato in silenzio e sarebbe andato a leggere e
+# scrivere 128 B di qualcun altro dentro la riserva.
+OFF_SLOT, N_SLOT = 0x380, 128
+# Il canarino di questo blocco arriva da `canarino.bin` (estratto dalla ROM):
+# la costante `CANARINO_MOTIVO = 0xCA5A1400` che stava qui non era usata da
+# nessuno — codice morto, tolto (M9 della revisione R1). Il motivo vero e'
+# documentato in `source/docs/arm9-reserve-map.md` insieme al limite noto che
+# lo accompagna: anim e opzioni condividono lo stesso motivo, quindi i due
+# canarini non distinguono le due regioni.
 ENTRATE_ATTESE = ("sgp_idle_task2", "sgp_idle_stop")
 
 
@@ -57,10 +68,28 @@ def _carica_build(build_dir):
     tab_u = (build / "tab_u.bin").read_bytes()
     par = (build / "par.bin").read_bytes()
     canarino = (build / "canarino.bin").read_bytes()
-    esigi(int(man["indirizzi"]["codice"], 16) == BLOCK_BASE + OFF_CODICE, "BUILD: indirizzo codice")
-    esigi(int(man["indirizzi"]["stato"], 16) == BLOCK_BASE + OFF_STATO, "BUILD: indirizzo stato")
-    esigi(int(man["indirizzi"]["canarino"], 16) == BLOCK_BASE + OFF_CANARINO, "BUILD: indirizzo canarino")
+    # M6 della revisione R2: si controllano TUTTI e cinque gli indirizzi con cui
+    # il blob e' compilato, non tre su cinque. `tabelle` e `slot` sono quelli
+    # che il blob usa per leggere e scrivere: se il manifesto li dichiara
+    # altrove, il blob scriverebbe dentro il blocco di qualcun altro.
+    for chiave, atteso in (("codice", BLOCK_BASE + OFF_CODICE),
+                           ("stato", BLOCK_BASE + OFF_STATO),
+                           ("canarino", BLOCK_BASE + OFF_CANARINO),
+                           ("tabelle", BLOCK_BASE + OFF_TABELLE),
+                           ("slot", BLOCK_BASE + OFF_SLOT)):
+        esigi(chiave in man["indirizzi"], "BUILD: manifesto senza l'indirizzo '%s'" % chiave)
+        esigi(int(man["indirizzi"][chiave], 16) == atteso,
+              "BUILD: indirizzo %s = %s, atteso 0x%08x" % (chiave, man["indirizzi"][chiave], atteso))
+    # ogni simbolo dichiarato deve cadere dentro il blob che lo contiene
+    for nome, valore in man["simboli"].items():
+        v = int(valore, 16) & ~1
+        esigi(BLOCK_BASE + OFF_CODICE <= v < BLOCK_BASE + OFF_CODICE + len(blob),
+              "BUILD: il simbolo '%s' (%s) cade fuori dal blob di sgp.anim" % (nome, valore))
     esigi(len(blob) <= MAX_CODICE, "BUILD: blob non entra prima del canarino")
+    # Questo controllo QUI NON C'ERA: `build/anim/manifesto.json` dichiara
+    # `blob: {byte, sha256}` e nessuno lo confrontava con `blob.bin`. Regola
+    # unica in `sgp12/rom.py`.
+    esigi_manifesto_descrive(man, blob, blocco="sgp.anim")
     esigi(len(tab_u) == 32 and len(par) == 32, "BUILD: tab_u/par devono essere 32+32 B")
     esigi(len(canarino) == N_CANARINO, "BUILD: canarino di dimensione sbagliata")
     for nome in ENTRATE_ATTESE:

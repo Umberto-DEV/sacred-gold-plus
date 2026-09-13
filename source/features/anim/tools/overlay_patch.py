@@ -658,7 +658,13 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
                 "identico": True,
                 "bersaglio": len(crudo), "bersaglio_centrato": len(corpo) == len(crudo)}
             modo = "a-ricompresso"
-        nuovo_flag = (v["flag"] | 1) & 0xFF
+        # Il bit «compresso» descrive i BYTE SCRITTI, non la strategia: nel
+        # ramo «corpo originale» si riscrive il file com'era, quindi su un
+        # overlay non compresso il bit deve restare spento (difetto A1 della
+        # revisione R1: accenderlo fa chiamare MIi_UncompressBackward su
+        # codice in chiaro).
+        nuovo_flag = ((v["flag"] | 1) if (modo == "a-ricompresso" or v["compresso"])
+                      else (v["flag"] & ~1)) & 0xFF
     elif strategia == "b":
         corpo = bytes(nuova)
         nuovo_flag = v["flag"] & ~1 & 0xFF

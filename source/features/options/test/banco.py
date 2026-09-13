@@ -10,10 +10,13 @@ una traccia confrontabile.
 E' la stessa impostazione di `SGP-1.2-PLUS-01/test/test_blob.py`, con in piu' la
 tabella delle chiamate: qui l'esito da provare non e' un numero, e' una sequenza.
 """
+import atexit
 import hashlib
 import json
 import os
+import shutil
 import struct
+import tempfile
 from pathlib import Path
 
 from unicorn import (Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_PROT_ALL)
@@ -25,7 +28,31 @@ from unicorn.arm_const import (UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2,
 PAC = Path(__file__).resolve().parent.parent
 # La cartella di costruzione e' scambiabile: i mutanti ne producono una
 # propria e riusano ESATTAMENTE questa suite, senza copiarne una riga.
-BUILD = Path(os.environ.get("SGP_UI_BUILD", PAC / "work" / "build"))
+# M8 della revisione R2: il default era `options/work/build`, una cartella di
+# cantiere che non esiste in questo repository — cosi' le cinque suite della
+# pagina Opzioni davano 76 errori e non esercitavano nulla. Il default e' ora
+# il blob SPEDITO, `source/sgp12/build/opzioni/`, che porta `ui_blob.bin`,
+# `manifesto.json`, `testi-{EN,IT}.bin` e `voci-{EN,IT}.bin`. `run_tests.py`
+# continua a passare `SGP_UI_BUILD` con il blob appena ricompilato, che e' il
+# confronto piu' stretto quando un compilatore ARM c'e'.
+def _build_predefinita():
+    """Mette insieme il blob spedito (`sgp12/build/opzioni/ui_blob.bin` +
+    `manifesto.json`) e i testi in forma GREZZA (`options/prove/testi/`), che e'
+    la stessa coppia che `run_tests.py` prepara quando un compilatore ARM c'e'.
+    I `testi-*.bin`/`voci-*.bin` sotto `sgp12/build/` sono gli stessi contenuti
+    riempiti di zeri fino alla misura dello scomparto in ROM: qui servono
+    grezzi, perche' i test ne contano le voci."""
+    tmp = Path(tempfile.mkdtemp(prefix="sgp-ui-build-"))
+    atexit.register(shutil.rmtree, tmp, True)
+    for f in ("ui_blob.bin", "manifesto.json"):
+        shutil.copy2(PAC.parents[1] / "sgp12/build/opzioni" / f, tmp / f)
+    for f in sorted((PAC / "prove/testi").iterdir()):
+        if f.is_file():
+            shutil.copy2(f, tmp / f.name)
+    return tmp
+
+
+BUILD = Path(os.environ["SGP_UI_BUILD"]) if os.environ.get("SGP_UI_BUILD") else _build_predefinita()
 
 BASE_RAM, DIM_RAM = 0x02000000, 0x00400000
 SP0 = 0x023B0000

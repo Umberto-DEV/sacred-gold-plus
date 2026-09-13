@@ -1,6 +1,6 @@
 # Sacred Gold Plus 1.2 — internal contracts
 
-Four contracts that the rest of the project depends on. Each one states the rule, why it is
+Five contracts that the rest of the project depends on. Each one states the rule, why it is
 written that way, and which public file implements it. Addresses are ARM9 RAM addresses without
 the Thumb bit; sizes are decimal unless prefixed with `0x`.
 
@@ -84,14 +84,27 @@ Three outcomes, recorded in the load-status byte:
 
 | case | status | behaviour |
 |---|---|---|
-| chunk absent (a 1.1 save) | `1 ABSENT` | every byte 0 except `peak = 1` — byte-identical to 1.1. This is not an error. |
+| chunk absent (a 1.1 save) | `1 ABSENT` | every byte 0 except `peak = 1` **and `npc = 1`** — see below |
 | chunk valid | `2 VALID` | applied as written |
 | chunk present, an invariant violated | `3 REJECT` | the chunk is neither zeroed nor rewritten, not even on the next save; the game runs in 1.1 mode |
 
 "Chunk absent means behave exactly like 1.1" is the rule that makes the whole arrangement safe
-to ship, and it does not bend for a single option. A feature that wants a default of "on" sets
-that byte the first time 1.2 writes a chunk of its own — from the options page, or on a new
-game — and from then on the byte stays 1.
+to ship. It has **one declared exception**, and the exception is in the shipped binary: with the
+chunk absent, `npc = 1`, so NPC movement smoothing is on from the first field frame of a 1.1
+save. This is a deliberate decision, not a default that leaked: the smoothing changes no game
+state — it only raises how many NPC models the field loads per frame — so it is reversible from
+the options page at any moment and it cannot make a save behave differently if it is turned off
+again. Every other byte is 0, and every option that *does* change game state (Plus difficulty,
+Plus wild levels, the level cap) stays off until the player asks for it.
+
+Read the sentence literally, then: a 1.1 save opened in 1.2 is byte-identical to 1.1 **on disk**,
+and behaves like 1.1 in everything that the save records. It is not frame-identical on the field.
+
+Any other feature that wants a default of "on" sets that byte the first time 1.2 writes a chunk
+of its own — from the options page, or on a new game — and from then on the byte stays 1.
+
+**Implemented by** `source/features/native-core/sorgenti-v-finale/salva_blob.c` (the two `strb`
+that write `peak` and `npc` when the chunk is absent).
 
 ### One accessor, no caching
 
@@ -239,6 +252,18 @@ melonDS does not model the ARM9 caches, so **no run on the test bench can observ
 automated test can only assert that both maintenance calls are present in the compiled blob;
 the behaviour itself is only distinguishable on real hardware.
 
+### One declared deviation: stack alignment in the two ARM veneers
+
+Every Thumb trampoline in this project pushes a multiple of 8 bytes, so that the C function it
+calls is entered with the stack 8-byte aligned, as AAPCS requires. The two ARM veneers of this
+contract (`0x023DA000` and `0x023DA020`) do not: they push five registers, 20 bytes, and enter
+`sgp_wfc_nibble` with `sp ≡ 4 (mod 8)`. It is harmless in the shipped build — the callees are
+Thumb-1 `-Oz` and emit neither `LDRD`/`STRD` nor VFP, the only instructions that would care —
+and melonDS would never show it either way. It is written down here because it is the single
+place in the project where the rule is broken, and because a future recompilation with different
+flags could start to care. Fixing it means changing the veneer bytes, so it belongs to a release
+that rebuilds the Wi-Fi blob, not to a patch release.
+
 **Implemented by** `source/features/native-core/sorgenti-v-finale/wifi_slot4.c` (service
 recognition, slot-configured probe, fallback, selector write) and
 `source/features/native-core/sorgenti-v-finale/sgp_chunk.h` (the shared accessor and the
@@ -300,6 +325,57 @@ edit. That attempt was discarded.
 **Implemented by** `source/native-guide/` (the contract, the presentation spec, the sources and
 the independent verifiers) and `source/features/guide/`, applied by
 `source/sgp12/blocchi/guida.py`.
+
+---
+
+## 5. Rare Candy reuse
+
+### The hook
+
+One hook, six bytes, in the static ARM9 at `0x02081E96`: the tail of sub-state 6 of
+`PartyMenu_ItemUseFunc_LevelUpLearnMovesLoop`. A `BL` into `sgp.caramelle` (4 bytes) plus
+`pop {r3,r4,r5,pc}` (2 bytes) replace `cmp r0,#0 / beq / movs r0,#9`. The ten bytes at
+`0x02081E9A..0x02081EA3` stay written as they were but become unreachable.
+
+The hook sits there and nowhere else because the Rare Candy never passes through the 1.1
+"use again" path: `ItemId_GetPartyUseType` gives it type 2, the table at `0x020812E8` installs
+`PartyMenu_ItemUseFunc_LevelUp`, and that chain ends in the loop above, which returns
+`BEGIN_EXIT` on its own. By the time the hook runs, the text is closed, the stats window is
+closed, new moves have been handled, and the evolution species is already in `args->species`:
+no state is half-finished.
+
+### The context it runs in
+
+The routine is entered with `r0 = args->species`, `r1 = args` (`PartyMenuArgs`) and
+`r4 = PartyMenu`, and what it returns is what the game's own function returns. It **does the
+whole job of the code it replaced**: it writes `args->selectedAction` itself and returns the
+state itself, so the "leave" case is not an imitation of vanilla — it *is* vanilla.
+
+It reads `PartyMenu` and `PartyMenuArgs` and calls six game functions whose addresses are
+identical in EN and IT (measured on four ROMs: 1.1 and 1.2 for each language). It never reads or
+calls `borsa.text`, the 1.1 bag code: that region is frozen by the 1.1-zone rule, and the
+re-entry sequence — clear window 34, print message 33, reset the cursor palette — is repeated
+here with its own literals so that the two functions can die separately.
+
+### The rule: ITEM_NONE and evolution
+
+Staying in the party menu is the exception, not the default. The routine stays only when every
+one of five preconditions holds, and **leaves exactly as vanilla does** otherwise:
+
+| gate | leaves with |
+|---|---|
+| an evolution is queued (`args->species != 0`) | `BEGIN_EXIT`, action **9** — the evolution scene is the game's, untouched |
+| `args->itemId == ITEM_NONE` | `BEGIN_EXIT`, action 0 — this is the relaunch after "forget a move": re-entering without an item is the one way this could hang |
+| `args->context != PARTY_MENU_CONTEXT_USE_ITEM (5)` | `BEGIN_EXIT`, action 0 — the same relaunch, seen from the other side |
+| the bag no longer holds the item | `BEGIN_EXIT`, action 0 — the last candy returns you to the Bag |
+| the party slot is not `< count` and `< capacity` | `BEGIN_EXIT`, action 0 — the guard `0x02074644` applies to itself |
+
+Level 100 needs no gate: on re-entry `CanUseItemOnMonInParty` refuses, the game prints "it will
+have no effect" and leaves through the existing 1.1 code. `selectedAction` is always written,
+never left at whatever it held.
+
+**Implemented by** `source/features/caramelle/` (sources, applicator, independent re-reader,
+Unicorn bench and mutants), applied by `source/sgp12/blocchi/caramelle.py`.
 
 ---
 

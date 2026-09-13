@@ -41,7 +41,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, sha
+from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, esigi_manifesto_descrive, sha
 from .. import overlay as ovp
 
 # --- pianta sgp.plus ---------------------------------------------------
@@ -85,9 +85,61 @@ def _carica_build(build_dir):
     esigi(len(tab_trainer) == 256 and len(tab_wild) == 256, "BUILD: tabelle di dimensione sbagliata")
     esigi(len(stato) == N_STATO, "BUILD: stato di dimensione sbagliata")
     esigi(len(canarino) == N_CANARY, "BUILD: canarino di dimensione sbagliata")
+    # Regola unica (`sgp12/rom.py`): il manifesto descrive i due blob che gli
+    # stanno accanto, byte e sha256, e i due campi sono OBBLIGATORI. Prima erano
+    # due `if ... in man`: un manifesto che non li dichiarava passava.
+    esigi_manifesto_descrive(man, blob_plus, "blob", "blob.bin", "sgp.plus")
+    esigi_manifesto_descrive(man, blob_salva, "blob_salva", "salva_blob.bin", "sgp.plus")
     for nome in ENTRATE_ATTESE:
         esigi(nome in man["simboli"], "BUILD: simbolo mancante: %s" % nome)
+    _verifica_simboli(man, blob_plus, blob_salva)
     return man, blob_plus, blob_salva, tab_trainer, tab_wild, stato, canarino
+
+
+# A quale dei due blob appartiene ciascuna entrata.
+PROPRIETARIO = {"sgp_trainer_hook": "plus", "sgp_wild_hook": "plus",
+                "sgp_gancio_carica": "salva", "sgp_gancio_salva": "salva"}
+
+
+def _verifica_simboli(man, blob_plus, blob_salva):
+    """M4 della revisione R2: `_carica_build` verificava solo che il NOME del
+    simbolo esistesse, mai il valore — e `applica()` scrive quel valore dentro
+    sette BL, mentre `rileggi()` L7-L10 lo riverifica leggendo LO STESSO
+    numero. Una BL sbagliata e la sua verifica sbagliata si annullavano a
+    vicenda. Qui si controllano indirizzo e contenuto:
+
+      * bit Thumb acceso (tutte e cinque le entrate sono Thumb);
+      * l'indirizzo cade dentro il blob che lo possiede — non genericamente
+        «dentro sgp.plus», dove c'e' anche la riserva azzerata e le tabelle;
+      * i byte a quell'indirizzo non sono nulli (non e' riempimento);
+      * `sgp_wild_hook` porta come PRIMA istruzione quella che il gancio
+        sostituisce in ov002 (`PREIMG_WILD`): e' la trampolina che la
+        riesegue, quindi e' un controllo sul CONTENUTO, non solo sul posto.
+    """
+    zone = {"plus": (PLUS_BASE + OFF_BLOB_PLUS, blob_plus),
+            "salva": (PLUS_BASE + OFF_BLOB_SALVA, blob_salva)}
+    for nome, valore in man["simboli"].items():
+        v = int(valore, 16)
+        dentro = [(base, blob) for base, blob in zone.values() if base <= (v & ~1) < base + len(blob)]
+        esigi(dentro, "BUILD: il simbolo '%s' (%s) non cade dentro nessuno dei due blob "
+                      "spediti di sgp.plus" % (nome, valore))
+    for nome in ENTRATE_ATTESE:
+        v = int(man["simboli"][nome], 16)
+        esigi(v & 1, "BUILD: '%s' (%s) senza bit Thumb" % (nome, man["simboli"][nome]))
+        base, blob = zone[PROPRIETARIO[nome]]
+        off = (v & ~1) - base
+        esigi(0 <= off <= len(blob) - 4,
+              "BUILD: '%s' (%s) fuori dal blob '%s' [%#x, %#x)"
+              % (nome, man["simboli"][nome], PROPRIETARIO[nome], base, base + len(blob)))
+        esigi(blob[off:off + 4] != b"\x00\x00\x00\x00",
+              "BUILD: '%s' (%s) punta a byte nulli: e' riempimento, non codice"
+              % (nome, man["simboli"][nome]))
+    v = int(man["simboli"]["sgp_wild_hook"], 16) & ~1
+    off = v - (PLUS_BASE + OFF_BLOB_PLUS)
+    esigi(blob_plus[off:off + 4] == PREIMG_WILD,
+          "BUILD: sgp_wild_hook non comincia con l'istruzione che il gancio sostituisce "
+          "(%s, attesa %s): o l'indirizzo e' sbagliato, o la trampolina non e' quella"
+          % (blob_plus[off:off + 4].hex(), PREIMG_WILD.hex()))
 
 
 def _carica_build_salvataggio(build_salvataggio_dir):

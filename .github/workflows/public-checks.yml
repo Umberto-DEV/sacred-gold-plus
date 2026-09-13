@@ -55,10 +55,20 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r source/requirements.txt
 
-      - name: Report the C compiler used for the ARM blobs
-        run: clang --version
+      - name: Check the C compiler can target the ARM946E-S
+        # Not informational: two suites (95 tests) compile our own blobs for
+        # this target and run them under an emulator. If the target is not
+        # usable here, the job must say so instead of quietly skipping them.
+        run: |
+          clang --version
+          clang --target=armv5te-none-eabi -mcpu=arm946e-s -mthumb -ffreestanding \
+                -c -x c /dev/null -o /dev/null
+          echo "armv5te-none-eabi: usable"
 
       - name: Run the Class A suites
+        # SGP_CI=1 makes a missing ARM compiler a failure rather than a skip.
+        env:
+          SGP_CI: '1'
         run: python source/run_tests.py --json class-a-results.json
 
       - name: Upload the test counts

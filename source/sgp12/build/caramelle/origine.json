@@ -1,0 +1,14 @@
+{
+  "blocco": "sgp.caramelle",
+  "base": "0x023DAC00",
+  "bytes": 256,
+  "prima_versione": "1.2.1",
+  "provenienza": "compilato, non estratto: `source/features/caramelle/tools/compila.py` dai sorgenti di `source/features/caramelle/sorgenti/` (caramelle.c 192 B di .text, canarino generato dalla formula 0xCA5A1600|i). Nessuna ROM precedente contiene questi byte, quindi non c'e' una ROM d'origine da citare.",
+  "costruito_il": "2026-09-13",
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "sorgente": {
+    "file": "caramelle.c",
+    "sha256": "19fdf2764538029955a8c49bf29e1fa00e8b18bae3a1da984d8bcffda7a08584"
+  },
+  "riprodurre": "python3 source/features/caramelle/tools/compila.py --uscita DIR"
+}

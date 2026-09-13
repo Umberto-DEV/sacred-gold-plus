@@ -19,7 +19,12 @@
  *
  * SPENTO = BYTE-IDENTICO: senza la guardia 0x5A nel proprio stato non si legge e
  * non si scrive niente; con la guardia ma attivazione 0, le sole scritture sono
- * su due campi diagnostici che il gioco non legge mai.
+ * su campi diagnostici che il gioco non legge mai — con UNA eccezione
+ * dichiarata, introdotta dalla 1.2.1 (M2 della revisione R2): se il clamp era
+ * gia' stato applicato in questa sessione di campo, il primo giro da spento
+ * riscrive nel campo +0x2 della lista il valore che il GIOCO ci aveva messo
+ * (`st->salvato`) e azzera `salvato`. Non e' un valore nostro: e' la restituzione
+ * di quello suo, ed e' cio' che rende «spento» reversibile senza cambiare mappa.
  */
 #include "sgp_chunk.h"
 
@@ -65,6 +70,25 @@ void sgp_npc_tetto(void *lista)
     st->attivo = attivo;              /* specchio diagnostico, non ingresso */
 
     if (attivo == 0u || st->tetto == 0u) {
+        /* M2 della revisione R2 — SPENTO VUOL DIRE RESTITUIRE IL TETTO.
+         * Fino alla 1.2 questo ramo si limitava a `return`, e il commento
+         * «tetto originale del gioco» era una promessa non mantenuta: il campo
+         * +0x2 della lista era gia' stato riscritto da 10 a 1 nei giri
+         * precedenti e nessuno lo rimetteva. Tornava quello del gioco solo alla
+         * prossima inizializzazione del sistema oggetti di campo (il sito
+         * 0x021FA854 citato in testa al file), cioe' al cambio di mappa:
+         * spegnere la fluidita' NPC dalla pagina Opzioni non faceva niente di
+         * visibile dentro la stessa sessione di campo, e il diagnostico
+         * `st->attivo` diceva 0 mentre il clamp era ancora addosso al gioco.
+         * `st->salvato` esiste apposta per questo ed era SCRITTO E MAI LETTO.
+         * Si ripristina UNA VOLTA SOLA: azzerandolo, il giro successivo non
+         * riscrive piu' niente e il gioco resta padrone del campo. Riaccendendo
+         * l'opzione, il ramo sotto ricattura il valore che trova. */
+        if (st->salvato != 0 && lista != 0) {
+            tetto = (volatile s16 *)((u8 *)lista + SGP_NPC_OFF_TETTO);
+            *tetto = st->salvato;
+            st->salvato = 0;
+        }
         return;                       /* spento: tetto originale del gioco */
     }
     if (lista == 0) {

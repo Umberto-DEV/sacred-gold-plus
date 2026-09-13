@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2 da
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.1 da
 una base 1.1, applicando tutti i blocchi in ordine:
 
-    riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi -> titolo -> credito -> guida
+    riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
+    -> titolo -> credito -> guida -> typhlosion -> caramelle
 
 Uso:
-    python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2-EN.nds --lingua EN
-    python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2-IT.nds --lingua IT
+    python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
+    python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.1-IT.nds --lingua IT
 
 `--build` (default: `sgp12/build/`) e' la cartella con i blob gia' validati di
 ogni blocco (vedi README.md per la mappa) e `MAPPA-RISERVA-ARM9.json`.
@@ -24,7 +25,8 @@ import time
 from pathlib import Path
 
 from .rom import Rifiuto, sha
-from .blocchi import riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi, titolo, guida
+from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
+                      titolo, guida, typhlosion, caramelle)
 
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 
@@ -61,7 +63,16 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
 
     t0 = time.time()
     rom, rep_testi = testi.applica(rom, build_dir / "testi", lingua)
-    registra("testi", t0, rom, {"narc_modificato": rep_testi.get("narc_modificato")})
+    # A3 della revisione R1: `narc_modificato` da solo non distingue «tutte le
+    # correzioni applicate» da «una sola applicata e 234 rifiutate». Il blocco
+    # ora RIFIUTA in quei casi (vedi `blocchi/testi.py`); qui si registrano i
+    # conteggi, cosi' il log dice quante regole sono passate davvero.
+    registra("testi", t0, rom, {
+        "narc_modificato": rep_testi.get("narc_modificato"),
+        "righe_in_perimetro": rep_testi.get("righe_totali_in_perimetro"),
+        "conteggi_esito": rep_testi.get("conteggi_esito"),
+        "regole_ricostruite": (rep_testi.get("correzioni_ricostruite") or {}).get("ricostruite"),
+    })
 
     t0 = time.time()
     rom, _ = npc.applica(rom, build_dir / "npc", manifest_path=manifest, attivo=1, tetto=1)
@@ -90,6 +101,16 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     t0 = time.time()
     rom, _ = guida.applica(rom)
     registra("guida", t0, rom)
+
+    t0 = time.time()
+    rom, _ = typhlosion.applica(rom)
+    registra("typhlosion", t0, rom)
+
+    # Ultimo: non dipende da nessuno e nessuno dipende da lui; l'unico vincolo
+    # e' che `riserva` sia gia' passato, perche' il blocco dev'essere a zero.
+    t0 = time.time()
+    rom, _ = caramelle.applica(rom, build_dir / "caramelle", manifest_path=manifest)
+    registra("caramelle", t0, rom)
 
     return rom, {"lingua": lingua, "base_sha256": sha(base), "uscita_sha256": sha(rom),
                 "uscita_bytes": len(rom), "passi": passi}

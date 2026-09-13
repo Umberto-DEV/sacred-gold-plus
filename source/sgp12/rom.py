@@ -41,6 +41,38 @@ def sha(dati) -> str:
     return hashlib.sha256(bytes(dati)).hexdigest()
 
 
+def esigi_manifesto_descrive(man: dict, corpo, chiave: str = "blob",
+                             file: str = "blob.bin", blocco: str = "") -> None:
+    """Il manifesto deve descrivere il file che gli sta ACCANTO: `byte` e
+    `sha256`, tutti e due, e tutti e due giusti.
+
+    M5 della revisione R2, e poi la revisione della 1.2.1: `build/npc/` aveva un
+    manifesto che dichiarava uno sha256 diverso dal `blob.bin` che gli stava
+    accanto — e diverso dal `SHA256SUMS` della stessa cartella — e nessuno li
+    confrontava. La correzione era stata scritta in `blocchi/npc.py`, e solo li'.
+    Le altre sei `_carica_build` erano rimaste com'erano: `anim` e `wifi` non
+    guardavano affatto il manifesto, `plus` e `npc` lo guardavano SE il campo
+    c'era (`if "blob" in man`), cioe' un manifesto senza quel campo passava per
+    buono. Sei copie di una regola, con sei livelli di severita' diversi.
+
+    Qui la regola e' una sola e non ha rami: il campo e' OBBLIGATORIO. Un
+    manifesto che non dice quanti byte e quale sha256 non descrive niente, e un
+    blob senza manifesto che lo descriva e' esattamente quello che questa
+    funzione esiste per impedire."""
+    dove = ("%s: " % blocco) if blocco else ""
+    d = man.get(chiave)
+    esigi(isinstance(d, dict),
+          "%sBUILD: il manifesto non ha il campo '%s' che descrive %s "
+          "(byte + sha256 sono obbligatori)" % (dove, chiave, file))
+    atteso_byte, atteso_sha = d.get("byte"), d.get("sha256")
+    esigi(isinstance(atteso_byte, int) and isinstance(atteso_sha, str),
+          "%sBUILD: il campo '%s' del manifesto deve avere 'byte' (intero) e "
+          "'sha256' (stringa): ha %r" % (dove, chiave, sorted(d)))
+    esigi(atteso_byte == len(corpo) and atteso_sha == sha(corpo),
+          "%sBUILD: %s (%d B, %s) non corrisponde al manifesto (%s B, %s)"
+          % (dove, file, len(corpo), sha(corpo)[:16], atteso_byte, str(atteso_sha)[:16]))
+
+
 # --------------------------------------------------------------------- CRC16
 
 _TBL_CRC16 = (0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,

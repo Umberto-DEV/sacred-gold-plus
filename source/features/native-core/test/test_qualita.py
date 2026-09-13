@@ -1,10 +1,21 @@
 #!/usr/bin/env python3
 """Cancelli Q1-Q7 di CRITERI.md, eseguendo il codice macchina.
 
-Ogni test che confronta «prima» e «dopo» carica DUE blob: quello ESTRATTO dalla
-ROM di lavoro (`prove/estratti/blob-*.bin`, i byte che oggi girano) e quello
-appena compilato da `sorgenti-v-finale/`. I difetti veri si vedono qui: il test
-che riproduce il difetto FALLISCE sul blob estratto e PASSA su quello nuovo.
+Di norma la suite prova i blob di `sorgenti-v-finale/`, cioe' **i byte che
+girano nella ROM spedita**, ed e' verde.
+
+`prove/estratti/blob-*.bin` sono i blob PRE-correzione, tenuti come fixture di
+regressione. Il commento che stava qui li chiamava «i byte che oggi girano»:
+non lo sono piu'. Misurato (revisione R2): nella ROM spedita, a 0x023D8100
+(PLUS), 0x023D8220 (salvataggio), 0x023D8900 (NPC), 0x023D8B00 (anim),
+0x023D9000 (opzioni) e 0x023DA250 (Wi-Fi) stanno i blob di
+`source/sgp12/build/**`, che sono quelli di `sorgenti-v-finale/`.
+
+Con `SGP_ANCHE_VECCHIO=1` si provano anche i blob superati: quella corsa
+FALLISCE apposta (sono i difetti riprodotti, RAPPORTO.md §1) e serve a
+dimostrare che i test vedono davvero il difetto che dicono di vedere. Non e' il
+comportamento predefinito, perche' una suite rossa sempre non distingue una
+regressione da se stessa e non si puo' agganciare a nessun cancello.
 
 Serve il `python3` di SISTEMA (unicorn + capstone); il venv `rom-review` no.
 """
@@ -22,6 +33,12 @@ QUI = Path(__file__).resolve().parent
 PACCHETTO = QUI.parent
 W = PACCHETTO.parent
 sys.path.insert(0, str(QUI))
+sys.path.insert(0, str(PACCHETTO / "tools"))
+
+# `compila_tutti` e' anche la libreria del confronto di versione: il suo
+# `identita()` decide se l'identita' byte per byte di Q7.1 sia dovuta o no, e va
+# provato da solo (QIdentitaCompilatore), non solo attraverso la compilazione.
+import compila_tutti as ct                                      # noqa: E402
 
 try:
     from banco import (Banco, crc16_ccitt, DC_FLUSH, IC_INVAL, SP0,
@@ -32,10 +49,17 @@ except ImportError:                                             # pragma: no cov
 
 import os
 
-# Con SGP_SOLO_NUOVO=1 si provano SOLO i blob di `sorgenti-v-finale/`: la suite
-# diventa verde. Senza, si provano anche i byte oggi in ROM e i 15 rossi che
-# restano SONO i difetti riprodotti (vedi RAPPORTO.md §1).
-BLOB = ("nuovo",) if os.environ.get("SGP_SOLO_NUOVO") else ("vecchio", "nuovo")
+# M8 della revisione R2 / F7 della revisione R3: il default era «vecchio +
+# nuovo», cioe' rosso per costruzione, e chi lo voleva verde doveva ricordarsi
+# SGP_SOLO_NUOVO=1 (che `run_tests.py` passava). Il default e' ora il blob
+# SPEDITO, e la corsa di riproduzione sui blob superati si chiede
+# esplicitamente con SGP_ANCHE_VECCHIO=1: quella e' rossa apposta.
+# La migrazione e' COMPLETA: `SGP_SOLO_NUOVO` non viene piu' letta da nessuna
+# parte in questo file. Restavano due `skipIf(SGP_SOLO_NUOVO)` su test che
+# `SGP_ANCHE_VECCHIO` gia' regola da se' (`for q in BLOB`) o che parlano solo
+# del blob superato: due nomi per la stessa scelta, uno dei quali non piu'
+# documentato, sono un modo perfetto per saltare un test senza accorgersene.
+BLOB = ("vecchio", "nuovo") if os.environ.get("SGP_ANCHE_VECCHIO") else ("nuovo",)
 
 ESTRATTI = PACCHETTO / "prove" / "estratti"
 # Livelli di allenatori e selvatici della 1.1: sono dati DEL GIOCO, letti
@@ -95,9 +119,21 @@ def nuovo(nome):
 
 
 def vecchio(nome):
+    """Il blob SUPERATO, letto da `prove/estratti/`. Quei file sono fixture di
+    regressione: chi non li ha (una copia sfoltita del repository, un archivio
+    senza le prove) non deve vedere un errore di file mancante a meta' di un
+    test, ma un SALTO che dice cosa manca e perche'."""
     spec = VECCHIO[nome]
-    return dict(byte=(ESTRATTI / spec["file"]).read_bytes(),
-                simboli=spec["simboli"])
+    return dict(byte=estratto(spec["file"]), simboli=spec["simboli"])
+
+
+def estratto(nome_file):
+    f = ESTRATTI / nome_file
+    if not f.is_file():
+        raise unittest.SkipTest(
+            "manca la fixture %s: senza `prove/estratti/*-EN.bin` questo "
+            "confronto non si puo' fare" % f)
+    return f.read_bytes()
 
 
 def chunk_bytes(magic=0x5347, versione=2, plus=0, selvatici=0, oltre100=0,
@@ -139,8 +175,8 @@ class BancoPlus(Banco):
         base = 0x023D8100
         self.simboli = blob["simboli"]
         self.carica(base, blob["byte"])
-        self.carica(TAB_TRN, (ESTRATTI / "tab-trainer-EN.bin").read_bytes())
-        self.carica(TAB_WLD, (ESTRATTI / "tab-wild-EN.bin").read_bytes())
+        self.carica(TAB_TRN, estratto("tab-trainer-EN.bin"))
+        self.carica(TAB_WLD, estratto("tab-wild-EN.bin"))
         self.carica(STATO, stato_bytes())
 
     def stato(self, **kw):
@@ -154,16 +190,112 @@ CANARINI = [0xA0A0A000, 0xA1A1A101, 0xA2A2A202, 0xA3A3A303,
             0xA4A4A404, 0xA5A5A505, 0xA6A6A606, 0xA7A7A707]
 
 
+BLOB_SPEDITI = ("plus", "salva", "npc", "wifi", "caramelle")
+
+
+class QIdentitaCompilatore(unittest.TestCase):
+    """Il confronto di versione su cui poggia Q7.1: e' l'unica cosa che decide
+    se l'identita' byte per byte e' una pretesa sul SORGENTE o sul COMPILATORE.
+    Non serve unicorn, e non serve nemmeno un compilatore: e' logica pura, e
+    va provata come tale (su una macchina sola non si vedono mai due
+    toolchain)."""
+
+    def test_legge_fornitore_e_versione_maggiore(self):
+        self.assertEqual(ct.identita("Apple clang version 21.0.0 (clang-2100.3.34.2)"),
+                         ("Apple", 21))
+        self.assertEqual(ct.identita("Ubuntu clang version 18.1.3 (1ubuntu1)"),
+                         ("Ubuntu", 18))
+        self.assertEqual(ct.identita("clang version 18.1.8"), ("LLVM", 18))
+        self.assertEqual(ct.identita("Debian clang version 16.0.6 (27)"), ("Debian", 16))
+
+    def test_una_riga_illeggibile_non_e_un_identita(self):
+        for riga in ("", "gcc (GCC) 13.2.0", "clang: error: no input files", None):
+            self.assertEqual(ct.identita(riga), (None, None), repr(riga))
+
+    def test_stessa_toolchain(self):
+        apple21 = "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+        # la versione MINORE non conta: stesso fornitore, stessa maggiore
+        self.assertTrue(ct.stessa_toolchain(apple21, "Apple clang version 21.1.2"))
+        self.assertTrue(ct.stessa_toolchain(apple21, apple21))
+        # fornitore diverso, o versione maggiore diversa: NO
+        self.assertFalse(ct.stessa_toolchain(apple21, "Ubuntu clang version 18.1.3"))
+        self.assertFalse(ct.stessa_toolchain(apple21, "Apple clang version 20.0.0"))
+        self.assertFalse(ct.stessa_toolchain(apple21, "clang version 21.0.0"))
+        # due righe illeggibili NON sono la stessa toolchain: nel dubbio il
+        # confronto byte per byte non si pretende.
+        self.assertFalse(ct.stessa_toolchain("", ""))
+        self.assertFalse(ct.stessa_toolchain("gcc 13", "gcc 13"))
+
+    def test_il_motivo_del_salto_nomina_tutte_e_due(self):
+        self.assertEqual(ct.descrivi("Ubuntu clang version 18.1.3"), "Ubuntu clang 18")
+        self.assertIn("non riconosciuto", ct.descrivi("gcc"))
+
+
 @unittest.skipUnless(UNICORN, "unicorn assente: i cancelli Q non sono superati")
 class Q7Byte(unittest.TestCase):
-    """Q7.1/Q7.2 — che cosa è cambiato rispetto ai byte applicati."""
+    """Q7.1/Q7.2 — i sorgenti spediti riproducono i blob spediti.
 
-    def test_dimensioni_e_identita(self):
-        atteso = {"plus": False, "salva": False, "npc": False, "wifi": False}
-        for nome, ident in atteso.items():
-            m = nuovo(nome)["manifesto"]
-            self.assertEqual(m["identico_al_blob_applicato"], ident,
-                             "%s: identità col blob applicato cambiata" % nome)
+    Fino alla 1.2 questo test pretendeva **False** per tutti e quattro, e aveva
+    ragione di farlo: il riferimento di `compila_tutti.py` erano quattro sha256
+    cablati, presi dai manifesti dei pacchetti d'origine, che descrivevano i blob
+    PRE-`sorgenti-v-finale/`. Un confronto che non poteva mai tornare non
+    segnalava piu' niente. Dalla 1.2.1 il riferimento e' `source/sgp12/build/**`,
+    cioe' i byte che `sgp12.costruisci` scrive davvero nella ROM, e la pretesa
+    diventa quella giusta e piu' forte: **True**. Se un domani un sorgente e il
+    suo blob divergessero, questo test lo dice.
+
+    **A parita' di compilatore.** Gli stessi byte da un altro compilatore non
+    sono dovuti: sorgente identico e toolchain diversa danno codice diverso. Su
+    una toolchain che non e' quella del manifesto questi test SALTANO, dicendo
+    quale contro quale, e resta in piedi `test_ogni_blob_ricompilato_e_valido`,
+    che non salta mai. Cosi' la CI su Ubuntu e' verde perche' e' onesta, non
+    perche' e' stata ammorbidita."""
+
+    def _confronta(self, nome):
+        m = nuovo(nome)["manifesto"]
+        if not m["confronto_valido"]:
+            raise unittest.SkipTest(m["motivo_salto"] + " — l'identita' byte per "
+                                    "byte vale solo a parita' di toolchain "
+                                    "(resta provata la validita' del blob)")
+        self.assertTrue(m["identico_al_blob_applicato"],
+                        "%s: il sorgente non riproduce piu' %s (%d B, %s) — "
+                        "ricompilato %d B, %s"
+                        % (nome, m["spedito"], m["applicato_byte"],
+                           str(m["applicato_sha256"])[:16], m["byte"], m["sha256"][:16]))
+
+    def test_plus_riproduce_il_blob_spedito(self):
+        self._confronta("plus")
+
+    def test_salva_riproduce_il_blob_spedito(self):
+        self._confronta("salva")
+
+    def test_npc_riproduce_il_blob_spedito(self):
+        self._confronta("npc")
+
+    def test_wifi_riproduce_il_blob_spedito(self):
+        self._confronta("wifi")
+
+    def test_caramelle_riproduce_il_blob_spedito(self):
+        self._confronta("caramelle")
+
+    def test_ogni_blob_ricompilato_e_valido(self):
+        """La pretesa che vale su OGNI toolchain, e che percio' non salta mai:
+        ogni sorgente spedito compila, entra nel suo scomparto e non ha simboli
+        esterni. L'ultimo punto e' `carica_text.load_text`, che su un simbolo
+        esterno solleva invece di restituire un blob: se siamo qui, non ce ne
+        sono."""
+        for nome in BLOB_SPEDITI:
+            with self.subTest(blob=nome):
+                m = nuovo(nome)["manifesto"]
+                self.assertGreater(m["byte"], 0, "%s: blob vuoto" % nome)
+                self.assertLessEqual(m["byte"], m["scomparto_byte"],
+                                     "%s: %d B oltre i %d B dello scomparto"
+                                     % (nome, m["byte"], m["scomparto_byte"]))
+                self.assertTrue(m["valido"], nome)
+                for entrata in ct.BLOB[nome]["entrate"]:
+                    self.assertIn(entrata, nuovo(nome)["simboli"],
+                                  "%s: entrata '%s' assente dal blob ricompilato"
+                                  % (nome, entrata))
 
     def test_blob_stanno_nei_loro_blocchi(self):
         """sgp.plus: blob PLUS + blob salvataggio devono stare sotto +0x400."""
@@ -174,6 +306,7 @@ class Q7Byte(unittest.TestCase):
         self.assertLessEqual(fine_salva, 0x023D8100 + 0x400)
         self.assertLessEqual(len(nuovo("npc")["byte"]), 0xE0)
         self.assertLessEqual(0x023DA250 + len(nuovo("wifi")["byte"]), 0x023DA800)
+        self.assertLessEqual(0x023DAC00 + len(nuovo("caramelle")["byte"]), 0x023DACF0)
 
 
 @unittest.skipUnless(UNICORN, "unicorn assente")
@@ -563,8 +696,109 @@ class QNpc(unittest.TestCase):
                              "%s: con chunk VALIDO non si tocca la scelta" % q)
             self.assertEqual(self.gira(b), 10)
 
+
+    # --- CORREZIONE M2 (revisione R2) ------------------------------------
+    # Il ramo «spento» non restituiva il tetto: il campo +0x2 della lista era
+    # gia' stato riscritto da 10 a 1 nei giri precedenti e nessuno lo rimetteva.
+    # Tornava quello del gioco solo alla prossima inizializzazione del sistema
+    # oggetti di campo, cioe' al cambio di mappa. `st->salvato` esisteva apposta
+    # ed era SCRITTO E MAI LETTO.
+    def _ciclo(self, npc_blob, simboli_extra=None):
+        """Un solo `lista` per tutto il ciclo — e' il punto: il gioco non la
+        riscrive fra un fotogramma e l'altro. Rende la successione dei valori
+        letti nel campo +0x2 e lo stato diagnostico a ogni passo."""
+        b = Banco()
+        b.carica(NPC_BLOB, npc_blob["byte"])
+        b.simboli = dict(npc_blob["simboli"])
+        b.carica(NPC_STATO, struct.pack("<BBBBhHII", 0, 1, 0x5A, 0, 0, 0, 0, 0))
+        b.carica(BUF, bytes(32))
+        b.scrivi(WORK, struct.pack("<hh", 4, 10))
+
+        def giro(npc):
+            b.carica(STATO, stato_bytes(load=2, guard=0x5A, chunk=chunk_bytes(npc=npc)))
+            b.chiama(b.simboli["sgp_npc_tetto"], (WORK,))
+            st = struct.unpack("<BBBBhHII", bytes(b.leggi(NPC_STATO, 16)))
+            return struct.unpack("<h", b.leggi(WORK + 2, 2))[0], st[4]
+
+        return [giro(1), giro(1), giro(0), giro(0), giro(1)]
+
+    def test_M2_spegnere_restituisce_il_tetto_del_gioco(self):
+        """acceso, acceso, SPENTO, spento, riacceso — su una lista sola.
+        Al terzo giro il tetto dev'essere tornato 10 e `salvato` azzerato; al
+        quinto il clamp dev'essere ricatturato dal valore trovato."""
+        passi = self._ciclo(nuovo("npc"))
+        tetti = [t for t, _s in passi]
+        salvati = [s for _t, s in passi]
+        self.assertEqual(tetti, [1, 1, 10, 10, 1],
+                         "acceso -> 1, spento -> 10 restituito, riacceso -> 1")
+        self.assertEqual(salvati, [10, 10, 0, 0, 10],
+                         "`salvato` tiene il valore del gioco solo mentre il clamp e' addosso")
+
+    def test_M2_il_ripristino_avviene_una_volta_sola(self):
+        """Il quarto giro non riscrive niente: se il gioco avesse messo lui un
+        valore nuovo nel campo, sarebbe suo e noi non lo tocchiamo."""
+        b = Banco()
+        npc = nuovo("npc")
+        b.carica(NPC_BLOB, npc["byte"])
+        b.simboli = dict(npc["simboli"])
+        b.carica(NPC_STATO, struct.pack("<BBBBhHII", 0, 1, 0x5A, 0, 0, 0, 0, 0))
+        b.carica(BUF, bytes(32))
+        b.scrivi(WORK, struct.pack("<hh", 4, 10))
+        b.carica(STATO, stato_bytes(load=2, guard=0x5A, chunk=chunk_bytes(npc=1)))
+        b.chiama(b.simboli["sgp_npc_tetto"], (WORK,))          # clamp: 10 -> 1
+        b.carica(STATO, stato_bytes(load=2, guard=0x5A, chunk=chunk_bytes(npc=0)))
+        b.chiama(b.simboli["sgp_npc_tetto"], (WORK,))          # restituisce 10
+        b.scrivi(WORK + 2, struct.pack("<h", 7))               # il gioco ne mette 7
+        b.chiama(b.simboli["sgp_npc_tetto"], (WORK,))
+        self.assertEqual(struct.unpack("<h", b.leggi(WORK + 2, 2))[0], 7,
+                         "da spenti, dopo il ripristino, non si scrive piu' nel campo")
+
+    def test_M2_da_spenti_senza_lista_non_si_schianta(self):
+        """Il ramo spento ora dereferenzia: `lista == 0` dev'essere gestito."""
+        b = Banco()
+        npc = nuovo("npc")
+        b.carica(NPC_BLOB, npc["byte"])
+        b.simboli = dict(npc["simboli"])
+        b.carica(NPC_STATO, struct.pack("<BBBBhHII", 0, 1, 0x5A, 0, 10, 0, 0, 0))
+        b.carica(BUF, bytes(32))
+        b.carica(STATO, stato_bytes(load=2, guard=0x5A, chunk=chunk_bytes(npc=0)))
+        b.chiama(b.simboli["sgp_npc_tetto"], (0,))
+        st = struct.unpack("<BBBBhHII", bytes(b.leggi(NPC_STATO, 16)))
+        self.assertEqual(st[4], 10, "senza lista `salvato` non si azzera: non si e' restituito niente")
+
+    def test_M2_mutante_senza_il_ripristino(self):
+        """Il mutante toglie le quattro righe e ricompila davvero: con quel blob
+        la successione torna a essere quella del difetto — il tetto resta 1
+        anche da spenti. Se questo test diventasse verde con il blob SPEDITO,
+        i tre sopra non proverebbero niente."""
+        import shutil as _sh, tempfile as _tf
+        with _tf.TemporaryDirectory(prefix="sgp-m2-mut-") as d:
+            d = Path(d)
+            sorg = d / "sorgenti"
+            _sh.copytree(PACCHETTO / "sorgenti-v-finale", sorg)
+            f = sorg / "npc_tetto.c"
+            testo = f.read_text()
+            inizio = testo.index("        if (st->salvato != 0 && lista != 0) {")
+            chiusura = "        }" + chr(10)
+            fine = testo.index(chiusura, inizio) + len(chiusura)
+            self.assertIn("*tetto = st->salvato;", testo[inizio:fine],
+                          "il sorgente non ha piu' la forma che questo mutante conosce")
+            f.write_text(testo[:inizio] + testo[fine:])
+            r = subprocess.run([sys.executable, str(PACCHETTO / "tools" / "compila_tutti.py"),
+                                "--uscita", str(d / "build"), "--sorgenti", str(sorg),
+                                "--solo", "npc"], text=True, capture_output=True)
+            self.assertTrue((d / "build" / "npc.bin").exists(),
+                            "il mutante non compila: %s" % (r.stdout + r.stderr)[-800:])
+            man = json.loads((d / "build" / "manifesto.json").read_text())["blob"]["npc"]
+            mutante = dict(byte=(d / "build" / "npc.bin").read_bytes(),
+                           simboli={n: int(x, 16) for n, x in man["simboli"].items()
+                                    if not n.startswith("$")})
+            passi = self._ciclo(mutante)
+            self.assertEqual([t for t, _s in passi], [1, 1, 1, 1, 1],
+                             "il mutante e' SOPRAVVISSUTO: senza le quattro righe il "
+                             "tetto dovrebbe restare clampato anche da spenti")
+
     # --- DIFETTO B4 -------------------------------------------------------
-    @unittest.skipIf(os.environ.get("SGP_SOLO_NUOVO"), "confronta vecchio e nuovo")
     def test_B4_contratto_della_trampolina_npc(self):
         """Il contratto dichiarava «r1..r7 invariati»: falso, r3 è clobberato
         dalla chiamata C. È sicuro (r3 è morto al sito: disasm-npc.txt), ma il
@@ -769,7 +1003,6 @@ class QVincoli(unittest.TestCase):
     """Q2.1, Q3 e il difetto B1 (due piante incompatibili sullo stesso stato)."""
 
     # --- DIFETTO B1 -------------------------------------------------------
-    @unittest.skipIf(os.environ.get("SGP_SOLO_NUOVO"), "riguarda solo il blob applicato")
     def test_B1_lo_stato_v1_corrompe_il_chunk_v2(self):
         """Il blob PLUS applicato porta ancora `sgp_state_*`, scritte per la
         pianta `SgpExtra` di versione 1 che nessuna ROM ha mai salvato. Quelle

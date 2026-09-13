@@ -1,6 +1,9 @@
-# Rebuilding Sacred Gold Plus 1.2
+# Rebuilding Sacred Gold Plus 1.2.1
 
-Two commands build a 1.2 ROM from your own 1.1 ROM and verify the result. This page is the
+Two commands build a 1.2.1 ROM from your own 1.1 ROM and verify the result.
+
+(The file keeps its `rebuilding-1.2.md` name: three other pages link to it, and the
+procedure is the same one, extended by one block.) This page is the
 step-by-step version: what you need, in what order, and what to do when a step refuses.
 
 No ROM is distributed here. You supply the base.
@@ -9,7 +12,7 @@ No ROM is distributed here. You supply the base.
 
 ## 1. Start from your own 1.1 ROM
 
-You need a Sacred Gold Plus **1.1** ROM, English or Italian. That file is your base; 1.2 is
+You need a Sacred Gold Plus **1.1** ROM, English or Italian. That file is your base; 1.2.1 is
 built by patching it.
 
 Put it in a private folder **outside this repository** and pass its path with `--base`. Nothing
@@ -52,8 +55,8 @@ variable is not set.
 Run from `source/`, with the interpreter from your virtual environment:
 
 ```sh
-python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2-EN.nds> --lingua EN
-python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2-IT.nds> --lingua IT
+python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.1-EN.nds> --lingua EN
+python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.1-IT.nds> --lingua IT
 ```
 
 `--build` selects the folder holding the validated per-block blobs and the ARM9 reserve manifest
@@ -62,7 +65,7 @@ after each block, which is what the step-by-step readers consume.
 
 ### The block order
 
-The builder applies eleven blocks, always in this order:
+The builder applies thirteen blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -75,10 +78,13 @@ The builder applies eleven blocks, always in this order:
 9. **title** — the title screen tilemap
 10. **credit** — the credit tiles in the same archive
 11. **guide** — turns the automatic EV/IV guide label off
+12. **Typhlosion** — the base stats of species 157 in the personal-data archive
+13. **rare candy** — the Rare Candy stays in the party menu after use
 
 The order matters: later blocks read the reserve map the first block wrote, and blocks that
 patch the same overlay run in a declared sequence, the second applier working on the ROM the
-first one produced.
+first one produced. The last block is last because nothing depends on it and it depends on
+nothing but the reserve: its 256 bytes must still be zero when it runs.
 
 ### The build is deterministic
 
@@ -89,7 +95,7 @@ here: it is what makes the verification below meaningful.
 ## 5. Verify
 
 ```sh
-python3 -m sgp12.verifica <out/sgp-1.2-EN.nds> --base <base-1.1-EN.nds> --lingua EN
+python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --base <base-1.1-EN.nds> --lingua EN
 ```
 
 `verifica` does three things:
@@ -109,12 +115,12 @@ python3 -m sgp12.verifica <out/sgp-1.2-EN.nds> --base <base-1.1-EN.nds> --lingua
 
 ## 6. Regenerating the canonical build blobs
 
-The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2 ROM, not
+The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.1 ROM, not
 recompiled:
 
 ```sh
-python3 -m sgp12.estrai_build --rom <sgp-1.2-EN.nds> --lingua EN
-python3 -m sgp12.estrai_build --rom <sgp-1.2-IT.nds> --lingua IT
+python3 -m sgp12.estrai_build --rom <sgp-1.2.1-EN.nds> --lingua EN
+python3 -m sgp12.estrai_build --rom <sgp-1.2.1-IT.nds> --lingua IT
 ```
 
 For every block that writes a blob at a fixed address, this reads the exact bytes out of the ROM
@@ -127,8 +133,15 @@ the same bytes that ended up in the shipped ROM: one blob differed by 152 bytes 
 one, having been compiled with slightly different options. Extracting from the ROM is correct by
 construction, and stays correct when the ROM changes — you just extract again.
 
-Blocks with no external blob (reserve, camera, title, credit, guide) are deterministic and need
-no extraction. The text block is a transformation of a correction table rather than a blob at a
+Blocks with no external blob (reserve, camera, title, credit, guide, Typhlosion) are
+deterministic and need no extraction. The two options text blobs
+(`build/opzioni/testi-{EN,IT}.bin` and `voci-{EN,IT}.bin`) are the one exception in the other
+direction: since 1.2.1 they are **built**, not extracted, by
+`features/options/tools/costruisci_testi.py` from `features/options/testi/testi.json` and the
+pret charmap, then zero-padded to the size of their compartment. The unpadded form sits in
+`features/options/prove/testi/`, byte for byte the same. That is how the version string shown
+on Continue is changed: edit `testi.json`, re-measure with `tools/misura_v2.py` against a real
+ROM font, rebuild the blobs, then rebuild the ROM. The text block is a transformation of a correction table rather than a blob at a
 fixed address, and is not extractable in the same way.
 
 ## 7. If a step refuses

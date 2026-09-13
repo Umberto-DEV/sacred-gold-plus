@@ -18,7 +18,7 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_thumb, esigi, sha
+from ..rom import Arm9, Rifiuto, bl_thumb, esigi, esigi_manifesto_descrive, sha
 from .. import overlay as ovp
 
 OV_CAMPO = 1
@@ -33,7 +33,16 @@ OFF_STATO, N_STATO = 0x0E0, 16
 CANARY_BASE, N_CANARY = BLOCK_BASE + BLOCK_N, 16
 CANARY_MOTIVO = 0xCA5A1300
 
-ENTRATE_ATTESE = ("sgp_npc_hook", "sgp_npc_tetto")
+# M10 della revisione R1: `sgp_npc_tetto` non e' PRETESO qui. Non perche' non
+# esista — esiste, `nm` lo trova a +0x00 del blob (0x23d8901), e il manifesto
+# spedito lo dichiara di nuovo dalla 1.2.1, che il blob lo RICOMPILA —, ma
+# perche' `estrai_build.py` non lo sa decodificare da una ROM: niente BL punta a
+# quella funzione, ci arriva solo la trampolina interna. Pretendere qui un nome
+# che l'estrattore non puo' produrre farebbe fallire l'estrazione, o peggio
+# inviterebbe a inventarne il valore, che e' esattamente il difetto M10.
+# `sgp_npc_hook` invece e' decodificato dalla BL in ov001: quello si pretende.
+# Ogni simbolo in PIU' resta comunque controllato: deve cadere dentro il blob.
+ENTRATE_ATTESE = ("sgp_npc_hook",)
 
 
 def _carica_build(build_dir):
@@ -43,8 +52,20 @@ def _carica_build(build_dir):
     esigi(int(man["indirizzi"]["codice"], 16) == BLOCK_BASE + OFF_BLOB, "BUILD: indirizzo codice")
     esigi(int(man["indirizzi"]["stato"], 16) == BLOCK_BASE + OFF_STATO, "BUILD: indirizzo stato")
     esigi(len(blob) <= N_BLOB_SLOT, "BUILD: blob non entra nello slot")
+    # M5 della revisione R2: il manifesto dichiarava uno sha256 DIVERSO dal
+    # `blob.bin` che gli sta accanto (e diverso dal SHA256SUMS della stessa
+    # cartella), e nessuno li confrontava: la bugia era invisibile a tutti i
+    # cancelli. La regola ora e' UNA per tutti i blocchi, in `sgp12/rom.py`, e
+    # non ha piu' il ramo `if "blob" in man`: un manifesto senza quel campo non
+    # descrive niente, e passava.
+    esigi_manifesto_descrive(man, blob, blocco="sgp.npc")
     for nome in ENTRATE_ATTESE:
         esigi(nome in man["simboli"], "BUILD: simbolo mancante: %s" % nome)
+    # ogni simbolo dichiarato deve cadere dentro il blob
+    for nome, valore in man["simboli"].items():
+        v = int(valore, 16) & ~1
+        esigi(BLOCK_BASE + OFF_BLOB <= v < BLOCK_BASE + OFF_BLOB + len(blob),
+              "BUILD: il simbolo '%s' (%s) cade fuori dal blob di sgp.npc" % (nome, valore))
     return man, blob
 
 

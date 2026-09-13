@@ -1,6 +1,6 @@
 {
  "schema": 3,
- "charmap": "features/options/testi/charmap-sgp.tsv",
+ "charmap": "<pret checkout>/charmap.txt",
  "limiti_px": {
   "nome": 114,
   "valore": 44,
@@ -9,7 +9,7 @@
   "suggerimento": 108,
   "comando": 80
  },
- "rom": "sgp-1.2-IT.nds (measured on the built ROM's font)",
+ "rom": "sgp-1.2.1-EN.nds (measured on the built ROM's font; identical in IT)",
  "voci": {
   "EN": {
    "p_titolo": {
@@ -193,11 +193,11 @@
     "entro_limite": true
    },
    "c_titolo": {
-    "testo": "Sacred Gold Plus 1.2",
+    "testo": "Sacred Gold Plus 1.2.1",
     "classe": "continua",
     "limite": 224,
-    "px": 109,
-    "byte": 42,
+    "px": 120,
+    "byte": 46,
     "ignoti": 0,
     "entro_limite": true
    },
@@ -438,11 +438,11 @@
     "entro_limite": true
    },
    "c_titolo": {
-    "testo": "Sacred Gold Plus 1.2",
+    "testo": "Sacred Gold Plus 1.2.1",
     "classe": "continua",
     "limite": 224,
-    "px": 109,
-    "byte": 42,
+    "px": 120,
+    "byte": 46,
     "ignoti": 0,
     "entro_limite": true
    },
@@ -503,8 +503,8 @@
   }
  },
  "byte_totali_blob": {
-  "EN": 818,
-  "IT": 876
+  "EN": 822,
+  "IT": 880
  },
  "fuori_limite": []
 }

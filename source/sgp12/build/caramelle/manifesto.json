@@ -1,0 +1,53 @@
+{
+  "pacchetto": "SGP-1.2-CARAMELLE-01",
+  "funzione": "Caramella Rara riutilizzabile dal menu squadra (opzione (a) di M-borsa-riuso-caramelle.md)",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-Wextra",
+    "-c",
+    "sorgenti/caramelle.c"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "avvisi_compilatore": [],
+  "sorgente": {
+    "file": "caramelle.c",
+    "sha256": "19fdf2764538029955a8c49bf29e1fa00e8b18bae3a1da984d8bcffda7a08584"
+  },
+  "indirizzi": {
+    "base": "0x23dac00",
+    "codice": "0x23dac00",
+    "canarino": "0x23dacf0",
+    "blocco_byte": 256,
+    "gancio_arm9": "0x02081E96"
+  },
+  "simboli": {
+    "$d": "0x23daca8",
+    "$t": "0x23dac00",
+    "sgp_caramelle_decidi": "0x23dac0d",
+    "sgp_caramelle_gancio": "0x23dac01"
+  },
+  "blob": {
+    "byte": 192,
+    "sha256": "9acfd1fdbcb72f0f9d28efc0042e0ca46fac4229ce569ad786eadfd2ad2f264f",
+    "max": 240
+  },
+  "canarino": {
+    "offset": "0xf0",
+    "byte": 16,
+    "motivo": "0xca5a1600",
+    "sha256": "48a048560342109e90bec8a240cee637125e9375b81511cc8491eacb0e82e51d"
+  },
+  "comando_nota": "Il percorso assoluto del sorgente e dell'oggetto e' stato tolto: era un percorso privato. Si riproduce con `python3 source/features/caramelle/tools/compila.py --uscita DIR`, che rifa' questo blob.bin e questo canarino.bin byte per byte.",
+  "origine": "SGP-1.2-CARAMELLE-01, integrato nella 1.2.1 il 13/09/2026. A differenza degli altri blocchi questo NON e' un estratto della ROM: e' l'uscita del compilatore dai sorgenti spediti in source/features/caramelle/sorgenti/, e la ROM 1.2.1 e' il primo posto in cui compare."
+}

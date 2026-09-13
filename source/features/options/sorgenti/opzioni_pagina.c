@@ -64,16 +64,32 @@
 __attribute__((used, noinline, section(".text")))
 static u32 opz_presente(u32 quale)
 {
+    /* v4 (A1 della revisione R2). PRECONDIZIONE UNICA, per OGNI voce: la
+     * pagina e' un consumatore del chunk di D1 come tutti gli altri, e applica
+     * la STESSA regola dell'accessore unico `sgp_chunk_opzione`
+     * (`native-core/sorgenti-v-finale/sgp_chunk.h`): serve la guardia di D1 E un
+     * `load_status` utilizzabile, cioe' ASSENTE (1) o VALIDO (2).
+     *
+     * Fino alla v3 questa regola valeva solo per Q_D1_PLUS/Q_D1_WILD; le altre
+     * tre voci guardavano la sola guardia del PROPRIETARIO — un byte che scrive
+     * l'iniettore e che vale sempre 0x5A/0x57, quindi «presente» sempre.
+     * Con `load_status = 3 RIFIUTATO` (chunk trovato ma con un'invariante
+     * violata) o `= 0 NONE` (gancio L0 mai eseguito) i consumatori leggono 0 e
+     * `sgp_chunk_scrivi` rifiuta di scrivere, ma la pagina mostrava lo stesso le
+     * tre voci attive: il giocatore spostava il cursore, premeva A, sentiva la
+     * conferma, vedeva il valore nuovo disegnato — e non succedeva niente, ne'
+     * allora ne' mai. La mitigazione esisteva solo per il pennino (il tocco
+     * sulla riga dei comandi era gia' disabilitato); A e B restavano attivi.
+     *
+     * Con la precondizione qui, `opz_visibili` non conta piu' quelle voci,
+     * `opz_scrivi` esce subito, e la riga dei comandi resta quella di
+     * T_RIFIUTATO: niente si lascia confermare. */
+    if (SGP_D1_GUARDIA != SGP_D1_GUARD
+        || (SGP_D1_LOAD != SGP_LOAD_ABSENT && SGP_D1_LOAD != SGP_LOAD_VALID)) {
+        return 0u;
+    }
     if (quale == Q_D1_PLUS || quale == Q_D1_WILD) {
-        /* v3: la STESSA regola di `sgp_chunk_opzione` del contratto nuovo
-         * (`SGP-1.2-QUALITA-NATIVO-01/sorgenti-v-finale/sgp_chunk.h`): serve la
-         * guardia di D1 E un load_status utilizzabile, cioe' ASSENTE o VALIDO.
-         * La v2 diceva «diverso da RIFIUTATO», che accettava anche lo stato 0
-         * («mai letto»): con quello il chunk non e' ancora normalizzato e la
-         * pagina mostrerebbe zeri spacciandoli per scelte. */
-        return (SGP_D1_GUARDIA == SGP_D1_GUARD
-                && (SGP_D1_LOAD == SGP_LOAD_ABSENT
-                    || SGP_D1_LOAD == SGP_LOAD_VALID)) ? 1u : 0u;
+        return 1u;
     }
     if (quale == Q_ANIM) {
         return SGP_ANIM_GUARD == SGP_D1_GUARD ? 1u : 0u;
