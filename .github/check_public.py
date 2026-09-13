@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the public file list and the release/1.2 fingerprints; no game files."""
+"""Check the public file list: no game files, no private data, only our own small blobs."""
 import hashlib
 import json
 from pathlib import Path
@@ -15,83 +15,24 @@ def _fingerprint(value, size_key, hash_key):
             re.fullmatch(r'[0-9a-f]{64}', value[hash_key]) is not None)
 
 
-def validate_release_folder(root):
-    """Check every downloadable release folder against its own two manifests.
-
-    `release/<version>/contenuto.json` pins the size and SHA-256 of every file a
-    download carries, and `release/<version>/<language>/Patch/manifest.json`
-    repeats the patch fingerprints for the player. Both must agree with the
-    bytes on disk and with each other, and no file may sit in a language folder
-    that neither declares. Returns the paths verified here, so the caller knows
-    which files it has already accounted for.
-    """
-    owned = set()
-    base = root/'release'
-    if not base.is_dir():
-        return owned
-    for version in sorted(p for p in base.iterdir() if p.is_dir()):
-        census = json.loads((version/'contenuto.json').read_text())
-        if (not isinstance(census, dict) or census.get('schema') != 1 or
-                census.get('version') != version.name or
-                not isinstance(census.get('packages'), list) or not census['packages']):
-            raise ValueError('Release census declares an unexpected contract')
-        for package in census['packages']:
-            folder = version/package['folder']
-            files = package['files']
-            if not isinstance(files, dict) or not files:
-                raise ValueError('Release census lists no files')
-            present = {str(p.relative_to(folder)) for p in folder.rglob('*') if p.is_file()}
-            if present != set(files):
-                raise ValueError('Release folder differs from its census')
-            for name, pin in sorted(files.items()):
-                path = folder/name
-                if path.is_symlink():
-                    raise ValueError('Symbolic links are not public artifacts')
-                data = path.read_bytes()
-                if (not _fingerprint(pin, 'bytes', 'sha256') or len(data) != pin['bytes'] or
-                        hashlib.sha256(data).hexdigest() != pin['sha256']):
-                    raise ValueError('Release file differs from the reviewed census')
-                owned.add(str(path.relative_to(root)))
-            patches = json.loads((folder/'Patch/manifest.json').read_text())
-            if (patches.get('version') != version.name or
-                    patches.get('language') != package['language'] or
-                    patches['game']['sha256'] != package['game']['sha256'] or
-                    patches['game']['bytes'] != package['game']['bytes']):
-                raise ValueError('Release patch manifest names another game')
-            declared = {row['file'] for row in patches['patches']}
-            if declared != {n[len('Patch/'):] for n in files if n.endswith('.xdelta')}:
-                raise ValueError('Release patch manifest and folder disagree')
-            for row in patches['patches']:
-                data = (folder/'Patch'/row['file']).read_bytes()
-                if (len(data) != row['bytes'] or
-                        hashlib.sha256(data).hexdigest() != row['sha256']):
-                    raise ValueError('Release patch fingerprint differs from its manifest')
-                if data[:4] != bytes([0xD6, 0xC3, 0xC4, 0]) or data[4] & 4:
-                    raise ValueError('Release patch has an unexpected format')
-        for name in ('contenuto.json', 'build_zip.py', 'README.md'):
-            if (version/name).is_file():
-                owned.add(str((version/name).relative_to(root)))
-    return owned
-
-
 # No tracked file may exceed this, so that a ROM, a dump or a captured video
 # cannot slip in unnoticed. The few legitimate exceptions are named below with
 # the reason they are large.
 SIZE_LIMIT = 2 * 1024 * 1024
 SIZE_EXCEPTIONS = {
-    # The full GPL-3.0 text, and the PDFs and patch deltas of the player package
-    # (each already pinned by size and SHA-256 in release/1.2/contenuto.json).
+    # The full GPL-3.0 text.
     'LICENSE',
 }
 
 # Extensions that only a game file, a save or a memory dump would carry. They
 # are refused outright: this repository ships tools and our own compiled code,
-# never game bytes. Our own small payloads live in release/ (.xdelta) or under
-# source/ with an explicit .bin allowance below.
+# never game bytes. The player packages (patches, manuals) live only on the
+# GitHub release page; our own small payloads live under source/ with an
+# explicit .bin allowance below.
 FORBIDDEN_SUFFIXES = ('.nds', '.sav', '.sav2', '.srm', '.dump', '.dsv', '.bak',
                       '.state', '.ml0', '.ml1', '.nds.gz')
 
-# The only binaries allowed outside a reviewed release folder and the gallery:
+# The only binaries allowed outside the screenshot gallery:
 # blobs we compiled ourselves from the C sources in this repository, each a few
 # hundred bytes, plus the intermediate object of that same build.
 OUR_BLOBS_PREFIXES = ('source/sgp12/build/', 'source/features/')
@@ -108,7 +49,7 @@ def check(root=ROOT):
         actual = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts}
     if actual != allowed:
         raise ValueError('Unexpected or missing public files; review the public file list')
-    owned = validate_release_folder(root)
+    owned = set()
     bad_text = re.compile(r'/(?:Users|home)/|/private/(?:tmp|var)/|(?:192\.168\.|10\.0\.)\d|\b[A-Za-z0-9._%+-]+@(?:gmail|outlook|icloud|hotmail)\.com\b', re.I)
     for name in sorted(actual):
         p = root/name
@@ -128,9 +69,8 @@ def check(root=ROOT):
         try:
             text = data.decode('utf-8')
         except UnicodeDecodeError:
-            # Binary files are only expected inside a reviewed release folder
-            # (pinned by size and SHA-256 above), in the screenshot gallery, or
-            # as one of our own small compiled blobs under source/.
+            # Binary files are only expected in the screenshot gallery or as
+            # one of our own small compiled blobs under source/.
             ours = (name.startswith(OUR_BLOBS_PREFIXES) and name.endswith(OUR_BLOBS_SUFFIXES)
                     and len(data) <= OUR_BLOB_MAX)
             if name not in owned and not name.startswith('images/') and not ours:

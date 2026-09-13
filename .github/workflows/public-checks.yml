@@ -1,7 +1,7 @@
 name: Public checks
 
 # Every push on any branch and every pull request against main: the file
-# contract, the release fingerprints and the Class A tests — the ones that need
+# contract and the Class A tests — the ones that need
 # no game file. Nothing here builds a game: that needs the player's own file and
 # happens only on a contributor's machine (see DEVELOPMENT.md).
 on:
@@ -18,7 +18,7 @@ env:
 
 jobs:
   public-files:
-    name: Public files and release fingerprints
+    name: Public files
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -32,11 +32,8 @@ jobs:
         with:
           python-version: '3.12.14'
 
-      - name: Check public files and release/1.2 fingerprints
+      - name: Check public files
         run: python .github/check_public.py
-
-      - name: Rebuild the release ZIPs from the checked files
-        run: python3 -B release/1.2/build_zip.py
 
   class-a-tests:
     name: Class A tests (no game file)

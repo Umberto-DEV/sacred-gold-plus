@@ -29,7 +29,6 @@
 # images/: only the reviewed 1.2 gallery screenshots.
 !/images/*.png
 
-/release/*/dist/
 __pycache__/
 .venv/
 local/

@@ -14,4 +14,3 @@
 # repository as "B (Formal Method)" because of the .mch cheat files.
 *.mch linguist-detectable=false
 *.xdelta binary linguist-detectable=false
-release/** linguist-documentation

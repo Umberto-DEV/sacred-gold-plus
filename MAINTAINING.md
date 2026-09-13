@@ -42,12 +42,11 @@ Then run, from the repository root:
 ```sh
 .venv/bin/python source/run_tests.py
 python3 .github/check_public.py
-python3 -B release/1.2/build_zip.py
 ```
 
 Review the exact staged files with `git diff --cached` and check commit names and email addresses before committing. Use your public GitHub identity and its private noreply email, not a personal email or local computer name. Check every new commit, not only the final file tree.
 
-Each language package carries the patches for the recognized inputs, the cheat files, the manuals and the install guide, pinned by size and SHA-256 in `release/1.2/contenuto.json`; `check_public.py` refuses a folder that differs from that census. A documentation-only revision can reuse already reviewed patch bytes when their input and output fingerprints are unchanged; it does not establish new gameplay test results. Check the contents and metadata of each ZIP, including PDFs and other attachments. Never upload a ROM or an entire build directory.
+Each language package carries the patches for the recognized inputs, the cheat files, the manuals and the install guide, with a manifest that pins every file by size and SHA-256. The packages are built on the maintainer's machine from the verified ROM and attached to the GitHub release; they are not tracked in this repository, which holds the sources. A documentation-only revision can reuse already reviewed patch bytes when their input and output fingerprints are unchanged; it does not establish new gameplay test results. Check the contents and metadata of each ZIP, including PDFs and other attachments. Never upload a ROM or an entire build directory.
 
 Create a draft under **Releases → Draft a new release**. Use a new `vX.Y` tag, attach the reviewed packages and write what changed, what remains unresolved and which input and save paths were checked. Mark a preview as **pre-release** and tag it `vX.Y-rcN`. Publish when the actual package has passed review, then download the uploaded assets and verify them again.
 

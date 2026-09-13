@@ -164,7 +164,7 @@ SGP_RISERVA_ROM=<your rom.nds> python3 -m unittest verifiche.test_riserva -v
 ```
 
 The register the tests read is `docs/arm9-reserve-map.json`; override it with `SGP_MAPPA`.
-The shipped cheat files T3 checks are looked up in `release/1.2`; override with `SGP_CHEATS`.
+The shipped cheat files T3 checks are read from the folder named by `SGP_CHEATS` (the unpacked release ZIP); without it, T3 is skipped.
 
 ### `source/verifiche/riserva_arm9.py` — layout report
 

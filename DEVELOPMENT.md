@@ -85,7 +85,6 @@ source/            everything needed to rebuild and check the game
   scripts/         the 1.04 variant builders, kept for the older route
   run_tests.py     the Class A suites, the same ones CI runs
 docs/              development documentation (reserve map, contracts, bench, rebuild)
-release/1.2/       the reviewed player package: patches, cheats, manuals, checksums
 .github/           the public-file contract, the checks workflow and the templates
 ```
 
