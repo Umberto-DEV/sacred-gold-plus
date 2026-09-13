@@ -1,5 +1,5 @@
 # Sacred Gold Plus 1.2 EN.nds
-# ROM SHA-256: f024dbb5fa91724b9d8ee59585d81d50521180152ba20ce7e15646294d1ee421
+# ROM SHA-256: b631e2a10593ad9cfcfe50ddbba0aff92488f63028ec19adc1d3ece4d6567fac
 # melonDS identifier: IPKE 19D1EEBB
 # Seven optional codes, all OFF. Try one at a time on a TEST copy.
 # These codes are for Sacred Gold Plus 1.2 only. A 1.1 catalogue cannot pair with this

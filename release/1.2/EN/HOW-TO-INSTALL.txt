@@ -27,36 +27,36 @@ If you have: Pokemon HeartGold (USA), original
     134.217.728 bytes, starting fingerprint
         65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105
 Use: Patch/From-HeartGold-USA.xdelta
-    5.909.505 bytes, SHA-256
-        320a1b5d4876df62ee8acd0379a52875ce11446b7d1c80ff31ebcc363c9745cd
+    5.908.458 bytes, SHA-256
+        f9b04d8cba7acad023b4168f11828e62b167a8147ac954596b261bc0830cf22d
 
 If you have: Sacred Gold Plus 1.03 (the original author release)
     126.979.552 bytes, starting fingerprint
         78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
 Use: Patch/From-Plus-1.03.xdelta
-    405.522 bytes, SHA-256
-        23ae10eda578c0e7225cd435aa64a99865492571817457ba278ab85e119e69bf
+    409.489 bytes, SHA-256
+        4afb8cf47932b898d8e31902ce2ff4b3d49cf976b0f177fff0e03f87dc9b9f08
 
 If you have: Sacred Gold Plus 1.04 US, Plus camera (New Angle)
     127.038.608 bytes, starting fingerprint
         3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248
 Use: Patch/From-Plus-1.04-US.xdelta
-    347.275 bytes, SHA-256
-        23d8d963068eb23b870a01863bc4089e942a480c134b5fff862a8c3e2bc1cca3
+    351.224 bytes, SHA-256
+        c49758161f62f5b951669a2dd496e750e9ed3b37bd4ddf4af25ea595def78d38
 
 If you have: Sacred Gold Plus 1.04 US, classic camera (Normal Angle)
     127.038.608 bytes, starting fingerprint
         ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760
 Use: Patch/From-Plus-1.04-US-classic-camera.xdelta
-    343.785 bytes, SHA-256
-        98e4361ffea366f0aac4304601232041e7bea5041dc9463ed37d03b7e1af86ff
+    347.734 bytes, SHA-256
+        87eb9658db54d2173d83ccf890b139794ff06e477ac8bdfb03a3ff86ed9fd45e
 
 If you have: Sacred Gold Plus 1.1 English
     127.104.144 bytes, starting fingerprint
         281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d
 Use: Patch/From-Plus-1.1-EN.xdelta
-    309.790 bytes, SHA-256
-        a83022336724a9e3a888317068a7089ddfed7e8524a91cd2c4ef24b9db463a45
+    314.036 bytes, SHA-256
+        44a0cffb82cb31e7ccd93754896a72174f4e1b47cb10e14fd3587aa216b2026b
 
 How to tell which version you have: not from the file name, which anyone
 can change, but from the whole-file SHA-256 fingerprint. The programs
@@ -153,7 +153,7 @@ The game that must come out is exactly this:
 
     Sacred Gold Plus 1.2 EN.nds
     127.104.144 bytes
-    SHA-256 f024dbb5fa91724b9d8ee59585d81d50521180152ba20ce7e15646294d1ee421
+    SHA-256 b631e2a10593ad9cfcfe50ddbba0aff92488f63028ec19adc1d3ece4d6567fac
     melonDS identifier IPKE 19D1EEBB
 
 Work out the fingerprint of the file you got with one of the commands in
