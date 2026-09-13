@@ -1,0 +1,6 @@
+# Pinned dependencies for the Sacred Gold Plus 1.2 tools.
+# Install into an isolated environment:  python3 -m venv .venv && .venv/bin/pip install -r source/requirements.txt
+ndspy==4.2.0        # NDS ROM/NARC container reader used by every applier
+unicorn==2.1.4      # ARM946E-S emulation: the Class A tests run our compiled blobs
+capstone==5.0.9     # disassembly in the readers and in the blob tests
+Pillow==11.3.0      # frame comparison in the Class B image checks

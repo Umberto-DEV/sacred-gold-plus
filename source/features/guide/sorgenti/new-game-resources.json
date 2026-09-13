@@ -1,0 +1,1290 @@
+{
+  "kind": "read-only-new-game-host-contract",
+  "private_evidence": "<scratch>",
+  "roms": {
+    "en": {
+      "r5_path": "<scratch> Gold Plus 1.05 EVIV TEST EN.nds",
+      "r5_sha256": "a1d7ed3ecb8aa98f96f65c17015cb49df5bda84323459cb17fd3d4c4501f556e",
+      "base_path": "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/$SGP_ROM_DIR/us-retail-to-en-plus.nds",
+      "base_sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "arm9_static_sha256": "ce9707ad973edfa045505ce65f9c6bce7839be0a8b7443369e3891facc03ff87",
+      "overlays": {
+        "36": {
+          "ram": "0x21e5900",
+          "ram_end_exclusive": "0x21e5c60",
+          "bytes": 864,
+          "bss_bytes": 0,
+          "file_id": 36,
+          "decompressed_sha256": "7d8cb8a0b0d2cb1865ffb09066f20a191eb06f8ae41f250828829c23c5b96acc",
+          "base_identical": true,
+          "rom_file_sha256": "0f233e0cce068152861f810559e89d1e4c3b41f4b24cea1e4327a664cd67e778"
+        },
+        "53": {
+          "ram": "0x21e5900",
+          "ram_end_exclusive": "0x21e88a0",
+          "bytes": 12192,
+          "bss_bytes": 0,
+          "file_id": 53,
+          "decompressed_sha256": "19a3c683b5e82e37d71bb3cab902b106c14694676550482c15fcdf6c4a850ac0",
+          "base_identical": true,
+          "rom_file_sha256": "856175e8d18283462a781bc9cea686ece84262f462dfd155e3698d6acd5756a2"
+        },
+        "74": {
+          "ram": "0x2227060",
+          "ram_end_exclusive": "0x223d080",
+          "bytes": 90144,
+          "bss_bytes": 6528,
+          "file_id": 74,
+          "decompressed_sha256": "dff34f90067bd90bd660367c9adfb5899ce857f363fd6ea1329a29dc08a781aa",
+          "base_identical": true,
+          "rom_file_sha256": "339c3fe1699927762dd34e2f42be093306bdddef8a5570ddeb1bbdd7a070581d"
+        }
+      }
+    },
+    "it": {
+      "r5_path": "<scratch> Gold Plus 1.05 EVIV TEST IT.nds",
+      "r5_sha256": "96c41b594349e22c34789a52123327093b78e92a5be926f4e3000dd32a8e8ed3",
+      "base_path": "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/$SGP_ROM_DIR/it-retail-to-it-plus.nds",
+      "base_sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
+      "arm9_static_sha256": "46c2a921731ee318a5f442d9f85c99cf5dc59120196b6ff9c62a8b068b666432",
+      "overlays": {
+        "36": {
+          "ram": "0x21e5900",
+          "ram_end_exclusive": "0x21e5c60",
+          "bytes": 864,
+          "bss_bytes": 0,
+          "file_id": 36,
+          "decompressed_sha256": "7d8cb8a0b0d2cb1865ffb09066f20a191eb06f8ae41f250828829c23c5b96acc",
+          "base_identical": true,
+          "rom_file_sha256": "0f233e0cce068152861f810559e89d1e4c3b41f4b24cea1e4327a664cd67e778"
+        },
+        "53": {
+          "ram": "0x21e5900",
+          "ram_end_exclusive": "0x21e88a0",
+          "bytes": 12192,
+          "bss_bytes": 0,
+          "file_id": 53,
+          "decompressed_sha256": "19a3c683b5e82e37d71bb3cab902b106c14694676550482c15fcdf6c4a850ac0",
+          "base_identical": true,
+          "rom_file_sha256": "856175e8d18283462a781bc9cea686ece84262f462dfd155e3698d6acd5756a2"
+        },
+        "74": {
+          "ram": "0x2227060",
+          "ram_end_exclusive": "0x223d080",
+          "bytes": 90144,
+          "bss_bytes": 6528,
+          "file_id": 74,
+          "decompressed_sha256": "dff34f90067bd90bd660367c9adfb5899ce857f363fd6ea1329a29dc08a781aa",
+          "base_identical": true,
+          "rom_file_sha256": "339c3fe1699927762dd34e2f42be093306bdddef8a5570ddeb1bbdd7a070581d"
+        }
+      }
+    }
+  },
+  "binary_intervals": [
+    {
+      "name": "NewGame_Init",
+      "overlay": 36,
+      "address": "0x21e5900",
+      "end_exclusive": "0x21e5918",
+      "first8": "08b5022203204b21",
+      "sha256": "6ddf3051772fded05b5e4be056720bc26468fcd26c63861793eab5ccaf115846",
+      "bytes": 24,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "NewGame_Exec",
+      "overlay": 36,
+      "address": "0x21e5918",
+      "end_exclusive": "0x21e592c",
+      "first8": "08b521f6c3fc8168",
+      "sha256": "3145a98b5a37ec95c0f3135ff51e7805583c77a65544e8b143a2207a41428110",
+      "bytes": 20,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "NewGame_Exit",
+      "overlay": 36,
+      "address": "0x21e592c",
+      "end_exclusive": "0x21e5948",
+      "first8": "08b54b2035f648f8",
+      "sha256": "9f000ecdf2eb2f905eb5414f1703ab96cc940fc81f2939cc0b035986244a7f7d",
+      "bytes": 28,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "AfterOak_Init",
+      "overlay": 36,
+      "address": "0x21e5948",
+      "end_exclusive": "0x21e5960",
+      "first8": "08b5022203204b21",
+      "sha256": "9f7f90b56cd28e70dffe83da609dfb043c355dabd6f900cd6fc68b8cbf7cca2f",
+      "bytes": 24,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "AfterOak_Exec",
+      "overlay": 36,
+      "address": "0x21e5960",
+      "end_exclusive": "0x21e5980",
+      "first8": "10b521f69ffc8468",
+      "sha256": "680136f972301e0f285f9dca18076e81c0e7f6dd126e1e9bb9270e5d13c9653f",
+      "bytes": 32,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "AfterOak_Exit",
+      "overlay": 36,
+      "address": "0x21e5980",
+      "end_exclusive": "0x21e599c",
+      "first8": "08b54b2035f61ef8",
+      "sha256": "c4009216df946cf400e46fdee72f0757ef1b771451ea0ad44fc2161eaf2c70f4",
+      "bytes": 28,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "NewGame_InitSaveData",
+      "overlay": 36,
+      "address": "0x21e5bc8",
+      "end_exclusive": "0x21e5bfc",
+      "first8": "10b50c1c201c41f6",
+      "sha256": "fc3357d66093551dcd785ad75e59d9ee8df3a0962867943d67e607f072525434",
+      "bytes": 52,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_Init",
+      "overlay": 53,
+      "address": "0x21e5900",
+      "end_exclusive": "0x21e5994",
+      "first8": "38b582b00122051c",
+      "sha256": "923701c04f8f3b84323fcb291ffb3c04e5bf5d8d300d7d1c33bc817d4b590d24",
+      "bytes": 148,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_Main",
+      "overlay": 53,
+      "address": "0x21e5994",
+      "end_exclusive": "0x21e5b48",
+      "first8": "78b583b00d1c21f6",
+      "sha256": "36f24e28f56a1c535a40413db255883ca42fc82a41effee72e3395d8b522e6a9",
+      "bytes": 436,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_Exit",
+      "overlay": 53,
+      "address": "0x21e5b48",
+      "end_exclusive": "0x21e5bcc",
+      "first8": "70b5061c21f6a0fb",
+      "sha256": "bcbffe2d24bc6a49df9faf3ea486e7696f2d35567c04b05cb4cec6ae7bd2cbd0",
+      "bytes": 132,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_VBlank",
+      "overlay": 53,
+      "address": "0x21e5bcc",
+      "end_exclusive": "0x21e5bdc",
+      "first8": "08b5806939f670f9",
+      "sha256": "0f9d57dbbd9623dc01025279fab4065d0a1f861e6e0e8b54552e5dbdb331846c",
+      "bytes": 16,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_InitBgs",
+      "overlay": 53,
+      "address": "0x21e5bdc",
+      "end_exclusive": "0x21e5de0",
+      "first8": "38b59eb0794d041c",
+      "sha256": "76c580e8019020715c495ea6fa058546068d9fa2deea358e02b502b8144dba74",
+      "bytes": 516,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_InitMsgPrinter",
+      "overlay": 53,
+      "address": "0x21e5e6c",
+      "end_exclusive": "0x21e5eb8",
+      "first8": "10b5041c23680120",
+      "sha256": "54a6bea21102f84a57625ba1ce753b4dbbbd672a8f6406b19a74851d3a8d551a",
+      "bytes": 76,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "Oak_DoMainTask",
+      "overlay": 53,
+      "address": "0x21e6f9c",
+      "end_exclusive": "0x21e7d04",
+      "first8": "38b584b0041ce168",
+      "sha256": "d4e8ccc53f8db26ecc395645ac1df6fe1c9afddc188135b720a5c15a22376af9",
+      "bytes": 3432,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "MainMenu_QueueSelectedApp",
+      "overlay": 74,
+      "address": "0x2228b8c",
+      "end_exclusive": "0x2228c60",
+      "first8": "08b5806d092846d8",
+      "sha256": "2c5bf18aaedef6ad02313ed1186cd059aa8ec7913834ec7cb90dabd515832d89",
+      "bytes": 212,
+      "mode": "Thumb",
+      "language": "en"
+    },
+    {
+      "name": "NewGame_Init",
+      "overlay": 36,
+      "address": "0x21e5900",
+      "end_exclusive": "0x21e5918",
+      "first8": "08b5022203204b21",
+      "sha256": "6ddf3051772fded05b5e4be056720bc26468fcd26c63861793eab5ccaf115846",
+      "bytes": 24,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "NewGame_Exec",
+      "overlay": 36,
+      "address": "0x21e5918",
+      "end_exclusive": "0x21e592c",
+      "first8": "08b521f6c3fc8168",
+      "sha256": "3145a98b5a37ec95c0f3135ff51e7805583c77a65544e8b143a2207a41428110",
+      "bytes": 20,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "NewGame_Exit",
+      "overlay": 36,
+      "address": "0x21e592c",
+      "end_exclusive": "0x21e5948",
+      "first8": "08b54b2035f648f8",
+      "sha256": "9f000ecdf2eb2f905eb5414f1703ab96cc940fc81f2939cc0b035986244a7f7d",
+      "bytes": 28,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "AfterOak_Init",
+      "overlay": 36,
+      "address": "0x21e5948",
+      "end_exclusive": "0x21e5960",
+      "first8": "08b5022203204b21",
+      "sha256": "9f7f90b56cd28e70dffe83da609dfb043c355dabd6f900cd6fc68b8cbf7cca2f",
+      "bytes": 24,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "AfterOak_Exec",
+      "overlay": 36,
+      "address": "0x21e5960",
+      "end_exclusive": "0x21e5980",
+      "first8": "10b521f69ffc8468",
+      "sha256": "680136f972301e0f285f9dca18076e81c0e7f6dd126e1e9bb9270e5d13c9653f",
+      "bytes": 32,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "AfterOak_Exit",
+      "overlay": 36,
+      "address": "0x21e5980",
+      "end_exclusive": "0x21e599c",
+      "first8": "08b54b2035f61ef8",
+      "sha256": "c4009216df946cf400e46fdee72f0757ef1b771451ea0ad44fc2161eaf2c70f4",
+      "bytes": 28,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "NewGame_InitSaveData",
+      "overlay": 36,
+      "address": "0x21e5bc8",
+      "end_exclusive": "0x21e5bfc",
+      "first8": "10b50c1c201c41f6",
+      "sha256": "fc3357d66093551dcd785ad75e59d9ee8df3a0962867943d67e607f072525434",
+      "bytes": 52,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_Init",
+      "overlay": 53,
+      "address": "0x21e5900",
+      "end_exclusive": "0x21e5994",
+      "first8": "38b582b00122051c",
+      "sha256": "923701c04f8f3b84323fcb291ffb3c04e5bf5d8d300d7d1c33bc817d4b590d24",
+      "bytes": 148,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_Main",
+      "overlay": 53,
+      "address": "0x21e5994",
+      "end_exclusive": "0x21e5b48",
+      "first8": "78b583b00d1c21f6",
+      "sha256": "36f24e28f56a1c535a40413db255883ca42fc82a41effee72e3395d8b522e6a9",
+      "bytes": 436,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_Exit",
+      "overlay": 53,
+      "address": "0x21e5b48",
+      "end_exclusive": "0x21e5bcc",
+      "first8": "70b5061c21f6a0fb",
+      "sha256": "bcbffe2d24bc6a49df9faf3ea486e7696f2d35567c04b05cb4cec6ae7bd2cbd0",
+      "bytes": 132,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_VBlank",
+      "overlay": 53,
+      "address": "0x21e5bcc",
+      "end_exclusive": "0x21e5bdc",
+      "first8": "08b5806939f670f9",
+      "sha256": "0f9d57dbbd9623dc01025279fab4065d0a1f861e6e0e8b54552e5dbdb331846c",
+      "bytes": 16,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_InitBgs",
+      "overlay": 53,
+      "address": "0x21e5bdc",
+      "end_exclusive": "0x21e5de0",
+      "first8": "38b59eb0794d041c",
+      "sha256": "76c580e8019020715c495ea6fa058546068d9fa2deea358e02b502b8144dba74",
+      "bytes": 516,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_InitMsgPrinter",
+      "overlay": 53,
+      "address": "0x21e5e6c",
+      "end_exclusive": "0x21e5eb8",
+      "first8": "10b5041c23680120",
+      "sha256": "54a6bea21102f84a57625ba1ce753b4dbbbd672a8f6406b19a74851d3a8d551a",
+      "bytes": 76,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "Oak_DoMainTask",
+      "overlay": 53,
+      "address": "0x21e6f9c",
+      "end_exclusive": "0x21e7d04",
+      "first8": "38b584b0041ce168",
+      "sha256": "d4e8ccc53f8db26ecc395645ac1df6fe1c9afddc188135b720a5c15a22376af9",
+      "bytes": 3432,
+      "mode": "Thumb",
+      "language": "it"
+    },
+    {
+      "name": "MainMenu_QueueSelectedApp",
+      "overlay": 74,
+      "address": "0x2228b8c",
+      "end_exclusive": "0x2228c60",
+      "first8": "08b5806d092846d8",
+      "sha256": "2c5bf18aaedef6ad02313ed1186cd059aa8ec7913834ec7cb90dabd515832d89",
+      "bytes": 212,
+      "mode": "Thumb",
+      "language": "it"
+    }
+  ],
+  "runtime": {
+    "en": {
+      "frame": 2375,
+      "source_ram_snapshot": "<scratch>",
+      "ram_sha256": "e486cc596ff1c18fe979a06ddb2ea84c147d9615f60c6e5f0e094da7792a09db",
+      "regs_sha256": "9a4e591aa131757c30ba0b0a132660725e35126dfd89da4159b82278d5fea084",
+      "sub_vram_sha256": "af355bcff10f10a9ea6e316dec17bc52f127b8246a37dc99cd69efd79cfdbc3f",
+      "sub_palette_sha256": "01e0071351f6a7fdef631226100dc2425d74e19d6cf5b25c4f25563de41b168a",
+      "pc": "0x20d3f64",
+      "callback": "0x021e5bcd",
+      "manager": "0x226f27c",
+      "data": "0x22a0244",
+      "bg_config": "0x22a08d4",
+      "outer_state": 1,
+      "inner_state": 0,
+      "loaded_overlay53_matches_rom": true,
+      "heap": {
+        "id": 80,
+        "logical_capacity": 262144,
+        "handle": "0x22a01ec",
+        "index": 4,
+        "start": "0x22a0224",
+        "end_exclusive": "0x22e01ec",
+        "free_blocks": [
+          {
+            "address": "0x22a7218",
+            "size": 8
+          },
+          {
+            "address": "0x22b1390",
+            "size": 191744
+          }
+        ],
+        "used_count": 150,
+        "total_free": 191752,
+        "largest_free": 191744,
+        "free_and_used_links_signatures_bounds_verified": true,
+        "lease_0x5800_fits_statically": true,
+        "runtime_lease_test": "not executed"
+      },
+      "font": {
+        "work": "0x2111890",
+        "font0": "0x229f86c",
+        "mode": 1,
+        "glyph_function": "0x2026111",
+        "narc_buffer": "0x0",
+        "narc": "0x229f908",
+        "refcounts": [
+          1,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "font_data_sha256": "8f5e09722577980958758d09ba9b966c2e6d7a59cb019bb9852d58b419b813ea"
+      },
+      "bgs": [
+        {
+          "id": 0,
+          "control": "0xf19",
+          "tilemap_pointer": "0x22a0a5c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x18000",
+          "screen_base": "0x7800"
+        },
+        {
+          "id": 1,
+          "control": "0xe15",
+          "tilemap_pointer": "0x22a127c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x14000",
+          "screen_base": "0x7000"
+        },
+        {
+          "id": 2,
+          "control": "0xd11",
+          "tilemap_pointer": "0x22a1a9c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x10000",
+          "screen_base": "0x6800"
+        },
+        {
+          "id": 3,
+          "control": "0xc0d",
+          "tilemap_pointer": "0x22a22bc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0xc000",
+          "screen_base": "0x6000"
+        },
+        {
+          "id": 4,
+          "control": "0xf18",
+          "tilemap_pointer": "0x22a2adc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x18000",
+          "screen_base": "0x7800"
+        },
+        {
+          "id": 5,
+          "control": "0xe14",
+          "tilemap_pointer": "0x22a32fc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x14000",
+          "screen_base": "0x7000"
+        },
+        {
+          "id": 6,
+          "control": "0xd10",
+          "tilemap_pointer": "0x22a3b1c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x10000",
+          "screen_base": "0x6800"
+        },
+        {
+          "id": 7,
+          "control": "0xc0f",
+          "tilemap_pointer": "0x22a433c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0xc000",
+          "screen_base": "0x6000"
+        }
+      ],
+      "display": {
+        "main_dispcnt": "0x11010",
+        "sub_dispcnt": "0x11010",
+        "main_master_brightness": "0x8010",
+        "sub_master_brightness": "0x8010",
+        "sub_bldcnt": "0x3944",
+        "sub_bldalpha": "0x1f",
+        "sub_bldy": "0x0",
+        "bank_bytes": [
+          129,
+          130,
+          132,
+          0,
+          128,
+          128,
+          128,
+          0,
+          130
+        ],
+        "wramcnt": 3,
+        "bank_registers_offset": "VRAMCNT A-G 0x240-0x246; WRAMCNT0x247; VRAMCNT H-I0x248-0x249"
+      },
+      "borrow": {
+        "characters_address": "0x06218020",
+        "characters_end_exclusive": "0x0621a440",
+        "characters_bytes": 9248,
+        "characters_sha256": "bd694d15caad8ad180be8aa28943d8b4c91054d0d6d1917d43a75fd68a3a4df3",
+        "cpu_map_address": "0x22a2adc",
+        "gpu_map_address": "0x06207800",
+        "map_bytes": 2048,
+        "cpu_gpu_map_equal": true,
+        "map_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+        "tilemap_zero": true,
+        "palette_slot": 14,
+        "palette_address": "0x050005c0",
+        "palette_sha256": "ab468d27a91147c79335455bfe25e7d7d8995a11fa6c8a61542e8862882216cb",
+        "palette_rgb555": [
+          14099,
+          10603,
+          24309,
+          2205,
+          24255,
+          3909,
+          18355,
+          32192,
+          30447,
+          24159,
+          29567,
+          0,
+          0,
+          0,
+          0,
+          32767
+        ]
+      }
+    },
+    "it": {
+      "frame": 2374,
+      "source_ram_snapshot": "<scratch>",
+      "ram_sha256": "0b21239653216d0baa6c559549e700db3e588361c46f32b356b4f0c7d86fda23",
+      "regs_sha256": "b9f8c5aa88c80e3c3c5ff8520d8667b9ac887e31adf7f5dd687e91e92b0a6ada",
+      "sub_vram_sha256": "364b496ec2a687d61d7a0fee90d1e34f3328181a9ba1eda28762a5d57a2b2993",
+      "sub_palette_sha256": "4e64864cdb818b79436df773a0631f0a116ca47cad5b8b56e612b8c48dfde2bb",
+      "pc": "0x20d3f64",
+      "callback": "0x021e5bcd",
+      "manager": "0x226f27c",
+      "data": "0x22a0244",
+      "bg_config": "0x22a08d4",
+      "outer_state": 1,
+      "inner_state": 0,
+      "loaded_overlay53_matches_rom": true,
+      "heap": {
+        "id": 80,
+        "logical_capacity": 262144,
+        "handle": "0x22a01ec",
+        "index": 4,
+        "start": "0x22a0224",
+        "end_exclusive": "0x22e01ec",
+        "free_blocks": [
+          {
+            "address": "0x22a7218",
+            "size": 8
+          },
+          {
+            "address": "0x22b1390",
+            "size": 191744
+          }
+        ],
+        "used_count": 150,
+        "total_free": 191752,
+        "largest_free": 191744,
+        "free_and_used_links_signatures_bounds_verified": true,
+        "lease_0x5800_fits_statically": true,
+        "runtime_lease_test": "not executed"
+      },
+      "font": {
+        "work": "0x2111890",
+        "font0": "0x229f86c",
+        "mode": 1,
+        "glyph_function": "0x2026111",
+        "narc_buffer": "0x0",
+        "narc": "0x229f908",
+        "refcounts": [
+          1,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        "font_data_sha256": "a68dcce0e45baca89be6f96b2503ab043bee731bfb16b89f22517d0646f859e5"
+      },
+      "bgs": [
+        {
+          "id": 0,
+          "control": "0xf19",
+          "tilemap_pointer": "0x22a0a5c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x18000",
+          "screen_base": "0x7800"
+        },
+        {
+          "id": 1,
+          "control": "0xe15",
+          "tilemap_pointer": "0x22a127c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x14000",
+          "screen_base": "0x7000"
+        },
+        {
+          "id": 2,
+          "control": "0xd11",
+          "tilemap_pointer": "0x22a1a9c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x10000",
+          "screen_base": "0x6800"
+        },
+        {
+          "id": 3,
+          "control": "0xc0d",
+          "tilemap_pointer": "0x22a22bc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0xc000",
+          "screen_base": "0x6000"
+        },
+        {
+          "id": 4,
+          "control": "0xf18",
+          "tilemap_pointer": "0x22a2adc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x18000",
+          "screen_base": "0x7800"
+        },
+        {
+          "id": 5,
+          "control": "0xe14",
+          "tilemap_pointer": "0x22a32fc",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x14000",
+          "screen_base": "0x7000"
+        },
+        {
+          "id": 6,
+          "control": "0xd10",
+          "tilemap_pointer": "0x22a3b1c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0x10000",
+          "screen_base": "0x6800"
+        },
+        {
+          "id": 7,
+          "control": "0xc0f",
+          "tilemap_pointer": "0x22a433c",
+          "map_bytes": 2048,
+          "base_tile": 0,
+          "scroll_x": 0,
+          "scroll_y": 0,
+          "packed_type_size_color_tile_bytes": "0x20000100",
+          "character_base": "0xc000",
+          "screen_base": "0x6000"
+        }
+      ],
+      "display": {
+        "main_dispcnt": "0x11010",
+        "sub_dispcnt": "0x11010",
+        "main_master_brightness": "0x8010",
+        "sub_master_brightness": "0x8010",
+        "sub_bldcnt": "0x3944",
+        "sub_bldalpha": "0x1f",
+        "sub_bldy": "0x0",
+        "bank_bytes": [
+          129,
+          130,
+          132,
+          0,
+          128,
+          128,
+          128,
+          0,
+          130
+        ],
+        "wramcnt": 3,
+        "bank_registers_offset": "VRAMCNT A-G 0x240-0x246; WRAMCNT0x247; VRAMCNT H-I0x248-0x249"
+      },
+      "borrow": {
+        "characters_address": "0x06218020",
+        "characters_end_exclusive": "0x0621a440",
+        "characters_bytes": 9248,
+        "characters_sha256": "bd694d15caad8ad180be8aa28943d8b4c91054d0d6d1917d43a75fd68a3a4df3",
+        "cpu_map_address": "0x22a2adc",
+        "gpu_map_address": "0x06207800",
+        "map_bytes": 2048,
+        "cpu_gpu_map_equal": true,
+        "map_sha256": "e5a00aa9991ac8a5ee3109844d84a55583bd20572ad3ffcd42792f3c36b183ad",
+        "tilemap_zero": true,
+        "palette_slot": 14,
+        "palette_address": "0x050005c0",
+        "palette_sha256": "ab468d27a91147c79335455bfe25e7d7d8995a11fa6c8a61542e8862882216cb",
+        "palette_rgb555": [
+          14099,
+          10603,
+          24309,
+          2205,
+          24255,
+          3909,
+          18355,
+          32192,
+          30447,
+          24159,
+          29567,
+          0,
+          0,
+          0,
+          0,
+          32767
+        ]
+      }
+    }
+  },
+  "templates": {
+    "new_game": {
+      "overlay": 36,
+      "address": "0x021e5c24",
+      "entries": [
+        "0x021e5901",
+        "0x021e5919",
+        "0x021e592d",
+        "0xffffffff"
+      ],
+      "sha256": "8eb09e518c81226c92bc954eaf150bcc7d68ba13a54e9750913f83e071cf12a5",
+      "bases_and_r5_en_it_identical": true
+    },
+    "after_oak": {
+      "overlay": 36,
+      "address": "0x021e5c14",
+      "entries": [
+        "0x021e5949",
+        "0x021e5961",
+        "0x021e5981",
+        "0xffffffff"
+      ],
+      "sha256": "8cfc914bf729b579cd78393c05ff281ebefbd9597f6162c36582fe9bf8e45352",
+      "bases_and_r5_en_it_identical": true
+    },
+    "oak": {
+      "storage": "ARM9 static",
+      "address": "0x02106068",
+      "entries": [
+        "0x021e5901",
+        "0x021e5995",
+        "0x021e5b49",
+        "0x00000035"
+      ],
+      "sha256": "233aee05185dd1d096a51f1be40fce8f337280ac1b71ae202dece3e3a52f8edb",
+      "bases_and_r5_en_it_identical": true
+    }
+  },
+  "observer": {
+    "manifest_path": "<scratch>",
+    "manifest_sha256": "df06da380cb93091b7e5aa504f88d0f5d7a520221649c6c2234eed9e1e3f2ab6",
+    "kind": "read-only-itcm-and-halfword-bus-observer",
+    "original_source_sha256": "ff94c480fbf56ab60749ff1d2dcf2b409224ecdcae2123d71c5165ec43d34552",
+    "prepared_source_sha256": "02c0ce7c51d97d4b51722ae3cc9ad743e0ac4a197979ec5803330d4a39bb5fd5",
+    "binary_sha256": "f918f1afb00a1aeff3833d655f5ad078dc680e4ba663ee9c1d7a381c4bed2af1",
+    "inputs": {
+      "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/CMakeFiles/hg_runtime.dir/platform.cpp.o": "8170cb4abccd6788e155be29063b5f664e579ccc131fd7a2fd9ecc09bda42dce",
+      "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/melonds/src/libcore.a": "a29eed98e1d67085c08fe95bece56c7354bd620cb0c5b5315d534ae7516cef1b",
+      "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/melonds/src/teakra/src/libteakra.a": "7a2bdeff592c8cc1e1c4290c15c5cada428b3c958e818cf21f4f7d8877a8972a"
+    },
+    "commands": [
+      [
+        "/usr/bin/c++",
+        "-O3",
+        "-DNDEBUG",
+        "-std=gnu++17",
+        "-arch",
+        "arm64",
+        "-fwrapv",
+        "-I<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<melonDS checkout>/src",
+        "-I<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/melonds/src",
+        "-I<home>/Desktop/PERSONAL/Sacred Gold Plus Community/rom-tools/runtime",
+        "-c",
+        "<scratch>",
+        "-o",
+        "<scratch>"
+      ],
+      [
+        "/usr/bin/c++",
+        "-O3",
+        "-DNDEBUG",
+        "-arch",
+        "arm64",
+        "<scratch>",
+        "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/CMakeFiles/hg_runtime.dir/platform.cpp.o",
+        "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/melonds/src/libcore.a",
+        "<home>/Desktop/PERSONAL/Sacred Gold Plus Community/lab/<build>/melonds/src/teakra/src/libteakra.a",
+        "-o",
+        "<scratch>"
+      ]
+    ],
+    "change": "Physical ITCM plus aligned ARM9Read16 bus snapshots; no game writes or core modifications."
+  },
+  "runtime_configuration": {
+    "core_revision": "906e9ebb27da8c6a715cd7abab4abfe8a8d29427",
+    "cpu": "interpreter",
+    "jit": false,
+    "renderer": "software",
+    "resolution": 1,
+    "cheats": 0,
+    "freezes": 0,
+    "bios": "FreeBIOS",
+    "firmware": "generated",
+    "RTC": "2026-09-05 12:00:00",
+    "input_save": null,
+    "preparation": "No existing SRAM; ordinary button/touch sequence only. No ROM/RAM write/cheat/freeze command."
+  },
+  "scripts": {
+    "locate.script": {
+      "path": "<scratch>",
+      "sha256": "d06ecd4377644f9a3fc878671093a6730eee4e737319b1f0f7d5cf9d11bea031"
+    },
+    "locate2.script": {
+      "path": "<scratch>",
+      "sha256": "5f2404504b2dd2476111666610a88ac30a1d717d5edaa61c4156878173af7ebc"
+    },
+    "setup.script": {
+      "path": "<scratch>",
+      "sha256": "cf9fbca02e42d432b0f70e820cf28686031c088307a8aa53de1b005fe4a4d528"
+    }
+  },
+  "existing_scripts": {
+    "newgame-keyboard.script": "f8258ebb9ad39ee52322a9497a455909e59e48a3647e794081e3f11e5491f0c4",
+    "boot-save.script": "306e9124871e4435808bbe7438cb42b1b2bdd5cf134d650476e9d969813c5320",
+    "cold-reload.script": "afe17d0736a00a30b778a777ecc453964ccd0bf1a756ff4e27a50d60e8f799d8"
+  },
+  "sources": [
+    {
+      "path": "src/oaks_speech.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/oaks_speech.c",
+      "bytes": 87497,
+      "sha256": "81e93240901df09bbd1b05c4620e58cf9c1ddbddcbdff8b43e0c7ac4a1a03fe2",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/application/main_menu/main_menu.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/application/main_menu/main_menu.c",
+      "bytes": 52256,
+      "sha256": "250923ca9b8a7b2c3955e90e1dcee2886c5f934c5ac555b0ecf77710fefe142c",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/oaks_speech.h",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/oaks_speech.h",
+      "bytes": 450,
+      "sha256": "cfa819b99578eb82ab3235064504e4f4190c7093b0135faff3f15b3ebac270a1",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/oaks_speech_internal.h",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/oaks_speech_internal.h",
+      "bytes": 3056,
+      "sha256": "d776f4e34eb0b52c7f8275f553d51d3df4dc292c9b63e4a718ff63153c5fd8df",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/main.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/main.c",
+      "bytes": 9382,
+      "sha256": "9857aba7d5eee17efcf6c5c937b3d7aaca9cc9fa822ede4b04167eff857d7087",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/text.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/text.c",
+      "git_blob_sha": "7e02f0995ec4b157fc8e2f91787a1c2ccf8ac117",
+      "sha256": "3f370dfc46655fddf05e784392440fad0bec6a17d96c7d8fd4bd171f89682b69",
+      "bytes": 10119,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/text.h",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/text.h",
+      "git_blob_sha": "f29d0c0bf0bc97b82de3074cdc746b7486cc9e82",
+      "sha256": "6e870972ce09740816659647b99e879e8f83867daf7ebc0b04386102efccbaa3",
+      "bytes": 1362,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/pm_string.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/pm_string.c",
+      "git_blob_sha": "8c3b80622feb847c3ee578a801c304e66771e979",
+      "sha256": "051bd1380bec7d261c8d5772a0ae77cdb46a7531d74c5d0be4a5f6cb90433e82",
+      "bytes": 11425,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/pm_string.h",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/pm_string.h",
+      "git_blob_sha": "dd1dd68c7ecbdf66aac5774b0eb6be8c8f8858c3",
+      "sha256": "6b9f116698c7e5918962559bc87139ad8a4a79735263fa7949084bc34b311977",
+      "bytes": 1634,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/render_text.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/render_text.c",
+      "git_blob_sha": "f008caca06311b1ce65494b7180fad3ffe9e2c45",
+      "sha256": "fe1f86f7a7778a002adce692fe826174b1d7762aa22c959c25484a842347ce2b",
+      "bytes": 19684,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/render_text.h",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/render_text.h",
+      "git_blob_sha": "55c15a20066062f805ad6c2adcbf40d013405094",
+      "sha256": "2c9967396f4b0e1b059a8da43f38ca05a98b9010fd54b5bb6111fe8fc13e9ebf",
+      "bytes": 1628,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/overlay_36.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/overlay_36.c",
+      "git_blob_sha": "bffdfd8b6518424adade6130811c4525ba96f02e",
+      "sha256": "29009c40b9ec4c7e3e91971430db5004095bbde3950ca10dd456d95f26b38887",
+      "bytes": 9132,
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "include/bg_window.h",
+      "sha256": "7b149412fcd5d02c355a2969111378668a76cbca386def3d83eb1ad460248ebf",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/include/bg_window.h",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/bg_window.c",
+      "sha256": "6178416960681f9926ad5459ea31e8e1a52f9eb796aa8650ad4e86d47eeb8cab",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/bg_window.c",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/font.c",
+      "sha256": "43c7616ceba37f7bf86364c75c7236d9dee28781429465b4fc301f14f34e79ff",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/font.c",
+      "local_path": "<scratch>"
+    },
+    {
+      "path": "src/font_data.c",
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/src/font_data.c",
+      "sha256": "308e5083177eb936e1eb342ea191e3accdcc46fcc58fbb0bdeb86eaa84773ce5",
+      "local_path": "<scratch>"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/pret/pokeheartgold/0985e8718df4f25e64d6507d89c0c97c0d288981/lib/asm/nnsys.s",
+      "bytes": 543587,
+      "sha256": "6ee4c095cf3c47483540883d66701126bc06f8ff8cd52047e646802af0ed4314",
+      "local_path": "<scratch>"
+    }
+  ],
+  "helpers": [
+    {
+      "name": "OverlayManager_GetData",
+      "address": "0x2007290",
+      "bytes": 4,
+      "mode": "Thumb",
+      "first8": "c0697047",
+      "sha256": "4364c4e11050cbae18db57d41eb4a01bcbfb92ca9c17bbe77fa0a68c3b4f3a3e",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "OverlayManager_GetArgs",
+      "address": "0x20072a4",
+      "bytes": 4,
+      "mode": "Thumb",
+      "first8": "80697047",
+      "sha256": "725c20c79b7f20c5c98b33eab6a6370200b22894599a863eed16bd0ae8871fff",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "OverlayManager_CreateAndGetData",
+      "address": "0x2007280",
+      "bytes": 16,
+      "mode": "Thumb",
+      "first8": "10b5041c101c13f0",
+      "sha256": "5b4f381dba08a9abe1369827eea7ba413e57b21f1bdc819407a833c1bac12024",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "RegisterMainOverlay",
+      "address": "0x2000ef4",
+      "bytes": 32,
+      "mode": "Thumb",
+      "first8": "38b5051c05480c1c",
+      "sha256": "b26cbc149278ab36b052e41fb3acc90e49bb0859181626549ff597cb39dc4a15",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "FontID_Alloc",
+      "address": "0x2002cec",
+      "bytes": 84,
+      "mode": "Thumb",
+      "first8": "38b5051c1048ac00",
+      "sha256": "cd45c5b3f4b32a181c2d44d0f3ca9737e3c5349ad5690774e00c2c06dce3328c",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "FontID_SetAccessDirect",
+      "address": "0x2002d40",
+      "bytes": 60,
+      "mode": "Thumb",
+      "first8": "38b5041c0d1c062c",
+      "sha256": "defeda8cc02d0626debc11a5ed88ac59134e3d75931290ed8f497ba12b3c09a1",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "FontID_TryLoadGlyph",
+      "address": "0x2002e7c",
+      "bytes": 36,
+      "mode": "Thumb",
+      "first8": "08b5054a80001268",
+      "sha256": "24a227a957a14ff2a98dfe2ae46dcb2ee18b1edf583c89e440c3910afcaeb337",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "name": "DecompressGlyphTiles_LazyFromNarc",
+      "address": "0x2026110",
+      "bytes": 176,
+      "mode": "Thumb",
+      "first8": "70b5041c0e1c151c",
+      "sha256": "11c2d7af34c8945f60d4ec0ac866179ca9d99fd4db335031ecce8893cac8b082",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34296736,
+      "bytes": 48,
+      "sha256": "a14db1696b85f30d2d84cf68bd866264dc33645aa780f691b9ff17512ebdad65",
+      "name": "NNS_FndAllocFromExpHeapEx",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34297136,
+      "bytes": 60,
+      "sha256": "90138c6a90eb6dc5c9596294f11506eefcd68ae6c475ba863045505bc4b9aed3",
+      "name": "NNS_FndFreeToExpHeap",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34421304,
+      "bytes": 20,
+      "sha256": "a8cdb747f9936730571b220bb9570615892665b120713ffc59b1cb2d7dee76ff",
+      "name": "OS_DisableInterrupts",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34421324,
+      "bytes": 24,
+      "sha256": "46b5111b6fad094dfff177dca974d33b477cb72772ecfe95b74b1c7f656bc4fd",
+      "name": "OS_RestoreInterrupts",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34296072,
+      "bytes": 180,
+      "sha256": "77c1ccc6472d962fc69635f962d2fcc66c94ffb63e2852ef87726ec706151903",
+      "name": "AllocFromHead",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34295248,
+      "bytes": 128,
+      "sha256": "3b64c5eb8eea52237cd7bf585fb82699d2da7e4248efbd243db733e3206b4043",
+      "name": "NNSi_FndInitHeapHead",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    },
+    {
+      "address": 34295572,
+      "bytes": 116,
+      "sha256": "d289cc1deb3630f570ce6dae2e5e560d963bbeaaf55ddcfd64cda343035a0337",
+      "name": "InitExpHeap",
+      "mode": "ARM",
+      "bases_and_r5_en_it_identical": true
+    }
+  ],
+  "tables": [
+    {
+      "name": "graphics_banks",
+      "address": "0x21e8628",
+      "bytes": 40,
+      "sha256": "89ec4021f54a3a375949d0988de8698b4d9bb796cb1f5d92a7b3a20188cf972f"
+    },
+    {
+      "name": "graphics_modes",
+      "address": "0x21e8548",
+      "bytes": 16,
+      "sha256": "4cbbd8ca5215b8d161aec181a74b694f4e24b001d5b081dc0030ed797a8973e0"
+    },
+    {
+      "name": "main_bg_template",
+      "address": "0x21e85cc",
+      "bytes": 28,
+      "sha256": "d50544ed785c1c9273ac4066d03824d356d1561597aa2dac181db9ad6955bb11"
+    },
+    {
+      "name": "sub_bg_template",
+      "address": "0x21e85e8",
+      "bytes": 28,
+      "sha256": "77775281446c93e7d08e64309e15198af171aeb8a378401182c503289e07a30e"
+    }
+  ],
+  "keyboard_baseline": {
+    "en": {
+      "path": "<scratch>",
+      "final_frame": 9478,
+      "final_pc": "0x20d3f64",
+      "commands_sha256": "a6871620b0a5e0210bd9ce4ab28fa6a27e1f501c437f9a04a3f71de717f07d49",
+      "frames_sha256": "c83844cd60e1751d0842605777b9b58bc6d91a42c0e1f924e1cb46082d96c487",
+      "keyboard_ppm_sha256": "ec9634226985bc423fbbb0726df395cf849068cdf556aa7f8adcb2b0546d4a5a",
+      "name_confirmation_ppm_sha256": "d148bd795469f13a07f74f074abe0f73d35b94f8245bc114ab6248d71725d922",
+      "visual_review": "Native keyboard and male-player name confirmation visually observed; language-specific test name follows historical touch coordinates. No final YES selected, no new-game SAVE claim.",
+      "no_input_save": true
+    },
+    "it": {
+      "path": "<scratch>",
+      "final_frame": 9478,
+      "final_pc": "0x20d3f64",
+      "commands_sha256": "a6871620b0a5e0210bd9ce4ab28fa6a27e1f501c437f9a04a3f71de717f07d49",
+      "frames_sha256": "13057624c8061fc017057e83dc936c4fd763b078d0c2496fc6a55a00c3f68021",
+      "keyboard_ppm_sha256": "36e5b6fe86f0a8a9861a2b9062db2ec3e01325f65dd4810a9403574e715b631d",
+      "name_confirmation_ppm_sha256": "9b28a8b668363cf7facf17fa9207a9da033e0ec67b3c1e752823f47ed312b801",
+      "visual_review": "Native keyboard and male-player name confirmation visually observed; language-specific test name follows historical touch coordinates. No final YES selected, no new-game SAVE claim.",
+      "no_input_save": true
+    }
+  },
+  "reuse_limits": [
+    "Historical boot-save/cold-reload scripts cover an existing town TEST save, not first SAVE after this New Game.",
+    "New r5 keyboard baselines stop at name confirmation; post-confirmation Oak Exit, start location, first SAVE and cold reload remain unobserved in Task4.",
+    "No guide-equivalent wait/skip behavior exists in unchanged r5. Setup checkpoints are pre-guide baseline only.",
+    "No actual heap allocation/release performed; clean release remains integration gate.",
+    "No GUI/Android/Thor or performance claim."
+  ],
+  "preservation": {
+    "historical_files": 39,
+    "historical_reference": "<scratch>",
+    "historical_all_identical": true,
+    "r5_and_base_roms_hash_verified": true,
+    "observer_source_binary_and_three_objects_verified": true,
+    "original_save_files_opened": 0
+  },
+  "proposed_integration": {
+    "recommendation": "Wrap the existing Oak template Init/Main/Exit; show shared pure guide after first legitimate graphics setup before first inner task. No NewGame implementation yet.",
+    "template_words_to_validate": [
+      "0x02106068",
+      "0x0210606c",
+      "0x02106070"
+    ],
+    "overlay_id_word_preserved": "0x02106074 = 53",
+    "instance_state_bytes_budget": 32,
+    "instance_state_location": "Must be explicitly reserved within accepted guide ITCM partition after Task3 review; no fixed gap claimed available.",
+    "total_r5_remaining_itcm_bytes": 6016,
+    "remaining_after_task3": "Not yet accepted or measured; no additional 6016-byte claim.",
+    "heap_lease_bytes": 22528,
+    "no_SaveData_in_presentation": true,
+    "brightness_and_blend_save_restore_required": true,
+    "font0_direct": false,
+    "runtime_lease_clean_return": "Not proven; integration gate"
+  }
+}

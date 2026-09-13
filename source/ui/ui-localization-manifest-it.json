@@ -1,0 +1,4134 @@
+{
+  "schema": 2,
+  "variant": "it",
+  "mode": "guarded release recipe; applied by build_release.py",
+  "source_roms": {
+    "US": "Pokemon - HeartGold Version.nds",
+    "IT": "Pokemon - Versione Oro HeartGold.nds",
+    "SG": "Pokemon - Sacred Gold Plus.nds"
+  },
+  "identity": "English internal identity retained; gGameLanguage and all code/saved-mon language fields unchanged.",
+  "edits": [
+    {
+      "file": "a/0/0/8",
+      "member": 188,
+      "sha256": {
+        "US": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0",
+        "IT": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c",
+        "SG": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 684,
+        "IT": 688,
+        "SG": 684
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 188,
+        "sha256": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 191,
+      "sha256": {
+        "US": "5e52ed1fd29f3e3e561e5abdbbba0da8cf3052c8b844bdf4077f5ce2d19a4540",
+        "IT": "fbf19689c5d0fe5a66366c7a3e027ad9c9c2a61db23bc93b8e9f32ffd47f87cc",
+        "SG": "5e52ed1fd29f3e3e561e5abdbbba0da8cf3052c8b844bdf4077f5ce2d19a4540"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 728,
+        "IT": 732,
+        "SG": 728
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 191,
+        "sha256": "fbf19689c5d0fe5a66366c7a3e027ad9c9c2a61db23bc93b8e9f32ffd47f87cc"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 194,
+      "sha256": {
+        "US": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0",
+        "IT": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c",
+        "SG": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 684,
+        "IT": 688,
+        "SG": 684
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 194,
+        "sha256": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 197,
+      "sha256": {
+        "US": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0",
+        "IT": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c",
+        "SG": "ce9de78a25b272bc517505466fc50a6aadcb1412467b1742b04707176f9f83b0"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 684,
+        "IT": 688,
+        "SG": 684
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 197,
+        "sha256": "0f488020c3a647e969703b6a867f9686fdb29c0bb183e24b1f29e1feef78aa7c"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 200,
+      "sha256": {
+        "US": "82d4f8b41b88de4a52665731967e8965f8b1c5e9425b1cbb59a2df6325a29455",
+        "IT": "99663c275d5146ab3514918b7e581dcafae2003155c093ec0c8c0f6f62bad1e0",
+        "SG": "82d4f8b41b88de4a52665731967e8965f8b1c5e9425b1cbb59a2df6325a29455"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 680,
+        "IT": 680,
+        "SG": 680
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 200,
+        "sha256": "99663c275d5146ab3514918b7e581dcafae2003155c093ec0c8c0f6f62bad1e0"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 203,
+      "sha256": {
+        "US": "82d4f8b41b88de4a52665731967e8965f8b1c5e9425b1cbb59a2df6325a29455",
+        "IT": "99663c275d5146ab3514918b7e581dcafae2003155c093ec0c8c0f6f62bad1e0",
+        "SG": "82d4f8b41b88de4a52665731967e8965f8b1c5e9425b1cbb59a2df6325a29455"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 680,
+        "IT": 680,
+        "SG": 680
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 203,
+        "sha256": "99663c275d5146ab3514918b7e581dcafae2003155c093ec0c8c0f6f62bad1e0"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 219,
+      "sha256": {
+        "US": "bbcf25d18c2b0ba90bd046bd12d363ffe01cd0b0b9d860aaef9be14f54d7e1b6",
+        "IT": "9ff23e349d6eabda2e2972263f4df69300af3eaa2c56d71f21d6d1437ee09bba",
+        "SG": "bbcf25d18c2b0ba90bd046bd12d363ffe01cd0b0b9d860aaef9be14f54d7e1b6"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 200,
+        "IT": 196,
+        "SG": 200
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 219,
+        "sha256": "9ff23e349d6eabda2e2972263f4df69300af3eaa2c56d71f21d6d1437ee09bba"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 220,
+      "sha256": {
+        "US": "18bc19c283b097c6bcadb87dfc75e6916dca0a1e8e093c429e4fc32c533bfddd",
+        "IT": "e68414a523aff8b0fa29a2b08354a0d2d0b1e722df7a81349778864d778af037",
+        "SG": "18bc19c283b097c6bcadb87dfc75e6916dca0a1e8e093c429e4fc32c533bfddd"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 192,
+        "IT": 208,
+        "SG": 192
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 220,
+        "sha256": "e68414a523aff8b0fa29a2b08354a0d2d0b1e722df7a81349778864d778af037"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 221,
+      "sha256": {
+        "US": "ce49f5d2eff22ab7151c2cf0d52207204e75e6a8807554625e54fdbcbc5b30de",
+        "IT": "b9238343f5aeee8a02400e1f92614af45b49200d3dd529e912ba3028f8088106",
+        "SG": "ce49f5d2eff22ab7151c2cf0d52207204e75e6a8807554625e54fdbcbc5b30de"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 208,
+        "IT": 200,
+        "SG": 208
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 221,
+        "sha256": "b9238343f5aeee8a02400e1f92614af45b49200d3dd529e912ba3028f8088106"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 222,
+      "sha256": {
+        "US": "af685734731d8218755a1251c3de61c9e692023771b4b4392dfa52bc030f7e18",
+        "IT": "dadda9dfc0159f267bc318e2bcb13b2ef00d58d50346ac88b1a3ce16d6af6353",
+        "SG": "af685734731d8218755a1251c3de61c9e692023771b4b4392dfa52bc030f7e18"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 212,
+        "IT": 196,
+        "SG": 212
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 222,
+        "sha256": "dadda9dfc0159f267bc318e2bcb13b2ef00d58d50346ac88b1a3ce16d6af6353"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 223,
+      "sha256": {
+        "US": "04dd3973fc2e86b35d85a5c69b9db50d644b4421d6f68846382c7b391bb9b0c5",
+        "IT": "ba5f4013f5ff17d4b3ba216a4c7ac9f5949c412647b6ea7e37a06fd816918cc1",
+        "SG": "04dd3973fc2e86b35d85a5c69b9db50d644b4421d6f68846382c7b391bb9b0c5"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 224,
+        "IT": 208,
+        "SG": 224
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 223,
+        "sha256": "ba5f4013f5ff17d4b3ba216a4c7ac9f5949c412647b6ea7e37a06fd816918cc1"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 224,
+      "sha256": {
+        "US": "ea4697bd8c1b75ba0b8ad66b39c618ae751e9aae9667e70f1e8d0a997f46556c",
+        "IT": "5e77d169055241d78ead40cd9f1c62fca83d72ce759abe72a50a8e6def19494d",
+        "SG": "ea4697bd8c1b75ba0b8ad66b39c618ae751e9aae9667e70f1e8d0a997f46556c"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 200,
+        "IT": 184,
+        "SG": 200
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 224,
+        "sha256": "5e77d169055241d78ead40cd9f1c62fca83d72ce759abe72a50a8e6def19494d"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 225,
+      "sha256": {
+        "US": "1dae5c0954cfe4e979a963d321bb0ed8658f24dcd0dd8c0820aa1d842c92b425",
+        "IT": "df357c85ddcfaf45a9e5aad479b59553fdec07a286e6116a6dbd7e73de3ef4c8",
+        "SG": "1dae5c0954cfe4e979a963d321bb0ed8658f24dcd0dd8c0820aa1d842c92b425"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 196,
+        "IT": 180,
+        "SG": 196
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 225,
+        "sha256": "df357c85ddcfaf45a9e5aad479b59553fdec07a286e6116a6dbd7e73de3ef4c8"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 226,
+      "sha256": {
+        "US": "3d6c54b655c09cdc44bc8cc22528c1b84f6d47393e7e60422230b262e95485c4",
+        "IT": "f5930e7fb2c1ba2c92b20be67d636a257dd9fd18f44c6ff8e9092ec64b248f00",
+        "SG": "3d6c54b655c09cdc44bc8cc22528c1b84f6d47393e7e60422230b262e95485c4"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 192,
+        "IT": 196,
+        "SG": 192
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 226,
+        "sha256": "f5930e7fb2c1ba2c92b20be67d636a257dd9fd18f44c6ff8e9092ec64b248f00"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 227,
+      "sha256": {
+        "US": "909f3100f1c8fbf109586fd6f26e896311c747bc110f0b6c87003c0fa3b803bd",
+        "IT": "c668bc7322ca3546ac2d559c8d3194ef75fdc1a9cf50476a09511264c89e25bf",
+        "SG": "909f3100f1c8fbf109586fd6f26e896311c747bc110f0b6c87003c0fa3b803bd"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 212,
+        "IT": 196,
+        "SG": 212
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 227,
+        "sha256": "c668bc7322ca3546ac2d559c8d3194ef75fdc1a9cf50476a09511264c89e25bf"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 228,
+      "sha256": {
+        "US": "6ce7d5e650419c70bf553d2895f38c695caf973c005f5daa65a91f30ed2f1de9",
+        "IT": "633df59bda77117540e6b9d4ed65f32dbfb5bfddc0179878e3b529dcadafa15a",
+        "SG": "6ce7d5e650419c70bf553d2895f38c695caf973c005f5daa65a91f30ed2f1de9"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 204,
+        "IT": 208,
+        "SG": 204
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 228,
+        "sha256": "633df59bda77117540e6b9d4ed65f32dbfb5bfddc0179878e3b529dcadafa15a"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 229,
+      "sha256": {
+        "US": "680843a97a9527e48fbb6b546548788315cd1b663dd7d90e51c12362ee25dfed",
+        "IT": "8b382e433cb837919e0475e2f46c282108edba73f34492e24ca96d893896bcc6",
+        "SG": "680843a97a9527e48fbb6b546548788315cd1b663dd7d90e51c12362ee25dfed"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 200,
+        "IT": 200,
+        "SG": 200
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 229,
+        "sha256": "8b382e433cb837919e0475e2f46c282108edba73f34492e24ca96d893896bcc6"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 230,
+      "sha256": {
+        "US": "c167de9b8ae44ba67daa3af662f46acdfff2f12f7ecb385a5584fb09f0ee2a1e",
+        "IT": "91c357a64b4e172af733723f98897bceb2cdbfcf4050e722e27c67f91b6f46fa",
+        "SG": "c167de9b8ae44ba67daa3af662f46acdfff2f12f7ecb385a5584fb09f0ee2a1e"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 176,
+        "IT": 220,
+        "SG": 176
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 230,
+        "sha256": "91c357a64b4e172af733723f98897bceb2cdbfcf4050e722e27c67f91b6f46fa"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 231,
+      "sha256": {
+        "US": "92437415e36ab83a2fa244cfcf29461154c97811f87578ec493a8fd00af2c900",
+        "IT": "7e101014d7813f10f6d78053611adfbe5bc54ecfa0f5b02de4f69fb8853b1b64",
+        "SG": "92437415e36ab83a2fa244cfcf29461154c97811f87578ec493a8fd00af2c900"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 180,
+        "IT": 212,
+        "SG": 180
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 231,
+        "sha256": "7e101014d7813f10f6d78053611adfbe5bc54ecfa0f5b02de4f69fb8853b1b64"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 232,
+      "sha256": {
+        "US": "e30bebbf18c683faa5efe255bdb59bf5e5ebd70fdc3f503e782d9dca3c0ea82e",
+        "IT": "70fa259380b6d5c0460454f7e5ecbd9e0409a59bd8fa284352dec6166d0d6c85",
+        "SG": "e30bebbf18c683faa5efe255bdb59bf5e5ebd70fdc3f503e782d9dca3c0ea82e"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 212,
+        "IT": 204,
+        "SG": 212
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 232,
+        "sha256": "70fa259380b6d5c0460454f7e5ecbd9e0409a59bd8fa284352dec6166d0d6c85"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 233,
+      "sha256": {
+        "US": "35560de47d8d399dec066be29d7dc8003de597f5c6d35224669142dc58c01fbc",
+        "IT": "ad5540b940244d4d30a046d061c637709a71a9b20b9a99e21bd9d435379b6929",
+        "SG": "35560de47d8d399dec066be29d7dc8003de597f5c6d35224669142dc58c01fbc"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 208,
+        "IT": 192,
+        "SG": 208
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 233,
+        "sha256": "ad5540b940244d4d30a046d061c637709a71a9b20b9a99e21bd9d435379b6929"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 234,
+      "sha256": {
+        "US": "caa24b08c82a6b1a2c9a95f25ce16439101619ecc77c0d62762fe80fc4656c95",
+        "IT": "c2e0fc2e92762cf6c3e4885f7b9b9b47fbb1f839e63bdde3dd8641cb3560bab7",
+        "SG": "caa24b08c82a6b1a2c9a95f25ce16439101619ecc77c0d62762fe80fc4656c95"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 208,
+        "IT": 192,
+        "SG": 208
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 234,
+        "sha256": "c2e0fc2e92762cf6c3e4885f7b9b9b47fbb1f839e63bdde3dd8641cb3560bab7"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 235,
+      "sha256": {
+        "US": "7a54b97c4dcc5d3f5581b939c1971c7f05febe7d2f3ed539d04d3a9145fb130b",
+        "IT": "6f372e1676d1c60e39aeb67abc65dee8c0caa893ee05e0eaed558e72c7bd3f4b",
+        "SG": "7a54b97c4dcc5d3f5581b939c1971c7f05febe7d2f3ed539d04d3a9145fb130b"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 212,
+        "IT": 212,
+        "SG": 212
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 235,
+        "sha256": "6f372e1676d1c60e39aeb67abc65dee8c0caa893ee05e0eaed558e72c7bd3f4b"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 237,
+      "sha256": {
+        "US": "4b837f31de81da3dcb5a5ffe8806beba3304bcff24673c94106ce0a856729643",
+        "IT": "ccb5c87d104472d0dc6a6a3b9456a1d8474b2cc41907bb7ca4b66b1f9aa49caa",
+        "SG": "4b837f31de81da3dcb5a5ffe8806beba3304bcff24673c94106ce0a856729643"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 204,
+        "IT": 220,
+        "SG": 204
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 237,
+        "sha256": "ccb5c87d104472d0dc6a6a3b9456a1d8474b2cc41907bb7ca4b66b1f9aa49caa"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 238,
+      "sha256": {
+        "US": "8b3c410b33758c9ca3e7af31f8287377279f54a6222041b9eeb7ea6ad7901f56",
+        "IT": "4e3ff74a86ac759de0ffcd0598551ee4ca33aaeb0a3f92260a0c155d5c46d443",
+        "SG": "8b3c410b33758c9ca3e7af31f8287377279f54a6222041b9eeb7ea6ad7901f56"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 196,
+        "IT": 204,
+        "SG": 196
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 238,
+        "sha256": "4e3ff74a86ac759de0ffcd0598551ee4ca33aaeb0a3f92260a0c155d5c46d443"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 239,
+      "sha256": {
+        "US": "99820c0a49fdb425c74217c6b46f3fcd897359e90926493f27dbf5e9e99c8d38",
+        "IT": "9f477af484eea98ad4c8fd63bddc3e0f41e2f04f04a75631522d116f941c9ac2",
+        "SG": "99820c0a49fdb425c74217c6b46f3fcd897359e90926493f27dbf5e9e99c8d38"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 184,
+        "IT": 204,
+        "SG": 184
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 239,
+        "sha256": "9f477af484eea98ad4c8fd63bddc3e0f41e2f04f04a75631522d116f941c9ac2"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 240,
+      "sha256": {
+        "US": "436641deae16fbb883b859fe7ac76ebabc40ed086369cf24a269763db63bd65a",
+        "IT": "fb3053a49ee3d5887df7a6c497343a5a6211ae2b332fee4b6452fd9b4e4d9205",
+        "SG": "436641deae16fbb883b859fe7ac76ebabc40ed086369cf24a269763db63bd65a"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 192,
+        "IT": 220,
+        "SG": 192
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 240,
+        "sha256": "fb3053a49ee3d5887df7a6c497343a5a6211ae2b332fee4b6452fd9b4e4d9205"
+      }
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 241,
+      "sha256": {
+        "US": "3b7420a4da42fca42bd0d751ce6aeab5148782d6baf5e923f20e8234042a5641",
+        "IT": "02805362b4dd3bafa0dbf030ea5ccb1af1705f642d933c1a08f59cab674e1509",
+        "SG": "3b7420a4da42fca42bd0d751ce6aeab5148782d6baf5e923f20e8234042a5641"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS; move type/category labels translated; Fairy member 236 and all other Plus edits retained.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 346,
+        "IT": 346,
+        "SG": 346
+      },
+      "size": {
+        "US": 184,
+        "IT": 196,
+        "SG": 184
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/0/8",
+        "member": 241,
+        "sha256": "02805362b4dd3bafa0dbf030ea5ccb1af1705f642d933c1a08f59cab674e1509"
+      }
+    },
+    {
+      "file": "a/0/1/5",
+      "member": 37,
+      "sha256": {
+        "US": "0838079970efff95f59206204902ca6c88f1e4d54ceb326305015154bb61719d",
+        "IT": "96036069234a751f8e4c40c1fc5624c004879631e2460bfa3cc2821d64f56700",
+        "SG": "0838079970efff95f59206204902ca6c88f1e4d54ceb326305015154bb61719d"
+      },
+      "donor": "IT",
+      "reason": "HM→MN and registered shortcut SET→ASGN labels.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 95,
+        "IT": 95,
+        "SG": 95
+      },
+      "size": {
+        "US": 896,
+        "IT": 896,
+        "SG": 896
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/1/5",
+        "member": 37,
+        "sha256": "96036069234a751f8e4c40c1fc5624c004879631e2460bfa3cc2821d64f56700"
+      }
+    },
+    {
+      "file": "a/0/1/6",
+      "member": 5,
+      "sha256": {
+        "US": "706c163426d4506122dcf9764a104668436626098460ae5bdcdf0c1b49a49cf2",
+        "IT": "92f34091668c1220f1f1cad33be58d3171c42e36c390e692e137d58d26397666",
+        "SG": "706c163426d4506122dcf9764a104668436626098460ae5bdcdf0c1b49a49cf2"
+      },
+      "donor": "IT",
+      "reason": "Small pictogram bitmap: localized level abbreviation; normal text fonts are untouched.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 11,
+        "IT": 11,
+        "SG": 11
+      },
+      "size": {
+        "US": 428,
+        "IT": 395,
+        "SG": 428
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/1/6",
+        "member": 5,
+        "sha256": "92f34091668c1220f1f1cad33be58d3171c42e36c390e692e137d58d26397666"
+      }
+    },
+    {
+      "file": "a/0/2/1",
+      "member": 15,
+      "sha256": {
+        "US": "d9877e6442dca08cc5cdaac1ac52a31ca7f06939e3a7739a84ab394d36e97cff",
+        "IT": "785b01671b54daa4eb4f90f8ec901afb05eb7f42ff6015f2f5fc662e955c951a",
+        "SG": "d9877e6442dca08cc5cdaac1ac52a31ca7f06939e3a7739a84ab394d36e97cff"
+      },
+      "donor": "IT",
+      "reason": "Party UI HP→PS label.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 27,
+        "IT": 27,
+        "SG": 27
+      },
+      "size": {
+        "US": 5184,
+        "IT": 5184,
+        "SG": 5184
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/2/1",
+        "member": 15,
+        "sha256": "785b01671b54daa4eb4f90f8ec901afb05eb7f42ff6015f2f5fc662e955c951a"
+      }
+    },
+    {
+      "file": "a/0/3/1",
+      "member": 10,
+      "sha256": {
+        "US": "ea71dc78ca83e5026e165124721ec1955983f9703cebda997debcf23d75e5dac",
+        "IT": "6d0516c80f2d780c02fc153f8ab6da6918db9cf71cbfdce6e7110b58967faa18",
+        "SG": "ea71dc78ca83e5026e165124721ec1955983f9703cebda997debcf23d75e5dac"
+      },
+      "donor": "IT",
+      "reason": "Naming buttons UPPER/lower/Others/BACK/OK→MAIUS/minus/altri/CANC/FINE. Cell and animation tables unchanged.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 19,
+        "IT": 19,
+        "SG": 19
+      },
+      "size": {
+        "US": 6854,
+        "IT": 6835,
+        "SG": 6854
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/3/1",
+        "member": 10,
+        "sha256": "6d0516c80f2d780c02fc153f8ab6da6918db9cf71cbfdce6e7110b58967faa18"
+      }
+    },
+    {
+      "file": "a/0/3/9",
+      "member": 0,
+      "sha256": {
+        "US": "9f8ff9d565a01ca1ee5d3f2110fc70987d82ba37aa89fb97b86585ea6fd470fb",
+        "IT": "ce792532534f710d77d02b66573059964c5546bdf6b4b9c98031c459c395d67d",
+        "SG": "9f8ff9d565a01ca1ee5d3f2110fc70987d82ba37aa89fb97b86585ea6fd470fb"
+      },
+      "donor": "IT",
+      "reason": "Summary contest/status labels (CLASSE, GRAZIA, ACUME, GRINTA, BELLEZZA; PAR/GEL/DRM/VEL/KO).",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 137,
+        "IT": 137,
+        "SG": 137
+      },
+      "size": {
+        "US": 15424,
+        "IT": 15424,
+        "SG": 15424
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/3/9",
+        "member": 0,
+        "sha256": "ce792532534f710d77d02b66573059964c5546bdf6b4b9c98031c459c395d67d"
+      }
+    },
+    {
+      "file": "a/0/3/9",
+      "member": 64,
+      "sha256": {
+        "US": "a768a777082439dfcefe2d9add06563e14171015583413c8051f2aa5dc2591b6",
+        "IT": "0b9e2543a1f6dafd63be39e0848e0ced2fe1f995d916ff4859dbc37a769b0b0a",
+        "SG": "a768a777082439dfcefe2d9add06563e14171015583413c8051f2aa5dc2591b6"
+      },
+      "donor": "IT",
+      "reason": "Summary contest/status labels (CLASSE, GRAZIA, ACUME, GRINTA, BELLEZZA; PAR/GEL/DRM/VEL/KO).",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 137,
+        "IT": 137,
+        "SG": 137
+      },
+      "size": {
+        "US": 720,
+        "IT": 720,
+        "SG": 720
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/3/9",
+        "member": 64,
+        "sha256": "0b9e2543a1f6dafd63be39e0848e0ced2fe1f995d916ff4859dbc37a769b0b0a"
+      }
+    },
+    {
+      "file": "a/0/4/6",
+      "member": 0,
+      "sha256": {
+        "US": "4121cffb363574a38b2d76d06e4969f9f4021eeae9885b16fe13cf87dace95a9",
+        "IT": "756be33a0066b643cc2289bf31b73a88a1a313b8187e3546266648741aa92100",
+        "SG": "4121cffb363574a38b2d76d06e4969f9f4021eeae9885b16fe13cf87dace95a9"
+      },
+      "donor": "IT",
+      "reason": "Retail title logo localized to Versione Oro HeartGold / Versione Argento SoulSilver. Transfer the five-member regional set together. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 44,
+        "IT": 44,
+        "SG": 44
+      },
+      "size": {
+        "US": 2084,
+        "IT": 2084,
+        "SG": 2084
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/6",
+        "member": 0,
+        "sha256": "756be33a0066b643cc2289bf31b73a88a1a313b8187e3546266648741aa92100"
+      },
+      "atomic_group": "a/0/4/6-regional-layout"
+    },
+    {
+      "file": "a/0/4/6",
+      "member": 1,
+      "sha256": {
+        "US": "0ec507c99f4edc2cec585fdb4dca5343a7ae30b17710755f678bb34f742ccef8",
+        "IT": "4e28202184515fa5f98a254a875aa7843933625f3ef823b3f4b5596dc17d0105",
+        "SG": "0ec507c99f4edc2cec585fdb4dca5343a7ae30b17710755f678bb34f742ccef8"
+      },
+      "donor": "IT",
+      "reason": "Retail title logo localized to Versione Oro HeartGold / Versione Argento SoulSilver. Transfer the five-member regional set together.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 44,
+        "IT": 44,
+        "SG": 44
+      },
+      "size": {
+        "US": 30784,
+        "IT": 29440,
+        "SG": 30784
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/6",
+        "member": 1,
+        "sha256": "4e28202184515fa5f98a254a875aa7843933625f3ef823b3f4b5596dc17d0105"
+      },
+      "atomic_group": "a/0/4/6-regional-layout"
+    },
+    {
+      "file": "a/0/4/6",
+      "member": 2,
+      "sha256": {
+        "US": "6869213aa112d8edf694fbfbd69ed2370d174399d9bd9c01b80e1a90f9794c08",
+        "IT": "a6820453f5132dd778555dedfe957cfb12e9305a39089120c7320c0cca6628d0",
+        "SG": "6869213aa112d8edf694fbfbd69ed2370d174399d9bd9c01b80e1a90f9794c08"
+      },
+      "donor": "IT",
+      "reason": "Retail title logo localized to Versione Oro HeartGold / Versione Argento SoulSilver. Transfer the five-member regional set together. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 44,
+        "IT": 44,
+        "SG": 44
+      },
+      "size": {
+        "US": 552,
+        "IT": 552,
+        "SG": 552
+      },
+      "decompressed_type": "RLCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/6",
+        "member": 2,
+        "sha256": "a6820453f5132dd778555dedfe957cfb12e9305a39089120c7320c0cca6628d0"
+      },
+      "atomic_group": "a/0/4/6-regional-layout"
+    },
+    {
+      "file": "a/0/4/6",
+      "member": 3,
+      "sha256": {
+        "US": "c1a5a1b01ef86dc9a8bad0aed9a28c7335a60317de06266b6f65734424bb4e33",
+        "IT": "f9e9a5303314aee7aca29ce9087d59df24920687df169b5fc9de05ba79db6256",
+        "SG": "c1a5a1b01ef86dc9a8bad0aed9a28c7335a60317de06266b6f65734424bb4e33"
+      },
+      "donor": "IT",
+      "reason": "Retail title logo localized to Versione Oro HeartGold / Versione Argento SoulSilver. Transfer the five-member regional set together.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 44,
+        "IT": 44,
+        "SG": 44
+      },
+      "size": {
+        "US": 30784,
+        "IT": 29440,
+        "SG": 30784
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/6",
+        "member": 3,
+        "sha256": "f9e9a5303314aee7aca29ce9087d59df24920687df169b5fc9de05ba79db6256"
+      },
+      "atomic_group": "a/0/4/6-regional-layout"
+    },
+    {
+      "file": "a/0/4/6",
+      "member": 4,
+      "sha256": {
+        "US": "61e390f56cc7464e7546df50d3d38785b79d7d860cb30eeaa70e18f856007e02",
+        "IT": "625d897ebfe0f5440679ebf3961502a82adb91263a57e431d9cbaea891a8cb04",
+        "SG": "61e390f56cc7464e7546df50d3d38785b79d7d860cb30eeaa70e18f856007e02"
+      },
+      "donor": "IT",
+      "reason": "Retail title logo localized to Versione Oro HeartGold / Versione Argento SoulSilver. Transfer the five-member regional set together. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 44,
+        "IT": 44,
+        "SG": 44
+      },
+      "size": {
+        "US": 552,
+        "IT": 552,
+        "SG": 552
+      },
+      "decompressed_type": "RLCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/6",
+        "member": 4,
+        "sha256": "625d897ebfe0f5440679ebf3961502a82adb91263a57e431d9cbaea891a8cb04"
+      },
+      "atomic_group": "a/0/4/6-regional-layout"
+    },
+    {
+      "file": "a/0/4/9",
+      "member": 41,
+      "sha256": {
+        "US": "c8e923a4588fb2d609f858707b0c4832aa81d7af66129782ba14c0bcce1e8929",
+        "IT": "5941f54eb389335ff9a7500cdcedc9c11a340408dbf99e4c6d99d8ea9a76e692",
+        "SG": "c8e923a4588fb2d609f858707b0c4832aa81d7af66129782ba14c0bcce1e8929"
+      },
+      "donor": "IT",
+      "reason": "Trainer Card→Scheda Allen.; League Badges→Medaglie.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 78,
+        "IT": 78,
+        "SG": 78
+      },
+      "size": {
+        "US": 26688,
+        "IT": 26688,
+        "SG": 26688
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/9",
+        "member": 41,
+        "sha256": "5941f54eb389335ff9a7500cdcedc9c11a340408dbf99e4c6d99d8ea9a76e692"
+      }
+    },
+    {
+      "file": "a/0/4/9",
+      "member": 43,
+      "sha256": {
+        "US": "6973f2e93fc2ea9b94096cb822be30015e2abe2d9732501e863ec8c80ec8853f",
+        "IT": "24239752897491fdfae116bafb814890ed1e13835f535cdf341df392c47c0f81",
+        "SG": "6973f2e93fc2ea9b94096cb822be30015e2abe2d9732501e863ec8c80ec8853f"
+      },
+      "donor": "IT",
+      "reason": "Trainer Card→Scheda Allen.; League Badges→Medaglie.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 78,
+        "IT": 78,
+        "SG": 78
+      },
+      "size": {
+        "US": 32832,
+        "IT": 32832,
+        "SG": 32832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/4/9",
+        "member": 43,
+        "sha256": "24239752897491fdfae116bafb814890ed1e13835f535cdf341df392c47c0f81"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 0,
+      "sha256": {
+        "US": "e1cda104125dd6f8a8e103a5b5640a39515044667fc3ed279f3e45c043e2779e",
+        "IT": "abca5b6a6374d74922ebd14e8631fd09b659bb095b97883aa1c6cc7378845e70",
+        "SG": "e1cda104125dd6f8a8e103a5b5640a39515044667fc3ed279f3e45c043e2779e"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 918,
+        "IT": 930,
+        "SG": 918
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 0,
+        "sha256": "abca5b6a6374d74922ebd14e8631fd09b659bb095b97883aa1c6cc7378845e70"
+      },
+      "atomic_group": "pokedex-list-labels"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 1,
+      "sha256": {
+        "US": "7fe4b7abc83adc37106e690f5a2ca418902e9ffd6c996cc16c833b8f59b401ac",
+        "IT": "27fb2ef57bee93f83881491250b3e2a815cda1ccbf63ad285debba69dd705daf",
+        "SG": "a523a80405d83a94b4524c6e78429095d3d7a9eeae70ab61b15cc10f6d27ae32"
+      },
+      "donor": "IT",
+      "reason": "Replace inherited Spanish Pokédex header lettering with Italian, preserving the standard NCGR dimensions and nontext artwork.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 2787,
+        "IT": 2741,
+        "SG": 2750
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 1,
+        "sha256": "27fb2ef57bee93f83881491250b3e2a815cda1ccbf63ad285debba69dd705daf"
+      },
+      "atomic_group": "pokedex-list-labels"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 4,
+      "sha256": {
+        "US": "43df5997e6515666a46e92f4ec4bed85f31471a503afffbfcad64fc6fe52ee66",
+        "IT": "90710715fb2244b80fa26350b6fbf4dad4778832bdf5d0c2e1fdc19656058da6",
+        "SG": "303cc41e9c6ed7edb60a8ab74918b3cfaf44a4e1e016178fbf92ec819b96b52c"
+      },
+      "donor": "IT",
+      "reason": "Replace inherited Spanish DETALLES/SALIR/BUSCAR buttons with Italian DETTAGLI/ESCI/CERCA. Does not contain Fairy graphics or unit-value formatting.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 1667,
+        "IT": 1689,
+        "SG": 1717
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 4,
+        "sha256": "90710715fb2244b80fa26350b6fbf4dad4778832bdf5d0c2e1fdc19656058da6"
+      },
+      "atomic_group": "pokedex-list-labels"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 8,
+      "sha256": {
+        "US": "51aef2339f205821a2183ddf8832e75403c1cad7c88cd9218d068991578d05cb",
+        "IT": "0abeeaf0aa9085f1bab85e89d1f44d617935e2fa9ffa9bca805f8cf31743d4ae",
+        "SG": "51aef2339f205821a2183ddf8832e75403c1cad7c88cd9218d068991578d05cb"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 205,
+        "IT": 206,
+        "SG": 205
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 8,
+        "sha256": "0abeeaf0aa9085f1bab85e89d1f44d617935e2fa9ffa9bca805f8cf31743d4ae"
+      },
+      "atomic_group": "pokedex-list-labels"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 12,
+      "sha256": {
+        "US": "40d54309c72630ed72188b067887cc16a25737d75acb291f8334112da52f7a68",
+        "IT": "c4afc272bb2319f7d393ab13c3d539969c138abdb53fb82062a2861fae01b78e",
+        "SG": "c4afc272bb2319f7d393ab13c3d539969c138abdb53fb82062a2861fae01b78e"
+      },
+      "donor": "US",
+      "reason": "Restore US search cursor graphics with feet/inches marks and decimal point. All 65 cells compared: regional differences only in cells 36,37,58 and missing 63,64. No Fairy/type tiles.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 3374,
+        "IT": 3129,
+        "SG": 3129
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 12,
+        "sha256": "40d54309c72630ed72188b067887cc16a25737d75acb291f8334112da52f7a68"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 13,
+      "sha256": {
+        "US": "cee4455d9393857fce5591cff78e0643bf22117ad5cc9001105de0c58f33ca0c",
+        "IT": "9d371ed4fdaf4798efc9d0ab8139586b8a31288df6243ef9a7bcff11db4d777e",
+        "SG": "9d371ed4fdaf4798efc9d0ab8139586b8a31288df6243ef9a7bcff11db4d777e"
+      },
+      "donor": "US",
+      "reason": "Restore matching US NCER with 65 cells. Plus/IT has 63; US overlay height cursors require the missing cells 63 and 64. All shared cells reconstructed and compared.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 2692,
+        "IT": 2666,
+        "SG": 2666
+      },
+      "decompressed_type": "RECN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 13,
+        "sha256": "cee4455d9393857fce5591cff78e0643bf22117ad5cc9001105de0c58f33ca0c"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 14,
+      "sha256": {
+        "US": "bfaddd582348a0375b1387118212ec18560f86241b9c951a46ef88ec6541a210",
+        "IT": "265ec4a6f9133879c46130c41062115f4fceba7c93939ddbde945e488171274e",
+        "SG": "265ec4a6f9133879c46130c41062115f4fceba7c93939ddbde945e488171274e"
+      },
+      "donor": "US",
+      "reason": "Restore matching US NANR with 69 sequences. Unchanged Plus/US ov18_021F3618 requests sequences 67/68, missing from Plus/IT (67 sequences); US maps these to feet/inches cursor cells 63/64.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 1337,
+        "IT": 1299,
+        "SG": 1299
+      },
+      "decompressed_type": "RNAN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 14,
+        "sha256": "bfaddd582348a0375b1387118212ec18560f86241b9c951a46ef88ec6541a210"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 36,
+      "sha256": {
+        "US": "465edbf3a832c9bc6720195e6f11a889b263575999013386f2f1cc9523f0ea4f",
+        "IT": "ae218b3856097a320ba59a77c30869cf0d62d9bcda5fa48158c3376e5c6c129c",
+        "SG": "465edbf3a832c9bc6720195e6f11a889b263575999013386f2f1cc9523f0ea4f"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 270,
+        "IT": 238,
+        "SG": 270
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 36,
+        "sha256": "ae218b3856097a320ba59a77c30869cf0d62d9bcda5fa48158c3376e5c6c129c"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 37,
+      "sha256": {
+        "US": "178524f526d668f1bacb2693b8d76bf81e1c408c13fb2f0074bc7a5f1ded9503",
+        "IT": "a95076a02993917d1430b8be1c10c2fe1f0681be4f074ddd70aedebfdf2e3580",
+        "SG": "178524f526d668f1bacb2693b8d76bf81e1c408c13fb2f0074bc7a5f1ded9503"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 234,
+        "IT": 270,
+        "SG": 234
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 37,
+        "sha256": "a95076a02993917d1430b8be1c10c2fe1f0681be4f074ddd70aedebfdf2e3580"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 38,
+      "sha256": {
+        "US": "b10c1d10950d46ba7a3d271c00fc05efb341356d9168d49f7415c32ebccbbd58",
+        "IT": "9dc61eefca95d85f93e89a7eeb7a84d1fbab48ac79f6747f15fe413299e1696a",
+        "SG": "b10c1d10950d46ba7a3d271c00fc05efb341356d9168d49f7415c32ebccbbd58"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 283,
+        "IT": 219,
+        "SG": 283
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 38,
+        "sha256": "9dc61eefca95d85f93e89a7eeb7a84d1fbab48ac79f6747f15fe413299e1696a"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 39,
+      "sha256": {
+        "US": "a758744496fe271c26d5b11ccc890526012650c92a778ddae5b140b82304836e",
+        "IT": "d1e3d828d9b543ce9574ba324e81b58e7b4a3d2693ac08cb6ec5b75b863be14b",
+        "SG": "a758744496fe271c26d5b11ccc890526012650c92a778ddae5b140b82304836e"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 266,
+        "IT": 264,
+        "SG": 266
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 39,
+        "sha256": "d1e3d828d9b543ce9574ba324e81b58e7b4a3d2693ac08cb6ec5b75b863be14b"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 40,
+      "sha256": {
+        "US": "822127fa80ae4132200b8b6abe8549b5caf979f29165a507552949fa8cdaae3a",
+        "IT": "04cc2f00de636e84398ccd8d31666db5212751c33cbacd41345ea665da6132d1",
+        "SG": "822127fa80ae4132200b8b6abe8549b5caf979f29165a507552949fa8cdaae3a"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 291,
+        "IT": 249,
+        "SG": 291
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 40,
+        "sha256": "04cc2f00de636e84398ccd8d31666db5212751c33cbacd41345ea665da6132d1"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 41,
+      "sha256": {
+        "US": "7a147c0b5416c8e73ff2d367db8be3a436f0bdcd272c4a9029a77faab19584aa",
+        "IT": "4853c9c2f73aa475e1450b20d1d5a955fc4bb9e59a77437a0cc5b5d8f6bdf6e3",
+        "SG": "7a147c0b5416c8e73ff2d367db8be3a436f0bdcd272c4a9029a77faab19584aa"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 222,
+        "IT": 281,
+        "SG": 222
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 41,
+        "sha256": "4853c9c2f73aa475e1450b20d1d5a955fc4bb9e59a77437a0cc5b5d8f6bdf6e3"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 42,
+      "sha256": {
+        "US": "45c48f068fb986ef8b08fbe08d03f82545db69f9e5edd7a276632e3fa5c086ed",
+        "IT": "8f6a4f1abff63d14d804bd2815715522bbb373cdf94c997162287fdd90233758",
+        "SG": "45c48f068fb986ef8b08fbe08d03f82545db69f9e5edd7a276632e3fa5c086ed"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 264,
+        "IT": 244,
+        "SG": 264
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 42,
+        "sha256": "8f6a4f1abff63d14d804bd2815715522bbb373cdf94c997162287fdd90233758"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 43,
+      "sha256": {
+        "US": "ed153fe01fa847053fa138c9222346228c84b712be271d83a09f4e97e16452e9",
+        "IT": "ec3b262f4b906892a849a65af03204f083d405a4172d535fca3bc6a5319a51bd",
+        "SG": "ed153fe01fa847053fa138c9222346228c84b712be271d83a09f4e97e16452e9"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 277,
+        "IT": 280,
+        "SG": 277
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 43,
+        "sha256": "ec3b262f4b906892a849a65af03204f083d405a4172d535fca3bc6a5319a51bd"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 44,
+      "sha256": {
+        "US": "8a45a859cab5d950717350222c38a5533a7483097458e471e339bfef71297c09",
+        "IT": "e7ab615ebe7ccd4af5163aa4ba0204784f82bdc8f3a9e02f56ed59676e1fac35",
+        "SG": "8a45a859cab5d950717350222c38a5533a7483097458e471e339bfef71297c09"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 292,
+        "IT": 284,
+        "SG": 292
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 44,
+        "sha256": "e7ab615ebe7ccd4af5163aa4ba0204784f82bdc8f3a9e02f56ed59676e1fac35"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 45,
+      "sha256": {
+        "US": "660246b42d1459fbfee6295d9778e51584a954c5e6356b94385845392f28fd9a",
+        "IT": "ce264f4d6913bd662edaddf153631349dc49f2edb3a9c6f8006700b382b880fc",
+        "SG": "660246b42d1459fbfee6295d9778e51584a954c5e6356b94385845392f28fd9a"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 270,
+        "IT": 268,
+        "SG": 270
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 45,
+        "sha256": "ce264f4d6913bd662edaddf153631349dc49f2edb3a9c6f8006700b382b880fc"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 46,
+      "sha256": {
+        "US": "d005feccea421d16fe4eb4946f836753f6c518b2807a836e89982ea022097691",
+        "IT": "dc9a8677eecf1f6ded08c2af96854d18a0e712841383cab88e3092b8fdad5723",
+        "SG": "d005feccea421d16fe4eb4946f836753f6c518b2807a836e89982ea022097691"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 276,
+        "IT": 294,
+        "SG": 276
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 46,
+        "sha256": "dc9a8677eecf1f6ded08c2af96854d18a0e712841383cab88e3092b8fdad5723"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 47,
+      "sha256": {
+        "US": "8abb0438eaf732a132984d38c37be27d44dd7b968d58dfdfba39bd279068b41e",
+        "IT": "43ae28bcc439b6b61de492e72a0fbc193699930b026e022bede085c636175aad",
+        "SG": "8abb0438eaf732a132984d38c37be27d44dd7b968d58dfdfba39bd279068b41e"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 239,
+        "IT": 286,
+        "SG": 239
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 47,
+        "sha256": "43ae28bcc439b6b61de492e72a0fbc193699930b026e022bede085c636175aad"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 48,
+      "sha256": {
+        "US": "f7314b8966a0dbc2d15375d91b2e4e8b75e1dbe85e58a03c2be56acb40bced7c",
+        "IT": "b0af5e1bbf9c70d004d4e8fc6af9536269d29df0299e58a06c3c5b27b04b583e",
+        "SG": "f7314b8966a0dbc2d15375d91b2e4e8b75e1dbe85e58a03c2be56acb40bced7c"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 212,
+        "IT": 240,
+        "SG": 212
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 48,
+        "sha256": "b0af5e1bbf9c70d004d4e8fc6af9536269d29df0299e58a06c3c5b27b04b583e"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 49,
+      "sha256": {
+        "US": "2170b79e24ecea5eafab6becd36e2b71f357ddd123ed865838d8ec2fc7565993",
+        "IT": "8fd3415c28b5e1a0fac9fd1be5f5fda1537f9125a54f37fd5aff7a9137e44d28",
+        "SG": "2170b79e24ecea5eafab6becd36e2b71f357ddd123ed865838d8ec2fc7565993"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 225,
+        "IT": 274,
+        "SG": 225
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 49,
+        "sha256": "8fd3415c28b5e1a0fac9fd1be5f5fda1537f9125a54f37fd5aff7a9137e44d28"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 50,
+      "sha256": {
+        "US": "f4f02ce0b026f4afe26325c25a890f34569e522a69dcc5c2b0c558b9b1e9d4b7",
+        "IT": "a3d0296da8b1e9c8b9452786057a4036918ecbd22a194d3cc179d346803e38ab",
+        "SG": "f4f02ce0b026f4afe26325c25a890f34569e522a69dcc5c2b0c558b9b1e9d4b7"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 275,
+        "IT": 277,
+        "SG": 275
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 50,
+        "sha256": "a3d0296da8b1e9c8b9452786057a4036918ecbd22a194d3cc179d346803e38ab"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 51,
+      "sha256": {
+        "US": "049d49fb806397a603d24ce5b88c6170d69a53288548bd5098dcb9c73ff19cf7",
+        "IT": "53a75054b2f591cd899273a266c04d381282f397158af9054c39f1eac1760436",
+        "SG": "049d49fb806397a603d24ce5b88c6170d69a53288548bd5098dcb9c73ff19cf7"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 306,
+        "IT": 272,
+        "SG": 306
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 51,
+        "sha256": "53a75054b2f591cd899273a266c04d381282f397158af9054c39f1eac1760436"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 52,
+      "sha256": {
+        "US": "aea46ad43cc51806a93fcf0fbd8b07d6a5f2ffe5e15d780b84c1db89c470e588",
+        "IT": "d755325f0e6834b5d142f7a7e20c6dcfab10383805af3a7bf4fe2470c830e473",
+        "SG": "aea46ad43cc51806a93fcf0fbd8b07d6a5f2ffe5e15d780b84c1db89c470e588"
+      },
+      "donor": "IT",
+      "reason": "Pokédex presentation only; native language code remains English and Fairy graphics are explicitly protected.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 297,
+        "IT": 290,
+        "SG": 297
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 52,
+        "sha256": "d755325f0e6834b5d142f7a7e20c6dcfab10383805af3a7bf4fe2470c830e473"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 53,
+      "sha256": {
+        "US": "a171bc30b364b6b962fb49506a719859634094c21f0535adcb2d65652661dc00",
+        "IT": "5796c22d5c94acca4ffcde4f1fe18251f88d3085486fc19bd97b01c84dad5e1a",
+        "SG": "5b40633ec737dadacff8715b7401ef056bcdd646ec6ba10fc03a14ca1712d8b2"
+      },
+      "donor": "IT",
+      "reason": "Replace language abbreviations with Italian GPN/ING/FRA/TED/ITA/SPA in both visual states. All 12 cells inspected; the native entry correctly retains the English-identity label ING.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 603,
+        "IT": 601,
+        "SG": 620
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/6/8",
+        "member": 53,
+        "sha256": "5796c22d5c94acca4ffcde4f1fe18251f88d3085486fc19bd97b01c84dad5e1a"
+      }
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 57,
+      "sha256": {
+        "US": "d681d83c81d375607d28ccee8a0fd90fb71fa19a0213d866d003bfd98db8b1e8",
+        "IT": "7ebb848658bce623ea539c1159ae5555752e60fbf6781d9bbae2bd50e736d5c7",
+        "SG": "7ebb848658bce623ea539c1159ae5555752e60fbf6781d9bbae2bd50e736d5c7"
+      },
+      "donor": "US",
+      "reason": "Restore US search summary tilemap paired with NCGR 58. Render shows Plus/IT wrongly labels US-calculated feet/inches as m and pounds as kg.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 528,
+        "IT": 529,
+        "SG": 529
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 57,
+        "sha256": "d681d83c81d375607d28ccee8a0fd90fb71fa19a0213d866d003bfd98db8b1e8"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 58,
+      "sha256": {
+        "US": "e2e48b37aca9cbeaf6d3835f4d7665f45d7fcb8d5656bb1d3254b47897abf82e",
+        "IT": "3222299cfc959da73f61568339e55e1cf4fe44a490b1ec09b8506470b1dac99c",
+        "SG": "3222299cfc959da73f61568339e55e1cf4fe44a490b1ec09b8506470b1dac99c"
+      },
+      "donor": "US",
+      "reason": "Restore US search units bitmap (lbs; no metric m) to match unchanged Plus/US imperial conversion routines. All other altered pixels reviewed as regional units/decoration in search backgrounds.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 2098,
+        "IT": 2104,
+        "SG": 2104
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 58,
+        "sha256": "e2e48b37aca9cbeaf6d3835f4d7665f45d7fcb8d5656bb1d3254b47897abf82e"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 65,
+      "sha256": {
+        "US": "29f5733a6f9f25c7953a35c0e3a85212dd6f6f2256fe199c867f49d49e6e0837",
+        "IT": "3009b627a9281f2d43970260ecf0ffb607e2f8960a4ab1e2bc2410a9403f071b",
+        "SG": "3009b627a9281f2d43970260ecf0ffb607e2f8960a4ab1e2bc2410a9403f071b"
+      },
+      "donor": "US",
+      "reason": "Restore US height-filter tilemap: removes metric m beside feet/inches values generated by Plus/US code and message 802:175.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 378,
+        "IT": 379,
+        "SG": 379
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 65,
+        "sha256": "29f5733a6f9f25c7953a35c0e3a85212dd6f6f2256fe199c867f49d49e6e0837"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 66,
+      "sha256": {
+        "US": "e68aafda737ba56576725361d520eab67df36f481e83798d3e5ad5528e322e9a",
+        "IT": "ae05328f3352ea01bbb833ce8453d650dc5d54dd6f56e36db058cb7f3ded9c7c",
+        "SG": "ae05328f3352ea01bbb833ce8453d650dc5d54dd6f56e36db058cb7f3ded9c7c"
+      },
+      "donor": "US",
+      "reason": "Restore US weight-filter tilemap paired with NCGR 58: labels Plus/US pound values lbs, replacing the inherited kg label.",
+      "plus_diff_reviewed": true,
+      "member_count": {
+        "US": 123,
+        "IT": 123,
+        "SG": 124
+      },
+      "size": {
+        "US": 366,
+        "IT": 365,
+        "SG": 365
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - HeartGold Version.nds",
+        "file": "a/0/6/8",
+        "member": 66,
+        "sha256": "e68aafda737ba56576725361d520eab67df36f481e83798d3e5ad5528e322e9a"
+      },
+      "atomic_group": "pokedex-us-imperial-search"
+    },
+    {
+      "file": "a/0/7/1",
+      "member": 22,
+      "sha256": {
+        "US": "e38f01fe6edfb508b3278d7ce19e8f731eaadbd944e999e87a38f5a8293314d1",
+        "IT": "5d3bf411d4f310d02b1dd38f34f8247f33b2a3e264ee3087dca4c32347bc4585",
+        "SG": "e38f01fe6edfb508b3278d7ce19e8f731eaadbd944e999e87a38f5a8293314d1"
+      },
+      "donor": "IT",
+      "reason": "Party/battle selection HP→PS labels.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 28,
+        "IT": 28,
+        "SG": 28
+      },
+      "size": {
+        "US": 32832,
+        "IT": 32832,
+        "SG": 32832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/0/7/1",
+        "member": 22,
+        "sha256": "5d3bf411d4f310d02b1dd38f34f8247f33b2a3e264ee3087dca4c32347bc4585"
+      }
+    },
+    {
+      "file": "a/1/0/4",
+      "member": 5,
+      "sha256": {
+        "US": "4294b536f43e2d2473687fb4ad8ae4ad6293f0cbd81810b0bc6757502300733d",
+        "IT": "9bcdc2698cbd0cd17a3b0c6a94be88e3ceb67ded3703421583ebb4604358f850",
+        "SG": "4294b536f43e2d2473687fb4ad8ae4ad6293f0cbd81810b0bc6757502300733d"
+      },
+      "donor": "IT",
+      "reason": "Win/Lose/Draw result labels localized.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 9,
+        "IT": 9,
+        "SG": 9
+      },
+      "size": {
+        "US": 3632,
+        "IT": 3632,
+        "SG": 3632
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/0/4",
+        "member": 5,
+        "sha256": "9bcdc2698cbd0cd17a3b0c6a94be88e3ceb67ded3703421583ebb4604358f850"
+      }
+    },
+    {
+      "file": "a/1/1/3",
+      "member": 30,
+      "sha256": {
+        "US": "e1b13f8a79ad66f3a98512593c56cfb770875d5f89fa805b5fae39be2c155d3b",
+        "IT": "cc7eef24ac5e700d461aa1a336b50094e147668e501420cc8c5cea34a891c5f0",
+        "SG": "e1b13f8a79ad66f3a98512593c56cfb770875d5f89fa805b5fae39be2c155d3b"
+      },
+      "donor": "IT",
+      "reason": "Main menu and connection button lettering, visually localized.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 50,
+        "IT": 50,
+        "SG": 50
+      },
+      "size": {
+        "US": 3086,
+        "IT": 3060,
+        "SG": 3086
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/1/3",
+        "member": 30,
+        "sha256": "cc7eef24ac5e700d461aa1a336b50094e147668e501420cc8c5cea34a891c5f0"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 6,
+      "sha256": {
+        "US": "1c7805a699ad615eec315634decc74459dbe0784c2ca4aab5b07baa13afd3418",
+        "IT": "8f12266343e1b61bca2481d3239d0900af206e63f3de5b17570217d2849d7dbd",
+        "SG": "1c7805a699ad615eec315634decc74459dbe0784c2ca4aab5b07baa13afd3418"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 6,
+        "sha256": "8f12266343e1b61bca2481d3239d0900af206e63f3de5b17570217d2849d7dbd"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 7,
+      "sha256": {
+        "US": "f3d8191626c0886c755893b51d6abe229830e71b145e464613a69762af33d5e2",
+        "IT": "9c9b616f6760fde1a08bc8bc9bdcc1c44feb307719f0b8e5c0f2278fcaca068a",
+        "SG": "f3d8191626c0886c755893b51d6abe229830e71b145e464613a69762af33d5e2"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 7,
+        "sha256": "9c9b616f6760fde1a08bc8bc9bdcc1c44feb307719f0b8e5c0f2278fcaca068a"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 8,
+      "sha256": {
+        "US": "e256b431efb8a50910c5e03c3955e52911787da3487ee6d1c675adb25e612cce",
+        "IT": "0ae670f5f7bf2278c8efda020cd038ba2b1a0a733824d7c4a954a686df90356b",
+        "SG": "e256b431efb8a50910c5e03c3955e52911787da3487ee6d1c675adb25e612cce"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 8,
+        "sha256": "0ae670f5f7bf2278c8efda020cd038ba2b1a0a733824d7c4a954a686df90356b"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 9,
+      "sha256": {
+        "US": "302a727eae1d194b3478b83e3ac72ef06faaaddfdaa6970d5ee71fd5870805cc",
+        "IT": "09bf94c9d4add79f9e61c2b6572b2c72000f55b0de7126e19274eda239345a2c",
+        "SG": "302a727eae1d194b3478b83e3ac72ef06faaaddfdaa6970d5ee71fd5870805cc"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 9,
+        "sha256": "09bf94c9d4add79f9e61c2b6572b2c72000f55b0de7126e19274eda239345a2c"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 10,
+      "sha256": {
+        "US": "124cc57386261f61572b504070d600b996cd4c508652e8f176cf28331ce358fa",
+        "IT": "8d993603164b45665d2bc2f9fc93fb2daa61f9494008f9bb6f2a1311782ee2c3",
+        "SG": "124cc57386261f61572b504070d600b996cd4c508652e8f176cf28331ce358fa"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 10,
+        "sha256": "8d993603164b45665d2bc2f9fc93fb2daa61f9494008f9bb6f2a1311782ee2c3"
+      }
+    },
+    {
+      "file": "a/1/4/3",
+      "member": 11,
+      "sha256": {
+        "US": "d4e716c80a8d239eb342ee0e61164dfe047877bb75c87cf461899445bc270feb",
+        "IT": "96d99ce21a64f8cd20b83ac54354b6199338f0739e2d5c72ba53934c568a8f80",
+        "SG": "d4e716c80a8d239eb342ee0e61164dfe047877bb75c87cf461899445bc270feb"
+      },
+      "donor": "IT",
+      "reason": "Pokégear weekday names/abbreviations across its six skins.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 60,
+        "IT": 60,
+        "SG": 60
+      },
+      "size": {
+        "US": 6832,
+        "IT": 6832,
+        "SG": 6832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/4/3",
+        "member": 11,
+        "sha256": "96d99ce21a64f8cd20b83ac54354b6199338f0739e2d5c72ba53934c568a8f80"
+      }
+    },
+    {
+      "file": "a/1/5/2",
+      "member": 1,
+      "sha256": {
+        "US": "6fc33501ec2209bb79dcd8d215db6003daae269b0b0b1f0ad14e3280c97fc1a6",
+        "IT": "a81914946c8508f5e6bc85cdfc73a834876f7fc4f7ba732e11b2753c56f9ce98",
+        "SG": "6fc33501ec2209bb79dcd8d215db6003daae269b0b0b1f0ad14e3280c97fc1a6"
+      },
+      "donor": "IT",
+      "reason": "Touch confirmation YES→SI bitmap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 10,
+        "IT": 10,
+        "SG": 10
+      },
+      "size": {
+        "US": 682,
+        "IT": 659,
+        "SG": 682
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/5/2",
+        "member": 1,
+        "sha256": "a81914946c8508f5e6bc85cdfc73a834876f7fc4f7ba732e11b2753c56f9ce98"
+      }
+    },
+    {
+      "file": "a/1/5/6",
+      "member": 28,
+      "sha256": {
+        "US": "dfe8ebf177c351672208afc6956a9a239b44f9a15bb2c81117538f213356b638",
+        "IT": "e19556125d893d17f54ff87162fba6be4eecafaf753e8154c40076a870cbb4ca",
+        "SG": "dfe8ebf177c351672208afc6956a9a239b44f9a15bb2c81117538f213356b638"
+      },
+      "donor": "IT",
+      "reason": "Rank/result ordinal suffixes (English st/nd/rd/th to Italian ordinal signs).",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 33,
+        "IT": 33,
+        "SG": 33
+      },
+      "size": {
+        "US": 30768,
+        "IT": 30768,
+        "SG": 30768
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/5/6",
+        "member": 28,
+        "sha256": "e19556125d893d17f54ff87162fba6be4eecafaf753e8154c40076a870cbb4ca"
+      }
+    },
+    {
+      "file": "a/1/6/2",
+      "member": 1,
+      "sha256": {
+        "US": "ce8cfb8284a3cc4603d0c607093c61217fd51b93d3f6724f2d48b92ca86f5677",
+        "IT": "958c4ecbfdf31cdc38693c1433465835a4c0d704900bd1a09232197e18ea84af",
+        "SG": "ce8cfb8284a3cc4603d0c607093c61217fd51b93d3f6724f2d48b92ca86f5677"
+      },
+      "donor": "IT",
+      "reason": "EXP→ESP and HP→PS UI labels.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 79,
+        "IT": 79,
+        "SG": 79
+      },
+      "size": {
+        "US": 16448,
+        "IT": 16448,
+        "SG": 16448
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/6/2",
+        "member": 1,
+        "sha256": "958c4ecbfdf31cdc38693c1433465835a4c0d704900bd1a09232197e18ea84af"
+      }
+    },
+    {
+      "file": "a/1/6/2",
+      "member": 2,
+      "sha256": {
+        "US": "c8ea700e41c6562e50d9e57fd2693a4962ef7cf873823c83cbae88493925bafe",
+        "IT": "7158407c44c41c7c68e74b4fcc9a40b87481365d6b8eb8576e1141415cd06317",
+        "SG": "c8ea700e41c6562e50d9e57fd2693a4962ef7cf873823c83cbae88493925bafe"
+      },
+      "donor": "IT",
+      "reason": "EXP→ESP and HP→PS UI labels.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 79,
+        "IT": 79,
+        "SG": 79
+      },
+      "size": {
+        "US": 8256,
+        "IT": 8256,
+        "SG": 8256
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/6/2",
+        "member": 2,
+        "sha256": "7158407c44c41c7c68e74b4fcc9a40b87481365d6b8eb8576e1141415cd06317"
+      }
+    },
+    {
+      "file": "a/1/6/7",
+      "member": 5,
+      "sha256": {
+        "US": "3e675200ba54a069cb3b389a6289f723e6824bc268a57d7876d2c30890115bd6",
+        "IT": "68f79ebf4880b225d7030b6967976cd15eb168fd305e26386e202cd0f4711965",
+        "SG": "3e675200ba54a069cb3b389a6289f723e6824bc268a57d7876d2c30890115bd6"
+      },
+      "donor": "IT",
+      "reason": "Result/point labels and associated localized screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 33,
+        "IT": 33,
+        "SG": 33
+      },
+      "size": {
+        "US": 15424,
+        "IT": 15424,
+        "SG": 15424
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/6/7",
+        "member": 5,
+        "sha256": "68f79ebf4880b225d7030b6967976cd15eb168fd305e26386e202cd0f4711965"
+      },
+      "atomic_group": "a/1/6/7-regional-layout"
+    },
+    {
+      "file": "a/1/6/7",
+      "member": 9,
+      "sha256": {
+        "US": "0cce2d5f6d45a7b454d162bab330f38a3e28165c2e34fa1e07b5ccec78754155",
+        "IT": "d323bb8cadefb2b0de1d7dd1ca46022c91b2545a1177f141c767f94215352042",
+        "SG": "0cce2d5f6d45a7b454d162bab330f38a3e28165c2e34fa1e07b5ccec78754155"
+      },
+      "donor": "IT",
+      "reason": "Result/point labels and associated localized screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 33,
+        "IT": 33,
+        "SG": 33
+      },
+      "size": {
+        "US": 4160,
+        "IT": 4160,
+        "SG": 4160
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/6/7",
+        "member": 9,
+        "sha256": "d323bb8cadefb2b0de1d7dd1ca46022c91b2545a1177f141c767f94215352042"
+      },
+      "atomic_group": "a/1/6/7-regional-layout"
+    },
+    {
+      "file": "a/1/6/7",
+      "member": 10,
+      "sha256": {
+        "US": "2ff96e7a22dc658f1573a4beaa298ce7d2984baf3dbcf84d9b2540c6e53189dc",
+        "IT": "c24a886089895780f22ac277d229a2e3329e2d0cbc4bf97b6c41075122e5b31d",
+        "SG": "2ff96e7a22dc658f1573a4beaa298ce7d2984baf3dbcf84d9b2540c6e53189dc"
+      },
+      "donor": "IT",
+      "reason": "Result/point labels and associated localized screen tilemap. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 33,
+        "IT": 33,
+        "SG": 33
+      },
+      "size": {
+        "US": 1572,
+        "IT": 1572,
+        "SG": 1572
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/6/7",
+        "member": 10,
+        "sha256": "c24a886089895780f22ac277d229a2e3329e2d0cbc4bf97b6c41075122e5b31d"
+      },
+      "atomic_group": "a/1/6/7-regional-layout"
+    },
+    {
+      "file": "a/1/7/3",
+      "member": 1,
+      "sha256": {
+        "US": "a7b52f841e2c152f703294de283d6ba098d78b690b78c5270f3097035b44e43f",
+        "IT": "270388eb1babb85c5d1becc63af7e17303c014e64e45fe708a999fa1e5bbf5f6",
+        "SG": "a7b52f841e2c152f703294de283d6ba098d78b690b78c5270f3097035b44e43f"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS, LZ11-compressed members.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 10,
+        "IT": 10,
+        "SG": 10
+      },
+      "size": {
+        "US": 861,
+        "IT": 866,
+        "SG": 861
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/3",
+        "member": 1,
+        "sha256": "270388eb1babb85c5d1becc63af7e17303c014e64e45fe708a999fa1e5bbf5f6"
+      }
+    },
+    {
+      "file": "a/1/7/3",
+      "member": 6,
+      "sha256": {
+        "US": "fd416b237daeaa91759186fa53a991e16d599cd3d82a3e09fde6771e43ab0fdc",
+        "IT": "cfe0221db04bc91e3c235132f501f8d6fe598469f425e3556727b8f44d40f315",
+        "SG": "fd416b237daeaa91759186fa53a991e16d599cd3d82a3e09fde6771e43ab0fdc"
+      },
+      "donor": "IT",
+      "reason": "Battle HUD HP→PS, LZ11-compressed members.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 10,
+        "IT": 10,
+        "SG": 10
+      },
+      "size": {
+        "US": 527,
+        "IT": 531,
+        "SG": 527
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/3",
+        "member": 6,
+        "sha256": "cfe0221db04bc91e3c235132f501f8d6fe598469f425e3556727b8f44d40f315"
+      }
+    },
+    {
+      "file": "a/1/7/7",
+      "member": 13,
+      "sha256": {
+        "US": "0c5fff6b622230b03ecaf7eab34cd3ab064706a71d3a116a3af817c51582fadc",
+        "IT": "5c4acdaf6110b5023251645f99b4ab652468a98c63aa39b20033aa96e077878a",
+        "SG": "0c5fff6b622230b03ecaf7eab34cd3ab064706a71d3a116a3af817c51582fadc"
+      },
+      "donor": "IT",
+      "reason": "Ordinal/rank labels localized to Italian signs.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 74,
+        "IT": 74,
+        "SG": 74
+      },
+      "size": {
+        "US": 400,
+        "IT": 366,
+        "SG": 400
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/7",
+        "member": 13,
+        "sha256": "5c4acdaf6110b5023251645f99b4ab652468a98c63aa39b20033aa96e077878a"
+      }
+    },
+    {
+      "file": "a/1/7/7",
+      "member": 52,
+      "sha256": {
+        "US": "0e598dfb07cc4dadcef69f3437202a42773f2d19e3259ce8e35eda0b519778b4",
+        "IT": "5146724a177b735703d024fa0849ffbb1f7c2e1b9e76db7b99f409255c4f753c",
+        "SG": "0e598dfb07cc4dadcef69f3437202a42773f2d19e3259ce8e35eda0b519778b4"
+      },
+      "donor": "IT",
+      "reason": "Ordinal/rank labels localized to Italian signs.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 74,
+        "IT": 74,
+        "SG": 74
+      },
+      "size": {
+        "US": 1776,
+        "IT": 1747,
+        "SG": 1776
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/7",
+        "member": 52,
+        "sha256": "5146724a177b735703d024fa0849ffbb1f7c2e1b9e76db7b99f409255c4f753c"
+      }
+    },
+    {
+      "file": "a/1/7/8",
+      "member": 6,
+      "sha256": {
+        "US": "edc0172343664af23d93c3085b354f4a8148b143a87490d0a624746bae405854",
+        "IT": "3f7b016570a29f67147f6403ed9d493d7dfe3839604304d677e96cc1dfa19991",
+        "SG": "edc0172343664af23d93c3085b354f4a8148b143a87490d0a624746bae405854"
+      },
+      "donor": "IT",
+      "reason": "Localized score punctuation and SWITCH→CAMBIO buttons.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 32832,
+        "IT": 32832,
+        "SG": 32832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/8",
+        "member": 6,
+        "sha256": "3f7b016570a29f67147f6403ed9d493d7dfe3839604304d677e96cc1dfa19991"
+      }
+    },
+    {
+      "file": "a/1/7/8",
+      "member": 17,
+      "sha256": {
+        "US": "a88e0b2af17326d25daf33b637342ac9f17f6890f4531efd082e01f8c0017a4d",
+        "IT": "ff66b0dce3125d263e742c1637009e15f30100798bc01ea0ba5c5be6b7539032",
+        "SG": "a88e0b2af17326d25daf33b637342ac9f17f6890f4531efd082e01f8c0017a4d"
+      },
+      "donor": "IT",
+      "reason": "Localized score punctuation and SWITCH→CAMBIO buttons.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 34096,
+        "IT": 34096,
+        "SG": 34096
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/7/8",
+        "member": 17,
+        "sha256": "ff66b0dce3125d263e742c1637009e15f30100798bc01ea0ba5c5be6b7539032"
+      }
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 23,
+      "sha256": {
+        "US": "5dbd08c4646e900e09c03a744df19185adf2dfdcf61340ea54da038f232e8331",
+        "IT": "f4b7f01dd2db4b4676662eb21f9a3810e13e5eaf5fef1f10ad2e4a1116787676",
+        "SG": "5dbd08c4646e900e09c03a744df19185adf2dfdcf61340ea54da038f232e8331"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 4308,
+        "IT": 4312,
+        "SG": 4308
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 23,
+        "sha256": "f4b7f01dd2db4b4676662eb21f9a3810e13e5eaf5fef1f10ad2e4a1116787676"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 24,
+      "sha256": {
+        "US": "2fe80d697b46d0bffbd52eb3e7e941294594539d385ceb0db62d436709af322e",
+        "IT": "e1319344eda08776cbe2a08a0ec26f2e935529dfc57509fda9590640f6c18ae5",
+        "SG": "2fe80d697b46d0bffbd52eb3e7e941294594539d385ceb0db62d436709af322e"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 440,
+        "IT": 440,
+        "SG": 440
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 24,
+        "sha256": "e1319344eda08776cbe2a08a0ec26f2e935529dfc57509fda9590640f6c18ae5"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 93,
+      "sha256": {
+        "US": "152202ffc3fedd2f830ec45284ede7a144b063cfc8e513e30a0b6ae80464b523",
+        "IT": "a87fc90d669192bdbbe12fdd9fdaf1c18c09573901ab4b8466fc0be644a6f9a8",
+        "SG": "152202ffc3fedd2f830ec45284ede7a144b063cfc8e513e30a0b6ae80464b523"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 9752,
+        "IT": 9760,
+        "SG": 9752
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 93,
+        "sha256": "a87fc90d669192bdbbe12fdd9fdaf1c18c09573901ab4b8466fc0be644a6f9a8"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 101,
+      "sha256": {
+        "US": "17595f34161391b9794dbcb53f5a7f0f6a1d6088d46a6077704af913b95c666b",
+        "IT": "f018c85bdacdf5ab3ceb387933b9b6cd853240f01e7763299e8529dd49cd0423",
+        "SG": "17595f34161391b9794dbcb53f5a7f0f6a1d6088d46a6077704af913b95c666b"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 9380,
+        "IT": 9344,
+        "SG": 9380
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 101,
+        "sha256": "f018c85bdacdf5ab3ceb387933b9b6cd853240f01e7763299e8529dd49cd0423"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 113,
+      "sha256": {
+        "US": "26bb02171d805e883b1fe0a4da75343634fb1433cca72b2b5e547253633b6f54",
+        "IT": "a8b6a167baad76e7887a721422ea2ae6ce3f6b4c3f4ada0028025eb16fdd47db",
+        "SG": "26bb02171d805e883b1fe0a4da75343634fb1433cca72b2b5e547253633b6f54"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 10432,
+        "IT": 10420,
+        "SG": 10432
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 113,
+        "sha256": "a8b6a167baad76e7887a721422ea2ae6ce3f6b4c3f4ada0028025eb16fdd47db"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/3",
+      "member": 115,
+      "sha256": {
+        "US": "a8da2b826eaeb5e512f27f63beab4c406750d2eb4489cec42426b4df05a590f3",
+        "IT": "d1806d5ae9d1709149bd2bb39fe82f9bc16ee3e44964e9bc527c4cc5620369cd",
+        "SG": "a8da2b826eaeb5e512f27f63beab4c406750d2eb4489cec42426b4df05a590f3"
+      },
+      "donor": "IT",
+      "reason": "Rank→Grado, HP→PS, BP→PL, associated rank layout.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 197,
+        "IT": 197,
+        "SG": 197
+      },
+      "size": {
+        "US": 10224,
+        "IT": 10252,
+        "SG": 10224
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/3",
+        "member": 115,
+        "sha256": "d1806d5ae9d1709149bd2bb39fe82f9bc16ee3e44964e9bc527c4cc5620369cd"
+      },
+      "atomic_group": "a/1/8/3-regional-layout"
+    },
+    {
+      "file": "a/1/8/4",
+      "member": 18,
+      "sha256": {
+        "US": "afb1dbfa9e7395c0e879d39b3a0d4d0db316d008107a11abe6b6caabe2c94e6b",
+        "IT": "e993fdec87af9f5397ff7ee535a7511507286b4b91bd3b530fde9fc4e1a0dcbd",
+        "SG": "afb1dbfa9e7395c0e879d39b3a0d4d0db316d008107a11abe6b6caabe2c94e6b"
+      },
+      "donor": "IT",
+      "reason": "Battle Arcade status/result sprite lettering; loaded by battle_arcade_game_board.c with unchanged cell/animation tables.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 65,
+        "IT": 65,
+        "SG": 65
+      },
+      "size": {
+        "US": 5372,
+        "IT": 5364,
+        "SG": 5372
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/8/4",
+        "member": 18,
+        "sha256": "e993fdec87af9f5397ff7ee535a7511507286b4b91bd3b530fde9fc4e1a0dcbd"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 17,
+      "sha256": {
+        "US": "94ca3f392b09b8f249a0129cfb9415e503c3f78b593f82b176f565e6a3c66e84",
+        "IT": "03bdc3a3065c2e3ed1648f274a61b342bf57e20ed2a71fa4bbd3b1eafbb5b949",
+        "SG": "94ca3f392b09b8f249a0129cfb9415e503c3f78b593f82b176f565e6a3c66e84"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 6192,
+        "IT": 6192,
+        "SG": 6192
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 17,
+        "sha256": "03bdc3a3065c2e3ed1648f274a61b342bf57e20ed2a71fa4bbd3b1eafbb5b949"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 48,
+      "sha256": {
+        "US": "f45b944573dae4be7605631b72fc4b5e4ba32fe7a6f5fcaf0c81c66aa9012a60",
+        "IT": "9d5caf1e07b2d4ba503ca764b37c0cede90b2156b1be7294ac5f78fa03c2a784",
+        "SG": "f45b944573dae4be7605631b72fc4b5e4ba32fe7a6f5fcaf0c81c66aa9012a60"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 9776,
+        "IT": 9776,
+        "SG": 9776
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 48,
+        "sha256": "9d5caf1e07b2d4ba503ca764b37c0cede90b2156b1be7294ac5f78fa03c2a784"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 54,
+      "sha256": {
+        "US": "0f9e9d17e9cfd6fccd6cb1570a1bce03488613d7d93b6da73f26ec9bfae26b7d",
+        "IT": "7a140d9ae33700ec0b3fc113cb6cd3cc0cbcff01dd6a271489c89bd5c7f8201f",
+        "SG": "0f9e9d17e9cfd6fccd6cb1570a1bce03488613d7d93b6da73f26ec9bfae26b7d"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 8256,
+        "IT": 8256,
+        "SG": 8256
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 54,
+        "sha256": "7a140d9ae33700ec0b3fc113cb6cd3cc0cbcff01dd6a271489c89bd5c7f8201f"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 62,
+      "sha256": {
+        "US": "83c6a09dcf97749dc7517a95a172d4e7c0f33d89d1f57d0f11aa2fa302eb6073",
+        "IT": "b0d93ab75cbed32ea21f0e3f25d8b0e5b38451dab491dddbfd7b6879003f5cee",
+        "SG": "83c6a09dcf97749dc7517a95a172d4e7c0f33d89d1f57d0f11aa2fa302eb6073"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 4160,
+        "IT": 4160,
+        "SG": 4160
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 62,
+        "sha256": "b0d93ab75cbed32ea21f0e3f25d8b0e5b38451dab491dddbfd7b6879003f5cee"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 66,
+      "sha256": {
+        "US": "950721b7e4f3fac275509edf9f2f25aee1d5dd43c2e5ecb5251d0a4d1dcfc4e0",
+        "IT": "26c0e64fea8fb756ffbf883ab7cc83aab25984e1ea9e1e5f6ca94fa58bc914ab",
+        "SG": "950721b7e4f3fac275509edf9f2f25aee1d5dd43c2e5ecb5251d0a4d1dcfc4e0"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 2864,
+        "IT": 2864,
+        "SG": 2864
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 66,
+        "sha256": "26c0e64fea8fb756ffbf883ab7cc83aab25984e1ea9e1e5f6ca94fa58bc914ab"
+      }
+    },
+    {
+      "file": "a/1/9/1",
+      "member": 67,
+      "sha256": {
+        "US": "a101dc718d99358bf78522ffb85c31ae98da259d49b4ee11450e28962e89bab4",
+        "IT": "613553d06fd4dd1e015ccca02eace246ac05bb21300b39fbd38f7fac8d3faa59",
+        "SG": "a101dc718d99358bf78522ffb85c31ae98da259d49b4ee11450e28962e89bab4"
+      },
+      "donor": "IT",
+      "reason": "Vs. Recorder→Registradati; Global/Browse Mode labels; Battle Points→Punti Lotta; BP→PL.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 258,
+        "IT": 258,
+        "SG": 258
+      },
+      "size": {
+        "US": 8256,
+        "IT": 8256,
+        "SG": 8256
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/1",
+        "member": 67,
+        "sha256": "613553d06fd4dd1e015ccca02eace246ac05bb21300b39fbd38f7fac8d3faa59"
+      }
+    },
+    {
+      "file": "a/1/9/8",
+      "member": 12,
+      "sha256": {
+        "US": "019a1e73c1d86c004f4a8d36d46941abd922ae7f802678767ad27e27dfed0e26",
+        "IT": "eb49bee04e6209306d7956990e9a9dba19754f4ce3c6f3e651466a9f62793a41",
+        "SG": "019a1e73c1d86c004f4a8d36d46941abd922ae7f802678767ad27e27dfed0e26"
+      },
+      "donor": "IT",
+      "reason": "Ordinal suffixes in event score sprites.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 27,
+        "IT": 27,
+        "SG": 27
+      },
+      "size": {
+        "US": 4656,
+        "IT": 4656,
+        "SG": 4656
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/1/9/8",
+        "member": 12,
+        "sha256": "eb49bee04e6209306d7956990e9a9dba19754f4ce3c6f3e651466a9f62793a41"
+      }
+    },
+    {
+      "file": "a/2/1/5",
+      "member": 16,
+      "sha256": {
+        "US": "4b0947ed22320e57e9b88f2ac004ef88f2370d4a275686dea012bc9ed0079610",
+        "IT": "6cf3a8665d44200289066108167f58a2baeefed516b8607cde6e800d20c4a4fd",
+        "SG": "4b0947ed22320e57e9b88f2ac004ef88f2370d4a275686dea012bc9ed0079610"
+      },
+      "donor": "IT",
+      "reason": "Victory result lettering localized.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 19,
+        "IT": 19,
+        "SG": 19
+      },
+      "size": {
+        "US": 6576,
+        "IT": 6576,
+        "SG": 6576
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/5",
+        "member": 16,
+        "sha256": "6cf3a8665d44200289066108167f58a2baeefed516b8607cde6e800d20c4a4fd"
+      }
+    },
+    {
+      "file": "a/2/1/7",
+      "member": 5,
+      "sha256": {
+        "US": "1084da33baa20d7677116b5c62106652c5c29b9887c78f336215c57272219c14",
+        "IT": "f3e7d54e4c90a267d586536adb7214d400067b0efb40c897f784dcf7ecde56b1",
+        "SG": "1084da33baa20d7677116b5c62106652c5c29b9887c78f336215c57272219c14"
+      },
+      "donor": "IT",
+      "reason": "Points/result lettering and matching screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 22,
+        "IT": 22,
+        "SG": 22
+      },
+      "size": {
+        "US": 32832,
+        "IT": 32832,
+        "SG": 32832
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/7",
+        "member": 5,
+        "sha256": "f3e7d54e4c90a267d586536adb7214d400067b0efb40c897f784dcf7ecde56b1"
+      },
+      "atomic_group": "a/2/1/7-regional-layout"
+    },
+    {
+      "file": "a/2/1/7",
+      "member": 7,
+      "sha256": {
+        "US": "d2959b9841b77514236248005986b8d93fce3a6b4b1771708a278a9e666f8731",
+        "IT": "855581e290fb86e0fe63a0bbbad2f865bb28e78f9609ff3c56c4b24ec824be0e",
+        "SG": "d2959b9841b77514236248005986b8d93fce3a6b4b1771708a278a9e666f8731"
+      },
+      "donor": "IT",
+      "reason": "Points/result lettering and matching screen tilemap. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 22,
+        "IT": 22,
+        "SG": 22
+      },
+      "size": {
+        "US": 1572,
+        "IT": 1572,
+        "SG": 1572
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/7",
+        "member": 7,
+        "sha256": "855581e290fb86e0fe63a0bbbad2f865bb28e78f9609ff3c56c4b24ec824be0e"
+      },
+      "atomic_group": "a/2/1/7-regional-layout"
+    },
+    {
+      "file": "a/2/1/7",
+      "member": 17,
+      "sha256": {
+        "US": "8b0d9b06af612fd40ec7dc666268ee8cfca3e907a2fde7c85573db73b81b7ee6",
+        "IT": "20fa05f80aee020a476917062f9bae8c49e165c56b9293b7fa6f10419b7127cb",
+        "SG": "8b0d9b06af612fd40ec7dc666268ee8cfca3e907a2fde7c85573db73b81b7ee6"
+      },
+      "donor": "IT",
+      "reason": "Points/result lettering and matching screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 22,
+        "IT": 22,
+        "SG": 22
+      },
+      "size": {
+        "US": 2608,
+        "IT": 2608,
+        "SG": 2608
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/7",
+        "member": 17,
+        "sha256": "20fa05f80aee020a476917062f9bae8c49e165c56b9293b7fa6f10419b7127cb"
+      },
+      "atomic_group": "a/2/1/7-regional-layout"
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 44,
+      "sha256": {
+        "US": "6409caf4ee7cba125f6bd6aaf2f025467b56b8347231e5ef7fa9d0bc7b51192f",
+        "IT": "39bd75e0436af2ab68ed100e1aa5529dc3e0c7b114d98d9a346968d4d7bd6ff4",
+        "SG": "6409caf4ee7cba125f6bd6aaf2f025467b56b8347231e5ef7fa9d0bc7b51192f"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 6137,
+        "IT": 6103,
+        "SG": 6137
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 44,
+        "sha256": "39bd75e0436af2ab68ed100e1aa5529dc3e0c7b114d98d9a346968d4d7bd6ff4"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 45,
+      "sha256": {
+        "US": "9d42c5513e77883d6271f80ff45e832a602e0ff4b498eaf585607a6bc8a1ca00",
+        "IT": "ffa6d2dc3c6d81aa4ec4a04217874b26679105f2614e8376185600a1ee6318bf",
+        "SG": "9d42c5513e77883d6271f80ff45e832a602e0ff4b498eaf585607a6bc8a1ca00"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 6933,
+        "IT": 6950,
+        "SG": 6933
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 45,
+        "sha256": "ffa6d2dc3c6d81aa4ec4a04217874b26679105f2614e8376185600a1ee6318bf"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 46,
+      "sha256": {
+        "US": "b18c99866708c56b55ce1470615cfeb0565c533a3f7bb7c59852611fb5e58b6b",
+        "IT": "58d7a0b0ca8004237a151ba3fd9604ead52ace51a71755a40289155618039db7",
+        "SG": "b18c99866708c56b55ce1470615cfeb0565c533a3f7bb7c59852611fb5e58b6b"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 7748,
+        "IT": 7711,
+        "SG": 7748
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 46,
+        "sha256": "58d7a0b0ca8004237a151ba3fd9604ead52ace51a71755a40289155618039db7"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 48,
+      "sha256": {
+        "US": "6d06a9b13f8f3d33ef8685a306b3b204f6fa6123c4e0da0dbf4d6a3fd0a63443",
+        "IT": "15fbf61cdb8bba3572f7aa572839a5e5d9e12d49b9631d265ac62cab0fbce644",
+        "SG": "6d06a9b13f8f3d33ef8685a306b3b204f6fa6123c4e0da0dbf4d6a3fd0a63443"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 5183,
+        "IT": 5200,
+        "SG": 5183
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 48,
+        "sha256": "15fbf61cdb8bba3572f7aa572839a5e5d9e12d49b9631d265ac62cab0fbce644"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 49,
+      "sha256": {
+        "US": "f4acecf0412450fb373a14c5a3f35c9f4eafc7a6f1beb29994788b7a00627c3e",
+        "IT": "434be12b77a9ec30b4ea47882e5bc16037b96ac136501b257d74b1caaa916a83",
+        "SG": "f4acecf0412450fb373a14c5a3f35c9f4eafc7a6f1beb29994788b7a00627c3e"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 5715,
+        "IT": 5733,
+        "SG": 5715
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 49,
+        "sha256": "434be12b77a9ec30b4ea47882e5bc16037b96ac136501b257d74b1caaa916a83"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 50,
+      "sha256": {
+        "US": "029c3fdf4982960fd2bfcbebd5cbf4e57837c7a088375c641dab0bb7ce0ceefd",
+        "IT": "5e9b9dcb885e2cdf2c62a7c6396647f347f4df8d31f9ec6e71ed4e727cf87957",
+        "SG": "029c3fdf4982960fd2bfcbebd5cbf4e57837c7a088375c641dab0bb7ce0ceefd"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 6134,
+        "IT": 6112,
+        "SG": 6134
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 50,
+        "sha256": "5e9b9dcb885e2cdf2c62a7c6396647f347f4df8d31f9ec6e71ed4e727cf87957"
+      }
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 51,
+      "sha256": {
+        "US": "2c8c09ffa15583a032a301e7d6ba03084e6751d40888cfab5373805c4a9233ac",
+        "IT": "fc9e7ced4f30796569cdab6c2ddab6fd8fa4fa3a15be27da52b749122ea91ee8",
+        "SG": "2c8c09ffa15583a032a301e7d6ba03084e6751d40888cfab5373805c4a9233ac"
+      },
+      "donor": "IT",
+      "reason": "Pokéathlon tutorial graphics: SWITCH→CAMBIO, POINTS→PUNTI, PLAYER→GIOCATORE, YOU→TU, localized sample names.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 62,
+        "IT": 62,
+        "SG": 62
+      },
+      "size": {
+        "US": 8301,
+        "IT": 8262,
+        "SG": 8301
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/1/9",
+        "member": 51,
+        "sha256": "fc9e7ced4f30796569cdab6c2ddab6fd8fa4fa3a15be27da52b749122ea91ee8"
+      }
+    },
+    {
+      "file": "a/2/2/4",
+      "member": 6,
+      "sha256": {
+        "US": "ce8e2c2eac78caf4c1f9265984a853cac77bf4b84be78130aeb0ebb0c6a0f40d",
+        "IT": "a18524b26038ad8fdc75af4d97bb82f908c14204cbfc3f7601dd48eb31e6fd39",
+        "SG": "ce8e2c2eac78caf4c1f9265984a853cac77bf4b84be78130aeb0ebb0c6a0f40d"
+      },
+      "donor": "IT",
+      "reason": "Result/score lettering and associated screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 24640,
+        "IT": 24640,
+        "SG": 24640
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/2/4",
+        "member": 6,
+        "sha256": "a18524b26038ad8fdc75af4d97bb82f908c14204cbfc3f7601dd48eb31e6fd39"
+      },
+      "atomic_group": "a/2/2/4-regional-layout"
+    },
+    {
+      "file": "a/2/2/4",
+      "member": 8,
+      "sha256": {
+        "US": "fa936cd267f08ebe8cf05c349d5934c4d466b42ad78932cb97c31b09ec45d8ea",
+        "IT": "7b5ae0d20e484ecc0116bd71cc8bbffe0be2ccad9e41ccb6cc05504ea368f164",
+        "SG": "fa936cd267f08ebe8cf05c349d5934c4d466b42ad78932cb97c31b09ec45d8ea"
+      },
+      "donor": "IT",
+      "reason": "Result/score lettering and associated screen tilemap. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 1572,
+        "IT": 1572,
+        "SG": 1572
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/2/4",
+        "member": 8,
+        "sha256": "7b5ae0d20e484ecc0116bd71cc8bbffe0be2ccad9e41ccb6cc05504ea368f164"
+      },
+      "atomic_group": "a/2/2/4-regional-layout"
+    },
+    {
+      "file": "a/2/2/4",
+      "member": 13,
+      "sha256": {
+        "US": "1138483063227be28ef51fcced57c722ed99086fbc8e68b0055e4540e6a91cab",
+        "IT": "42ce72e4006b85bbdd2a9ffb2868fcabfe4ed129dd40910d75afbdb4581721d4",
+        "SG": "1138483063227be28ef51fcced57c722ed99086fbc8e68b0055e4540e6a91cab"
+      },
+      "donor": "IT",
+      "reason": "Result/score lettering and associated screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 6704,
+        "IT": 6704,
+        "SG": 6704
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/2/4",
+        "member": 13,
+        "sha256": "42ce72e4006b85bbdd2a9ffb2868fcabfe4ed129dd40910d75afbdb4581721d4"
+      },
+      "atomic_group": "a/2/2/4-regional-layout"
+    },
+    {
+      "file": "a/2/2/4",
+      "member": 17,
+      "sha256": {
+        "US": "886e5b68fbbd31bebc06f354fe6f69a7545744c6f45208519faafa80ad3078f6",
+        "IT": "7eb507e82a925fef47b8e4bef3e6a2f53e6253155cc50151d977c5fe0b0681b9",
+        "SG": "886e5b68fbbd31bebc06f354fe6f69a7545744c6f45208519faafa80ad3078f6"
+      },
+      "donor": "IT",
+      "reason": "Result/score lettering and associated screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 18,
+        "IT": 18,
+        "SG": 18
+      },
+      "size": {
+        "US": 16944,
+        "IT": 16944,
+        "SG": 16944
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/2/4",
+        "member": 17,
+        "sha256": "7eb507e82a925fef47b8e4bef3e6a2f53e6253155cc50151d977c5fe0b0681b9"
+      },
+      "atomic_group": "a/2/2/4-regional-layout"
+    },
+    {
+      "file": "a/2/3/2",
+      "member": 8,
+      "sha256": {
+        "US": "960d9fc4c17b615991ba505554da2e5eab56484ca56238b53088687bf8d58da3",
+        "IT": "6c1ea3ba2c670aca43b7e53b593a8fec372d3fda0f5308d76330b0672f5fba49",
+        "SG": "960d9fc4c17b615991ba505554da2e5eab56484ca56238b53088687bf8d58da3"
+      },
+      "donor": "IT",
+      "reason": "SWITCH→CAMBIO button states.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 19,
+        "IT": 19,
+        "SG": 19
+      },
+      "size": {
+        "US": 10683,
+        "IT": 10805,
+        "SG": 10683
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/3/2",
+        "member": 8,
+        "sha256": "6c1ea3ba2c670aca43b7e53b593a8fec372d3fda0f5308d76330b0672f5fba49"
+      }
+    },
+    {
+      "file": "a/2/3/5",
+      "member": 1,
+      "sha256": {
+        "US": "30ea0b51f9c34e76c13b7fa7832278566b83119a43e8175af096f11a4d6afd8b",
+        "IT": "f66703ce2345b491572a9a5278d7d5a4483e20df820ab373e425362764aa40bf",
+        "SG": "30ea0b51f9c34e76c13b7fa7832278566b83119a43e8175af096f11a4d6afd8b"
+      },
+      "donor": "IT",
+      "reason": "POINTS→PUNTI and score labels with matching screen tilemap. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 27,
+        "IT": 27,
+        "SG": 27
+      },
+      "size": {
+        "US": 746,
+        "IT": 734,
+        "SG": 746
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/3/5",
+        "member": 1,
+        "sha256": "f66703ce2345b491572a9a5278d7d5a4483e20df820ab373e425362764aa40bf"
+      },
+      "atomic_group": "a/2/3/5-regional-layout"
+    },
+    {
+      "file": "a/2/3/5",
+      "member": 2,
+      "sha256": {
+        "US": "03bb00dbbbcb1aeba75c96801f54e91ab9d2305b27a5e39ecc533db5ff881da8",
+        "IT": "0b984ac43d919a5dad5397ddabb1d38ef9f58f6665270a8bee369bc2ad9cc959",
+        "SG": "03bb00dbbbcb1aeba75c96801f54e91ab9d2305b27a5e39ecc533db5ff881da8"
+      },
+      "donor": "IT",
+      "reason": "POINTS→PUNTI and score labels with matching screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 27,
+        "IT": 27,
+        "SG": 27
+      },
+      "size": {
+        "US": 1485,
+        "IT": 1465,
+        "SG": 1485
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/3/5",
+        "member": 2,
+        "sha256": "0b984ac43d919a5dad5397ddabb1d38ef9f58f6665270a8bee369bc2ad9cc959"
+      },
+      "atomic_group": "a/2/3/5-regional-layout"
+    },
+    {
+      "file": "a/2/3/5",
+      "member": 11,
+      "sha256": {
+        "US": "e3c7f7bcf19570f01235cb4dd2cf98a2afb617007df501408f0b87cc363cfa69",
+        "IT": "7ed1ebceafccba65bfe289be6bb23f17f32979f74670acd3770aaabf5399f310",
+        "SG": "e3c7f7bcf19570f01235cb4dd2cf98a2afb617007df501408f0b87cc363cfa69"
+      },
+      "donor": "IT",
+      "reason": "POINTS→PUNTI and score labels with matching screen tilemap.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 27,
+        "IT": 27,
+        "SG": 27
+      },
+      "size": {
+        "US": 2730,
+        "IT": 2718,
+        "SG": 2730
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/3/5",
+        "member": 11,
+        "sha256": "7ed1ebceafccba65bfe289be6bb23f17f32979f74670acd3770aaabf5399f310"
+      },
+      "atomic_group": "a/2/3/5-regional-layout"
+    },
+    {
+      "file": "a/2/4/0",
+      "member": 16,
+      "sha256": {
+        "US": "621dc92d978d3975b86369477411a79cc2266bf16c493dbb07e1dc07d03c259e",
+        "IT": "03e1298a930118f1d6a22e930a426882635a63c04c0c4f2e75fd3b62277c9db7",
+        "SG": "621dc92d978d3975b86369477411a79cc2266bf16c493dbb07e1dc07d03c259e"
+      },
+      "donor": "IT",
+      "reason": "SWITCH→CAMBIO button states.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 25,
+        "IT": 25,
+        "SG": 25
+      },
+      "size": {
+        "US": 5990,
+        "IT": 6075,
+        "SG": 5990
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/4/0",
+        "member": 16,
+        "sha256": "03e1298a930118f1d6a22e930a426882635a63c04c0c4f2e75fd3b62277c9db7"
+      }
+    },
+    {
+      "file": "a/2/6/2",
+      "member": 1,
+      "sha256": {
+        "US": "dbbfcebafbc04239fe541ac50fb4310197b1974085c8092495c024562eb427fb",
+        "IT": "7abd3f835db505cf4443e0d9fd8c7b0da958eda94dd3319f092e4d3b339051ce",
+        "SG": "dbbfcebafbc04239fe541ac50fb4310197b1974085c8092495c024562eb427fb"
+      },
+      "donor": "IT",
+      "reason": "Opening/Game Freak PRESENTS→PRESENTA and matching retail local palette/tilemap set. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 106,
+        "IT": 106,
+        "SG": 106
+      },
+      "size": {
+        "US": 552,
+        "IT": 552,
+        "SG": 552
+      },
+      "decompressed_type": "RLCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/6/2",
+        "member": 1,
+        "sha256": "7abd3f835db505cf4443e0d9fd8c7b0da958eda94dd3319f092e4d3b339051ce"
+      },
+      "atomic_group": "a/2/6/2-regional-layout"
+    },
+    {
+      "file": "a/2/6/2",
+      "member": 3,
+      "sha256": {
+        "US": "eda179852a5e388e2c04b36f18bd6258f7175f263e43259a5d36f890fd4efcd8",
+        "IT": "41730ae007fe68b43b98e8b62113f50006b014288537b6a7e3d4465eb2665e51",
+        "SG": "eda179852a5e388e2c04b36f18bd6258f7175f263e43259a5d36f890fd4efcd8"
+      },
+      "donor": "IT",
+      "reason": "Opening/Game Freak PRESENTS→PRESENTA and matching retail local palette/tilemap set. This dependent palette/tilemap is part of the same retail localized graphics set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 106,
+        "IT": 106,
+        "SG": 106
+      },
+      "size": {
+        "US": 552,
+        "IT": 552,
+        "SG": 552
+      },
+      "decompressed_type": "RLCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/6/2",
+        "member": 3,
+        "sha256": "41730ae007fe68b43b98e8b62113f50006b014288537b6a7e3d4465eb2665e51"
+      },
+      "atomic_group": "a/2/6/2-regional-layout"
+    },
+    {
+      "file": "a/2/6/2",
+      "member": 5,
+      "sha256": {
+        "US": "73464f88f30019a3621e39c8e3687e1d1d1f8d2c06d4df9ab57371ab1a11be8a",
+        "IT": "cbee8abcf0ae96ae2f6ff1c3b466681dc4a7dcda9280beeb137e752325355d6c",
+        "SG": "73464f88f30019a3621e39c8e3687e1d1d1f8d2c06d4df9ab57371ab1a11be8a"
+      },
+      "donor": "IT",
+      "reason": "Opening/Game Freak PRESENTS→PRESENTA and matching retail local palette/tilemap set.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 106,
+        "IT": 106,
+        "SG": 106
+      },
+      "size": {
+        "US": 2591,
+        "IT": 1400,
+        "SG": 2591
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/6/2",
+        "member": 5,
+        "sha256": "cbee8abcf0ae96ae2f6ff1c3b466681dc4a7dcda9280beeb137e752325355d6c"
+      },
+      "atomic_group": "a/2/6/2-regional-layout"
+    },
+    {
+      "file": "a/2/6/2",
+      "member": 13,
+      "sha256": {
+        "US": "e778fb5799f243733688cbe195e00ce7a0c02cce8f2128ae2e878bd455d063ab",
+        "IT": "2a722ff552b39e1981738382fb35ca5ca1cf83346c3241ad2b81317cfea3fa52",
+        "SG": "e778fb5799f243733688cbe195e00ce7a0c02cce8f2128ae2e878bd455d063ab"
+      },
+      "donor": "IT",
+      "reason": "Opening/Game Freak PRESENTS→PRESENTA and matching retail local palette/tilemap set. This dependent palette/tilemap is part of the same retail localized graphics set. Decompress only this donor member to raw RCSN, as required by the unchanged US intro loader (isCompressed=FALSE). Runtime diagnostic fixed the boot data abort by changing this member alone.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 106,
+        "IT": 106,
+        "SG": 106
+      },
+      "size": {
+        "US": 2084,
+        "IT": 344,
+        "SG": 2084
+      },
+      "decompressed_type": "RCSN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/6/2",
+        "member": 13,
+        "sha256": "40106cd911ddf392543237ff24da770a660ef6deaa2d501790d82fc889b8c39b"
+      },
+      "atomic_group": "a/2/6/2-regional-layout",
+      "transform": {
+        "kind": "lz10-decompress",
+        "after_sha256": "40106cd911ddf392543237ff24da770a660ef6deaa2d501790d82fc889b8c39b"
+      }
+    },
+    {
+      "file": "a/2/6/3",
+      "member": 6,
+      "sha256": {
+        "US": "c24a0ce88c4893e4da42f136f7a26fe1ea8464a0e93cfeebeb2336b584e5f90c",
+        "IT": "6f26af0154154de4e5e125f14cd354b51e914ba19baf0d3f4fdf453d5a2c9558",
+        "SG": "c24a0ce88c4893e4da42f136f7a26fe1ea8464a0e93cfeebeb2336b584e5f90c"
+      },
+      "donor": "IT",
+      "reason": "THE END→FINE ending graphic.",
+      "plus_diff_reviewed": false,
+      "member_count": {
+        "US": 192,
+        "IT": 192,
+        "SG": 192
+      },
+      "size": {
+        "US": 2322,
+        "IT": 2217,
+        "SG": 2322
+      },
+      "decompressed_type": "RGCN",
+      "postimage": {
+        "kind": "local_rom_narc_member",
+        "rom": "Pokemon - Versione Oro HeartGold.nds",
+        "file": "a/2/6/3",
+        "member": 6,
+        "sha256": "6f26af0154154de4e5e125f14cd354b51e914ba19baf0d3f4fdf453d5a2c9558"
+      }
+    }
+  ],
+  "protected_members": [
+    {
+      "file": "a/0/0/8",
+      "member": 46,
+      "SG_sha256": "fd11de3606d587d851f91bb56c18717facf6589037bcbc1b94876e4c098d60ff",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 61,
+      "SG_sha256": "fae43f06d8f3e6e8e84b40f847b139a43a77f2c3a355c396d962b5234646188a",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 62,
+      "SG_sha256": "fae43f06d8f3e6e8e84b40f847b139a43a77f2c3a355c396d962b5234646188a",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 63,
+      "SG_sha256": "fae43f06d8f3e6e8e84b40f847b139a43a77f2c3a355c396d962b5234646188a",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 74,
+      "SG_sha256": "731aec4cc59bc0ff5be32367df46defd3f70a85a4a27e74c4692882aa048cf17",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/0/8",
+      "member": 236,
+      "SG_sha256": "5b8d2e7ec57cc2475f07ed5459ac9575c6f31ae0a0a42edad0129f2680ca7d3d",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 35,
+      "SG_sha256": "6587da596072d0e032cf710aef99dcfc15329f11bf496e7091d8b6e6bc48d7a5",
+      "reason": "Preserve Plus custom/Fairy resource."
+    },
+    {
+      "file": "a/0/6/8",
+      "member": 123,
+      "SG_sha256": "0b1a3a4c73b304fdd4a3c839149bcaf9b0db980003013f53d2158cb1e02a7cd6",
+      "reason": "Preserve Plus custom/Fairy resource."
+    }
+  ],
+  "required_atomic_groups": {
+    "pokedex-us-imperial-search": [
+      {
+        "file": "a/0/6/8",
+        "member": 12,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 13,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 14,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 57,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 58,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 65,
+        "donor": "US"
+      },
+      {
+        "file": "a/0/6/8",
+        "member": 66,
+        "donor": "US"
+      }
+    ]
+  },
+  "presentation_overrides": "presentation-overrides.json",
+  "guards": "Require current member SHA256==SG preimage and donor SHA256==selected donor. Retain member order/count and all unlisted bytes. Apply every atomic_group as one set.",
+  "not_covered": [
+    "No executable code or gameplay data; no 3D maps/textures or PBR resources.",
+    "Not an in-game regression proof. Unit value formatting is separately documented in UI_LOCALIZATION_NOTES.md.",
+    "NCGR atlases use diagnostic colors; NCER cells reconstruct actual cell geometry."
+  ],
+  "deferred": [
+    {
+      "file": "a/0/1/9",
+      "member": 66,
+      "reason": "Bag cell geometry changes; no translated bitmap label established."
+    },
+    {
+      "file": "a/1/5/3",
+      "member": 3,
+      "reason": "Sprite geometry/punctuation not confidently identified as a text translation."
+    },
+    {
+      "file": "a/1/5/3",
+      "member": 13,
+      "reason": "Sprite geometry/punctuation not confidently identified as a text translation."
+    },
+    {
+      "file": "a/1/5/3",
+      "member": 19,
+      "reason": "Sprite geometry/punctuation not confidently identified as a text translation."
+    },
+    {
+      "file": "a/1/5/3",
+      "member": 22,
+      "reason": "Sprite geometry/punctuation not confidently identified as a text translation."
+    },
+    {
+      "file": "a/1/5/3",
+      "member": 28,
+      "reason": "Sprite geometry/punctuation not confidently identified as a text translation."
+    },
+    {
+      "file": "a/1/7/1",
+      "member": 1,
+      "reason": "Photo viewer geometry; no translated bitmap label established."
+    },
+    {
+      "file": "a/1/9/8",
+      "member": 2,
+      "reason": "Large tiled event lettering requires a reconstructed cell review."
+    },
+    {
+      "file": "a/2/1/9",
+      "member": 42,
+      "reason": "Tutorial bitmap change not legibly identified in current render."
+    },
+    {
+      "file": "a/2/3/4",
+      "member": 6,
+      "reason": "Game Freak graphic spacing difference; no translation required."
+    }
+  ]
+}

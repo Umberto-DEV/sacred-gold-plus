@@ -1,0 +1,37 @@
+{
+  "source_core_revision": "906e9ebb27da8c6a715cd7abab4abfe8a8d29427",
+  "unchanged_runtime_sources": {
+    "main.cpp": "ff94c480fbf56ab60749ff1d2dcf2b409224ecdcae2123d71c5165ec43d34552",
+    "platform.cpp": "5f03432ec4641b832369f492fc9be6267a0537bc4753ea68d5bc245b0b874090",
+    "hg_trace.h": "3ca2817773026d7110835eaf280d0b0f8aadf29db7031ab8db76582cfe56539f",
+    "melonds-observation-hooks.patch": "f99dc0723803ccf93dc777cf3b67a027705c74fb691be8c4fb86d2f1aab24885"
+  },
+  "portability_changes": {
+    "patch_core.py": "The checkout path is a required --source argument; no personal default remains.",
+    "CMakeLists.txt": "The existing companion target defaults to enabled, with a configurable source path and an explicit standalone-harness option. POSIX thread and dynamic-loader link libraries are explicit."
+  },
+  "host_scope": "POSIX platform glue; newly built on macOS ARM64. Linux build not exercised, Windows glue not implemented.",
+  "companion_test": {
+    "default_relative_path": "../scripts/wait_loop_test.cpp",
+    "distributed_in_this_folder": false,
+    "sha256": "9305388c1590c42f08f178692b3b047e4a62596e3143c8749a70d6922d64fe99"
+  },
+  "input_script_policy": {
+    "allowed_commands": [
+      "capture",
+      "key",
+      "quit",
+      "read",
+      "release",
+      "run",
+      "sram",
+      "status",
+      "tap",
+      "touch",
+      "tracepc"
+    ],
+    "rom_ram_mutation_or_external_state_load": false,
+    "newgame_change": "Removed the discarded first 60-frame replay and output-only commands, preserving the subsequent guest input timeline.",
+    "save_change": "Split the existing final 300-frame wait into 100+200 to capture the complete Italian saved message without changing total emulated frames."
+  }
+}

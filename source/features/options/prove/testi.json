@@ -1,0 +1,510 @@
+{
+ "schema": 3,
+ "charmap": "features/options/testi/charmap-sgp.tsv",
+ "limiti_px": {
+  "nome": 114,
+  "valore": 44,
+  "riga": 166,
+  "continua": 224,
+  "suggerimento": 108,
+  "comando": 80
+ },
+ "rom": "sgp-1.2-IT.nds (measured on the built ROM's font)",
+ "voci": {
+  "EN": {
+   "p_titolo": {
+    "testo": "Sacred Gold Plus",
+    "classe": "riga",
+    "limite": 166,
+    "px": 88,
+    "byte": 34,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_aiuto_a": {
+    "testo": "A: Save",
+    "classe": "comando",
+    "limite": 80,
+    "px": 39,
+    "byte": 16,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_aiuto_b": {
+    "testo": "B: Cancel",
+    "classe": "comando",
+    "limite": 80,
+    "px": 49,
+    "byte": 20,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_bloccato": {
+    "testo": "Not available yet.",
+    "classe": "riga",
+    "limite": 166,
+    "px": 96,
+    "byte": 38,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_rifiutato": {
+    "testo": "Save unreadable. 1.1 mode.",
+    "classe": "riga",
+    "limite": 166,
+    "px": 145,
+    "byte": 54,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_suggerimento": {
+    "testo": "SELECT → Plus",
+    "classe": "suggerimento",
+    "limite": 108,
+    "px": 73,
+    "byte": 28,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v0_nome": {
+    "testo": "Plus Difficulty",
+    "classe": "nome",
+    "limite": 114,
+    "px": 76,
+    "byte": 32,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v1_nome": {
+    "testo": "Wild Levels",
+    "classe": "nome",
+    "limite": 114,
+    "px": 57,
+    "byte": 24,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v2_nome": {
+    "testo": "Animated Pokémon",
+    "classe": "nome",
+    "limite": 114,
+    "px": 91,
+    "byte": 34,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v3_nome": {
+    "testo": "Characters",
+    "classe": "nome",
+    "limite": 114,
+    "px": 60,
+    "byte": 22,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v4_nome": {
+    "testo": "Online Server",
+    "classe": "nome",
+    "limite": 114,
+    "px": 71,
+    "byte": 28,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_off": {
+    "testo": "Off",
+    "classe": "valore",
+    "limite": 44,
+    "px": 16,
+    "byte": 8,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_on": {
+    "testo": "On",
+    "classe": "valore",
+    "limite": 44,
+    "px": 12,
+    "byte": 6,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_normale": {
+    "testo": "Normal",
+    "classe": "valore",
+    "limite": 44,
+    "px": 34,
+    "byte": 14,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_plus": {
+    "testo": "Plus",
+    "classe": "valore",
+    "limite": 44,
+    "px": 22,
+    "byte": 10,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "n_norm": {
+    "testo": "Normal",
+    "classe": "valore",
+    "limite": 44,
+    "px": 34,
+    "byte": 14,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "n_fluido": {
+    "testo": "Smooth",
+    "classe": "valore",
+    "limite": 44,
+    "px": 36,
+    "byte": 14,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_0": {
+    "testo": "Original",
+    "classe": "valore",
+    "limite": 44,
+    "px": 40,
+    "byte": 18,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_1": {
+    "testo": "Conn. 2",
+    "classe": "valore",
+    "limite": 44,
+    "px": 39,
+    "byte": 16,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_2": {
+    "testo": "Conn. 3",
+    "classe": "valore",
+    "limite": 44,
+    "px": 39,
+    "byte": 16,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_titolo": {
+    "testo": "Sacred Gold Plus 1.2",
+    "classe": "continua",
+    "limite": 224,
+    "px": 109,
+    "byte": 42,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga1": {
+    "testo": "This save comes from 1.1.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 136,
+    "byte": 52,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga2": {
+    "testo": "Set the new features now.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 140,
+    "byte": 52,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga1n": {
+    "testo": "A new adventure begins.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 128,
+    "byte": 48,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga2n": {
+    "testo": "Set the new features now.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 140,
+    "byte": 52,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_nota": {
+    "testo": "Press SELECT in OPTIONS to change them.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 218,
+    "byte": 80,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_aiuto": {
+    "testo": "A: Confirm    B: Later",
+    "classe": "continua",
+    "limite": 224,
+    "px": 114,
+    "byte": 46,
+    "ignoti": 0,
+    "entro_limite": true
+   }
+  },
+  "IT": {
+   "p_titolo": {
+    "testo": "SACRED GOLD PLUS",
+    "classe": "riga",
+    "limite": 166,
+    "px": 92,
+    "byte": 34,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_aiuto_a": {
+    "testo": "A: SALVA",
+    "classe": "comando",
+    "limite": 80,
+    "px": 45,
+    "byte": 18,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_aiuto_b": {
+    "testo": "B: ANNULLA",
+    "classe": "comando",
+    "limite": 80,
+    "px": 57,
+    "byte": 22,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_bloccato": {
+    "testo": "NON ANCORA DISPONIBILE.",
+    "classe": "riga",
+    "limite": 166,
+    "px": 133,
+    "byte": 48,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_rifiutato": {
+    "testo": "DATI ILLEGGIBILI. MODO 1.1.",
+    "classe": "riga",
+    "limite": 166,
+    "px": 153,
+    "byte": 56,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "p_suggerimento": {
+    "testo": "SELECT → PLUS",
+    "classe": "suggerimento",
+    "limite": 108,
+    "px": 75,
+    "byte": 28,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v0_nome": {
+    "testo": "DIFFICOLTÀ PLUS",
+    "classe": "nome",
+    "limite": 114,
+    "px": 88,
+    "byte": 32,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v1_nome": {
+    "testo": "LIVELLI SELVATICI",
+    "classe": "nome",
+    "limite": 114,
+    "px": 100,
+    "byte": 36,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v2_nome": {
+    "testo": "POKéMON ANIMATI",
+    "classe": "nome",
+    "limite": 114,
+    "px": 88,
+    "byte": 32,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v3_nome": {
+    "testo": "PERSONAGGI",
+    "classe": "nome",
+    "limite": 114,
+    "px": 60,
+    "byte": 22,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "v4_nome": {
+    "testo": "SERVER ONLINE",
+    "classe": "nome",
+    "limite": 114,
+    "px": 76,
+    "byte": 28,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_off": {
+    "testo": "NO",
+    "classe": "valore",
+    "limite": 44,
+    "px": 12,
+    "byte": 6,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_on": {
+    "testo": "SÌ",
+    "classe": "valore",
+    "limite": 44,
+    "px": 12,
+    "byte": 6,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_normale": {
+    "testo": "NORM.",
+    "classe": "valore",
+    "limite": 44,
+    "px": 29,
+    "byte": 12,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "x_plus": {
+    "testo": "PLUS",
+    "classe": "valore",
+    "limite": 44,
+    "px": 24,
+    "byte": 10,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "n_norm": {
+    "testo": "NORM.",
+    "classe": "valore",
+    "limite": 44,
+    "px": 29,
+    "byte": 12,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "n_fluido": {
+    "testo": "FLUIDI",
+    "classe": "valore",
+    "limite": 44,
+    "px": 36,
+    "byte": 14,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_0": {
+    "testo": "ORIG.",
+    "classe": "valore",
+    "limite": 44,
+    "px": 29,
+    "byte": 12,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_1": {
+    "testo": "CONN. 2",
+    "classe": "valore",
+    "limite": 44,
+    "px": 39,
+    "byte": 16,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "w_2": {
+    "testo": "CONN. 3",
+    "classe": "valore",
+    "limite": 44,
+    "px": 39,
+    "byte": 16,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_titolo": {
+    "testo": "Sacred Gold Plus 1.2",
+    "classe": "continua",
+    "limite": 224,
+    "px": 109,
+    "byte": 42,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga1": {
+    "testo": "Questo salvataggio viene dalla 1.1.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 188,
+    "byte": 72,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga2": {
+    "testo": "Scegli ora le nuove funzioni.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 151,
+    "byte": 60,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga1n": {
+    "testo": "Comincia una nuova avventura.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 161,
+    "byte": 60,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_riga2n": {
+    "testo": "Scegli ora le nuove funzioni.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 151,
+    "byte": 60,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_nota": {
+    "testo": "Si cambiano dalle OPZIONI con SELECT.",
+    "classe": "continua",
+    "limite": 224,
+    "px": 201,
+    "byte": 76,
+    "ignoti": 0,
+    "entro_limite": true
+   },
+   "c_aiuto": {
+    "testo": "A: CONFERMA    B: DOPO",
+    "classe": "continua",
+    "limite": 224,
+    "px": 118,
+    "byte": 46,
+    "ignoti": 0,
+    "entro_limite": true
+   }
+  }
+ },
+ "byte_totali_blob": {
+  "EN": 818,
+  "IT": 876
+ },
+ "fuori_limite": []
+}

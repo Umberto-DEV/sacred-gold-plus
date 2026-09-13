@@ -1,0 +1,57 @@
+{
+  "Summary_Main": {
+    "address": 34112548,
+    "bytes": 328,
+    "sha256": "823e595b38e21a4fedbb7688f9f67135be503c6e739b0f25f3ac7f07c4603efa"
+  },
+  "Summary_Exit": {
+    "address": 34112876,
+    "bytes": 112,
+    "sha256": "6a4f481a007065ac8286de67375185b18c601aaae568ce4ad1daeae6bed6492e"
+  },
+  "OverlayManager_GetData": {
+    "address": 33583760,
+    "bytes": 4,
+    "sha256": "4364c4e11050cbae18db57d41eb4a01bcbfb92ca9c17bbe77fa0a68c3b4f3a3e"
+  },
+  "FontID_TryLoadGlyph": {
+    "address": 33566332,
+    "bytes": 28,
+    "sha256": "addb599fed10095551a8d77286ba6bd622ba8dad2bb4aaf0b3e881428ef24765"
+  },
+  "TryLoadGlyph": {
+    "address": 33710156,
+    "bytes": 28,
+    "sha256": "9f134a3850147093448092e28bdeaf4362f3806efab7b5d678628240ca049722"
+  },
+  "PreloadedGlyphs": {
+    "address": 33710184,
+    "bytes": 180,
+    "sha256": "a6a626d07448dbdb631961df9341195ad6471578c31aa130961b894e61dc4b66"
+  },
+  "GenerateFontHalfRowLookupTable": {
+    "address": 33686380,
+    "bytes": 164,
+    "sha256": "9b4918bf9ea3888549cbeed73c558f804e718d03c42e280abfbb8e4798ea4e99"
+  },
+  "DecompressGlyphTile": {
+    "address": 33686544,
+    "bytes": 168,
+    "sha256": "20786cdd06a5221a79f29e0810c78cc0716a598c27f19bac2db93f02d9fce5ac"
+  },
+  "CopyGlyphToWindow": {
+    "address": 33675980,
+    "bytes": 4468,
+    "sha256": "1eccea6c1cffcd1bc5b366526415854585b5589b7b2886050c277f900627fcfc"
+  },
+  "Printer_allocation_reference_only": {
+    "address": 33685924,
+    "bytes": 324,
+    "sha256": "0ea809438ab21738f96f7bcfb79e9b50fbb042d9fe6a9e1df666261d000f9cd0"
+  },
+  "original_Summary_VBlank": {
+    "address": 34112988,
+    "bytes": 52,
+    "sha256": "f80488adae7084275f56df913a37e0a4105658fa8a97545e57782313de7b73fb"
+  }
+}

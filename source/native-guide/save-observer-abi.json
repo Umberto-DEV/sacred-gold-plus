@@ -1,0 +1,65 @@
+{
+  "ranges": [
+    {
+      "name": "SaveData_Get/SaveArray_Get",
+      "address": 33714864,
+      "bytes": 88,
+      "sha256": "ba01a32ff2fe8c9162f1ee16a20b1a51e4f47cff8a9d4a033589e0d03c502735"
+    },
+    {
+      "name": "SaveChunkHeaders",
+      "address": 34563268,
+      "bytes": 672,
+      "sha256": "48612869a3c23d8311962924fcdbf9705f86d0743d127df4a56ccd9888c21cab"
+    },
+    {
+      "name": "PlayerData-size/getters",
+      "address": 33721964,
+      "bytes": 100,
+      "sha256": "9a7d94616d0c15d1ca575306f5581e4e90576aa59d847f69c064a6bbe194caed"
+    },
+    {
+      "name": "Party-size",
+      "address": 34030764,
+      "bytes": 8,
+      "sha256": "5ac729e3191133ab7f22ff9da749236ca4a6743b5dde7bb81135b4aad91baa70"
+    },
+    {
+      "name": "Bag-size",
+      "address": 34046336,
+      "bytes": 8,
+      "sha256": "f6d0b43856617a3953ba1bf1a947a71f2835de871bf1523e5ae383e8a7d0bebf"
+    },
+    {
+      "name": "VarsFlags-size/getter",
+      "address": 33883064,
+      "bytes": 36,
+      "sha256": "260c33337196294d11833a43bbd673f5847613a5acc8ae7b62db16f49bf2559c"
+    },
+    {
+      "name": "Pokedex-size",
+      "address": 33723360,
+      "bytes": 8,
+      "sha256": "5597d307744a2a18580ce5d81132f3db78b4213cf995cbc533e405a931e60f85"
+    },
+    {
+      "name": "PCStorage-size",
+      "address": 34028320,
+      "bytes": 8,
+      "sha256": "e3994538c34c1dde5acac987adadcd6c222e00a6bdc4a35b8ce9eab54f39388e"
+    }
+  ],
+  "sources": {
+    "<scratch>": "03d45990d01e7b02ffb8b8678f97f666ced23b8eda75b679e18c1447da6b8eff",
+    "<scratch>": "c0ccc14c3b01f20f6ee4623345ee1f328cdebbe3b16e38a71a7aabf060b1cd28",
+    "<scratch>": "907318f03e92f07346b0e7ddb1bc2b4a6626cfb456de390af1eb0bd6a4e3f5ed",
+    "<scratch>": "1bfd419a51443a217a27ad119fd61cbffe4dfb22d37750ba1d5f76c3599178d1",
+    "<scratch>": "cd29a0d02e001d8a8b708b4e6b9bcda5d83a4377cfe26927c8b3620a78ee791b"
+  },
+  "notes": [
+    "Read-only observation; no new native calls or save writes in guide.",
+    "SaveData_Get global 0x021D2228; dynamicRegion+0x10; arrayHeaders+0x23014 verified from source and SaveArray_Get actual instructions.",
+    "Native sizes: player44, party1456, bag1948, vars/flags1100, Pokedex832, PC74492; array allocation adds four bytes.",
+    "Player profile begins at4 and is32 bytes, coins+0x24, IGT+0x26 verified getter instructions."
+  ]
+}

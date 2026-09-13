@@ -1,0 +1,109 @@
+{
+  "pacchetto": "SGP-1.2-OPZIONI-03",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-DSGP_UI_ADDR=0x23d9000u",
+    "-DSGP_UI_TESTI_ADDR=0x23da800u",
+    "-DSGP_UI_TAB_ADDR=0x23d9e60u",
+    "-DSGP_UI_STATO_ADDR=0x23d9ec0u",
+    "-DSGP_UI_TPL_ADDR=0x23d9ea0u",
+    "-DSGP_UI_RIS_ADDR=0x23d9e00u",
+    "-DSGP_STATO_D1_ADDR=0x23d8700u",
+    "-DSGP_STATO_NPC_ADDR=0x23d89e0u",
+    "-DSGP_STATO_ANIM_ADDR=0x23d8e40u",
+    "-DSGP_STATO_WIFI_ADDR=0x23da240u",
+    "-c",
+    "<private>/work-1.2/SGP-1.2-OPZIONI-03/sorgenti/ui_blob.c",
+    "-o",
+    "work/build/ui_blob.o"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "indirizzi": {
+    "codice": "0x23d9000",
+    "ris": "0x23d9e00",
+    "tab": "0x23d9e60",
+    "tpl": "0x23d9f40",
+    "stato": "0x23d9ec0",
+    "testi": "0x23da800",
+    "stato_d1": "0x23d8700",
+    "stato_npc": "0x23d89e0",
+    "stato_anim": "0x23d8e40",
+    "stato_wifi": "0x23da240"
+  },
+  "zona": "PROVA — il blocco definitivo lo assegna la fase di iniezione (PIANO-INIEZIONE.md); gli indirizzi sono parametrici (-D).",
+  "blob": {
+    "byte": 3628,
+    "sha256": "b92e6580c53d69796341636567491f42ca5072c13d5f8e1a22357f15570bc19d"
+  },
+  "pianta": {
+    "codice": {
+      "ram": "0x23d9000",
+      "byte": 3584
+    },
+    "ris": {
+      "ram": "0x23d9e00",
+      "byte": 96
+    },
+    "tab": {
+      "ram": "0x23d9e60",
+      "byte": 64
+    },
+    "tpl": {
+      "ram": "0x23d9ea0",
+      "byte": 32
+    },
+    "stato": {
+      "ram": "0x23d9ec0",
+      "byte": 96
+    },
+    "testi": {
+      "ram": "0x23da800",
+      "byte": 1008
+    }
+  },
+  "blocco_byte": 5120,
+  "blocco_testi_byte": 1024,
+  "simboli": {
+    "$d": "0x23d9d10",
+    "$t": "0x23d9cf0",
+    "cont_disegna": "0x23d9851",
+    "cont_exit": "0x23d9c4d",
+    "cont_init": "0x23d9995",
+    "cont_main": "0x23d9b65",
+    "opz_apri": "0x23d94bd",
+    "opz_cambia": "0x23d97ed",
+    "opz_chiudi": "0x23d962d",
+    "opz_disegna": "0x23d93e9",
+    "opz_disegna_riga": "0x23d9251",
+    "opz_leggi": "0x23d9105",
+    "opz_muovi": "0x23d97c9",
+    "opz_presente": "0x23d90b9",
+    "opz_rettangolo": "0x23d9229",
+    "opz_scrivi": "0x23d9151",
+    "opz_suggerimento": "0x23d9409",
+    "opz_visibili": "0x23d91a1",
+    "sgp_cont_exit": "0x23d9df9",
+    "sgp_cont_init": "0x23d9de5",
+    "sgp_cont_main": "0x23d9def",
+    "sgp_new_exit": "0x23d9e1d",
+    "sgp_new_init": "0x23d9e09",
+    "sgp_new_main": "0x23d9e13",
+    "sgp_opz_hook": "0x23d9951",
+    "sgp_ui_frame": "0x23d9001",
+    "ui_copia": "0x23d9001",
+    "ui_stampa_m": "0x23d904d",
+    "ui_testo": "0x23d9039"
+  },
+  "avvisi_compilatore": []
+}

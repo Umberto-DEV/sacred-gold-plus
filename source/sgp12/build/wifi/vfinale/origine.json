@@ -1,0 +1,16 @@
+{
+  "EN": {
+    "lingua": "EN",
+    "rom": "<private>/roms/1.2-lavoro-2026-09-12/sgp-1.2-EN.nds",
+    "sha256": "0811e8c3600d9fb545e8dc1e5d9aca4bc5671f2fcb33daa71c21ff2b5205e49c",
+    "bytes": 127104144,
+    "estratto_il": "2026-09-13"
+  },
+  "IT": {
+    "lingua": "IT",
+    "rom": "<private>/roms/1.2-lavoro-2026-09-12/sgp-1.2-IT.nds",
+    "sha256": "f69154ccd0a929fa1a5fb9e8f8d024740bf94757fc869b29d7b6e1fe09f4ee8e",
+    "bytes": 131906120,
+    "estratto_il": "2026-09-13"
+  }
+}
