@@ -1,0 +1,107 @@
+run 60
+run 1200
+capture title.ppm
+tap A 2 120
+capture title.ppm
+run 180
+tap A 2 180
+capture newgame.ppm
+run 240
+capture newgame.ppm
+touch 128 154 3
+run 180
+tap A 2 180
+capture newgame.ppm
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+capture newgame.ppm
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+capture newgame.ppm
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+capture newgame.ppm
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+capture newgame.ppm
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+tap A 2 120
+capture newgame.ppm
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+tap A 2 180
+capture newgame.ppm
+touch 64 100 3
+run 120
+tap A 2 180
+capture newgame.ppm
+touch 190 60 3
+run 180
+tap A 2 180
+capture newgame.ppm
+capture keyboard.ppm
+tap B 2 30
+capture keyboard-blank.ppm
+touch 34 156 3
+run 30
+touch 50 156 3
+run 30
+touch 66 156 3
+run 30
+touch 82 156 3
+run 30
+touch 98 156 3
+run 30
+touch 114 156 3
+run 30
+capture accents-upper.ppm
+touch 176 72 3
+run 30
+capture canc-deleted-last.ppm
+tap B 2 30
+tap B 2 30
+tap B 2 30
+tap B 2 30
+tap B 2 30
+capture keyboard-cleared.ppm
+touch 73 72 3
+run 60
+touch 34 156 3
+run 30
+touch 50 156 3
+run 30
+touch 66 156 3
+run 30
+touch 82 156 3
+run 30
+touch 98 156 3
+run 30
+touch 114 156 3
+run 30
+capture accents-lower.ppm
+touch 216 72 3
+run 180
+capture name-confirmation.ppm

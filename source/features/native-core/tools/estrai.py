@@ -7,7 +7,7 @@ SGP-1.2-PRESTAZIONI-NPC-03/tools/overlay_patch.py). Non scrive mai sulle ROM.
 import hashlib, json, struct, sys
 from pathlib import Path
 
-RADICE = Path('<home>/Developer/sacred-gold-plus')
+RADICE = Path(__file__).resolve().parents[4]   # radice del repo
 W = RADICE / 'the private development workspace'
 sys.path.insert(0, str(W / 'SGP-1.2-PLUS-02/tools'))
 sys.path.insert(0, str(W / 'SGP-1.2-PRESTAZIONI-NPC-03/tools'))

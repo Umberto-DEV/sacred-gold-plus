@@ -17,8 +17,8 @@ def prepare(out):
     source = ROOT / 'runtime/main.cpp'
     if sha(source) != 'ff94c480fbf56ab60749ff1d2dcf2b409224ecdcae2123d71c5165ec43d34552':
         raise ValueError('Unknown frontend source')
-    build = ROOT / 'lab/<build>'
-    core = ROOT / 'lab/<melonDS checkout>/src'
+    build = ROOT / '<build directory>'
+    core = ROOT / '<melonDS checkout>/src'
     anchor = 'else if(c=="dump"){require(2);writeFile(t[1],nds->MainRAM,0x400000);}'
     original = source.read_text()
     if original.count(anchor) != 1:

@@ -4,7 +4,7 @@
  * La scelta del server sta nella pagina Opzioni v2, che scrive `wifi_server` nel
  * chunk pubblico (`sgp_chunk.h`): qui non c'è nessuna schermata.
  *
- * Regola di ripiego (mandato Umberto, verificato via melonDS): ogni servizio usa
+ * Regola di ripiego (scelta di progetto, verificata su emulatore): ogni servizio usa
  * il proprio slot designato SE è configurato nel firmware; altrimenti il PRIMO
  * slot configurato; se nessuno lo è, nessuna forzatura.
  */

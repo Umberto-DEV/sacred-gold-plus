@@ -37,7 +37,7 @@ Get the ZIP for your language from the [**1.2 release**](https://github.com/Umbe
 | Language | File |
 | --- | --- |
 | Italian | `Sacred-Gold-Plus-1.2-IT.zip` |
-| English | `Sacred-Gold-Plus-1.2-EN.zip` |
+| English | `Sacred-Gold-Plus-1.2-US.zip` |
 
 Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
 
@@ -87,7 +87,7 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 
 **Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
-**Download:** dalla [release 1.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2), `Sacred-Gold-Plus-1.2-IT.zip` o `-EN.zip`.
+**Download:** dalla [release 1.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2), `Sacred-Gold-Plus-1.2-IT.zip` o `-US.zip`.
 
 **Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); melonDS per Android 2.1 o successivo consigliato.
 

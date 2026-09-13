@@ -1,0 +1,70 @@
+run 1800
+tap A 2 180
+tap A 2 360
+capture continue.ppm
+read 0x020D3FA8 4 1
+read 0x020DE16C 4 1
+read 0x020F5670 1 1
+tap A 2 900
+capture town-reloaded.ppm
+sram reloaded.sav
+status
+touch 44 36 4
+run 300
+capture pokedex-list.ppm
+tap A 2 180
+capture pokedex-open.ppm
+touch 32 170 4
+run 120
+capture search-menu.ppm
+touch 91 88 4
+run 120
+capture height-initial.ppm
+touch 204 61
+run 4
+touch 175 61
+run 4
+release
+run 60
+capture height-max-moved.ppm
+touch 51 132
+run 4
+touch 81 132
+run 4
+release
+run 60
+capture height-both-moved.ppm
+touch 35 177 4
+run 90
+capture height-summary.ppm
+touch 91 112 4
+run 120
+capture weight-initial.ppm
+touch 204 61
+run 4
+touch 175 61
+run 4
+release
+run 60
+capture weight-max-moved.ppm
+touch 51 132
+run 4
+touch 81 132
+run 4
+release
+run 60
+capture weight-both-moved.ppm
+touch 35 177 4
+run 90
+capture filters-summary.ppm
+touch 128 177 4
+run 180
+capture search-result.ppm
+tap A 2 60
+touch 35 177 4
+run 90
+capture filters-reset.ppm
+touch 128 177 4
+run 180
+capture search-result-positive.ppm
+status

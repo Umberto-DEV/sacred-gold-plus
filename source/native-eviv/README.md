@@ -2,13 +2,13 @@
 
 **Ricerca locale del 7 settembre 2026, separata dalla 1.04.** Il codice aggiunge un lettore nativo nella pagina Dati del riepilogo: L mostra gli EV, R gli IV, Select ripristina i valori ordinari. Non richiede cheat e non scrive nuovi campi nel save. Il cambio pagina o Pokémon ripristina titolo e parametri coerenti.
 
-Le prime prove EN/IT Plus hanno verificato valori, navigazione con pulsanti e touch, tasti prolungati, uscita/rientro, SAVE normale e cold boot. I [risultati della revisione 4](verification-r4.json) conservano questa prima prova. È un solo starter TEST con EV distinti: non equivale alla compatibilità con ogni Pokémon o partita. La revisione 5 ottimizza Select; le [prove ampliate EN/IT](verification-r5.json) includono uno e tre slot, due Chikorita con dati distinti, un uovo sintetico e PS non pieni. Tutti i 708 byte della squadra a tre membri restano identici anche dopo SAVE/cold boot.
+Le prime prove EN/IT Plus hanno verificato valori, navigazione con pulsanti e touch, tasti prolungati, uscita/rientro, SAVE normale e cold boot. I risultati della revisione 4 (private lab record, not distributed) conservano questa prima prova. È un solo starter TEST con EV distinti: non equivale alla compatibilità con ogni Pokémon o partita. La revisione 5 ottimizza Select; le prove ampliate EN/IT (private lab record, not distributed) includono uno e tre slot, due Chikorita con dati distinti, un uovo sintetico e PS non pieni. Tutti i 708 byte della squadra a tre membri restano identici anche dopo SAVE/cold boot.
 
 ## Cosa è stato corretto nel pilota
 
 La prima esecuzione ha mostrato titoli EV/IV tagliati. I testi sono stati abbreviati e verificati a video in entrambe le lingue. Il ritorno da un'altra pagina ripristinava i numeri ordinari ma conservava il titolo EV: un aggancio al ridisegno normale ora ripristina anche il titolo, compresi i cambi via touch. Le build precedenti restano nelle prove private.
 
-La [misura del codice reale](performance.json) ha poi trovato un costo evitabile in Select: il primo disegno richiamava tutta la pagina, riformattando anche abilità e descrizioni. La revisione 5 ripristina soltanto sei valori e titolo, usando gli stessi dati e formattazione del gioco.
+La misura del codice reale (private lab record, not distributed) ha poi trovato un costo evitabile in Select: il primo disegno richiamava tutta la pagina, riformattando anche abilità e descrizioni. La revisione 5 ripristina soltanto sei valori e titolo, usando gli stessi dati e formattazione del gioco.
 
 | Percorso EN Plus | Revisione 4 | Revisione 5 |
 |---|---:|---:|
@@ -37,19 +37,19 @@ con `ModuleNotFoundError: No module named 'ndspy'`. Le stesse suite richiedono a
 target ARM funzionante (verificato: Apple clang, `--target=armv5te-none-eabi`).
 
 ```sh
-python3 (vedi source/requirements.txt) -m unittest discover -s rom-tools/native-eviv -p 'test_*.py'
-python3 rom-tools/native-eviv/build_test_rom.py \
+python3 -m unittest discover -s source/native-eviv -p 'test_*.py'
+python3 source/native-eviv/build_test_rom.py \
   --rom /percorso/Community1-EN.nds \
   --charmap /percorso/pret/charmap.txt \
   --out /percorso/privato/nuova-build
-python3 rom-tools/native-eviv/run_probe.py \
+python3 source/native-eviv/run_probe.py \
   --build /percorso/privato/nuova-build/build.json \
   --fixture /percorso/EV-distinct-TEST.sav \
   --harness /percorso/hg_runtime \
   --out /percorso/privato/nuova-prova
 ```
 
-Il riproduttore controlla hash, checksum/dati del Pokémon, ritorno delle regioni grafiche, save e cold boot. Lascia la revisione visiva grezza `pending`; la verifica umana delle immagini viene aggiunta in un rapporto curato distinto. Nessuno stato attraversa revisioni ROM. Il [lettore TEST](../../proofs/cheat-functional/inspect_test_mon.py) conserva la modalità originale a un membro; i test con più slot richiedono conteggio e indice espliciti.
+Il riproduttore controlla hash, checksum/dati del Pokémon, ritorno delle regioni grafiche, save e cold boot. Lascia la revisione visiva grezza `pending`; la verifica umana delle immagini viene aggiunta in un rapporto curato distinto. Nessuno stato attraversa revisioni ROM. Il [lettore TEST](inspect_test_mon.py) conserva la modalità originale a un membro; i test con più slot richiedono conteggio e indice espliciti.
 
 Per i tre slot usare `run_party_probe.py` con gli stessi argomenti e la fixture SHA-256 `966338cfff49cd214479adce11f113df4085c357634b1febce1d89638e1ac583`. Il controllo iniziale confronta anche l'hash dei 708 byte preparati indipendentemente. In una prima lettura IT il core si era fermato durante la decifratura temporanea dell'uovo dentro GetBoxMonData: il checksum risultava corretto sul blocco già in chiaro, ma il flag non viene impostato da quella funzione. I successivi dump erano integri. Il riproduttore ora campiona nella schermata stabile prima di L/R e durante il cold reload; conserva il decoder rigoroso e il tentativo precedente, senza classificare il campionamento intermedio come corruzione del save.
 
@@ -63,4 +63,4 @@ Per ricostruire il confronto precedente, `build_test_rom.py --baseline-r4` usa i
 
 ## Seguito necessario
 
-Il caso box EN/IT è passato con EV/IV, ripristino, uscita, SAVE e cold boot; i dati di tutti i box e della squadra rimasta sono invariati. Il [riproduttore](run_box_probe.py) usa la fixture da deposito normale SHA-256 `5208191f489232908c41d160c0782d945bbf0084897c0465d809b9a41d7527d7`. Il primo tentativo aveva omesso una chiusura del menu PC e non completava SAVE: conservato, poi corretto e rieseguito. Le prove EN/IT con due Chikorita distinti e un uovo sintetico hanno conservato tutti i 708 byte della squadra e superato il cold boot; non sono prove di ottenimento, scambio o schiusa. Poi guida riapribile e introduzione di qualità, coerenti soltanto con funzioni reali. Le varianti native Classic non sono ancora provate. Forme, altre specie, lingue aggiuntive, interazioni con altri codici e hardware restano da coprire. Il [piano tecnico](../../docs/superpowers/plans/2026-09-07-pilota-105-eviv-nativo.md) mantiene aperte queste condizioni; non esiste una release 1.05 stabile.
+Il caso box EN/IT è passato con EV/IV, ripristino, uscita, SAVE e cold boot; i dati di tutti i box e della squadra rimasta sono invariati. Il [riproduttore](run_box_probe.py) usa la fixture da deposito normale SHA-256 `5208191f489232908c41d160c0782d945bbf0084897c0465d809b9a41d7527d7`. Il primo tentativo aveva omesso una chiusura del menu PC e non completava SAVE: conservato, poi corretto e rieseguito. Le prove EN/IT con due Chikorita distinti e un uovo sintetico hanno conservato tutti i 708 byte della squadra e superato il cold boot; non sono prove di ottenimento, scambio o schiusa. Poi guida riapribile e introduzione di qualità, coerenti soltanto con funzioni reali. Le varianti native Classic non sono ancora provate. Forme, altre specie, lingue aggiuntive, interazioni con altri codici e hardware restano da coprire. Il piano tecnico (private lab record, not distributed) mantiene aperte queste condizioni; non esiste una release 1.05 stabile.

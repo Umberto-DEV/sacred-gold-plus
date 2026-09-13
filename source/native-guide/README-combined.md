@@ -19,10 +19,10 @@ Il percorso Nuova partita sostituisce soltanto i tre puntatori del template Oak 
 
 Oak conserva font0 lazy, palette14, background15, BG4 caratteri`0x06218000` e mappa`0x06207800`. Prima del prestito controlla callback, configurazione video, heap80 e font. La guida mostra BG4 con brightness neutra e blend spento; il ritorno ripristina esattamente nero, blend, visibilità, mappe, caratteri e scratch del font prima del rilascio e della ripresa di Oak. I buffer rimangono validi fino al trasferimento schedulato. Il rilascio degli input è richiesto prima della continuazione.
 
-Esempio di build normale, dalla root, sostituendo i percorsi con input identificati:
+Esempio di build normale, dalla radice del repo, sostituendo i percorsi con input identificati; per il banco headless vedi [source/docs/test-bench.md](../docs/test-bench.md):
 
 ```sh
-lab/python3 (vedi source/requirements.txt) rom-tools/native-guide/build_combined_guide.py --rom <base-plus> --charmap <charmap-verificata> --out <nuova-directory-privata>
+python3 source/native-guide/build_combined_guide.py --rom <base-plus> --charmap <charmap-verificata> --out <nuova-directory-privata>
 ```
 
 `verify_newgame_guide.py` parte senza SRAM e usa soltanto input ordinari. Il copione include guida/skip, genere, tastiera con nome TEST esplicito, conferma, cameretta, dialogo originale con la madre che abilita il menu, primo SAVE e avvio da zero dal save appena prodotto. Verifica SRAM tuttaFF prima di SAVE e roundtrip esatto, nome/genere/partita e location. Il confronto tra nuove partite distingue ID/avatar e var0x403C variabili già nella r5 originale; il generatore casuale non viene modificato.
@@ -31,4 +31,4 @@ lab/python3 (vedi source/requirements.txt) rom-tools/native-guide/build_combined
 
 Per la pressione usare il distinto `build_newgame_pressure.py` e `verify_newgame_pressure.py`: prenotazione propria174000 byte, successiva vera richiesta UI22528 che restituisceNULL, controllo delle canarie e free nativo. Queste ROM lasciano Summary sulla r5 e non sono candidate normali. La strumentazione non modifica free list o dimensione dell'heap.
 
-Gli esiti selezionati e i percorsi delle prove sono in `new-game-verification.json`. Le prove restano limitate a core Mac interprete/software1× e alle fixture descritte; non attestano GUI, audio, Android/Thor, tutti i save o una release. La review indipendente precede l'accettazione del task.
+Gli esiti selezionati e i percorsi delle prove restano in un registro di laboratorio (private lab record, not distributed). Le prove restano limitate a core Mac interprete/software1× e alle fixture descritte; non attestano GUI, audio, Android o console portatili, tutti i save o una release. La review indipendente precede l'accettazione del task.

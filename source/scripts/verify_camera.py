@@ -53,7 +53,7 @@ def verify(original, reference, candidate, wait_fix=False):
     return {"status": "PASS", "map_count": COUNT, "changed_maps": len(expected_map_changes),
             "changed_bytes": len(changed), "size": len(candidate),
             "sha256": hashlib.sha256(candidate).hexdigest(),
-            "limits": "Static isolation and intended camera fields; not a full playthrough or Thor benchmark"}
+            "limits": "Static isolation and intended camera fields; not a full playthrough or a handheld benchmark"}
 
 
 if __name__ == "__main__":
