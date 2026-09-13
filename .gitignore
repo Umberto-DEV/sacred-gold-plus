@@ -42,7 +42,7 @@
 __pycache__/
 .venv/
 local/
-inputs/
+/inputs/
 outputs/
 *.build.json
 

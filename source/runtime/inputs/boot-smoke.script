@@ -1,0 +1,6 @@
+run 600
+capture boot600.ppm
+read 0x020D3FA8 4 1
+read 0x020DE16C 4 1
+read 0x020F5670 1 1
+status

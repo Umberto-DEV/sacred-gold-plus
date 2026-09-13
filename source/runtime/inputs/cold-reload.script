@@ -1,0 +1,11 @@
+run 1800
+tap A 2 180
+tap A 2 360
+capture continue.ppm
+read 0x020D3FA8 4 1
+read 0x020DE16C 4 1
+read 0x020F5670 1 1
+tap A 2 900
+capture town-reloaded.ppm
+sram reloaded.sav
+status

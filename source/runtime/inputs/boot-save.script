@@ -1,0 +1,29 @@
+run 1800
+tap A 2 180
+tap A 2 360
+capture continue.ppm
+read 0x020D3FA8 4 1
+read 0x020DE16C 4 1
+read 0x020F5670 1 1
+tap A 2 900
+capture town.ppm
+sram imported-roundtrip.sav
+run 600
+touch 123 76 4
+run 180
+capture save-prompt.ppm
+touch 233 96 4
+run 300
+capture overwrite-prompt.ppm
+touch 233 96 4
+run 1240
+capture save-completed.ppm
+run 100
+capture save-completed-late.ppm
+run 200
+capture after-save.ppm
+sram after-save.sav
+read 0x020D3FA8 4 1
+read 0x020DE16C 4 1
+read 0x020F5670 1 1
+status
