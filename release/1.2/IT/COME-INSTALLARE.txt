@@ -28,36 +28,36 @@ Se hai: Pokemon Versione Oro HeartGold (Italia), originale
     134.217.728 byte, impronta di partenza
         013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1
 Usa: Patch/Da-HeartGold-Italia.xdelta
-    16.202.880 byte, SHA-256
-        62470b5da9384b79483e5cced6789a966a2a1ef1a7accbb09b7a1bef9e856c95
+    16.203.649 byte, SHA-256
+        2ba86e455968fef555aef5775a8fe0252d5949ba32100c4894e013551d17485a
 
 Se hai: Sacred Gold Plus 1.03 (inglese, dell autore originale)
     126.979.552 byte, impronta di partenza
         78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
 Usa: Patch/Da-Plus-1.03.xdelta
-    4.440.030 byte, SHA-256
-        0d112dfc003dfd4cba4b27aaf313859cf824ef1dd340d0e7f1614208d5cd8f9c
+    4.443.992 byte, SHA-256
+        f375eeb30b6d82db88ec70d0e4c75700f00b75a3e575a12668572cd0e4344d4b
 
 Se hai: Sacred Gold Plus 1.04 IT, camera Plus (New Angle)
     131.840.584 byte, impronta di partenza
         217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4
 Usa: Patch/Da-Plus-1.04-IT.xdelta
-    355.396 byte, SHA-256
-        fe3e4e6aa24fa048d447a3ee9ef2cdcf95cc22b50d331724ba38b9e7119b1bfb
+    359.360 byte, SHA-256
+        a40b12de069d74708fe4b3b816ad0357331304e6178e6dd004d64fe1c50c5bdf
 
 Se hai: Sacred Gold Plus 1.04 IT, camera classica (Normal Angle)
     131.840.584 byte, impronta di partenza
         9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a
 Usa: Patch/Da-Plus-1.04-IT-camera-classica.xdelta
-    351.934 byte, SHA-256
-        a7fd8d10363078d7f7e84137a4af64122c3e2143c8e3003a9160f1d0d99ca364
+    355.898 byte, SHA-256
+        869b2effb6965cbf66877271feae5d95b8c4f9d8346c0301d0590de592db9c10
 
 Se hai: Sacred Gold Plus 1.1 IT
     131.906.120 byte, impronta di partenza
         7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077
 Usa: Patch/Da-Plus-1.1-IT.xdelta
-    303.937 byte, SHA-256
-        301aaea6ea016b2091792f881d0ddf6bcfab6c2355dc945c371e2a905cc1a362
+    308.185 byte, SHA-256
+        51282d019fd8b666a151ac607db72b723b3a831176a55494e26c496453adbadd
 
 Come si riconosce la versione che hai: non dal nome del file, che
 chiunque puo' cambiare, ma dall'impronta SHA-256 dell'intero file. I
@@ -162,7 +162,7 @@ Il gioco che deve uscire e' esattamente questo:
 
     Sacred Gold Plus 1.2 IT.nds
     131.906.120 byte
-    SHA-256 d099d71785285c8be9da2d6384130f562a90ec0104226a8a7323d3fdae81478c
+    SHA-256 f443030042d1754088854cae324858ec4b08298de7e8c1c1a1e557d23328b8ac
     identita' melonDS IPKE 1C1F741C
 
 Calcola l'impronta del file che ti e' uscito con uno dei comandi del

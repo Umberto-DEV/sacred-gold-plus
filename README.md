@@ -28,6 +28,7 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 - **Online server choice**: pick which Wi-Fi connection slot handles GTS and battles; Mystery Gift connects automatically.
 - **200+ text corrections** in English and Italian.
 - A cleaner **title screen**, with a single credit line.
+- The **EV/IV guide** on a Pokémon's Ability page (in the summary) no longer shows an automatic "START Guide" label; press START there to open it.
 - **Bug fixes.**
 - **Saves from 1.1 are compatible.**
 
@@ -75,7 +76,7 @@ This project's own tools are licensed under [GPL-3.0-or-later](LICENSE). Pokémo
 
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
-**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; correzioni varie; **i salvataggi della 1.1 sono compatibili**.
+**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
 **Download:** dalla [release 1.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2), `Sacred-Gold-Plus-1.2-IT.zip` o `-EN.zip`.
 
