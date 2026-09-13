@@ -8,6 +8,10 @@ import subprocess
 import build_combined_guide as combined
 from build_lease_rom import BASES, HERE, digest, require, replace_arm9, append_files, NintendoDSRom, load_text
 
+# Build outputs never land inside this checkout: game files and build
+# products stay in a private folder of your own.
+_CHECKOUT = Path(__file__).resolve().parents[2]
+
 PRESSURE_FUNCTION = r'''
 static int oak_pressure_acquire(Lease *ui)
 {
@@ -49,7 +53,7 @@ __attribute__((naked,used,section(".text"))) void guide_exit_hook(void) { __asm_
 
 
 def build(source, charmap, out):
-    require(not out.exists() and out.resolve().is_relative_to(Path('/private/tmp')), 'New private output required')
+    require(not out.exists() and not out.resolve().is_relative_to(_CHECKOUT),'New private output outside this repository required')
     base = source.read_bytes()
     require(digest(base) in BASES, 'Unknown complete Plus base')
     lang, r5_sha = BASES[digest(base)]

@@ -13,6 +13,10 @@ sys.path.insert(0, str(ROOT / 'native-eviv'))
 from native_image import require
 from run_probe import sha
 
+# Build outputs never land inside this checkout: game files and build
+# products stay in a private folder of your own.
+_CHECKOUT = Path(__file__).resolve().parents[2]
+
 PREFIX = ('run 600\nrun 60\nrun 1200\ntap A 2 120\n'
           'run 180\ntap A 2 180\n')
 OBSERVER_SHA = 'f918f1afb00a1aeff3833d655f5ad078dc680e4ba663ee9c1d7a381c4bed2af1'
@@ -65,7 +69,7 @@ def capture(name):
 
 def run_new(rom, observer, out, commands, save=None):
     require(not out.exists(), 'Output directory must be new')
-    require(out.resolve().is_relative_to(Path('/private/tmp')), 'Private output required')
+    require(not out.resolve().is_relative_to(_CHECKOUT),'Private output must be outside this repository')
     for line in commands.splitlines():
         require(not line.split() or line.split()[0] not in
                 ['write', 'freeze', 'load', 'cheat'], 'Normal run may not change RAM or load state')

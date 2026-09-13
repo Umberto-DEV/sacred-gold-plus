@@ -17,6 +17,10 @@ from native_image import require, replace_arm9
 from thumb_object import load_text
 from ndspy.rom import NintendoDSRom
 
+# Build outputs never land inside this checkout: game files and build
+# products stay in a private folder of your own.
+_CHECKOUT = Path(__file__).resolve().parents[2]
+
 PROBE_BASE=0x01FF8880
 MARKER=0x01FF9F00
 ARENA_END=0x01FFA000
@@ -60,7 +64,7 @@ def build(source,charmap,out):
     require(not out.exists(),'Output directory must be new')
     source_bytes=source.read_bytes();source_sha=digest(source_bytes)
     require(source_sha in BASES,'Unknown complete Plus base')
-    require(out.resolve().is_relative_to(Path('/private/tmp')),'Private output must be under /private/tmp')
+    require(not out.resolve().is_relative_to(_CHECKOUT),'Private output must be outside this repository')
     lang,expected_r5=BASES[source_sha]
     original=NintendoDSRom(source_bytes)
     abi(original.loadArm9().sections[0].data)

@@ -8,6 +8,10 @@ import struct
 import subprocess
 from build_lease_rom import BASES, HERE, ROOT, abi, digest, build_r5, require, replace_arm9, append_files, load_text, NintendoDSRom
 
+# Build outputs never land inside this checkout: game files and build
+# products stay in a private folder of your own.
+_CHECKOUT = Path(__file__).resolve().parents[4]
+
 CODE=0x01FF8880
 TEXT=0x01FF9B10
 STATE=0x01FF9FC0
@@ -115,7 +119,7 @@ def extend(main,payload,symbols,text):
 
 def build(source,charmap,out,pressure=False):
     require(not out.exists(),'Output directory must be new')
-    require(out.resolve().is_relative_to(Path('/private/tmp')),'Private output required')
+    require(not out.resolve().is_relative_to(_CHECKOUT),'Private output must be outside this repository')
     original=source.read_bytes();base_sha=digest(original)
     require(base_sha in BASES,'Unknown complete Plus base')
     lang,r5_sha=BASES[base_sha]

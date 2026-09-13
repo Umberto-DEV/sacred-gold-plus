@@ -18,7 +18,7 @@ Il probe occupa **792 byte** a `0x01FF8880`; il suo codice termina a `0x01FF8B98
 
 ## Strumenti e riproduzione locale
 
-- [build_lease_rom.py](build_lease_rom.py): accetta soltanto le basi complete Plus Community1 EN/IT, ricompone r5 con il builder originale e ne verifica l’hash completo, valida le preimmagini dei nuovi helper, compila e aggiunge il probe. Le basi Classic e ROM r5 già patchate non sono input ammessi. Output nuovo sotto `/private/tmp`.
+- [build_lease_rom.py](build_lease_rom.py): accetta soltanto le basi complete Plus Community1 EN/IT, ricompone r5 con il builder originale e ne verifica l’hash completo, valida le preimmagini dei nuovi helper, compila e aggiunge il probe. Le basi Classic e ROM r5 già patchate non sono input ammessi. L'uscita e' una cartella nuova FUORI da questo checkout.
 - [prepare_lease_observer.py](prepare_lease_observer.py): compila un frontend separato dalla sorgente storica fissata aggiungendo soltanto `dumpitcm`, copia in lettura dei 32 KiB fisici ARM9.ITCM. Collega le librerie storiche senza ricostruire/modificare il core. Sorgenti, comandi, input oggetto/libreria e binario sono legati da hash nel manifest privato.
 - [run_lease_probe.py](run_lease_probe.py) e [lease_oracle.py](lease_oracle.py): avviano da save normali TEST, registrano input e output reali e confrontano heap, Summary, SRAM e schermate. Prima del runtime rifiutano manifest di sorgente, oggetto o ROM obsoleti; i dump ITCM confermano anche i byte effettivamente caricati di r5 e probe.
 
@@ -33,7 +33,7 @@ lab/python3 (vedi source/requirements.txt) -m unittest discover -s rom-tools/nat
 
 Per il controllo RED, `--red` accetta l’hash esatto della r5 passata e cerca lo stesso risultato runtime: sulle quattro fixture fallisce con `Missing game-executed lease result`. Le fixture locali identificate sono necessarie per `run_lease_probe.py`/`lease_oracle.py` (corse a runtime); niente di tutto questo è incorporato nel gate. Nessuna ROM, save, dump o schermata è incorporata nei file del gate.
 
-**Aggiornamento 12/09/2026** (`private development notes (ex 01-AUDIT-1.1.md)`, §I4/R4): i test statici di `test_lease_builder.py`, `test_summary_builder.py` e `test_lease_provenance.py` non fanno più riferimento a ROM lasciate da sessioni precedenti in `/private/tmp` (path effimeri, persi ad ogni riavvio). `test_fixtures.py` in questa cartella costruisce da solo, a ogni corsa, la r5 EV/IV pilota e la ROM lease completa da una ROM 1.04 riconosciuta e dal charmap pret già presenti in questo checkout, sotto una cartella nuova in `/private/tmp` (richiesto da `build_lease_rom.build()`), e la cancella a fine modulo. Se quegli input non sono presenti localmente, i test si saltano con un motivo esplicito invece di fallire.
+**Aggiornamento 12/09/2026** (`private development notes (ex 01-AUDIT-1.1.md)`, §I4/R4): i test statici di `test_lease_builder.py`, `test_summary_builder.py` e `test_lease_provenance.py` non fanno più riferimento a ROM lasciate da corse precedenti in una directory temporanea (percorsi effimeri, persi a ogni riavvio). `test_fixtures.py` in questa cartella costruisce da solo, a ogni corsa, la r5 EV/IV pilota e la ROM lease completa da una ROM 1.04 riconosciuta e dal charmap pret già presenti in questo checkout, sotto una cartella nuova nella directory temporanea di sistema (fuori dal checkout, come richiede `build_lease_rom.build()`), e la cancella a fine modulo. Se quegli input non sono presenti localmente, i test si saltano con un motivo esplicito invece di fallire.
 
 ## Verifiche e limiti
 

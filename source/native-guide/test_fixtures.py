@@ -1,14 +1,14 @@
 """Build the r5/lease ROM fixtures the native-guide tests need, on this machine.
 
-The suite used to point at ROMs left over in /private/tmp by earlier, unrelated
+The suite used to point at ROMs left over in a scratch directory by earlier, unrelated
 sessions (see private development notes (ex 01-AUDIT-1.1.md), §I4/R4): a scratchpad wiped on
 reboot, so 5 of 11 tests errored with FileNotFoundError for anyone else, or
 after any reboot. This module builds the same fixtures fresh, from files that
 already live in this checkout (a recognized 1.04 Plus ROM plus the pinned pret
 charmap), under a fresh directory it creates itself. build_lease_rom.build()
-requires its output directory to resolve under /private/tmp, so the fixture
-directory is created there (not under tempfile's default, which resolves under
-/private/var on macOS) and removed again in tearDownModule.
+requires its output directory to sit outside this checkout, so the fixture
+directory is created under the platform temporary directory and removed again
+in tearDownModule.
 
 Needs the venv interpreter documented in native-eviv/README.md
 (python3 (vedi source/requirements.txt): ndspy + Pillow) and a
@@ -74,7 +74,7 @@ _workdir = None
 def _fresh_workdir():
     global _workdir
     if _workdir is None:
-        _workdir = Path(tempfile.mkdtemp(prefix='sgpc-native-guide-tests-', dir='/private/tmp'))
+        _workdir = Path(tempfile.mkdtemp(prefix='sgpc-native-guide-tests-'))
     return _workdir
 
 

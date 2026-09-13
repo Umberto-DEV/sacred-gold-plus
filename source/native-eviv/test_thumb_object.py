@@ -9,7 +9,7 @@ from thumb_object import load_text
 
 class ThumbObjectTests(unittest.TestCase):
     def compile(self, source):
-        with tempfile.TemporaryDirectory(prefix='sgpc-thumb-test-', dir='/private/tmp') as tmp:
+        with tempfile.TemporaryDirectory(prefix='sgpc-thumb-test-') as tmp:
             src, obj = Path(tmp) / 'fixture.s', Path(tmp) / 'fixture.o'
             src.write_text('.syntax unified\n.thumb\n.text\n' + source)
             subprocess.run(['clang', '--target=armv5te-none-eabi', '-mcpu=arm946e-s',
