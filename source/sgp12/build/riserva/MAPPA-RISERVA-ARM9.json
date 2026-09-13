@@ -26,7 +26,7 @@
     }
   ],
   "fuori_riserva": {
-    "nota": "native-guide e native-eviv (funzioni 1.1) NON stanno nella riserva ARM9 (STATO-1.2.md, ex 04-RISERVA-ARM9-F0.md): elencati qui perche' chi legge solo questo registro non lo puo' dedurre da solo (revisione 02, corregge C23/REVISIONE-OPUS.md).",
+    "nota": "native-guide e native-eviv (funzioni 1.1) NON stanno nella riserva ARM9 (STATO-1.2.md, ex 04-RISERVA-ARM9-F0.md): elencati qui perche' chi legge solo questo registro non lo puo' dedurre da solo (revisione 02, corregge C23 della revisione privata).",
     "moduli": [
       "source/native-guide",
       "source/native-eviv"
@@ -83,7 +83,7 @@
       "ancore": [],
       "pubblico": false,
       "sha256_atteso_a_zero": "6a7d1c8afe661bd4eb4e84df1fba2c74a1fbb4efed7b979a379ddee807f44d20",
-      "nota_revisione_02": "il campo si chiama 'sha256_atteso_a_zero' per compatibilita' col resto del file ma NON e' un'impronta di byte a zero: e' l'impronta vera del motivo del canarino 0xCA5A1000|idx. Prima valeva null e T2 lo saltava in silenzio (D5/C11 di REVISIONE-OPUS.md)."
+      "nota_revisione_02": "il campo si chiama 'sha256_atteso_a_zero' per compatibilita' col resto del file ma NON e' un'impronta di byte a zero: e' l'impronta vera del motivo del canarino 0xCA5A1000|idx. Prima valeva null e T2 lo saltava in silenzio (D5/C11 della revisione privata)."
     },
     {
       "nome": "intestazione",
@@ -97,7 +97,7 @@
         "0x04": "schema u32 LE = 1",
         "0x08": "base u32 LE = 0x023D8000",
         "0x0C": "fine u32 LE = 0x023E0000",
-        "0x10": "primi 16 B di sha256 della PARTE STABILE di questo file — {schema, riserva, zone}, serializzati come JSON canonico (sort_keys=True, separatori ',' ':'​) — NON dell'intero file e NON di 'blocchi': cosi' l'intestazione non cambia ogni volta che si registra un blocco nuovo (revisione 02, corregge D1/C1/C2/C3 di REVISIONE-OPUS.md)"
+        "0x10": "primi 16 B di sha256 della PARTE STABILE di questo file — {schema, riserva, zone}, serializzati come JSON canonico (sort_keys=True, separatori ',' ':'​) — NON dell'intero file e NON di 'blocchi': cosi' l'intestazione non cambia ogni volta che si registra un blocco nuovo (revisione 02, corregge D1/C1/C2/C3 della revisione privata)"
       },
       "impronte_parziali": [
         {
@@ -527,7 +527,7 @@
           "significa": "guardia di firma della camera Classic (confronta le prime 4 istruzioni del corpo repellente prima di applicare il resto del codice)"
         }
       ],
-      "nota_revisione_02": "marcato pubblico:true (era false, senza consumatori_pubblici): il codice 523DEBE0 002EB570 e' presente in tutti e quattro i file di cheat spediti e legge questo indirizzo. Prima T3 non lo vedeva (regex ancorata a riga, nessun supporto ai codici 5xxxxxxx: D3/C6/C8 di REVISIONE-OPUS.md)."
+      "nota_revisione_02": "marcato pubblico:true (era false, senza consumatori_pubblici): il codice 523DEBE0 002EB570 e' presente in tutti e quattro i file di cheat spediti e legge questo indirizzo. Prima T3 non lo vedeva (regex ancorata a riga, nessun supporto ai codici 5xxxxxxx: D3/C6/C8 della revisione privata)."
     },
     {
       "nome": "borsa.text",
@@ -562,7 +562,7 @@
       "zona": "1.1",
       "tutto_zero": true,
       "assegnabile": false,
-      "nota": "candidato a secondo canarino (audit R3): NON in questo pacchetto, cambierebbe lo sha della zona 1.1 e il cancello G11 di applica_finale.py. 'assegnabile:false' (revisione 02, C16/C17 di REVISIONE-OPUS.md): riserva_arm9.py non lo somma piu' al libero vero (27 392, non 27 412) pur restando tipo 'libero' per onesta' di descrizione.",
+      "nota": "candidato a secondo canarino (audit R3): NON in questo pacchetto, cambierebbe lo sha della zona 1.1 e il cancello G11 di applica_finale.py. 'assegnabile:false' (revisione 02, C16/C17 della revisione privata): riserva_arm9.py non lo somma piu' al libero vero (27 392, non 27 412) pur restando tipo 'libero' per onesta' di descrizione.",
       "ancore": [],
       "pubblico": false,
       "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90"
@@ -707,7 +707,7 @@
       "franco_residuo_ram": 65316,
       "franco_rom_dopo_F0": 26132,
       "bytes_rom_richiesti": 32768,
-      "stato": "misurata libera IN RAM il 12/09, MA NON RAGGIUNGIBILE IN LUOGO: dopo F0 restano solo 26 132 B di padding ROM prima della tabella overlay y9 (G3 di applica_riserva12.py li rifiuterebbe), ne servirebbero 32 768. Richiede prima uno spostamento di y9/FAT o l'opzione C di §4.5 (revisione 02, corregge D6/C13 di REVISIONE-OPUS.md)."
+      "stato": "misurata libera IN RAM il 12/09, MA NON RAGGIUNGIBILE IN LUOGO: dopo F0 restano solo 26 132 B di padding ROM prima della tabella overlay y9 (G3 di applica_riserva12.py li rifiuterebbe), ne servirebbero 32 768. Richiede prima uno spostamento di y9/FAT o l'opzione C di §4.5 (revisione 02, corregge D6/C13 della revisione privata)."
     },
     {
       "base": "0x023C8000",
@@ -715,7 +715,7 @@
       "franco_residuo_ram": 32548,
       "franco_rom_dopo_F0": 26132,
       "bytes_rom_richiesti": 65536,
-      "stato": "misurata libera IN RAM + finestra confermata dalla comunita' (pokehacking.com/tutorials/ramexpansion, scan su IPKE), MA NON RAGGIUNGIBILE IN LUOGO per lo stesso motivo: mancano 39 404 B di spazio ROM. Richiede prima uno spostamento di y9/FAT o l'opzione C di §4.5 (revisione 02, corregge D6/C13 di REVISIONE-OPUS.md)."
+      "stato": "misurata libera IN RAM + finestra confermata dalla comunita' (pokehacking.com/tutorials/ramexpansion, scan su IPKE), MA NON RAGGIUNGIBILE IN LUOGO per lo stesso motivo: mancano 39 404 B di spazio ROM. Richiede prima uno spostamento di y9/FAT o l'opzione C di §4.5 (revisione 02, corregge D6/C13 della revisione privata)."
     },
     {
       "base": "sotto 0x023C8000",

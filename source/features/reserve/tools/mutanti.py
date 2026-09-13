@@ -14,7 +14,7 @@ ndspy sa dove va davvero un indirizzo), poi rilancia il rilettore indipendente.
     M3  zona 1.1 alterata di 1 byte: il padding a 0x023DEB60 (atteso 0x00) diventa
         0x01. Deve fallire "zona_1_1_identica_alla_base" (sha256 diversa) e T2 di
         test_riserva.py sul blocco "padding".
-    M4  (REVISIONE 02, corregge D1/C1 di REVISIONE-OPUS.md: e' l'ex mutante "m7" del
+    M4  (REVISIONE 02, corregge D1/C1 della revisione privata: e' l'ex mutante "m7" del
         revisore, che usciva VERDE) i 16 B a 0x023D8030 (coda dell'intestazione, lo sha
         della parte stabile del manifest) vengono azzerati. Deve fallire
         "intestazione_manifest" nel rilettore.
@@ -138,7 +138,7 @@ def mutante_m4(src, dst, manifest):
     return {"nome": "M4_intestazione_manifest_azzerata",
             "descrizione": "i 16 B a 0x023D8030 (sha della parte stabile del manifest) azzerati",
             "atteso": "rileggi_riserva12.py: intestazione_manifest ROSSO",
-            "nota": "REVISIONE 02: e' il mutante m7 di REVISIONE-OPUS.md, che con lo strumento "
+            "nota": "REVISIONE 02: e' il mutante m7 della revisione privata, che con lo strumento "
                     "precedente usciva VERDE (D1)."}
 
 

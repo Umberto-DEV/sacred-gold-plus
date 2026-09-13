@@ -14,7 +14,8 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | --- | --- |
 | ![Title screen](images/01-title-screen.png)<br>Title screen | ![Cherrygrove City](images/02-overworld-cherrygrove.png)<br>Exploring Cherrygrove City |
 | ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
-| ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>The classic camera, restored natively indoors |
+| ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
+| ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
 
 ## What's new (1.04 → 1.2)
 

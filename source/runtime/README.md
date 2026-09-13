@@ -24,7 +24,7 @@ cmake --build work/build --target hg_runtime --parallel 8
 
 `MELONDS_SOURCE` accepts any separate pinned checkout; there is no personal path in the sources. Set `CMAKE_MAKE_PROGRAM` if Ninja is outside `PATH`. The configuration forces the ARM interpreter, software renderer and no Qt/SDL, OpenGL renderer, GDB stub, JIT or release LTO.
 
-The optional `hg_wait_loop_test` target depends on `../scripts/wait_loop_test.cpp`, distributed by the surrounding project rather than this folder. Its SHA-256 is `9305388c1590c42f08f178692b3b047e4a62596e3143c8749a70d6922d64fe99`. The target defaults to enabled, so standalone builds explicitly disable it above. To include it when the companion source is available:
+The optional `hg_wait_loop_test` target depends on `../scripts/wait_loop_test.cpp`, which the surrounding project distributes in `source/scripts/` rather than in this folder. Its SHA-256 is `9305388c1590c42f08f178692b3b047e4a62596e3143c8749a70d6922d64fe99`. The target defaults to enabled, so standalone builds explicitly disable it above. To include it when the companion source is available:
 
 ```sh
 cmake -S . -B work/build -G Ninja \

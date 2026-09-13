@@ -12,8 +12,9 @@ a differenza di `applica_anim4.py --sostituisci` (che riconosce una v3 gia'
 in ROM), qui non serve riconoscimento di stato intermedio — si scrive la v4
 direttamente.
 
-`rileggi()` per questo blocco non e' stato ancora migrato (vedi README):
-`verifica.py` usa per ora `rileggi_anim.py` originale, invariato.
+`rileggi()` e' scritto QUI, indipendente da `applica()`: ridecodifica blob,
+tavola, canarino e i due ganci dalla ROM derivata e li confronta con `build/`.
+`verifica.py` chiama questo, non un rilettore esterno.
 """
 from __future__ import annotations
 

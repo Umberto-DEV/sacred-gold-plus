@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 """SGP-1.2-PLUS-03 — test host del blob `sgp.salvataggio`.
 
+Prova il blob STORICO di PLUS-03 (`prove/build/salva_blob.bin`, 460 B). Quello
+spedito nella 1.2 e' `sgp12/build/plus/salva_blob.bin` (500 B), applicato da
+`sgp12/blocchi/plus_chunk.py` e verificato da `sgp12/test_lib.py`.
+
 Il blob viene ESEGUITO (Unicorn, ARMv5 Thumb), non letto: le cinque funzioni del
 gioco che chiama (lettura/scrittura della memoria di backup, CRC16, e le due
 chiamate originali dei siti di gancio) sono sostituite da moncherini scritti

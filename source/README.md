@@ -12,10 +12,10 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
-| `translation/`, `quality-audit/`, `recipes/`, `ui/` | Message codec, release recipes, container helpers, pixel-width measurement against the game font, localization recipes and interface manifests. |
+| `translation/`, `quality-audit/` | Message codec, release recipe loader, container helpers and pixel-width measurement against the game font. |
 | `features/debug/` | Field instrumentation for the headless bench: a minimal GDB RSP client for the melonDS gdbstub, a scriptable warp that makes the game run its own map-change routine, the map and camera campaigns and their independent gate read-back. Development aids only: no block, no test, and they need a `hg_runtime-gdb` you build yourself. |
 | `runtime/` | The headless melonDS harness used for runtime proofs: sources, the core patch script and build instructions. No binary; you build it. See [docs/test-bench.md](docs/test-bench.md). |
-| `scripts/` | The 1.04 variant builders, kept for that older route. |
+| `scripts/` | The 1.04 variant builders, kept for that older route, plus the ROM-free instruction probe the runtime build compiles. The 1.04 route itself does not run from this repository: `translation/build_release.py` needs release recipes, interface manifests and message banks that are not distributed. |
 | `run_tests.py` | The Class A suites — exactly what CI runs. |
 
 ## Prepare

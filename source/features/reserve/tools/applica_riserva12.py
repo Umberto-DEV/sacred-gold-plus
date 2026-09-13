@@ -70,7 +70,7 @@ def canarino(motivo_alto):
 
 
 def parte_stabile_mappa(manifest_path):
-    """REVISIONE 02 (corregge D1 di REVISIONE-OPUS.md): l'intestazione NON porta piu' lo sha
+    """REVISIONE 02 (corregge D1 della revisione privata): l'intestazione NON porta piu' lo sha
     dell'intero MAPPA-RISERVA-ARM9.json (che cambia a ogni blocco registrato, rompendo il
     legame ROM<->manifest quattro minuti dopo la scrittura, come misurato dalla revisione),
     ma solo di {schema, riserva, zone}: la parte che NON cambia quando un pacchetto successivo

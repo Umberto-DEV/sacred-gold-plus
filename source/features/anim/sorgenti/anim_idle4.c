@@ -236,7 +236,7 @@ void sgp_idle_task2(void *task, void *data)
      * «non ancora letto» valgono 0 = comportamento 1.1) prima di leggere il
      * byte `anim`. Prima si leggeva quel byte alla cieca: segnalazione S9 di
      * SGP-1.2-QUALITA-NATIVO-01. `st->flags` resta il byte diagnostico
-     * (l'ultimo valore applicato), riletto da `tools/rileggi_anim.py` (L4). */
+     * (l'ultimo valore applicato), riletto da `tools/rileggi_anim4.py` (L4). */
     flags = sgp_chunk_opzione(SGP_CHUNK_ANIM_ADDR) != 0u ? (u8)SGP_F_TUTTI : 0u;
     st->flags = flags;
     if ((flags & SGP_F_TUTTI) == 0u) {

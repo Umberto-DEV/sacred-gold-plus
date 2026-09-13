@@ -13,7 +13,7 @@ Verifica:
   - i primi 32 B sono il canarino basso 0xCA5A1000..0xCA5A1007;
   - i 32 B successivi sono l'intestazione SGP2, e i suoi ultimi 16 B sono DAVVERO i primi
     16 B di sha256({schema,riserva,zone} del manifest indicato, JSON canonico) — non solo
-    "un valore qualunque" (REVISIONE 02, corregge D1 di REVISIONE-OPUS.md: prima questo
+    "un valore qualunque" (REVISIONE 02, corregge D1 della revisione privata: prima questo
     script non controllava affatto quei 16 B, e un mutante che li azzerava usciva VERDE);
   - i 27392 B centrali sono tutti zero;
   - gli ultimi 5312 B (zona 1.1) sono IDENTICI, byte per byte, alla riserva letta
@@ -26,7 +26,7 @@ Uso:
     python3 rileggi_riserva12.py <base.nds> <candidata.nds> --manifest MAPPA-RISERVA-ARM9.json
                                   [--json out.json]
 
---manifest e' OBBLIGATORIO da REVISIONE 02 (C1 di REVISIONE-OPUS.md): senza di lui non si puo'
+--manifest e' OBBLIGATORIO da REVISIONE 02 (C1 della revisione privata): senza di lui non si puo'
 verificare "intestazione_manifest", ed e' esattamente il controllo che mancava.
 
 Uscita 0 se tutti i controlli passano, 1 altrimenti (con il primo motivo stampato).

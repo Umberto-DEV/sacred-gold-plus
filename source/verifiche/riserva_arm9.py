@@ -18,7 +18,7 @@ che risultano DAVVERO a zero nella ROM, non un numero cablato. Senza `--manifest
 lo strumento stampa la coda azzerata e AVVISA che senza manifest non puo' dire quanto
 e' davvero libero (invece di stampare uno zero che sembra un verdetto).
 
-REVISIONE 02 (12/09/2026, C16/C17 di SGP-1.2-RISERVA-01/REVISIONE-OPUS.md): il libero
+REVISIONE 02 (12/09/2026, C16/C17 di SGP-1.2-RISERVA-01, revisione privata): il libero
 "vero" sommava anche blocchi 'libero' dichiarati NON assegnabili dal manifest stesso
 (es. il "buco" di zona 1.1, 20 B, che il manifest marca intoccabile): 27 412 invece di
 27 392. Ora distingue LIBERO ASSEGNABILE da libero-ma-non-assegnabile, ed esce con
@@ -63,7 +63,7 @@ def libero_da_manifest(b, base_sezione, manifest_path):
     padding/riservato, o un 'libero' con assegnabile:false) NON e' disponibile, anche se
     e' a zero a riposo: e' il punto che il vecchio '--stato N' cablato non poteva
     cogliere, e che la vecchia versione di QUESTA funzione sbagliava ancora (REVISIONE
-    02, C16/D9 di REVISIONE-OPUS.md: sommava anche il 'buco' di zona 1.1, dando 27 412
+    02, C16/D9 della revisione privata: sommava anche il 'buco' di zona 1.1, dando 27 412
     invece di 27 392 — un blocco 'libero' ma dichiarato intoccabile dal manifest
     stesso). Ritorna anche il FUORI_SEZIONE trovato, cosi' il chiamante puo' segnalarlo.
 
@@ -149,12 +149,12 @@ def main(argv):
         print(f"\n  LIBERO ASSEGNABILE (da manifest)      {libero_ass:6d} B")
         if libero_non_ass:
             print(f"  libero MA NON assegnabile (escluso)   {libero_non_ass:6d} B  "
-                  f"(REVISIONE 02: prima veniva sommato insieme, C16/D9 di REVISIONE-OPUS.md)")
+                  f"(REVISIONE 02: prima veniva sommato insieme, C16/D9 della revisione privata)")
         print(f"  per tipo: " + ", ".join(f"{t}={n}" for t, n in sorted(per_tipo.items())))
         if fuori_sezione:
             print(f"\n  ERRORE: {len(fuori_sezione)} blocco/i del manifest FUORI DALLA SEZIONE: "
                   f"{fuori_sezione}. Il manifest non corrisponde a questa ROM.")
-            print("  (REVISIONE 02, C17/D9 di REVISIONE-OPUS.md: prima questo caso usciva "
+            print("  (REVISIONE 02, C17/D9 della revisione privata: prima questo caso usciva "
                   "0 senza avvisare)")
             return 4
         return 0

@@ -9,28 +9,28 @@ docs/arm9-reserve-map.json (registro della riserva ARM9; STATO-1.2.md §b (ex 04
       impronte_parziali) combacia con quanto letto dalla ROM di release indicata da
       --rom (o dalla variabile d'ambiente SGP_RISERVA_ROM). Un blocco senza NESSUNA
       impronta dichiarata fa fallire il test (REVISIONE 02, C12: prima veniva saltato
-      in silenzio - D5 di REVISIONE-OPUS.md). Un blocco con "puo_essere_ancora_zero"
+      in silenzio - D5 della revisione privata). Un blocco con "puo_essere_ancora_zero"
       passa anche se e' ancora tutto zero (prenotato ma non ancora scritto).
   T3  ogni ancora e ogni consumatore pubblico cade nel blocco che lo dichiara: si legge
       il letterale che punta al codice camera, si verifica che l'ultima sezione di
       autoload abbia la base e la dimensione dichiarate dalla mappa (REVISIONE 02, C7:
       e' il cancello che fa fallire T3 per una ragione VERA sulla base 1.1, non con un
-      LookupError - D2 di REVISIONE-OPUS.md), e si leggono gli indirizzi dai file di
+      LookupError - D2 della revisione privata), e si leggono gli indirizzi dai file di
       cheat pubblici spediti in cheats/ (codici 2xxxxxxx e 5xxxxxxx).
   T4  la riserva non tocca l'heap: ArenaLo + Sigma(heap) + FNT + FAT + margine(8 KiB)
       deve restare sotto la base della riserva (STATO-1.2.md §b (ex 04-RISERVA-ARM9-F0.md §4.3) e §6 passo 1
       cancello 9; REVISIONE 02, C22: il test non esisteva ancora - D1.3 di
-      REVISIONE-OPUS.md).
+      revisione privata).
   T5  l'intestazione SGP2 scritta in ROM (0x023D8020) e' coerente con la mappa: i suoi
       ultimi 16 B sono i primi 16 B di sha256({schema,riserva,zone}) in JSON canonico
-      (REVISIONE 02: corregge D1 di REVISIONE-OPUS.md, dove l'intestazione portava lo
+      (REVISIONE 02: corregge D1 della revisione privata, dove l'intestazione portava lo
       sha dell'INTERO manifest - che cambia a ogni blocco registrato - e nessun cancello
       lo controllava affatto: un mutante che azzerava quei 16 B usciva VERDE).
 
 Senza una ROM, T2/T3/T4/T5 SALTANO con motivo esplicito (02-COME-LAVORARE.md §7:
 "non trovato" si dichiara, non si finge). Se SGP_RISERVA_COMPLETA=1 e' impostata (uso
 raccomandato in CI) e SGP_RISERVA_ROM manca, la suite FALLISCE invece di saltare in
-silenzio (REVISIONE 02, C18: D10 di REVISIONE-OPUS.md).
+silenzio (REVISIONE 02, C18: D10 della revisione privata).
 
 Uso:
     python3 -m unittest verifiche.test_riserva -v          # da source/
@@ -192,7 +192,7 @@ class TestT2Impronta(_ImpiantoConROM):
         self.fail("blocco %s SENZA alcuna impronta dichiarata (ne' sha256, ne' "
                   "sha256_atteso_a_zero, ne' impronte_parziali): T2 non lo puo' "
                   "controllare (REVISIONE 02, C12: prima era un 'continue' silenzioso, D5 "
-                  "di REVISIONE-OPUS.md)" % b["nome"])
+                  "della revisione privata)" % b["nome"])
 
     def test_ogni_blocco_con_sha256_combacia(self):
         for b in self.mappa["blocchi"]:
@@ -222,7 +222,7 @@ class TestT3Ancore(_ImpiantoConROM):
         return None
 
     def test_riserva_ha_la_base_e_la_dimensione_dichiarate(self):
-        """REVISIONE 02 (C7, corregge D2 di REVISIONE-OPUS.md): senza questo test T3
+        """REVISIONE 02 (C7, corregge D2 della revisione privata): senza questo test T3
         passava identico su base e candidata (nessuna controprova reale). Sulla base 1.1
         (riserva ancora a 0x023DEB40) questo test FALLISCE per una ragione vera: la base
         e la dimensione dell'ultima sezione di autoload non coincidono con quelle
@@ -273,7 +273,7 @@ class TestT3Ancore(_ImpiantoConROM):
                                      % (target, dove, blocco_target["nome"], atteso_nome))
 
     def test_cheat_pubblici_spediti_cadono_in_un_blocco_pubblico(self):
-        """REVISIONE 02 (C6, corregge D2/D3 di REVISIONE-OPUS.md):
+        """REVISIONE 02 (C6, corregge D2/D3 della revisione privata):
         - la regex NON e' piu' ancorata a riga intera (^...$ MULTILINE): i due
           cheat.xml spediti hanno tutti i codici su UNA riga sola dentro <codes>, e con
           l'ancoraggio precedente davano 0 indirizzi;
@@ -309,7 +309,7 @@ ARENA_LO_LIT = 0x020D2C5C
 HEAP_TOTALE_MISURATO = 0x14D810
 """Somma di sDefaultHeapSpec (0x020F62A4, STATO-1.2.md §b (ex 04-RISERVA-ARM9-F0.md §4.3)), MISURATA e non
 riparsata qui dalla ROM: la struttura esatta della tabella non e' documentata in questo
-registro. E' la stessa costante con cui REVISIONE-OPUS.md §3.2 ha calcolato il franco di
+registro. E' la stessa costante con cui la revisione privata §3.2 ha calcolato il franco di
 106 578 B (0x0226EC40+0x14D810+0xB56+0x1008 = 0x023BDFAE, verificato con aritmetica
 indipendente durante questa revisione). Un pacchetto futuro che cambi l'heap deve
 aggiornare QUESTA costante insieme al cambiamento, non il contrario."""
@@ -320,7 +320,7 @@ MARGINE_MINIMO_T4 = 8192
 class TestT4MargineHeap(_ImpiantoConROM):
     """T4 (REVISIONE 02, C22: STATO-1.2.md §b (ex 04-RISERVA-ARM9-F0.md §6) passo 1 lo prescriveva - cancello 9 -
     ma non era mai stato scritto; RESULT.json lo dava per 'assorbito qui', D1.3 di
-    REVISIONE-OPUS.md). Protegge dal rischio residuo di 04 §3: se un lavoro futuro
+    revisione privata). Protegge dal rischio residuo di 04 §3: se un lavoro futuro
     ingrandisce l'heap o aggiunge file alla FAT/FNT, QUESTO test deve diventare rosso
     prima che il gioco si corrompa."""
 
@@ -359,7 +359,7 @@ class TestT5Intestazione(_ImpiantoConROM):
 
 
 class TestGuardiaModalitaCompleta(unittest.TestCase):
-    """REVISIONE 02 (C18, corregge D10 di REVISIONE-OPUS.md): senza una ROM, T2-T5
+    """REVISIONE 02 (C18, corregge D10 della revisione privata): senza una ROM, T2-T5
     saltano con motivo esplicito, ed e' corretto per lo sviluppo locale. Ma una suite
     'OK (skipped=8)' e' indistinguibile da una suite verde vera se nessuno la guarda: chi
     vuole una corsa CI che NON possa dimenticare la variabile imposta

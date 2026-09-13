@@ -3,6 +3,11 @@
 
 Recipes contain edits and references to retail Italian messages, not a retail
 message corpus. Existing code/files stay at their original cartridge offsets.
+
+This is the 1.04 route and it does not run from this repository: the recipe,
+the interface manifest and the message banks they name are not distributed.
+The code is kept because it is the record of how 1.04 was built; 1.2 is built
+by sgp12/costruisci.py instead.
 """
 import argparse
 import collections

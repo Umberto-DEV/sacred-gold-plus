@@ -72,6 +72,11 @@ def estrai_rom(etichetta, rom_path):
         except KeyError as e:
             res['blocchi'][nome] = {'errore': str(e)}
             continue
+        # Si estrae per ogni lingua, ma il codice nativo non e' localizzato: su
+        # tutti e otto gli artefatti (blob plus/salvataggio/npc/wifi_slot4, le
+        # due tabelle e i due veneer) l'estrazione IT esce byte per byte
+        # identica alla EN, come registra `CONFRONTO-EN-IT.json` qui sotto.
+        # Per questo `prove/estratti/` nel repository conserva la sola copia EN.
         f = USCITA / ('%s-%s.bin' % (nome, etichetta))
         f.write_bytes(b)
         v = {'ram': '0x%08X' % ram, 'bytes': n, 'sha256': sha(b),

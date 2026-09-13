@@ -35,7 +35,8 @@ Cancelli (tutti di riconoscimento, prima di scrivere):
   N1  il blocco `sgp.anim` contiene il blob dichiarato applicato (sha256 del
       codice a +0x000) e il canarino dichiarato a +0x2F0;
   N2  la tavola attualmente in ROM e' ESATTAMENTE quella del seno a 18 fasi che
-      `compila_animb.py` genera con i parametri di default: se non lo e',
+      il compilatore della v3 (SGP-1.2-ANIM-B-03) genera con i parametri di
+      default: se non lo e',
       qualcuno l'ha gia' cambiata e non si sovrascrive niente;
   N3  i parametri a +0x320 (ampiezze, scale, fasi, battito) restano INVARIATI:
       questo cantiere cambia la forma dell'onda, non la sua ampiezza;
@@ -90,7 +91,7 @@ def _round(x):
 
 
 def tab_attesa_vecchia():
-    """La tavola che `compila_animb.py` genera oggi: il seno a 18 fasi."""
+    """La tavola della v3 in ROM oggi: il seno a 18 fasi."""
     return [_round(math.sin(math.radians(i * (360.0 / FASI))) * 16.0) for i in range(FASI)]
 
 
