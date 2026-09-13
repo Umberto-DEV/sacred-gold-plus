@@ -1,0 +1,12 @@
+{
+  "componente": "sgp.anim2",
+  "sorgenti": [
+    "source/features/anim2/sorgenti/anim_blob5.c",
+    "source/features/anim2/sorgenti/anim_idle5.c",
+    "source/features/anim2/sorgenti/sgp_anim5.h",
+    "source/features/anim2/sorgenti/sgp_chunk.h"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "livello": "5b",
+  "nota": "Artefatti ricostruibili con source/features/anim2/tools/compila_anim2.py; interruttore spento per difetto."
+}

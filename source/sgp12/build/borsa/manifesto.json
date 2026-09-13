@@ -1,0 +1,80 @@
+{
+  "pacchetto": "source/features/borsa",
+  "funzione": "Borsa al tetto: l'oggetto donato o raccolto quando lo slot e' al tetto viene comunque ricevuto e scartato (U-borsa-progetto-esecutivo.md §4)",
+  "comando": [
+    "clang",
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-Wextra",
+    "-DSGP_BORSA_BASE=0x023dad00u",
+    "-c",
+    "source/features/borsa/sorgenti/borsa.c",
+    "-o",
+    "borsa.o"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "avvisi_compilatore": [],
+  "sorgente": {
+    "file": "borsa.c",
+    "sha256": "b575923d4098035ac16cc228d93ddeba8fd82e3002cf525ee291a7564ee4c5bd"
+  },
+  "intestazione": {
+    "file": "sgp_borsa.h",
+    "sha256": "ebf3b77ff97b986182664f0e7a451509b6899f38c885101df5a49e51dc0b6182"
+  },
+  "indirizzi": {
+    "base": "0x23dad00",
+    "codice": "0x23dad00",
+    "originali": "0x23db2e0",
+    "staffetta": "0x23db2f0",
+    "tabella": "0x23db300",
+    "tabella_voci": 120,
+    "canarino": "0x23db4f0",
+    "blocco_byte": 2048,
+    "ganci": {
+      "gScriptCmdTable": "0x020FAD00",
+      "voce_127": "0x20faefc",
+      "voce_125": "0x20faef4",
+      "valore_127": "0x23dad01",
+      "valore_125": "0x23dad09",
+      "originale_127": "0x0204EA89",
+      "originale_125": "0x0204E9D9"
+    }
+  },
+  "simboli": {
+    "$d": "0x23daf30",
+    "$t": "0x23daf64",
+    "sgp_borsa_cmd125": "0x23dad09",
+    "sgp_borsa_cmd127": "0x23dad01",
+    "sgp_borsa_give_item": "0x23daf65",
+    "sgp_borsa_has_space": "0x23dad11",
+    "sgp_nucleo": "0x23dad1d"
+  },
+  "blob": {
+    "byte": 622,
+    "sha256": "905d124e8593d47cba965b49cd2985009674f763f241abf3900419020f66091e",
+    "max": 1504
+  },
+  "canarino": {
+    "offset": "0x7f0",
+    "byte": 16,
+    "motivo": "0xca5a1700",
+    "sha256": "46bebd8bc2218078b8b974ff27d54b269d90c19724bf06e4938819b2c797216b"
+  },
+  "spazio": {
+    "codice": "622/1504 B",
+    "tabella": "480 B (120 voci u32)",
+    "staffetta_e_originali": "32 B",
+    "canarino": "16 B",
+    "totale_blocco": 2048
+  }
+}

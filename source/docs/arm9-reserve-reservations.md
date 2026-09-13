@@ -101,18 +101,18 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | `sgp.wifi` (per-service Wi-Fi slot) | `0x023DA000` | `0x800` | `0x023DA800` | 704/2048 | applied |
 | `sgp.opzioni.testi` (EN/IT Options page text) | `0x023DA800` | `0x400` | `0x023DAC00` | 882 EN / 940 IT of 1024 | applied |
 | `sgp.caramelle` (Rare Candy stays in the party menu) | `0x023DAC00` | `0x100` | `0x023DAD00` | 208/256 | applied |
-| free | `0x023DAD00` | — | `0x023DEB40` | — | **free** |
+| `sgp.borsa` (capped gifts and pickups) | `0x023DAD00` | `0x800` | `0x023DB500` | 2048 B reserved | integrated in 1.2.1 |
+| `sgp.anim2` (continuous battle motion, v5) | `0x023DB500` | `0x800` | `0x023DBD00` | 2048 B reserved | integrated in 1.2.1 |
+| free | `0x023DBD00` | — | `0x023DEB40` | — | **free** |
 
 Zone 1.1, `0x023DEB40` to `0x023E0000`, is frozen: no block moves, no block changes size,
 and the two public addresses it holds are never touched. It is not open for reservation.
 
 ### Free space
 
-- **15 936 B contiguous** at `0x023DAD00`, up to the zone 1.1 canary at `0x023DEB40`. This is
-  the space a new reservation draws from. It was 16 192 B at `0x023DAC00` until 1.2.1, when
-  `sgp.caramelle` took 256 B from the low end and the register entry was reduced in the same
-  edit — the reservation is a subtraction, and a block that is not subtracted here is a block
-  two owners believe they own.
+- **11 840 B contiguous** at `0x023DBD00`, up to the zone 1.1 canary at
+  `0x023DEB40`. The 1.2.1 blocks take 256 B for Rare Candy, 2048 B for capped
+  gifts and 2048 B for continuous battle motion from the low end of the pool.
 - A 240 B gap at `0x023D8A10`, between the NPC canary and `sgp.anim`. Usable only for
   something that fits in it whole.
 - Headroom inside blocks already allocated belongs to their owners, not to the free pool. The

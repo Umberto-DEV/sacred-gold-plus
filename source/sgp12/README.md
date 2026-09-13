@@ -5,7 +5,7 @@ Obiettivo: `costruisci.py` riproduce la ROM 1.2.1 da una base 1.1 con UN comando
 `base-1.1-{EN,IT}.nds` produce ROM IDENTICHE, sha256 per sha256, alla ROM
 DEFINITIVA `$SGP_ROM_DIR/sgp-1.2.1-{EN,IT}.nds` (§4) — **con animazioni v4,
 credito, etichetta guida spenta, versione in gioco 1.2.1, pagina Opzioni v4,
-tetto NPC restituito allo spegnimento e Caramella Rara riutilizzabile** (`c7f9562c…` EN, `495ab922…` IT; la 1.2 era `b631e2a1…`/`f4430300…`). Questo pacchetto sostituisce, per la parte INFRASTRUTTURALE
+tetto NPC restituito allo spegnimento, Caramella Rara riutilizzabile, doni a pila piena e moto continuo in lotta** (`82db6c33…` EN, `de5485b0…` IT; la 1.2 era `b631e2a1…`/`f4430300…`). Questo pacchetto sostituisce, per la parte INFRASTRUTTURALE
 (non per la logica di ogni blocco), le copie duplicate di `arm9.py`,
 `overlay_patch.py` e simili che vivevano in ciascun cantiere
 `SGP-1.2-*`.
@@ -48,10 +48,10 @@ dell'originale applicando una patch reale sulla ROM base vera.
 ## 2. I blocchi (`blocchi/`) — pianta DEFINITIVA (13/09/2026)
 
 Ordine di costruzione: **riserva → camera → plus+chunk → testi → npc → anim
-→ opzioni → wifi → titolo → credito → guida → caramelle**.
-Dodici blocchi. `caramelle` è ULTIMO: non dipende da nessuno e nessuno dipende
-da lui, e l'unico vincolo è che `riserva` sia già passato (il suo blocco dev'essere
-a zero).
+→ opzioni → wifi → titolo → credito → guida → caramelle → borsa → anim2**.
+Quattordici blocchi. `borsa` compone ripristino dei premi, messaggio, appendici
+e ganci ARM9: le chiavi dei siti si calcolano dopo le appendici. `anim2`
+aggiorna i ganci di lotta dopo il blocco `anim` originale, che resta in riserva.
 
 | blocco | stato | pianta | build in `sgp12/build/` |
 |---|---|---|---|
@@ -66,6 +66,8 @@ a zero).
 | `testi.py` | **adattatore** (la funzione originale è già pura bytes→bytes) | trasformazione di `CORREZIONI.tsv`, non un blocco a indirizzo fisso | `testi/{CORREZIONI.tsv,pret-source/charmap.txt}` — dipendenza esterna, vedi §5 |
 | `guida.py` | **nuovo** (SGP-1.2-GUIDA-EVIV-02, 13/09/2026): `applica`+`rileggi` propri, porta diretta di `SGP-1.2-GUIDA-EVIV-02/tools/applica_guida.py`+`rileggi_guida.py`. Spegne l'etichetta automatica "START Guida"/"START Guide" nella pagina ABILITÀ/Dati del Riepilogo (START e il tocco restano funzionanti); non tocca la riserva 1.2, il salvataggio, l'automatismo di Nuova Partita né i numeri EV/IV. **Patch chirurgica, NON ricompilazione**: un primo tentativo ricompilava `combined_guide.c` e sostituiva l'intera regione codice (4752 B) — `hg_runtime` ha trovato che il clang disponibile in questo ambiente produce, per quel file, codice che blocca il gioco premendo START (riprodotto anche ricompilando SENZA alcun taglio: non era il taglio, era la ricompilazione in sé). Scartato: la versione consegnata patcha 96 byte macchina direttamente sul binario spedito | sostituisce 96 B a `0x01FF8A1A` (dentro `guide_main`, IDENTICI EN/IT); nessun trampolino, nessun template Oak, nessuna zona testi toccati — vedi `SGP-1.2-GUIDA-EVIV-02/RAPPORTO.md` §2 per la regressione trovata e scartata | nessuno: blocco deterministico (96 byte fissi nel codice), come `riserva`/`camera` |
 | `caramelle.py` | **nuovo** (1.2.1, da SGP-1.2-CARAMELLE-01): `applica`+`rileggi` propri, e il `rileggi` è di un'ALTRA famiglia (vista sull'ARM9 scritta a mano con `struct`, BL decodificata con capstone, ogni indirizzo ridichiarato). Dopo l'uso di una Caramella Rara dal menu squadra si RESTA nel menu, salvo che ci sia un'evoluzione in coda: in quel caso si esce come il vanilla. Nove cancelli in scrittura (G0 idempotenza, G2 zona, G3 preimmagini, G4 motivo unico nell'ARM9 statico, G5 invarianti della 1.1, G6/G7/G8 controlli positivi e conteggio) | `sgp.caramelle` 256 B a 0x023DAC00: blob Thumb 192 B (+0x000, su 240) + canarino `0xCA5A1600|i` (+0x0F0); **più** 6 B nell'ARM9 statico a 0x02081E96 (BL + `pop {r3,r4,r5,pc}`) | `caramelle/{manifesto.json,blob.bin,canarino.bin,origine.json}` — **compilato**, non estratto: la 1.2.1 è la prima ROM in cui questi byte esistono |
+| `borsa.py` | Doni gratuiti e raccolte al tetto, messaggio con nome; acquisti e scambi invariati. Quattro sottorilettori indipendenti. | `sgp.borsa`, 2048 B a `0x023DAD00`, più due voci della tabella comandi e modifiche mirate agli script/testi | `borsa/`: blob e canarino compilati dai sorgenti |
+| `anim2.py` | Moto v5 sui lottatori, continuo nei menu e sospeso durante le mosse; spento per default | `sgp.anim2`, 2048 B a `0x023DB500`, più quattro finestre in ov012 | `anim2/`: codice, tavola, parametri, siti e canarino |
 
 **Cantieri scartati per duplicazione letterale** (stesso `shasum`, non solo
 "stessa idea"): NPC-03 ≡ NPC-02, ANIM-B-03 ≡ ANIM-B-02, WIFI-05 ≡ WIFI-04
@@ -104,11 +106,11 @@ sono già indipendenti dalla sua funzione di scrittura.
 ## 4. Stato della verifica end-to-end (13 settembre 2026) — CHIUSO
 
 `costruisci.py` da `base-1.1-EN.nds`/`base-1.1-IT.nds` produce ROM **IDENTICHE,
-sha256 per sha256**, alla ROM DEFINITIVA (dodici blocchi, Caramelle incluse):
+sha256 per sha256**, alla ROM DEFINITIVA (quattordici blocchi, Borsa e moto continuo inclusi):
 
 ```
-EN  base 281c2d68e442479e… → costruita c7f9562c6e369bb1…  (== bersaglio, SHA256SUMS)
-IT  base 7b61646c627eb67c… → costruita 495ab9226277fc0f…  (== bersaglio, SHA256SUMS)
+EN  base 281c2d68e442479e… → costruita 82db6c33264598c8…  (== bersaglio, SHA256SUMS)
+IT  base 7b61646c627eb67c… → costruita de5485b0ed93d487…  (== bersaglio, SHA256SUMS)
 ```
 
 (la 1.2 era EN `b631e2a1…` / IT `f4430300…`; prima di GUIDA-EVIV-02 EN `0811e8c3…` / IT `f69154cc…`)

@@ -39,7 +39,7 @@ Two inputs stay outside this repository.
 
 **Your game file.** A Sacred Gold Plus 1.1 ROM, English or Italian, in a private folder. Point `SGP_ROM_DIR` at that folder; the tools expect `base-1.1-EN.nds` and `base-1.1-IT.nds` there. Never copy a ROM, save, BIOS or dump into this checkout.
 
-**The character mapping.** `charmap.txt` from the reference disassembly, at the pinned revision:
+**The reference metadata.** `charmap.txt` and `tools/py_scripts/scrcmd.json` from the reference disassembly, at the pinned revision. Both files are included in its checkout:
 
 ```sh
 git clone https://github.com/pret/pokeheartgold.git ../pokeheartgold
@@ -47,7 +47,7 @@ git -C ../pokeheartgold checkout --detach 0985e8718df4f25e64d6507d89c0c97c0d2889
 export SGP_PRET_SOURCE=$PWD/../pokeheartgold
 ```
 
-It is not redistributed here: its licensing was not established to our satisfaction, so it is an external input like the game file.
+These files are not redistributed here: their licensing was not established to our satisfaction, so they remain external inputs. The character mapping encodes text; the command metadata lets the gift tools walk and verify scripts.
 
 ## Build and check the game
 
@@ -62,7 +62,7 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
 
 The build is deterministic: the same base gives the same bytes. `verifica` rebuilds the ROM internally from the same base, compares it with the one you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Use `IT` and the Italian base for the other language. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
 
-The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy — twelve in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
+The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts and continuous battle motion — fourteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
 

@@ -19,6 +19,8 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 ## What's new in 1.2.1
 
+- **A full item stack no longer blocks a free gift or pickup.** The existing quantity cap stays in place; excess items are discarded and a message names the item that could not be kept. Purchases, exchanges, mail and key items keep their original checks.
+- **Optional battle motion extends to both sides and the Bag and party menus.** Motion pauses during move animations. The setting remains off by default; loading transitions can still pause the whole battle display.
 - **The cheat catalogue is reordered and grown**: 67 folders and 2113 codes, the wild-encounter family included, and an instruction on every code that needs a button.
 - **A Rare Candy no longer closes the party menu.** Use one and the menu stays open on the same Pokémon, ready for the next. It closes exactly as before when the game has something of its own to do: an evolution, a move to replace, or the last candy in the bag.
 - **Turning NPC smoothing off takes effect immediately**, instead of at the next map change.
@@ -96,6 +98,8 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
 **Novità della 1.2.1:** il catalogo dei cheat è riordinato e cresciuto a 2113 codici in 67 cartelle, con la famiglia degli incontri selvatici. La schermata al Continua dice «Sacred Gold Plus 1.2.1». **Le Caramelle Rare si usano una dopo l'altra**: il menu squadra resta aperto sullo stesso Pokémon, e si chiude come prima solo quando il gioco ha qualcosa di suo da fare (un'evoluzione, una mossa da sostituire, l'ultima caramella). Spegnere la fluidità dei personaggi dalla pagina Opzioni ha effetto subito, non al prossimo cambio mappa; e con un salvataggio senza il blocco Sacred Gold Plus, o con il blocco rifiutato, tutte e cinque le voci della pagina si mostrano non disponibili invece di lasciarsi cambiare a vuoto.
+
+**Borsa piena e animazioni nella 1.2.1:** i doni gratuiti e gli oggetti raccolti non bloccano più la progressione quando la quantità è al tetto: il limite resta, l'eccedenza viene scartata e il messaggio nomina l'oggetto. Acquisti, scambi, Posta e strumenti chiave mantengono i controlli originali. Il moto opzionale copre entrambi i lati della lotta e resta attivo nei menu Borsa e Squadra; si sospende durante le mosse. I caricamenti possono ancora fermare l'intero disegno della lotta.
 
 **Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 

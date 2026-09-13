@@ -137,6 +137,25 @@ BLOB = {
         entrate=("sgp_caramelle_gancio", "sgp_caramelle_decidi"),
         spedito="caramelle/blob.bin", manifesto="caramelle/manifesto.json",
         max_byte=0xF0),
+    "borsa": dict(
+        sorgente="borsa.c", base=0x023DAD00,
+        sorgenti_dir=SOURCE / "features" / "borsa" / "sorgenti",
+        defs=["-Wall", "-Wextra", "-DSGP_BORSA_BASE=0x023dad00u"],
+        entrate=("sgp_borsa_cmd127", "sgp_borsa_cmd125",
+                 "sgp_borsa_has_space", "sgp_borsa_give_item"),
+        spedito="borsa/blob.bin", manifesto="borsa/manifesto.json",
+        max_byte=0x5E0),
+    "anim2": dict(
+        sorgente="anim_blob5.c", base=0x023DB500,
+        sorgenti_dir=SOURCE / "features" / "anim2" / "sorgenti",
+        defs=["-Wall", "-Wextra", "-DSGP_ANIM5_BASE=0x23db500u",
+              "-DSGP_ANIM5_STATE_ADDR=0x23dbba0u", "-DSGP_ANIM5_TAB_ADDR=0x23dbb20u",
+              "-DSGP_ANIM5_PAR_ADDR=0x23dbb40u", "-DSGP_ANIM5_SITI_ADDR=0x23dbb60u",
+              "-DSGP_ANIM5_SLOT_ADDR=0x23dbbe0u"],
+        entrate=("sgp_pulisci", "sgp_avvia_tutti", "sgp_stop_politica",
+                 "sgp_stop_testa", "sgp_idle_task5"),
+        spedito="anim2/blob.bin", manifesto="anim2/manifesto.json",
+        max_byte=0x600),
 }
 
 

@@ -479,16 +479,122 @@
       ]
     },
     {
-      "nome": "libero.1.2.finale",
+      "nome": "sgp.borsa",
       "base": "0x023DAD00",
-      "bytes": 15936,
+      "bytes": 2048,
+      "proprietario": "Sacred Gold Plus 1.2.1 — doni con borsa al tetto",
+      "tipo": "codice+dati+stato",
+      "zona": "1.2",
+      "pubblico": false,
+      "formato": {
+        "+0x000": "blob Thumb dei comandi 127 e 125, 622 B",
+        "+0x5E0": "puntatori ai comandi originali, 8 B",
+        "+0x5F0": "staffetta di esecuzione, 16 B",
+        "+0x600": "120 chiavi permissive u32, zero termina la tabella",
+        "+0x7F0": "canarino 0xCA5A1700|i, 16 B"
+      },
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 622,
+          "sha256": "905d124e8593d47cba965b49cd2985009674f763f241abf3900419020f66091e"
+        },
+        {
+          "offset": 2032,
+          "bytes": 16,
+          "sha256": "46bebd8bc2218078b8b974ff27d54b269d90c19724bf06e4938819b2c797216b"
+        }
+      ],
+      "ancore": [
+        {
+          "dove": "0x020FAEF4",
+          "vale": "0x023DAD09",
+          "thumb": true
+        },
+        {
+          "dove": "0x020FAEFC",
+          "vale": "0x023DAD01",
+          "thumb": true
+        }
+      ],
+      "nota": "Tabella generata dopo ripristino dei premi e appendici del messaggio. Il rilettore verifica tabella e padding; T2 controlla codice e canarino. Posta, oggetti chiave, acquisti e scambi conservano i limiti originali."
+    },
+    {
+      "nome": "sgp.anim2",
+      "base": "0x023DB500",
+      "bytes": 2048,
+      "proprietario": "Sacred Gold Plus 1.2.1 — moto continuo v5",
+      "tipo": "codice+dati+stato",
+      "zona": "1.2",
+      "pubblico": false,
+      "formato": {
+        "+0x000": "blob Thumb v5, 1438 B su 1536",
+        "+0x600": "canarino 0xCA5A1800|i, 16 B",
+        "+0x620": "tabella moto, 32 B",
+        "+0x640": "parametri, 32 B",
+        "+0x660": "nove siti di fermata, 64 B",
+        "+0x6A0": "stato di esecuzione, 64 B",
+        "+0x6E0": "quattro voci lottatore, 128 B"
+      },
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 1438,
+          "sha256": "a12e2c233146b8fbfadf10e0cb393dff3ea6494886b36e91ab636b3a98237237"
+        },
+        {
+          "offset": 1536,
+          "bytes": 16,
+          "sha256": "8ad8301aa5304736cbbc42aed03488cbd8aee055d38216de41434a1950c72afc"
+        },
+        {
+          "offset": 1568,
+          "bytes": 32,
+          "sha256": "7e5c57b8166f5339985c0c5e1ffd109038d2121aff2f178227af44cb78060c17"
+        },
+        {
+          "offset": 1600,
+          "bytes": 32,
+          "sha256": "82b572784dfaf963f664d053a1cd85120e39fa5a3e24c1a00fb137975862f10a"
+        },
+        {
+          "offset": 1632,
+          "bytes": 64,
+          "sha256": "a2f7660dca7c567bf130a0a1bb6eee0e3087a81632e3d8148414c3a2a6281b50"
+        }
+      ],
+      "ancore": [],
+      "ganci_non_verificati_da_T3": [
+        {
+          "dove": "ov012 0x0226200C",
+          "nota": "letterale del task v5"
+        },
+        {
+          "dove": "ov012 0x02262016",
+          "nota": "politica di fermata"
+        },
+        {
+          "dove": "ov012 0x0225DC8A",
+          "nota": "avvio su tutti i lottatori"
+        },
+        {
+          "dove": "ov012 0x02262032",
+          "nota": "ritiro del gancio di pulizia v4"
+        }
+      ],
+      "nota": "Usa il bit anim esistente, spento per default. Il blocco v4 resta invariato per ricostruire lo stadio precedente. Il rilettore anim2 verifica i ganci nell overlay compresso, i dati e il padding."
+    },
+    {
+      "nome": "libero.1.2.finale",
+      "base": "0x023DBD00",
+      "bytes": 11840,
       "proprietario": "(nessuno)",
       "tipo": "libero",
       "zona": "1.2",
       "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "nota": "libero fino al canarino 1.1 (0x023DEB40) Tipizzato 'padding' fino alla revisione R3 (J3): cosi' `verifiche/riserva_arm9.py`, che somma i soli blocchi 'libero' assegnabili, riportava 0 B liberi mentre i documenti annunciavano 16 192 B contigui. E' il registro a essere stato corretto: questi due blocchi SONO il serbatoio da cui si prenota. RIDOTTO il 13/09/2026 di 256 B (era 0x023DAC00 / 16 192 B): la prenotazione di sgp.caramelle e' stata scalata da qui, come la regola pretende.",
+      "nota": "Libero fino al canarino 1.1 a 0x023DEB40; sottratti 2048 B per sgp.borsa e 2048 B per sgp.anim2 nella 1.2.1.",
       "assegnabile": true
     },
     {

@@ -4,7 +4,9 @@
 
 Download: the [1.2.1 release](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), one ZIP per language. Saves from 1.2 open in 1.2.1 and 1.2.1 saves open in 1.2. **Cheat files from 1.2 keep working**: unlike the step from 1.1 to 1.2, the game header is unchanged, so melonDS still pairs them with this game.
 
-- **The in-game version now reads "Sacred Gold Plus 1.2.1"** on the screen shown at Continue. That screen is the only text that changes; the Options page, the title screen and the game header are untouched.
+- **A full item stack no longer blocks a free gift or pickup.** The existing quantity cap stays in place; excess items are discarded and a message names the item that could not be kept. Purchases, exchanges, mail and key items keep their original checks.
+- **Optional battle motion extends to both sides and the Bag and party menus.** Motion pauses during move animations. The setting remains off by default; loading transitions can still pause the whole battle display.
+- **The in-game version now reads "Sacred Gold Plus 1.2.1"** on the screen shown at Continue. The title screen and game header remain unchanged.
 - **The cheat catalogue is reordered and grown**: 67 folders instead of 56, 2113 codes instead of 1510. The 1510 existing codes keep their exact bytes — order, naming and notes are what changed. The 603 new ones are the wild-encounter family, 493 species and 100 levels. Every code that needs a button now says which one; 94 of them did not.
 - The guard the wild-encounter codes check was re-read from the 1.2.1 image in both languages and matches, and one species and one level were measured on a headless emulator running the English build. The other 492 species and 99 levels differ by a single field and were not measured one by one; the Italian build was checked statically only. The shipped notes say so.
 - **A Rare Candy no longer closes the party menu.** Use one and the menu stays open on the same Pokémon, ready for the next: levelling a team no longer means walking back through the Bag for every single candy. It leaves the menu exactly as before whenever the game has something of its own to do — an evolution, a move to replace, the last candy in the bag — so nothing about those paths changes.
@@ -50,6 +52,6 @@ Fairy typing, the additional Fairy moves and the 1.03 battle changes come from t
 - Full-story and post-game testing is still needed. Some corrected dialogue and translated screens need further in-game review.
 - The original game's reported event issues are not all fixed. Please report a reproducible case rather than assuming a historical bug list is resolved.
 - Newly added Fairy moves can still use their older battle animations, as reported by the original Plus author.
-- The optional battle animation moves the sprite; it does not add per-species animation. Double battles, switching and capture are not covered by the checks behind it.
+- The optional battle motion moves existing sprites; it does not add per-species animation frames. Full-story and hardware coverage remain incomplete.
 - The Wi-Fi slot fallback is fully demonstrated for three of its five cases on the test bench; the two that need a live online trigger were checked under emulation only. Official online services for this game are long discontinued.
 - Cheats: the codes shipped in the package have bounded checks on the real game core. This is not full-game cheat coverage or a promise about every emulator.

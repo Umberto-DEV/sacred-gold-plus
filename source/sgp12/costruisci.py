@@ -3,7 +3,7 @@
 una base 1.1, applicando tutti i blocchi in ordine:
 
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
-    -> titolo -> credito -> guida -> caramelle
+    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2
 
 Uso:
     python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
@@ -26,7 +26,7 @@ from pathlib import Path
 
 from .rom import Rifiuto, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
-                      titolo, guida, caramelle)
+                      titolo, guida, caramelle, borsa, anim2)
 
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 
@@ -45,7 +45,7 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
                 json.dumps(passi[-1], indent=2, ensure_ascii=False) + "\n")
             # ROM intermedia: serve a `verifica.py` per i rilettori pensati
             # per un confronto PASSO-PASSO (base immediatamente precedente),
-            # non contro la ROM finale con tutti gli 8 blocchi applicati.
+            # non contro la ROM finale con tutti i blocchi applicati.
             (Path(log_dir) / ("%02d-%s.nds" % (len(passi), nome))).write_bytes(out)
 
     rom = base
@@ -102,11 +102,19 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     rom, _ = guida.applica(rom)
     registra("guida", t0, rom)
 
-    # Ultimo: non dipende da nessuno e nessuno dipende da lui; l'unico vincolo
-    # e' che `riserva` sia gia' passato, perche' il blocco dev'essere a zero.
+    # Il blocco deve essere ancora a zero nella riserva.
     t0 = time.time()
     rom, _ = caramelle.applica(rom, build_dir / "caramelle", manifest_path=manifest)
     registra("caramelle", t0, rom)
+
+    t0 = time.time()
+    rom, _ = borsa.applica(rom, build_dir / "borsa", lingua,
+                           manifest_path=manifest)
+    registra("borsa", t0, rom)
+
+    t0 = time.time()
+    rom, _ = anim2.applica(rom, build_dir / "anim2", manifest_path=manifest)
+    registra("anim2", t0, rom)
 
     return rom, {"lingua": lingua, "base_sha256": sha(base), "uscita_sha256": sha(rom),
                 "uscita_bytes": len(rom), "passi": passi}

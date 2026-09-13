@@ -34,7 +34,7 @@ from pathlib import Path
 from .rom import sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
-                      opzioni, wifi, titolo, guida, caramelle)
+                      opzioni, wifi, titolo, guida, caramelle, borsa, anim2)
 
 SOURCE = Path(__file__).resolve().parents[1]
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
@@ -42,7 +42,7 @@ TEST_RISERVA = SOURCE / "verifiche/test_riserva.py"
 
 
 ORDINE_STADI = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim", "opzioni",
-                "wifi", "titolo", "credito", "guida", "caramelle")
+                "wifi", "titolo", "credito", "guida", "caramelle", "borsa", "anim2")
 
 
 def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> dict:
@@ -107,6 +107,12 @@ def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> 
     stadio("caramelle", lambda r: _con(caramelle.applica(r, build_dir / "caramelle",
                                                          manifest_path=manifest),
                                        lambda d: caramelle.rileggi(r, d, build_dir / "caramelle")))
+    stadio("borsa", lambda r: _con(borsa.applica(r, build_dir / "borsa", lingua,
+                                                 manifest_path=manifest),
+                                   lambda d: borsa.rileggi(r, d, build_dir / "borsa", lingua)))
+    stadio("anim2", lambda r: _con(anim2.applica(r, build_dir / "anim2",
+                                                 manifest_path=manifest),
+                                   lambda d: anim2.rileggi(r, d, build_dir / "anim2")))
     return out
 
 
@@ -145,7 +151,7 @@ def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: st
     # T1-T5: eseguiti SEMPRE (T1 non richiede una ROM), con SGP_RISERVA_ROM
     # per T2-T5 sulla ROM data (non su una ricostruita: e' lei che si verifica).
     env = dict(os.environ)
-    env["SGP_RISERVA_ROM"] = str(rom_path)
+    env["SGP_RISERVA_ROM"] = str(rom_path.resolve())
     # E3 della revisione R3: `TestGuardiaModalitaCompleta` esiste per trasformare
     # l'assenza della ROM in un fallimento invece che in otto skip silenziosi, ma
     # nessuno impostava mai la variabile che la arma — ne' `run_tests.py` ne' la

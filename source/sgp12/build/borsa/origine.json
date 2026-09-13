@@ -1,0 +1,14 @@
+{
+  "blocco": "sgp.borsa",
+  "base": "0x023DAD00",
+  "bytes": 2048,
+  "prima_versione": "1.2.1",
+  "provenienza": "compilato, non estratto: source/features/borsa/tools/compila_borsa.py dai sorgenti pubblici; il canarino e' generato dalla formula 0xCA5A1700|i",
+  "costruito_il": "2026-09-13",
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "sorgente": {
+    "file": "borsa.c",
+    "sha256": "b575923d4098035ac16cc228d93ddeba8fd82e3002cf525ee291a7564ee4c5bd"
+  },
+  "riprodurre": "python3 source/features/borsa/tools/compila_borsa.py --uscita DIR"
+}

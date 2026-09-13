@@ -68,7 +68,7 @@ after each block, which is what the step-by-step readers consume.
 
 ### The block order
 
-The builder applies twelve blocks, always in this order:
+The builder applies fourteen blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -82,11 +82,13 @@ The builder applies twelve blocks, always in this order:
 10. **credit** — the credit tiles in the same archive
 11. **guide** — turns the automatic EV/IV guide label off
 12. **rare candy** — the Rare Candy stays in the party menu after use
+13. **capped gifts** — restores the old reward paths, adds the named-item warning and its script calls, then builds the permissive site table and installs the ARM9 hooks
+14. **continuous battle motion** — updates the battle hooks for both sides and pauses motion during moves
 
 The order matters: later blocks read the reserve map the first block wrote, and blocks that
 patch the same overlay run in a declared sequence, the second applier working on the ROM the
-first one produced. The last block is last because nothing depends on it and it depends on
-nothing but the reserve: its 256 bytes must still be zero when it runs.
+first one produced. The gift block computes site keys after the script changes. The final
+motion block updates the original animation hooks; its reserved bytes must still be zero.
 
 ### The build is deterministic
 

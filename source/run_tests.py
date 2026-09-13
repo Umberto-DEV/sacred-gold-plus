@@ -57,6 +57,8 @@ SUITE = [
     ("EV/IV reader (1.1)",     SOURCE, ["-m", "unittest", "discover", "-s", "native-eviv", "-p", "test_*.py"]),
     ("guide label patch",      SOURCE / "features/guide/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("save chunk",             SOURCE / "features/plus-chunk/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
+    ("full bag build metadata", SOURCE / "features/borsa/test", ["-m", "unittest", "discover", "-p", "test_build.py"]),
+    ("battle motion build policy", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_metadata.py"]),
 ]
 
 # Class B, listed apart on purpose. These need a real game file (SGP_ROM_DIR) and
@@ -70,6 +72,10 @@ SUITE_CLASSE_B = [
     # hook site itself, so it needs the built ROMs (SGP_ROM_DIR). Without them it
     # skips with a reason, and it is never counted as Class A coverage.
     ("rare candy (Unicorn)",   SOURCE / "features/caramelle/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
+    ("full bag pipeline",      SOURCE / "features/borsa/test", ["-m", "unittest", "discover", "-p", "test_composta.py"]),
+    ("full bag (Unicorn)",     SOURCE / "features/borsa/test", ["-m", "unittest", "discover", "-p", "test_borsa_nucleo.py"]),
+    ("battle motion (Unicorn)", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_blob5.py"]),
+    ("battle motion reader mutants", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_mutanti_anim2.py"]),
 ]
 
 CONTA = re.compile(r"^Ran (\d+) tests?", re.M)
