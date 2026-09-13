@@ -22,7 +22,7 @@ from . import blz, chunk, overlay as ovl, rom as romlib
 from .blocchi import (riserva as bloc_riserva, camera as bloc_camera, plus_chunk as bloc_plus,
                       npc as bloc_npc, anim as bloc_anim, opzioni as bloc_opzioni, wifi as bloc_wifi,
                       titolo as bloc_titolo, testi as bloc_testi, guida as bloc_guida,
-                      typhlosion as bloc_typh, caramelle as bloc_car)
+                      caramelle as bloc_car)
 from . import costruisci as costruisci_mod
 
 # Le ROM non stanno in questo repository. Chi vuole eseguire anche i test
@@ -689,63 +689,6 @@ class TestBloccoCaramelle(unittest.TestCase):
         r.scrivi(bloc_car.BLOCK_BASE + 0x40, bytes([r.leggi(bloc_car.BLOCK_BASE + 0x40, 1)[0] ^ 0x01]))
         rep = bloc_car.rileggi(prima, bytes(r.raw), self.BUILD)
         self.assertEqual(rep["esito_finale"], "ROSSO", rep)
-
-
-@unittest.skipUnless(BASE_EN.exists() and BASE_IT.exists(), "mancano le ROM base 1.1 EN/IT")
-class TestBloccoTyphlosion(unittest.TestCase):
-    """Blocco deterministico su NitroFS (NARC a/0/0/2, membro 157). Si applica
-    su qualunque stadio: non tocca ARM9, overlay, riserva ne' salvataggio.
-    Per questo il test parte dalla base 1.1 direttamente, senza la catena."""
-
-    def test_applica_e_rileggi_verde_en_it(self):
-        for base_path, lingua in ((BASE_EN, "EN"), (BASE_IT, "IT")):
-            base = base_path.read_bytes()
-            out, log = bloc_typh.applica(base)
-            self.assertEqual(log["esito"], "applicato", "%s: %s" % (lingua, log))
-            self.assertEqual(log["byte_diversi"], 6, "%s: %s" % (lingua, log))
-            rep = bloc_typh.rileggi(base, out)
-            self.assertEqual(rep["esito"], "VERDE", "%s: %s" % (lingua, rep))
-
-    def test_idempotenza(self):
-        base = BASE_EN.read_bytes()
-        out1, log1 = bloc_typh.applica(base)
-        out2, log2 = bloc_typh.applica(out1)
-        self.assertEqual(log1["esito"], "applicato")
-        self.assertEqual(log2["esito"], "gia-applicato")
-        self.assertEqual(log2["byte_diversi"], 0)
-        self.assertEqual(out1, out2)
-
-    def test_dimensione_e_membro_invariati(self):
-        base = BASE_EN.read_bytes()
-        out, _ = bloc_typh.applica(base)
-        off, lun, n = bloc_typh.posizione_membro(base)
-        self.assertEqual(len(out), len(base))
-        self.assertEqual((lun, n), (44, 508))
-        self.assertEqual(base[off + 6:off + 44], out[off + 6:off + 44])
-
-    def test_mutante_preimmagine_alterata_e_rifiutata(self):
-        """M1: se il membro 157 non e' quello atteso, A2 deve RIFIUTARE invece
-        di sovrascrivere una specie ignota."""
-        base = bytearray(BASE_EN.read_bytes())
-        off, _lun, _n = bloc_typh.posizione_membro(bytes(base))
-        base[off] ^= 0xFF
-        with self.assertRaises(romlib.Rifiuto):
-            bloc_typh.applica(bytes(base))
-
-    def test_mutante_membro_vicino_non_toccato(self):
-        """M2: i membri 156 e 158 restano identici byte per byte."""
-        base = BASE_EN.read_bytes()
-        out, _ = bloc_typh.applica(base)
-        for indice in (bloc_typh.SPECIE - 1, bloc_typh.SPECIE + 1):
-            off, lun, _n = bloc_typh.posizione_membro(base, indice=indice)
-            self.assertEqual(base[off:off + lun], out[off:off + lun])
-
-    def test_narc_risolto_per_nome(self):
-        """Il blocco non cabla l'offset: `a/0/0/2` deve risolversi dalla FNT e
-        un nome inesistente deve essere RIFIUTATO, non dare un offset a caso."""
-        base = BASE_EN.read_bytes()
-        with self.assertRaises(romlib.Rifiuto):
-            bloc_typh.posizione_membro(base, percorso="a/0/0/999")
 
 
 def _sha_attesi():

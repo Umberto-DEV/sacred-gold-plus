@@ -4,8 +4,6 @@
 
 Download: the [1.2.1 release](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), one ZIP per language. Saves from 1.2 open in 1.2.1 and 1.2.1 saves open in 1.2. **Cheat files from 1.2 keep working**: unlike the step from 1.1 to 1.2, the game header is unchanged, so melonDS still pairs them with this game.
 
-- **Typhlosion's base stats raised** to 88 HP / 135 Attack / 89 Defense / 129 Sp. Atk / 95 Sp. Def / 114 Speed — 650 total, up from 534. Six bytes inside the species-data archive; nothing else in the game changes.
-- A Typhlosion already in the party keeps the stats stored in the save until the game recalculates them: deposit it in the PC and take it straight back out, or level it up, use a vitamin, or evolve it. Current HP rises by the same amount as maximum HP.
 - **The in-game version now reads "Sacred Gold Plus 1.2.1"** on the screen shown at Continue. That screen is the only text that changes; the Options page, the title screen and the game header are untouched.
 - **The cheat catalogue is reordered and grown**: 67 folders instead of 56, 2113 codes instead of 1510. The 1510 existing codes keep their exact bytes — order, naming and notes are what changed. The 603 new ones are the wild-encounter family, 493 species and 100 levels. Every code that needs a button now says which one; 94 of them did not.
 - The guard the wild-encounter codes check was re-read from the 1.2.1 image in both languages and matches, and one species and one level were measured on a headless emulator running the English build. The other 492 species and 99 levels differ by a single field and were not measured one by one; the Italian build was checked statically only. The shipped notes say so.

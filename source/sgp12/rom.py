@@ -41,6 +41,33 @@ def sha(dati) -> str:
     return hashlib.sha256(bytes(dati)).hexdigest()
 
 
+_BLOCCO_CONFRONTO = 1 << 20
+
+
+def posizioni_diverse(a, b) -> list:
+    """Tutte le posizioni in cui `a` e `b` differiscono, sull'INTERA immagine.
+
+    Confronto a blocchi da 1 MiB: il confronto di fetta (C) scarta in un colpo
+    i blocchi identici e solo dentro un blocco che differisce si scende al
+    singolo byte. Il risultato e' lo stesso di un ciclo byte per byte su
+    127 MB, ma senza il minuto di attesa che quello costa a ogni chiamata
+    (`applica`, `rileggi` e i test lo usano piu' volte per ROM).
+
+    Non porta nessuna conoscenza della ROM — confronta due sequenze di byte —
+    quindi non e' una costante condivisa fra applicatore e rilettore: sta qui
+    perche' vale la pena averne UNA sola.
+    """
+    n = min(len(a), len(b))
+    fuori = []
+    for inizio in range(0, n, _BLOCCO_CONFRONTO):
+        fine = min(inizio + _BLOCCO_CONFRONTO, n)
+        if a[inizio:fine] == b[inizio:fine]:
+            continue
+        fuori.extend(i for i in range(inizio, fine) if a[i] != b[i])
+    fuori.extend(range(n, max(len(a), len(b))))
+    return fuori
+
+
 def esigi_manifesto_descrive(man: dict, corpo, chiave: str = "blob",
                              file: str = "blob.bin", blocco: str = "") -> None:
     """Il manifesto deve descrivere il file che gli sta ACCANTO: `byte` e

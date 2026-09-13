@@ -44,11 +44,8 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_decode, bl_thumb, esigi, esigi_manifesto_descrive, sha
-# `posizioni_diverse` non e' una costante ne' un decodificatore: e' il
-# confronto fra due sequenze di byte, e vale la pena averne UNA sola
-# (vedi la nota nel corpo di `applica`).
-from .typhlosion import posizioni_diverse
+from ..rom import (Arm9, Rifiuto, bl_decode, bl_thumb, esigi, esigi_manifesto_descrive,
+                   posizioni_diverse, sha)
 
 # ------------------------------------------------------------------ applica
 GANCIO = 0x02081E96
@@ -235,12 +232,12 @@ def applica(rom: bytes, build, manifest_path=None) -> tuple[bytes, dict]:
     esigi(len(dopo) == len(prima), "G8: la ROM ha cambiato dimensione")
     leciti = set(range(r.off(GANCIO), r.off(GANCIO) + 6))
     leciti |= set(range(r.off(BLOCK_BASE), r.off(BLOCK_BASE) + BLOCK_N))
-    # `posizioni_diverse` e' la STESSA funzione che usa il blocco Typhlosion:
-    # confronto a fette da 1 MiB, e il byte per byte solo dentro la fetta che
-    # differisce. Qui c'era un `for i in range(len(prima))` su 127 MB, ripetuto a
-    # ogni applicazione: lo stesso risultato, un minuto di attesa in piu'. La
-    # funzione non porta nessuna conoscenza della ROM — confronta due sequenze
-    # di byte — quindi non e' una costante condivisa fra applicatore e rilettore.
+    # `posizioni_diverse` (in `sgp12/rom.py`): confronto a fette da 1 MiB, e il
+    # byte per byte solo dentro la fetta che differisce. Qui c'era un
+    # `for i in range(len(prima))` su 127 MB, ripetuto a ogni applicazione: lo
+    # stesso risultato, un minuto di attesa in piu'. La funzione non porta
+    # nessuna conoscenza della ROM — confronta due sequenze di byte — quindi non
+    # e' una costante condivisa fra applicatore e rilettore.
     diversi = posizioni_diverse(prima, dopo)
     fuori = [i for i in diversi if i not in leciti]
     esigi(not fuori, "G8: %d byte cambiati FUORI dalle due regioni dichiarate (primo: %#x)"

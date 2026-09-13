@@ -3,7 +3,7 @@
 una base 1.1, applicando tutti i blocchi in ordine:
 
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
-    -> titolo -> credito -> guida -> typhlosion -> caramelle
+    -> titolo -> credito -> guida -> caramelle
 
 Uso:
     python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
@@ -26,7 +26,7 @@ from pathlib import Path
 
 from .rom import Rifiuto, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
-                      titolo, guida, typhlosion, caramelle)
+                      titolo, guida, caramelle)
 
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 
@@ -101,10 +101,6 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     t0 = time.time()
     rom, _ = guida.applica(rom)
     registra("guida", t0, rom)
-
-    t0 = time.time()
-    rom, _ = typhlosion.applica(rom)
-    registra("typhlosion", t0, rom)
 
     # Ultimo: non dipende da nessuno e nessuno dipende da lui; l'unico vincolo
     # e' che `riserva` sia gia' passato, perche' il blocco dev'essere a zero.

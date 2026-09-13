@@ -34,7 +34,7 @@ from pathlib import Path
 from .rom import sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
-                      opzioni, wifi, titolo, guida, typhlosion, caramelle)
+                      opzioni, wifi, titolo, guida, caramelle)
 
 SOURCE = Path(__file__).resolve().parents[1]
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
@@ -42,7 +42,7 @@ TEST_RISERVA = SOURCE / "verifiche/test_riserva.py"
 
 
 ORDINE_STADI = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim", "opzioni",
-                "wifi", "titolo", "credito", "guida", "typhlosion", "caramelle")
+                "wifi", "titolo", "credito", "guida", "caramelle")
 
 
 def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> dict:
@@ -104,7 +104,6 @@ def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> 
     stadio("credito", lambda r: _con(titolo.applica_credito(r),
                                      lambda d: titolo.rileggi_credito(r, d)))
     stadio("guida", lambda r: _con(guida.applica(r), lambda d: guida.rileggi(r, d)))
-    stadio("typhlosion", lambda r: _con(typhlosion.applica(r), lambda d: typhlosion.rileggi(r, d)))
     stadio("caramelle", lambda r: _con(caramelle.applica(r, build_dir / "caramelle",
                                                          manifest_path=manifest),
                                        lambda d: caramelle.rileggi(r, d, build_dir / "caramelle")))

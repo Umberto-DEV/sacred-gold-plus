@@ -68,7 +68,7 @@ after each block, which is what the step-by-step readers consume.
 
 ### The block order
 
-The builder applies thirteen blocks, always in this order:
+The builder applies twelve blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -81,8 +81,7 @@ The builder applies thirteen blocks, always in this order:
 9. **title** — the title screen tilemap
 10. **credit** — the credit tiles in the same archive
 11. **guide** — turns the automatic EV/IV guide label off
-12. **Typhlosion** — the base stats of species 157 in the personal-data archive
-13. **rare candy** — the Rare Candy stays in the party menu after use
+12. **rare candy** — the Rare Candy stays in the party menu after use
 
 The order matters: later blocks read the reserve map the first block wrote, and blocks that
 patch the same overlay run in a declared sequence, the second applier working on the ROM the
@@ -138,7 +137,7 @@ the same bytes that ended up in the shipped ROM: one blob differed by 152 bytes 
 one, having been compiled with slightly different options. Extracting from the ROM is correct by
 construction, and stays correct when the ROM changes — you just extract again.
 
-Blocks with no external blob (reserve, camera, title, credit, guide, Typhlosion) are
+Blocks with no external blob (reserve, camera, title, credit, guide) are
 deterministic and need no extraction. The two options text blobs
 (`build/opzioni/testi-{EN,IT}.bin` and `voci-{EN,IT}.bin`) are the one exception in the other
 direction: since 1.2.1 they are **built**, not extracted, by
