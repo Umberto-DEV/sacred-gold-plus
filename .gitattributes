@@ -8,3 +8,10 @@
 # regardless of how git's content-based detection classifies a given file.
 *.pdf binary
 *.nds binary
+
+# Language statistics: cheat databases and binary deltas are data, not code,
+# and the release folder is documentation. Without this, GitHub reports the
+# repository as "B (Formal Method)" because of the .mch cheat files.
+*.mch linguist-detectable=false
+*.xdelta binary linguist-detectable=false
+release/** linguist-documentation

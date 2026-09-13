@@ -74,6 +74,31 @@ def validate_release_folder(root):
     return owned
 
 
+# No tracked file may exceed this, so that a ROM, a dump or a captured video
+# cannot slip in unnoticed. The few legitimate exceptions are named below with
+# the reason they are large.
+SIZE_LIMIT = 2 * 1024 * 1024
+SIZE_EXCEPTIONS = {
+    # The full GPL-3.0 text, and the PDFs and patch deltas of the player package
+    # (each already pinned by size and SHA-256 in release/1.2/contenuto.json).
+    'LICENSE',
+}
+
+# Extensions that only a game file, a save or a memory dump would carry. They
+# are refused outright: this repository ships tools and our own compiled code,
+# never game bytes. Our own small payloads live in release/ (.xdelta) or under
+# source/ with an explicit .bin allowance below.
+FORBIDDEN_SUFFIXES = ('.nds', '.sav', '.sav2', '.srm', '.dump', '.dsv', '.bak',
+                      '.state', '.ml0', '.ml1', '.nds.gz')
+
+# The only binaries allowed outside a reviewed release folder and the gallery:
+# blobs we compiled ourselves from the C sources in this repository, each a few
+# hundred bytes, plus the intermediate object of that same build.
+OUR_BLOBS_PREFIXES = ('source/sgp12/build/', 'source/features/')
+OUR_BLOBS_SUFFIXES = ('.bin', '.o')
+OUR_BLOB_MAX = 8 * 1024
+
+
 def check(root=ROOT):
     allowed = set(json.loads((root/'.github/public-files.json').read_text()))
     r = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
@@ -89,7 +114,11 @@ def check(root=ROOT):
         p = root/name
         if p.is_symlink() or any(x.is_symlink() for x in p.parents if x != root.parent):
             raise ValueError('Symbolic links are not public artifacts')
+        if name.lower().endswith(FORBIDDEN_SUFFIXES):
+            raise ValueError('A game file, save or dump must never be tracked: ' + name)
         data = p.read_bytes()
+        if len(data) > SIZE_LIMIT and name not in SIZE_EXCEPTIONS and name not in owned:
+            raise ValueError('Tracked file over the size limit; declare it or keep it out: ' + name)
         if name.endswith('.xdelta'):
             if len(data) < 5 or data[:4] != bytes([0xD6, 0xC3, 0xC4, 0]):
                 raise ValueError('Patch has an unexpected format')
@@ -100,12 +129,15 @@ def check(root=ROOT):
             text = data.decode('utf-8')
         except UnicodeDecodeError:
             # Binary files are only expected inside a reviewed release folder
-            # (pinned by size and SHA-256 above) or the screenshot gallery.
-            if name not in owned and not name.startswith('images/'):
-                raise ValueError('Unexpected binary public file') from None
+            # (pinned by size and SHA-256 above), in the screenshot gallery, or
+            # as one of our own small compiled blobs under source/.
+            ours = (name.startswith(OUR_BLOBS_PREFIXES) and name.endswith(OUR_BLOBS_SUFFIXES)
+                    and len(data) <= OUR_BLOB_MAX)
+            if name not in owned and not name.startswith('images/') and not ours:
+                raise ValueError('Unexpected binary public file: ' + name) from None
             continue
         if bad_text.search(text):
-            raise ValueError('Possible private information: review locally before publication')
+            raise ValueError('Possible private information: review locally before publication: ' + name)
     return len(actual)
 
 
