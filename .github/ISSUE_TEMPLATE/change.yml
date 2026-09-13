@@ -1,0 +1,40 @@
+name: Propose a source change
+description: For developers: describe a change to the tools, sources or documentation before opening a pull request.
+title: "[Change] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: What should behave differently?
+      description: One change, described from the player's side where it is visible from the player's side.
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Which part of the sources does it touch?
+      description: "For example: source/sgp12/blocchi/, source/features/<name>/, source/translation/, docs/. See DEVELOPMENT.md."
+    validations:
+      required: true
+  - type: dropdown
+    id: reserve
+    attributes:
+      label: Does it need space in the ARM9 reserve?
+      options: ["No", "Yes — I will claim it in docs/arm9-reserve-reservations.md", "I do not know yet"]
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: How would it be checked?
+      description: Which Class A tests cover it, and which Class B run (with your own game file) would prove it. Say what such a run would not establish.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I will not commit game files, game text, game code, extracted game data, saves, BIOS or raw device logs.
+          required: true
