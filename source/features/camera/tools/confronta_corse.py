@@ -37,7 +37,7 @@ ASSERZIONI = [
     ('C-5 percorso-lotta, prima della lotta', 'pl-base', 'pl-cand', 'PRIMA-LOTTA.ppm', 'uguali', ''),
     ('C-5 percorso-lotta, in lotta', 'pl-base', 'pl-cand', 'IN-LOTTA.ppm', 'uguali', ''),
     ('C-1 IT, non-regressione', 'it-base', 'it-cand', '01-campo.ppm', 'uguali',
-     'ROM IT, salvataggio reale della Thor'),
+     'ROM IT, con un salvataggio reale di un giocatore'),
     ('C-1 IT, non-regressione fermo', 'it-base', 'it-cand', '02-campo-fermo.ppm', 'uguali', ''),
 ]
 

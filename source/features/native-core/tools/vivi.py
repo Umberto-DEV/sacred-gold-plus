@@ -11,7 +11,7 @@ from pathlib import Path
 from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB, CS_MODE_ARM
 from capstone.arm import ARM_REG_CPSR, ARM_CC_AL, ARM_CC_INVALID
 
-R = Path('<home>/Developer/sacred-gold-plus')
+R = Path(__file__).resolve().parents[4]   # radice del repo
 W = R / 'the private development workspace'
 sys.path.insert(0, str(W / 'SGP-1.2-PLUS-02/tools'))
 sys.path.insert(0, str(W / 'SGP-1.2-PRESTAZIONI-NPC-03/tools'))

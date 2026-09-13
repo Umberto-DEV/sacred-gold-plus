@@ -14,14 +14,14 @@ body:
     id: where
     attributes:
       label: Which part of the sources does it touch?
-      description: "For example: source/sgp12/blocchi/, source/features/<name>/, source/translation/, docs/. See source/README.md."
+      description: "For example: source/sgp12/blocchi/, source/features/<name>/, source/translation/, source/docs/. See source/README.md."
     validations:
       required: true
   - type: dropdown
     id: reserve
     attributes:
       label: Does it need space in the ARM9 reserve?
-      options: ["No", "Yes — I will claim it in source/source/docs/arm9-reserve-reservations.md", "I do not know yet"]
+      options: ["No", "Yes — I will claim it in source/docs/arm9-reserve-reservations.md", "I do not know yet"]
     validations:
       required: true
   - type: textarea

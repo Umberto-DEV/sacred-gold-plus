@@ -135,7 +135,7 @@ def probe(rom,fixture,observer,out,kind,baseline):
             'exact_heap_and_resources_restored_each_cycle':True,'pokemon_party_storage_sha256':data_sha,'sram_unchanged':True,
             'native_font_panels':3,'button_mode_tests':'Synthetic gSystem.buttonMode1 and3, restored0; no options UI claim',
             'config':'Core906e9ebb interpreter/software1x/fixed RTC/FreeBIOS/no cheats',
-            'limits':['Private existing party1/box1 fixtures; no GUI/Android/Thor/FPS/NewGame claim.']})
+            'limits':['Private existing party1/box1 fixtures; no GUI/Android/handheld/FPS/NewGame claim.']})
     except Exception as exc:
         result.update({'passed':False,'failure':str(exc)})
         (out/'verification.json').write_text(json.dumps(result,indent=2)+'\n')

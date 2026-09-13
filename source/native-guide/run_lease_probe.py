@@ -116,7 +116,7 @@ def probe(rom, fixture, observer, out, kind, expected_rom_sha, red=False):
         'pokemon_party_box_preserved':True,'sram_preserved':True,'stable_regions_preserved':True,
         'original_eviv_works':True,'directions_and_exit_work':True,'a_b_priority_over_start_works':True,
         'config':'Core906e9ebb, interpreter, software1x, fixed RTC, FreeBIOS, no cheats',
-        'limits':['No guide UI, SAVE/cold-reload regression, GUI, Android, Thor or performance claim.']})
+        'limits':['No guide UI, SAVE/cold-reload regression, GUI, Android, handheld or performance claim.']})
     (out/'verification.json').write_text(json.dumps(result,indent=2)+'\n')
     return result
 
