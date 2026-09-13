@@ -58,23 +58,24 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 - **Saves:** a 1.1 save opens in 1.2 and a 1.2 save opens in 1.1 — checked byte for byte.
 - **Cheats:** 1.1 cheat files do not carry over, because 1.2 has a different game header. Re-import the cheat files from the 1.2 package; every code starts switched off.
 
-## For developers
+## Source code and contributing
 
-The sources, tools and tests that build and check this game are in this repository, and contributions are welcome.
+Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2 from a 1.1 ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/).
 
-- [DEVELOPMENT.md](DEVELOPMENT.md) — branching model, release cycle, the two classes of test and how the repository is laid out.
-- [source/README.md](source/README.md) — build the game from your own game file and run the tests.
-- [CONTRIBUTING.md](CONTRIBUTING.md) — how to propose a change.
-
-`main` is the development trunk and is always green: every push and every pull request runs the tests that need no game file. Building the game itself needs your own copy of it, so that step happens on your machine, never on GitHub.
+- `main` is the development trunk. Fork, create a `feature/…` or `fix/…` branch, open a pull request.
+- Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
+- Finished versions are tags (`v1.2`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
+- Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
 
 ## Credits
 
-Built on **Drayano**'s *Sacred Gold*, continuing **Sacred Gold Plus** with credit to its original community. Developed by a fan, with community contributions. Full acknowledgements and third-party terms: [CREDITS.md](CREDITS.md).
+Built on **Drayano**'s *Sacred Gold* and Storm Silver; **mikelan / Mikelan98** contributed the Fairy-type implementation; **NefariousnessNo3436** created Sacred Gold Plus and its 1.03 additions, and [allowed reuse with credit](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/). This is an independent continuation, not an official handover. The original PDF guides in the packages remain credited to Drayano and the original contributors; **@JD48096761** compiled the trainer reference. Developed by a fan, with community contributions.
+
+Third-party material used by the tools, none of it redistributed here: the character mapping from [pret/pokeheartgold](https://github.com/pret/pokeheartgold) (read from your own checkout), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/) and [Capstone](https://www.capstone-engine.org/) as pinned dependencies, and the [melonDS](https://melonds.kuribo64.net/) core (GPL-3.0-or-later) as the base of the headless test bench you build yourself.
 
 ## License
 
-This project's own tools are licensed under [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights; full credits are in each package's `README.txt` / `LEGGIMI.txt`.
+This project's own tools and sources are licensed under [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights; attribution does not transfer them. No game code, text, graphics, ROM, BIOS or save is distributed here.
 
 ---
 
@@ -94,7 +95,7 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 
 **Compatibilità:** i salvataggi 1.1↔1.2 sono stati verificati byte per byte; i cheat della 1.1 non funzionano sulla 1.2 (intestazione diversa) — reimporta quelli del pacchetto 1.2, tutti spenti di default.
 
-**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in questo repository — [DEVELOPMENT.md](DEVELOPMENT.md) e [source/README.md](source/README.md). `main` e' il tronco di sviluppo, sempre verde; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub.
+**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il tronco di sviluppo; si lavora su un branch e si apre una pull request; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub.
 
 **Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
 

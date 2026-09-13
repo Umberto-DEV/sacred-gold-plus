@@ -3,7 +3,7 @@
 """APPLICATORE dell'iniezione — SGP-1.2-OPZIONI-04 (preparazione v2).
 
 Scrive i DUE blocchi della v2 (`PIANO-INIEZIONE.md` §1 di SGP-1.2-OPZIONI-03,
-ratificati in `docs/arm9-reserve-reservations.md`):
+ratificati in `source/docs/arm9-reserve-reservations.md`):
 
   sgp.opzioni        0x023D9000  4096 B  codice+risorse+tabella+template+stato,
                                          canarino DENTRO il blocco a +0xFF0

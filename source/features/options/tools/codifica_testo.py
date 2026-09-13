@@ -52,7 +52,7 @@ CHARMAP_PACCHETTO = Path(__file__).resolve().parent.parent / "testi" / "charmap-
 def carica_charmap(percorso=None):
     """Legge una charmap. Passa `--charmap <pret>/charmap.txt` dal checkout
     pinnato in `source/README.md`: la tabella non e' ridistribuita qui (vedi
-    CREDITS.md). Se manca, resta la tabella minima incorporata, che basta ai
+    source/README.md). Se manca, resta la tabella minima incorporata, che basta ai
     test ma NON riproduce i blob dei testi spediti. Accetta sia il formato di
     pret («XXXX=c») sia quello ridotto («XXXX<TAB>c»)."""
     t = _base()

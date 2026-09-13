@@ -15,7 +15,7 @@ Download: the [1.2 release](https://github.com/Umberto-DEV/sacred-gold-plus/rele
 - **The EV/IV guide** on a Pokémon's Ability page no longer shows an automatic "START Guide" label; press START there to open it.
 - Bug fixes.
 
-This release also opens the development side of the project: the sources, tools and tests that build and check the game are in [`source/`](source/), the development documentation is in [`docs/`](docs/), and [DEVELOPMENT.md](DEVELOPMENT.md) describes how to work on it. No game file is distributed: the tools read the player's own.
+This release also opens the development side of the project: the sources, tools and tests that build and check the game are in [`source/`](source/), the technical documentation is in [`source/docs/`](source/docs/), and [DEVELOPMENT.md](DEVELOPMENT.md) describes how to work on it. No game file is distributed: the tools read the player's own.
 
 ## 1.1 — 11 September 2026
 

@@ -3,7 +3,7 @@ name: Public checks
 # Every push on any branch and every pull request against main: the file
 # contract and the Class A tests — the ones that need
 # no game file. Nothing here builds a game: that needs the player's own file and
-# happens only on a contributor's machine (see DEVELOPMENT.md).
+# happens only on a contributor's machine (see source/README.md).
 on:
   push:
     branches: ['**']

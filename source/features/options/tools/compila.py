@@ -29,7 +29,7 @@ ENTRATE = ("sgp_ui_frame", "sgp_opz_hook",
            "sgp_new_init", "sgp_new_main", "sgp_new_exit")
 
 # Base = il blocco `sgp.opzioni` assegnato dall'orchestratore
-# (`docs/arm9-reserve-reservations.md`): **0x023D9000**.
+# (`source/docs/arm9-reserve-reservations.md`): **0x023D9000**.
 #
 # DUE BLOCCHI. Nei 4096 B assegnati ci stanno codice (3412), risorse (84),
 # tabella (24), template (32), stato (76) e canarino (16) = 3644. **Non** ci sta

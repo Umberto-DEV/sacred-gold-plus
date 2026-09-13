@@ -26,6 +26,16 @@
 !.gitattributes
 !/.github/CODEOWNERS
 
+# The root carries only README and CHANGELOG besides LICENSE: no other notes
+# or folders at the top level (development notes stay in source/docs/).
+/*.md
+!/README.md
+!/CHANGELOG.md
+/docs/
+/release/
+/dist/
+*.zip
+
 # images/: only the reviewed 1.2 gallery screenshots.
 !/images/*.png
 

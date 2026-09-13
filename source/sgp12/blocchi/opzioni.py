@@ -38,7 +38,7 @@ TESTI_CANARY_MOTIVO = 0xCA5A1500
 # v3 (SGP-1.2-RIFINITURA-01, applicata in luogo 12/09/2026): il codice cresce
 # da 3348 a 3628 B (tocco dello stilo, righe comandi, default chunk) e sposta
 # ris/tab/tpl/stato in avanti; il canarino a +0xFF0 resta DOVE ERA. Pianta
-# esatta: docs/arm9-reserve-map.json, voce "sgp.opzioni".
+# esatta: source/docs/arm9-reserve-map.json, voce "sgp.opzioni".
 PIANTA = {"codice": (0x000, 0xEC0), "ris": (0xEC0, 0x60), "tab": (0xF20, 0x20),
           "tpl": (0xF40, 0x20), "stato": (0xF60, 0x60)}
 PIANTA_TESTI = {"testi": (0x000, 0x3F0)}

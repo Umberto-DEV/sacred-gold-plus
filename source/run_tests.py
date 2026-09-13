@@ -16,7 +16,7 @@ because they run our own compiled code under an ARM946E-S emulator; without a
 usable compiler they are reported as skipped, not as failures.
 
 Class B tests — the ones that open a real game file — are not run here. See
-`source/README.md` and `DEVELOPMENT.md` for those.
+`source/README.md` for those.
 """
 from __future__ import annotations
 

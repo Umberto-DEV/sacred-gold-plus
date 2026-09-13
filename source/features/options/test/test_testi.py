@@ -208,11 +208,11 @@ class G5Testi(unittest.TestCase):
 
     def test_la_charmap_viene_da_pret(self):
         """La tabella ridotta e' un estratto di pret/pokeheartgold e NON e'
-        ridistribuita qui (CREDITS.md): si passa `--charmap <pret>/charmap.txt`.
+        ridistribuita qui (vedi source/README.md): si passa `--charmap <pret>/charmap.txt`.
         Quando qualcuno la mette comunque in `testi/`, dev'essere quella."""
         f = PAC / "testi" / "charmap-sgp.tsv"
         if not f.is_file():
-            self.skipTest("charmap ridotta assente: e' un ingresso esterno, vedi CREDITS.md")
+            self.skipTest("charmap ridotta assente: e' un ingresso esterno, vedi source/README.md")
         riga = f.read_text(encoding="utf-8")
         self.assertIn("pret/pokeheartgold", riga)
         self.assertIn("d010fe01f7a83d29", riga, "sha256 della copia usata")

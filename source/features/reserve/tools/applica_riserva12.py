@@ -49,7 +49,7 @@ INTESTAZIONE_BYTES = 32
 LIBERO_1_2_BYTES = RISERVA_TOTALE_BYTES - CANARINO_BASSO_BYTES - INTESTAZIONE_BYTES - RISERVA_1_1_BYTES
 assert LIBERO_1_2_BYTES == 27392
 
-MANIFEST_DEFAULT = Path(os.environ.get("SGP_MAPPA", REPO / "docs/arm9-reserve-map.json"))
+MANIFEST_DEFAULT = Path(os.environ.get("SGP_MAPPA", REPO / "source/docs/arm9-reserve-map.json"))
 
 
 class Rifiuto(Exception):

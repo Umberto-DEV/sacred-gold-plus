@@ -27,7 +27,7 @@
     "tab_trainer": "0x23d8500",
     "tab_wild": "0x23d8600",
     "provvisori": true,
-    "nota": "da riallineare a docs/arm9-reserve-map.json (cantiere F0)",
+    "nota": "da riallineare a source/docs/arm9-reserve-map.json (cantiere F0)",
     "codice_salva": "0x23d8220",
     "canarino": "0x23d8720"
   },

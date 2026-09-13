@@ -49,7 +49,7 @@ QUI = Path(__file__).resolve()
 PACCHETTO = QUI.parents[1]
 REPO = QUI.parents[4]
 ROM_DIR = Path(os.environ.get("SGP_ROM_DIR", "rom-dir-not-set"))
-MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "docs/arm9-reserve-map.json"))
+MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "source/docs/arm9-reserve-map.json"))
 
 sys.path.insert(0, str(QUI))
 from arm9 import Arm9  # noqa: E402

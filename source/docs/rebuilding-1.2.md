@@ -162,5 +162,5 @@ Two related failure modes worth naming:
 - `docs/contracts.md` — the save chunk, in-place overlay patching, the Wi-Fi slot rule and the
   EV/IV guide.
 - `docs/arm9-reserve-map.md` — the ARM9 reserve layout the native blocks allocate from.
-- `DEVELOPMENT.md` — repository layout, tests and how to work on the sources.
+- `source/README.md` — repository layout, tests and how to work on the sources.
 - `source/sgp12/README.md` — the library itself, block by block.

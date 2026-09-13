@@ -12,7 +12,7 @@ non esiste piu' (124 B di stato borsa + 16 di coda, ARENA-INNESTO-01). Misurato 
 riserva 1.1 finale, il numero giusto per quel layout e' 32 B (20 del "buco" fra
 `.bss` borsa e stato camera + 12 di padding), non 140: `max(0, 3 - 140) = 0` mentiva
 per la ragione sbagliata due volte (vedi il documento). Lo strumento ora preferisce
-leggere un MANIFEST (`docs/arm9-reserve-map.json` o compatibile) che
+leggere un MANIFEST (`source/docs/arm9-reserve-map.json` o compatibile) che
 elenca i blocchi dichiarati: il libero vero e' la somma dei blocchi `tipo: "libero"`
 che risultano DAVVERO a zero nella ROM, non un numero cablato. Senza `--manifest`,
 lo strumento stampa la coda azzerata e AVVISA che senza manifest non puo' dire quanto

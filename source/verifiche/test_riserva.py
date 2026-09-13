@@ -48,7 +48,7 @@ from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
 REPO = QUI.parents[1]
-MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "docs/arm9-reserve-map.json"))
+MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "source/docs/arm9-reserve-map.json"))
 # I file di cheat spediti stanno nel pacchetto ZIP della release (non nel repo):
 # indicare la cartella scompattata con SGP_CHEATS, altrimenti T3 viene saltato.
 CHEATS_DIR = Path(os.environ.get("SGP_CHEATS", REPO / "release/1.2"))

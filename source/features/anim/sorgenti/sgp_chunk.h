@@ -20,7 +20,7 @@ typedef signed short   s16;
 typedef signed int     s32;
 
 /* Una sola base parametrica per tutto il blocco `sgp.plus`: il valore qui è
- * quello vero di `docs/arm9-reserve-map.json`. Tutto il resto ne
+ * quello vero di `source/docs/arm9-reserve-map.json`. Tutto il resto ne
  * discende, così un `-D` che sposta il blocco sposta anche le due tabelle —
  * prima erano letterali scollegati, e dimenticare un `-D` faceva leggere la
  * tabella dei livelli da memoria altrui invece di far fallire la build. */

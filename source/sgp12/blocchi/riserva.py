@@ -10,7 +10,7 @@ dell'impronta del manifest e del canarino basso, di proposito (vedi
 `applica()`.
 
 `build`: una cartella con `MAPPA-RISERVA-ARM9.json` (il registro dei blocchi
-della riserva; il registro pubblico e' `docs/arm9-reserve-map.json`).
+della riserva; il registro pubblico e' `source/docs/arm9-reserve-map.json`).
 """
 from __future__ import annotations
 

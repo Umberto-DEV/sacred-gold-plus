@@ -17,7 +17,7 @@
  *
  * INDIRIZZI. Due blocchi, entrambi parametrici (-D da `tools/compila.py`):
  *   `sgp.opzioni`        0x023D9000, 4096 B — assegnato dall'orchestratore
- *                        (`docs/arm9-reserve-reservations.md`, fonte unica).
+ *                        (`source/docs/arm9-reserve-reservations.md`, fonte unica).
  *                        Ci stanno codice, risorse, tabella, template, stato e
  *                        canarino: 3412 + 84 + 24 + 32 + 76 + 16 = 3644 su 4096.
  *   `sgp.opzioni.testi`  0x023DA800, 1024 B — **da ratificare**. Il blob dei

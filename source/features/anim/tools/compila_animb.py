@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SGP-1.2-ANIM-B-02 — compila il blob della FASE 2b (`anim_idle2b.c`) per lo
 STESSO blocco VERO della riserva: `sgp.anim`, 1024 B a 0x023D8B00
-(`docs/arm9-reserve-reservations.md`: fine 0x023D8F00, "868 B su 1024").
+(`source/docs/arm9-reserve-reservations.md`: fine 0x023D8F00, "868 B su 1024").
 
 Derivato riga per riga da `compila_anim.py` (fase 2/2a, che RESTA invariato:
 compila ancora `anim_blob2.c`). L'UNICA differenza voluta e' il sorgente
@@ -32,7 +32,7 @@ SORGENTI = Path(__file__).resolve().parent.parent / "sorgenti"
 ENTRATE = ("sgp_idle_task2",)
 FASI = 18
 
-# Blocco `sgp.anim`, riservato in docs/arm9-reserve-reservations.md:
+# Blocco `sgp.anim`, riservato in source/docs/arm9-reserve-reservations.md:
 # 0x023D8B00, 1024 B, fine (esclusa) 0x023D8F00. Layout identico a fase 1b:
 # codice / tabelle / stato / slot; il canarino e' NUOVO qui (dentro il
 # margine del codice, non oltre il blocco: la riserva non lascia spazio dopo).
@@ -173,7 +173,7 @@ def main():
             "base": hex(args.base), "codice": hex(codice), "canarino": hex(canarino),
             "tabelle": hex(tabelle), "stato": hex(stato), "slot": hex(slot),
             "blocco_byte": BLOCCO,
-            "nota": "sgp.anim e' riservato in docs/arm9-reserve-reservations.md "
+            "nota": "sgp.anim e' riservato in source/docs/arm9-reserve-reservations.md "
                     "a 0x023D8B00, 1024 B, fine 0x023D8F00 (il blocco successivo, "
                     "riserva D1, comincia esattamente li': nessuno spazio libero fuori "
                     "dal blocco per un canarino separato, quindi il canarino sta DENTRO, "

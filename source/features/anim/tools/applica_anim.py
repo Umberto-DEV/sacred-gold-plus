@@ -2,7 +2,7 @@
 """APPLICATORE — SGP-1.2-ANIM-B-02 (A1-B fase 2, preparazione).
 
 Scrive il blocco `sgp.anim` (1024 B a 0x023D8B00, riservato in
-`docs/arm9-reserve-reservations.md`, fine 0x023D8F00) e patcha il gancio
+`source/docs/arm9-reserve-reservations.md`, fine 0x023D8F00) e patcha il gancio
 in `ov012` (letterale di 4 B a 0x0226200C, NON un'istruzione: e' il puntatore
 a funzione passato a `CreateSysTask` da `ov12_02261FD4`), USANDO
 `overlay_patch.py` (copia di `SGP-1.2-OVERLAY-01/tools/overlay_patch.py`:
