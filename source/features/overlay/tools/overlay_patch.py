@@ -708,8 +708,20 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
     struct.pack_into("<II", out, fat["offset_voce"], inizio, fine)
     cambiati.append(("voce FAT", fat["offset_voce"], fat["offset_voce"] + 8))
     nuova_parola = (len(corpo) & 0xFFFFFF) | (nuovo_flag << 24)
-    struct.pack_into("<I", out, v["offset_voce"] + 28, nuova_parola)
-    cambiati.append(("voce y9 (dim+flag)", v["offset_voce"] + 28, v["offset_voce"] + 32))
+    if modo != "a-corpo-originale (immagine invariata)":
+        struct.pack_into("<I", out, v["offset_voce"] + 28, nuova_parola)
+        cambiati.append(("voce y9 (dim+flag)", v["offset_voce"] + 28, v["offset_voce"] + 32))
+    # Nel ramo «corpo originale» sopra la parola NON si tocca, nemmeno quando
+    # il valore calcolato (`nuova_parola`) differisce da quello gia' in ROM.
+    # Su un overlay non compresso i 24 bit bassi di questa parola sono la
+    # dimensione compressa: il caricatore li ignora quando il bit «compresso»
+    # e' spento (letto sopra da `v["compresso"]`), quindi puo' restare
+    # qualunque valore lasci l'utensile che ha prodotto la ROM originale — su
+    # ov035 della base 1.1 EN e' 0, non la vera lunghezza. Scriverci la
+    # lunghezza vera comunque non e' scorretto per il gioco, ma rompe la
+    # promessa sopra ("niente e' cambiato: non si tocca un byte"): un giro a
+    # vuoto smetteva di essere identico al byte per un byte che il gioco non
+    # legge mai in questo stato. Trovato da TestFlagCompresso su quell'overlay.
 
     # header: dimensione usata, capienza della cartuccia, CRC
     usato_prima = struct.unpack_from("<I", rom.d, 0x80)[0]

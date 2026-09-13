@@ -293,7 +293,11 @@ class TestT3Ancore(_ImpiantoConROM):
           vede il codice 523DEBE0 002EB570 (guardia camera Classic), presente in tutti
           e quattro i file spediti."""
         if not CHEATS_DIR.is_dir():
-            self.skipTest("cartella dei cheat non trovata: %s" % CHEATS_DIR)
+            self.skipTest("cartella dei cheat non trovata: %s (normale in un checkout "
+                          "pubblico: le release si costruiscono e si impacchettano sulla "
+                          "macchina del manutentore, non in questo repository; per "
+                          "eseguire anche questo test puntare SGP_CHEATS alla cartella "
+                          "scompattata di una release)" % CHEATS_DIR)
         pubblici = [b for b in self.mappa["blocchi"] if b.get("pubblico")]
         self.assertTrue(pubblici, "nessun blocco pubblico dichiarato nella mappa")
         indirizzi_letti = set()

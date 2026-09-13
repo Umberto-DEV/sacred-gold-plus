@@ -350,7 +350,12 @@ class TestFlagCompresso(unittest.TestCase):
         _, _, img = self.rom.immagine_overlay(oid)
         # una patch a vuoto: stessi byte prima e dopo, quindi corpo originale
         pre = bytes(img[:4])
-        out, ric = OP.applica(self.d, oid, [], [{"addr": v["ram"], "pre": pre, "post": pre}],
+        # `applica` esige sempre almeno una guardia, anche con `oid` dato
+        # (`scegli_overlay`, overlay_patch.py: "la guardia DEVE combaciare... in
+        # entrambi i casi"): il contenuto sceglie l'overlay, mai il solo indirizzo.
+        # Gli stessi quattro byte di `pre` servono da guardia, come negli altri test.
+        guardia = [(v["ram"], pre)]
+        out, ric = OP.applica(self.d, oid, guardia, [{"addr": v["ram"], "pre": pre, "post": pre}],
                               strategia="auto")
         dopo = OP.Rom(out).voce_overlay(oid)
         self.assertEqual(ric["strategia"]["usata"], "a-corpo-originale (immagine invariata)")
@@ -364,7 +369,8 @@ class TestFlagCompresso(unittest.TestCase):
         self.assertTrue(v["compresso"])
         _, _, img = self.rom.immagine_overlay(12)
         pre = bytes(img[:4])
-        out, _ = OP.applica(self.d, 12, [], [{"addr": v["ram"], "pre": pre, "post": pre}],
+        guardia = [(v["ram"], pre)]
+        out, _ = OP.applica(self.d, 12, guardia, [{"addr": v["ram"], "pre": pre, "post": pre}],
                             strategia="auto")
         self.assertTrue(OP.Rom(out).voce_overlay(12)["compresso"])
 

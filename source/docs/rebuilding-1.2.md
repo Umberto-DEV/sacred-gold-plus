@@ -52,11 +52,14 @@ variable is not set.
 
 ## 4. Build
 
-Run from `source/`, with the interpreter from your virtual environment:
+`sgp12` is a package inside `source/`, so `python -m sgp12...` needs `source/` as the working
+directory — one level below where step 2 creates `.venv`. Every command below is written
+`cd source &&`, then the venv interpreter as `../.venv/bin/python3`, the same convention
+`source/README.md` uses, so each line can be copied and run from the repository root on its own:
 
 ```sh
-python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.1-EN.nds> --lingua EN
-python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.1-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.1-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.1-IT.nds> --lingua IT
 ```
 
 `--build` selects the folder holding the validated per-block blobs and the ARM9 reserve manifest
@@ -95,7 +98,7 @@ here: it is what makes the verification below meaningful.
 ## 5. Verify
 
 ```sh
-python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --base <base-1.1-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --base <base-1.1-EN.nds> --lingua EN
 ```
 
 `verifica` does three things:
@@ -111,7 +114,9 @@ python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --base <base-1.1-EN.nds> --ling
   block, not against the finished ROM, so `verifica` reconstructs the intermediate stages and
   feeds each reader the right pair.
 - **T1–T5** — the independent ARM9 reserve checks in `source/verifiche/test_riserva.py`, run on
-  the ROM you passed. T1 needs no ROM and always runs.
+  the ROM you passed. T1 needs no ROM and always runs. One of T3's own checks skips on its own,
+  even here, if `SGP_CHEATS` (default `release/<version>/`) is not a folder that exists: it reads
+  the cheat files a release ZIP ships, which are not part of a plain checkout.
 
 ## 6. Regenerating the canonical build blobs
 
@@ -119,8 +124,8 @@ The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.
 recompiled:
 
 ```sh
-python3 -m sgp12.estrai_build --rom <sgp-1.2.1-EN.nds> --lingua EN
-python3 -m sgp12.estrai_build --rom <sgp-1.2.1-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.1-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.1-IT.nds> --lingua IT
 ```
 
 For every block that writes a blob at a fixed address, this reads the exact bytes out of the ROM

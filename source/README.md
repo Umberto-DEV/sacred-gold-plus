@@ -27,6 +27,14 @@ python3 -m venv .venv
 .venv/bin/pip install -r source/requirements.txt
 ```
 
+A C compiler that can target the ARM946E-S: two Class A suites (`native-core`, and the options page — 95 tests on its own) compile our own C sources for `--target=armv5te-none-eabi -mcpu=arm946e-s` and run the result under an ARM946E-S emulator, and rebuilding the options-page payload needs the same compiler (`source/features/options/tools/compila.py`, used the same way by `source/features/native-core/tools/compila_tutti.py`). Apple Clang on macOS and `clang` on Ubuntu both work as-is; check with:
+
+```sh
+clang --target=armv5te-none-eabi -mcpu=arm946e-s -mthumb -ffreestanding -c -x c /dev/null -o /dev/null
+```
+
+Without a usable compiler the affected tests SKIP, with their count kept in the summary and the JSON — not a silent hole, but still a skip, so a first local run can print PASS with those tests unexercised. `SGP_CI=1` (what CI sets; `--richiedi-compilatore` does the same for `run_tests.py`) turns that skip into a failure instead, which is how you reproduce CI's severity locally. A compiler that is present but cannot build the shipped sources is never a skip, there or here: that is a defect and it fails on every machine.
+
 Two inputs stay outside this repository.
 
 **Your game file.** A Sacred Gold Plus 1.1 ROM, English or Italian, in a private folder. Point `SGP_ROM_DIR` at that folder; the tools expect `base-1.1-EN.nds` and `base-1.1-IT.nds` there. Never copy a ROM, save, BIOS or dump into this checkout.
@@ -43,18 +51,18 @@ It is not redistributed here: its licensing was not established to our satisfact
 
 ## Build and check the game
 
-From this folder:
+`sgp12` is a package inside `source/`, so every command below runs `python -m sgp12....`: it needs `source/` as the working directory, which is one level below where "Prepare" creates `.venv`. Every command in this README that touches `sgp12` is written the same way — `cd source &&`, then the venv interpreter as `../.venv/bin/python3` — so it can be copied and run from the repository root without a separate `cd` step to remember:
 
 ```sh
-python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/base-1.1-EN.nds" \
+cd source && ../.venv/bin/python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/base-1.1-EN.nds" \
         --uscita /tmp/sgp-1.2.1-EN.nds --lingua EN
-python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
+cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
         --base "$SGP_ROM_DIR/base-1.1-EN.nds" --lingua EN
 ```
 
 The build is deterministic: the same base gives the same bytes. `verifica` rebuilds the ROM internally from the same base, compares it with the one you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Use `IT` and the Italian base for the other language. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
 
-The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label.
+The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Typhlosion, Rare Candy — thirteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
 
@@ -64,16 +72,15 @@ Class A — no game file, the same set CI runs:
 .venv/bin/python source/run_tests.py         # from the repository root
 ```
 
-Class B — with your own game file:
+Class B — with your own game file (same venv-from-root convention as above: `cd source &&`, then `../.venv/bin/python3`):
 
 ```sh
-cd source
-SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokeheartgold \
-    python3 -m unittest sgp12.test_lib -v
-SGP_ROM_DIR=/path/to/private/roms python3 -m unittest discover -s features/overlay/test -v
-SGP_ROM_DIR=/path/to/private/roms python3 -m unittest discover -s features/caramelle/test -v
-SGP_RISERVA_ROM=/tmp/sgp-1.2.1-EN.nds SGP_RISERVA_COMPLETA=1 \
-    python3 -m unittest verifiche.test_riserva -v
+cd source && SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokeheartgold \
+    ../.venv/bin/python3 -m unittest sgp12.test_lib -v
+cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/overlay/test -v
+cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/caramelle/test -v
+cd source && SGP_RISERVA_ROM=/tmp/sgp-1.2.1-EN.nds SGP_RISERVA_COMPLETA=1 \
+    ../.venv/bin/python3 -m unittest verifiche.test_riserva -v
 ```
 
 `SGP_PRET_SOURCE` is a checkout of `pret/pokeheartgold` at commit
@@ -82,7 +89,12 @@ that file is not redistributed here. Without it the affected tests skip and say 
 
 `SGP_RISERVA_COMPLETA=1` turns "no ROM, so T2–T5 skipped" into a failure. Use it whenever you
 mean to run the reserve register in full: eight skipped tests and eight passing tests print
-almost the same summary. `sgp12/verifica.py` sets it for you.
+almost the same summary. `sgp12/verifica.py` sets it for you. Even in full mode, T3's
+`test_cheat_pubblici_spediti_cadono_in_un_blocco_pubblico` still skips on its own if `SGP_CHEATS`
+(default `release/<version>/`, the cheat files a release ZIP is built from) is not a folder that
+exists: a public checkout normally does not have one, since releases are built and packaged on
+the maintainer's machine. That single skip is expected and does not need `SGP_CHEATS` set; see
+`source/verifiche/test_riserva.py` for what it checks when the folder is there.
 
 The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.1-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
 
