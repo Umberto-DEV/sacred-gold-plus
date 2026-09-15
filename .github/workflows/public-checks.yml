@@ -67,7 +67,10 @@ jobs:
         run: |
           xcodebuild -version
           compiler=$(xcrun --find clang)
+          export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
+          echo "SDKROOT=$SDKROOT" >> "$GITHUB_ENV"
           "$compiler" --version
+          "$compiler" -shared -fPIC -x c /dev/null -o "$RUNNER_TEMP/host-probe.dylib"
           "$compiler" --version | head -n 1 | grep -E '^Apple clang version 21\.0\.0 '
           # Put this selected toolchain ahead of Homebrew for all Python subprocesses.
           dirname "$compiler" >> "$GITHUB_PATH"
