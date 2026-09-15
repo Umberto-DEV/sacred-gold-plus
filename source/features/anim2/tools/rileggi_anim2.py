@@ -21,6 +21,7 @@ BASE, N_BLOCCO = 0x023DB500, 0x800
 OFF_CAN, OFF_TAB, OFF_PAR, OFF_SITI = 0x600, 0x620, 0x640, 0x660
 OFF_STATO, OFF_SLOT = 0x6A0, 0x6E0
 G3, G1, G2, CODA = 0x0225DC8A, 0x0226200C, 0x02262016, 0x02262032
+G4 = 0x0223EBD8
 POST_CODA = bytes.fromhex("206a0421")
 
 
@@ -103,19 +104,21 @@ def rileggi(prima, dopo, build_dir):
         ia, ib = immagine_overlay(prima, ea), immagine_overlay(dopo, eb)
         off = lambda addr: addr - eb["ram"]
         att = {G3: int(man["simboli"]["sgp_avvia_tutti"], 16) & ~1,
-               G2: int(man["simboli"]["sgp_stop_testa"], 16) & ~1}
+               G2: int(man["simboli"]["sgp_stop_testa"], 16) & ~1,
+               G4: int(man["simboli"]["sgp_avvia_cattura"], 16) & ~1}
         ganci_ok = (struct.unpack_from("<I", ib, off(G1))[0] ==
                     int(man["simboli"]["sgp_idle_task5"], 16) and
                     bersaglio_bl(G3, ib[off(G3):off(G3) + 4]) == att[G3] and
                     bersaglio_bl(G2, ib[off(G2):off(G2) + 4]) == att[G2] and
+                    bersaglio_bl(G4, ib[off(G4):off(G4) + 4]) == att[G4] and
                     ib[off(CODA):off(CODA) + 4] == POST_CODA)
-        ck("L6-ganci", ganci_ok, "G3/G1/G2 puntano ai simboli; coda v4 ritirata")
+        ck("L6-ganci", ganci_ok, "G3/G1/G2/G4 puntano ai simboli; coda v4 ritirata")
         diffov = [i for i, (x, y) in enumerate(zip(ia, ib)) if x != y]
         finestre = set()
-        for x in (G3, G1, G2, CODA):
+        for x in (G3, G1, G2, G4, CODA):
             finestre.update(range(off(x), off(x) + 4))
         inattesi = [i for i in diffov if i not in finestre]
-        ck("L6", len(ia) == len(ib) and not inattesi and 1 <= len(diffov) <= 16,
+        ck("L6", len(ia) == len(ib) and not inattesi and 1 <= len(diffov) <= 20,
            "%d byte overlay decompresso diversi; inattesi=%d" % (len(diffov), len(inattesi)))
         # Capienza fisica fino al file successivo nella FAT (l'overlay e'
         # allineato: puo' avere qualche byte oltre la sua fine logica).

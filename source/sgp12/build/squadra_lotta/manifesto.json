@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "base": "0x023dbe00",
+  "blocco_byte": 256,
+  "canarino_offset": 240,
+  "blob": {
+    "byte": 200,
+    "sha256": "a9b56d5ea7fe8df1c9a91b4305b04512d329ac7f7ad51cc74cf24bff399912be"
+  },
+  "canarino": {
+    "byte": 16,
+    "sha256": "9e07534a7975bab52754aef9a42273a335682ab636bdb878d7371f257c9449f8"
+  },
+  "simboli": {
+    "sgp_squadra_attr_cache": "0x23dbe01",
+    "sgp_squadra_attr_hook": "0x23dbeb5",
+    "sgp_squadra_pp_cache": "0x23dbe7d",
+    "sgp_squadra_pp_hook": "0x23dbebf"
+  },
+  "ganci": [
+    {
+      "overlay": 8,
+      "sito": "0x221d3de",
+      "pre": "55f6a5ff",
+      "bersaglio": "sgp_squadra_pp_hook"
+    },
+    {
+      "overlay": 8,
+      "sito": "0x221d3e8",
+      "pre": "55f694ff",
+      "bersaglio": "sgp_squadra_attr_hook"
+    },
+    {
+      "overlay": 8,
+      "sito": "0x221d3f2",
+      "pre": "55f68fff",
+      "bersaglio": "sgp_squadra_attr_hook"
+    },
+    {
+      "overlay": 8,
+      "sito": "0x221d3fc",
+      "pre": "55f68aff",
+      "bersaglio": "sgp_squadra_attr_hook"
+    },
+    {
+      "overlay": 8,
+      "sito": "0x221d406",
+      "pre": "55f685ff",
+      "bersaglio": "sgp_squadra_attr_hook"
+    }
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "opzioni_compilazione": [
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ]
+}

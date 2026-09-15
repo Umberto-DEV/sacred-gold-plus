@@ -58,7 +58,7 @@ def guasta_overlay(rom, addr):
 class MutantiAnim2(unittest.TestCase):
     @unittest.skipUnless(BASE_ROM.is_file() and PATCHED.is_file(),
                          "serve SGP_ROM_BASE e SGP_ROM_ANIM2")
-    def test_tredici_mutanti_tutti_uccisi(self):
+    def test_quattordici_mutanti_tutti_uccisi(self):
         prima = BASE_ROM.read_bytes()
         buona = PATCHED.read_bytes()
         baseline = reader.rileggi(prima, buona, BUILD)
@@ -80,6 +80,7 @@ class MutantiAnim2(unittest.TestCase):
             "gancio_avvio": 0x0225DC8A,
             "gancio_task": 0x0226200C,
             "gancio_stop": 0x02262016,
+            "gancio_cattura": 0x0223EBD8,
             "byte_overlay_estraneo": 0x02262020,
         }
         esiti = []
@@ -95,7 +96,7 @@ class MutantiAnim2(unittest.TestCase):
                 json.dumps({"totale": len(esiti),
                             "uccisi": sum(x["ucciso"] for x in esiti),
                             "esiti": esiti}, indent=2) + "\n")
-        self.assertEqual(13, len(esiti))
+        self.assertEqual(14, len(esiti))
         self.assertTrue(all(x["ucciso"] for x in esiti), esiti)
 
     @unittest.skipUnless(BASE_ROM.is_file() and PATCHED.is_file(),

@@ -528,7 +528,7 @@
       "zona": "1.2",
       "pubblico": false,
       "formato": {
-        "+0x000": "blob Thumb v5, 1438 B su 1536",
+        "+0x000": "blob Thumb v5c, 1532 B su 1536",
         "+0x600": "canarino 0xCA5A1800|i, 16 B",
         "+0x620": "tabella moto, 32 B",
         "+0x640": "parametri, 32 B",
@@ -539,8 +539,8 @@
       "impronte_parziali": [
         {
           "offset": 0,
-          "bytes": 1438,
-          "sha256": "a12e2c233146b8fbfadf10e0cb393dff3ea6494886b36e91ab636b3a98237237"
+          "bytes": 1532,
+          "sha256": "680bb15e1a6f7df08040df686e5fe8fbca835f076d7ea299d11c57912c49b252"
         },
         {
           "offset": 1536,
@@ -555,7 +555,7 @@
         {
           "offset": 1600,
           "bytes": 32,
-          "sha256": "82b572784dfaf963f664d053a1cd85120e39fa5a3e24c1a00fb137975862f10a"
+          "sha256": "8fb0e71dde3e23fff9ff1b892ce55e852c9855a0ba9a12d902337823c7f6f1c2"
         },
         {
           "offset": 1632,
@@ -580,21 +580,117 @@
         {
           "dove": "ov012 0x02262032",
           "nota": "ritiro del gancio di pulizia v4"
+        },
+        {
+          "dove": "ov012 0x0223EBD8",
+          "nota": "fermata prima del task nativo di cattura (Pokédex/soprannome)"
         }
       ],
       "nota": "Usa il bit anim esistente, spento per default. Il blocco v4 resta invariato per ricostruire lo stadio precedente. Il rilettore anim2 verifica i ganci nell overlay compresso, i dati e il padding."
     },
     {
-      "nome": "libero.1.2.finale",
+      "nome": "sgp.borsa_lotta",
       "base": "0x023DBD00",
-      "bytes": 11840,
+      "bytes": 256,
+      "proprietario": "Sacred Gold Plus — cache Borsa in battaglia",
+      "tipo": "codice",
+      "zona": "1.2",
+      "pubblico": false,
+      "puo_essere_ancora_zero": true,
+      "formato": {
+        "+0x000": "blob Thumb stateless, 162 B; cache ItemData gia posseduta dal BattleContext",
+        "+0x0A2..+0x0EF": "margine zero, 78 B",
+        "+0x0F0": "canarino 0xCA5A1900|i, 16 B"
+      },
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 162,
+          "sha256": "859d5fbc13a8014ce44a65edc28badd92049b35e1d3d4003144b4d56ae2974e4"
+        },
+        {
+          "offset": 240,
+          "bytes": 16,
+          "sha256": "6b99c8b860e28e67530367b5c6ea7c77b40b6065715bc60e8231f796068dd9aa"
+        }
+      ],
+      "ancore": [],
+      "ganci_non_verificati_da_T3": [
+        {
+          "dove": "ov008 0x02223C30",
+          "pre": "54f6aaf8",
+          "nota": "BL GetItemAttr -> sgp_borsa_attr_hook; verificato dal rilettore borsa_lotta"
+        }
+      ],
+      "nota": "Opzione anim OFF o contesto/cache non disponibili: getter nativo. Nessuna nuova allocazione o modifica agli oggetti."
+    },
+    {
+      "nome": "sgp.squadra_lotta",
+      "base": "0x023DBE00",
+      "bytes": 256,
+      "proprietario": "Sacred Gold Plus — cache mosse Squadra in battaglia",
+      "tipo": "codice",
+      "zona": "1.2",
+      "pubblico": false,
+      "puo_essere_ancora_zero": true,
+      "formato": {
+        "+0x000": "blob Thumb stateless, 200 B; MoveTbl posseduta dal BattleContext",
+        "+0x0C8..+0x0EF": "margine zero, 40 B",
+        "+0x0F0": "canarino 0xCA5A1A00|i, 16 B"
+      },
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 200,
+          "sha256": "a9b56d5ea7fe8df1c9a91b4305b04512d329ac7f7ad51cc74cf24bff399912be"
+        },
+        {
+          "offset": 240,
+          "bytes": 16,
+          "sha256": "9e07534a7975bab52754aef9a42273a335682ab636bdb878d7371f257c9449f8"
+        }
+      ],
+      "ancore": [],
+      "ganci_non_verificati_da_T3": [
+        {
+          "dove": "ov008 0x221d3de",
+          "pre": "55f6a5ff",
+          "nota": "BL verso sgp_squadra_pp_hook; verificato dal rilettore squadra_lotta"
+        },
+        {
+          "dove": "ov008 0x221d3e8",
+          "pre": "55f694ff",
+          "nota": "BL verso sgp_squadra_attr_hook; verificato dal rilettore squadra_lotta"
+        },
+        {
+          "dove": "ov008 0x221d3f2",
+          "pre": "55f68fff",
+          "nota": "BL verso sgp_squadra_attr_hook; verificato dal rilettore squadra_lotta"
+        },
+        {
+          "dove": "ov008 0x221d3fc",
+          "pre": "55f68aff",
+          "nota": "BL verso sgp_squadra_attr_hook; verificato dal rilettore squadra_lotta"
+        },
+        {
+          "dove": "ov008 0x221d406",
+          "pre": "55f685ff",
+          "nota": "BL verso sgp_squadra_attr_hook; verificato dal rilettore squadra_lotta"
+        }
+      ],
+      "nota": "Cinque getter mosse della scansione Squadra; opzione OFF e contesto assente mantengono il getter nativo. Nessuna allocazione o stato persistente."
+    },
+    {
+      "nome": "libero.1.2.finale",
+      "base": "0x023DEB00",
+      "bytes": 64,
       "proprietario": "(nessuno)",
       "tipo": "libero",
       "zona": "1.2",
       "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "nota": "Libero fino al canarino 1.1 a 0x023DEB40; sottratti 2048 B per sgp.borsa e 2048 B per sgp.anim2 nella 1.2.1.",
+      "nota": "Residuo dopo capacità Borsa 1.2.1.",
       "assegnabile": true
     },
     {
@@ -903,6 +999,24 @@
         }
       ],
       "patch_overlay_nota": "T3 di test_riserva.py verifica solo puntatori a 4 byte con 'dove' esadecimale dentro arm9/autoload: questi sono letterali dentro un overlay compresso (ov012), stessa ragione di sgp.npc/sgp.plus. Verifica vera: rilettore L1/S2 (bersagli) e L6/S3 (unico cambio nell'overlay decompresso, a parte i due ganci)."
+    },
+    {
+      "nome": "sgp.capacita_borsa",
+      "base": "0x023DBF00",
+      "bytes": 11264,
+      "proprietario": "source/features/capacita-borsa",
+      "tipo": "codice e stato",
+      "zona": "1.2",
+      "pubblico": true,
+      "impronte_parziali": [
+        {
+          "offset": 0,
+          "bytes": 3184,
+          "sha256": "1aa3236b6a2d6980c424cbc1d938a9454e71ee960ce954f11027ad1bdd9ab499"
+        }
+      ],
+      "ancore": [],
+      "nota": "Codice Thumb da sorgente; stato a +0x1800 (Borsa594 slot, mirror nativo e journal). Salvataggio nativo1948 byte invariato; estensione nei settori48/112."
     }
   ],
   "via_di_espansione": [

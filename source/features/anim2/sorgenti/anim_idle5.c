@@ -1,14 +1,6 @@
-/* Sacred Gold Plus 1.2.1 — `sgp.anim2` **v5**: il task del moto di attesa su
- * tutti i lottatori, la politica di fermata per `lr` e la sospensione durante
- * l'animazione della mossa. GPL-3.0-or-later.
- *
- * Discende riga per riga da `source/features/anim/sorgenti/anim_idle4.c`. Le
- * differenze, e il perché di ciascuna, stanno in cima a `sgp_anim5.h`
- * (A1 avvio su tutti, A2 politica per `lr`, A3 sospensione).
- *
- * Il ciclo di vita del moto resta **del gioco**: `ov12_02261FD4` avvia,
- * `ov12_02262014` ferma. La v5 non lo reinventa — cambia solo *quanti*
- * lottatori vengono avviati e *quando* la fermata avviene davvero.
+/* Sacred Gold Plus — ANIM2 v5c. GPL-3.0-or-later.
+ * Clock di attesa, HUD fermo, continuita' menu e isolamento delle animazioni
+ * native. Ciclo di vita e layout sono documentati in sgp_anim5.h.
  */
 #include "sgp_anim5.h"
 
@@ -57,21 +49,11 @@ static u32 par16(u32 off)
     return (u32)SGP_PAR[off] | ((u32)SGP_PAR[off + 1u] << 8);
 }
 
-/* deg e' sempre uno dei 18 multipli di 20 in [0,340]: (deg*205)>>12 e'
- * esattamente deg/20 su quell'insieme, e non costa una divisione. */
-static u32 fase_da_gradi(u32 deg)
-{
-    u32 idx = (deg * 205u) >> 12;
-    if (idx >= (u32)SGP_FASI) {
-        idx = (u32)SGP_FASI - 1u;
-    }
-    return idx;
-}
-
-/* Arrotondamento al piu' vicino di (u * k / 16) con u in [-16,16]. */
+/* Tavola [-16,16] interpolata in ottavi e inviluppo [0,16].
+ * Mantiene la precisione fino all'ultimo arrotondamento al pixel/scala. */
 static s32 scala_unita(s32 u, s32 k)
 {
-    return (u * k + 8) >> 4;
+    return (u * k + 1024) >> 11;
 }
 
 /* La scala affine e' un canale conteso (99 siti la scrivono): ci si permette
@@ -143,6 +125,7 @@ static SgpAnim5Slot *slot_per(SgpAnim5State *st, u32 od, u32 pic, u32 *indice)
         ((u32 *)s)[4] = 0x01000000u; /* usato = 1 */
         ((u32 *)s)[5] = 0u;          /* idx = 0, sospeso = 0 */
         s->idx = (u8)indice_lottatore(st->bs, od);
+        s->blink_wait = SGP_PAR[PAR_BLINK_MIN];
     }
     return s;
 }
@@ -246,7 +229,9 @@ void sgp_pulisci(void *data)
         if (s->od != (u32)data) {
             continue;
         }
-        if (s->pic != 0u) {
+        if (s->pic != 0u && s->pic == *(volatile u32 *)((u8 *)data + OD_POKEPIC)
+            && (*(volatile u8 *)s->pic & 1u) != 0u
+            && s->sospeso == 0u) {
             riposo(s, (u8 *)s->pic);
         }
         w = (u32 *)s;
@@ -278,6 +263,7 @@ void sgp_avvia_tutti(void *data, void *bs)
     if (abilitato() == 0u) {
         return;
     }
+    ((FermaFn)SGP_FERMA_HUD)((u8 *)data + OD_HPBAR);
     n = nlott(b);
     st->maxbatt = (u8)n;
     for (i = 0; i < n; i++) {
@@ -292,9 +278,8 @@ void sgp_avvia_tutti(void *data, void *bs)
     }
 }
 
-/* Ripete la fermata sugli ALTRI lottatori. `st->dentro` impedisce la
- * ricorsione: la chiamata annidata attraversa la trampolina, vede il flag e si
- * limita a ripulire la sua voce e proseguire. */
+/* Ferma tutti prima della cattura, mentre tutti gli OpponentData sono vivi.
+ * Non viene chiamata dai destructor. `dentro` resta un indicatore di debug. */
 static void estendi(void *data)
 {
     SgpAnim5State *st = SGP_STATO5;
@@ -314,6 +299,19 @@ static void estendi(void *data)
         st->estesi = st->estesi + 1u;
     }
     st->dentro = 0u;
+}
+
+/* G4: il task di cattura riusa i Pokepic per Pokédex e soprannome.
+ * Ferma tutti PRIMA di schedularlo; una cattura fallita torna all'avvio
+ * normale del menu. getterWork è condiviso con EXP: non è un segnale. */
+void *sgp_avvia_cattura(TaskFn fn, void *data, u32 priorita)
+{
+    typedef void *(*CreaFn)(TaskFn, void *, u32);
+    if (abilitato() != 0u) {
+        SGP_STATO5->bs = *(u32 *)data;
+        estendi(0);
+    }
+    return ((CreaFn)SGP_CREA_TASK)(fn, data, priorita);
 }
 
 /* ------------------------------------------------------------------------
@@ -337,7 +335,7 @@ u32 sgp_stop_politica(void *data, u32 lr)
         }
     }
     st->ultimo_sito = (u8)(i < (u32)SGP_N_SITI ? i : 0xFFu);
-    if (i < (u32)SGP_N_SITI && st->dentro == 0u) {
+    if (i < (u32)SGP_N_SITI) {
         m = par16((u32)PAR_SOPPRIMI);
         if (((m >> i) & 1u) != 0u) {
             st->soppressi = st->soppressi + 1u;
@@ -345,15 +343,8 @@ u32 sgp_stop_politica(void *data, u32 lr)
         }
     }
     sgp_pulisci(data);
-    if (st->dentro != 0u) {
-        return 0u; /* chiamata annidata dall'estensione: niente altra estensione */
-    }
-    if (i < (u32)SGP_N_SITI) {
-        m = par16((u32)PAR_ESTENDI);
-        if (((m >> i) & 1u) != 0u) {
-            estendi(data);
-        }
-    }
+    /* Ogni destructor ferma il proprio task. Non visitare gli altri od:
+     * il teardown nativo può averli già liberati. */
     return 0u;
 }
 
@@ -402,7 +393,7 @@ void sgp_idle_task5(void *task, void *data)
     SgpAnim5Slot *s;
     u8 *od = (u8 *)data;
     u8 *pic;
-    u32 deg, idx, cls, slot, g;
+    u32 fase, idx, prossimo, cls, slot, g;
     s32 u, y;
     u8 flags;
 
@@ -418,7 +409,8 @@ void sgp_idle_task5(void *task, void *data)
     }
 
     pic = *(u8 **)(od + OD_POKEPIC);
-    if (pic == 0) {
+    if (pic == 0 || (*(volatile u8 *)pic & 1u) == 0u) {
+        sgp_pulisci(data); /* niente ripristino su una pic inattiva */
         return;
     }
 
@@ -429,12 +421,17 @@ void sgp_idle_task5(void *task, void *data)
      *    scrive yOffset: dopo il primo riposo nessun codice di moto deve
      *    toccare il Pokepic finche' i cancelli non cadono tutti. */
     g = cancelli_alzati(st, s, pic);
+    if (scala_nostra(pic) == 0u || (*(volatile u16 *)(pic + 0x54) & 0x0803u) != 0u) {
+        /* hasVanished, ritaglio (KO) o dontDraw: precedono il riuso. */
+        g |= SGP_G_SCALA;
+    }
     st->cancelli = (u8)g;
     if (g != 0u) {
         st->hits_busy = st->hits_busy + 1u;
         if (s->sospeso == 0u) {
             riposo(s, pic);
             s->sospeso = 1u;
+            s->inviluppo = 0u;
             st->last_y = 0;
             st->sospensioni = st->sospensioni + 1u;
         }
@@ -442,12 +439,14 @@ void sgp_idle_task5(void *task, void *data)
     }
     s->sospeso = 0u;
 
-    /* 2. Fuori dalle animazioni il task vanilla avanza `degrees` e scrive il
-     * rimbalzo +-1 px; subito dopo la v5 usa quella stessa fase. */
-    ((TaskFn)SGP_VANILLA_TASK)(task, data);
-
-    deg = (u32)(*(volatile u16 *)(od + OD_DEGREES));
-    idx = fase_da_gradi(deg);
+    /* Orologio privato: aggiorna ogni tick, interpolando la tavola, senza
+     * richiamare il rimbalzo vanilla o rallentare il resto del gioco. */
+    fase = (u32)s->fase + (u32)SGP_PAR[PAR_PASSO];
+    if (fase >= (u32)SGP_FASI * 8u) {
+        fase -= (u32)SGP_FASI * 8u;
+    }
+    s->fase = (u8)fase;
+    idx = fase >> 3;
     if ((flags & SGP_F_FASE) != 0u) { /* idea 2: i lottatori non all'unisono */
         idx += (u32)SGP_PAR[PAR_FASE + slot];
         if (idx >= (u32)SGP_FASI) {
@@ -463,7 +462,15 @@ void sgp_idle_task5(void *task, void *data)
               : 1u;
     st->last_cls = (u8)cls;
 
-    u = (s32)SGP_TAB_U[idx];
+    prossimo = idx + 1u;
+    if (prossimo == (u32)SGP_FASI) {
+        prossimo = 0u;
+    }
+    if (s->inviluppo < 16u) {
+        s->inviluppo++;
+    }
+    u = ((s32)SGP_TAB_U[idx] * (s32)(8u - (fase & 7u))
+         + (s32)SGP_TAB_U[prossimo] * (s32)(fase & 7u)) * (s32)s->inviluppo;
     y = scala_unita(u, (s32)SGP_PAR[PAR_AMP + cls]);
 
     /* 3a. Respiro verticale. */
@@ -486,7 +493,7 @@ void sgp_idle_task5(void *task, void *data)
         }
     }
 
-    /* 3b. Battito di ciglia con la posa B (idea 3). */
+    /* 3b. Accento con la posa B. Non tutte le specie vi chiudono gli occhi. */
     if ((flags & SGP_F_POSA) != 0u) {
         u32 p;
         if (s->blink_left != 0u) {

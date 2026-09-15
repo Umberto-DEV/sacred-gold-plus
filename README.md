@@ -17,16 +17,14 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
 | ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
 
-## What's new in 1.2.1
+## What's new in 1.2.1 — updated 15 September 2026
 
-- **A full item stack no longer blocks a free gift or pickup.** The existing quantity cap stays in place; excess items are discarded and a message names the item that could not be kept. Purchases, exchanges, mail and key items keep their original checks.
-- **Optional battle motion extends to both sides and the Bag and party menus.** Motion pauses during move animations. The setting remains off by default; loading transitions can still pause the whole battle display.
-- **The cheat catalogue is reordered and grown**: 67 folders and 2113 codes, the wild-encounter family included, and an instruction on every code that needs a button.
-- **A Rare Candy no longer closes the party menu.** Use one and the menu stays open on the same Pokémon, ready for the next. It closes exactly as before when the game has something of its own to do: an evolution, a move to replace, or the last candy in the bag.
-- **Turning NPC smoothing off takes effect immediately**, instead of at the next map change.
-- **The options page stops offering settings that would not stick.** With a missing or rejected save block all five entries are shown as unavailable, not just the two difficulty ones.
-- **Cheat files from 1.2 keep working** and **1.2 saves open in 1.2.1** (and the other way round). The game header did not change.
-- The screen shown at Continue now reads "Sacred Gold Plus 1.2.1".
+- **42 full pages in the main Bag pocket:** 252 slots. All eight pockets have capacities divisible by six: items 252, medicine 42, Balls 30, TM/HM 102, berries 66, mail 12, battle items 30 and key items 60.
+- **Smoother optional battle motion.** Interpolated movement and corrected cleanup; shorter Bag and party loading pauses. In the tested EN/IT battles, Bag opening drops from 55 to 7 frames and party opening from 33 to 20. Brief loading pauses remain.
+- **Search all 493 wild Pokémon and choose a level from 1 to 100** with this project's [melonDS Android 2.1.1 build](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1). Leave the code enabled and press **L+R** to toggle it in game; it starts off. The selector works in grass with Wild levels off.
+- **Corrected male/female + nature cheats**, including Cute Charm. The catalogue contains 2,110 codes in 67 folders; the obsolete clean-ROM overlay patch was removed. Maximum-IV and manual species/level choices remain available. [Validation scope](source/docs/cheat-catalogue-validation.md).
+- Free gifts and pickups no longer block progress at a full item stack. Rare Candies can be used consecutively from the party menu. NPC smoothing changes take effect immediately and unavailable save options cannot be changed.
+- Existing saves import into the expanded Bag. **Older ROMs cannot access its extra slots; saving in an older ROM prevents automatic recovery of those slots.** Update using the game's normal save, not an old emulator savestate.
 
 ## What's new (1.04 → 1.2)
 
@@ -57,7 +55,7 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 - An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04 or 1.1** ROM (any camera) — you must obtain this yourself.
 - A DS patching tool: a desktop program, an Android app, or a browser page (all free; links are in the package guide).
-- An emulator or a flashcart. **[melonDS](https://melonds.kuribo64.net/) for Android, version 2.1 or newer, is recommended.**
+- An emulator or a flashcart. The searchable picker and L+R toggle require [this fork’s melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1).
 
 ## Install
 
@@ -67,8 +65,8 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 ## Compatibility
 
-- **Saves:** a 1.2 save opens in 1.2.1 and a 1.2.1 save opens in 1.2 — the save format did not change. A 1.1 save also opens in 1.2, and a 1.2 save in 1.1.
-- **Cheats:** cheat files from **1.2 keep working** in 1.2.1: the game header is unchanged. Importing the ones in the package is still worth it, because the catalogue is reordered and much larger. Cheat files from **1.1** do not carry over, because 1.2 changed the game header. Every code ships switched off.
+- **Saves:** existing 1.1/1.2/earlier 1.2.1 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
+- **Cheats:** the game header is unchanged from 1.2, but import the updated catalogue to get the corrected codes. 1.1 catalogues have a different header. Every supplied code starts disabled.
 
 ## Source code and contributing
 
@@ -97,19 +95,19 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
-**Novità della 1.2.1:** il catalogo dei cheat è riordinato e cresciuto a 2113 codici in 67 cartelle, con la famiglia degli incontri selvatici. La schermata al Continua dice «Sacred Gold Plus 1.2.1». **Le Caramelle Rare si usano una dopo l'altra**: il menu squadra resta aperto sullo stesso Pokémon, e si chiude come prima solo quando il gioco ha qualcosa di suo da fare (un'evoluzione, una mossa da sostituire, l'ultima caramella). Spegnere la fluidità dei personaggi dalla pagina Opzioni ha effetto subito, non al prossimo cambio mappa; e con un salvataggio senza il blocco Sacred Gold Plus, o con il blocco rifiutato, tutte e cinque le voci della pagina si mostrano non disponibili invece di lasciarsi cambiare a vuoto.
+**Novità della 1.2.1 — aggiornamento del 15 settembre 2026:** borsa principale da **252 slot, 42 pagine complete**. Tutte le tasche hanno capienza multipla di sei: strumenti 252, medicine 42, Ball 30, MT/MN 102, bacche 66, posta 12, strumenti lotta 30, strumenti base 60. Animazioni opzionali di lotta più fluide, con aperture di Borsa e Squadra più rapide; restano brevi pause di caricamento.
 
-**Borsa piena e animazioni nella 1.2.1:** i doni gratuiti e gli oggetti raccolti non bloccano più la progressione quando la quantità è al tetto: il limite resta, l'eccedenza viene scartata e il messaggio nomina l'oggetto. Acquisti, scambi, Posta e strumenti chiave mantengono i controlli originali. Il moto opzionale copre entrambi i lati della lotta e resta attivo nei menu Borsa e Squadra; si sospende durante le mosse. I caricamenti possono ancora fermare l'intero disegno della lotta.
+**Selvatici:** nel [melonDS Android 2.1.1 di questo progetto](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1) scegli fra tutti i **493 Pokémon** con ricerca e imposti il livello **1–100**. Lascia il codice abilitato: in gioco parte spento, **L+R** lo attiva e una nuova pressione lo spegne. Vale per l'erba alta con Livelli selvatici OFF. Corretti anche i codici maschio/femmina + natura. Catalogo aggiornato: **2.110 codici in 67 cartelle**, con [rapporto di verifica](source/docs/cheat-catalogue-validation.md).
 
 **Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
 **Download:** dalla [release 1.2.1](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), `Sacred-Gold-Plus-1.2.1-IT.zip` o `-US.zip`.
 
-**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); melonDS per Android 2.1 o successivo consigliato.
+**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
 
 **Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
 
-**Compatibilità:** i salvataggi 1.2↔1.2.1 sono intercambiabili (il formato non cambia), e così quelli 1.1↔1.2; **i cheat della 1.2 continuano a funzionare sulla 1.2.1**, perché l'intestazione del gioco non cambia — vale comunque la pena importare quelli del pacchetto, che sono riordinati e molto più numerosi. I cheat della 1.1 restano inutilizzabili, come nella 1.2. Tutti i codici sono spenti di default.
+**Compatibilità:** i salvataggi esistenti vengono importati. Gli slot aggiuntivi della Borsa usano un’estensione del salvataggio: tornando a una ROM vecchia, gli oggetti negli slot extra non sono disponibili; salvando con quella ROM non si recuperano automaticamente al ritorno. Carica il salvataggio normale del gioco, non un savestate precedente. L’intestazione è invariata dalla 1.2, ma importa il catalogo aggiornato per le correzioni. Tutti i codici sono spenti di default.
 
 **Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il tronco di sviluppo; si lavora su un branch e si apre una pull request; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub.
 

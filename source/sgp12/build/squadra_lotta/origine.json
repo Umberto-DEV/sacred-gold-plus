@@ -1,0 +1,7 @@
+{
+  "metodo": "compilazione da sorgenti; nessuna estrazione ROM",
+  "sorgenti": {
+    "source/features/squadra-lotta/sorgenti/squadra_cache.c": "dc0abee488222a1f8119bf02a5c2cc19726f3746e6ef6a2ec5c834132a43a755",
+    "source/features/squadra-lotta/tools/compila.py": "485487ad9b227d342eacc74df4e0560cf93b57e1396ce46d17cd138c58b3763a"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "base": "0x23dbf00",
+  "blocco_byte": 11264,
+  "stato": "0x23dd700",
+  "blob": {
+    "byte": 3184,
+    "sha256": "1aa3236b6a2d6980c424cbc1d938a9454e71ee960ce954f11027ad1bdd9ab499"
+  },
+  "simboli": {
+    "sgp_cap_get": "0x23dc649",
+    "sgp_cap_init": "0x23dc7d1",
+    "sgp_cap_new": "0x23dc7f1",
+    "sgp_cap_copy": "0x23dc80d",
+    "sgp_cap_registered1": "0x23dc859",
+    "sgp_cap_registered2": "0x23dc869",
+    "sgp_cap_register": "0x23dc879",
+    "sgp_cap_unregister": "0x23dc8ad",
+    "sgp_cap_pocket": "0x23dc8d5",
+    "sgp_cap_not_empty": "0x23dc909",
+    "sgp_cap_view": "0x23dc93d",
+    "sgp_cap_slot": "0x23dc989",
+    "sgp_cap_move": "0x23dc9b1",
+    "sgp_cap_load": "0x23dc9d9",
+    "sgp_cap_save": "0x23dca0d",
+    "sgp_cap_original_load": "0x23dca01",
+    "sgp_cap_original_save": "0x23dcb59"
+  },
+  "capacita": [
+    252,
+    42,
+    30,
+    102,
+    66,
+    12,
+    30,
+    60
+  ],
+  "settori": [
+    48,
+    112
+  ],
+  "formato_estensione": 1,
+  "opzioni_compilazione": [
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+}

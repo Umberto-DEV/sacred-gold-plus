@@ -1,0 +1,7 @@
+{
+  "metodo": "compilazione da sorgenti; nessuna estrazione ROM",
+  "sorgenti": {
+    "source/features/borsa-lotta/sorgenti/borsa_cache.c": "0efba6184a990ede71cb4ed3a7f999d47fc2f8b41c9a580c486fd102537f59fd",
+    "source/features/borsa-lotta/tools/compila.py": "f35361e9d2f9f18fcf5b06455936f757b352cb42f5c6c97f7834779b639ca4ba"
+  }
+}

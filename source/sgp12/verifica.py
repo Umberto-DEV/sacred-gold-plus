@@ -34,7 +34,7 @@ from pathlib import Path
 from .rom import sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
-                      opzioni, wifi, titolo, guida, caramelle, borsa, anim2)
+                      opzioni, wifi, titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
 
 SOURCE = Path(__file__).resolve().parents[1]
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
@@ -42,7 +42,7 @@ TEST_RISERVA = SOURCE / "verifiche/test_riserva.py"
 
 
 ORDINE_STADI = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim", "opzioni",
-                "wifi", "titolo", "credito", "guida", "caramelle", "borsa", "anim2")
+                "wifi", "titolo", "credito", "guida", "caramelle", "borsa", "anim2", "borsa_lotta", "squadra_lotta", "capacita_borsa")
 
 
 def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> dict:
@@ -113,6 +113,15 @@ def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> 
     stadio("anim2", lambda r: _con(anim2.applica(r, build_dir / "anim2",
                                                  manifest_path=manifest),
                                    lambda d: anim2.rileggi(r, d, build_dir / "anim2")))
+    stadio("borsa_lotta", lambda r: _con(borsa_lotta.applica(r, build_dir / "borsa_lotta",
+                                                            manifest_path=manifest),
+                                        lambda d: borsa_lotta.rileggi(r, d, build_dir / "borsa_lotta")))
+    stadio("squadra_lotta", lambda r: _con(squadra_lotta.applica(r, build_dir / "squadra_lotta",
+                                                            manifest_path=manifest),
+                                        lambda d: squadra_lotta.rileggi(r, d, build_dir / "squadra_lotta")))
+    stadio("capacita_borsa", lambda r: _con(capacita_borsa.applica(r, build_dir / "capacita_borsa",
+                                                            manifest_path=manifest),
+                                        lambda d: capacita_borsa.rileggi(r, d, build_dir / "capacita_borsa")))
     return out
 
 

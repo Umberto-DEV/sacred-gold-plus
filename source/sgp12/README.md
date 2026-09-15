@@ -48,8 +48,8 @@ dell'originale applicando una patch reale sulla ROM base vera.
 ## 2. I blocchi (`blocchi/`) — pianta DEFINITIVA (13/09/2026)
 
 Ordine di costruzione: **riserva → camera → plus+chunk → testi → npc → anim
-→ opzioni → wifi → titolo → credito → guida → caramelle → borsa → anim2**.
-Quattordici blocchi. `borsa` compone ripristino dei premi, messaggio, appendici
+→ opzioni → wifi → titolo → credito → guida → caramelle → borsa → anim2 → borsa_lotta → squadra_lotta → capacita_borsa**.
+Quindici blocchi. `borsa` compone ripristino dei premi, messaggio, appendici
 e ganci ARM9: le chiavi dei siti si calcolano dopo le appendici. `anim2`
 aggiorna i ganci di lotta dopo il blocco `anim` originale, che resta in riserva.
 
@@ -68,6 +68,9 @@ aggiorna i ganci di lotta dopo il blocco `anim` originale, che resta in riserva.
 | `caramelle.py` | **nuovo** (1.2.1, da SGP-1.2-CARAMELLE-01): `applica`+`rileggi` propri, e il `rileggi` è di un'ALTRA famiglia (vista sull'ARM9 scritta a mano con `struct`, BL decodificata con capstone, ogni indirizzo ridichiarato). Dopo l'uso di una Caramella Rara dal menu squadra si RESTA nel menu, salvo che ci sia un'evoluzione in coda: in quel caso si esce come il vanilla. Nove cancelli in scrittura (G0 idempotenza, G2 zona, G3 preimmagini, G4 motivo unico nell'ARM9 statico, G5 invarianti della 1.1, G6/G7/G8 controlli positivi e conteggio) | `sgp.caramelle` 256 B a 0x023DAC00: blob Thumb 192 B (+0x000, su 240) + canarino `0xCA5A1600|i` (+0x0F0); **più** 6 B nell'ARM9 statico a 0x02081E96 (BL + `pop {r3,r4,r5,pc}`) | `caramelle/{manifesto.json,blob.bin,canarino.bin,origine.json}` — **compilato**, non estratto: la 1.2.1 è la prima ROM in cui questi byte esistono |
 | `borsa.py` | Doni gratuiti e raccolte al tetto, messaggio con nome; acquisti e scambi invariati. Quattro sottorilettori indipendenti. | `sgp.borsa`, 2048 B a `0x023DAD00`, più due voci della tabella comandi e modifiche mirate agli script/testi | `borsa/`: blob e canarino compilati dai sorgenti |
 | `anim2.py` | Moto v5 sui lottatori, continuo nei menu e sospeso durante le mosse; spento per default | `sgp.anim2`, 2048 B a `0x023DB500`, più quattro finestre in ov012 | `anim2/`: codice, tavola, parametri, siti e canarino |
+| `borsa_lotta.py` | Riusa la cache ItemData della battaglia durante la costruzione della Borsa; OFF segue il getter originale | `sgp.borsa_lotta`, 256 B a `0x023DBD00`, un BL in ov008 | `borsa_lotta/`: codice e canarino, senza dati o immagini di gioco |
+| `squadra_lotta.py` | Riusa la MoveTbl della battaglia nella scansione Squadra; OFF conserva i getter originali | `sgp.squadra_lotta`, 256 B a `0x023DBE00`, cinque BL in ov008 | `squadra_lotta/`: codice e canarino; [misure e limiti](../features/squadra-lotta/README.md) |
+| `capacita_borsa.py` | Tasca principale 252 slot e pagine complete in tutte le tasche; estensione save associata alla generazione nativa | `sgp.capacita_borsa`, 11264 B a `0x023DBF00`; stato a `0x023DD700`, 15 hook ARM9 e layout ov015 | `capacita_borsa/`: codice compilato e provenienza; [contratto e prove](../features/capacita-borsa/README.md) |
 
 **Cantieri scartati per duplicazione letterale** (stesso `shasum`, non solo
 "stessa idea"): NPC-03 ≡ NPC-02, ANIM-B-03 ≡ ANIM-B-02, WIFI-05 ≡ WIFI-04

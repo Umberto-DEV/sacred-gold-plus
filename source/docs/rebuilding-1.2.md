@@ -68,7 +68,7 @@ after each block, which is what the step-by-step readers consume.
 
 ### The block order
 
-The builder applies fourteen blocks, always in this order:
+The builder applies seventeen blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -83,7 +83,10 @@ The builder applies fourteen blocks, always in this order:
 11. **guide** — turns the automatic EV/IV guide label off
 12. **rare candy** — the Rare Candy stays in the party menu after use
 13. **capped gifts** — restores the old reward paths, adds the named-item warning and its script calls, then builds the permissive site table and installs the ARM9 hooks
-14. **continuous battle motion** — updates the battle hooks for both sides and pauses motion during moves
+14. **continuous battle motion** — v5c slows the idle cycle to 0.375×, keeps the statistics panels still, preserves motion through menu selections, and stops it before capture or during native animations. See the [measured audit](../features/anim2/AUDIT-2026-09-14.md).
+15. **battle Bag cache** — reuses the ItemData already loaded by the battle, avoiding repeated file reads while building the Bag list. Animation OFF and unavailable cache use the native getter. See the [implementation and validation](../features/borsa-lotta/README.md).
+16. **battle party move cache** — reuses the battle MoveTbl while preparing the party menu. The measured opening pause falls from 33 to 20 frames with animations ON; OFF retains the native getters. See the [implementation and validation](../features/squadra-lotta/README.md).
+17. **expanded Bag capacity** — 252 main-pocket slots and complete six-cell pages in every pocket, with a generation-bound save extension. See the [save contract and tests](../features/capacita-borsa/README.md).
 
 The order matters: later blocks read the reserve map the first block wrote, and blocks that
 patch the same overlay run in a declared sequence, the second applier working on the ROM the

@@ -25,6 +25,9 @@ Sottocomandi:
             riga di tempo
     fasi    la corsa E1/E2/E3: MENU, BORSA, SQUADRA, LISTA MOSSE, MOSSA, con
             `--fotogrammi` scatti consecutivi per fase (misura dei pixel vivi)
+    borsa   MENU, BORSA, tasca Poke Ball, pannello del primo oggetto, ritorno
+            alla lotta; non usa l'oggetto. Per misurare due cicli a 0.25x
+            usare almeno --fotogrammi 300.
     turni   due turni completi, per vedere se il moto **riparte** al secondo
             turno (`start_effettivi >= 2`)
     finale  lotta portata fino alla fine, per far scattare i siti di
@@ -62,6 +65,9 @@ SI = (64, 130)           # menu Si/No: «SI» a sinistra
 NO = (192, 130)          # menu Si/No: «NO» a destra
 SQUADRA_2A = (190, 60)   # secondo riquadro della lista squadra (colonna destra)
 SQUADRA_MANDA = (128, 110)  # «SHIFT / CAMBIA» nel pannello del Pokemon scelto
+TASCA_BALL = (192, 50)
+OGGETTO_1 = (128, 45)
+BORSA_INDIETRO = (238, 165)
 
 # --- indirizzi osservati dal banco (blocco v5, cfr. sonda_fasi.py) --------
 HITS = 0x023DBBA4
@@ -173,6 +179,17 @@ def corsa_fasi(a):
     return "".join(s)
 
 
+def corsa_borsa(a):
+    """Sottomenu reali della Borsa: osserva senza consumare oggetti."""
+    n = a.fotogrammi
+    return (watch() + prologo(a) + seq("m", n) +
+            tocca(BORSA, 160, "10-borsa.ppm") + seq("b", n) +
+            tocca(TASCA_BALL, 120, "20-tasca.ppm") + seq("t", n) +
+            tocca(OGGETTO_1, 120, "30-oggetto.ppm") + seq("o", n) +
+            tocca(BORSA_INDIETRO, 120) * 3 + "capture 60-lotta.ppm\n" +
+            "status\nquit\n")
+
+
 def corsa_turni(a):
     """Due turni: menu -> mossa -> attesa -> menu -> mossa. Si guarda se il
     moto riparte al secondo turno (`start_effettivi >= 2`)."""
@@ -267,7 +284,7 @@ def corsa_siti(a):
 
 CORSE = {"menu": corsa_menu, "fasi": corsa_fasi, "turni": corsa_turni,
          "finale": corsa_finale, "sino": corsa_sino, "siti": corsa_siti,
-         "cambio": corsa_cambio}
+         "cambio": corsa_cambio, "borsa": corsa_borsa}
 
 
 def main():

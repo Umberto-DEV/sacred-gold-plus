@@ -117,7 +117,12 @@ Zone 1.2 (`0x023D8000` upward):
 | `0x023DA000` | 2 048 | `sgp.wifi` | Wi-Fi per-service slot; 704 B used | no |
 | `0x023DA800` | 1 024 | `sgp.opzioni.testi` | EN/IT text for the Options page (882 B EN, 940 B IT) | no |
 | `0x023DAC00` | 256 | `sgp.caramelle` | Rare Candy stays in the party menu; blob 192 B plus a canary at `+0x0F0`. Also owns 6 bytes of static ARM9 at `0x02081E96` | no |
-| `0x023DAD00` | 15 936 | `libero.1.2.finale` | free | no |
+| `0x023DAD00` | 2 048 | `sgp.borsa` | full-stack gifts and pickups | no |
+| `0x023DB500` | 2 048 | `sgp.anim2` | optional battle motion | no |
+| `0x023DBD00` | 256 | `sgp.borsa_lotta` | battle item cache getter | no |
+| `0x023DBE00` | 256 | `sgp.squadra_lotta` | battle move cache getters | no |
+| `0x023DBF00` | 11 264 | `sgp.capacita_borsa` | expanded Bag code and state; state at +0x1800 | yes |
+| `0x023DEB00` | 64 | `libero.1.2.finale` | free | no |
 
 Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 

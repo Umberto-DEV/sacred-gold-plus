@@ -1,8 +1,20 @@
 # What changed
 
-## 1.2.1 — 13 September 2026
+## 1.2.1 — updated 15 September 2026
 
-Download: the [1.2.1 release](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), one ZIP per language. Saves from 1.2 open in 1.2.1 and 1.2.1 saves open in 1.2. **Cheat files from 1.2 keep working**: unlike the step from 1.1 to 1.2, the game header is unchanged, so melonDS still pairs them with this game.
+- Expanded all Bag pockets to whole six-slot pages: 252/42/30/102/66/12/30/60 slots. Existing saves import; extra slots are stored in a checked save extension and are unavailable to older ROMs.
+- Added the searchable 493-species/level picker with the companion melonDS Android 2.1.1 build and an in-game L+R toggle.
+- Replaced broken male/female + nature codes, updated the nature-only family and removed the incompatible clean-ROM overlay workaround. The current catalogue contains 2,110 codes in 67 folders. See the [catalogue audit](source/docs/cheat-catalogue-validation.md).
+- Reduced party menu opening from 33 to 20 frames in the tested battles by reusing loaded move data.
+
+- Refined optional battle motion: the idle cycle runs at 0.375× with interpolated steps and a gradual restart; the name, level, HP and EXP panels stay still. Motion continues through menu selections and yields to native move, entrance and fainting animations.
+- Stops battle idle tasks before capture so they cannot animate the Pokémon reused by the Pokédex or nickname screen. Corrects cleanup when a Pokémon is replaced or the battle ends.
+- Reduced the battle Bag opening pause with optional battle motion enabled: the Bag reuses item data already loaded for the battle. Local English and Italian tests reduce the pause from about 0.9 to 0.12 seconds; short loading pauses remain. See the [implementation and checks](source/features/borsa-lotta/README.md).
+- Added regression coverage and a [source-backed animation audit](source/features/anim2/AUDIT-2026-09-14.md).
+
+## 1.2.1 — initial release, 13 September 2026
+
+The initial 13 September build used the previous Bag capacity and save layout. The current [1.2.1 downloads](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1) include the 15 September changes above; the extra Bag slots are not available in older ROMs. The game header remains unchanged.
 
 - **A full item stack no longer blocks a free gift or pickup.** The existing quantity cap stays in place; excess items are discarded and a message names the item that could not be kept. Purchases, exchanges, mail and key items keep their original checks.
 - **Optional battle motion extends to both sides and the Bag and party menus.** Motion pauses during move animations. The setting remains off by default; loading transitions can still pause the whole battle display.

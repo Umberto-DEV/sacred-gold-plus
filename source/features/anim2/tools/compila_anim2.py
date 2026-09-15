@@ -1,30 +1,11 @@
 #!/usr/bin/env python3
-"""SGP-1.2.1-ANIM-MOTO-01 — compila il blocco **v5** `sgp.anim2`.
+"""Compila ANIM2 v5c: moto lento, HUD fermo e ciclo di vita della cattura.
 
-Derivato riga per riga da `source/features/anim/tools/compila_anim4.py` (che
-resta invariato nel suo pacchetto). Le differenze volute sono cinque, e
-nessun'altra:
-
-1. **sorgente**: `anim_blob5.c` (che include `sgp_anim5.h`, `sgp_chunk.h` e
-   `anim_idle5.c`);
-2. **blocco nuovo**: `sgp.anim2`, 2048 B a 0x023DB500, canarino **0xCA5A1800**
-   (motivo nuovo, come impone la regola della riserva: mai riusare 0xCA5A14xx,
-   che appartiene al blocco `sgp.anim` della v4);
-3. **quattro entrate** invece di due: `sgp_idle_task5` (il task, bersaglio del
-   letterale `ov012 0x0226200C`), `sgp_stop_testa` (la trampolina della testa
-   di `ov12_02262014`), `sgp_avvia_tutti` (lo stub d'avvio al sito
-   `ov012 0x0225DC8A`) e `sgp_stop_politica` (chiamata dalla trampolina; sta
-   fra le entrate perché il banco la prova da sola);
-4. **tabella dei nove `lr`** (`siti.bin`, 9 parole): i nove siti di chiamata di
-   `ov12_02262014`, `sito + 5`, **verificati sui byte EN e IT** dal pacchetto
-   T1-1 (`SGP-1.2.1-ANIM-FASI-01/RAPPORTO.md` §3.2). Sono un DATO del blocco,
-   non costanti del codice, così il rilettore li può confrontare e i mutanti
-   li possono guastare;
-5. **due preselezioni** (`--livello 5a` / `--livello 5b`) che scrivono le due
-   maschere `sopprimi`/`estendi` nei parametri. Il cancello M-MONO della v4
-   resta identico e resta una condizione di compilazione.
-
-Uso: compila_anim5.py --uscita DIR [--livello 5b] [--base 0x023DB500] ...
+Blocco 2048 B a 0x023DB500, codice <=1536 B, dati agli indirizzi di v5b.
+Cinque entrate: idle, stop/trampolina, avvio, politica e avvio cattura.
+Il preset 5c sostituisce gli esperimenti 5a/5b: sette stop di menu soppressi,
+nessuna estensione dei destructor. --passo 2/3/4 sceglie 0.25/0.375/0.5x.
+Gli artefatti e il manifesto sono verificati dall'applicatore indipendente.
 GPL-3.0-or-later.
 """
 import argparse
@@ -42,7 +23,7 @@ sys.path.insert(0, str(REPO / "source" / "features" / "anim" / "tools"))
 from carica_text import load_text  # noqa: E402
 
 ENTRATE = ("sgp_idle_task5", "sgp_stop_testa", "sgp_avvia_tutti",
-           "sgp_stop_politica")
+           "sgp_stop_politica", "sgp_avvia_cattura")
 FASI = 18
 
 # Pianta del blocco. Il tetto del codice (1536 B) e la dimensione del blocco
@@ -95,26 +76,15 @@ def maschera(nomi):
     return m
 
 
-# --- le due preselezioni --------------------------------------------------
-# 5a (la consegna sicura del piano, §4.1): sopprime solo BORSA e SQUADRA, e
-#    lascia passare tutti gli altri ESTENDENDOLI a tutti i lottatori.
-# 5b (il mandato pieno): rispetto al 5a sopprime anche IO-BARRA, la fermata
-#    per turno misurata quattro V-blank dopo la conferma. Tutti gli altri siti
-#    passano e vengono estesi agli altri lottatori, come deciso nel brief:
-#    la sospensione a tre cancelli protegge il task quando esso resta vivo,
-#    ma non sostituisce di nascosto altre fermate del gioco.
+# Politica corrente: conserva i menu, rispetta distruzione e Safari.
 LIVELLI = {
-    "5a": {
-        "sopprimi": maschera(("BORSA", "SQUADRA")),
-        "estendi": maschera(("DISTRUZIONE", "IO-BARRA", "IO-SCHERMO-BASSO",
-                             "SAFARI", "CONFERMA-MOSSA", "BERSAGLIO", "SI-NO")),
-        "cancelli": 0x04,   # solo animActive: il 5a non usa il segnale
-    },
-    "5b": {
-        "sopprimi": maschera(("IO-BARRA", "BORSA", "SQUADRA")),
-        "estendi": maschera(("DISTRUZIONE", "IO-SCHERMO-BASSO", "SAFARI",
-                             "CONFERMA-MOSSA", "BERSAGLIO", "SI-NO")),
-        "cancelli": 0x07,   # moveActive + ingresso + animActive
+    "5c": {
+        "sopprimi": maschera(("IO-BARRA", "IO-SCHERMO-BASSO", "BORSA", "SQUADRA",
+                              "CONFERMA-MOSSA", "BERSAGLIO", "SI-NO")),
+        # Il teardown nativo distrugge ciascun lottatore: estenderlo dalla
+        # seconda chiamata leggerebbe gli OpponentData già liberati.
+        "estendi": 0,
+        "cancelli": 0x07,
     },
 }
 
@@ -131,6 +101,7 @@ DEF_RARO_PIU = 3
 PAR_SOPPRIMI = 0x12
 PAR_ESTENDI = 0x14
 PAR_CANCELLI = 0x16
+PAR_PASSO = 0x17
 
 
 def sha(b):
@@ -152,7 +123,7 @@ def salti(vu, k):
 
 
 def par_bin(amp, sca, fase, blink_min, blink_mask, blink_dur, raro_ogni,
-            raro_piu, sopprimi, estendi, cancelli):
+            raro_piu, sopprimi, estendi, cancelli, passo=3):
     b = bytearray(32)
     b[0x00:0x04] = bytes(amp)
     b[0x04:0x08] = bytes(sca)
@@ -165,6 +136,7 @@ def par_bin(amp, sca, fase, blink_min, blink_mask, blink_dur, raro_ogni,
     struct.pack_into("<H", b, PAR_SOPPRIMI, sopprimi)
     struct.pack_into("<H", b, PAR_ESTENDI, estendi)
     b[PAR_CANCELLI] = cancelli
+    b[PAR_PASSO] = passo
     return bytes(b)
 
 
@@ -195,10 +167,12 @@ def main():
     ap.add_argument("--cc", default="clang")
     ap.add_argument("--opt", default="-Oz")
     ap.add_argument("--base", type=lambda x: int(x, 0), default=DEF_BASE)
-    ap.add_argument("--livello", choices=sorted(LIVELLI), default="5b")
+    ap.add_argument("--livello", choices=sorted(LIVELLI), default="5c")
     ap.add_argument("--sopprimi", type=lambda x: int(x, 0), default=None)
     ap.add_argument("--estendi", type=lambda x: int(x, 0), default=None)
     ap.add_argument("--cancelli", type=lambda x: int(x, 0), default=None)
+    ap.add_argument("--passo", type=int, choices=(2, 3, 4), default=3,
+                    help="velocita: 2=0.25x, 3=0.375x, 4=0.5x")
     ap.add_argument("--amp", type=quattro, default=DEF_AMP)
     ap.add_argument("--sca", type=quattro, default=DEF_SCA)
     ap.add_argument("--fase", type=quattro, default=DEF_FASE)
@@ -215,6 +189,8 @@ def main():
     sopprimi = liv["sopprimi"] if args.sopprimi is None else args.sopprimi
     estendi = liv["estendi"] if args.estendi is None else args.estendi
     cancelli = liv["cancelli"] if args.cancelli is None else args.cancelli
+    if estendi:
+        raise SystemExit("R3 ROSSO: estendere le fermate visita lottatori gia liberati")
     if sopprimi & 1:
         raise SystemExit(
             "R3 ROSSO: il sito DISTRUZIONE (0x02258E98) non si puo' sopprimere: "
@@ -229,6 +205,12 @@ def main():
     slot = args.base + OFF_SLOT
 
     tu, vu = tabella_u()
+
+    # La guardia runtime considera nativa ogni scala fuori da 256 +/- 8.
+    # Un'ampiezza maggiore farebbe sospendere per sempre il proprio idle.
+    if any(x < 0 or x > 8 for x in args.sca):
+        raise SystemExit("SCALA ROSSO: --sca deve restare fra 0 e 8, "
+                         "entro la finestra di proprieta' dell'idle.")
 
     # --- cancello M-MONO, prima di compilare ------------------------------
     mono = {}
@@ -269,7 +251,7 @@ def main():
     (out / "blob.bin").write_bytes(blob)
     pb = par_bin(args.amp, args.sca, args.fase, args.blink_min, args.blink_mask,
                  args.blink_dur, args.raro_ogni, args.raro_piu,
-                 sopprimi, estendi, cancelli)
+                 sopprimi, estendi, cancelli, args.passo)
     can = canarino_bin()
     sb = siti_bin()
     (out / "tab_u.bin").write_bytes(tu)
@@ -277,13 +259,16 @@ def main():
     (out / "siti.bin").write_bytes(sb)
     (out / "canarino.bin").write_bytes(can)
 
-    serie = {str(c): [scala_unita(u, args.amp[c]) for u in vu] for c in range(4)}
-    serie_s = {str(c): [scala_unita(u, args.sca[c]) for u in vu] for c in range(4)}
+    # Serie a regime, con la stessa unita' fissa del C; niente inviluppo.
+    onda = [(vu[f >> 3] * (8 - (f & 7)) + vu[((f >> 3) + 1) % FASI]
+             * (f & 7)) * 16 for f in range(0, FASI * 8, args.passo)]
+    serie = {str(c): [(u * args.amp[c] + 1024) >> 11 for u in onda] for c in range(4)}
+    serie_s = {str(c): [(u * args.sca[c] + 1024) >> 11 for u in onda] for c in range(4)}
     usati = OFF_SLOT + N_SLOT
 
     manifesto = {
         "pacchetto": "SGP-1.2.1-ANIM-MOTO-01",
-        "fase": "v5-moto-su-tutti-i-lottatori-e-sospensione",
+        "fase": "v5c-rifinitura-moto-menu-hud-cattura",
         "eredita": "SGP-1.2-ANIM-SOLIDO-01 (v4, blob in ROM a 0x023D8B00) + "
                    "SGP-1.2.1-ANIM-SEGNALE-01 (il segnale moveActive) + "
                    "SGP-1.2.1-ANIM-FASI-01 (i nove lr, misurati sui byte).",
@@ -309,6 +294,8 @@ def main():
                     "blink_min": args.blink_min, "blink_mask": args.blink_mask,
                     "blink_dur": args.blink_dur, "raro_ogni": args.raro_ogni,
                     "raro_piu": args.raro_piu,
+                    "passo": args.passo, "velocita_relativa": args.passo / 8,
+                    "periodo_tick": FASI * 8 // args.passo,
                     "sopprimi": hex(sopprimi), "estendi": hex(estendi),
                     "cancelli": hex(cancelli)},
             "siti": {"byte": len(sb), "sha256": sha(sb),
@@ -322,9 +309,12 @@ def main():
                         if not ((sopprimi >> i) & 1)],
             "cancelli_sospensione": [n for b, n in
                                      ((1, "moveActive"), (2, "ingresso"),
-                                      (4, "animActive")) if cancelli & b],
+                                      (4, "animActive")) if cancelli & b] + ["scala_nativa", "ritaglio_o_invisibile"],
         },
-        "M_MONO": {"salti_massimi": mono, "esito": "verde"},
+        "M_MONO": {"salti_massimi_tavola": mono, "esito": "verde",
+                   "salti_massimi_interpolati_y": {
+                       c: max(abs(y[(i + 1) % len(y)] - y[i]) for i in range(len(y)))
+                       for c, y in serie.items()}},
         "serie_y_per_classe": serie,
         "serie_scala_per_classe": serie_s,
         "occupazione_totale_byte": usati,
@@ -344,6 +334,7 @@ def main():
             "G1_letterale_task": "ov012 0x0226200c",
             "G2_testa_fermata": "ov012 0x02262016 (BL -> sgp_stop_testa)",
             "G2_coda_v4_ritirata": "ov012 0x02262032 torna vanilla (20 6a 04 21)",
+            "G4_avvio_cattura": "ov012 0x0223ebd8 (BL -> sgp_avvia_cattura)",
         },
     }
     (out / "manifesto.json").write_text(json.dumps(manifesto, indent=2) + "\n")

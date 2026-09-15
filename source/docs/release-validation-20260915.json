@@ -1,0 +1,243 @@
+{
+  "date": "2026-09-15",
+  "version": "1.2.1",
+  "source_tests": {
+    "suites": [
+      {
+        "suite": "cheat selector catalogue",
+        "collected": 10,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "sgp12 library",
+        "collected": 57,
+        "skipped": 2,
+        "ok": true
+      },
+      {
+        "suite": "ARM9 reserve register",
+        "collected": 11,
+        "skipped": 1,
+        "ok": true
+      },
+      {
+        "suite": "text codec / translation",
+        "collected": 21,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "text width measurement",
+        "collected": 16,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "EV/IV guide (1.1)",
+        "collected": 11,
+        "skipped": 5,
+        "ok": true
+      },
+      {
+        "suite": "EV/IV reader (1.1)",
+        "collected": 13,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "guide label patch",
+        "collected": 13,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "save chunk",
+        "collected": 10,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "full bag build metadata",
+        "collected": 1,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle motion build policy",
+        "collected": 6,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle bag build metadata",
+        "collected": 6,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle party build metadata",
+        "collected": 7,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle bag cache (Unicorn)",
+        "collected": 10,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle party cache (Unicorn)",
+        "collected": 10,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "bag capacity core",
+        "collected": 7,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "bag capacity journal",
+        "collected": 4,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "bag capacity build",
+        "collected": 4,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "native code (Unicorn)",
+        "collected": 55,
+        "skipped": 1,
+        "ok": true
+      },
+      {
+        "suite": "options page (Unicorn)",
+        "collected": 104,
+        "skipped": 5,
+        "ok": true
+      }
+    ],
+    "classe_b": [
+      {
+        "suite": "native gender and nature",
+        "collected": 1,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "overlay in place",
+        "collected": 31,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "rare candy (Unicorn)",
+        "collected": 15,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "full bag pipeline",
+        "collected": 4,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "full bag (Unicorn)",
+        "collected": 27,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle motion (Unicorn)",
+        "collected": 20,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle motion reader mutants",
+        "collected": 2,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle bag reader mutants",
+        "collected": 6,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle party reader mutants",
+        "collected": 6,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "battle party native move data",
+        "collected": 1,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "bag capacity native ARM",
+        "collected": 8,
+        "skipped": 0,
+        "ok": true
+      },
+      {
+        "suite": "bag capacity reader mutants",
+        "collected": 3,
+        "skipped": 0,
+        "ok": true
+      }
+    ],
+    "collected": 376,
+    "skipped": 14,
+    "classe_a_ok": true,
+    "collected_classe_b": 124,
+    "skipped_classe_b": 0,
+    "classe_b_ok": true,
+    "ok": true
+  },
+  "roms": {
+    "EN": {
+      "rom_sha256": "09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b",
+      "verdetto": "VERDE",
+      "copertura": "completa",
+      "rebuild_identical": true,
+      "stages": 17
+    },
+    "IT": {
+      "rom_sha256": "8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a",
+      "verdetto": "VERDE",
+      "copertura": "completa",
+      "rebuild_identical": true,
+      "stages": 17
+    }
+  },
+  "archives": {
+    "Sacred-Gold-Plus-1.2.1-US.zip": {
+      "sha256": "6ae1c788cf8e6e994c1796ba34d5569e993291a1d18d0d4d3bd8c044c3ae4031",
+      "bytes": 10202897
+    },
+    "Sacred-Gold-Plus-1.2.1-IT.zip": {
+      "sha256": "41dcdfff42a876228003a2c0158255380e66d42e6fb2fc61f6a123bfacbe6599",
+      "bytes": 24004024
+    }
+  },
+  "android": {
+    "commit": "f7dc5ab8a728199aae8bc6b8406afaafdecc9a47",
+    "version": "2.1.1",
+    "unit_tests": 110,
+    "unit_failures": 0,
+    "apk_sha256": "aed28d3f7c173db670a8cacc611027375548da290d87c645e7fe84d1cbe23d47",
+    "hardware_tested": false
+  }
+}

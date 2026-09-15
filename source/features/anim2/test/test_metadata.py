@@ -36,17 +36,17 @@ class CompilaAnim5Test(unittest.TestCase):
         )
         return json.loads((Path(td.name) / "manifesto.json").read_text())
 
-    def test_5b_sopprime_solo_le_tre_fermate_decise(self):
+    def test_5c_tiene_vivi_i_menu_e_non_estende_il_teardown(self):
         """Cattura l'allargamento accidentale della lista di soppressione."""
-        m = self.compila("5b")
+        m = self.compila("5c")
         self.assertEqual(
             m["politica"]["soppressi"],
-            ["IO-BARRA", "BORSA", "SQUADRA"],
+            ["IO-BARRA", "IO-SCHERMO-BASSO", "BORSA", "SQUADRA",
+             "CONFERMA-MOSSA", "BERSAGLIO", "SI-NO"],
         )
         self.assertEqual(
             m["politica"]["estesi"],
-            ["DISTRUZIONE", "IO-SCHERMO-BASSO", "SAFARI",
-             "CONFERMA-MOSSA", "BERSAGLIO", "SI-NO"],
+            [],
         )
 
     def test_build_rifiuta_la_soppressione_della_distruzione(self):
@@ -57,6 +57,15 @@ class CompilaAnim5Test(unittest.TestCase):
             )
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("R3 ROSSO", r.stderr)
+
+    def test_build_rifiuta_scale_che_farebbero_sospendere_il_proprio_moto(self):
+        with tempfile.TemporaryDirectory() as td:
+            r = subprocess.run(
+                [sys.executable, str(COMPILA), "--uscita", td,
+                 "--sca", "9,9,9,9"], capture_output=True, text=True,
+            )
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("SCALA ROSSO", r.stderr)
 
     def copia_build(self):
         td = tempfile.TemporaryDirectory()

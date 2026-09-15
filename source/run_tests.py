@@ -11,7 +11,7 @@ request, so a green run here is a green run there. From the repository root:
 It prints one line per suite with how many tests ran, how many were skipped
 and why, then a total. It exits non-zero if any suite fails.
 
-Two suites need a C compiler with the ARM target (`clang --target=armv5te-none-eabi`)
+The compiled-code suites need a C compiler with the ARM target (`clang --target=armv5te-none-eabi`)
 because they run our own compiled code under an ARM946E-S emulator. A MISSING
 compiler makes the options-page suite SKIPPED, with its test count, and it
 stays in the summary and in the JSON — it used to vanish from both. With
@@ -49,6 +49,7 @@ ROOT = SOURCE.parent
 
 # (name, working directory, unittest arguments)
 SUITE = [
+    ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib"]),
     ("ARM9 reserve register",  SOURCE, ["-m", "unittest", "verifiche.test_riserva"]),
     ("text codec / translation", SOURCE, ["-m", "unittest", "discover", "-s", "translation", "-p", "test_*.py"]),
@@ -59,6 +60,13 @@ SUITE = [
     ("save chunk",             SOURCE / "features/plus-chunk/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("full bag build metadata", SOURCE / "features/borsa/test", ["-m", "unittest", "discover", "-p", "test_build.py"]),
     ("battle motion build policy", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_metadata.py"]),
+    ("battle bag build metadata", SOURCE / "features/borsa-lotta/test", ["-m", "unittest", "discover", "-p", "test_build.py"]),
+    ("battle party build metadata", SOURCE / "features/squadra-lotta/test", ["-m", "unittest", "discover", "-p", "test_build.py"]),
+    ("battle bag cache (Unicorn)", SOURCE / "features/borsa-lotta/test", ["-m", "unittest", "discover", "-p", "test_blob.py"]),
+    ("battle party cache (Unicorn)", SOURCE / "features/squadra-lotta/test", ["-m", "unittest", "discover", "-p", "test_blob.py"]),
+    ("bag capacity core", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_core.py"]),
+    ("bag capacity journal", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_journal.py"]),
+    ("bag capacity build", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_build.py"]),
 ]
 
 # Class B, listed apart on purpose. These need a real game file (SGP_ROM_DIR) and
@@ -67,6 +75,7 @@ SUITE = [
 # and in-place overlay applicator, 31 tests, could not fail anything. They are
 # run and reported, but they are never counted as Class A coverage.
 SUITE_CLASSE_B = [
+    ("native gender and nature", SOURCE / "cheats", ["-m", "unittest", "test_gender_arm"]),
     ("overlay in place",       SOURCE / "features/overlay/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     # The rare-candy suite runs the shipped ARM9 under Unicorn starting from the
     # hook site itself, so it needs the built ROMs (SGP_ROM_DIR). Without them it
@@ -76,6 +85,11 @@ SUITE_CLASSE_B = [
     ("full bag (Unicorn)",     SOURCE / "features/borsa/test", ["-m", "unittest", "discover", "-p", "test_borsa_nucleo.py"]),
     ("battle motion (Unicorn)", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_blob5.py"]),
     ("battle motion reader mutants", SOURCE / "features/anim2/test", ["-m", "unittest", "discover", "-p", "test_mutanti_anim2.py"]),
+    ("battle bag reader mutants", SOURCE / "features/borsa-lotta/test", ["-m", "unittest", "discover", "-p", "test_rilettore.py"]),
+    ("battle party reader mutants", SOURCE / "features/squadra-lotta/test", ["-m", "unittest", "discover", "-p", "test_rilettore.py"]),
+    ("battle party native move data", SOURCE / "features/squadra-lotta/test", ["-m", "unittest", "discover", "-p", "test_native_data.py"]),
+    ("bag capacity native ARM", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_arm.py"]),
+    ("bag capacity reader mutants", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_reader.py"]),
 ]
 
 CONTA = re.compile(r"^Ran (\d+) tests?", re.M)

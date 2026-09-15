@@ -384,3 +384,37 @@ Unicorn bench and mutants), applied by `source/sgp12/blocchi/caramelle.py`.
 - `docs/test-bench.md` — the headless runtime harness and the gates that judge a run.
 - `docs/arm9-reserve-map.md` — the ARM9 reserve layout every native block allocates from.
 - `docs/rebuilding-1.2.md` — building a 1.2 ROM from your own 1.1 base.
+
+## Expanded Bag (1.2.1)
+
+The main pocket has **252 distinct slots, 42 pages of six**. Pocket-ID order
+capacities are `[252, 42, 30, 102, 66, 12, 30, 60]`; quantities remain 999,
+or 99 for TM/HM. The complete contract and tests live in
+[`features/capacita-borsa`](../features/capacita-borsa/README.md).
+
+`Save_Bag_sizeof()` remains **1948 bytes**. All existing save-array offsets,
+registered items and legacy cheat addresses remain fixed. Runtime Bag objects
+use 2380 bytes and every pocket getter, slot enumerator, view, copy, registered
+item operation and reorder operation routes to that representation. Native
+Add/Take/Has/Quantity functions retain their original implementation.
+
+The 108 extra slots use two 452-byte records per save bank, in reserved flash
+sectors **48 and 112**, at offsets 0 and 0x200. These do not overlap the native
+extra-save arrays or SGP options sectors47/111. Each record contains format1,
+the **native save generation and main-block CRC16**, and its own CRC32. Both
+records in the inactive bank must be written and read back successfully before
+the native save begins. Failure leaves the previous native bank and its
+matching extension intact. Each destination is independently checked for an
+erased or project-owned record before any write; foreign data is not replaced.
+An interrupted owned record can be retried. A matching mirror recovers an
+erased or corrupt primary record. An unrecoverable corrupt active extension
+opens the native save-read-error screen rather than dropping inventory.
+
+Existing 1.1/1.2/earlier 1.2.1 saves import with zero extra slots. Opening a save
+with no extension does not write flash. **Older ROMs cannot access extra slots;
+saving in an older ROM changes the native generation and invalidates the old
+extension association. Returning to 1.2.1 then imports only the native inventory.**
+Keep the last save made in 1.2.1 when changing ROM versions. This is input
+compatibility with older saves, not full bidirectional inventory compatibility.
+Load the normal in-game save after a ROM update: emulator savestates also retain
+old executable RAM and are not an update mechanism.

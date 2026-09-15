@@ -2,7 +2,7 @@
 """Blocco ``sgp.anim2``: moto su tutti i lottatori e sospensione nelle mosse.
 
 Il blocco si applica dopo ``sgp.anim`` v4. La v4 resta intatta nella riserva;
-i tre nuovi ganci di ov012 raggiungono la v5 e il vecchio gancio di coda torna
+i quattro nuovi ganci di ov012 raggiungono la v5c e il vecchio gancio di coda torna
 alla sua preimmagine vanilla. L'opzione condivisa ``anim`` resta spenta per
 difetto nel chunk di ``sgp.plus``.
 """

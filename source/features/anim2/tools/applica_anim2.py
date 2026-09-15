@@ -28,6 +28,7 @@ G3_AVVIA = 0x0225DC8A
 G1_TASK = 0x0226200C
 G2_TESTA = 0x02262016
 G2_CODA_V4 = 0x02262032
+G4_CATTURA = 0x0223EBD8
 V4_TASK = 0x023D8BE5
 V4_STOP = 0x023D8BD3
 VANILLA_AVVIA = 0x02261FD5
@@ -35,7 +36,7 @@ PRE_G2_TESTA = bytes.fromhex("041c6620")
 POST_G2_CODA = bytes.fromhex("206a0421")
 
 ENTRATE = ("sgp_idle_task5", "sgp_stop_testa", "sgp_avvia_tutti",
-           "sgp_stop_politica")
+           "sgp_stop_politica", "sgp_avvia_cattura")
 INDIRIZZI_BUILD = {
     "base": BASE, "codice": BASE, "canarino": BASE + OFF_CAN,
     "tab_u": BASE + OFF_TAB, "par": BASE + OFF_PAR,
@@ -56,6 +57,7 @@ ANCORE_BUILD = {
     "G1_letterale_task": "ov012 0x0226200c",
     "G2_testa_fermata": "ov012 0x02262016 (BL -> sgp_stop_testa)",
     "G2_coda_v4_ritirata": "ov012 0x02262032 torna vanilla (20 6a 04 21)",
+    "G4_avvio_cattura": "ov012 0x0223ebd8 (BL -> sgp_avvia_cattura)",
 }
 
 
@@ -209,12 +211,14 @@ def applica(rom, build_dir, manifest_path=None):
         G1_TASK: struct.pack("<I", V4_TASK),
         G2_TESTA: PRE_G2_TESTA,
         G2_CODA_V4: bl_thumb(G2_CODA_V4, V4_STOP),
+        G4_CATTURA: bl_thumb(G4_CATTURA, 0x0200E321),
     }
     post = {
         G3_AVVIA: bl_thumb(G3_AVVIA, int(man["simboli"]["sgp_avvia_tutti"], 16)),
         G1_TASK: struct.pack("<I", int(man["simboli"]["sgp_idle_task5"], 16)),
         G2_TESTA: bl_thumb(G2_TESTA, int(man["simboli"]["sgp_stop_testa"], 16)),
         G2_CODA_V4: POST_G2_CODA,
+        G4_CATTURA: bl_thumb(G4_CATTURA, int(man["simboli"]["sgp_avvia_cattura"], 16)),
     }
     guardie = list(pre.items())
     patch = [{"addr": a, "pre": pre[a], "post": post[a]} for a in pre]
@@ -235,7 +239,7 @@ def applica(rom, build_dir, manifest_path=None):
                     "blob_sha256": sha(parti["blob.bin"])},
         "preimmagini_ov012": {hex(a): pre[a].hex() for a in pre},
         "postimmagini_ov012": {hex(a): post[a].hex() for a in post},
-        "nuovi_ganci_12B": [hex(G3_AVVIA), hex(G1_TASK), hex(G2_TESTA)],
+        "nuovi_ganci_16B": [hex(G3_AVVIA), hex(G1_TASK), hex(G2_TESTA), hex(G4_CATTURA)],
         "ritiro_gancio_coda_v4": hex(G2_CODA_V4),
         "overlay_patch": ric,
     }

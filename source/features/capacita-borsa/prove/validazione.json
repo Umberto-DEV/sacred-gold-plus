@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "data": "2026-09-15",
+  "versione": "1.2.1",
+  "capacita_per_id_tasca": [252, 42, 30, 102, 66, 12, 30, 60],
+  "save_bag_byte_nativi": 1948,
+  "bag_runtime_byte": 2380,
+  "slot_extra": 108,
+  "record_byte": 452,
+  "settori_flash": [48, 112],
+  "offset_copie_per_settore": [0, 512],
+  "test_feature": {
+    "EN": {"eseguiti": 26, "errori": 0, "saltati": 0},
+    "IT": {"eseguiti": 26, "errori": 0, "saltati": 0},
+    "interruzioni_prima_scrittura_con_riavvio_e_retry": 452
+  },
+  "pipeline": {
+    "EN": {"stadi": 17, "verdetto": "VERDE", "ricostruzione_identica": true, "riletture_saltate": 0},
+    "IT": {"stadi": 17, "verdetto": "VERDE", "ricostruzione_identica": true, "riletture_saltate": 0}
+  },
+  "emulazione_melonDS": {
+    "fixture": "inventario sintetico di 251 oggetti piu elemento finale; nessun dato della fixture distribuito",
+    "pagina_42_sei_celle_occupate": true,
+    "rimozione_via_menu_cestina": true,
+    "aggiunta_nativa_slot_252_da_oggetto_tenuto": true,
+    "salvataggio_in_gioco_e_riavvio_freddo": true,
+    "pagina_42_finale_EN_IT_controllata_visivamente": true,
+    "sram_riesportata_identica_EN_IT": true
+  },
+  "categorie_borsa_lotta": {
+    "capacita_nativa_per_categoria": 36,
+    "tipi_unici_reali_EN": [25, 10, 14, 23, 5],
+    "tipi_unici_reali_IT": [25, 10, 14, 23, 5]
+  },
+  "revisione_indipendente": "Ownership flash controllata per entrambe le destinazioni prima di scrivere; regressione confermata fallire prima e passare dopo. Nessun finding aperto.",
+  "limiti": [
+    "Collaudo su emulazione, non su hardware Nintendo DS.",
+    "Un salvataggio effettuato su ROM precedenti invalida l'associazione dell'estensione: al ritorno si importa solo l'inventario nativo.",
+    "ROM, SRAM, dump, catture e savestate rimangono locali e privati."
+  ]
+}

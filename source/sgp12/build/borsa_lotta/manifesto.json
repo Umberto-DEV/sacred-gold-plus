@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "base": "0x023dbd00",
+  "blocco_byte": 256,
+  "canarino_offset": 240,
+  "blob": {
+    "byte": 162,
+    "sha256": "859d5fbc13a8014ce44a65edc28badd92049b35e1d3d4003144b4d56ae2974e4"
+  },
+  "canarino": {
+    "byte": 16,
+    "sha256": "6b99c8b860e28e67530367b5c6ea7c77b40b6065715bc60e8231f796068dd9aa"
+  },
+  "simboli": {
+    "sgp_borsa_attr_cache": "0x23dbd01",
+    "sgp_borsa_attr_hook": "0x23dbd99"
+  },
+  "gancio": {
+    "overlay": 8,
+    "sito": "0x02223c30",
+    "pre": "54f6aaf8",
+    "bersaglio": "sgp_borsa_attr_hook"
+  },
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "opzioni_compilazione": [
+    "--target=armv5te-none-eabi",
+    "-mcpu=arm946e-s",
+    "-mthumb",
+    "-Oz",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-jump-tables",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ]
+}

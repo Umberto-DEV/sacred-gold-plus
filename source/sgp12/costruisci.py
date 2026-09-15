@@ -3,7 +3,7 @@
 una base 1.1, applicando tutti i blocchi in ordine:
 
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
-    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2
+    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa
 
 Uso:
     python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
@@ -26,7 +26,7 @@ from pathlib import Path
 
 from .rom import Rifiuto, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
-                      titolo, guida, caramelle, borsa, anim2)
+                      titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
 
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 
@@ -115,6 +115,18 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     t0 = time.time()
     rom, _ = anim2.applica(rom, build_dir / "anim2", manifest_path=manifest)
     registra("anim2", t0, rom)
+
+    t0 = time.time()
+    rom, _ = borsa_lotta.applica(rom, build_dir / "borsa_lotta", manifest_path=manifest)
+    registra("borsa_lotta", t0, rom)
+
+    t0 = time.time()
+    rom, _ = squadra_lotta.applica(rom, build_dir / "squadra_lotta", manifest_path=manifest)
+    registra("squadra_lotta", t0, rom)
+
+    t0 = time.time()
+    rom, _ = capacita_borsa.applica(rom, build_dir / "capacita_borsa", manifest_path=manifest)
+    registra("capacita_borsa", t0, rom)
 
     return rom, {"lingua": lingua, "base_sha256": sha(base), "uscita_sha256": sha(rom),
                 "uscita_bytes": len(rom), "passi": passi}

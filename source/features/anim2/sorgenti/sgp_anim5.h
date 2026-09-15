@@ -1,93 +1,22 @@
-/* Sacred Gold Plus 1.2.1 — `sgp.anim2` **v5**: contratto del blocco del moto
- * di attesa in lotta su TUTTI i lottatori e in TUTTE le fasi. GPL-3.0-or-later.
+/* Sacred Gold Plus — ANIM2 v5c, GPL-3.0-or-later.
  *
- * Pacchetto SGP-1.2.1-ANIM-MOTO-01 (T1-4 + T1-5 + T1-6 del piano
- * `T-animazioni-progetto.md`, §4.1 Opzione 5, §5.7, §6.1).
+ * Moto di attesa su fino a quattro lottatori, con clock privato in ottavi
+ * (0.25x / 0.375x / 0.5x), interpolazione e ripresa graduale da riposo.
+ * G3 avvia gli sprite e arresta il solo bounce della barra HP. G2 conserva
+ * i task nei sette siti dei menu; ogni destructor pulisce soltanto il suo
+ * lottatore, senza rileggere quelli gia' liberati. G4 ferma tutti prima del
+ * task nativo di cattura che riusa i Pokepic per Pokédex e soprannome.
  *
- * Discende da `source/features/anim/sorgenti/sgp_anim4.h` (la v4 che sta in
- * ROM nella 1.2.1, blocco `sgp.anim` 1024 B a 0x023D8B00). **La v4 non viene
- * toccata**: resta in ROM, con il suo canarino e i suoi 752 B di codice, ma
- * non è più raggiunta perché il letterale 0x0226200C punta al task v5. Il
- * blocco nuovo è `sgp.anim2`, 2048 B a **0x023DB500**, canarino 0xCA5A1800.
+ * moveActive, ingresso specie, animActive, scala nativa e flag di ritaglio/
+ * invisibilita' sospendono l'idle: un riposo, poi nessuna scrittura. Il KO
+ * imposta il ritaglio PRIMA della discesa. Un tick inattivo libera la voce;
+ * il riuso dello stesso indirizzo riparte con fase/ombra/inviluppo puliti.
  *
- * ---------------------------------------------------------------------------
- * CHE COSA CAMBIA NELLA v5 — tre aggiunte, nessuna sottrazione
- * ---------------------------------------------------------------------------
- *
- * A1 — **avvio su tutti i lottatori** (Opzione 1b, T1-4). Il gioco chiama
- *      `ov12_02261FD4(od, battleSystem)` da UN solo sito, 0x0225DC8A, e solo
- *      per il lottatore del giocatore: in HGSS l'avversario non oscilla
- *      nemmeno nella 1.1. Il gancio G3 sostituisce quella `BL` con una `BL`
- *      alla nostra `sgp_avvia`, che (a) **cattura `BattleSystem*`** — è in
- *      `r1` al sito, misurato — e (b) ripete l'avvio su tutti i lottatori
- *      leggendo `BattleSystem->maxBattlers` (+0x44) e `battlers[i]` (+0x34).
- *      A interruttore spento la `BL` fa **esattamente** la chiamata che c'era
- *      prima, una sola volta e con gli stessi argomenti.
- *
- * A2 — **politica di fermata per `lr`** (Opzione 2, T1-5). `ov12_02262014`
- *      (la fermata) ha **nove** siti di chiamata, tutti noti e identici EN/IT.
- *      Il gancio G2 sta in TESTA alla funzione, dopo il `push {r4,lr}` del
- *      gioco, così `lr` del chiamante è già sulla pila e si legge da lì (una
- *      `BL` piazzata sulla PRIMA istruzione distruggerebbe proprio il
- *      discriminante). Per ciascuno dei nove siti la tabella `SGP_SITI` dice
- *      che cosa fare, e due maschere a 16 bit nei parametri lo rendono un
- *      dato e non una costante del codice:
- *        · `sopprimi` → la fermata non avviene (il task resta vivo);
- *        · `estendi`  → la fermata avviene e viene RIPETUTA su tutti gli altri
- *                       lottatori (cura dell'artefatto E3, quando serve).
- *      Il sito sconosciuto (nessuno dei nove) passa sempre: è la scelta
- *      conservativa.
- *
- * A3 — **sospensione durante la mossa** (livello 5b, T1-6), che SOSTITUISCE le
- *      fermate soppresse. A ogni esecuzione il task guarda tre cancelli:
- *        · `[[BattleSystem+0x8C] + 0x10] != 0`  — `BattleAnimSystem.moveActive`:
- *          «è in corso un'animazione di mossa». Uno per LOTTA (misurato in
- *          SGP-1.2.1-ANIM-SEGNALE-01: 11 animazioni, 0 falsi negativi, sale 3
- *          fotogrammi PRIMA del primo pixel e cade entro 1 fotogramma
- *          dall'ultimo).
- *        · `[[[BattleSystem+0x1C8]+0x00] + i*0x1D0 + 0x20] == 0` — il gestore
- *          delle animazioni per specie: 0 durante l'animazione d'INGRESSO di
- *          quel lottatore. Per LOTTATORE, e per questo la voce porta l'indice.
- *        · `[pokepic + 0x58] != 0` — `animActive`, la guardia della v4:
- *          l'interprete di `a/1/8/0` sta lavorando.
- *      Se uno qualunque è alzato: **si riporta lo sprite a riposo UNA SOLA
- *      VOLTA** (`riposo()`, gli stessi canali di `sgp_pulisci`) e poi non si
- *      scrive più niente finché tutti e tre non cadono. È il rimedio
- *      all'artefatto E4b (la fiamma di Lanciafiamme staccata dalla bocca,
- *      2 137 px su 9 216): le animazioni di `ov007` sono ancorate a coordinate
- *      fisse e non seguono `yOffset`.
- *      **Terza finestra** (§3.1 del rapporto T1-2): il lancio della Ball, dove
- *      nessuno dei due primi cancelli è alzato ma il `Pokepic` viene distrutto
- *      e ricreato. La copre la guardia già esistente sul cambio di `pic`:
- *      `slot_per()` riazzera la voce — e con essa `sospeso` — appena
- *      `od+0x20` rende un puntatore diverso.
- *
- * ---------------------------------------------------------------------------
- * CHE COSA NON CAMBIA DALLA v4
- * ---------------------------------------------------------------------------
- * A funzione spenta il task vanilla è chiamato subito e lo stato del gioco è
- * identico al byte. A funzione accesa il task vanilla precede il nostro moto
- * soltanto quando i tre cancelli sono bassi; durante una sospensione non deve
- * riscrivere `yOffset` dopo l'unico `riposo()`. L'interruttore passa da
- * `sgp_chunk_opzione()`; il divieto di scrivere `xOffset`; la finestra stretta
- * sulla scala; la tavola v3 lisciata e i parametri per classe di taglia
- * (M-MONO); il battito pseudo-casuale; lo sfasamento per slot; nessuna
- * rotazione. Un'unica unità di traduzione, nessun simbolo esterno.
- *
- * ---------------------------------------------------------------------------
- * IL GANCIO DI CODA DELLA v4 (0x02262032) VIENE **TOLTO**, non riusato
- * ---------------------------------------------------------------------------
- * La v4 puliva lo stato sporco da un gancio di 4 B sulla CODA di
- * `ov12_02262014`. La v5 ha un gancio in TESTA alla stessa funzione, che (a)
- * vede `lr`, (b) decide, e (c) può rientrare nella funzione per gli altri
- * lottatori. Tenere anche il gancio di coda significherebbe farlo scattare
- * una volta per ogni rientro, con un secondo contatore da riconciliare e una
- * seconda trampolina da mantenere, per fare una cosa che la testa fa già
- * meglio: la pulizia avviene **prima** che il gioco distrugga il task, non
- * dopo, e perciò vale anche per la fermata soppressa (dove il task non muore
- * affatto). Il sito 0x02262032 torna quindi **byte-identico al vanilla**, e
- * i byte diversi in `ov012` rispetto alla base 1.1 sono esattamente **12**:
- * G3 (avvio), G1 (letterale del task), G2 (testa della fermata).
+ * Opzione spenta: chiamate native con stessi argomenti e stesso ritorno.
+ * Opzione accesa: niente task vanilla nel tick idle. La v4 resta nella sua
+ * riserva; il suo gancio di coda torna vanilla. Blocco, canarino e indirizzi
+ * dei dati restano quelli di v5b (2048 B a 0x023DB500).
+ * Vedi ../AUDIT-2026-09-14.md per cause, misure, fonti e limiti.
  */
 #ifndef SGP_ANIM5_H
 #define SGP_ANIM5_H
@@ -103,6 +32,8 @@ typedef signed char s8;
 #define SGP_VANILLA_TASK 0x0226203Du    /* ov12_0226203C, idle bounce vanilla  */
 #define SGP_OV12_AVVIA 0x02261FD5u      /* ov12_02261FD4(od, battleSystem)     */
 #define SGP_OV12_FERMA 0x02262015u      /* ov12_02262014(od)                   */
+#define SGP_FERMA_HUD 0x02265DA1u      /* solo bounce: conserva la freccia   */
+#define SGP_CREA_TASK 0x0200E321u      /* SysTask_CreateOnMainQueue          */
 
 /* `BattleSystem`, campi letti (i corpi degli accessori sono stati
  * disassemblati in SGP-1.2.1-ANIM-SEGNALE-01 §1.1, non supposti):
@@ -137,6 +68,7 @@ typedef signed char s8;
 
 /* OpponentData (ov012): il `data` del task. */
 #define OD_POKEPIC 0x20
+#define OD_HPBAR 0x28
 #define OD_TASK 0x198
 #define OD_DEGREES 0x19C
 
@@ -195,16 +127,18 @@ typedef signed char s8;
 #define PAR_BLINK_DUR 0x0E
 #define PAR_RARO_OGNI 0x0F
 #define PAR_RARO_PIU 0x10
-/* v5: due maschere a 16 bit sui nove siti, bit i = SGP_SITI[i]. */
+/* Maschera sui nove siti, bit i = SGP_SITI[i]. */
 #define PAR_SOPPRIMI 0x12 /* allineato a 2: u16 LE */
-#define PAR_ESTENDI 0x14  /* allineato a 2: u16 LE */
+#define PAR_ESTENDI 0x14  /* riservato, zero in v5c: mai estendere teardown */
 /* v5: cancelli della sospensione, un bit per cancello (per poterli spegnere
  * uno a uno nelle corse di misura, non per gusto di configurabilità). */
 #define PAR_CANCELLI 0x16
+#define PAR_PASSO 0x17 /* fase in ottavi: 2 = 0.25x, 3 = 0.375x, 4 = 0.5x */
 #define SGP_G_MOSSA 0x01   /* moveActive            */
 #define SGP_G_INGRESSO 0x02 /* gestore per specie   */
 #define SGP_G_ANIMACT 0x04 /* animActive del Pokepic */
 #define SGP_G_TUTTI 0x07
+#define SGP_G_SCALA 0x08 /* trasformazione nativa: protezione sempre attiva */
 
 /* ------------------------------------------------------------------ */
 /* Stato globale, 64 B. I primi 32 B sono IDENTICI alla v4: gli         */
@@ -233,7 +167,7 @@ typedef struct SgpAnim5State {
     u32 soppressi; /* +0x30 v5: fermate soppresse                          */
     u32 estesi;    /* +0x34 v5: fermate ripetute su un altro lottatore     */
     u32 sospensioni;/*+0x38 v5: transizioni «in moto» -> «sospeso»         */
-    u8 dentro;     /* +0x3C v5: 1 mentre siamo dentro l'estensione         */
+    u8 dentro;     /* +0x3C debug: 1 mentre G4 ferma gli altri task       */
     u8 maxbatt;    /* +0x3D v5: ultimo maxBattlers letto                   */
     u8 ultimo_sito;/* +0x3E v5: indice del sito dell'ultima fermata (0xFF = ignoto) */
     u8 cancelli;   /* +0x3F v5: quali cancelli hanno sospeso l'ultima volta */
@@ -252,7 +186,8 @@ typedef struct SgpAnim5Slot {
     u8 usato;      /* +0x13 1 se la voce è occupata                       */
     u8 idx;        /* +0x14 v5: indice del lottatore (0..3), 0xFF ignoto  */
     u8 sospeso;    /* +0x15 v5: 1 = già riportato a riposo, non scrivere  */
-    u16 pad;       /* +0x16                                              */
+    u8 fase;      /* +0x16 fase privata in ottavi, 0..143                */
+    u8 inviluppo; /* +0x17 ingresso/ripresa graduale, 0..16              */
     u32 coda[2];   /* +0x18 riservato                                    */
 } SgpAnim5Slot;    /* sizeof == 32 */
 
@@ -283,5 +218,6 @@ void sgp_stop_testa(void);
 u32 sgp_stop_politica(void *data, u32 lr);
 void sgp_avvia_tutti(void *data, void *bs);
 void sgp_pulisci(void *data);
+void *sgp_avvia_cattura(void (*fn)(void *, void *), void *data, u32 priorita);
 
 #endif /* SGP_ANIM5_H */

@@ -14,7 +14,8 @@ try:
                         PP_AFFINEW, PP_AFFINEH, PP_SHADOW_YOFF, OD_POKEPIC,
                         SL_OD, SL_PIC, SL_SIZE)
     from unicorn import UC_HOOK_CODE
-    from unicorn.arm_const import UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_R0, UC_ARM_REG_R1
+    from unicorn.arm_const import (UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_R0,
+                                   UC_ARM_REG_R1, UC_ARM_REG_R2)
     UNICORN = True
 except ImportError:
     UNICORN = False
@@ -75,7 +76,7 @@ class Blob5Test(unittest.TestCase):
         self.assertEqual(visti, [(od, BS) for od in battlers])
 
     def test_i_nove_lr_hanno_la_politica_dichiarata(self):
-        soppressi = {LRS[1], LRS[3], LRS[4]}
+        soppressi = {LRS[i] for i in (1, 2, 3, 4, 6, 7, 8)}
         for lr in LRS:
             self.b.prepara(OD0, PIC0)
             got = self.b.politica(OD0, lr)["r0"]
@@ -126,6 +127,166 @@ class Blob5Test(unittest.TestCase):
             self.b.nostro(OD0)
             ys.append(self.b.y_ombra(PIC0)[1])
         self.assertLessEqual(max(ys) - min(ys), 1)
+
+    def test_respiro_rallentato_senza_salti_di_pixel(self):
+        # Il vecchio ciclo di 18 tick deve durare da 36 a 72 tick (0.5–0.25x).
+        # Misuriamo gli attributi realmente scritti dal blob, non la sua fase.
+        campioni = []
+        for _ in range(240):
+            self.b.nostro(OD0)
+            campioni.append((self.b.s16(PIC0 + PP_YOFFSET),
+                             self.b.s16(PIC0 + PP_AFFINEW)))
+        campioni = campioni[80:]  # lascia terminare l'ingresso a riposo
+        periodo = next((p for p in range(1, 73)
+                        if all(a == b for a, b in zip(campioni, campioni[p:]))), None)
+        self.assertIsNotNone(periodo)
+        self.assertGreaterEqual(periodo, 36)
+        self.assertGreater(max(y for y, _ in campioni), min(y for y, _ in campioni))
+        self.assertLessEqual(max(abs(a[0] - b[0]) for a, b in
+                                 zip(campioni, campioni[1:])), 1)
+
+    def test_ripresa_dopo_mossa_parte_da_riposo(self):
+        self.b.prepara_bs([OD0, OD1, OD2, OD3])
+        for od, pic in ((OD0, PIC0), (OD1, PIC1), (OD2, PIC2), (OD3, PIC3)):
+            self.b.prepara(od, pic)
+            for _ in range(13):
+                self.b.nostro(od)
+        self.b.mossa(True)
+        for od in (OD0, OD1, OD2, OD3):
+            self.b.nostro(od)
+        self.b.mossa(False)
+        for od, pic in ((OD0, PIC0), (OD1, PIC1), (OD2, PIC2), (OD3, PIC3)):
+            self.b.nostro(od)
+            self.assertLessEqual(abs(self.b.s16(pic + PP_YOFFSET)), 1)
+
+    def test_sprite_cancellato_non_viene_animato_e_libera_slot(self):
+        self.b.nostro(OD0)
+        self.b.wr(PIC0, bytes(4))  # Pokepic_Delete: active = FALSE
+        self.b.nostro(OD0, sorveglia=True)
+        self.assertEqual([x for x in self.b.scritture
+                          if PIC0 <= x[0] < PIC0 + 0xAC], [])
+        self.assertEqual(self.b.u32(self.b.slot + SL_OD), 0)
+
+    def test_scala_nativa_sospende_anche_posa_respiro_e_ombra(self):
+        self.b.nostro(OD0)
+        self.b.wr16(PIC0 + PP_AFFINEW, 128)
+        self.b.wr16(PIC0 + PP_AFFINEH, 128)
+        self.b.nostro(OD0)
+        self.b.nostro(OD0, sorveglia=True)
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEW), 128)
+        self.assertEqual([x for x in self.b.scritture
+                          if PIC0 <= x[0] < PIC0 + 0xAC], [])
+
+    def test_avvio_rimette_ferma_la_barra_hp(self):
+        self.b.wr16(OD0 + 0x28 + 0x54, 160)  # fase del bounce HUD
+
+        def sistema_creazione(uc, address, size, user):
+            uc.reg_write(UC_ARM_REG_PC, uc.reg_read(UC_ARM_REG_LR))
+
+        # La sola creazione OS è esclusa; il reset della barra e il renderer
+        # sono quelli originali. La prova pixel runtime copre il task vivo.
+        h = self.b.uc.hook_add(UC_HOOK_CODE, sistema_creazione,
+                              begin=0x02261FD4, end=0x02261FD4)
+        try:
+            self.b.chiama(self.b.avvia_tutti, r0=OD0, r1=BS)
+        finally:
+            self.b.uc.hook_del(h)
+        self.assertEqual(self.b.u16(OD0 + 0x28 + 0x54), 0)
+
+    def test_tutti_i_menu_conservano_il_task_fino_alla_mossa(self):
+        for i in (1, 2, 3, 4, 6, 7, 8):
+            with self.subTest(sito=hex(LRS[i])):
+                self.assertEqual(self.b.politica(OD0, LRS[i])["r0"], 1)
+
+    def test_cattura_ferma_tutti_prima_di_creare_il_task_nativo(self):
+        self.b.prepara_bs([OD0, OD1])
+        self.b.prepara(OD1, PIC1)
+        for od in (OD0, OD1):
+            self.b.nostro(od)
+        work = 0x02358000
+        self.b.wr(work, BS.to_bytes(4, "little"))
+        visti = []
+
+        def scheduler(uc, address, size, user):
+            if address == 0x0200E320:
+                visti.append((uc.reg_read(UC_ARM_REG_R0),
+                              uc.reg_read(UC_ARM_REG_R1),
+                              uc.reg_read(UC_ARM_REG_R2),
+                              self.b.voci_occupate(),
+                              [self.b.u32(od + 0x198) for od in (OD0, OD1)]))
+                uc.reg_write(UC_ARM_REG_R0, 0x42)
+            uc.reg_write(UC_ARM_REG_PC, uc.reg_read(UC_ARM_REG_LR))
+
+        hooks = [self.b.uc.hook_add(UC_HOOK_CODE, scheduler, begin=a, end=a)
+                 for a in (0x0200E320, 0x0200E390)]
+        try:
+            # La build precedente raggiungeva direttamente CreateOnMainQueue.
+            fn = self.b.simboli.get("sgp_avvia_cattura", 0x0200E321) & ~1
+            r = self.b.chiama(fn, r0=0x022465A9, r1=work, r2=0)
+        finally:
+            for h in hooks:
+                self.b.uc.hook_del(h)
+        self.assertEqual(visti, [(0x022465A9, work, 0, [], [0, 0])])
+        self.assertEqual(r["r0"], 0x42)
+
+    def test_ko_ritagliato_sospende_senza_cambiare_scala(self):
+        self.b.nostro(OD0)
+        # Funzione originale che il KO chiama prima di abbassare il corpo.
+        self.b.chiama(0x0200908C, r0=PIC0, r1=0, r2=0, r3=80)
+        self.assertEqual(self.b.u32(PIC0 + 0x54) & 2, 2)
+        self.b.nostro(OD0)
+        self.b.nostro(OD0, sorveglia=True)
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEW), 256)
+        self.assertEqual([x for x in self.b.scritture
+                          if PIC0 <= x[0] < PIC0 + 0xAC], [])
+
+    def test_riuso_stesso_indirizzo_riparte_con_nuova_ombra(self):
+        for _ in range(24):
+            self.b.nostro(OD0)
+        nuova_base = self.b.s16(PIC0 + PP_SHADOW_YOFF)
+        self.b.wr(PIC0, bytes(4))
+        self.b.nostro(OD0)
+        self.b.prepara(OD0, PIC0, ombra_yoff=nuova_base)
+        self.b.nostro(OD0)
+        self.assertLessEqual(abs(self.b.s16(PIC0 + PP_YOFFSET)), 1)
+        self.assertEqual(self.b.s16(PIC0 + PP_SHADOW_YOFF)
+                         + self.b.s16(PIC0 + PP_YOFFSET), nuova_base)
+
+    def test_pulizia_non_scrive_sul_vecchio_puntatore(self):
+        for _ in range(24):
+            self.b.nostro(OD0)
+        self.b.wr(OD0 + OD_POKEPIC, PIC4.to_bytes(4, "little"))
+        prima = self.b.rd(PIC0, 0xAC)
+        self.b.politica(OD0, 0)
+        self.assertEqual(self.b.rd(PIC0, 0xAC), prima)
+
+    def test_distruzione_non_legge_altri_lottatori_gia_liberati(self):
+        self.b.prepara_bs([OD0, 0xDEAD0000])
+        self.b.nostro(OD0)
+        self.assertEqual(self.b.politica(OD0, LRS[0])["r0"], 0)
+        self.assertEqual(self.b.voci_occupate(), [])
+
+    def test_cattura_spenta_conserva_argomenti_e_ritorno(self):
+        self.b.spegni()
+        work = 0x02358000
+        visti = []
+
+        def scheduler(uc, address, size, user):
+            visti.append((uc.reg_read(UC_ARM_REG_R0),
+                          uc.reg_read(UC_ARM_REG_R1), uc.reg_read(UC_ARM_REG_R2)))
+            uc.reg_write(UC_ARM_REG_R0, 0x42)
+            uc.reg_write(UC_ARM_REG_PC, uc.reg_read(UC_ARM_REG_LR))
+
+        h = self.b.uc.hook_add(UC_HOOK_CODE, scheduler,
+                              begin=0x0200E320, end=0x0200E320)
+        try:
+            r = self.b.chiama(self.b.simboli["sgp_avvia_cattura"] & ~1,
+                              r0=0x022465A9, r1=work, r2=0)
+        finally:
+            self.b.uc.hook_del(h)
+        self.assertEqual(visti, [(0x022465A9, work, 0)])
+        self.assertEqual(r["r0"], 0x42)
+        self.assertEqual(self.b.u32(OD0 + 0x198), 0x02320000)
 
 
 if __name__ == "__main__":

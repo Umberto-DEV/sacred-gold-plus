@@ -3,6 +3,7 @@
 import sys
 import shutil
 import tempfile
+import struct
 from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
@@ -18,21 +19,34 @@ MGR_BASE = 0x02353000
 
 
 class Banco5(Banco4):
+    def prepara(self, od=OD0, pic=PIC0, **kw):
+        super().prepara(od, pic, **kw)
+        self.wr(pic, (1).to_bytes(4, "little"))  # Pokepic.active, come Create
+        # Barra sintetica, renderer originale: ManagedSprite -> Sprite.
+        box = 0x02360000 + (od - OD0)
+        self.wr(box, bytes(0x400))
+        self.wr(od + 0x2C, box.to_bytes(4, "little"))
+        self.wr(box, (box + 0x40).to_bytes(4, "little"))
+
     def __init__(self, build):
         # Banco4 usa il nome storico blob2.bin e lo crea accanto al build.
         # Il test non deve mai modificare source/sgp12/build: lavora su copia.
-        self._build_tmp = tempfile.TemporaryDirectory(prefix="sgp-anim2-banco-")
-        build_copia = Path(self._build_tmp.name)
-        for p in Path(build).iterdir():
-            if p.is_file():
-                shutil.copy2(p, build_copia / p.name)
-        super().__init__(build_copia, 0x023DB500, 0x023DBB20,
-                         0x023DBBA0, 0x023DBBE0)
-        self.wr(0x023DBB60, (build_copia / "siti.bin").read_bytes())
+        with tempfile.TemporaryDirectory(prefix="sgp-anim2-banco-") as td:
+            build_copia = Path(td)
+            for p in Path(build).iterdir():
+                if p.is_file():
+                    shutil.copy2(p, build_copia / p.name)
+            super().__init__(build_copia, 0x023DB500, 0x023DBB20,
+                             0x023DBBA0, 0x023DBBE0)
+            self.wr(0x023DBB60, (build_copia / "siti.bin").read_bytes())
         self.entrata = self.simboli["sgp_idle_task5"] & ~1
         self.stop_politica = self.simboli["sgp_stop_politica"] & ~1
         self.avvia_tutti = self.simboli["sgp_avvia_tutti"] & ~1
         self.stop_testa = self.simboli["sgp_stop_testa"] & ~1
+        # Esegui anche la vera fermata del gioco attraverso la trampolina.
+        delta = self.stop_testa - (0x02262016 + 4)
+        self.wr(0x02262016, struct.pack("<HH", 0xF000 | ((delta >> 12) & 0x7FF),
+                                       0xF800 | ((delta >> 1) & 0x7FF)))
         self.prepara_bs([OD0])
 
     def prepara_bs(self, battlers):
