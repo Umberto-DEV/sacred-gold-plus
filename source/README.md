@@ -27,9 +27,26 @@ python3 -m venv .venv
 .venv/bin/pip install -r source/requirements.txt
 ```
 
-A C compiler that can target the ARM946E-S: two Class A suites (`native-core`, and the options page — 95 tests on its own) compile our own C sources for `--target=armv5te-none-eabi -mcpu=arm946e-s` and run the result under an ARM946E-S emulator, and rebuilding the options-page payload needs the same compiler (`source/features/options/tools/compila.py`, used the same way by `source/features/native-core/tools/compila_tutti.py`). Apple Clang on macOS and `clang` on Ubuntu both work as-is; check with:
+The compiled-code suites need an ARM946E-S-capable C compiler. The shipped
+1.2.1 payloads were built with **Apple clang 21.0.0
+(`clang-2100.3.34.2`, Command Line Tools 27.0)**; each build manifest records
+its compiler. Other Clang releases may produce different bytes or exceed a
+payload's fixed space limit even when they support the ARM target. A usable
+ARM target alone does not establish release reproducibility.
+
+CI runs the Class A suites on the official `xcode-27` macOS runner with
+Xcode 27 beta 6 explicitly selected. It requires Apple clang 21 and retains
+all existing byte-for-byte and payload-size tests; those tests establish
+whether the selected compiler reproduces the shipped artifacts. Public-file
+checks remain on Ubuntu. Runner software is documented by
+[GitHub Actions](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
+The exact local compiler build is newer than that runner selection; a different
+result remains a failing check rather than being accepted or regenerated.
+
+Check that your compiler supports the target with:
 
 ```sh
+clang --version
 clang --target=armv5te-none-eabi -mcpu=arm946e-s -mthumb -ffreestanding -c -x c /dev/null -o /dev/null
 ```
 
@@ -62,7 +79,7 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
 
 The build is deterministic: the same base gives the same bytes. `verifica` rebuilds the ROM internally from the same base, compares it with the one you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Use `IT` and the Italian base for the other language. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
 
-The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts and continuous battle motion — fourteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
+The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache and expanded Bag capacity — seventeen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
 
@@ -98,7 +115,7 @@ the maintainer's machine. That single skip is expected and does not need `SGP_CH
 
 The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.1-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
 
-The native-code suite recompiles the shipped C sources and compares them with the blobs that go into the ROM. Those bytes are only reproducible on the toolchain that produced them, which each `build/*/manifesto.json` names; on a different compiler (vendor or major version) the byte-for-byte tests **skip with the two identities printed**, and what stays is the claim that holds anywhere: the blob compiles, fits its compartment and has no external symbols. That is why the Ubuntu CI is green — not because the check was softened.
+The native-code suite recompiles the shipped C sources and compares them with the blobs that go into the ROM. Those bytes are only reproducible on the toolchain that produced them, which each `build/*/manifesto.json` names; on a different compiler (vendor or major version) the byte-for-byte tests **skip with the two identities printed**, and what stays is the claim that holds anywhere: the blob compiles, fits its compartment and has no external symbols. The expanded-Bag build suite always requires byte-identical code and symbols. The current macOS CI keeps those assertions and every fixed-space limit enabled. A compiler mismatch can therefore fail the full suite; it is not permission to replace the validated payloads.
 
 The battle-animation suite (`features/anim/test/`) also needs the overlay modules extracted from your ROM; its tools do that, and the suite skips with an explicit reason without them. The runtime runs on the headless emulator are described in [docs/test-bench.md](docs/test-bench.md).
 
