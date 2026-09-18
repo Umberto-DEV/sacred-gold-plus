@@ -14,9 +14,11 @@ Uso (da dentro `source/`):
 import os
 import random
 import struct
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from . import blz, chunk, overlay as ovl, rom as romlib
 from .blocchi import (riserva as bloc_riserva, camera as bloc_camera, plus_chunk as bloc_plus,
@@ -24,6 +26,7 @@ from .blocchi import (riserva as bloc_riserva, camera as bloc_camera, plus_chunk
                       titolo as bloc_titolo, testi as bloc_testi, guida as bloc_guida,
                       caramelle as bloc_car)
 from . import costruisci as costruisci_mod
+from . import verifica as verifica_mod
 
 # Le ROM non stanno in questo repository. Chi vuole eseguire anche i test
 # di classe B (quelli che aprono un file di gioco) indica la propria
@@ -732,6 +735,62 @@ class TestCostruisciIdentico(unittest.TestCase):
 
     def test_identico_IT(self):
         self._prova("IT")
+
+
+class TestVerificaVerdetto(unittest.TestCase):
+    """Classe A, nessuna ROM: dimostra la correzione W2C-6 al rilievo A5 di
+    `A8b/REPORT.md` — `verifica.py` usciva VERDE/exit 0 anche con tutti i
+    rilettori saltati (copertura PARZIALE), e un `Rifiuto` sollevato durante
+    la ricostruzione usciva come traceback invece che come diagnosi."""
+
+    def test_verdetto_finale_precedenza_rosso_poi_parziale_poi_verde(self):
+        f = verifica_mod._verdetto_finale
+        # tutto pulito, niente saltato -> VERDE
+        self.assertEqual(f(0, [], True, []), "VERDE")
+        # niente di rosso ma qualcosa e' saltato -> PARZIALE, non VERDE
+        self.assertEqual(f(0, [], True, ["borsa", "anim2"]), "PARZIALE")
+        # un rilettore rosso vince sempre, anche senza saltati
+        self.assertEqual(f(0, ["anim2"], True, []), "ROSSO")
+        # la ricostruzione che non combacia vince anche con copertura completa
+        self.assertEqual(f(0, [], False, []), "ROSSO")
+        # T1-T5 fallito vince anche se il resto e' tutto verde
+        self.assertEqual(f(1, [], True, []), "ROSSO")
+        # un rosso vince anche in presenza di saltati (non diventa "solo" PARZIALE)
+        self.assertEqual(f(0, ["npc"], True, ["borsa"]), "ROSSO")
+
+    def test_codici_uscita_mappano_i_tre_verdetti(self):
+        self.assertEqual(verifica_mod.CODICI_USCITA["VERDE"], 0)
+        self.assertEqual(verifica_mod.CODICI_USCITA["ROSSO"], 1)
+        self.assertEqual(verifica_mod.CODICI_USCITA["PARZIALE"], 2)
+        # i tre codici sono distinti: nessuno "PARZIALE che vale come VERDE"
+        self.assertEqual(len(set(verifica_mod.CODICI_USCITA.values())), 3)
+
+    def test_senza_base_copertura_parziale_esce_2_non_piu_verde(self):
+        """Riproduce esattamente lo scenario del rilievo: `verifica.py ROM`
+        senza `--base`. Prima usciva VERDE/0; deve uscire PARZIALE/2. Nessuna
+        ROM vera: il file e' qualche byte a caso e T1-T5 e' un doppio finto
+        (`subprocess.run`), cosi' il test non richiede ne' compila nulla."""
+        with tempfile.TemporaryDirectory() as d:
+            rom_path = Path(d) / "finta.nds"
+            rom_path.write_bytes(b"\x00" * 32)
+            t1_t5_ok = subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+            with mock.patch.object(verifica_mod.subprocess, "run", return_value=t1_t5_ok):
+                esiti = verifica_mod.verifica(rom_path, None, verifica_mod.BUILD_DEFAULT)
+
+        self.assertTrue(esiti["copertura"].startswith("PARZIALE"), esiti["copertura"])
+        self.assertEqual(esiti["verdetto"], "PARZIALE",
+                         "senza --base tutti i rilettori sono saltati: non e' "
+                         "un verdetto VERDE sui blocchi (rilievo A5)")
+        self.assertEqual(verifica_mod.CODICI_USCITA[esiti["verdetto"]], 2)
+
+    def test_rifiuto_in_costruzione_diventa_diagnosi_non_traceback(self):
+        with mock.patch.object(verifica_mod.costruisci_mod, "costruisci",
+                               side_effect=romlib.Rifiuto("base incompatibile con questo blocco")):
+            esito = verifica_mod._verifica_costruzione(b"ROM-FINTA", b"BASE-FINTA",
+                                                        "EN", verifica_mod.BUILD_DEFAULT)
+        self.assertFalse(esito["identico"])
+        self.assertIn("rifiuto", esito)
+        self.assertIn("base incompatibile con questo blocco", esito["rifiuto"])
 
 
 if __name__ == "__main__":

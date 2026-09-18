@@ -11,6 +11,21 @@ Uso:
 Senza `--base` la ricostruzione e i rilettori sono saltati con motivo
 esplicito (T1-T5 restano attivi: T1 non richiede una ROM).
 
+Verdetto ed exit code (revisione 18/09/2026, W2C-6): una copertura non
+completa NON e' piu' un VERDE silenzioso. Tre esiti, tre exit code:
+
+    VERDE     0   tutto eseguito, niente di rosso
+    PARZIALE  2   niente di rosso in quello che e' girato, ma uno o piu'
+                  rilettori sono stati saltati (di solito: manca --base)
+                  — non e' un verdetto sui blocchi saltati, vedi "copertura"
+    ROSSO     1   almeno un rilettore rosso, la ricostruzione non combacia,
+                  o T1-T5 e' fallito
+
+Un `Rifiuto` sollevato durante la ricostruzione (base incompatibile, blocco
+che rifiuta la propria preimmagine) non fa piu' uscire un traceback: diventa
+una voce `rifiuto` dentro `costruzione_identica`, come fa `costruisci.py`
+con il proprio `Rifiuto` a livello di riga di comando.
+
 Nota sui rilettori `riserva`/`camera`/`npc`: sono scritti (per costruzione,
 `02-COME-LAVORARE.md §2.3`) per confrontare una ROM con la ROM SUBITO PRIMA di
 quel blocco, non con una ROM finale che ha gia' tutti gli 8 blocchi applicati
@@ -31,7 +46,7 @@ import sys
 import traceback
 from pathlib import Path
 
-from .rom import sha
+from .rom import Rifiuto, sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
                       opzioni, wifi, titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
@@ -39,6 +54,10 @@ from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim
 SOURCE = Path(__file__).resolve().parents[1]
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 TEST_RISERVA = SOURCE / "verifiche/test_riserva.py"
+
+# Tre esiti, tre exit code (vedi il docstring del modulo). PARZIALE e' nuovo:
+# prima una copertura incompleta (rilettori saltati) restava VERDE/exit 0.
+CODICI_USCITA = {"VERDE": 0, "PARZIALE": 2, "ROSSO": 1}
 
 
 ORDINE_STADI = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim", "opzioni",
@@ -132,6 +151,24 @@ def _con(applicato, rileggi):
     return dopo, rileggi(dopo)
 
 
+def _verifica_costruzione(rom: bytes, base: bytes, lingua: str, build_dir: Path) -> dict:
+    """Isolata da `verifica()` per essere testabile da sola, senza ROM: prima
+    un `Rifiuto` sollevato da `costruisci()` (base incompatibile, blocco che
+    rifiuta la propria preimmagine) usciva come traceback fino a `main()`.
+    Qui diventa una voce `rifiuto`, come fa `costruisci.py` in riga di
+    comando col proprio `Rifiuto` (W2C-6)."""
+    try:
+        ricostruita, rapporto = costruisci_mod.costruisci(base, lingua, build_dir)
+    except Rifiuto as e:
+        return {"identico": False, "rifiuto": "%s: %s" % (type(e).__name__, e)}
+    return {
+        "identico": ricostruita == rom,
+        "base_sha256": sha(base), "rom_sha256": sha(rom),
+        "ricostruita_sha256": rapporto["uscita_sha256"],
+        "passi": rapporto["passi"],
+    }
+
+
 def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: str | None = None) -> dict:
     rom = Path(rom_path).read_bytes()
     esiti = {"rom": str(rom_path), "rom_sha256": sha(rom), "rilettori": {}}
@@ -139,13 +176,7 @@ def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: st
     if base_path is not None:
         base = Path(base_path).read_bytes()
         if lingua:
-            ricostruita, rapporto = costruisci_mod.costruisci(base, lingua, build_dir)
-            esiti["costruzione_identica"] = {
-                "identico": ricostruita == rom,
-                "base_sha256": sha(base), "rom_sha256": sha(rom),
-                "ricostruita_sha256": rapporto["uscita_sha256"],
-                "passi": rapporto["passi"],
-            }
+            esiti["costruzione_identica"] = _verifica_costruzione(rom, base, lingua, build_dir)
         else:
             esiti["costruzione_identica"] = {"saltato": "serve --lingua per ricostruire da --base"}
         esiti["rilettori"].update(_rilettori_di_libreria(base, build_dir, lingua))
@@ -177,14 +208,29 @@ def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: st
     riletture_saltate = [n for n, v in esiti["rilettori"].items()
                          if isinstance(v, dict) and "saltato" in v]
     costruzione_ok = esiti["costruzione_identica"].get("identico", True)  # True se saltata: non e' lei a bocciare
-    esiti["verdetto"] = "VERDE" if (r.returncode == 0 and not riletture_rosse and costruzione_ok) else "ROSSO"
     esiti["riletture_rosse"] = riletture_rosse
     esiti["riletture_saltate"] = riletture_saltate
     # Un verdetto VERDE con dei rilettori saltati non e' un verdetto sui
     # blocchi: lo dice qui, invece di lasciarlo dedurre (A2 della revisione R1).
     esiti["copertura"] = "completa" if not riletture_saltate else \
         "PARZIALE: %d rilettori saltati (%s)" % (len(riletture_saltate), ", ".join(riletture_saltate))
+    esiti["verdetto"] = _verdetto_finale(r.returncode, riletture_rosse, costruzione_ok, riletture_saltate)
     return esiti
+
+
+def _verdetto_finale(t1_t5_returncode: int, riletture_rosse: list, costruzione_ok: bool,
+                     riletture_saltate: list) -> str:
+    """W2C-6: prima una copertura PARZIALE (rilettori saltati, tipicamente per
+    mancanza di --base) produceva comunque VERDE/exit 0 se nessuno dei
+    rilettori ESEGUITI era rosso — il rilievo A5 di `A8b/REPORT.md`. Isolata
+    dal resto di `verifica()` per essere testabile a tavolino, con liste e
+    booleani finti, senza ROM ne' sottoprocessi. Precedenza: un rosso vince
+    sempre su un saltato, un saltato vince su tutto verde."""
+    if t1_t5_returncode != 0 or riletture_rosse or not costruzione_ok:
+        return "ROSSO"
+    if riletture_saltate:
+        return "PARZIALE"
+    return "VERDE"
 
 
 def main(argv=None):
@@ -200,12 +246,27 @@ def main(argv=None):
     if lingua is None and a.base:
         lingua = "IT" if "-IT" in Path(a.base).name.upper() else "EN"
 
-    esiti = verifica(Path(a.rom), Path(a.base) if a.base else None, Path(a.build), lingua)
+    try:
+        esiti = verifica(Path(a.rom), Path(a.base) if a.base else None, Path(a.build), lingua)
+    except Rifiuto as e:
+        # Difesa aggiuntiva, come costruisci.py: `_verifica_costruzione` gia'
+        # cattura il caso previsto (Rifiuto durante la ricostruzione), ma se
+        # un percorso futuro ne lasciasse sfuggire uno, qui esce una diagnosi
+        # JSON invece di un traceback.
+        diagnosi = {"rom": a.rom, "verdetto": "ROSSO",
+                   "rifiuto": "%s: %s" % (type(e).__name__, e)}
+        testo = json.dumps(diagnosi, indent=2, ensure_ascii=False) + "\n"
+        if a.json:
+            Path(a.json).write_text(testo)
+        print(testo)
+        print("RIFIUTO: %s" % e, file=sys.stderr)
+        return CODICI_USCITA["ROSSO"]
+
     testo = json.dumps(esiti, indent=2, ensure_ascii=False) + "\n"
     if a.json:
         Path(a.json).write_text(testo)
     print(testo)
-    return 0 if esiti["verdetto"] == "VERDE" else 1
+    return CODICI_USCITA[esiti["verdetto"]]
 
 
 if __name__ == "__main__":

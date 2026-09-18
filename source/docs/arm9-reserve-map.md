@@ -141,10 +141,14 @@ Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 The zone 1.1 blocks hold the two public addresses in the project. They never move, and the
 anchors their public consumers use are never touched.
 
-Free space left in zone 1.2: 15 936 B contiguous at `0x023DAD00`, plus a 240 B gap at
-`0x023D8A10`. It was 16 192 B until 1.2.1, when `sgp.caramelle` took the first 256 B from the
-low end of the pool — anchoring low is allowed because nothing a user can see names that
-address (no cheat, no literal quoted outside). Reservation procedure and the per-block internal headroom are in
+Free space left in zone 1.2, recomputed from the register on 18/09/2026 (sum of the
+`docs/arm9-reserve-map.json` blocks typed `libero` with `assegnabile: true` — do not trust a
+cached figure, recompute it): **304 B**, in two blocks — 240 B at `0x023D8A10`
+(`libero.1.2`) and 64 B at `0x023DEB00` (`libero.1.2.finale`). The pool that used to sit at
+`0x023DAD00` is gone: `sgp.borsa` (2 048 B), `sgp.anim2` (2 048 B), `sgp.borsa_lotta` (256 B),
+`sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B) have all been carved out of it
+since 1.2.1 — each in the same logical commit as its register entry, per the reservation
+procedure. Reservation procedure and the per-block internal headroom are in
 `docs/arm9-reserve-reservations.md`.
 
 Features that are *not* in the reserve — the title screen, the credit line and the guide
@@ -220,9 +224,12 @@ python3 verifiche/riserva_arm9.py <your rom.nds> --manifest docs/arm9-reserve-ma
 ```
 
 The path used to be written `../docs/arm9-reserve-map.json`, which from `source/` is the
-repository root, where there is no `docs/` folder: the command ended in a traceback. On the
-shipped 1.2.1 EN ROM the corrected command reports **16 176 B assignable** — the 15 936 B
-contiguous block plus the 240 B gap — and exits 0.
+repository root, where there is no `docs/` folder: the command ended in a traceback. Against
+today's register (18/09/2026) the corrected command reports **304 B assignable** — the 240 B
+gap at `0x023D8A10` plus the 64 B block at `0x023DEB00` — and exits 0. (Earlier revisions of
+this page quoted 16 176 B / 15 936 B, from before `sgp.borsa`, `sgp.anim2`, `sgp.borsa_lotta`,
+`sgp.squadra_lotta` and `sgp.capacita_borsa` consumed the rest of the pool; that figure is
+stale and should not be reused.)
 
 Without `--manifest` the tool prints the zeroed tail and states explicitly that the true free
 space is unknown, rather than printing a zero that looks like a verdict. It exits non-zero if

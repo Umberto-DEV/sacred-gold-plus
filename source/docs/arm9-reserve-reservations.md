@@ -103,18 +103,28 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | `sgp.caramelle` (Rare Candy stays in the party menu) | `0x023DAC00` | `0x100` | `0x023DAD00` | 208/256 | applied |
 | `sgp.borsa` (capped gifts and pickups) | `0x023DAD00` | `0x800` | `0x023DB500` | 2048 B reserved | integrated in 1.2.1 |
 | `sgp.anim2` (continuous battle motion, v5) | `0x023DB500` | `0x800` | `0x023DBD00` | 2048 B reserved | integrated in 1.2.1 |
-| free | `0x023DBD00` | — | `0x023DEB40` | — | **free** |
+| `sgp.borsa_lotta` (Bag cache in battle) | `0x023DBD00` | `0x100` | `0x023DBE00` | 162/256 | applied |
+| `sgp.squadra_lotta` (party move cache in battle) | `0x023DBE00` | `0x100` | `0x023DBF00` | 200/256 | applied |
+| `sgp.capacita_borsa` (expanded Bag capacity) | `0x023DBF00` | `0x2C00` | `0x023DEB00` | 3184/11264 | applied |
+| free (`libero.1.2.finale`) | `0x023DEB00` | `0x40` | `0x023DEB40` | — | **free** |
 
 Zone 1.1, `0x023DEB40` to `0x023E0000`, is frozen: no block moves, no block changes size,
 and the two public addresses it holds are never touched. It is not open for reservation.
 
 ### Free space
 
-- **11 840 B contiguous** at `0x023DBD00`, up to the zone 1.1 canary at
-  `0x023DEB40`. The 1.2.1 blocks take 256 B for Rare Candy, 2048 B for capped
-  gifts and 2048 B for continuous battle motion from the low end of the pool.
-- A 240 B gap at `0x023D8A10`, between the NPC canary and `sgp.anim`. Usable only for
-  something that fits in it whole.
+As of 18/09/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
+`libero` with `assegnabile: true` — the two `.md` pages used to disagree with the register and
+with each other; the register is the source of truth):
+
+- **304 B total**, in two disjoint blocks — nothing here is contiguous with anything else.
+- **64 B** at `0x023DEB00` (`libero.1.2.finale`), up to the zone 1.1 canary at `0x023DEB40`.
+  What used to be free from `0x023DBD00` has since been taken by `sgp.borsa_lotta` (256 B),
+  `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B), on top of the 256 B for Rare
+  Candy, 2048 B for capped gifts and 2048 B for continuous battle motion already taken before
+  this page's previous revision.
+- **240 B** at `0x023D8A10` (`libero.1.2`), between the NPC canary and `sgp.anim`. Usable only
+  for something that fits in it whole.
 - Headroom inside blocks already allocated belongs to their owners, not to the free pool. The
   largest is 1 344 B in `sgp.wifi`; `sgp.plus` has 464 B free at `+0x630` and 236 B of growth
   margin at `+0x314`; `sgp.salvataggio` has 208 B. `sgp.anim` is full and any change to it

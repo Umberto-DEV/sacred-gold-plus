@@ -83,8 +83,22 @@ hg_runtime --rom "$ROM" --sram "$SAVE_COPY" --out runs/<name> --script runs/<nam
 - `--interactive` is never used in a run that produces a proof.
 
 Script commands cover key presses, touch coordinates and releases, bounded waits, memory reads,
-per-frame watches, named captures and SRAM export. The public scripts contain only input, waits,
-reads, status and local exports: no RAM writes, no cheats, no freezes, no savestate loads.
+per-frame watches, named captures and SRAM export. The public scripts in `source/runtime/inputs/`
+contain only input, waits, reads, status and local exports: no RAM writes, no cheats, no freezes,
+no savestate loads (checked 18/09/2026: `grep -n '^write' source/runtime/inputs/*.script` finds
+nothing).
+
+That guarantee does **not** extend to the scripts that `anim2/tools/copioni.py` (the
+`PROLOGO_FREDDO` prologue every sub-command starts from) and `squadra-lotta/tools/copione.py`
+generate for the anim2/Bag/party proof runs. Their prologue contains exactly one write:
+`write 0x023D8716 1 1`. `0x023D8716` is the "animations" option byte inside the Plus save
+chunk — the same byte `borsa_cache.c:13` and `squadra_cache.c:13` gate their fast paths on — and
+the write is there because the option defaults to **off**: without it the anim2 motion, the
+Bag-in-battle cache and the party-move cache never engage, and the run would be measuring the
+native fallback path instead of the feature under test. A run built from one of these generated
+scripts is therefore **not** a "ROM-intact proof" in the sense the rest of this document uses
+that phrase: it starts from one RAM byte set deliberately away from its shipped default, and
+that has to be declared alongside the result the way any other non-default setting would be.
 
 ### Deterministic settings
 

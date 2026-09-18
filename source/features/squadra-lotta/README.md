@@ -6,6 +6,14 @@ scende da **33 a 20 frame**, circa **0,55 → 0,33 secondi** a 60 Hz, alla prima
 e alla seconda apertura. Rimane un caricamento visibile: non è movimento
 continuo in ogni fotogramma. La taratura anim2 v5c a 0,375× resta invariata.
 
+**La cache è attiva solo con l'opzione «animazioni» accesa.** Quel byte
+(`0x023D8716` nel chunk di salvataggio Plus) è **spento per difetto**:
+`record()` in [squadra_cache.c:13](sorgenti/squadra_cache.c) lo controlla
+insieme al blocco opzioni valido, e con l'opzione OFF la funzione ritorna
+sempre il getter nativo. Con l'opzione spenta il percorso resta quello
+nativo: la riduzione 33→20 frame **non** si applica, come misurato di
+seguito nella riga «OFF».
+
 ## Causa e contratto
 
 `ov08_0221D184` prepara i dati dei sei Pokémon. Per ogni mossa occupata chiama

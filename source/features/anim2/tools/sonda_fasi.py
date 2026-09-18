@@ -43,6 +43,12 @@ avergli fatto fare qualche giro. Cosi' `lr` lo calcola il processore e vale
 davvero `sito + 5`, e si vede l'effetto della fermata sui campi del `Pokepic`.
 Serve per i siti che una lotta selvatica non fa mai scattare.
 
+`--gancio-task` e `--forza-subito`/`--siti-finti` puntano di default alla testa
+di `sgp_idle_task5` (blocco v5c, simbolo in
+`source/sgp12/build/anim2/manifesto.json`, bit Thumb tolto). Il vecchio blocco
+v4 (`0x023D8BE4`) e' codice storico, morto dopo il passaggio ad anim2: un
+breakpoint li' non scatta mai in una lotta reale.
+
 Uso:
     sonda_fasi.py --hg BIN --rom ROM [--sram SAV] --out DIR --script S --json F
                   [--politica nessuna|E2|E4|E4b] [--anima-avversario]
@@ -297,8 +303,10 @@ def argomenti():
                          "(prova R6: `lr` vero e effetto sullo sprite)")
     ap.add_argument("--bs", default="0x022C0264",
                     help="BattleSystem*, usato solo con --forza-subito")
-    ap.add_argument("--gancio-task", default="0x023D8BE4",
-                    help="testa del task del moto (blocco v5)")
+    ap.add_argument("--gancio-task", default="0x023DB750",
+                    help="testa di sgp_idle_task5 (blocco v5c; simbolo "
+                         "`sgp_idle_task5` in source/sgp12/build/anim2/"
+                         "manifesto.json, bit Thumb tolto)")
     return ap.parse_args()
 
 
