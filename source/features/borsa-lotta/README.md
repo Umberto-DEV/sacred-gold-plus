@@ -7,6 +7,14 @@ pausa del task idle passa da **55 a 7 frame**, circa **0,9 → 0,12 secondi** a
 ogni fotogramma. Il blocco si applica dopo `anim2` e conserva la taratura v5c
 a 0,375×.
 
+**La cache è attiva solo con l'opzione «animazioni» accesa.** Quel byte
+(`0x023D8716` nel chunk di salvataggio Plus) è **spento per difetto**:
+`abilitato()` in [borsa_cache.c:13](sorgenti/borsa_cache.c) lo controlla
+insieme al blocco opzioni valido e all'attributo 13, e con l'opzione OFF la
+funzione ritorna sempre falso. Con l'opzione spenta il percorso resta quello
+nativo: la riduzione 55→7 frame **non** si applica, come misurato di seguito
+nella riga «animazioni OFF».
+
 ## Causa verificata nel gioco
 
 Il costruttore della lista `ov08_02223BF4` scorre gli slot delle otto tasche e
