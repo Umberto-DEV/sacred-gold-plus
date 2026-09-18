@@ -35,7 +35,7 @@ payload's fixed space limit even when they support the ARM target. A usable
 ARM target alone does not establish release reproducibility.
 
 CI runs the Class A suites on the official `xcode-27` macOS runner with
-Xcode 27 beta 6 explicitly selected. It requires Apple clang 21 and retains
+Xcode 27.0 explicitly selected. It requires Apple clang 21 and retains
 all existing byte-for-byte and payload-size tests; those tests establish
 whether the selected compiler reproduces the shipped artifacts. Public-file
 checks remain on Ubuntu. Runner software is documented by
