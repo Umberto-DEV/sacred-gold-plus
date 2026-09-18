@@ -9,7 +9,7 @@
   "suggerimento": 108,
   "comando": 80
  },
- "rom": "sgp-1.2.1-EN.nds (measured on the built ROM's font; identical in IT)",
+ "rom": "sgp-1.2.2-EN.nds (measured on the built ROM's font; identical in IT)",
  "voci": {
   "EN": {
    "p_titolo": {
@@ -193,7 +193,7 @@
     "entro_limite": true
    },
    "c_titolo": {
-    "testo": "Sacred Gold Plus 1.2.1",
+    "testo": "Sacred Gold Plus 1.2.2",
     "classe": "continua",
     "limite": 224,
     "px": 120,
@@ -438,7 +438,7 @@
     "entro_limite": true
    },
    "c_titolo": {
-    "testo": "Sacred Gold Plus 1.2.1",
+    "testo": "Sacred Gold Plus 1.2.2",
     "classe": "continua",
     "limite": 224,
     "px": 120,
