@@ -79,7 +79,12 @@ COND_NE = 5
 
 # Variabili speciali (include/constants/vars.h:386-389)
 VAR_ITEM = 0x8004        # l'oggetto donato/raccolto, in tutti e 6 i flussi
-VAR_SCARTATO = 0x800D    # VAR_SPECIAL_x800D: 1 = il gancio 125 ha scartato
+# 1 = il gancio ARM9 del comando 125 ha scartato qualcosa. NON e' 0x800D:
+# quello e' VAR_SPECIAL_LAST_TALKED (pret include/constants/vars.h:402), che
+# il MOTORE riempie con l'id dell'oggetto con cui si e' interagito (1 per le
+# Poke Ball a terra) e che il membro 141 legge con `HidePerson`. Vedi
+# `sorgenti/sgp_borsa.h`, SGP_VAR_SCARTATO: le due costanti devono coincidere.
+VAR_SCARTATO = 0x800A
 
 BANCO_MSG = 199          # msg_0199, messaggio nuovo aggiunto da BORSA-GEN-08
 MSG_BORSA_PIENA = 10     # 199#10
@@ -164,25 +169,25 @@ class Assemblatore:
 
 
 # ---------------------------------------------------------------------------
-# Il blocco comune: mostra il messaggio se x800D == 1, poi azzera x800D.
+# Il blocco comune: mostra il messaggio se il flag vale 1, poi lo azzera.
 #
-# Chi azzera x800D: L'APPENDICE, subito dopo aver mostrato il messaggio (scelta
+# Chi azzera il flag: L'APPENDICE, subito dopo aver mostrato il messaggio (scelta
 # di questo pacchetto, richiesta dal mandato). Il gancio ARM9 del comando 125 la
-# alza soltanto (`sgp_borsa.h:151`, SGP_VAR_SCARTATO, valore 1 = scartato) e non
-# la abbassa mai. Senza l'azzeramento, un secondo dono nello stesso script — o
+# scrive SEMPRE (0 quando non ha scartato nulla, 1 quando ha scartato:
+# `sorgenti/borsa.c`, `sgp_segna`), perche' la ScriptEnvironment nasce sporca. Senza l'azzeramento, un secondo dono nello stesso script — o
 # un flusso che passa due volte per lo stesso punto — ripresenterebbe il
-# riquadro senza motivo. x800D vive nella ScriptEnvironment (muore con lo
+# riquadro senza motivo. Il flag vive nella ScriptEnvironment (muore con lo
 # script, non entra nel salvataggio: `script_manager.c:353-360`), quindi
 # l'azzeramento serve DENTRO lo script, non fra uno script e l'altro.
 def blocco_messaggio(suffisso: str):
     fine = Etichetta("fine_msg_%s" % suffisso)
     return [
-        (17, [VAR_SCARTATO, 1]),                  # CompareVarToValue x800D, 1
+        (17, [VAR_SCARTATO, 1]),                  # CompareVarToValue <flag>, 1
         (28, [COND_NE, fine]),                    # GoToIf ne, fine
         (194, [1, VAR_ITEM]),                     # BufferItemName 1, x8004
         (440, [BANCO_MSG, MSG_BORSA_PIENA]),      # MsgBoxExtern 199, 10
         (50, []),                                 # WaitButton
-        (41, [VAR_SCARTATO, 0]),                  # SetVar x800D, 0
+        (41, [VAR_SCARTATO, 0]),                  # SetVar <flag>, 0
         ("label", fine),
     ]
 

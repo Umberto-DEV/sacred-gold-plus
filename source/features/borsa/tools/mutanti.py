@@ -50,42 +50,46 @@ CONTA = re.compile(r"^Ran (\d+) tests?", re.M)
 # (nome, offset nel blob, byte atteso prima, byte dopo, cosa spegne)
 # Ogni coppia prima/dopo differisce di UN SOLO bit: lo si verifica qui sotto.
 MUTANTI = [
-    ("M0-staffetta-item", 0x0CF, 0xD1, 0xD0,
+    ("M0-staffetta-item", 0x0EB, 0xD1, 0xD0,
      "bne -> beq sul confronto dell'oggetto della staffetta: un 127 permissivo "
      "su un oggetto armerebbe la consegna di un ALTRO oggetto"),
     ("M1-tabella-ignorata", 0x026, 0x00, 0x01,
      "`movs r2,#0` -> `#1` sull'inizializzazione di `permesso`: permissivo "
      "ovunque, negozi e Angolo dei Premi compresi"),
-    ("M2-tetto-mt-mn", 0x194, 0x03, 0x02,
+    ("M2-tetto-mt-mn", 0x1B4, 0x03, 0x02,
      "`cmp r7,#3` -> `#2` sulla tasca: le MT/MN userebbero il tetto 999 invece "
      "del loro 99"),
-    ("M3-entra-non-limitata", 0x1E3, 0xD3, 0xD2,
+    ("M3-entra-non-limitata", 0x205, 0xD3, 0xD2,
      "blo -> bhs sul confronto fra quantita' chiesta e spazio residuo: la "
      "quantita' non verrebbe piu' limitata a `tetto - avute`"),
-    ("M4-chiavi-e-posta", 0x13E, 0x07, 0x05,
+    ("M4-chiavi-e-posta", 0x15C, 0x07, 0x05,
      "`cmp r0,#7` -> `#5` su `(tasca|2)`: il confronto non e' piu' soddisfatto "
      "da nessuna tasca, e ne' gli oggetti chiave ne' la Posta restano immuni"),
-    ("M5-posta", 0x13A, 0x02, 0x00,
+    ("M5-posta", 0x158, 0x02, 0x00,
      "`movs r0,#2` -> `#0`: il confronto collassa su `tasca == 7`, cioe' la "
      "Posta (tasca 5) smette di essere immune"),
-    ("M6-scorta-ignorata", 0x193, 0xD0, 0xD1,
+    ("M6-scorta-ignorata", 0x1B3, 0xD0, 0xD1,
      "beq -> bne sul controllo `avute == 0`: la scorta gia' in borsa non "
      "conterebbe piu' e nessun oggetto risulterebbe mai al tetto"),
-    ("M7-staffetta-monouso", 0x0D6, 0x00, 0x01,
+    ("M7-staffetta-monouso", 0x0F4, 0x00, 0x01,
      "`movs r0,#0` -> `#1` nell'azzeramento della staffetta dopo un 125 armato: "
      "la staffetta non sarebbe piu' monouso"),
-    ("M8-gancio-125", 0x266, 0x01, 0x00,
+    ("M8-gancio-125", 0x28A, 0x01, 0x00,
      "`movs r1,#1` -> `#0` in sgp_borsa_give_item: il gancio del 125 si "
      "comporterebbe come quello del 127, cioe' non consegnerebbe nulla"),
-    ("M9-rifiuto-non-disarma", 0x1CB, 0xD0, 0xD1,
+    ("M9-rifiuto-non-disarma", 0x1EF, 0xD0, 0xD1,
      "beq -> bne sul rifiuto della Borsa: una staffetta parziale resterebbe "
      "armata anche quando lo SLOT manca e il 127 ha detto no"),
-    ("M10-finestra-impronta", 0x054, 0x15, 0x55,
+    ("M10-finestra-impronta", 0x052, 0x15, 0x55,
      "`ldrb r5,[r2]` -> `[r2,#1]`: la finestra dell'impronta scivola di un "
      "byte e nessuna chiave calcolata combacia piu' con la tabella"),
-    ("M11-flag-x800d", 0x217, 0xD2, 0xD3,
+    ("M11-flag-scartato", 0x237, 0xD2, 0xD3,
      "bhs -> blo sul confronto `entra < qty`: il flag «scartato» verrebbe "
      "alzato quando NON si e' scartato nulla e taciuto quando si e' scartato"),
+    ("M12-flag-mai-azzerato", 0x09C, 0x00, 0x01,
+     "`movs r1,#0` -> `#1` nell'azzeramento del flag in testa al 125: il flag "
+     "resterebbe sempre alto e il messaggio «Borsa piena» uscirebbe su ogni "
+     "dono riuscito — e' il difetto 1.2.1 nella sua forma peggiore"),
 ]
 
 

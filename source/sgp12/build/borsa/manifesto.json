@@ -2,7 +2,7 @@
   "pacchetto": "source/features/borsa",
   "funzione": "Borsa al tetto: l'oggetto donato o raccolto quando lo slot e' al tetto viene comunque ricevuto e scartato (U-borsa-progetto-esecutivo.md §4)",
   "comando": [
-    "clang",
+    "/usr/bin/clang",
     "--target=armv5te-none-eabi",
     "-mcpu=arm946e-s",
     "-mthumb",
@@ -25,11 +25,11 @@
   "avvisi_compilatore": [],
   "sorgente": {
     "file": "borsa.c",
-    "sha256": "b575923d4098035ac16cc228d93ddeba8fd82e3002cf525ee291a7564ee4c5bd"
+    "sha256": "d7b7fea4678b04b43a2ea32f95189b1649578af6a3fddc23eb2b2c613194e928"
   },
   "intestazione": {
     "file": "sgp_borsa.h",
-    "sha256": "ebf3b77ff97b986182664f0e7a451509b6899f38c885101df5a49e51dc0b6182"
+    "sha256": "8ae1d93dc93fa6e217be4fa8ccb9f7b09fba4b1781e0df9c1e52a2f012b4e1d2"
   },
   "indirizzi": {
     "base": "0x23dad00",
@@ -51,17 +51,17 @@
     }
   },
   "simboli": {
-    "$d": "0x23daf30",
-    "$t": "0x23daf64",
+    "$d": "0x23daf54",
+    "$t": "0x23daf88",
     "sgp_borsa_cmd125": "0x23dad09",
     "sgp_borsa_cmd127": "0x23dad01",
-    "sgp_borsa_give_item": "0x23daf65",
+    "sgp_borsa_give_item": "0x23daf89",
     "sgp_borsa_has_space": "0x23dad11",
     "sgp_nucleo": "0x23dad1d"
   },
   "blob": {
-    "byte": 622,
-    "sha256": "905d124e8593d47cba965b49cd2985009674f763f241abf3900419020f66091e",
+    "byte": 658,
+    "sha256": "315f86bd89c49634d11bb7ef1c86746636d84af62b913a84ad2bc0b16ddf7b9e",
     "max": 1504
   },
   "canarino": {
@@ -71,7 +71,7 @@
     "sha256": "46bebd8bc2218078b8b974ff27d54b269d90c19724bf06e4938819b2c797216b"
   },
   "spazio": {
-    "codice": "622/1504 B",
+    "codice": "658/1504 B",
     "tabella": "480 B (120 voci u32)",
     "staffetta_e_originali": "32 B",
     "canarino": "16 B",

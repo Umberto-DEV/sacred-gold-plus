@@ -2,7 +2,8 @@
 """applica_appendici.py — SGP-1.2-BORSA-GEN-09.
 
 Innesta nel NARC `a/0/1/2` le 6 appendici di bytecode che, quando il gancio
-ARM9 del comando 125 ha dovuto scartare l'oggetto (`VAR_SPECIAL_x800D` == 1),
+ARM9 del comando 125 ha dovuto scartare l'oggetto (il flag di
+`appendici_def.VAR_SCARTATO` vale 1),
 mostrano il messaggio 199#10 «La Borsa è piena! Non c'è posto per X…» subito
 dopo l'ultimo riquadro del dono/della raccolta e prima che il flusso finisca.
 

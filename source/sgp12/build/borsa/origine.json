@@ -4,11 +4,11 @@
   "bytes": 2048,
   "prima_versione": "1.2.1",
   "provenienza": "compilato, non estratto: source/features/borsa/tools/compila_borsa.py dai sorgenti pubblici; il canarino e' generato dalla formula 0xCA5A1700|i",
-  "costruito_il": "2026-09-13",
+  "costruito_il": "2026-09-18",
   "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
   "sorgente": {
     "file": "borsa.c",
-    "sha256": "b575923d4098035ac16cc228d93ddeba8fd82e3002cf525ee291a7564ee4c5bd"
+    "sha256": "d7b7fea4678b04b43a2ea32f95189b1649578af6a3fddc23eb2b2c613194e928"
   },
   "riprodurre": "python3 source/features/borsa/tools/compila_borsa.py --uscita DIR"
 }

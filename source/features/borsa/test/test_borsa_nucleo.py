@@ -7,7 +7,7 @@
 E' la matrice T1 di `U-borsa-progetto-esecutivo.md` §5. Ogni caso parte dal
 trampolino — l'indirizzo che l'applicatore scrivera' in `gScriptCmdTable` — e
 legge l'esito dai byte: la variabile di risultato, la staffetta nel blocco,
-`VAR_SPECIAL_x800D`, la sequenza di chiamate native, l'avanzamento di
+il flag «scartato», la sequenza di chiamate native, l'avanzamento di
 `script_ptr`. Nessun caso consulta il sorgente C.
 
 La via NON permissiva non e' confrontata con un'imitazione del vanilla: chiama
@@ -29,7 +29,9 @@ from banco import (  # noqa: E402
 
 ITEM = 50            # un oggetto qualunque: l'id e' un letterale (< 0x4000)
 RETVAR = 0x4001      # la variabile in cui i due comandi scrivono il risultato
-X800D = 0x800D       # VAR_SPECIAL_x800D, il flag «scartato»
+X_FLAG = 0x800A      # il flag «scartato» che legge l'appendice (sgp_borsa.h)
+X800D = 0x800D       # VAR_SPECIAL_LAST_TALKED: del MOTORE, non nostro
+SPAZZATURA = 0x2B0C  # un valore qualunque gia' presente nella variabile
 
 OFF_DONO = 96        # sito «di dono»: finestra piena (96 + 8 > 32)
 OFF_STD = 144        # il sito comune del membro 3, MAI in tabella
@@ -122,7 +124,7 @@ class ProveBorsa(unittest.TestCase):
                 sp = [c for c in r["chiamate"] if c[0] == "Bag_HasSpaceForItem"]
                 self.assertEqual(sp[0][3], 5, "la quantita' piena, come il vanilla")
                 self.assertEqual(b.var(RETVAR), 1)
-                self.assertEqual(b.var(X800D), 0, "il flag resta basso")
+                self.assertEqual(b.var(X_FLAG), 0, "il flag resta basso")
 
     def test_t1d_slot_mancante_non_e_tetto_raggiunto(self):
         """Oggetto assente e tasca senza slot liberi: rifiuto vanilla e nessuna
@@ -289,7 +291,7 @@ class ProveBorsa(unittest.TestCase):
                 self.assert_vanilla(b, r)
 
     # ============================================================== [125] ===
-    def test_t2a_staffetta_armata_consegna_il_nulla_e_alza_x800d(self):
+    def test_t2a_staffetta_armata_consegna_il_nulla_e_alza_il_flag(self):
         for L in LINGUE:
             with self.subTest(lingua=L):
                 b, _ = self.banco125(L, qty=1)
@@ -300,10 +302,10 @@ class ProveBorsa(unittest.TestCase):
                 self.assertNotIn("Bag_AddItem", b.nomi(r),
                                  "non entra niente: Bag_AddItem non si chiama")
                 self.assertEqual(b.var(RETVAR), 1, "«ricevuto»: l'evento passa")
-                self.assertEqual(b.var(X800D), 1, "il flag «scartato» dev'essere alto")
+                self.assertEqual(b.var(X_FLAG), 1, "il flag «scartato» dev'essere alto")
                 self.assertEqual(r["staffetta"]["armata"], 0, "consumata")
 
-    def test_t2b_consegna_parziale_aggiunge_due_e_alza_x800d(self):
+    def test_t2b_consegna_parziale_aggiunge_due_e_alza_il_flag(self):
         for L in LINGUE:
             with self.subTest(lingua=L):
                 b, _ = self.banco125(L, qty=5)
@@ -316,7 +318,7 @@ class ProveBorsa(unittest.TestCase):
                 self.assertEqual(add[0][2], ITEM)
                 self.assertEqual(add[0][3], 2, "ne devono entrare 2, non 5")
                 self.assertEqual(b.var(RETVAR), 1)
-                self.assertEqual(b.var(X800D), 1)
+                self.assertEqual(b.var(X_FLAG), 1)
 
     def test_t2c_sito_in_tabella_con_spazio_non_alza_il_flag(self):
         """I 5 `GiveItem` permissivi (membri 141, 145, 240, 938): quando c'e'
@@ -330,7 +332,7 @@ class ProveBorsa(unittest.TestCase):
                 add = [c for c in r["chiamate"] if c[0] == "Bag_AddItem"]
                 self.assertEqual(add[0][3], 5, "la quantita' piena")
                 self.assertEqual(b.var(RETVAR), 1)
-                self.assertEqual(b.var(X800D), 0, "niente scartato, niente flag")
+                self.assertEqual(b.var(X_FLAG), 0, "niente scartato, niente flag")
 
     def test_t2d_staffetta_non_armata_e_vanilla(self):
         for L in LINGUE:
@@ -341,12 +343,14 @@ class ProveBorsa(unittest.TestCase):
                 self.assert_sano(r)
                 self.assert_vanilla(b, r)
                 self.assertEqual(b.var(RETVAR), 0)
-                self.assertEqual(b.var(X800D), 0)
+                self.assertEqual(b.var(X_FLAG), 0)
                 self.assertEqual(b.nomi(r),
-                                 ["ScriptGetVar", "ScriptGetVar", "ScriptGetVar",
+                                 ["GetVarPointer",
+                                  "ScriptGetVar", "ScriptGetVar", "ScriptGetVar",
                                   "ScriptGetVar", "GetVarPointer", "Save_Bag_Get",
                                   "Bag_AddItem"],
-                                 "due sbirciate nostre, poi la sequenza di 0x0204E9D9")
+                                 "azzeramento del flag, due sbirciate nostre, "
+                                 "poi la sequenza di 0x0204E9D9")
 
     def test_t2e_staffetta_per_un_altro_oggetto_e_vanilla(self):
         for L in LINGUE:
@@ -357,7 +361,7 @@ class ProveBorsa(unittest.TestCase):
                 r = b.esegui(125)
                 self.assert_sano(r)
                 self.assert_vanilla(b, r)
-                self.assertEqual(b.var(X800D), 0)
+                self.assertEqual(b.var(X_FLAG), 0)
 
     def test_t2f_staffetta_per_un_altra_quantita_e_vanilla(self):
         for L in LINGUE:
@@ -377,13 +381,13 @@ class ProveBorsa(unittest.TestCase):
                 b.arma(ITEM, 1, 0)
                 b.tasca, b.quantita, b.aggiunta = POCKET_ITEMS, 999, 0
                 uno = b.esegui(125)
-                self.assertEqual(b.var(X800D), 1)
+                self.assertEqual(b.var(X_FLAG), 1)
                 b.prepara(m)                      # rimette il membro e azzera le var
                 due = b.esegui(125)
                 self.assert_sano(due)
                 self.assert_vanilla(b, due)
                 self.assertEqual(b.var(RETVAR), 0)
-                self.assertEqual(b.var(X800D), 0, "la seconda non alza niente")
+                self.assertEqual(b.var(X_FLAG), 0, "la seconda non alza niente")
                 self.assertEqual(uno["staffetta"]["armata"], 0)
 
     def test_t2h_oggetti_chiave_al_tetto_restano_vanilla_anche_col_125(self):
@@ -395,7 +399,7 @@ class ProveBorsa(unittest.TestCase):
                 self.assert_sano(r)
                 add = [c for c in r["chiamate"] if c[0] == "Bag_AddItem"]
                 self.assertEqual(add[0][3], 1, "quantita' piena: nessuno sconto")
-                self.assertEqual(b.var(X800D), 0)
+                self.assertEqual(b.var(X_FLAG), 0)
 
     # ==================================================== la coppia 127+125 ===
     def test_t3_la_staffetta_attraversa_due_ScriptContext(self):
@@ -419,7 +423,7 @@ class ProveBorsa(unittest.TestCase):
                 self.assert_sano(r2)
                 self.assertNotIn("Bag_AddItem", b.nomi(r2))
                 self.assertEqual(b.var(RETVAR), 1)
-                self.assertEqual(b.var(X800D), 1)
+                self.assertEqual(b.var(X_FLAG), 1)
 
     def test_t3_bis_un_127_di_negozio_chiude_la_staffetta(self):
         """Un 127 qualunque azzera la staffetta: se fra il dono e la consegna
@@ -440,7 +444,95 @@ class ProveBorsa(unittest.TestCase):
                 b.prepara(std)
                 r = b.esegui(125)
                 self.assert_vanilla(b, r)
-                self.assertEqual(b.var(X800D), 0)
+                self.assertEqual(b.var(X_FLAG), 0)
+
+
+    # ================================== il flag «scartato» e LAST_TALKED ===
+    # Regressione del difetto 1.2.1: il flag stava su VAR_SPECIAL_x800D, che e'
+    # VAR_SPECIAL_LAST_TALKED — la variabile in cui il MOTORE mette l'id
+    # dell'oggetto con cui si e' interagito (1 per le Poke Ball a terra). La
+    # guardia dell'appendice risultava gia' soddisfatta e il messaggio
+    # «Borsa piena / l'oggetto e' stato lasciato» usciva su una raccolta
+    # perfettamente riuscita.
+    def test_t4a_il_flag_non_e_last_talked(self):
+        """Uno scarto vero alza il flag e NON tocca VAR_SPECIAL_LAST_TALKED."""
+        for L in LINGUE:
+            with self.subTest(lingua=L):
+                b, _ = self.banco125(L, qty=1)
+                b.scrivi_var(X800D, 1)          # il motore: «hai parlato con l'oggetto 1»
+                b.arma(ITEM, 1, 0)
+                b.tasca, b.quantita = POCKET_ITEMS, 999
+                r = b.esegui(125)
+                self.assert_sano(r)
+                self.assertNotEqual(X_FLAG, X800D,
+                                    "il flag non puo' essere LAST_TALKED")
+                self.assertEqual(b.var(X_FLAG), 1, "il flag «scartato» e' alto")
+                self.assertEqual(b.var(X800D), 1,
+                                 "LAST_TALKED deve restare l'id dell'oggetto")
+
+    def test_t4b_last_talked_uguale_a_uno_non_alza_il_flag(self):
+        """Il caso del difetto: Ball a terra (LAST_TALKED = 1), c'e' posto,
+        niente viene scartato. La guardia dell'appendice deve restare chiusa."""
+        for L in LINGUE:
+            with self.subTest(lingua=L):
+                b, _ = self.banco125(L, qty=1, permissivo=True, off=OFF_DONO)
+                b.scrivi_var(X800D, 1)
+                b.tasca, b.quantita, b.aggiunta = POCKET_ITEMS, 0, 1
+                r = b.esegui(125)
+                self.assert_sano(r)
+                self.assertEqual(b.var(RETVAR), 1, "l'oggetto entra")
+                self.assertEqual(b.var(X_FLAG), 0,
+                                 "niente scartato: nessun messaggio")
+                self.assertEqual(b.var(X800D), 1, "LAST_TALKED intatto")
+
+    def test_t4c_il_125_azzera_sempre_il_flag_anche_sulla_via_vanilla(self):
+        """La ScriptEnvironment sta sull'heap e la speciale nasce sporca
+        (misurata in partita: 1 dopo una raccolta, 11 a riposo). Ogni 125 —
+        permissivo, armato o vanilla — deve riportarla a un valore noto."""
+        for L in LINGUE:
+            for permissivo in (False, True):
+                with self.subTest(lingua=L, permissivo=permissivo):
+                    b, _ = self.banco125(L, qty=1, permissivo=permissivo,
+                                         off=OFF_DONO if permissivo else OFF_STD)
+                    b.scrivi_var(X_FLAG, 1)     # spazzatura: «scartato» acceso
+                    b.tasca, b.quantita, b.aggiunta = POCKET_ITEMS, 0, 1
+                    r = b.esegui(125)
+                    self.assert_sano(r)
+                    self.assertEqual(b.var(X_FLAG), 0,
+                                     "il 125 deve riportare il flag a 0")
+
+    def test_t4d_il_127_non_tocca_ne_il_flag_ne_last_talked(self):
+        """Il controllo di spazio non consegna niente: non ha nulla da dire
+        all'appendice, e non deve sporcare nessuna delle due variabili."""
+        for L in LINGUE:
+            with self.subTest(lingua=L):
+                b, _ = self.banco127(L, qty=1)
+                b.scrivi_var(X800D, SPAZZATURA)
+                b.scrivi_var(X_FLAG, SPAZZATURA)
+                b.tasca, b.quantita = POCKET_ITEMS, 999
+                r = b.esegui(127)
+                self.assert_sano(r)
+                self.assertEqual(b.var(X800D), SPAZZATURA)
+                self.assertEqual(b.var(X_FLAG), SPAZZATURA)
+
+    def test_t4e_il_flag_e_lo_stesso_nel_C_e_nel_bytecode(self):
+        """Le due meta' della staffetta lunga — il gancio ARM9 e l'appendice di
+        bytecode — devono nominare la STESSA variabile, e non quella del motore."""
+        import re
+        import importlib.util
+        pac = Path(__file__).resolve().parents[1]
+        testo = (pac / "sorgenti" / "sgp_borsa.h").read_text()
+        m = re.search(r"#define\s+SGP_VAR_SCARTATO\s+(0x[0-9A-Fa-f]+)u", testo)
+        self.assertIsNotNone(m, "SGP_VAR_SCARTATO non trovata nell'intestazione")
+        dal_c = int(m.group(1), 16)
+        spec = importlib.util.spec_from_file_location(
+            "_app_def", pac / "tools" / "appendici_def.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        self.assertEqual(dal_c, mod.VAR_SCARTATO)
+        self.assertEqual(dal_c, X_FLAG)
+        self.assertNotEqual(dal_c, 0x800D, "0x800D e' VAR_SPECIAL_LAST_TALKED")
+        self.assertNotEqual(dal_c, 0x800C, "0x800C e' VAR_SPECIAL_RESULT")
 
     # ========================================================== il manifesto ===
     def test_i_trampolini_stanno_agli_offset_fissi(self):

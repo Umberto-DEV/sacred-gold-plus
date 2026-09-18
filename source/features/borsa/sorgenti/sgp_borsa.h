@@ -70,7 +70,7 @@ typedef int BOOL;
 /* GetVarPointer(FieldSystem*, u16 varId) -> u16*   (0x02040374)
  * < 0x4000 -> NULL (letterale); 0x4000..0x7FFF -> variabile di salvataggio;
  * >= 0x8000 -> FieldSysGetAttrAddr(fs, varId - 0x7FD6). Il letterale 0x7FD6
- * sta a 0x020403A8: letto. Quindi x800D -> campo 0x37, ed e' questa la via
+ * sta a 0x020403A8: letto. Quindi x800A -> campo 0x34, ed e' questa la via
  * con cui il C scrive una VAR speciale: la stessa che usa il gioco. */
 #define SGP_BORSA_GET_VAR_PTR   0x02040375u
 /* ScriptGetVar(FieldSystem*, u16 varId) -> u16     (0x020403AC)
@@ -139,10 +139,33 @@ typedef int BOOL;
 #define SGP_HEAP_CMD            4u
 #define SGP_HEAP_QUANTITA       11u
 
-/* VAR_SPECIAL_x800D: variabile di lavoro dello script, libera nei cinque
- * membri interessati (U §3.4). Le speciali sono 0x8000..0x800D
- * (NUM_SPECIAL_VARS = 14, pret include/constants/vars.h:387). */
-#define SGP_VAR_SCARTATO        0x800Du
+/* Il flag «ho scartato qualcosa», letto dall'appendice di bytecode
+ * (SGP-1.2-BORSA-GEN-09) con `CompareVarToValue <flag>, 1`.
+ *
+ * NON E' 0x800D. La 1.2.1 usava `VAR_SPECIAL_x800D` credendolo libero perche'
+ * «le speciali sono 0x8000..0x800D e nessuno dei cinque membri lo scrive»
+ * (U §3.4). Le due premesse sono vere e la conclusione e' falsa: 0x800D e'
+ * `VAR_SPECIAL_LAST_TALKED` (pret include/constants/vars.h:402), cioe'
+ * `specialVars[13]` / `SCRIPTENV_SPECIAL_VAR_LAST_INTERACTED`
+ * (pret include/script.h:138). A scriverlo non e' lo script: e' il MOTORE,
+ * che ci mette l'id dell'oggetto con cui si e' appena interagito — e per le
+ * Poke Ball a terra quell'id vale 1. Il membro 141 lo legge pure
+ * (`HidePerson VAR_SPECIAL_LAST_TALKED`, scr_seq_0141 @_1830). Misura al
+ * banco: raccogliendo una Ball a terra la guardia dell'appendice era gia'
+ * soddisfatta senza che niente fosse stato scartato, e il gioco mostrava
+ * «The Bag is full! / It was picked up, but had to be left behind.» DOPO
+ * aver messo l'oggetto in Borsa.
+ *
+ * 0x800A e' l'unica speciale che nessuno scrive: censimento sugli 82703
+ * comandi degli script della ROM 1.2.x, 3 sole occorrenze, tutte letture
+ * (`Wait x800A` nel membro 3), zero scritture; e il motore non la tocca
+ * (scrive x8000..x8003 in FieldMove_SetArgs, x800C = RESULT, x800D =
+ * LAST_TALKED). Non basta pero' che nessuno la scriva: la ScriptEnvironment
+ * sta sull'heap e in partita contiene spazzatura (misurata: x800A = 11).
+ * Percio' il contratto e': **il gancio del comando 125 la scrive SEMPRE**,
+ * 0 quando non ha scartato nulla, 1 quando ha scartato; e ogni appendice e'
+ * preceduta, nello stesso flusso, dal `GiveItem` a cui e' agganciata. */
+#define SGP_VAR_SCARTATO        0x800Au
 
 /* Lunghezza dell'istruzione dei due comandi ganciati: opcode (2 B) + tre
  * argomenti da 2 B ciascuno (`scrcmd.json`, e i tre `bl ScriptReadHalfword`

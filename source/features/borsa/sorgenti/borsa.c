@@ -230,6 +230,24 @@ static u16 sgp_quanto_entra(void *bag, u16 item, u16 qty)
     return (qty <= spazio) ? qty : spazio;
 }
 
+/* ------------------------------------------------- il flag «ho scartato» ---
+ * Lo legge l'appendice di bytecode con `CompareVarToValue <flag>, 1`. Si
+ * scrive SEMPRE sul comando 125, su ogni via d'uscita, perche' la variabile
+ * non nasce azzerata: la ScriptEnvironment sta sull'heap e la speciale puo'
+ * contenere spazzatura di un'altra partita. Scrivere solo l'1 lascerebbe
+ * decidere al caso; scrivere sempre rende la guardia esatta. */
+static void sgp_segna(void *fs, u16 valore)
+{
+    u16 *v;
+    if (fs == 0) {
+        return;
+    }
+    v = ((GetVarPtrFn)SGP_BORSA_GET_VAR_PTR)(fs, SGP_VAR_SCARTATO);
+    if (v != 0) {
+        *v = valore;
+    }
+}
+
 static void sgp_arma(u16 item, u16 chieste, u16 entrate)
 {
     WR16(CAMPO(SGP_BORSA_STAFFETTA, SGP_ST_ITEM), item);
@@ -271,6 +289,14 @@ static BOOL sgp_nucleo(void *ctx, int e125)
 
     permesso = sgp_permesso(sgp_chiave(ctx));
     fs = (void *)RD32(CAMPO(ctx, SGP_CTX_FIELD_SYSTEM));
+
+    if (e125) {
+        /* Il flag parte basso su OGNI 125, anche su quello che se ne andra'
+         * dritto al vanilla: l'appendice che lo legge sta a valle di questo
+         * stesso GiveItem, e senza l'azzeramento leggerebbe la spazzatura
+         * della ScriptEnvironment. */
+        sgp_segna(fs, 0u);
+    }
 
     if (e125) {
         /* Sbirciata NON distruttiva dei primi due argomenti: serve a sapere se
@@ -344,12 +370,10 @@ static BOOL sgp_nucleo(void *ctx, int e125)
     if (e125 && entra < qty) {
         /* Qualcosa e' stato scartato: lo dice all'appendice di bytecode
          * (SGP-1.2-BORSA-GEN-09), che stampa il messaggio col nome
-         * dell'oggetto. VAR_SPECIAL_x800D vive nella ScriptEnvironment: muore
-         * con lo script, non finisce nel salvataggio, non puo' restare accesa. */
-        u16 *v = ((GetVarPtrFn)SGP_BORSA_GET_VAR_PTR)(fs, SGP_VAR_SCARTATO);
-        if (v != 0) {
-            *v = 1u;
-        }
+         * dell'oggetto. La speciale scelta vive nella ScriptEnvironment: muore
+         * con lo script, non finisce nel salvataggio, non puo' restare accesa
+         * — e NON e' 0x800D, che appartiene al motore (vedi sgp_borsa.h). */
+        sgp_segna(fs, 1u);
     }
     return 0;
 }

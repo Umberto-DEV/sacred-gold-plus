@@ -12,8 +12,8 @@ CONTROLLI (tutti devono essere verdi):
   1. per ciascuno dei 6 flussi, la traccia attesa — dall'ancora del flusso fino
      alla fine — coincide istruzione per istruzione, argomenti compresi;
   2. il blocco del messaggio compare UNA volta per flusso, nella forma esatta
-     (guardia su x800D, nome oggetto ricaricato, banco 199 messaggio 10, attesa,
-     azzeramento di x800D) e il salto di guardia scavalca esattamente il blocco;
+     (guardia sul flag, nome oggetto ricaricato, banco 199 messaggio 10, attesa,
+     azzeramento del flag) e il salto di guardia scavalca esattamente il blocco;
   3. `scr_disasm --verifica` (ri-serializzazione) verde su TUTTO l'archivio, e
      i membri con errori di decodifica sono esattamente i 6 preesistenti;
   4. nessun membro dell'archivio cambia oltre i cinque previsti;
@@ -48,7 +48,7 @@ MEMBRI_ATTESI = {3, 141, 145, 240, 938}
 ERRORI_PREESISTENTI = [225, 232, 243, 246, 938, 962]
 
 VAR_ITEM = 0x8004
-VAR_SCARTATO = 0x800D
+VAR_SCARTATO = 0x800A   # vedi sorgenti/sgp_borsa.h: NON e' 0x800D (LAST_TALKED)
 BANCO = 199
 MESSAGGIO = 10
 COND_NE = 5

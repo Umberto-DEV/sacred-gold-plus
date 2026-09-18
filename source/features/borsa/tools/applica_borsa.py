@@ -251,7 +251,7 @@ NARC_SCRIPT = "a/0/1/2"
 NARC_MESSAGGI = "a/0/2/7"
 ARCHIVIO_SCRIPT_VANILLA = 442264
 ARCHIVIO_SCRIPT_FINALE = 442524
-ARCHIVIO_SCRIPT_FINALE_SHA = "c7869d1f1328d95426ef31921eb783bc65d9fe9055263dfb1bc3652ebd2c51a0"
+ARCHIVIO_SCRIPT_FINALE_SHA = "b1144f1572c5efe8a4a5ce50386ec569ee782bb55ef4b85c56ad458094986e29"
 ARCHIVIO_SCRIPT_CON_REWARD = 442616
 MEMBRI_VANILLA = {
     843: (5468, "cb690bc3b229515e11dda13d691f354e0d39905597b7b2d2abd3bafb200862d1"),
@@ -259,11 +259,11 @@ MEMBRI_VANILLA = {
     877: (457, "742f3f4fe75ecc952fa8fbbdc9ecee56c5f743f5199d864eb2725721cc2f4f00"),
 }
 FIRME_APPENDICI = {
-    3: (6163, "5c209d30c2e2166ffc77cbbe54c024823a96ea3fffc2800f11aecf0db303239a"),
-    141: (6652, "1c24e6a528f875e677eaa3d2dc8d9cc0eb5bcd0afb0a75f8cfbd98b850fcd50e"),
-    145: (1548, "d7dbc776615c591f2a276c9aadaa672536764c40d577c0848a30737b7539e71f"),
-    240: (1082, "df16804c1b9fd5b3ff0f3017b8bc9f79c016b6af354bf39f71dc0f0654704961"),
-    938: (2150, "c3aa275172ee98f5cbd193990055746b4969a7d6c60d3e996052774ea5f6ade5"),
+    3: (6163, "fdde73cfa414a6e773f15b1ba04c9e1615669eda1ea3a73250c17b869f70e98a"),
+    141: (6652, "4d95a52d22458f98d14cf09d30fc50b28a0a72cfe91012e3796a7a3de0a0630a"),
+    145: (1548, "12795b2518150834fb06d625c5a6e9104077982a607eccc59323b221917b9d67"),
+    240: (1082, "3bfcee24c0bf46f73bfa3871f3927b6b477f37a096deea196586b55627430d14"),
+    938: (2150, "ce0704e5edeccb895c8214b91d0317e0ea35b81cd9899828a7f7c62a02ab0c80"),
 }
 BANCO_199 = 199
 MSG_199_ATTESI = 11          # 10 in vanilla + il messaggio 199#10 del pacchetto 08
@@ -630,7 +630,7 @@ def verifica_catena_a_monte(rom_path, log):
     esigi(quanti == MSG_199_ATTESI,
           "B3b: il banco %d di %s ha %d messaggi, attesi %d: `applica_199.py` "
           "(BORSA-GEN-08) non e' stato eseguito, e il gancio accenderebbe "
-          "VAR_SPECIAL_x800D per un messaggio che non esiste"
+          "il flag 'scartato' per un messaggio che non esiste"
           % (BANCO_199, NARC_MESSAGGI, quanti, MSG_199_ATTESI))
     log["catena_a_monte"] = {
         "%s_byte" % NARC_SCRIPT: len(script),
