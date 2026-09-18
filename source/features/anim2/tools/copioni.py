@@ -12,6 +12,13 @@ un altro salvataggio richiede un copione adatto alla sua posizione. I puntatori
 PIC0/PIC1 sono propri della fixture, da misurare di nuovo su altre squadre.
 Nessun salvataggio è incluso.
 
+`--pic0`/`--pic1` hanno per default i valori misurati il 18/09/2026 sulla
+fixture Typhlosion (giocatore) / Kakuna (avversario) del Parco Nazionale:
+0x022F0DB8 e 0x022F0E64, identici EN/IT. Per una fixture diversa NON fidarsi
+di questi numeri: i puntatori PIC vanno riletti dalle voci del blocco anim2,
+campo `pic` a +0x04 di ciascuna voce (0x023DBBE0+0x04 per il lottatore
+giocatore, 0x023DBC00+0x04 per l'avversario), e passati con `--pic0/--pic1`.
+
 Le coordinate sono quelle dello **schermo basso** e sono state lette sulle
 catture del menu di lotta; sono **identiche in EN e IT** (verificato sulle corse
 di questo pacchetto). Avvertenza misurata: dopo aver toccato il menu, `tap A`
@@ -73,8 +80,12 @@ BORSA_INDIETRO = (238, 165)
 HITS = 0x023DBBA4
 HITS_ON = 0x023DBBA8
 CHUNK_ANIM = 0x023D8716          # interruttore della funzione (1 = accesa)
-PIC0 = 0x022F0C08                # Pokepic del lottatore del giocatore
-PIC1 = 0x022F0CB4                # Pokepic del lottatore avversario
+# Default di --pic0/--pic1: Pokepic* misurati il 18/09/2026 sulla fixture
+# Typhlosion (giocatore) / Kakuna (avversario) del Parco Nazionale, identici
+# EN/IT. Per un'altra fixture rileggere dal blocco anim2 (voci a 0x023DBBE0 e
+# 0x023DBC00, campo pic a +0x04) e passare --pic0/--pic1.
+PIC0 = 0x022F0DB8                # Pokepic del lottatore del giocatore
+PIC1 = 0x022F0E64                # Pokepic del lottatore avversario
 
 
 def watch(pic0=PIC0, pic1=PIC1):
@@ -147,13 +158,13 @@ def indietro(volte=2, attesa=60, dopo=120, nome=None):
 # --------------------------------------------------------------------------
 def corsa_menu(a):
     """Da ROM fredda fino al menu comandi, e salva lo stato."""
-    return (watch() + PROLOGO_FREDDO +
+    return (watch(a.pic0, a.pic1) + PROLOGO_FREDDO +
             "save %s\nstatus\nquit\n" % a.stato_da_salvare)
 
 
 def corsa_fasi(a):
     n = a.fotogrammi
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     s.append("# --- MENU comandi (riferimento) ---\n")
     s.append(seq("m", n))
     s.append("read 0x%08X 4 1\ncapture 09-menu-fine.ppm\n" % HITS)
@@ -182,7 +193,7 @@ def corsa_fasi(a):
 def corsa_borsa(a):
     """Sottomenu reali della Borsa: osserva senza consumare oggetti."""
     n = a.fotogrammi
-    return (watch() + prologo(a) + seq("m", n) +
+    return (watch(a.pic0, a.pic1) + prologo(a) + seq("m", n) +
             tocca(BORSA, 160, "10-borsa.ppm") + seq("b", n) +
             tocca(TASCA_BALL, 120, "20-tasca.ppm") + seq("t", n) +
             tocca(OGGETTO_1, 120, "30-oggetto.ppm") + seq("o", n) +
@@ -194,7 +205,7 @@ def corsa_turni(a):
     """Due turni: menu -> mossa -> attesa -> menu -> mossa. Si guarda se il
     moto riparte al secondo turno (`start_effettivi >= 2`)."""
     n = a.fotogrammi
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     for turno in (1, 2):
         s.append("# --- TURNO %d: menu ---\n" % turno)
         s.append(seq("t%d" % turno, n))
@@ -213,7 +224,7 @@ def corsa_turni(a):
 def corsa_finale(a):
     """Lotta portata fino alla fine: la prima mossa basta a mettere KO
     l'avversario, poi si preme A finche' si torna in overworld."""
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     s.append(tocca(LOTTA, 120, "50-mosse.ppm"))
     s.append(tocca(MOSSA_4, 20, "55-scelta.ppm"))
     for k in range(a.attese):
@@ -228,7 +239,7 @@ def corsa_finale(a):
 def corsa_sino(a):
     """Lotta allenatore: si attacca finche' il primo Pokemon avversario cade;
     con lo stile «cambio» il gioco apre allora il menu Si/No."""
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     for giro in range(a.attese):
         s.append("# --- attacco %d ---\n" % giro)
         s.append(tocca(LOTTA, 120, "s%02d-mosse.ppm" % giro))
@@ -248,7 +259,7 @@ def corsa_cambio(a):
     (`start_effettivi >= 2`) e, insieme, il caso «il Pokepic cambia sotto il
     task» del rischio R2."""
     n = a.fotogrammi
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     s.append("# --- TURNO 1: menu ---\n")
     s.append(seq("u", n))
     s.append("read 0x%08X 4 1\ncapture t1-00-menu.ppm\n" % HITS)
@@ -274,7 +285,7 @@ def corsa_cambio(a):
 def corsa_siti(a):
     """Copione minimo: basta stare nella lotta mentre la sonda `--siti-finti`
     spara a CPU ferma il `bl` di tutti e nove i siti."""
-    s = [watch(), prologo(a)]
+    s = [watch(a.pic0, a.pic1), prologo(a)]
     s.append("capture 01-prima.ppm\nread 0x%08X 4 1\n" % HITS)
     for k in range(a.attese):
         s.append("run 120\ncapture n%02d.ppm\nread 0x%08X 4 1\n" % (k, HITS))
@@ -298,6 +309,15 @@ def main():
     ap.add_argument("--stato", help="savestate da cui partire (nella cartella "
                                     "--out della corsa)")
     ap.add_argument("--stato-da-salvare", default="menu.state")
+    ap.add_argument("--pic0", type=lambda x: int(x, 0), default=PIC0,
+                    help="Pokepic* del lottatore giocatore (default: misurato "
+                         "18/09/2026 su Typhlosion/Kakuna, 0x%08X; per "
+                         "un'altra fixture rileggere dal blocco anim2, voce "
+                         "0x023DBBE0+0x04)" % PIC0)
+    ap.add_argument("--pic1", type=lambda x: int(x, 0), default=PIC1,
+                    help="Pokepic* del lottatore avversario (default: "
+                         "misurato 18/09/2026, 0x%08X; rileggere da "
+                         "0x023DBC00+0x04 per un'altra fixture)" % PIC1)
     a = ap.parse_args()
     testo = CORSE[a.corsa](a)
     with open(a.file, "w") as f:
