@@ -67,6 +67,66 @@ class CompilaAnim5Test(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("SCALA ROSSO", r.stderr)
 
+    def esegui(self, *argv):
+        with tempfile.TemporaryDirectory() as td:
+            return subprocess.run(
+                [sys.executable, str(COMPILA), "--uscita", td, *argv],
+                capture_output=True, text=True,
+            )
+
+    def test_i_cinque_cancelli_dell_accento_bloccano_i_valori_che_si_rompono(self):
+        """A1 §3.2 B1/B2/B4 e A8b M3: cinque parametri che il compilatore
+        accettava in silenzio e che a runtime davano troncamenti in u8,
+        sottrazioni in underflow, maschere a buchi e letture fuori tabella.
+        Sono controlli Python: costano zero byte di ROM."""
+        casi = (
+            (["--blink-dur", "0"], "BLINK ROSSO"),          # B2: (u8)(0-1) = 255 tick
+            (["--blink-min", "200", "--blink-mask", "63"], "BLINK ROSSO"),  # B1: 263 -> 7
+            (["--blink-mask", "100"], "BLINK ROSSO"),       # B4: maschera non 2^n-1
+            (["--fase", "200,200,200,200"], "FASE ROSSO"),  # M3: idx fuori tab_u
+            (["--blink-dur", "250", "--raro-piu", "10"], "BLINK ROSSO"),   # blink_left tronca
+        )
+        for argv, marchio in casi:
+            with self.subTest(argv=" ".join(argv)):
+                r = self.esegui(*argv)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn(marchio, r.stderr)
+
+    def test_i_valori_spediti_passano_tutti_i_cancelli(self):
+        self.assertEqual(self.esegui().returncode, 0)
+        for variante in ("V1", "V2", "V3"):
+            with self.subTest(variante=variante):
+                self.assertEqual(self.esegui("--variante", variante).returncode, 0)
+
+    def test_le_tre_varianti_cambiano_solo_i_parametri(self):
+        """V1/V2/V3 sono tarature, non codice: stesso blob, par.bin diverso."""
+        manifesti = {}
+        for variante in ("V1", "V2", "V3"):
+            td = tempfile.TemporaryDirectory()
+            self.addCleanup(td.cleanup)
+            subprocess.run([sys.executable, str(COMPILA), "--uscita", td.name,
+                            "--variante", variante], check=True, capture_output=True)
+            manifesti[variante] = json.loads(
+                (Path(td.name) / "manifesto.json").read_text())
+        blob = {m["blob"]["sha256"] for m in manifesti.values()}
+        self.assertEqual(len(blob), 1, "le varianti non condividono il blob")
+        par = {v: m["tabelle_bin"]["par"] for v, m in manifesti.items()}
+        self.assertEqual(len({p["sha256"] for p in par.values()}), 3)
+        self.assertEqual([par["V1"]["blink_dur"], par["V1"]["raro_piu"]], [10, 5])
+        self.assertEqual([par["V2"]["blink_dur"], par["V2"]["raro_piu"]], [15, 5])
+        self.assertEqual([par["V3"]["blink_dur"], par["V3"]["raro_piu"]], [30, 0])
+        for v, pv in par.items():
+            self.assertEqual([pv["blink_min"], pv["blink_mask"]], [120, 127], v)
+
+    def test_i_valori_spediti_sono_la_variante_V1(self):
+        """Il default del compilatore e' la taratura spedita in build/anim2."""
+        m = json.loads((BUILD / "manifesto.json").read_text())
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(
+            [par["blink_dur"], par["raro_piu"], par["blink_min"], par["blink_mask"]],
+            [10, 5, 120, 127])
+        self.assertEqual(par["variante"], "V1")
+
     def copia_build(self):
         td = tempfile.TemporaryDirectory()
         self.addCleanup(td.cleanup)

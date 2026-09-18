@@ -10,9 +10,9 @@ sys.path.insert(0, str(QUI))
 
 try:
     from banco5 import Banco5, BS, ANIMSYS
-    from banco4 import (OD0, OD1, PIC0, PIC1, PP_ANIMACTIVE, PP_YOFFSET,
-                        PP_AFFINEW, PP_AFFINEH, PP_SHADOW_YOFF, OD_POKEPIC,
-                        SL_OD, SL_PIC, SL_SIZE)
+    from banco4 import (OD0, OD1, PIC0, PIC1, PP_ANIMACTIVE, PP_ANIMSTEP,
+                        PP_YOFFSET, PP_AFFINEW, PP_AFFINEH, PP_SHADOW_YOFF,
+                        OD_POKEPIC, SL_OD, SL_PIC, SL_SIZE)
     from unicorn import UC_HOOK_CODE
     from unicorn.arm_const import (UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_R0,
                                    UC_ARM_REG_R1, UC_ARM_REG_R2)
@@ -27,6 +27,14 @@ OD2, OD3 = 0x02302000, 0x02303000
 PIC2, PIC3, PIC4 = 0x02312000, 0x02313000, 0x02314000
 LRS = [0x02258E9D, 0x0225933D, 0x0225959B, 0x0225DFC3, 0x0225E00F,
        0x0225E0B7, 0x0225E3A3, 0x0225E675, 0x0225FC0F]
+# offset di `par.bin` (sgp_anim5.h) e dello stato, usati dalle prove dell'accento
+PAR_BLINK_MIN, PAR_BLINK_MASK, PAR_BLINK_DUR = 0x0C, 0x0D, 0x0E
+PAR_RARO_OGNI, PAR_RARO_PIU = 0x0F, 0x10
+ST_LAST_STEP, ST_LAST_IDX = 0x12, 0x13
+SL_RNG, SL_BLEFT, SL_BWAIT = 0x08, 0x10, 0x11
+SL_CODA0 = 0x18            # v5d: il BattleSystem che ha creato la voce (M2)
+SETATTR = 0x020087A4       # Pokepic_SetAttr, indirizzo pari
+PICCO = (4, 5)             # indici in cui `tab_u` vale il massimo (16)
 
 
 @unittest.skipUnless(UNICORN, "serve unicorn")
@@ -288,6 +296,190 @@ class Blob5Test(unittest.TestCase):
         self.assertEqual(r["r0"], 0x42)
         self.assertEqual(self.b.u32(OD0 + 0x198), 0x02320000)
 
+
+    # ------------------------------------------------------------------ v5d
+    def _porta_dentro_la_posa_b(self, od=OD0, limite=4000):
+        """Fa girare il task finche' la voce non e' dentro una posa B con
+        almeno un tick residuo. Rende il numero di tick consumati."""
+        for i in range(limite):
+            self.b.nostro(od)
+            if self.b.u8(self.b.slot + SL_BLEFT) != 0:
+                return i + 1
+        self.fail("in %d tick la posa B non e' mai iniziata" % limite)
+
+    def test_cancello_dentro_la_posa_b_annulla_il_residuo(self):
+        """B3 (A1 §3.2, misurato sul banco in A2 §6.2): oggi il residuo di
+        `blink_left` si congela e la posa B riappare appena il cancello cade —
+        un lampo fisso alla fine di ogni mossa. Dopo la correzione la posa e'
+        annullata e l'attesa riparte da un valore pieno."""
+        blink_min = self.b.par(PAR_BLINK_MIN)
+        self._porta_dentro_la_posa_b()
+        self.b.mossa(True)
+        self.b.nostro(OD0)                     # riposo + sospensione
+        self.assertEqual(self.b.u8(self.b.slot + SL_BLEFT), 0,
+                         "il residuo della posa B non e' stato annullato")
+        self.assertGreaterEqual(self.b.u8(self.b.slot + SL_BWAIT), blink_min,
+                                "l'attesa non e' ripartita da un valore pieno")
+        self.b.mossa(False)
+        for i in range(blink_min):
+            self.b.nostro(OD0)
+            self.assertEqual(self.b.u8(PIC0 + PP_ANIMSTEP), 0,
+                             "posa B al tick %d dopo il rilascio" % i)
+
+    def test_ogni_accento_comincia_al_picco_del_respiro(self):
+        """S3 (A1 §3.3, confermato in A2 §3: il cambio di posa e' oggi
+        indipendente dalla fase, chi-quadro compatibile con l'uniforme). In
+        v5d l'accento parte solo nel punto di quiete del respiro, dove
+        `tab_u` e' al massimo, cosi' non si sommano due moti."""
+        inizi, prec = [], self.b.u8(PIC0 + PP_ANIMSTEP)
+        for _ in range(400):
+            self.b.nostro(OD0)
+            p = self.b.u8(PIC0 + PP_ANIMSTEP)
+            if p == 1 and prec == 0:
+                inizi.append(self.b.u8(self.b.stato + ST_LAST_IDX))
+            prec = p
+        self.assertTrue(inizi, "nessun accento in 400 tick")
+        self.assertEqual(sorted(set(inizi) - set(PICCO)), [],
+                         "accenti fuori dal picco, indici visti: %s" % inizi)
+
+    def test_prima_attesa_casuale_per_ogni_lottatore(self):
+        """S2 (A1 §3.3): in v5c la prima attesa e' `BLINK_MIN` nuda, uguale per
+        tutti, e quattro lottatori creati nello stesso tick fanno il primo
+        accento all'unisono. In v5d la prima attesa e' sorteggiata come ogni
+        altra."""
+        b = Banco5(BUILD)
+        b.accendi()
+        b.prepara_bs([OD0, OD1])
+        minimo, maschera = b.par(PAR_BLINK_MIN), b.par(PAR_BLINK_MASK)
+        for od, pic in ((OD0, PIC0), (OD1, PIC1)):
+            b.prepara(od, pic)
+        b.nostro(OD0)
+        b.nostro(OD1)
+        attese = [b.u8(b.slot + i * SL_SIZE + SL_BWAIT) for i in (0, 1)]
+        for a in attese:   # un tick e' gia' stato scalato dal primo giro
+            self.assertGreaterEqual(a + 1, minimo)
+            self.assertLessEqual(a + 1, minimo + maschera)
+        self.assertNotEqual(attese[0], attese[1],
+                            "i due lottatori hanno la STESSA prima attesa (%s)" % attese)
+
+    def test_primo_accento_in_tick_diversi_per_i_due_lottatori(self):
+        """La conseguenza visibile di S2: la prima posa B non e' all'unisono."""
+        b = Banco5(BUILD)
+        b.accendi()
+        b.prepara_bs([OD0, OD1])
+        for od, pic in ((OD0, PIC0), (OD1, PIC1)):
+            b.prepara(od, pic)
+        primo = {}
+        for t in range(600):
+            for od, pic in ((OD0, PIC0), (OD1, PIC1)):
+                b.nostro(od)
+                if od not in primo and b.u8(pic + PP_ANIMSTEP) == 1:
+                    primo[od] = t
+            if len(primo) == 2:
+                break
+        self.assertEqual(len(primo), 2, "un lottatore non ha mai fatto l'accento")
+        self.assertNotEqual(primo[OD0], primo[OD1], primo)
+
+    def test_spegnere_a_lotta_in_corso_ripulisce_e_libera(self):
+        """A8b-A1: le due uscite «opzione spenta» ritornavano senza
+        `sgp_pulisci`, e affineW/H (+-6), shadow.yOffset e posa B restavano
+        impressi sullo sprite — D1+D2 della v4, reintrodotti."""
+        for _ in range(120):   # fino a trovare lo sprite davvero spostato
+            self.b.nostro(OD0)
+            if self.b.s16(PIC0 + PP_AFFINEW) != 256:
+                break
+        base = self.b.s16(self.b.slot + 0x0C)          # base76 catturata
+        self.assertNotEqual(self.b.s16(PIC0 + PP_AFFINEW), 256,
+                            "la scala non e' stata toccata: prova non probante")
+        self.b.spegni()
+        self.b.politica(OD0, LRS[0])
+        self.assertEqual(self.b.voci_occupate(), [])
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEW), 256)
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEH), 256)
+        self.assertEqual(self.b.s16(PIC0 + PP_SHADOW_YOFF), base)
+        self.assertEqual(self.b.s16(PIC0 + PP_YOFFSET), 0)
+        self.assertEqual(self.b.u8(PIC0 + PP_ANIMSTEP), 0)
+
+    def test_spegnere_dal_task_ripulisce_prima_del_task_vanilla(self):
+        """L'altra uscita «opzione spenta»: quella del task idle."""
+        for _ in range(24):
+            self.b.nostro(OD0)
+        self.b.spegni()
+        self.b.nostro(OD0)
+        self.assertEqual(self.b.voci_occupate(), [])
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEW), 256)
+        self.assertEqual(self.b.s16(PIC0 + PP_AFFINEH), 256)
+        self.assertEqual(self.b.u8(PIC0 + PP_ANIMSTEP), 0)
+
+    def test_opzione_mai_accesa_non_scrive_un_byte_in_piu(self):
+        """La byte-identita' a interruttore spento: le stesse Pokepic_SetAttr,
+        nello stesso ordine, e la politica che non tocca il Pokepic."""
+        a, v = Banco5(BUILD), Banco5(BUILD)
+        a.spegni()
+        v.spegni()
+        a.prepara(OD0, PIC0, ombra_yoff=7)
+        v.prepara(OD0, PIC0, ombra_yoff=7)
+        conta = {"a": 0, "v": 0}
+
+        def fai(banco, chiave):
+            def visto(uc, address, size, user):
+                conta[chiave] += 1
+            h = banco.uc.hook_add(UC_HOOK_CODE, visto,
+                                  begin=SETATTR, end=SETATTR)
+            try:
+                if chiave == "a":
+                    banco.nostro(OD0, sorveglia=True)
+                else:
+                    banco.vanilla(OD0)
+            finally:
+                banco.uc.hook_del(h)
+
+        fai(a, "a")
+        fai(v, "v")
+        self.assertEqual(conta["a"], conta["v"], conta)
+        self.assertEqual(a.istantanea(PIC0, OD0), v.istantanea(PIC0, OD0))
+        prima = a.rd(PIC0, 0xAC)
+        a.politica(OD0, LRS[0])
+        self.assertEqual(a.rd(PIC0, 0xAC), prima,
+                         "la politica a opzione spenta ha scritto nel Pokepic")
+
+    def test_seconda_lotta_con_stessi_indirizzi_ricrea_la_voce(self):
+        """M2 (A8b): `s->idx`, inviluppo, fase e rng sopravvivevano a una
+        seconda lotta che riusa gli stessi indirizzi. La voce porta ora il
+        `BattleSystem` che l'ha creata e si riazzera quando cambia."""
+        BS2 = 0x02354000
+        for _ in range(24):
+            self.b.nostro(OD0)
+        rng = self.b.u32(self.b.slot + SL_RNG)
+        fase = self.b.u8(self.b.slot + 0x16)
+        self.assertNotEqual(fase, 0, "fase gia' a zero: prova non probante")
+        self.b.wr(BS2, self.b.rd(BS, 0x220))          # seconda lotta, stessi od
+        self.b.wr(self.b.stato + 0x28, BS2.to_bytes(4, "little"))
+        self.b.nostro(OD0)
+        self.assertEqual(self.b.u32(self.b.slot + SL_CODA0), BS2)
+        self.assertNotEqual(self.b.u32(self.b.slot + SL_RNG), rng)
+        self.assertLessEqual(abs(self.b.s16(PIC0 + PP_YOFFSET)), 1,
+                             "l'inviluppo non e' ripartito da zero")
+
+    def test_durata_della_posa_b_segue_i_parametri(self):
+        """A1 §1.2 / A2 §3.2: l'intervallo con ANIM_STEP=1 dura `dur` o
+        `dur+1` tick, e uno su `raro_ogni` dura `raro_piu` tick in piu'."""
+        dur = self.b.par(PAR_BLINK_DUR)
+        piu = self.b.par(PAR_RARO_PIU)
+        attese = {dur, dur + 1, dur + piu, dur + piu + 1}
+        durate, corsa, prec = [], 0, 0
+        for _ in range(3000):
+            self.b.nostro(OD0)
+            p = self.b.u8(PIC0 + PP_ANIMSTEP)
+            if p == 1:
+                corsa += 1
+            elif prec == 1:
+                durate.append(corsa)
+                corsa = 0
+            prec = p
+        self.assertGreaterEqual(len(durate), 3, durate)
+        self.assertEqual(sorted(set(durate) - attese), [],
+                         "durate fuori dai parametri %s: %s" % (sorted(attese), durate))
 
 if __name__ == "__main__":
     unittest.main()

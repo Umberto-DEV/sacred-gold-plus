@@ -73,3 +73,9 @@ class Banco5(Banco4):
 
     def politica(self, od, lr):
         return self.chiama(self.stop_politica, r0=od, r1=lr)
+
+    # I parametri spediti stanno a `tabelle + 0x20` (par.bin, 32 B). I test li
+    # leggono da li' invece di ricopiarli: cambiare una variante non deve
+    # costringere a riscrivere le prove.
+    def par(self, off):
+        return self.u8(self.tabelle + 0x20 + off)

@@ -1,4 +1,4 @@
-/* Sacred Gold Plus — ANIM2 v5c, GPL-3.0-or-later.
+/* Sacred Gold Plus — ANIM2 v5d, GPL-3.0-or-later.
  *
  * Moto di attesa su fino a quattro lottatori, con clock privato in ottavi
  * (0.25x / 0.375x / 0.5x), interpolazione e ripresa graduale da riposo.
@@ -12,11 +12,23 @@
  * imposta il ritaglio PRIMA della discesa. Un tick inattivo libera la voce;
  * il riuso dello stesso indirizzo riparte con fase/ombra/inviluppo puliti.
  *
- * Opzione spenta: chiamate native con stessi argomenti e stesso ritorno.
+ * Opzione spenta: chiamate native con stessi argomenti e stesso ritorno, e
+ * ora anche `sgp_pulisci` prima di entrambe le uscite, cosi' spegnere a lotta
+ * in corso non lascia scala, ombra e posa impresse sullo sprite (A8b-A1).
  * Opzione accesa: niente task vanilla nel tick idle. La v4 resta nella sua
  * riserva; il suo gancio di coda torna vanilla. Blocco, canarino e indirizzi
  * dei dati restano quelli di v5b (2048 B a 0x023DB500).
- * Vedi ../AUDIT-2026-09-14.md per cause, misure, fonti e limiti.
+ *
+ * v5d (18/09/2026) — l'accento di posa B. La posa B non e' un battito di
+ * ciglia: per il 99 % delle viste e' una seconda posa intera, e la v5c la
+ * teneva 2-3 tick = 0,067-0,100 s (misurati), da 3,3x a 7,5x meno di
+ * qualunque durata che il gioco stesso usi per lo stesso fotogramma. Quattro
+ * cambi nel codice, tutti dentro i 1536 B: (1) la posa parte solo al picco
+ * del respiro; (2) un cancello che si alza la ANNULLA invece di congelarla;
+ * (3) la prima attesa e' sorteggiata per lottatore; (4) la voce ricorda il
+ * `BattleSystem` che l'ha creata. I tempi stanno in par.bin (varianti
+ * V1/V2/V3 di compila_anim2.py), non nel codice.
+ * Vedi ../AUDIT-2026-09-14.md e ../README.md §v5d per cause, misure e limiti.
  */
 #ifndef SGP_ANIM5_H
 #define SGP_ANIM5_H
@@ -88,6 +100,13 @@ typedef signed char s8;
 #define PP_SHADOW_YOFF 0x76
 
 #define SGP_FASI 18
+/* v5d — il picco del respiro: gli indici in cui `tab_u` vale il massimo.
+ * Con la tavola v3 spedita (0,5,9,13,16,16,13,9,5,0,-5,...) sono 4 e 5.
+ * NON e' una scelta libera: `compila_anim2.py` ricalcola gli argomenti del
+ * massimo della tavola che sta scrivendo e va in ROSSO se non sono questi,
+ * perche' il confronto qui sotto e' due istruzioni e non puo' cercarlo. */
+#define SGP_PICCO_IDX 4
+#define SGP_PICCO_N 2
 #define SGP_SCALA_UNO 0x100
 #define SGP_SCALA_FINESTRA 8
 #define SGP_SLOT 4
@@ -155,21 +174,28 @@ typedef struct SgpAnim5State {
     s16 last_y;    /* +0x10 ultimo yOffset scritto                         */
     u8 last_step;  /* +0x12 ultima posa scritta                            */
     u8 last_idx;   /* +0x13 ultima fase 0..17                              */
-    u32 blinks;    /* +0x14 battiti di ciglia iniziati                     */
-    u32 rari;      /* +0x18 battiti "rari" iniziati                        */
+    u32 riservato14;/*+0x14 v5d: RISERVATO. Era `blinks` (accenti iniziati),  */
+    u32 riservato18;/*+0x18 v5d: RISERVATO. Era `rari`. I due contatori di    */
+                   /*      diagnostica costavano 16 B di codice e nessun      */
+                   /*      test tracciato ne' strumento v5 li leggeva (i tre  */
+                   /*      lettori — anim/tools/sonda_moto.py:108,            */
+                   /*      misura_v4.py:117, misura_anim.py:73 — guardano lo  */
+                   /*      stato della v4 a 0x023D8E40, non questo). Restano  */
+                   /*      come buchi per non spostare i campi che seguono.   */
     s16 last_s76;  /* +0x1C ultimo shadow.yOffset scritto                  */
     u8 last_cls;   /* +0x1E ultima classe di taglia letta                  */
     u8 last_slot;  /* +0x1F ultimo slot usato                              */
-    u32 stop_visti;/* +0x20 chiamate a ov12_02262014 intercettate          */
+    u32 riservato20;/*+0x20 v5d: RISERVATO. Era `stop_visti`.               */
     u32 puliti;    /* +0x24 voci ripulite e liberate                       */
     u32 bs;        /* +0x28 v5: BattleSystem* catturato dallo stub d'avvio */
     u32 avvii;     /* +0x2C v5: avvii tentati dallo stub (tutti i lottatori)*/
     u32 soppressi; /* +0x30 v5: fermate soppresse                          */
     u32 estesi;    /* +0x34 v5: fermate ripetute su un altro lottatore     */
     u32 sospensioni;/*+0x38 v5: transizioni «in moto» -> «sospeso»         */
-    u8 dentro;     /* +0x3C debug: 1 mentre G4 ferma gli altri task       */
-    u8 maxbatt;    /* +0x3D v5: ultimo maxBattlers letto                   */
-    u8 ultimo_sito;/* +0x3E v5: indice del sito dell'ultima fermata (0xFF = ignoto) */
+    u8 riservato3C;/* +0x3C v5d: RISERVATO. Era `dentro` (indicatore di    */
+                   /*       debug di G4).                                  */
+    u8 riservato3D;/* +0x3D v5d: RISERVATO. Era `maxbatt`.                 */
+    u8 riservato3E;/* +0x3E v5d: RISERVATO. Era `ultimo_sito`.             */
     u8 cancelli;   /* +0x3F v5: quali cancelli hanno sospeso l'ultima volta */
 } SgpAnim5State;   /* sizeof == 64 */
 
@@ -188,7 +214,8 @@ typedef struct SgpAnim5Slot {
     u8 sospeso;    /* +0x15 v5: 1 = già riportato a riposo, non scrivere  */
     u8 fase;      /* +0x16 fase privata in ottavi, 0..143                */
     u8 inviluppo; /* +0x17 ingresso/ripresa graduale, 0..16              */
-    u32 coda[2];   /* +0x18 riservato                                    */
+    u32 bs_visto;  /* +0x18 v5d: BattleSystem che ha creato la voce (M2)  */
+    u32 coda;      /* +0x1C riservato                                    */
 } SgpAnim5Slot;    /* sizeof == 32 */
 
 #ifndef SGP_ANIM5_BASE

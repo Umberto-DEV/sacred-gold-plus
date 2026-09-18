@@ -523,12 +523,12 @@
       "nome": "sgp.anim2",
       "base": "0x023DB500",
       "bytes": 2048,
-      "proprietario": "Sacred Gold Plus 1.2.1 — moto continuo v5",
+      "proprietario": "Sacred Gold Plus 1.2.1 — moto continuo v5 (v5d, accento di posa B, 18/09/2026)",
       "tipo": "codice+dati+stato",
       "zona": "1.2",
       "pubblico": false,
       "formato": {
-        "+0x000": "blob Thumb v5c, 1532 B su 1536",
+        "+0x000": "blob Thumb v5d, 1532 B su 1536",
         "+0x600": "canarino 0xCA5A1800|i, 16 B",
         "+0x620": "tabella moto, 32 B",
         "+0x640": "parametri, 32 B",
@@ -540,7 +540,7 @@
         {
           "offset": 0,
           "bytes": 1532,
-          "sha256": "680bb15e1a6f7df08040df686e5fe8fbca835f076d7ea299d11c57912c49b252"
+          "sha256": "dc6f64e7a017636a6d52fc9a6a1d6ec8c61e60cd807938008dfa9b8135286564"
         },
         {
           "offset": 1536,
@@ -555,7 +555,7 @@
         {
           "offset": 1600,
           "bytes": 32,
-          "sha256": "8fb0e71dde3e23fff9ff1b892ce55e852c9855a0ba9a12d902337823c7f6f1c2"
+          "sha256": "5971def9d0b2ef771cd0decbf5dc8ca64f19ad1447d311265f2696fb59731af1"
         },
         {
           "offset": 1632,
