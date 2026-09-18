@@ -58,9 +58,16 @@ class JournalTests(unittest.TestCase):
         self.assertEqual(bytes(b),before)
 
     def test_create_sanitises_zero_quantity_and_out_of_range_slots(self):
-        """F2: {id,0} and id>536 in the extension must not poison the record."""
+        """F2: {id,0} and id>536 in the extension must not poison the record.
+
+        M1: the sanitation happens IN PLACE. A dropped cell becomes {0,0} and
+        every other cell keeps its index, including when the poison PRECEDES a
+        legitimate slot -- compacting moved the player's item one cell up.
+        """
         b=Bag();p0=self.lib.cap_pocket(C.byref(b),0)
         p0[165]=Slot(30,7)    # valid, first extension cell
+        p0[166]=Slot(40,0)    # poison BEFORE a good slot
+        p0[167]=Slot(50,2)    # valid: must stay at extension index 2
         p0[249]=Slot(10,5)    # valid
         p0[250]=Slot(20,0)    # quantity 0: what native PocketCompaction leaves behind
         p0[251]=Slot(600,1)   # id beyond ITEM_MAX
@@ -70,14 +77,49 @@ class JournalTests(unittest.TestCase):
         self.assertEqual(self.lib.cap_record_restore(C.byref(r),None,7,0x1234),1)
         extras=[(r.extra[i].id,r.extra[i].quantity) for i in range(87)]
         self.assertEqual(extras[0],(30,7))      # pocket 0 extension starts at 165
+        self.assertEqual(extras[1],(0,0))       # the dropped {40,0}
+        self.assertEqual(extras[2],(50,2))      # slot 167: it does NOT move up
         self.assertEqual(extras[84],(10,5))     # slot 249: it does NOT move
-        self.assertTrue(all(s==(0,0) for i,s in enumerate(extras) if i not in (0,84)))
+        self.assertTrue(all(s==(0,0) for i,s in enumerate(extras) if i not in (0,2,84)))
         self.assertEqual((r.extra[95].id,r.extra[95].quantity),(0,0))  # TM/HM cell
         target=Bag()
         self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(target),7,0x1234),1)
         t=self.lib.cap_pocket(C.byref(target),0)
-        self.assertEqual([(t[i].id,t[i].quantity) for i in (165,249,250,251)],
-                         [(30,7),(10,5),(0,0),(0,0)])
+        self.assertEqual([(t[i].id,t[i].quantity) for i in (165,166,167,249,250,251)],
+                         [(30,7),(0,0),(50,2),(10,5),(0,0),(0,0)])
+
+    def test_every_pocket_keeps_its_extension_indexes(self):
+        """M1: a poisoned cell at the head of each pocket extension must leave
+        every following cell exactly where the player put it."""
+        b=Bag()
+        for p,(old,new) in enumerate(zip(OLD,NEW)):
+            if new-old<2:continue
+            v=self.lib.cap_pocket(C.byref(b),p)
+            v[old]=Slot(11,0)                       # poison: dropped in place
+            for i in range(old+1,new):v[i]=Slot(i+1,1)
+        r=Record();self.lib.cap_record_create(C.byref(r),C.byref(b),7,0x1234)
+        restored=Bag()
+        self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(restored),7,0x1234),1)
+        for p,(old,new) in enumerate(zip(OLD,NEW)):
+            if new-old<2:continue
+            v=self.lib.cap_pocket(C.byref(restored),p)
+            self.assertEqual((v[old].id,v[old].quantity),(0,0),p)
+            for i in range(old+1,new):
+                self.assertEqual((v[i].id,v[i].quantity),(i+1,1),(p,i))
+
+    def test_uniform_destination_is_claimable_never_foreign(self):
+        """A2: 452 identical bytes -- erased flash, a converter's 0x00, a wiped
+        card's 0xAA -- are claimable. Anything else that is not ours is not."""
+        for fill in (b'\xff',b'\x00',b'\xaa',b'\x5a'):
+            r=Record.from_buffer_copy(fill*452)
+            self.assertEqual(self.lib.cap_record_uniform(C.byref(r)),1,fill)
+        _,ours=self.record()
+        self.assertEqual(self.lib.cap_record_uniform(C.byref(ours)),0)
+        for i in (0,4,451):
+            raw=bytearray(b'\x00'*452);raw[i]=1
+            r=Record.from_buffer_copy(bytes(raw))
+            self.assertEqual(self.lib.cap_record_uniform(C.byref(r)),0,i)
+            self.assertEqual(self.lib.cap_record_owned_prefix(C.byref(r)),0,i)
     def test_absent_old_save_and_stale_generation(self):
         r=Record.from_buffer_copy(b'\xff'*452);b=Bag()
         self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(b),1,10),0)

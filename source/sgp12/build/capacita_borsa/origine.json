@@ -3,8 +3,8 @@
   "sorgenti": {
     "source/features/capacita-borsa/sorgenti/core.c": "14f7c8d53d74e798760c780e0ba0eb77fee4d75a68da83d9d6b3ed175f07dc70",
     "source/features/capacita-borsa/sorgenti/core.h": "0adf3dd58303da6e6d38de6f052993b64d079f203f7680e8c74882dcb59e261b",
-    "source/features/capacita-borsa/sorgenti/journal.c": "a1cce2197f8150a9e773cfe5b80fd436148af0288c4282be940274a611479d04",
-    "source/features/capacita-borsa/sorgenti/journal.h": "6ec0bb12cb4091bc4fea4db7434653190c7e644c3bea4921e5e1b256c45d2fe8",
+    "source/features/capacita-borsa/sorgenti/journal.c": "e89ad1991cdf811d271a0bdf6bc4b3488c771afe49b36845d9f336da706d25b6",
+    "source/features/capacita-borsa/sorgenti/journal.h": "48071a18f76c60b9fe70943323c64c3fb3967653af0b3d9205cef8fe23b0238e",
     "source/features/capacita-borsa/sorgenti/runtime.c": "679f97f4835222fd57670e22701e67911750bf3c34faec95881549d4d9f59d04",
     "source/features/capacita-borsa/tools/compila.py": "a5640aa953f4b725600dca2ad183ef7497112bdd691270163db6bdbb9e25d0f1"
   }
