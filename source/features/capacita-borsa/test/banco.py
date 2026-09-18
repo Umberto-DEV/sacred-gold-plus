@@ -8,8 +8,26 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[3]))
 from sgp12.rom import Arm9
 BASE=0x02000000
 SAVE=0x02200000
+# Where the bench hands out the native 1948-byte Bag array. It is a bench
+# constant, not the game's: in a real save the array starts at SaveBlock+0x654.
+# Only the extension code's view of it matters, and that comes from CALL_ARRAY.
 NATIVE=SAVE+0xD634
 S=0x023DD700
+RECORD_BYTES=452          # sizeof(CapRecord)
+CHUNK_BYTES=32            # verify_copy's stack buffer: it reads back in chunks
+READBACK_READS=-(-RECORD_BYTES//CHUNK_BYTES)   # ceil(452/32) = 15 reads per copy
+OWNERSHIP_READS=2         # one per destination, before anything is written
+# CapState field addresses, as the shipped manifest and the lab tools read them.
+S_MAGIC=S+0x0000
+S_SAVE=S+0x0004
+S_NATIVE=S+0x0008
+S_REJECTED=S+0x000C
+S_OWNED=S+0x0010
+S_BAG=S+0x0014
+S_SNAPSHOT=S+0x0960
+S_RECORD=S+0x10FC
+S_STATO_CARICAMENTO=S+0x12C0
+S_STATO_SCRITTURA=S+0x12C4
 STOP=0x023AF000
 REGS=(UC_ARM_REG_R0,UC_ARM_REG_R1,UC_ARM_REG_R2,UC_ARM_REG_R3)
 class Bench:
@@ -19,9 +37,18 @@ class Bench:
         for base,off,size in arm.segmenti:
             if BASE<=base and base+size<=BASE+0x400000:self.mu.mem_write(base,bytes(arm.raw[off:off+size]))
         self.mu.mem_write(STOP,b'\x00\xbe')
-        self.symbols={n:int(a,16) for n,a in json.loads((Path(build)/'manifesto.json').read_text())['simboli'].items()}
+        manifest=json.loads((Path(build)/'manifesto.json').read_text())
+        self.symbols={n:int(a,16) for n,a in manifest['simboli'].items()}
+        # The ROM under test must carry exactly the build under test: otherwise
+        # these tests would certify code that is not the one being shipped.
+        blob=(Path(build)/'blob.bin').read_bytes()
+        if arm.leggi(int(manifest['base'],16),len(blob))!=blob:
+            raise AssertionError('la ROM non contiene il blob di %s'%build)
         self.flash=bytearray(b'\xff'*0x80000);self.pockets={};self.heap=0x02240000
         self.read_fail=False;self.reads=0;self.fail_on_read=0;self.write_cut=None;self.writes=[];self.original_saves=0;self.errors=0
+        # read_filter(index,address,size,data)->data: a flash that hands back
+        # bytes other than the ones just written, without failing the read.
+        self.read_filter=None
         self.store(SAVE+4,1);self.store(SAVE+8,0);self.store(SAVE+0x23010,1)
         self.store(SAVE+0x232B8,0);self.store(SAVE+0x232BC,0x10000)
         self.mu.mem_write(SAVE+0x2330A,b'\0\0')
@@ -41,7 +68,10 @@ class Bench:
             out=self.heap;self.heap+=(a[1]+7)&~7;self.return_(out)
         elif address==0x0202877C:
             self.reads+=1;fail=self.read_fail or self.reads==self.fail_on_read
-            if not fail:uc.mem_write(a[1],bytes(self.flash[a[0]:a[0]+a[2]]))
+            if not fail:
+                data=bytes(self.flash[a[0]:a[0]+a[2]])
+                if self.read_filter:data=self.read_filter(self.reads,a[0],a[2],data)
+                uc.mem_write(a[1],data)
             self.return_(not fail)
         elif address==0x02028758:
             raw=bytes(uc.mem_read(a[1],a[2]));n=len(raw) if self.write_cut is None else (self.write_cut.pop(0) if isinstance(self.write_cut,list) else self.write_cut)

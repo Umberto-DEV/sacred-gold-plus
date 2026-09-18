@@ -12,8 +12,22 @@
 #define CALL_READ ((int (*)(u32,void *,u32))0x0202877Du)
 #define CALL_WRITE ((int (*)(u32,const void *,u32))0x02028759u)
 #define CALL_CRC ((u16 (*)(const void *,u32))0x0201FF99u)
-#define CALL_ERROR ((void (*)(u32))0x0209263Du)
 #define ENTRY __attribute__((used,noinline))
+/* CapState.stato_caricamento: what the two flash copies turned out to be. */
+#define CAP_L_ASSENTE   0u /* both copies erased, or no disk read at all */
+#define CAP_L_PRIMARIA  1u /* the primary copy matched this save */
+#define CAP_L_SPECCHIO  2u /* the mirror matched this save */
+#define CAP_L_STALE     3u /* intact record from another save generation */
+#define CAP_L_INVALIDA  4u /* our magic, but the record itself is damaged */
+#define CAP_L_NO_FLASH  5u /* the flash read itself failed */
+#define CAP_L_ESTRANEA  6u /* bytes that are not ours at all: nothing to read */
+/* CapState.stato_scrittura: what the last save did with the extension. */
+#define CAP_W_NON_TENTATA 0u
+#define CAP_W_SCRITTA     1u /* both copies written and read back identical */
+#define CAP_W_ESTRANEI    2u /* foreign data in a destination: nothing written */
+#define CAP_W_FALLITA     3u /* no usable copy on flash after the attempt */
+#define CAP_W_NO_FLASH    4u /* flash unreadable: the extension was skipped */
+#define CAP_W_PARZIALE    5u /* only one of the two copies survived readback */
 int sgp_cap_original_load(void *save);
 int sgp_cap_original_save(void *save,void *manager);
 typedef struct {
@@ -25,6 +39,8 @@ typedef struct {
     CapBag bag;
     CapSlot snapshot[487];
     CapRecord record;
+    u32 stato_caricamento;
+    u32 stato_scrittura;
 } CapState;
 #define S ((CapState *)CAP_STATE)
 _Static_assert(sizeof(CapState)<=0x1400,"state crosses the frozen 1.1 reserve");
@@ -40,23 +56,43 @@ static CapBag *route(CapBag *bag) {
     }
     return bag;
 }
+/* Classify the copy already read into S->record. No outcome is fatal: the
+ * extension may be missing, stale or unreadable, and the native save still
+ * loads with its 486 slots. */
+static u32 classify(CapBag *bag,u32 generation,u16 main_crc) {
+    int status;
+    if(cap_record_erased(&S->record))return CAP_L_ASSENTE;
+    if(!cap_record_owned_prefix(&S->record))return CAP_L_ESTRANEA;
+    status=cap_record_restore(&S->record,bag,generation,main_crc);
+    if(status==1)return CAP_L_PRIMARIA;
+    if(status==2)return CAP_L_STALE;
+    return CAP_L_INVALIDA;
+}
 static void load_inventory(void *save,int disk) {
-    u32 sector;u8 *footer;int status;
+    u32 sector,generation,first=CAP_L_ASSENTE,second=CAP_L_ASSENTE;u16 main_crc;u8 *footer;
     S->magic=0;S->save=save;S->native=CALL_ARRAY(save,3);S->rejected=0;S->owned=0;
+    S->stato_caricamento=CAP_L_ASSENTE;S->stato_scrittura=CAP_W_NON_TENTATA;
     cap_import(&S->bag,S->native);mirror_copy(S->snapshot,S->native);
     if(disk){
         sector=0x30000u+(RD16(save,0x2330A)?0x40000u:0u);
         footer=(u8 *)save+0x10+RD32(save,0x232B8)+RD32(save,0x232BC)-16;
-        if(!CALL_READ(sector,&S->record,sizeof(S->record))){S->rejected=1;CALL_ERROR(1);return;}
-        status=cap_record_restore(&S->record,&S->bag,RD32(save,0x23010),RD16(footer,14));
-        S->owned=status>0;
-        if(status!=1){
-            int second;
-            if(!CALL_READ(sector+0x200,&S->record,sizeof(S->record))){S->rejected=1;CALL_ERROR(1);return;}
-            second=cap_record_restore(&S->record,&S->bag,RD32(save,0x23010),RD16(footer,14));
-            if(second!=1&&(status<0||second<0)){S->rejected=1;CALL_ERROR(1);return;}
-            if(second>0)S->owned=1;
+        generation=RD32(save,0x23010);main_crc=RD16(footer,14);
+        first=CALL_READ(sector,&S->record,sizeof(S->record))?
+              classify(&S->bag,generation,main_crc):CAP_L_NO_FLASH;
+        if(first==CAP_L_PRIMARIA)S->stato_caricamento=CAP_L_PRIMARIA;
+        else{
+            second=CALL_READ(sector+0x200,&S->record,sizeof(S->record))?
+                   classify(&S->bag,generation,main_crc):CAP_L_NO_FLASH;
+            if(second==CAP_L_PRIMARIA)S->stato_caricamento=CAP_L_SPECCHIO;
+            else if(first==CAP_L_NO_FLASH||second==CAP_L_NO_FLASH)S->stato_caricamento=CAP_L_NO_FLASH;
+            else if(first==CAP_L_STALE||second==CAP_L_STALE)S->stato_caricamento=CAP_L_STALE;
+            else if(first==CAP_L_INVALIDA||second==CAP_L_INVALIDA)S->stato_caricamento=CAP_L_INVALIDA;
+            else if(first==CAP_L_ESTRANEA||second==CAP_L_ESTRANEA)S->stato_caricamento=CAP_L_ESTRANEA;
         }
+        /* Diagnostic only: "the flash refused to read the bank we loaded from".
+         * It does NOT gate the next save, which writes the other bank. */
+        S->rejected=first==CAP_L_NO_FLASH||second==CAP_L_NO_FLASH;
+        S->owned=S->stato_caricamento&&S->stato_caricamento<=CAP_L_STALE;
     }
     S->magic=CAP_MAGIC;
 }
@@ -117,29 +153,66 @@ ENTRY int sgp_cap_load(void *save){
     if(result)load_inventory(save,1);
     return result;
 }
+/* Read back what was just written and compare the bytes. Re-validating the
+ * domain instead would reject records the game itself can produce, and the
+ * save would fail for ever. The 452 bytes are compared in chunks so the
+ * comparison needs no second copy of the record in the frozen reserve. */
+static int verify_copy(u32 address,const CapRecord *r){
+    const u8 *want=(const u8 *)r;u8 got[32];u32 off,i,n;
+    for(off=0;off<sizeof(*r);off+=n){
+        n=sizeof(*r)-off;if(n>sizeof(got))n=sizeof(got);
+        if(!CALL_READ(address+off,got,n))return 0;
+        for(i=0;i<n;i++)if(got[i]!=want[off+i])return 0;
+    }
+    return 1;
+}
+/* The sanitised record is what the game must see from now on. A cell the
+ * record dropped cannot stay in RAM: {id,0} still makes its pocket answer
+ * "not empty", and an id beyond ITEM_MAX can still reach the item table from
+ * the menu. Only EXTRA cells are rewritten -- the native 486 belong to the
+ * vanilla save, which has already been told what they are. */
+static void adopt_record(void){
+    u32 p,i,k=0;
+    for(p=0;p<8;p++){
+        CapSlot *v=cap_pocket(&S->bag,p);
+        for(i=cap_old_count(p);i<cap_count(p);i++)v[i]=S->record.extra[k++];
+    }
+}
 ENTRY int sgp_cap_save(void *save,void *manager){
     if(RD32(manager,0x14)==0&&RD32(manager,8)==0){
-        u32 sector,generation,expected,copy;u16 crc;int status;
+        u32 sector,generation,copy,esito=CAP_W_SCRITTA,good=0;u16 crc;
         sgp_cap_get(save);
-        if(S->rejected)return 3;
+        /* `rejected` is deliberately NOT consulted here. The load reads the
+         * ACTIVE bank and this writes the INACTIVE one: a sector that could
+         * not be read at load time says nothing about the destination, and
+         * the two reads below report CAP_W_NO_FLASH by themselves if the
+         * flash really is unreadable. Vetoing on `rejected` turned a single
+         * unreadable sector into a lost extension for the whole session. */
         sector=0x30000u+(RD16(save,0x2330A)?0u:0x40000u);
         generation=RD32(save,0x23010);
         crc=CALL_CRC((u8 *)save+0x10+RD32(save,0x232B8),RD32(save,0x232BC)-16);
-        /* Each destination must independently belong to us before any write.
-         * Ownership of the active bank never authorizes foreign inactive data. */
-        for(copy=0;copy<2;copy++){
-            if(!CALL_READ(sector+copy*0x200,&S->record,sizeof(S->record)))return 3;
-            status=cap_record_restore(&S->record,0,generation,crc);
-            if(status<0&&!cap_record_owned_prefix(&S->record))return 3;
+        /* Each destination must independently be claimable before any write:
+         * erased, uniform (a converter's 0x00, a wiped card) or already ours.
+         * Ownership of the active bank never authorizes foreign inactive data.
+         * `esito` doubles as the loop sentinel: once a destination refuses the
+         * write there is nothing to learn from the other one. */
+        for(copy=0;copy<2&&esito==CAP_W_SCRITTA;copy++){
+            if(!CALL_READ(sector+copy*0x200,&S->record,sizeof(S->record)))esito=CAP_W_NO_FLASH;
+            else if(!cap_record_uniform(&S->record)&&!cap_record_owned_prefix(&S->record))esito=CAP_W_ESTRANEI;
         }
-        for(copy=0;copy<2;copy++){
-            cap_record_create(&S->record,&S->bag,generation,crc);expected=S->record.crc;
-            if(!CALL_WRITE(sector+copy*0x200,&S->record,sizeof(S->record)))return 3;
-            if(!CALL_READ(sector+copy*0x200,&S->record,sizeof(S->record)))return 3;
-            if(S->record.crc!=expected||cap_record_restore(&S->record,0,generation,crc)!=1)return 3;
+        if(esito==CAP_W_SCRITTA){
+            cap_record_create(&S->record,&S->bag,generation,crc);
+            adopt_record();
+            for(copy=0;copy<2;copy++)
+                if(CALL_WRITE(sector+copy*0x200,&S->record,sizeof(S->record))&&
+                   verify_copy(sector+copy*0x200,&S->record))good++;
+            esito=good==2?CAP_W_SCRITTA:(good?CAP_W_PARZIALE:CAP_W_FALLITA);
+            if(good)S->owned=1;
         }
-        S->owned=1;
+        S->stato_scrittura=esito;
     }
+    /* The extension never stops the native save: its own result is the answer
+     * the caller gets, and the failure is reported in stato_scrittura. */
     return sgp_cap_original_save(save,manager);
 }
 
