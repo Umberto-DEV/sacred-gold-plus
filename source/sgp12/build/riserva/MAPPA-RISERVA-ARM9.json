@@ -1011,8 +1011,8 @@
       "impronte_parziali": [
         {
           "offset": 0,
-          "bytes": 3504,
-          "sha256": "91121a2d44bbb09fd4dd2635c5a00a398ab25c75cd834c8fd6966e341f940f2c"
+          "bytes": 3584,
+          "sha256": "e41d95a3a7f57e504697c83f754c6fbb57745291d149dcb9d94b4dcde5f3c1fb"
         }
       ],
       "ancore": [],

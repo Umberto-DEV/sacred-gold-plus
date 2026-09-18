@@ -1,5 +1,9 @@
 # What changed
 
+## Unreleased
+
+- **The expanded Bag no longer loses its extra slots in silence.** A save whose extension sectors could not be read once, or that a converter normalised to a single repeated byte, is written again instead of dropping the 108 extra slots at every reload. A spent or out-of-range slot is emptied where it sits, so nothing else changes position, and the game keeps the same cleaned inventory in memory. Foreign data in those two sectors is still never overwritten: the [feature notes](source/features/capacita-borsa/README.md) say how to tell and how to clear them by hand.
+
 ## 1.2.1 — updated 15 September 2026
 
 - Expanded all Bag pockets to whole six-slot pages: 252/42/30/102/66/12/30/60 slots. Existing saves import; extra slots are stored in a checked save extension and are unavailable to older ROMs.

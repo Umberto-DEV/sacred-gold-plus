@@ -5,7 +5,7 @@
     "source/features/capacita-borsa/sorgenti/core.h": "0adf3dd58303da6e6d38de6f052993b64d079f203f7680e8c74882dcb59e261b",
     "source/features/capacita-borsa/sorgenti/journal.c": "e89ad1991cdf811d271a0bdf6bc4b3488c771afe49b36845d9f336da706d25b6",
     "source/features/capacita-borsa/sorgenti/journal.h": "48071a18f76c60b9fe70943323c64c3fb3967653af0b3d9205cef8fe23b0238e",
-    "source/features/capacita-borsa/sorgenti/runtime.c": "679f97f4835222fd57670e22701e67911750bf3c34faec95881549d4d9f59d04",
+    "source/features/capacita-borsa/sorgenti/runtime.c": "0ff9b663f9939366d4ea04cb3d9c5b9ec3046a14d2c34ac7b8f37808cf0589ab",
     "source/features/capacita-borsa/tools/compila.py": "a5640aa953f4b725600dca2ad183ef7497112bdd691270163db6bdbb9e25d0f1"
   }
 }

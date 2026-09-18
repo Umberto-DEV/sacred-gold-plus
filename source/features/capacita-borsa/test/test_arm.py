@@ -91,10 +91,11 @@ class ArmTests(unittest.TestCase):
             b.store(S,0);bag=b.bag()
             self.assertEqual(b.slot(bag,0,251),(252,3))
     def test_second_copy_readback_failure_leaves_one_good_copy(self):
-        from banco import SAVE,S_STATO_SCRITTURA
-        # 2 ownership reads, then 8 chunked readback reads per copy: fail the
-        # first readback chunk of the mirror.
-        b=self.b;b.bag();manager=0x02234000;b.fail_on_read=b.reads+2+8+1
+        from banco import SAVE,S_STATO_SCRITTURA,OWNERSHIP_READS,READBACK_READS
+        # One ownership read per destination, then ceil(452/64) chunked readback
+        # reads per copy: fail the first readback chunk of the mirror.
+        b=self.b;b.bag();manager=0x02234000
+        b.fail_on_read=b.reads+OWNERSHIP_READS+READBACK_READS+1
         self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
         self.assertEqual(b.original_saves,1)
         self.assertEqual(len(b.writes),2)
@@ -139,45 +140,141 @@ class ArmTests(unittest.TestCase):
                 self.assertEqual(b.errors,0)
                 self.assertEqual(b.read32(S_MAGIC),0x43415042)
                 self.assertEqual(b.read32(S_REJECTED),0)
-                self.assertEqual(b.read32(S_STATO_CARICAMENTO),4)
+                # 6 = not ours at all, told apart from 4 = ours but damaged.
+                self.assertEqual(b.read32(S_STATO_CARICAMENTO),6)
                 # 486 native slots: the extension is simply absent, the Bag works.
                 self.assertEqual(b.slot(bag,0,251),(0,0))
                 for i in range(1,253):self.assertEqual(b.call(0x02078398,bag,i,2,4),1,i)
                 self.assertEqual(b.slot(bag,0,251),(252,2))
 
+    def test_uniform_destination_is_claimed_by_the_next_save(self):
+        """A2: a .sav normalised to 0x00 (or wiped to 0xAA) holds no data in
+        sectors 48/112. Such a destination is claimable: the extension must be
+        written there, otherwise every extra slot is lost at every reload."""
+        import struct
+        from banco import SAVE,S,S_STATO_SCRITTURA,S_OWNED,RECORD_BYTES
+        for fill in (0x00,0xAA):
+            with self.subTest(fill=fill):
+                self.setUp();b=self.b
+                b.flash=bytearray([fill])*0x80000
+                b.store(S,0);bag=b.bag();manager=0x02234000
+                b.mu.mem_write(bag+251*4,struct.pack('<HH',252,3))
+                self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
+                self.assertEqual(b.original_saves,1)
+                self.assertEqual(b.read32(S_STATO_SCRITTURA),1)
+                self.assertEqual(b.read32(S_OWNED),1)
+                primary=bytes(b.flash[0x70000:0x70000+RECORD_BYTES])
+                self.assertEqual(primary,bytes(b.flash[0x70200:0x70200+RECORD_BYTES]))
+                # and the extension comes back on the next load of that bank
+                crc=struct.unpack_from('<H',primary,12)[0]
+                b.mu.mem_write(SAVE+0x2330A,b'\1\0')
+                b.mu.mem_write(SAVE+0x10000+14,struct.pack('<H',crc))
+                b.store(S,0);bag=b.bag()
+                self.assertEqual(b.slot(bag,0,251),(252,3))
+
     def test_load_truth_table_primary_by_mirror(self):
-        """F3: every primary x mirror combination loads; none is fatal."""
+        """F3: every primary x mirror combination loads; none is fatal.
+        `noflash` is a destination the flash itself refuses to read."""
         from banco import SAVE,S,S_REJECTED,S_OWNED,S_STATO_CARICAMENTO
-        kinds=('invalida','vuota','valida','stale')
+        kinds=('invalida','vuota','valida','stale','estranea','noflash')
         for first in kinds:
             for second in kinds:
                 with self.subTest(primaria=first,specchio=second):
                     self.setUp();b=self.b;v=self._variants(self._committed())
-                    b.flash[0x70000:0x70000+452]=v[first]
-                    b.flash[0x70200:0x70200+452]=v[second]
+                    for offset,kind in ((0,first),(0x200,second)):
+                        if kind!='noflash':b.flash[0x70000+offset:0x70000+offset+452]=v[kind]
                     b.store(S,0)
+                    if first=='noflash' and second=='noflash':b.read_fail=True
+                    elif first=='noflash':b.fail_on_read=b.reads+1
+                    elif second=='noflash':b.fail_on_read=b.reads+2
                     bag=b.bag()
                     if first=='valida':stato,restored=1,True
                     elif second=='valida':stato,restored=2,True
+                    elif 'noflash' in (first,second):stato,restored=5,False
                     elif 'stale' in (first,second):stato,restored=3,False
                     elif 'invalida' in (first,second):stato,restored=4,False
+                    elif 'estranea' in (first,second):stato,restored=6,False
                     else:stato,restored=0,False
+                    rejected=1 if first=='noflash' or (second=='noflash' and first!='valida') else 0
                     self.assertEqual(b.errors,0)
                     self.assertEqual(b.read32(S_STATO_CARICAMENTO),stato)
-                    self.assertEqual(b.read32(S_REJECTED),0)
+                    self.assertEqual(b.read32(S_REJECTED),rejected)
                     self.assertEqual(b.read32(S_OWNED),1 if stato in (1,2,3) else 0)
                     self.assertEqual(b.slot(bag,0,251),(252,3) if restored else (0,0))
+
+    def test_unreadable_load_never_vetoes_the_following_save(self):
+        """A1: the load reads the ACTIVE bank and the save writes the INACTIVE
+        one. A read failure on the first must not forbid writing the second:
+        that turned one unreadable sector into a silent loss of every extra
+        slot, for the whole session."""
+        import struct
+        from banco import SAVE,S,S_REJECTED,S_STATO_CARICAMENTO,S_STATO_SCRITTURA,RECORD_BYTES
+        b=self.b;manager=0x02234000
+        b.store(S,0);b.fail_on_read=b.reads+1          # the active bank is unreadable
+        bag=b.bag()
+        self.assertEqual(b.read32(S_STATO_CARICAMENTO),5)
+        self.assertEqual(b.read32(S_REJECTED),1)
+        b.fail_on_read=0
+        b.mu.mem_write(bag+251*4,struct.pack('<HH',252,3))
+        writes=len(b.writes)
+        self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
+        self.assertEqual(b.read32(S_STATO_SCRITTURA),1)
+        self.assertEqual([a for a,_ in b.writes[writes:]],[0x70000,0x70200])
+        primary=bytes(b.flash[0x70000:0x70000+RECORD_BYTES])
+        crc=struct.unpack_from('<H',primary,12)[0]
+        b.mu.mem_write(SAVE+0x2330A,b'\1\0')
+        b.mu.mem_write(SAVE+0x10000+14,struct.pack('<H',crc))
+        b.store(S,0);bag=b.bag()
+        self.assertEqual(b.read32(S_STATO_CARICAMENTO),1)
+        self.assertEqual(b.slot(bag,0,251),(252,3))
+
+    def test_readback_of_a_different_valid_record_is_refused(self):
+        """M4: the readback is a byte comparison of what was just written. A
+        destination that hands back a record which is perfectly valid, but not
+        the one written, is a failed copy -- not an accepted one."""
+        import struct
+        from banco import SAVE,S_STATO_SCRITTURA,OWNERSHIP_READS,RECORD_BYTES
+        for copies,stato in (((0,),5),((0,1),3)):
+            with self.subTest(copie_guaste=copies):
+                self.setUp();b=self.b;bag=b.bag();manager=0x02234000
+                b.mu.mem_write(bag+251*4,struct.pack('<HH',252,3))
+                self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
+                self.assertEqual(b.read32(S_STATO_SCRITTURA),1)
+                other=bytes(b.flash[0x70000:0x70000+RECORD_BYTES])
+                b.mu.mem_write(bag+251*4,struct.pack('<HH',100,1))
+                start=b.reads
+                def filtro(index,address,size,data,start=start,copies=copies):
+                    # Only the readback: the ownership reads come first and are
+                    # left alone. verify_copy stops at the first mismatching
+                    # chunk, so the substitution is by address, not by count.
+                    if index<=start+OWNERSHIP_READS:return data
+                    for c in copies:
+                        off=address-(0x70000+c*0x200)
+                        if 0<=off<RECORD_BYTES:return other[off:off+size]
+                    return data
+                b.read_filter=filtro
+                self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
+                self.assertEqual(b.read32(S_STATO_SCRITTURA),stato)
+                self.assertEqual(b.original_saves,2)
 
     # ---- F2: a slot the native compaction leaves behind must not block saving ----
     def test_zero_quantity_or_out_of_range_slot_still_saves(self):
         import struct,zlib
-        from banco import SAVE,S,S_STATO_SCRITTURA,S_OWNED
+        from banco import SAVE,S,S_STATO_SCRITTURA,S_OWNED,NATIVE
         for item,quantity in ((1,0),(600,1)):
             with self.subTest(slot=(item,quantity)):
                 self.setUp();b=self.b;bag=b.bag();manager=0x02234000
                 b.mu.mem_write(bag+250*4,struct.pack('<HH',7,5))
                 b.mu.mem_write(bag+251*4,struct.pack('<HH',item,quantity))
+                native=bytes(b.mu.mem_read(NATIVE,1948))
                 self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
+                # M2: the sanitised record is the truth. The poisoned cell must
+                # be gone from RAM as well, or the pocket still counts as
+                # non-empty and the UI can ask the item table about id 600.
+                self.assertEqual(b.slot(bag,0,250),(7,5))
+                self.assertEqual(b.slot(bag,0,251),(0,0))
+                # The 486 native slots are never touched by the sanitation.
+                self.assertEqual(bytes(b.mu.mem_read(NATIVE,1948)),native)
                 self.assertEqual(b.original_saves,1)
                 self.assertEqual(b.read32(S_STATO_SCRITTURA),1)
                 self.assertEqual(b.read32(S_OWNED),1)

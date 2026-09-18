@@ -41,20 +41,32 @@ nativa di errore di lettura.** L'esito finisce in `stato_caricamento`
 |---|---|---:|---:|
 | la copia primaria corrisponde a questo salvataggio | 594 slot dalla primaria (lo specchio non viene letto) | 1 | 1 |
 | lo specchio corrisponde a questo salvataggio | 594 slot dallo specchio | 2 | 1 |
-| una copia non è leggibile dalla flash | 486 slot nativi; il prossimo salvataggio salta l'estensione | 5 | 0 |
+| una copia non è leggibile dalla flash | 486 slot nativi | 5 | 0 |
 | una copia è integra ma di un'altra generazione | 486 slot nativi | 3 | 1 |
-| una copia ha il nostro magic ma è danneggiata, oppure byte estranei | 486 slot nativi | 4 | 0 |
+| una copia ha il nostro magic ma è danneggiata | 486 slot nativi | 4 | 0 |
+| una copia contiene byte che non sono nostri | 486 slot nativi | 6 | 0 |
 | entrambe le copie cancellate (0xFF) | 486 slot nativi | 0 | 0 |
 
-`rejected` (`CapState + 0x0C`) significa ora soltanto «flash illeggibile, non
-scrivere l'estensione»: non è più uno stato fatale e non blocca nulla.
+`rejected` (`CapState + 0x0C`) è **solo diagnostico**: «la flash non ha saputo
+leggere la banca da cui abbiamo caricato». Non blocca nulla. In particolare non
+vieta il salvataggio successivo: il caricamento legge la banca *attiva*, la
+scrittura tocca quella *inattiva*, e se anche quella è illeggibile lo dicono le
+due riletture di destinazione (`stato_scrittura` 4). Prima era un veto per tutta
+la sessione, e un solo settore illeggibile faceva sparire in silenzio i 108 slot.
 
-**In scrittura** ogni destinazione deve essere indipendentemente cancellata o
-nostra: i dati estranei non vengono mai sostituiti. `cap_record_create` bonifica
-prima di scrivere — uno slot dell'estensione con quantità 0, con id 0 o id oltre
-536, o con quantità oltre il limite della tasca, viene scartato e la coda
-dell'estensione di quella tasca viene azzerata, mentre ogni altro slot resta
-dov'è. Il compattamento nativo spinge in fondo alla tasca gli slot esauriti
+**In scrittura** ogni destinazione deve essere indipendentemente *rivendicabile*:
+cancellata (0xFF), **uniforme** — 452 byte tutti uguali, come li lascia un
+convertitore che azzera i settori inutilizzati o una card pulita con un motivo
+fisso — oppure già nostra. Byte estranei *non uniformi* non vengono mai
+sostituiti: nessuna delle due copie viene scritta e `stato_scrittura` resta 2.
+`cap_record_create` bonifica prima di scrivere — uno slot dell'estensione con
+quantità 0, con id 0 o id oltre 536, o con quantità oltre il limite della tasca
+viene **svuotato dov'è** (`{0, 0}`), senza far scalare nulla: ogni altro slot
+resta esattamente all'indice che aveva nella Borsa. Le stesse celle bonificate
+vengono riscritte anche nella Borsa in RAM (solo le celle dell'estensione: le
+486 native non si toccano mai), perché `{id, 0}` fa ancora dire «tasca non
+vuota» e un id oltre 536 può ancora arrivare alla tabella oggetti dal menu.
+Il compattamento nativo spinge in fondo alla tasca gli slot esauriti
 *conservandone l'id*, quindi `{id, 0}` finisce dentro l'estensione col gioco
 normale; scriverlo produceva un record che il nostro stesso validatore
 rifiutava, e da lì in poi il salvataggio falliva per sempre. Per la stessa
@@ -63,6 +75,17 @@ byte scritti**, non una seconda validazione di dominio. `stato_scrittura`
 (`CapState + 0x12C4`): 0 non tentata, 1 due copie scritte e verificate,
 2 dati estranei in una destinazione (niente scritto), 3 niente di usabile
 scritto, 4 flash illeggibile (saltata), 5 una sola copia verificata.
+
+### Se `stato_scrittura` resta 2 (dati estranei)
+
+È l'unico caso in cui l'estensione non viene più scritta finché la situazione
+non cambia: i 108 slot extra spariscono a ogni ricaricamento e il gioco riparte
+dai 486 nativi, senza alcun messaggio. La spia è `stato_scrittura` = 2
+(`0x023DE9C4`). Il rimedio è manuale e vale su una **copia** del salvataggio:
+riportare a `0xFF` i 452 byte all'inizio dei settori 48 e 112 (offset `0x30000`,
+`0x30200`, `0x70000`, `0x70200` del `.sav` da 512 KB) con un editor esadecimale,
+oppure azzerarli — un settore uniforme è rivendicabile. Al salvataggio successivo
+l'estensione torna a essere scritta. Non toccare nient'altro del file.
 
 **In ogni caso il salvataggio nativo parte e il suo risultato è quello
 restituito.** Il gancio non risponde mai `WRITE_STATUS_TOTAL_FAIL` di propria
@@ -93,8 +116,13 @@ La classe B usa `SGP_CAPACITY_ROM` (ROM finale privata), `SGP_CAPACITY_BEFORE`
 `test_arm.py` esegue su Unicorn le funzioni ARM native modificate: 252° slot,
 copie private, read failure, 452 interruzioni di scrittura con riavvio e retry,
 mirror corrotto/erased, rifiuto dati estranei in entrambe le destinazioni,
-SRAM interamente a 0x00 e a 0xAA, la matrice completa primaria×specchio (16
-combinazioni) e il salvataggio con uno slot `{id, 0}` o `id > 536` nell'estensione.
+SRAM interamente a 0x00 e a 0xAA (caricata come assente, poi **rivendicata** dal
+salvataggio successivo), la matrice completa primaria×specchio (36 combinazioni,
+inclusa la lettura che fallisce), una lettura fallita al caricamento che **non**
+impedisce la scrittura nella banca inattiva, una rilettura che restituisce un
+record valido ma diverso da quello scritto, e il salvataggio con uno slot
+`{id, 0}` o `id > 536` nell'estensione. Il banco verifica che la ROM in prova
+contenga esattamente il `blob.bin` del bundle indicato.
 `test_reader.py` muta ABI, codice, stato, dimensione Bag nativa e conteggi UI.
 
 Collaudo locale melonDS: fixture sintetica con 251 elementi nella tasca

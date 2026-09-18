@@ -415,28 +415,49 @@ diagnostic word at `0x023DE9C0` (`CapState + 0x12C0`), first matching rule wins:
 |---|---|---:|---:|
 | primary record matches this save | 594 slots, from the primary (mirror not read) | 1 | 1 |
 | mirror record matches this save | 594 slots, from the mirror | 2 | 1 |
-| a copy could not be read from flash | 486 native slots; the next save skips the extension | 5 | 0 |
+| a copy could not be read from flash | 486 native slots | 5 | 0 |
 | a copy is intact but from another generation | 486 native slots | 3 | 1 |
-| a copy carries our magic but is damaged, or foreign bytes | 486 native slots | 4 | 0 |
+| a copy carries our magic but is damaged | 486 native slots | 4 | 0 |
+| a copy carries bytes that are not ours at all | 486 native slots | 6 | 0 |
 | both copies erased (0xFF) | 486 native slots | 0 | 0 |
 
-`rejected` (`CapState + 0x0C`) now means only "flash could not be read, do not
-write the extension"; it is never a fatal state and never blocks a save.
+`rejected` (`CapState + 0x0C`) is **diagnostic only**: "the flash could not read
+the bank we loaded from". It blocks nothing, and in particular it does not veto
+the next save: the load reads the *active* bank while the save writes the
+*inactive* one, and an unreadable destination reports itself through the two
+ownership reads (`stato_scrittura` 4). It used to veto the whole session, so one
+unreadable sector silently cost the 108 extra slots.
 
 **The extension can never stop a save from being written either.** Before any
-write each destination must independently be erased or project-owned: foreign
-data is never replaced. `cap_record_create` sanitises the inventory first — an
+write each destination must independently be *claimable*: erased (0xFF),
+**uniform** — 452 identical bytes, as left by a converter that zeroes unused
+sectors or by a card wiped with a fill pattern — or already ours. Foreign bytes
+that are not uniform are never replaced: neither copy is written and
+`stato_scrittura` stays 2. `cap_record_create` sanitises the inventory first — an
 extension cell with quantity 0, with id 0 or id above 536, or with a quantity
-over its pocket limit, is dropped and the tail of that pocket's extension is
-erased, while every other cell keeps its position. The native pocket compaction
-pushes a spent slot to the end of the pocket *keeping its id*, so `{id, 0}` lands
-inside the extension by normal play; writing it produced a record our own
-validator rejected, and the save then failed for ever. The readback after the
-write is a **byte-by-byte comparison of the 452 bytes written**, not a second
-validation of the domain, for the same reason. `stato_scrittura`
-(`CapState + 0x12C4`) records what happened: 0 not attempted, 1 both copies
-written and verified, 2 foreign data in a destination (nothing written),
-3 nothing usable written, 4 flash unreadable (skipped), 5 only one copy verified.
+over its pocket limit, is **emptied in place** (`{0, 0}`), nothing is shifted,
+and every other cell keeps exactly the index it had in the Bag. The sanitised
+cells are written back into the runtime Bag as well (extension cells only; the
+486 native ones are never touched), because `{id, 0}` still makes its pocket
+answer "not empty" and an id above 536 can still reach the item table from the
+menu. The native pocket compaction pushes a spent slot to the end of the pocket
+*keeping its id*, so `{id, 0}` lands inside the extension by normal play; writing
+it produced a record our own validator rejected, and the save then failed for
+ever. The readback after the write is a **byte-by-byte comparison of the 452
+bytes written**, not a second validation of the domain, for the same reason.
+`stato_scrittura` (`CapState + 0x12C4`) records what happened: 0 not attempted,
+1 both copies written and verified, 2 foreign data in a destination (nothing
+written), 3 nothing usable written, 4 flash unreadable (skipped), 5 only one
+copy verified.
+
+**When `stato_scrittura` stays 2** the extension is no longer written at all,
+so the 108 extra slots are lost at every reload and the game silently falls back
+to its 486 native ones. That word at `0x023DE9C4` is the only indication. The
+remedy is manual and is performed on a *copy* of the save: with a hex editor,
+restore to `0xFF` (or zero) the 452 bytes at offsets `0x30000`, `0x30200`,
+`0x70000` and `0x70200` of the 512 KB `.sav` — a uniform destination is
+claimable — and the next save writes the extension again. Nothing else in the
+file may be touched.
 
 **Whatever happens, the vanilla save runs and its own result is returned.** The
 hook never answers `WRITE_STATUS_TOTAL_FAIL` on its own: the touch-save app
