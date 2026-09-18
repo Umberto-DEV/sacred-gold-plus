@@ -99,15 +99,19 @@ static u32 lcg(SgpAnim5Slot *s)
 /* v5d — «riarma l'accento»: nessuna posa B in corso e un'attesa PIENA, presa
  * a caso nella stessa fascia di ogni altra attesa.
  *
- * Tre siti di chiamata, e sono tre correzioni in una sola funzione:
- *   - alla creazione della voce (S2 di A1 §3.3): la v5c metteva `blink_wait =
- *     BLINK_MIN` nudo, cosi' quattro lottatori creati nello stesso tick
- *     facevano il primo accento all'unisono;
- *   - quando un cancello si alza (B3 di A1 §3.2, misurato in A2 §6.2): il
- *     residuo di `blink_left` si congelava e faceva riapparire la posa B nel
- *     tick successivo alla caduta del cancello — un lampo a ogni mossa;
- *   - a voce liberata, per non lasciare un residuo a chi riusa l'indirizzo.
- * `noinline`: il corpo costa piu' di una BL, e i siti sono tre. */
+ * DUE siti di chiamata (slot_per sotto, e sgp_idle_task5 alla caduta di un
+ * cancello), e sono due correzioni in una sola funzione:
+ *   - alla creazione della voce (S2 di A1 §3.3, in slot_per): la v5c metteva
+ *     `blink_wait = BLINK_MIN` nudo, cosi' quattro lottatori creati nello
+ *     stesso tick facevano il primo accento all'unisono;
+ *   - quando un cancello si alza (B3 di A1 §3.2, misurato in A2 §6.2, in
+ *     sgp_idle_task5): il residuo di `blink_left` si congelava e faceva
+ *     riapparire la posa B nel tick successivo alla caduta del cancello — un
+ *     lampo a ogni mossa.
+ * La terza correzione dell'audit — niente residuo a chi riusa l'indirizzo —
+ * non passa da qui: e' `w[4] = 0` in `sgp_pulisci`, che azzera insieme
+ * blink_left/blink_wait/blink_cnt/usato quando la voce si libera (vedi li').
+ * `noinline`: il corpo costa piu' di una BL, e i siti sono due. */
 __attribute__((noinline)) static void riarma(SgpAnim5Slot *s)
 {
     s->blink_left = 0u;
@@ -239,7 +243,15 @@ static void riposo(SgpAnim5Slot *s, u8 *pic)
  * A interruttore spento non esiste nessuna voce con questo `od` (il task
  * ritorna prima di crearla), quindi il ciclo non trova niente e **non scrive
  * un solo byte** nella memoria del gioco: e' il motivo per cui la
- * spegnibilita' resta byte-identica. */
+ * spegnibilita' resta byte-identica.
+ *
+ * Precondizione: `data != 0`. Tutti i chiamanti (sgp_stop_politica,
+ * sgp_idle_task5) passano l'OpponentData* vivo che il gioco ha appena dato
+ * loro, mai NULL. Con `data == 0` una voce gia' libera (`od == 0`) la
+ * eguaglierebbe e il ramo sotto leggerebbe `*(u32*)(0 + OD_POKEPIC)`, cioe'
+ * l'indirizzo 0x20: percorso teorico (B10 della review 18/09/2026), non
+ * raggiungibile dai chiamanti attuali; non e' stata aggiunta una guardia
+ * perche' costerebbe 4 B per un caso irraggiungibile. */
 void sgp_pulisci(void *data)
 {
     SgpAnim5State *st = SGP_STATO5;
@@ -260,7 +272,10 @@ void sgp_pulisci(void *data)
         w = (u32 *)s;
         w[0] = 0u; /* od: la voce torna LIBERA */
         w[3] = 0u;
-        w[4] = 0u;
+        w[4] = 0u; /* blink_left/blink_wait/blink_cnt/usato: la "terza
+                    * correzione" del commento sopra riarma() passa da qui,
+                    * non da una terza chiamata a riarma() — niente residuo
+                    * di posa B a chi riusa questo indirizzo. */
         w[5] = 0u;
         st->puliti = st->puliti + 1u;
     }
@@ -301,7 +316,10 @@ void sgp_avvia_tutti(void *data, void *bs)
 }
 
 /* Ferma tutti prima della cattura, mentre tutti gli OpponentData sono vivi.
- * Non viene chiamata dai destructor. `dentro` resta un indicatore di debug. */
+ * Non viene chiamata dai destructor. Fino alla v5c uno store di debug
+ * (`st->dentro`) segnava il transito da qui; in v5d quel campo e' stato
+ * liberato (sgp_anim5.h: +0x3C, RISERVATO, nessun test o strumento lo
+ * leggeva) e questa funzione non scrive piu' niente in `SgpAnim5State`. */
 static void estendi(void *data)
 {
     SgpAnim5State *st = SGP_STATO5;
@@ -518,7 +536,11 @@ void sgp_idle_task5(void *task, void *data)
         }
     }
 
-    /* 3b. Accento con la posa B. Non tutte le specie vi chiudono gli occhi. */
+    /* 3b. Accento con la posa B: NON un battito di ciglia. Per il 99,3-99,65%
+     * delle viste misurate e' un cambio di posa intero (arti, ali, testa,
+     * sagoma, A3); e' il motivo per cui v5d lo tiene per il tempo che il
+     * gioco stesso usa per lo stesso fotogramma (par.bin, --variante) invece
+     * che per 2-3 tick. Vedi README.md §v5d e AUDIT-2026-09-14.md. */
     if ((flags & SGP_F_POSA) != 0u) {
         u32 p = 0u;
         if (s->blink_left != 0u) {

@@ -105,12 +105,16 @@ e c'è un test che la misura contando le `Pokepic_SetAttr`.
 Il blob resta a **1532 B su 1536**, gli stessi della v5c. Sono stati liberati
 i sei campi di diagnostica che nessun test tracciato e nessuno strumento
 della v5 leggeva — `blinks` (+0x14), `rari` (+0x18), `stop_visti` (+0x20),
-`dentro` (+0x3C), `maxbatt` (+0x3D), `ultimo_sito` (+0x3E) — che valevano
-52 B. Gli offset **non** si spostano: i campi restano come buchi riservati,
-così gli strumenti che leggono i primi 32 B dello stato continuano a
-funzionare. I tre lettori di `blinks`/`rari` (`anim/tools/sonda_moto.py:108`,
-`misura_v4.py:117`, `misura_anim.py:73`) guardano lo stato della **v4** a
-`0x023D8E40`, che non è toccato.
+`dentro` (+0x3C), `maxbatt` (+0x3D), `ultimo_sito` (+0x3E) — che valgono
+**48 B**, non 52: misurati col mutante che li rimette tutti e sei (1580 B,
+contro i 1532 B spediti). Gli offset **non** si spostano: i campi restano
+come buchi riservati, così gli strumenti che leggono i primi 32 B dello
+stato continuano a funzionare. I quattro lettori di `blinks`/`rari`
+(`anim/tools/sonda_moto.py:108`, `anim/tools/misura_v4.py:117`,
+`anim/tools/misura_anim.py:73`, `options/tools/misura_anim.py:73`) guardano
+lo stato della **v4** a `0x023D8E40`, che non è toccato: `sonda_moto.py`
+legge la RAM dal vivo, gli altri tre leggono le stesse colonne da un CSV
+già esportato.
 
 ### Parametri e varianti
 
@@ -125,8 +129,11 @@ Tutti i tempi stanno in `par.bin`: cambiarli **non ricompila il codice**.
 
 `blink_min 120`, `blink_mask 127` in tutte e tre. Il jitter di ±1 tick
 (±33 ms) sulla durata è nella logica e non è disattivabile dai parametri.
-L'attesa effettiva si allunga fino a un ciclo di respiro (max +1,6 s) perché
-l'accento aspetta il picco.
+Le attese fra inizi di accento stanno in **[240, 590] fotogrammi (4,0–8,2 s
+nominali + al massimo un ciclo di respiro di 96 fotogrammi per aspettare il
+picco)**: `blink_wait` sorteggia 120–247 tick (240–494 fotogrammi), poi la
+voce resta armata fino al prossimo picco del respiro, che nel caso peggiore
+arriva fino a un ciclo intero (96 fotogrammi) più tardi.
 
 ### Cancelli del compilatore (zero byte di ROM)
 

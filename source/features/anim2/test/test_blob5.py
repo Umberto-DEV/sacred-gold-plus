@@ -32,7 +32,9 @@ PAR_BLINK_MIN, PAR_BLINK_MASK, PAR_BLINK_DUR = 0x0C, 0x0D, 0x0E
 PAR_RARO_OGNI, PAR_RARO_PIU = 0x0F, 0x10
 ST_LAST_STEP, ST_LAST_IDX = 0x12, 0x13
 SL_RNG, SL_BLEFT, SL_BWAIT = 0x08, 0x10, 0x11
+SL_FASE, SL_INVILUPPO = 0x16, 0x17   # fase privata in ottavi, inviluppo 0..16
 SL_CODA0 = 0x18            # v5d: il BattleSystem che ha creato la voce (M2)
+PAR_PASSO = 0x17           # par.bin: stesso numero di SL_INVILUPPO, tabella diversa
 SETATTR = 0x020087A4       # Pokepic_SetAttr, indirizzo pari
 PICCO = (4, 5)             # indici in cui `tab_u` vale il massimo (16)
 
@@ -363,7 +365,29 @@ class Blob5Test(unittest.TestCase):
                             "i due lottatori hanno la STESSA prima attesa (%s)" % attese)
 
     def test_primo_accento_in_tick_diversi_per_i_due_lottatori(self):
-        """La conseguenza visibile di S2: la prima posa B non e' all'unisono."""
+        """M4 (A8b, riesaminato in review): QUESTO test misura l'effetto
+        visibile combinato di S2 (prima attesa sorteggiata) **e** dello
+        sfasamento statico `--fase` spedito (0,9,5,14) — non S2 da solo. Con
+        `--fase` spedito i due lottatori raggiungono il picco del respiro
+        (SGP_PICCO_IDX) su tick assoluti gia' diversi, quindi resterebbe
+        verde anche con un S2 rotto (`blink_wait` identico per tutti).
+
+        La prova diretta e deterministica di S2 e'
+        `test_prima_attesa_casuale_per_ogni_lottatore`, che legge `blink_wait`
+        dalla voce invece di dedurlo dal primo accento visibile.
+
+        Si e' provato ad azzerare i quattro byte di `PAR_FASE` nella RAM del
+        banco per isolare S2: con OD0/OD1 e la sequenza di chiamate di questo
+        test il risultato e' PEGGIORE, non migliore — i due lottatori restano
+        allo stesso tick (250 == 250) pur avendo `blink_wait` diversi (vedi
+        l'altro test), perche' l'accento e' quantizzato sulle finestre di
+        picco del respiro (una ogni 48 tick, larga 4 tick): due attese
+        diverse possono arrotondare sulla STESSA finestra per coincidenza.
+        Isolare `--fase` scambia un falso positivo (questo test, con S2
+        rotto) con un falso negativo (con S2 funzionante): non e' stato
+        tenuto. Questo test resta quello che il pacchetto spedito garantisce
+        davvero: coi parametri di consegna, il primo accento dei due
+        lottatori NON e' all'unisono."""
         b = Banco5(BUILD)
         b.accendi()
         b.prepara_bs([OD0, OD1])
@@ -458,8 +482,16 @@ class Blob5Test(unittest.TestCase):
         self.b.nostro(OD0)
         self.assertEqual(self.b.u32(self.b.slot + SL_CODA0), BS2)
         self.assertNotEqual(self.b.u32(self.b.slot + SL_RNG), rng)
-        self.assertLessEqual(abs(self.b.s16(PIC0 + PP_YOFFSET)), 1,
-                             "l'inviluppo non e' ripartito da zero")
+        # M3 (A8b): `yOffset == 0` al tick 25 non e' probante, perche' vale
+        # anche col bug (idx sopravvissuto puo' dare y=0 per coincidenza
+        # della tavola). Si legge direttamente la voce: inviluppo == 1 (era
+        # 0, un solo tick e' passato da quando slot_per l'ha azzerato) e
+        # fase == passo (era 0, +PASSO in un tick), non la loro proiezione
+        # sullo schermo.
+        self.assertEqual(self.b.u8(self.b.slot + SL_INVILUPPO), 1,
+                         "l'inviluppo non e' ripartito da zero")
+        self.assertEqual(self.b.u8(self.b.slot + SL_FASE), self.b.par(PAR_PASSO),
+                         "la fase non e' ripartita da zero")
 
     def test_durata_della_posa_b_segue_i_parametri(self):
         """A1 §1.2 / A2 §3.2: l'intervallo con ANIM_STEP=1 dura `dur` o

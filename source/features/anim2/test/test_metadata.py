@@ -24,6 +24,7 @@ def carica_modulo(nome, path):
 
 
 applicatore = carica_modulo("anim2_applicatore_metadata", PACCHETTO / "tools/applica_anim2.py")
+compila_mod = carica_modulo("anim2_compila_metadata", COMPILA)
 
 
 class CompilaAnim5Test(unittest.TestCase):
@@ -170,6 +171,90 @@ class CompilaAnim5Test(unittest.TestCase):
                 (build / "manifesto.json").write_text(json.dumps(manifesto))
                 with self.assertRaises(applicatore.Rifiuto):
                     applicatore.carica_build(build)
+
+    # ------------------------------------------------------------ A8b A1
+    def test_relativo_lascia_intatti_i_flag_e_riduce_i_percorsi(self):
+        """A1: la vecchia `relativo()` chiamava `Path(x).resolve()` su ogni
+        elemento del comando, flag compresi: da dentro `source/` un flag come
+        `-Oz` si risolveva in `source/-Oz`. Deve restare intatto; un percorso
+        assoluto dentro il repo diventa relativo; uno fuori si riduce al solo
+        nome del file (mai al percorso assoluto intero, che porterebbe la
+        cartella personale di chi compila)."""
+        self.assertEqual(compila_mod.relativo("-Oz"), "-Oz")
+        self.assertEqual(compila_mod.relativo("clang"), "clang")
+        dentro = str(compila_mod.SORGENTI / "anim_blob5.c")
+        atteso = str((compila_mod.SORGENTI / "anim_blob5.c")
+                     .relative_to(compila_mod.REPO))
+        self.assertEqual(compila_mod.relativo(dentro), atteso)
+        with tempfile.TemporaryDirectory() as td:
+            fuori = str(Path(td) / "anim_blob5.o")
+            self.assertNotIn(td, compila_mod.relativo(fuori))
+            self.assertEqual(compila_mod.relativo(fuori), "anim_blob5.o")
+
+    def test_manifesto_rigenerato_dentro_il_repo_non_porta_percorsi_macchina(self):
+        """A1: quando `--uscita` sta dentro il repo, `comando` non deve
+        portare ne' la cartella personale di chi compila ne' il nome della
+        cartella temporanea di questa prova (solo percorsi relativi al repo,
+        o i flag/nomi comando intatti); il blob resta quello spedito.
+        Nota: `--uscita` diversa da `source/sgp12/build/anim2` produce
+        comunque un `-o` relativo ma non identico a quello spedito (l'ultimo
+        pezzo del percorso e' il nome di QUESTA cartella): la verifica di
+        identita' con `--uscita source/sgp12/build/anim2` va fatta a mano,
+        non da un test che scrive dentro l'albero tracciato da git."""
+        out = REPO / "source" / "sgp12" / "build" / "anim2-prova-a1"
+        self.addCleanup(shutil.rmtree, out, True)
+        subprocess.run([sys.executable, str(COMPILA), "--uscita", str(out)],
+                       cwd=str(REPO), check=True, capture_output=True, text=True)
+        rigenerato = json.loads((out / "manifesto.json").read_text())
+        for arg in rigenerato["comando"]:
+            self.assertNotIn(str(REPO), arg, arg)
+            self.assertNotIn(str(out), arg, arg)
+        spedito = json.loads((BUILD / "manifesto.json").read_text())
+        self.assertEqual(rigenerato["blob"]["sha256"], spedito["blob"]["sha256"])
+
+    # ------------------------------------------------------------ A8b B3
+    def test_override_esplicito_etichetta_la_variante_come_modificata(self):
+        m = self.compila_con("--variante", "V1", "--blink-dur", "20")
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(par["variante"], "V1 (modificata)")
+        self.assertTrue(par["variante_modificata"])
+
+    def test_variante_senza_override_non_e_etichettata_modificata(self):
+        m = self.compila_con("--variante", "V2")
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(par["variante"], "V2")
+        self.assertFalse(par["variante_modificata"])
+
+    def compila_con(self, *argv):
+        td = tempfile.TemporaryDirectory()
+        self.addCleanup(td.cleanup)
+        subprocess.run([sys.executable, str(COMPILA), "--uscita", td.name, *argv],
+                       check=True, capture_output=True, text=True)
+        return json.loads((Path(td.name) / "manifesto.json").read_text())
+
+    # ------------------------------------------------------------ A8b B4/B5
+    def test_valori_negativi_sono_un_rosso_non_un_traceback(self):
+        casi = (
+            ["--blink-min", "-1"],
+            ["--raro-piu", "-1"],
+            ["--amp", "-1,3,4,4"],
+        )
+        for argv in casi:
+            with self.subTest(argv=" ".join(argv)):
+                r = self.esegui(*argv)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn("NEGATIVO ROSSO", r.stderr)
+                self.assertNotIn("Traceback", r.stderr)
+
+    def test_raro_ogni_sotto_due_e_rosso(self):
+        for valore in ("0", "1"):
+            with self.subTest(valore=valore):
+                r = self.esegui("--raro-ogni", valore)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn("RARO ROSSO", r.stderr)
+
+    def test_raro_ogni_due_passa(self):
+        self.assertEqual(self.esegui("--raro-ogni", "2").returncode, 0)
 
 
 if __name__ == "__main__":

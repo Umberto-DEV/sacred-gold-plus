@@ -173,15 +173,25 @@ typedef struct SgpAnim5State {
     u32 hits_busy; /* +0x0C esecuzioni SOSPESE (v4: solo animActive)       */
     s16 last_y;    /* +0x10 ultimo yOffset scritto                         */
     u8 last_step;  /* +0x12 ultima posa scritta                            */
-    u8 last_idx;   /* +0x13 ultima fase 0..17                              */
+    u8 last_idx;   /* +0x13 ultima fase 0..17. v5d: NON e' piu' solo          */
+                   /*      diagnostica. sgp_idle_task5 lo scrive a 3a e lo     */
+                   /*      rilegge a 3b (SGP_PICCO_IDX/SGP_PICCO_N) per capire */
+                   /*      se il respiro e' al picco: e' cosi' che l'accento  */
+                   /*      di posa B si sincronizza col respiro. Non liberarlo*/
+                   /*      ne' spostarlo come i campi sotto senza rifare      */
+                   /*      quella lettura.                                    */
     u32 riservato14;/*+0x14 v5d: RISERVATO. Era `blinks` (accenti iniziati),  */
     u32 riservato18;/*+0x18 v5d: RISERVATO. Era `rari`. I due contatori di    */
                    /*      diagnostica costavano 16 B di codice e nessun      */
-                   /*      test tracciato ne' strumento v5 li leggeva (i tre  */
-                   /*      lettori — anim/tools/sonda_moto.py:108,            */
-                   /*      misura_v4.py:117, misura_anim.py:73 — guardano lo  */
-                   /*      stato della v4 a 0x023D8E40, non questo). Restano  */
-                   /*      come buchi per non spostare i campi che seguono.   */
+                   /*      test tracciato ne' strumento v5 li leggeva (i      */
+                   /*      quattro lettori — anim/tools/sonda_moto.py:108,    */
+                   /*      anim/tools/misura_v4.py:117, anim/tools/           */
+                   /*      misura_anim.py:73 e options/tools/misura_anim.py:73*/
+                   /*      — guardano lo stato della v4 a 0x023D8E40, non     */
+                   /*      questo; sonda_moto.py legge la RAM dal vivo, gli   */
+                   /*      altri tre leggono le stesse colonne da un CSV gia' */
+                   /*      esportato). Restano come buchi per non spostare i  */
+                   /*      campi che seguono.                                 */
     s16 last_s76;  /* +0x1C ultimo shadow.yOffset scritto                  */
     u8 last_cls;   /* +0x1E ultima classe di taglia letta                  */
     u8 last_slot;  /* +0x1F ultimo slot usato                              */

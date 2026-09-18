@@ -132,11 +132,22 @@ def relativo(x):
     macchina che ha compilato: `.github/check_public.py` rifiuta i file
     pubblici che contengono una home o uno scratch, e un manifesto con dentro
     la cartella personale di chi compila non e' nemmeno confrontabile fra due
-    macchine."""
-    try:
-        return str(Path(x).resolve().relative_to(REPO))
-    except (ValueError, OSError):
+    macchine.
+
+    Tocca SOLO i percorsi assoluti. La versione precedente chiamava
+    `Path(x).resolve()` su ogni elemento di `comando`, flag compresi: da CWD
+    `source/` un flag come `-Oz` si risolveva in `source/-Oz`, un nome
+    comando come `clang` in `source/clang` (A8b A1). Un percorso assoluto
+    dentro il repo diventa relativo; uno fuori (es. `--uscita` fuori
+    dall'albero) resta ridotto al solo nome del file, mai al percorso
+    assoluto intero."""
+    p = Path(x)
+    if not p.is_absolute():
         return x
+    try:
+        return str(p.resolve().relative_to(REPO))
+    except (ValueError, OSError):
+        return p.name
 
 
 def tabella_u():
@@ -218,6 +229,12 @@ def main():
     for nome, valore in VARIANTI[args.variante].items():
         if getattr(args, nome) is None:
             setattr(args, nome, valore)
+    # B3 — se un flag esplicito ha spostato un parametro che la variante
+    # controlla (blink_dur/raro_piu) lontano dal suo preset, il manifesto non
+    # puo' piu' etichettare la build come "V1"/"V2"/"V3" tal quale: sarebbe
+    # una variante che non corrisponde ai propri numeri.
+    variante_modificata = any(getattr(args, nome) != valore
+                              for nome, valore in VARIANTI[args.variante].items())
     out = args.uscita
     out.mkdir(parents=True, exist_ok=True)
 
@@ -231,6 +248,35 @@ def main():
         raise SystemExit(
             "R3 ROSSO: il sito DISTRUZIONE (0x02258E98) non si puo' sopprimere: "
             "il SysTask punta alla struttura che quella funzione libera.")
+
+    # --- cancello NEGATIVO, prima di ogni altro controllo (A8b B4) --------
+    # Questi parametri finiscono impacchettati come byte non firmati in
+    # `par_bin` (assegnazione diretta in un bytearray o `bytes(...)`): senza
+    # questo cancello un valore negativo non dava un ROSSO leggibile ma un
+    # ValueError di libreria a meta' scrittura di par.bin.
+    negativi = {}
+    for nome, valore in (("blink-min", args.blink_min),
+                         ("blink-mask", args.blink_mask),
+                         ("blink-dur", args.blink_dur),
+                         ("raro-ogni", args.raro_ogni),
+                         ("raro-piu", args.raro_piu)):
+        if valore < 0:
+            negativi[nome] = valore
+    for nome, valori in (("amp", args.amp), ("sca", args.sca), ("fase", args.fase)):
+        for i, v in enumerate(valori):
+            if v < 0:
+                negativi["%s%d" % (nome, i)] = v
+    if negativi:
+        raise SystemExit(
+            "NEGATIVO ROSSO: questi parametri non possono essere negativi "
+            "(diventano byte non firmati in par.bin): %s" % negativi)
+
+    if args.raro_ogni < 2:
+        raise SystemExit(
+            "RARO ROSSO: --raro-ogni deve valere almeno 2. Con 0 o 1 "
+            "`blink_cnt >= SGP_PAR[PAR_RARO_OGNI]` e' vero fin dal primo "
+            "giro (blink_cnt parte da 0 e viene incrementato PRIMA del "
+            "confronto): ogni accento diventerebbe raro, non uno su N.")
 
     codice = args.base + OFF_CODICE
     canarino = args.base + OFF_CANARINO
@@ -366,7 +412,9 @@ def main():
             "par": {"byte": len(pb), "sha256": sha(pb),
                     "amp": list(args.amp), "sca": list(args.sca),
                     "fase": list(args.fase),
-                    "variante": args.variante,
+                    "variante": (args.variante + " (modificata)"
+                                if variante_modificata else args.variante),
+                    "variante_modificata": variante_modificata,
                     "blink_min": args.blink_min, "blink_mask": args.blink_mask,
                     "blink_dur": args.blink_dur, "raro_ogni": args.raro_ogni,
                     "raro_piu": args.raro_piu,
