@@ -4,7 +4,9 @@ Con le animazioni opzionali attive, il menu Squadra riusa la tabella delle
 mosse già caricata dalla battaglia. Nella fixture EN/IT la pausa del task idle
 scende da **33 a 20 frame**, circa **0,55 → 0,33 secondi** a 60 Hz, alla prima
 e alla seconda apertura. Rimane un caricamento visibile: non è movimento
-continuo in ogni fotogramma. La taratura anim2 v5c a 0,375× resta invariata.
+continuo in ogni fotogramma. La taratura del respiro anim2 a 0,375× resta invariata
+(v5c, e la [v5d](../anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026) non la tocca:
+cambia solo la posa B).
 
 **La cache è attiva solo con l'opzione «animazioni» accesa.** Quel byte
 (`0x023D8716` nel chunk di salvataggio Plus) è **spento per difetto**:

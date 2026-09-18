@@ -44,10 +44,15 @@ davvero `sito + 5`, e si vede l'effetto della fermata sui campi del `Pokepic`.
 Serve per i siti che una lotta selvatica non fa mai scattare.
 
 `--gancio-task` e `--forza-subito`/`--siti-finti` puntano di default alla testa
-di `sgp_idle_task5` (blocco v5c, simbolo in
-`source/sgp12/build/anim2/manifesto.json`, bit Thumb tolto). Il vecchio blocco
-v4 (`0x023D8BE4`) e' codice storico, morto dopo il passaggio ad anim2: un
-breakpoint li' non scatta mai in una lotta reale.
+di `sgp_idle_task5`, LETTA dal manifesto del blocco spedito
+(`source/sgp12/build/anim2/manifesto.json`, campo `simboli`, bit Thumb tolto).
+Non e' piu' una costante: la testa si sposta a ogni ricompilazione del blob
+(v5c 0x023DB750, v5d 0x023DB72C), e un valore cablato invecchia in silenzio —
+il breakpoint non scatta e la corsa sembra semplicemente «senza eventi».
+Se il manifesto manca o non porta il simbolo, si ricade sul valore esplicito
+`GANCIO_TASK_RIPIEGO` (la testa v5d nota al 18/09/2026) e lo si dice su stderr.
+Il vecchio blocco v4 (`0x023D8BE4`) e' codice storico, morto dopo il passaggio
+ad anim2: un breakpoint li' non scatta mai in una lotta reale.
 
 Uso:
     sonda_fasi.py --hg BIN --rom ROM [--sram SAV] --out DIR --script S --json F
@@ -88,6 +93,35 @@ OD_POKEPIC, OD_TASK, OD_DEGREES = 0x20, 0x198, 0x19C
 
 GET_MAX_BATTLERS = 0x0223A7F0   # BattleSystem_GetMaxBattlers
 GET_BATTLER_DATA = 0x0223A7E8   # BattleSystem_GetBattlerData
+
+# La testa del task del moto NON e' una costante: cambia a ogni ricompilazione
+# del blob anim2. Si legge dal manifesto del blocco spedito; il ripiego serve
+# solo se il manifesto non c'e' (albero parziale) o non porta il simbolo.
+MANIFESTO_ANIM2 = os.path.join(REPO, "source", "sgp12", "build", "anim2",
+                               "manifesto.json")
+SIMBOLO_TASK = "sgp_idle_task5"
+GANCIO_TASK_RIPIEGO = 0x023DB72C   # testa v5d al 18/09/2026 (0x23db72d & ~1)
+
+
+def gancio_task_default(manifesto=MANIFESTO_ANIM2, avvisa=True):
+    """Testa di `sgp_idle_task5` dal manifesto, bit Thumb tolto.
+
+    Rende `(indirizzo, fonte)`. `fonte` e' "manifesto" oppure "ripiego": il
+    chiamante la stampa, cosi' chi legge il log sa se la sonda sta puntando al
+    blob che ha davvero in mano o a una costante."""
+    try:
+        with open(manifesto, "r") as f:
+            simboli = (json.load(f).get("simboli") or {})
+        valore = simboli[SIMBOLO_TASK]
+    except (OSError, ValueError, KeyError):
+        if avvisa:
+            print("sonda_fasi: %s non leggibile o senza `%s`: uso il ripiego "
+                  "%#010x" % (manifesto, SIMBOLO_TASK, GANCIO_TASK_RIPIEGO),
+                  file=sys.stderr)
+        return GANCIO_TASK_RIPIEGO, "ripiego"
+    if isinstance(valore, str):
+        valore = int(valore, 0)
+    return int(valore) & ~1, "manifesto"
 
 SITI = {
     0x02258E98: "DISTRUZIONE",
@@ -303,10 +337,12 @@ def argomenti():
                          "(prova R6: `lr` vero e effetto sullo sprite)")
     ap.add_argument("--bs", default="0x022C0264",
                     help="BattleSystem*, usato solo con --forza-subito")
-    ap.add_argument("--gancio-task", default="0x023DB750",
-                    help="testa di sgp_idle_task5 (blocco v5c; simbolo "
-                         "`sgp_idle_task5` in source/sgp12/build/anim2/"
-                         "manifesto.json, bit Thumb tolto)")
+    gancio, fonte = gancio_task_default()
+    ap.add_argument("--gancio-task", default="%#010x" % gancio,
+                    help="testa di sgp_idle_task5; di default %#010x, letta "
+                         "dal %s (source/sgp12/build/anim2/manifesto.json, "
+                         "simbolo `sgp_idle_task5`, bit Thumb tolto)"
+                         % (gancio, fonte))
     return ap.parse_args()
 
 

@@ -257,5 +257,55 @@ class CompilaAnim5Test(unittest.TestCase):
         self.assertEqual(self.esegui("--raro-ogni", "2").returncode, 0)
 
 
+class SondaFasiGancioTest(unittest.TestCase):
+    """Il default di `--gancio-task` di sonda_fasi.py segue il blob spedito.
+
+    Nasce dall'integrazione 1.2.2: il ramo degli strumenti aveva cablato la
+    testa v5c (0x023DB750) proprio mentre il ramo anim2 la spostava a
+    0x023DB72C con la v5d. Un default cablato non fa rumore quando invecchia —
+    il breakpoint non scatta e la corsa sembra «senza eventi» — quindi il
+    valore va letto dal manifesto del blocco, non scritto a mano."""
+
+    def setUp(self):
+        self.sonda = carica_modulo("anim2_sonda_fasi",
+                                   PACCHETTO / "tools/sonda_fasi.py")
+        self.manifesto = json.loads((BUILD / "manifesto.json").read_text())
+        # il manifesto scrive i simboli come stringhe ("0x23db72d")
+        self.testa = int(self.manifesto["simboli"]["sgp_idle_task5"], 0) & ~1
+
+    def test_default_letto_dal_manifesto_del_blob_spedito(self):
+        valore, fonte = self.sonda.gancio_task_default()
+        self.assertEqual(fonte, "manifesto")
+        self.assertEqual(valore, self.testa)
+        # bit Thumb tolto davvero, e non e' piu' la testa v5c
+        self.assertEqual(valore & 1, 0)
+        self.assertNotEqual(valore, 0x023DB750)
+
+    def test_manifesto_diverso_sposta_il_default(self):
+        """Il valore VIENE dal file: cambiato il file, cambia il default."""
+        with tempfile.TemporaryDirectory() as td:
+            finto = Path(td) / "manifesto.json"
+            finto.write_text(json.dumps(
+                {"simboli": {"sgp_idle_task5": 0x02345679}}))
+            self.assertEqual(self.sonda.gancio_task_default(str(finto)),
+                             (0x02345678, "manifesto"))
+
+    def test_senza_manifesto_ripiega_su_un_valore_esplicito(self):
+        with tempfile.TemporaryDirectory() as td:
+            assente = str(Path(td) / "non-c-e.json")
+            valore, fonte = self.sonda.gancio_task_default(assente, avvisa=False)
+        self.assertEqual(fonte, "ripiego")
+        self.assertEqual(valore, self.sonda.GANCIO_TASK_RIPIEGO)
+        self.assertEqual(valore, self.testa)
+
+    def test_la_riga_di_comando_usa_quel_default(self):
+        r = subprocess.run(
+            [sys.executable, str(PACCHETTO / "tools/sonda_fasi.py"), "--help"],
+            capture_output=True, text=True, check=True)
+        atteso = "%#010x" % self.testa
+        self.assertIn(atteso, r.stdout)
+        self.assertNotIn("0x023DB750", r.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

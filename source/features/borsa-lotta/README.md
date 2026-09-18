@@ -4,8 +4,9 @@ Con le animazioni opzionali attive, la costruzione della Borsa riusa i dati
 degli oggetti già residenti nella battaglia. Nella fixture locale EN/IT la
 pausa del task idle passa da **55 a 7 frame**, circa **0,9 → 0,12 secondi** a
 60 Hz. Resta un breve caricamento: il risultato non è movimento continuo in
-ogni fotogramma. Il blocco si applica dopo `anim2` e conserva la taratura v5c
-a 0,375×.
+ogni fotogramma. Il blocco si applica dopo `anim2` e conserva la taratura del respiro
+a 0,375× (v5c, invariata nella [v5d](../anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026),
+che cambia solo la posa B).
 
 **La cache è attiva solo con l'opzione «animazioni» accesa.** Quel byte
 (`0x023D8716` nel chunk di salvataggio Plus) è **spento per difetto**:
