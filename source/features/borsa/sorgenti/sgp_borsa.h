@@ -20,9 +20,9 @@ typedef int BOOL;
  * `source/docs/arm9-reserve-map.json` assegna questo intervallo a `sgp.borsa`.
  *
  * 2048 B, non 1024. U §4.4 stimava 1024 «da un conteggio di istruzioni, non da
- * un assemblato» (U §7, che lo dichiara). L'assemblato misura **622 B** di
- * codice; con 480 B di tabella, 16 B di canarino e 16 B fra staffetta e
- * puntatori agli originali il totale e' 1134 B, che in 1024 non entra.
+ * un assemblato» (U §7, che lo dichiara). L'assemblato misura **658 B** di
+ * codice; con 480 B di tabella, 16 B di canarino e 32 B fra staffetta e
+ * puntatori agli originali il totale e' 1186 B, che in 1024 non entra.
  * La riserva successiva inizia a 0x023DBD00, dopo `sgp.anim2`.
  *
  *   +0x000  sgp_borsa_cmd127   trampolino, 8 B   <- gScriptCmdTable[127]
