@@ -27,12 +27,57 @@ class JournalTests(unittest.TestCase):
         restored=Bag();self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(restored),7,0x1234),1)
         self.assertEqual(bytes(source),bytes(restored))
     def test_corruption_never_silently_restores_or_clears(self):
+        # A damaged record never reaches the Bag. A flip inside the magic makes
+        # the sector unrecognisable, so it reads as ABSENT (0); anywhere else the
+        # record is still ours and reads as INVALID (-1). Neither is fatal.
         _,r=self.record();target=Bag();target.slots[251]=Slot(7,9);before=bytes(target)
         raw=bytes(r)
         for i in range(len(raw)):
             changed=bytearray(raw);changed[i]^=1;bad=Record.from_buffer_copy(changed)
-            self.assertEqual(self.lib.cap_record_restore(C.byref(bad),C.byref(target),7,0x1234),-1,i)
+            self.assertEqual(self.lib.cap_record_restore(C.byref(bad),C.byref(target),7,0x1234),0 if i<4 else -1,i)
+            self.assertEqual(self.lib.cap_record_owned_prefix(C.byref(bad)),0 if i<4 else 1,i)
             self.assertEqual(bytes(target),before)
+
+    def test_zeroed_or_foreign_sectors_read_as_absent_never_invalid(self):
+        """F1: sectors that are not ours degrade to ABSENT, never to a fatal -1."""
+        for fill in (b'\xff',b'\x00',b'\xaa',b'\x5a'):
+            with self.subTest(fill=fill):
+                r=Record.from_buffer_copy(fill*452);b=Bag();b.slots[251]=Slot(7,9);before=bytes(b)
+                self.assertEqual(self.lib.cap_record_owned_prefix(C.byref(r)),0)
+                self.assertEqual(self.lib.cap_record_erased(C.byref(r)),1 if fill==b'\xff' else 0)
+                self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(b),7,0x1234),0)
+                self.assertEqual(bytes(b),before)
+
+    def test_our_magic_with_broken_checksum_is_invalid_but_not_foreign(self):
+        _,r=self.record()
+        raw=bytearray(bytes(r));raw[20]^=1
+        bad=Record.from_buffer_copy(bytes(raw));b=Bag();before=bytes(b)
+        self.assertEqual(self.lib.cap_record_owned_prefix(C.byref(bad)),1)
+        self.assertEqual(self.lib.cap_record_erased(C.byref(bad)),0)
+        self.assertEqual(self.lib.cap_record_restore(C.byref(bad),C.byref(b),7,0x1234),-1)
+        self.assertEqual(bytes(b),before)
+
+    def test_create_sanitises_zero_quantity_and_out_of_range_slots(self):
+        """F2: {id,0} and id>536 in the extension must not poison the record."""
+        b=Bag();p0=self.lib.cap_pocket(C.byref(b),0)
+        p0[165]=Slot(30,7)    # valid, first extension cell
+        p0[249]=Slot(10,5)    # valid
+        p0[250]=Slot(20,0)    # quantity 0: what native PocketCompaction leaves behind
+        p0[251]=Slot(600,1)   # id beyond ITEM_MAX
+        p3=self.lib.cap_pocket(C.byref(b),3)
+        p3[101]=Slot(4,200)   # quantity beyond the TM/HM limit of 99
+        r=Record();self.lib.cap_record_create(C.byref(r),C.byref(b),7,0x1234)
+        self.assertEqual(self.lib.cap_record_restore(C.byref(r),None,7,0x1234),1)
+        extras=[(r.extra[i].id,r.extra[i].quantity) for i in range(87)]
+        self.assertEqual(extras[0],(30,7))      # pocket 0 extension starts at 165
+        self.assertEqual(extras[84],(10,5))     # slot 249: it does NOT move
+        self.assertTrue(all(s==(0,0) for i,s in enumerate(extras) if i not in (0,84)))
+        self.assertEqual((r.extra[95].id,r.extra[95].quantity),(0,0))  # TM/HM cell
+        target=Bag()
+        self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(target),7,0x1234),1)
+        t=self.lib.cap_pocket(C.byref(target),0)
+        self.assertEqual([(t[i].id,t[i].quantity) for i in (165,249,250,251)],
+                         [(30,7),(10,5),(0,0),(0,0)])
     def test_absent_old_save_and_stale_generation(self):
         r=Record.from_buffer_copy(b'\xff'*452);b=Bag()
         self.assertEqual(self.lib.cap_record_restore(C.byref(r),C.byref(b),1,10),0)

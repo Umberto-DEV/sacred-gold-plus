@@ -401,14 +401,53 @@ Add/Take/Has/Quantity functions retain their original implementation.
 The 108 extra slots use two 452-byte records per save bank, in reserved flash
 sectors **48 and 112**, at offsets 0 and 0x200. These do not overlap the native
 extra-save arrays or SGP options sectors47/111. Each record contains format1,
-the **native save generation and main-block CRC16**, and its own CRC32. Both
-records in the inactive bank must be written and read back successfully before
-the native save begins. Failure leaves the previous native bank and its
-matching extension intact. Each destination is independently checked for an
-erased or project-owned record before any write; foreign data is not replaced.
-An interrupted owned record can be retried. A matching mirror recovers an
-erased or corrupt primary record. An unrecoverable corrupt active extension
-opens the native save-read-error screen rather than dropping inventory.
+the **native save generation and main-block CRC16**, and its own CRC32.
+
+**The extension can never stop a save from loading.** Each copy is classified on
+its own; a copy that is not usable is ignored, and if no copy is usable the
+extension is ABSENT and the game opens with its 486 native slots. Sectors that
+hold foreign bytes — zeroed by a converter, a flashcart backup or a save editor —
+are a normal, silent case, not a failure. **No path in the load opens the native
+save-read-error screen.** The outcome is recorded in `stato_caricamento`, a
+diagnostic word at `0x023DE9C0` (`CapState + 0x12C0`), first matching rule wins:
+
+| condition | inventory | `stato_caricamento` | `owned` |
+|---|---|---:|---:|
+| primary record matches this save | 594 slots, from the primary (mirror not read) | 1 | 1 |
+| mirror record matches this save | 594 slots, from the mirror | 2 | 1 |
+| a copy could not be read from flash | 486 native slots; the next save skips the extension | 5 | 0 |
+| a copy is intact but from another generation | 486 native slots | 3 | 1 |
+| a copy carries our magic but is damaged, or foreign bytes | 486 native slots | 4 | 0 |
+| both copies erased (0xFF) | 486 native slots | 0 | 0 |
+
+`rejected` (`CapState + 0x0C`) now means only "flash could not be read, do not
+write the extension"; it is never a fatal state and never blocks a save.
+
+**The extension can never stop a save from being written either.** Before any
+write each destination must independently be erased or project-owned: foreign
+data is never replaced. `cap_record_create` sanitises the inventory first — an
+extension cell with quantity 0, with id 0 or id above 536, or with a quantity
+over its pocket limit, is dropped and the tail of that pocket's extension is
+erased, while every other cell keeps its position. The native pocket compaction
+pushes a spent slot to the end of the pocket *keeping its id*, so `{id, 0}` lands
+inside the extension by normal play; writing it produced a record our own
+validator rejected, and the save then failed for ever. The readback after the
+write is a **byte-by-byte comparison of the 452 bytes written**, not a second
+validation of the domain, for the same reason. `stato_scrittura`
+(`CapState + 0x12C4`) records what happened: 0 not attempted, 1 both copies
+written and verified, 2 foreign data in a destination (nothing written),
+3 nothing usable written, 4 flash unreadable (skipped), 5 only one copy verified.
+
+**Whatever happens, the vanilla save runs and its own result is returned.** The
+hook never answers `WRITE_STATUS_TOTAL_FAIL` on its own: the touch-save app
+discards that value and prints "saved the game" regardless, so a refusal by the
+extension lost the whole session silently. The price is bounded: when the
+extension is not written the vanilla save still commits a new generation, so the
+old record becomes stale and the next load degrades to 486 slots — the 108 extra
+slots, rather than everything played since the last successful save.
+
+An interrupted owned record can be retried. A matching mirror recovers an erased
+or corrupt primary record.
 
 Existing 1.1/1.2/earlier 1.2.1 saves import with zero extra slots. Opening a save
 with no extension does not write flash. **Older ROMs cannot access extra slots;
