@@ -470,11 +470,11 @@ slots, rather than everything played since the last successful save.
 An interrupted owned record can be retried. A matching mirror recovers an erased
 or corrupt primary record.
 
-Existing 1.1/1.2/earlier 1.2.1 saves import with zero extra slots. Opening a save
+Existing 1.1/1.2/1.2.1/earlier 1.2.2 saves import with zero extra slots. Opening a save
 with no extension does not write flash. **Older ROMs cannot access extra slots;
 saving in an older ROM changes the native generation and invalidates the old
-extension association. Returning to 1.2.1 then imports only the native inventory.**
-Keep the last save made in 1.2.1 when changing ROM versions. This is input
+extension association. Returning to 1.2.2 then imports only the native inventory.**
+Keep the last save made in 1.2.2 when changing ROM versions. This is input
 compatibility with older saves, not full bidirectional inventory compatibility.
 Load the normal in-game save after a ROM update: emulator savestates also retain
 old executable RAM and are not an update mechanism.

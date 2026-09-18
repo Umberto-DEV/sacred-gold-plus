@@ -1,4 +1,4 @@
-# Capacità Borsa — 1.2.1
+# Capacità Borsa — 1.2.1 (aggiornata nella 1.2.2)
 
 | Tasca | Prima | Adesso | Pagine da 6 |
 |---|---:|---:|---:|
@@ -99,8 +99,8 @@ vecchio record diventa «stale» e il caricamento successivo degrada ai 486 slot
 
 Il [contratto salvataggi](../../docs/contracts.md#expanded-bag-121) specifica
 recupero, errori e compatibilità. **Salvare su una ROM precedente rende gli
-slot extra non recuperabili automaticamente al successivo caricamento 1.2.1.**
-Conservare il save 1.2.1 prima di tornare indietro.
+slot extra non recuperabili automaticamente al successivo caricamento 1.2.2.**
+Conservare il save 1.2.2 prima di tornare indietro.
 
 ## Build e prove
 

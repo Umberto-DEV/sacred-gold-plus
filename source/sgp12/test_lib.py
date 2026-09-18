@@ -37,9 +37,9 @@ BASE_EN = ROM_DIR / "base-1.1-EN.nds"
 BASE_IT = ROM_DIR / "base-1.1-IT.nds"
 SHA256SUMS = ROM_DIR / "SHA256SUMS"
 # Nome della ROM bersaglio dentro $SGP_ROM_DIR. E' una COSTANTE DI VERSIONE:
-# la 1.2.1 costruisce `sgp-1.2.1-{EN,IT}.nds`. Va aggiornata quando cambia la
+# la 1.2.2 costruisce `sgp-1.2.2-{EN,IT}.nds`. Va aggiornata quando cambia la
 # versione, mai aggirata rendendo il confronto facoltativo.
-BERSAGLIO = "sgp-1.2.1-%s.nds"
+BERSAGLIO = "sgp-1.2.2-%s.nds"
 BUILD_RISERVA = Path(__file__).resolve().parent / "build" / "riserva"
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 MANIFEST = BUILD_RISERVA / "MAPPA-RISERVA-ARM9.json"

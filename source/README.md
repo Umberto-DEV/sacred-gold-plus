@@ -8,7 +8,7 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 
 | Folder | What it is |
 | --- | --- |
-| `sgp12/` | The library. One command builds 1.2.1 from a 1.1 base, one command checks the result. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
+| `sgp12/` | The library. One command builds 1.2.2 from a 1.1 base, one command checks the result. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -28,7 +28,7 @@ python3 -m venv .venv
 ```
 
 The compiled-code suites need an ARM946E-S-capable C compiler. The shipped
-1.2.1 payloads were built with **Apple clang 21.0.0
+1.2.2 payloads were built with **Apple clang 21.0.0
 (`clang-2100.3.34.2`, Command Line Tools 27.0)**; each build manifest records
 its compiler. Other Clang releases may produce different bytes or exceed a
 payload's fixed space limit even when they support the ARM target. A usable
@@ -72,8 +72,8 @@ These files are not redistributed here: their licensing was not established to o
 
 ```sh
 cd source && ../.venv/bin/python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/base-1.1-EN.nds" \
-        --uscita /tmp/sgp-1.2.1-EN.nds --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.1-EN.nds \
+        --uscita /tmp/sgp-1.2.2-EN.nds --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.2-EN.nds \
         --base "$SGP_ROM_DIR/base-1.1-EN.nds" --lingua EN
 ```
 
@@ -96,7 +96,7 @@ cd source && SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokehear
     ../.venv/bin/python3 -m unittest sgp12.test_lib -v
 cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/overlay/test -v
 cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/caramelle/test -v
-cd source && SGP_RISERVA_ROM=/tmp/sgp-1.2.1-EN.nds SGP_RISERVA_COMPLETA=1 \
+cd source && SGP_RISERVA_ROM=/tmp/sgp-1.2.2-EN.nds SGP_RISERVA_COMPLETA=1 \
     ../.venv/bin/python3 -m unittest verifiche.test_riserva -v
 ```
 
@@ -113,7 +113,7 @@ exists: a public checkout normally does not have one, since releases are built a
 the maintainer's machine. That single skip is expected and does not need `SGP_CHEATS` set; see
 `source/verifiche/test_riserva.py` for what it checks when the folder is there.
 
-The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.1-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
+The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.2-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
 
 The native-code suite recompiles the shipped C sources and compares them with the blobs that go into the ROM. Those bytes are only reproducible on the toolchain that produced them, which each `build/*/manifesto.json` names; on a different compiler (vendor or major version) the byte-for-byte tests **skip with the two identities printed**, and what stays is the claim that holds anywhere: the blob compiles, fits its compartment and has no external symbols. The expanded-Bag build suite always requires byte-identical code and symbols. The current macOS CI keeps those assertions and every fixed-space limit enabled. A compiler mismatch can therefore fail the full suite; it is not permission to replace the validated payloads.
 

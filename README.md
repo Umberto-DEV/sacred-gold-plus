@@ -2,7 +2,7 @@
 
 **A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
 
-**Version 1.2.1** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
+**Version 1.2.2** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
 
 Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
 
@@ -16,6 +16,12 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
 | ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
 | ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
+
+## What's new in 1.2.2 — updated 19 September 2026
+
+- **The second battle pose is held, not flashed.** With optional battle motion on, the sprite's alternate pose (Typhlosion closing its mouth, for instance) now lasts **0.33 s**, with a longer **0.50 s** accent every third time, instead of 0.07–0.10 s. It starts at the resting point of the breathing cycle and no longer reappears at the end of a move. With the option off the game is byte-identical to 1.2.1.
+- **The expanded Bag no longer loses its extra slots in silence.** A save whose extension sectors could not be read once, or that a converter normalised to a single repeated byte, is written again instead of dropping the 108 extra slots at every reload, and a spent or out-of-range slot is emptied where it sits. Foreign data in those sectors is still never overwritten.
+- **No more false "Bag is full" on a pickup that worked.** Picking up a Poké Ball from the ground showed the "left behind" warning every time the item was in fact collected: the "I discarded something" flag lived on a script variable the game itself writes. The warning now appears only when the item really is left behind.
 
 ## What's new in 1.2.1 — updated 15 September 2026
 
@@ -42,18 +48,18 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 ## Download
 
-Get the ZIP for your language from the [**1.2.1 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1):
+Get the ZIP for your language from the [**1.2.2 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.2):
 
 | Language | File |
 | --- | --- |
-| Italian | `Sacred-Gold-Plus-1.2.1-IT.zip` |
-| English | `Sacred-Gold-Plus-1.2.1-US.zip` |
+| Italian | `Sacred-Gold-Plus-1.2.2-IT.zip` |
+| English | `Sacred-Gold-Plus-1.2.2-US.zip` |
 
 Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
 
 ## Requirements
 
-- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04 or 1.1** ROM (any camera) — you must obtain this yourself.
+- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04, 1.1 or 1.2.1** ROM (any camera) — you must obtain this yourself.
 - A DS patching tool: a desktop program, an Android app, or a browser page (all free; links are in the package guide).
 - An emulator or a flashcart. The searchable picker and L+R toggle require [this fork’s melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1).
 
@@ -65,16 +71,16 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 ## Compatibility
 
-- **Saves:** existing 1.1/1.2/earlier 1.2.1 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
+- **Saves:** existing 1.1/1.2/1.2.1 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
 - **Cheats:** the game header is unchanged from 1.2, but import the updated catalogue to get the corrected codes. 1.1 catalogues have a different header. Every supplied code starts disabled.
 
 ## Source code and contributing
 
-Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.1 from a 1.1 ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/).
+Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.2 from a 1.1 ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/).
 
 - `main` is the development trunk. Fork, create a `feature/…` or `fix/…` branch, open a pull request.
 - Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
-- Finished versions are tags (`v1.2.1`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
+- Finished versions are tags (`v1.2.2`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
 - Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
 
 ## Credits
@@ -95,15 +101,17 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
+**Novità della 1.2.2 — aggiornamento del 19 settembre 2026:** con le animazioni opzionali di lotta accese, la **seconda posa** dello sprite (per esempio Typhlosion che chiude la bocca) dura ora **0,33 s**, con un accento più lungo di **0,50 s** ogni tre, invece di 0,07–0,10 s: parte all'apice del respiro e non riappare a fine mossa. Con l'opzione spenta il gioco è identico alla 1.2.1 al byte. **Borsa espansa:** un salvataggio i cui settori dell'estensione non si erano potuti leggere, o che un convertitore ha normalizzato a un solo byte ripetuto, viene riscritto invece di perdere i 108 slot extra a ogni ricarica; uno slot esaurito o fuori intervallo viene svuotato dov'è. I dati estranei in quei settori non vengono mai sovrascritti. **«Borsa piena» falsa:** raccogliendo una Poké Ball a terra l'avviso «lasciato a terra» compariva a ogni raccolta riuscita, perché la spia «ho scartato qualcosa» stava su una variabile di script che scrive il gioco stesso; ora l'avviso compare solo quando l'oggetto viene davvero lasciato.
+
 **Novità della 1.2.1 — aggiornamento del 15 settembre 2026:** borsa principale da **252 slot, 42 pagine complete**. Tutte le tasche hanno capienza multipla di sei: strumenti 252, medicine 42, Ball 30, MT/MN 102, bacche 66, posta 12, strumenti lotta 30, strumenti base 60. Animazioni opzionali di lotta più fluide, con aperture di Borsa e Squadra più rapide; restano brevi pause di caricamento.
 
 **Selvatici:** nel [melonDS Android 2.1.1 di questo progetto](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1) scegli fra tutti i **493 Pokémon** con ricerca e imposti il livello **1–100**. Lascia il codice abilitato: in gioco parte spento, **L+R** lo attiva e una nuova pressione lo spegne. Vale per l'erba alta con Livelli selvatici OFF. Corretti anche i codici maschio/femmina + natura. Catalogo aggiornato: **2.110 codici in 67 cartelle**, con [rapporto di verifica](source/docs/cheat-catalogue-validation.md).
 
 **Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
-**Download:** dalla [release 1.2.1](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.1), `Sacred-Gold-Plus-1.2.1-IT.zip` o `-US.zip`.
+**Download:** dalla [release 1.2.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.2), `Sacred-Gold-Plus-1.2.2-IT.zip` o `-US.zip`.
 
-**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04 o 1.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
+**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04, 1.1 o 1.2.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
 
 **Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
 

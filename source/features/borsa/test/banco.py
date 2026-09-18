@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SGP-1.2-BORSA-GEN-03 — banco Unicorn per `sgp.borsa`.
 
-Il codice si ESEGUE, non si legge: si carica l'ARM9 **vero** di una ROM 1.2.1,
+Il codice si ESEGUE, non si legge: si carica l'ARM9 **vero** di una ROM 1.2.2,
 si scrive il nostro blob nella riserva a 0x023DAD00 insieme alla tabella
 permissiva di prova, si fabbrica in memoria emulata un **membro di script vero**
 (intestazione + bytecode) e un `ScriptContext` che ci punta dentro, e si parte
@@ -98,7 +98,7 @@ CALLEE = {UC_ARM_REG_R4: 0xC4C4C4C4, UC_ARM_REG_R5: 0xC5C5C5C5,
           UC_ARM_REG_R8: 0xC8C8C8C8, UC_ARM_REG_R9: 0xC9C9C9C9,
           UC_ARM_REG_R10: 0xCACACACA, UC_ARM_REG_R11: 0xCBCBCBCB}
 
-ROM_NOME = os.environ.get("SGP_BORSA_ROM_NOME", "sgp-1.2.1-%s.nds")
+ROM_NOME = os.environ.get("SGP_BORSA_ROM_NOME", "sgp-1.2.2-%s.nds")
 LINGUE = ("EN", "IT")
 
 

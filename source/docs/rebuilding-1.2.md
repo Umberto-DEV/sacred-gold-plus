@@ -1,6 +1,6 @@
-# Rebuilding Sacred Gold Plus 1.2.1
+# Rebuilding Sacred Gold Plus 1.2.2
 
-Two commands build a 1.2.1 ROM from your own 1.1 ROM and verify the result.
+Two commands build a 1.2.2 ROM from your own 1.1 ROM and verify the result.
 
 (The file keeps its `rebuilding-1.2.md` name: three other pages link to it, and the
 procedure is the same one, extended by one block.) This page is the
@@ -12,7 +12,7 @@ No ROM is distributed here. You supply the base.
 
 ## 1. Start from your own 1.1 ROM
 
-You need a Sacred Gold Plus **1.1** ROM, English or Italian. That file is your base; 1.2.1 is
+You need a Sacred Gold Plus **1.1** ROM, English or Italian. That file is your base; 1.2.2 is
 built by patching it.
 
 Put it in a private folder **outside this repository** and pass its path with `--base`. Nothing
@@ -58,8 +58,8 @@ directory — one level below where step 2 creates `.venv`. Every command below 
 `source/README.md` uses, so each line can be copied and run from the repository root on its own:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.1-EN.nds> --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.1-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.2-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.2-IT.nds> --lingua IT
 ```
 
 `--build` selects the folder holding the validated per-block blobs and the ARM9 reserve manifest
@@ -102,7 +102,7 @@ here: it is what makes the verification below meaningful.
 ## 5. Verify
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --base <base-1.1-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.2-EN.nds> --base <base-1.1-EN.nds> --lingua EN
 ```
 
 `verifica` does three things:
@@ -124,12 +124,12 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.1-EN.nds> --bas
 
 ## 6. Regenerating the canonical build blobs
 
-The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.1 ROM, not
+The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.2 ROM, not
 recompiled:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.1-EN.nds> --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.1-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.2-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.2-IT.nds> --lingua IT
 ```
 
 For every block that writes a blob at a fixed address, this reads the exact bytes out of the ROM

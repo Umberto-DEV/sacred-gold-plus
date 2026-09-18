@@ -74,7 +74,7 @@ CALLEE = {UC_ARM_REG_R4: 0xC4C4C4C4, UC_ARM_REG_R5: 0xC5C5C5C5,
 # che il giocatore riceve, non su una copia di comodo. `tools/mutanti.py`, che
 # deve costruirsi le proprie ROM con un blob guasto, lo cambia con
 # SGP_CAR_ROM_NOME (un modello con un solo `%s`, la lingua).
-ROM_NOME = os.environ.get("SGP_CAR_ROM_NOME", "sgp-1.2.1-%s.nds")
+ROM_NOME = os.environ.get("SGP_CAR_ROM_NOME", "sgp-1.2.2-%s.nds")
 
 
 def rom_dir():

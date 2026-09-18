@@ -15,8 +15,8 @@ quando la ROM cambia per la rifinitura in corso: si ri-estrae e basta.
 Non modifica la ROM letta. Non scrive nella cartella ROM di lavoro condivisa.
 
 Uso:
-    python3 -m sgp12.estrai_build --rom sgp-1.2.1-EN.nds --lingua EN [--build sgp12/build]
-    python3 -m sgp12.estrai_build --rom sgp-1.2.1-IT.nds --lingua IT
+    python3 -m sgp12.estrai_build --rom sgp-1.2.2-EN.nds --lingua EN [--build sgp12/build]
+    python3 -m sgp12.estrai_build --rom sgp-1.2.2-IT.nds --lingua IT
 
 Blocchi estratti: npc, anim, opzioni (+ testi/voci per lingua), plus,
 salvataggio, wifi. `riserva`, `camera` e `guida` (GUIDA-EVIV-02: patch

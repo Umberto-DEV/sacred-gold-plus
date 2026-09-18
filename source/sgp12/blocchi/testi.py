@@ -41,7 +41,7 @@ RIFIUTI_DICHIARATI = {
     ("EN", 219, 35): "msg_0219 (oaks_speech.c, introduzione), priorita' B: il testo proposto "
                      "misura 218 px contro un limite effettivo di 216 (contesto 216, gia' "
                      "spedito 213). Rifiutata dal cancello di larghezza dell'applicatore, non "
-                     "da una scelta: riscriverla piu' corta e' lavoro della 1.3. La ROM 1.2.1 "
+                     "da una scelta: riscriverla piu' corta e' lavoro della 1.3. La ROM 1.2.2 "
                      "spedisce quindi 212 correzioni su 213 in perimetro per l'inglese.",
 }
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SGP-1.2-BORSA-GEN-03 — la suite. Gira sull'ARM9 VERO di una ROM 1.2.1.
+"""SGP-1.2-BORSA-GEN-03 — la suite. Gira sull'ARM9 VERO di una ROM 1.2.2.
 
     SGP_ROM_DIR=/percorso/alle/rom \
         python3 -m unittest discover -s test -v

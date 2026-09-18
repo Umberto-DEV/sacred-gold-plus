@@ -63,7 +63,7 @@ MAPPA = Path(os.environ.get("SGP_MAPPA", REPO / "source/docs/arm9-reserve-map.js
 # Il default segue la versione in corso: e' la cartella che `build_zip.py --esporta`
 # produce prima di impacchettare. Se esiste ma non contiene i file di cheat, T3
 # FALLISCE apposta: vuol dire che l'esportazione e' incompleta.
-CHEATS_DIR = Path(os.environ.get("SGP_CHEATS", REPO / "release/1.2.1"))
+CHEATS_DIR = Path(os.environ.get("SGP_CHEATS", REPO / "release/1.2.2"))
 
 
 def carica_mappa():

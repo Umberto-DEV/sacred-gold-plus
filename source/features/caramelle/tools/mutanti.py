@@ -121,7 +121,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rom-dir", type=Path,
                     default=Path(os.environ.get("SGP_ROM_DIR", "rom-dir-not-set")))
-    ap.add_argument("--nome", default="sgp-1.2.1-%s.nds",
+    ap.add_argument("--nome", default="sgp-1.2.2-%s.nds",
                     help="modello del nome della ROM dentro --rom-dir (un solo %%s: la lingua)")
     ap.add_argument("--build", type=Path, default=BUILD_DEFAULT)
     ap.add_argument("--uscita", type=Path, default=None)

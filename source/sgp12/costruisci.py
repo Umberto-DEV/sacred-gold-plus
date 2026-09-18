@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.1 da
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.2 da
 una base 1.1, applicando tutti i blocchi in ordine:
 
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
     -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa
 
 Uso:
-    python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
-    python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.1-IT.nds --lingua IT
+    python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.2-EN.nds --lingua EN
+    python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.2-IT.nds --lingua IT
 
 `--build` (default: `sgp12/build/`) e' la cartella con i blob gia' validati di
 ogni blocco (vedi README.md per la mappa) e `MAPPA-RISERVA-ARM9.json`.

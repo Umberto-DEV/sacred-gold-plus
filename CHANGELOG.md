@@ -1,9 +1,12 @@
 # What changed
 
-## Unreleased
+## 1.2.2 — 19 September 2026
 
 - **The expanded Bag no longer loses its extra slots in silence.** A save whose extension sectors could not be read once, or that a converter normalised to a single repeated byte, is written again instead of dropping the 108 extra slots at every reload. A spent or out-of-range slot is emptied where it sits, so nothing else changes position, and the game keeps the same cleaned inventory in memory. Foreign data in those two sectors is still never overwritten: the [feature notes](source/features/capacita-borsa/README.md) say how to tell and how to clear them by hand.
 - Optional battle motion: the B-pose accent now holds the pose for the time the game itself uses for the same frame (0.33–1.00 s depending on tuning, chosen with `--variante`) instead of 2–3 ticks, and starts only at the breathing motion's resting peak. See the [v5d notes](source/features/anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026).
+- **A successful pickup no longer reports "Bag is full".** Picking a Poké Ball up off the ground showed the "left behind" message every time the item was in fact collected. The capacity check was not at fault: the capped-gift block kept its "I discarded something" flag on a script variable the engine writes itself with the id of the object you interacted with, which is `1` for a ground ball — the exact value the guard compares. The flag moved to a special variable no script and no engine path writes, and the hook now always sets it. The warning is shown only when the item really is left behind.
+- The in-game version now reads "Sacred Gold Plus 1.2.2" on the screen shown at Continue. The title screen and game header remain unchanged, so 1.2.1 cheat files still apply.
+- Tools and documents: the ARM9 reserve register is back in step with the blocks, `sgp12.verifica` tells PARTIAL apart from GREEN instead of reporting both as green, and the bench probes and scripts for the battle-animation phases were corrected.
 
 ## 1.2.1 — updated 15 September 2026
 

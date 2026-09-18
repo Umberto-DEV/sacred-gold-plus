@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """SGP-1.2-CARAMELLE-01 — la suite. Gira sull'ARM9 VERO di una ROM patchata.
 
-    SGP_ROM_DIR=<dir con sgp-1.2.1-{EN,IT}.nds> \
+    SGP_ROM_DIR=<dir con sgp-1.2.2-{EN,IT}.nds> \
         python3 -m unittest discover -s test -v
 
 Ogni caso parte dal sito del gancio 0x02081E96 e legge l'esito dai byte: lo

@@ -1,10 +1,10 @@
-# sgp12 — libreria consolidata per la ROM Sacred Gold Plus 1.2.1
+# sgp12 — libreria consolidata per la ROM Sacred Gold Plus 1.2.2
 
-Obiettivo: `costruisci.py` riproduce la ROM 1.2.1 da una base 1.1 con UN comando,
+Obiettivo: `costruisci.py` riproduce la ROM 1.2.2 da una base 1.1 con UN comando,
 `verifica.py` la ricontrolla con UN comando. **Verificato il 13/09/2026**: da
 `base-1.1-{EN,IT}.nds` produce ROM IDENTICHE, sha256 per sha256, alla ROM
-DEFINITIVA `$SGP_ROM_DIR/sgp-1.2.1-{EN,IT}.nds` (§4) — **con animazioni v4,
-credito, etichetta guida spenta, versione in gioco 1.2.1, pagina Opzioni v4,
+DEFINITIVA `$SGP_ROM_DIR/sgp-1.2.2-{EN,IT}.nds` (§4) — **con animazioni v4,
+credito, etichetta guida spenta, versione in gioco 1.2.2, pagina Opzioni v4,
 tetto NPC restituito allo spegnimento, Caramella Rara riutilizzabile, doni a pila piena e moto continuo in lotta** (`82db6c33…` EN, `de5485b0…` IT; la 1.2 era `b631e2a1…`/`f4430300…`). Questo pacchetto sostituisce, per la parte INFRASTRUTTURALE
 (non per la logica di ogni blocco), le copie duplicate di `arm9.py`,
 `overlay_patch.py` e simili che vivevano in ciascun cantiere
@@ -17,12 +17,12 @@ uno strumento di lettura testo: solo script che leggono/scrivono i byte.
 ## I comandi
 
 ```
-python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.1-EN.nds --lingua EN
-python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.1-IT.nds --lingua IT
+python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.2-EN.nds --lingua EN
+python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.2-IT.nds --lingua IT
 
-python3 -m sgp12.verifica sgp-1.2.1-EN.nds --base base-1.1-EN.nds --lingua EN
+python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base base-1.1-EN.nds --lingua EN
 
-python3 -m sgp12.estrai_build --rom sgp-1.2.1-EN.nds --lingua EN   # rigenera i build canonici (§4b)
+python3 -m sgp12.estrai_build --rom sgp-1.2.2-EN.nds --lingua EN   # rigenera i build canonici (§4b)
 ```
 
 (da dentro `source/`, con quell'interprete — vedi sopra). `verifica.py`
@@ -132,11 +132,11 @@ volte con sei severità diverse — e un settimo test di classe B che pretende c
 `$SGP_ROM_DIR`: si aggiorna a ogni release, non si aggira.
 
 Verificato con `python3 -m unittest sgp12.test_lib -v` (`TestCostruisciIdentico`
-+ `TestBlocchiVFinale`) e con `python3 -m sgp12.verifica sgp-1.2.1-{EN,IT}.nds
++ `TestBlocchiVFinale`) e con `python3 -m sgp12.verifica sgp-1.2.2-{EN,IT}.nds
 --base base-1.1-{EN,IT}.nds --lingua {EN,IT}` **sulle due
 ROM di lavoro reali** (`costruzione_identica.identico: true`, ogni rilettore
 `verde`, `T1_T5` 11/11 verdi). T3 legge i file di cheat spediti: senza
-`SGP_CHEATS` li cerca in `release/1.2.1/`, cioè dove li lascia l'esportazione.
+`SGP_CHEATS` li cerca in `release/1.2.2/`, cioè dove li lascia l'esportazione.
 
 ### 4a. `wifi_slot4` sostituisce `wifi_slot3`, non lo segue
 
@@ -148,8 +148,8 @@ direttamente il blob v-finale (572 B) su un blocco a zero, nessuna catena.
 ### 4b. `estrai_build.py`: i blob canonici si leggono dalla ROM, non si ricompilano
 
 ```
-python3 -m sgp12.estrai_build --rom sgp-1.2.1-EN.nds --lingua EN
-python3 -m sgp12.estrai_build --rom sgp-1.2.1-IT.nds --lingua IT
+python3 -m sgp12.estrai_build --rom sgp-1.2.2-EN.nds --lingua EN
+python3 -m sgp12.estrai_build --rom sgp-1.2.2-IT.nds --lingua IT
 ```
 
 Per ogni blocco con un blob a indirizzo fisso (npc, anim, opzioni, plus,

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""sgp12.verifica — UN comando per verificare una ROM 1.2.1: confronta la ROM
+"""sgp12.verifica — UN comando per verificare una ROM 1.2.2: confronta la ROM
 data con quella che `costruisci.py` produce dalla stessa base (criterio 4),
 esegue i rilettori disponibili in `sgp12.blocchi` sugli stadi che sanno
 verificare, e T1-T5 (`verifiche/test_riserva.py`, NON toccato:
 resta il rilettore indipendente della mappa della riserva).
 
 Uso:
-    python3 -m sgp12.verifica sgp-1.2.1-EN.nds --base base-1.1-EN.nds --lingua EN
+    python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base base-1.1-EN.nds --lingua EN
 
 Senza `--base` la ricostruzione e i rilettori sono saltati con motivo
 esplicito (T1-T5 restano attivi: T1 non richiede una ROM).

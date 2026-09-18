@@ -17,7 +17,7 @@ ROM_DIR = Path(_ROM_DIR) if _ROM_DIR else None
 BASE_ROM = Path(os.environ.get("SGP_ROM_BASE") or
                 (ROM_DIR / "pre-anim2-EN.nds" if ROM_DIR else ""))
 PATCHED = Path(os.environ.get("SGP_ROM_ANIM2") or
-               (ROM_DIR / "sgp-1.2.1-EN.nds" if ROM_DIR else ""))
+               (ROM_DIR / "sgp-1.2.2-EN.nds" if ROM_DIR else ""))
 sys.path.insert(0, str(REPO / "source/features/anim/tools"))
 from arm9 import Arm9  # noqa: E402
 import overlay_patch as ovp  # noqa: E402
