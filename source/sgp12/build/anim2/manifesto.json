@@ -1,6 +1,6 @@
 {
   "pacchetto": "SGP-1.2.1-ANIM-MOTO-01",
-  "fase": "v5c-rifinitura-moto-menu-hud-cattura",
+  "fase": "v5d-accento-posa-b",
   "eredita": "SGP-1.2-ANIM-SOLIDO-01 (v4, blob in ROM a 0x023D8B00) + SGP-1.2.1-ANIM-SEGNALE-01 (il segnale moveActive) + SGP-1.2.1-ANIM-FASI-01 (i nove lr, misurati sui byte).",
   "comando": [
     "clang",
@@ -43,7 +43,7 @@
   },
   "blob": {
     "byte": 1532,
-    "sha256": "680bb15e1a6f7df08040df686e5fe8fbca835f076d7ea299d11c57912c49b252",
+    "sha256": "dc6f64e7a017636a6d52fc9a6a1d6ec8c61e60cd807938008dfa9b8135286564",
     "max": 1536
   },
   "canarino": {
@@ -80,7 +80,7 @@
     },
     "par": {
       "byte": 32,
-      "sha256": "8fb0e71dde3e23fff9ff1b892ce55e852c9855a0ba9a12d902337823c7f6f1c2",
+      "sha256": "5971def9d0b2ef771cd0decbf5dc8ca64f19ad1447d311265f2696fb59731af1",
       "amp": [
         3,
         3,
@@ -99,11 +99,29 @@
         5,
         14
       ],
-      "blink_min": 70,
-      "blink_mask": 63,
-      "blink_dur": 2,
+      "variante": "V1",
+      "variante_modificata": false,
+      "blink_min": 120,
+      "blink_mask": 127,
+      "blink_dur": 10,
       "raro_ogni": 3,
-      "raro_piu": 3,
+      "raro_piu": 5,
+      "posa_b_tick": [
+        10,
+        11
+      ],
+      "posa_b_rara_tick": [
+        15,
+        16
+      ],
+      "attesa_tick": [
+        120,
+        247
+      ],
+      "picco_tab_u": [
+        4,
+        5
+      ],
       "passo": 3,
       "velocita_relativa": 0.375,
       "periodo_tick": 48,
@@ -589,19 +607,20 @@
   "blocco_richiesto_byte": 2048,
   "simboli": {
     "$d": "0x23dbaf8",
-    "$t": "0x23dbac8",
-    "abilitato": "0x23db625",
-    "lott": "0x23db657",
-    "nlott": "0x23db645",
+    "$t": "0x23dbaf0",
+    "abilitato": "0x23db621",
+    "lott": "0x23db653",
+    "nlott": "0x23db641",
+    "riarma": "0x23dbac5",
     "riposo": "0x23db559",
-    "scala_nostra": "0x23dbac9",
+    "scala_nostra": "0x23dba9d",
     "setattr5": "0x23dbaf1",
-    "sgp_avvia_cattura": "0x23db661",
+    "sgp_avvia_cattura": "0x23db65d",
     "sgp_avvia_tutti": "0x23db5b9",
-    "sgp_idle_task5": "0x23db751",
+    "sgp_idle_task5": "0x23db72d",
     "sgp_pulisci": "0x23db501",
-    "sgp_stop_politica": "0x23db6d5",
-    "sgp_stop_testa": "0x23db731"
+    "sgp_stop_politica": "0x23db6c1",
+    "sgp_stop_testa": "0x23db70d"
   },
   "offset_relativi": {
     "codice": "0x0",

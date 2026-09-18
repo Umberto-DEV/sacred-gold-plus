@@ -24,6 +24,7 @@ def carica_modulo(nome, path):
 
 
 applicatore = carica_modulo("anim2_applicatore_metadata", PACCHETTO / "tools/applica_anim2.py")
+compila_mod = carica_modulo("anim2_compila_metadata", COMPILA)
 
 
 class CompilaAnim5Test(unittest.TestCase):
@@ -66,6 +67,66 @@ class CompilaAnim5Test(unittest.TestCase):
             )
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("SCALA ROSSO", r.stderr)
+
+    def esegui(self, *argv):
+        with tempfile.TemporaryDirectory() as td:
+            return subprocess.run(
+                [sys.executable, str(COMPILA), "--uscita", td, *argv],
+                capture_output=True, text=True,
+            )
+
+    def test_i_cinque_cancelli_dell_accento_bloccano_i_valori_che_si_rompono(self):
+        """A1 §3.2 B1/B2/B4 e A8b M3: cinque parametri che il compilatore
+        accettava in silenzio e che a runtime davano troncamenti in u8,
+        sottrazioni in underflow, maschere a buchi e letture fuori tabella.
+        Sono controlli Python: costano zero byte di ROM."""
+        casi = (
+            (["--blink-dur", "0"], "BLINK ROSSO"),          # B2: (u8)(0-1) = 255 tick
+            (["--blink-min", "200", "--blink-mask", "63"], "BLINK ROSSO"),  # B1: 263 -> 7
+            (["--blink-mask", "100"], "BLINK ROSSO"),       # B4: maschera non 2^n-1
+            (["--fase", "200,200,200,200"], "FASE ROSSO"),  # M3: idx fuori tab_u
+            (["--blink-dur", "250", "--raro-piu", "10"], "BLINK ROSSO"),   # blink_left tronca
+        )
+        for argv, marchio in casi:
+            with self.subTest(argv=" ".join(argv)):
+                r = self.esegui(*argv)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn(marchio, r.stderr)
+
+    def test_i_valori_spediti_passano_tutti_i_cancelli(self):
+        self.assertEqual(self.esegui().returncode, 0)
+        for variante in ("V1", "V2", "V3"):
+            with self.subTest(variante=variante):
+                self.assertEqual(self.esegui("--variante", variante).returncode, 0)
+
+    def test_le_tre_varianti_cambiano_solo_i_parametri(self):
+        """V1/V2/V3 sono tarature, non codice: stesso blob, par.bin diverso."""
+        manifesti = {}
+        for variante in ("V1", "V2", "V3"):
+            td = tempfile.TemporaryDirectory()
+            self.addCleanup(td.cleanup)
+            subprocess.run([sys.executable, str(COMPILA), "--uscita", td.name,
+                            "--variante", variante], check=True, capture_output=True)
+            manifesti[variante] = json.loads(
+                (Path(td.name) / "manifesto.json").read_text())
+        blob = {m["blob"]["sha256"] for m in manifesti.values()}
+        self.assertEqual(len(blob), 1, "le varianti non condividono il blob")
+        par = {v: m["tabelle_bin"]["par"] for v, m in manifesti.items()}
+        self.assertEqual(len({p["sha256"] for p in par.values()}), 3)
+        self.assertEqual([par["V1"]["blink_dur"], par["V1"]["raro_piu"]], [10, 5])
+        self.assertEqual([par["V2"]["blink_dur"], par["V2"]["raro_piu"]], [15, 5])
+        self.assertEqual([par["V3"]["blink_dur"], par["V3"]["raro_piu"]], [30, 0])
+        for v, pv in par.items():
+            self.assertEqual([pv["blink_min"], pv["blink_mask"]], [120, 127], v)
+
+    def test_i_valori_spediti_sono_la_variante_V1(self):
+        """Il default del compilatore e' la taratura spedita in build/anim2."""
+        m = json.loads((BUILD / "manifesto.json").read_text())
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(
+            [par["blink_dur"], par["raro_piu"], par["blink_min"], par["blink_mask"]],
+            [10, 5, 120, 127])
+        self.assertEqual(par["variante"], "V1")
 
     def copia_build(self):
         td = tempfile.TemporaryDirectory()
@@ -110,6 +171,90 @@ class CompilaAnim5Test(unittest.TestCase):
                 (build / "manifesto.json").write_text(json.dumps(manifesto))
                 with self.assertRaises(applicatore.Rifiuto):
                     applicatore.carica_build(build)
+
+    # ------------------------------------------------------------ A8b A1
+    def test_relativo_lascia_intatti_i_flag_e_riduce_i_percorsi(self):
+        """A1: la vecchia `relativo()` chiamava `Path(x).resolve()` su ogni
+        elemento del comando, flag compresi: da dentro `source/` un flag come
+        `-Oz` si risolveva in `source/-Oz`. Deve restare intatto; un percorso
+        assoluto dentro il repo diventa relativo; uno fuori si riduce al solo
+        nome del file (mai al percorso assoluto intero, che porterebbe la
+        cartella personale di chi compila)."""
+        self.assertEqual(compila_mod.relativo("-Oz"), "-Oz")
+        self.assertEqual(compila_mod.relativo("clang"), "clang")
+        dentro = str(compila_mod.SORGENTI / "anim_blob5.c")
+        atteso = str((compila_mod.SORGENTI / "anim_blob5.c")
+                     .relative_to(compila_mod.REPO))
+        self.assertEqual(compila_mod.relativo(dentro), atteso)
+        with tempfile.TemporaryDirectory() as td:
+            fuori = str(Path(td) / "anim_blob5.o")
+            self.assertNotIn(td, compila_mod.relativo(fuori))
+            self.assertEqual(compila_mod.relativo(fuori), "anim_blob5.o")
+
+    def test_manifesto_rigenerato_dentro_il_repo_non_porta_percorsi_macchina(self):
+        """A1: quando `--uscita` sta dentro il repo, `comando` non deve
+        portare ne' la cartella personale di chi compila ne' il nome della
+        cartella temporanea di questa prova (solo percorsi relativi al repo,
+        o i flag/nomi comando intatti); il blob resta quello spedito.
+        Nota: `--uscita` diversa da `source/sgp12/build/anim2` produce
+        comunque un `-o` relativo ma non identico a quello spedito (l'ultimo
+        pezzo del percorso e' il nome di QUESTA cartella): la verifica di
+        identita' con `--uscita source/sgp12/build/anim2` va fatta a mano,
+        non da un test che scrive dentro l'albero tracciato da git."""
+        out = REPO / "source" / "sgp12" / "build" / "anim2-prova-a1"
+        self.addCleanup(shutil.rmtree, out, True)
+        subprocess.run([sys.executable, str(COMPILA), "--uscita", str(out)],
+                       cwd=str(REPO), check=True, capture_output=True, text=True)
+        rigenerato = json.loads((out / "manifesto.json").read_text())
+        for arg in rigenerato["comando"]:
+            self.assertNotIn(str(REPO), arg, arg)
+            self.assertNotIn(str(out), arg, arg)
+        spedito = json.loads((BUILD / "manifesto.json").read_text())
+        self.assertEqual(rigenerato["blob"]["sha256"], spedito["blob"]["sha256"])
+
+    # ------------------------------------------------------------ A8b B3
+    def test_override_esplicito_etichetta_la_variante_come_modificata(self):
+        m = self.compila_con("--variante", "V1", "--blink-dur", "20")
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(par["variante"], "V1 (modificata)")
+        self.assertTrue(par["variante_modificata"])
+
+    def test_variante_senza_override_non_e_etichettata_modificata(self):
+        m = self.compila_con("--variante", "V2")
+        par = m["tabelle_bin"]["par"]
+        self.assertEqual(par["variante"], "V2")
+        self.assertFalse(par["variante_modificata"])
+
+    def compila_con(self, *argv):
+        td = tempfile.TemporaryDirectory()
+        self.addCleanup(td.cleanup)
+        subprocess.run([sys.executable, str(COMPILA), "--uscita", td.name, *argv],
+                       check=True, capture_output=True, text=True)
+        return json.loads((Path(td.name) / "manifesto.json").read_text())
+
+    # ------------------------------------------------------------ A8b B4/B5
+    def test_valori_negativi_sono_un_rosso_non_un_traceback(self):
+        casi = (
+            ["--blink-min", "-1"],
+            ["--raro-piu", "-1"],
+            ["--amp", "-1,3,4,4"],
+        )
+        for argv in casi:
+            with self.subTest(argv=" ".join(argv)):
+                r = self.esegui(*argv)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn("NEGATIVO ROSSO", r.stderr)
+                self.assertNotIn("Traceback", r.stderr)
+
+    def test_raro_ogni_sotto_due_e_rosso(self):
+        for valore in ("0", "1"):
+            with self.subTest(valore=valore):
+                r = self.esegui("--raro-ogni", valore)
+                self.assertNotEqual(r.returncode, 0)
+                self.assertIn("RARO ROSSO", r.stderr)
+
+    def test_raro_ogni_due_passa(self):
+        self.assertEqual(self.esegui("--raro-ogni", "2").returncode, 0)
 
 
 if __name__ == "__main__":

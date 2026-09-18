@@ -8,11 +8,13 @@
   ],
   "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
   "livello": "5c",
-  "nota": "Artefatti ricostruibili con source/features/anim2/tools/compila_anim2.py; interruttore spento per difetto.",
+  "nota": "Artefatti ricostruibili con source/features/anim2/tools/compila_anim2.py (--variante V1, il default); interruttore spento per difetto.",
   "sorgenti_sha256": {
     "source/features/anim2/sorgenti/anim_blob5.c": "7215eef0f4a6350b90ab5c36204226495c7f639e78dfb9a74929833b8c5bf87b",
-    "source/features/anim2/sorgenti/anim_idle5.c": "fd3c87b41fc87ed6b15a47594252ce9fe3613857704cfd2ac78d9ce239dd1061",
-    "source/features/anim2/sorgenti/sgp_anim5.h": "e419e54182026eaa05c5028facff32990c4ab35914cb27bb58dffa7e1cd002d5",
+    "source/features/anim2/sorgenti/anim_idle5.c": "3baeb93804d78ecbff5cee6812944f6619f3335588ae1b144a261c6e35f7afc1",
+    "source/features/anim2/sorgenti/sgp_anim5.h": "8565edd813b226ec216e0ec876373b2b093d628d66dcfcbf3954f6e5ebdd69b6",
     "source/features/anim2/sorgenti/sgp_chunk.h": "5377721d93f149b0f668bc4a8a715121cd63d03f64893a653172fc9146327758"
-  }
+  },
+  "variante": "V1",
+  "fase": "v5d-accento-posa-b"
 }

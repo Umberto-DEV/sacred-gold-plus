@@ -1,6 +1,7 @@
-/* Sacred Gold Plus — ANIM2 v5c. GPL-3.0-or-later.
- * Clock di attesa, HUD fermo, continuita' menu e isolamento delle animazioni
- * native. Ciclo di vita e layout sono documentati in sgp_anim5.h.
+/* Sacred Gold Plus — ANIM2 v5d. GPL-3.0-or-later.
+ * Clock di attesa, HUD fermo, continuita' menu, isolamento delle animazioni
+ * native e accento di posa B ancorato al respiro. Ciclo di vita, layout e
+ * cronologia delle versioni sono documentati in sgp_anim5.h.
  */
 #include "sgp_anim5.h"
 
@@ -88,6 +89,36 @@ static u32 indice_lottatore(u32 bs, u32 od)
     return 0xFFu;
 }
 
+static u32 lcg(SgpAnim5Slot *s)
+{
+    u32 r = s->rng * 1664525u + 1013904223u;
+    s->rng = r;
+    return r >> 8; /* i bit alti sono i buoni in un LCG */
+}
+
+/* v5d — «riarma l'accento»: nessuna posa B in corso e un'attesa PIENA, presa
+ * a caso nella stessa fascia di ogni altra attesa.
+ *
+ * DUE siti di chiamata (slot_per sotto, e sgp_idle_task5 alla caduta di un
+ * cancello), e sono due correzioni in una sola funzione:
+ *   - alla creazione della voce (S2 di A1 §3.3, in slot_per): la v5c metteva
+ *     `blink_wait = BLINK_MIN` nudo, cosi' quattro lottatori creati nello
+ *     stesso tick facevano il primo accento all'unisono;
+ *   - quando un cancello si alza (B3 di A1 §3.2, misurato in A2 §6.2, in
+ *     sgp_idle_task5): il residuo di `blink_left` si congelava e faceva
+ *     riapparire la posa B nel tick successivo alla caduta del cancello — un
+ *     lampo a ogni mossa.
+ * La terza correzione dell'audit — niente residuo a chi riusa l'indirizzo —
+ * non passa da qui: e' `w[4] = 0` in `sgp_pulisci`, che azzera insieme
+ * blink_left/blink_wait/blink_cnt/usato quando la voce si libera (vedi li').
+ * `noinline`: il corpo costa piu' di una BL, e i siti sono due. */
+__attribute__((noinline)) static void riarma(SgpAnim5Slot *s)
+{
+    s->blink_left = 0u;
+    s->blink_wait = (u8)((u32)SGP_PAR[PAR_BLINK_MIN]
+                         + ((lcg(s) >> 4) & (u32)SGP_PAR[PAR_BLINK_MASK]));
+}
+
 /* Trova (o crea) la voce del lottatore. L'identita' e' il puntatore
  * all'OpponentData. La voce si riazzera anche quando lo STESSO `od` presenta
  * un `Pokepic` diverso: e' la terza guardia chiesta dal rapporto T1-2 §3.1
@@ -115,9 +146,12 @@ static SgpAnim5Slot *slot_per(SgpAnim5State *st, u32 od, u32 pic, u32 *indice)
     }
     *indice = i;
     s = &SGP_SLOTS[i];
-    if (s->od != od || s->pic != pic) {
+    if (s->od != od || s->pic != pic || s->bs_visto != st->bs) {
+        /* M2 (A8b): senza il confronto su `bs` una seconda lotta che riusa gli
+         * stessi indirizzi ereditava idx, fase, inviluppo e rng della prima. */
         s->od = od;
         s->pic = pic;
+        s->bs_visto = st->bs;
         s->rng = st->hits * 1103515245u + od + 12345u;
         /* tre parole intere della voce, azzerate insieme: {base76,last76},
          * {blink_left,blink_wait,blink_cnt,usato} e {idx,sospeso,pad}. */
@@ -125,16 +159,9 @@ static SgpAnim5Slot *slot_per(SgpAnim5State *st, u32 od, u32 pic, u32 *indice)
         ((u32 *)s)[4] = 0x01000000u; /* usato = 1 */
         ((u32 *)s)[5] = 0u;          /* idx = 0, sospeso = 0 */
         s->idx = (u8)indice_lottatore(st->bs, od);
-        s->blink_wait = SGP_PAR[PAR_BLINK_MIN];
+        riarma(s);
     }
     return s;
-}
-
-static u32 lcg(SgpAnim5Slot *s)
-{
-    u32 r = s->rng * 1664525u + 1013904223u;
-    s->rng = r;
-    return r >> 8; /* i bit alti sono i buoni in un LCG */
 }
 
 /* ------------------------------------------------------------------------
@@ -216,7 +243,15 @@ static void riposo(SgpAnim5Slot *s, u8 *pic)
  * A interruttore spento non esiste nessuna voce con questo `od` (il task
  * ritorna prima di crearla), quindi il ciclo non trova niente e **non scrive
  * un solo byte** nella memoria del gioco: e' il motivo per cui la
- * spegnibilita' resta byte-identica. */
+ * spegnibilita' resta byte-identica.
+ *
+ * Precondizione: `data != 0`. Tutti i chiamanti (sgp_stop_politica,
+ * sgp_idle_task5) passano l'OpponentData* vivo che il gioco ha appena dato
+ * loro, mai NULL. Con `data == 0` una voce gia' libera (`od == 0`) la
+ * eguaglierebbe e il ramo sotto leggerebbe `*(u32*)(0 + OD_POKEPIC)`, cioe'
+ * l'indirizzo 0x20: percorso teorico (B10 della review 18/09/2026), non
+ * raggiungibile dai chiamanti attuali; non e' stata aggiunta una guardia
+ * perche' costerebbe 4 B per un caso irraggiungibile. */
 void sgp_pulisci(void *data)
 {
     SgpAnim5State *st = SGP_STATO5;
@@ -237,7 +272,10 @@ void sgp_pulisci(void *data)
         w = (u32 *)s;
         w[0] = 0u; /* od: la voce torna LIBERA */
         w[3] = 0u;
-        w[4] = 0u;
+        w[4] = 0u; /* blink_left/blink_wait/blink_cnt/usato: la "terza
+                    * correzione" del commento sopra riarma() passa da qui,
+                    * non da una terza chiamata a riarma() — niente residuo
+                    * di posa B a chi riusa questo indirizzo. */
         w[5] = 0u;
         st->puliti = st->puliti + 1u;
     }
@@ -265,7 +303,6 @@ void sgp_avvia_tutti(void *data, void *bs)
     }
     ((FermaFn)SGP_FERMA_HUD)((u8 *)data + OD_HPBAR);
     n = nlott(b);
-    st->maxbatt = (u8)n;
     for (i = 0; i < n; i++) {
         odi = lott(b, i);
         if (odi == 0u || odi == (u32)data) {
@@ -279,14 +316,16 @@ void sgp_avvia_tutti(void *data, void *bs)
 }
 
 /* Ferma tutti prima della cattura, mentre tutti gli OpponentData sono vivi.
- * Non viene chiamata dai destructor. `dentro` resta un indicatore di debug. */
+ * Non viene chiamata dai destructor. Fino alla v5c uno store di debug
+ * (`st->dentro`) segnava il transito da qui; in v5d quel campo e' stato
+ * liberato (sgp_anim5.h: +0x3C, RISERVATO, nessun test o strumento lo
+ * leggeva) e questa funzione non scrive piu' niente in `SgpAnim5State`. */
 static void estendi(void *data)
 {
     SgpAnim5State *st = SGP_STATO5;
     u32 b = st->bs;
     u32 n = nlott(b), i, odi;
 
-    st->dentro = 1u;
     for (i = 0; i < n; i++) {
         odi = lott(b, i);
         if (odi == 0u || odi == (u32)data) {
@@ -298,7 +337,6 @@ static void estendi(void *data)
         ((FermaFn)SGP_OV12_FERMA)((void *)odi);
         st->estesi = st->estesi + 1u;
     }
-    st->dentro = 0u;
 }
 
 /* G4: il task di cattura riusa i Pokepic per Pokédex e soprannome.
@@ -325,16 +363,15 @@ u32 sgp_stop_politica(void *data, u32 lr)
     SgpAnim5State *st = SGP_STATO5;
     u32 i, m;
 
-    st->stop_visti = st->stop_visti + 1u;
     if (abilitato() == 0u) {
-        return 0u; /* SPENTO: la fermata avviene, come nella 1.2.1 */
+        sgp_pulisci(data); /* A8b-A1: vedi sgp_idle_task5 */
+        return 0u;         /* SPENTO: la fermata avviene, come nella 1.2.1 */
     }
     for (i = 0; i < (u32)SGP_N_SITI; i++) {
         if (SGP_SITI[i] == lr) {
             break;
         }
     }
-    st->ultimo_sito = (u8)(i < (u32)SGP_N_SITI ? i : 0xFFu);
     if (i < (u32)SGP_N_SITI) {
         m = par16((u32)PAR_SOPPRIMI);
         if (((m >> i) & 1u) != 0u) {
@@ -403,7 +440,12 @@ void sgp_idle_task5(void *task, void *data)
     st->flags = flags;
     if ((flags & SGP_F_TUTTI) == 0u) {
         /* Spento: il task del gioco resta la sola operazione, con gli stessi
-         * argomenti e nello stesso ordine della 1.2.1. */
+         * argomenti e nello stesso ordine della 1.2.1. A interruttore mai
+         * acceso `sgp_pulisci` non trova nessuna voce e non scrive un byte
+         * (byte-identita' preservata); se invece l'opzione e' stata spenta a
+         * lotta in corso, e' quello che toglie dallo sprite scala, ombra e
+         * posa che il task vanilla non sa rimettere a posto (A8b-A1). */
+        sgp_pulisci(data);
         ((TaskFn)SGP_VANILLA_TASK)(task, data);
         return;
     }
@@ -430,6 +472,7 @@ void sgp_idle_task5(void *task, void *data)
         st->hits_busy = st->hits_busy + 1u;
         if (s->sospeso == 0u) {
             riposo(s, pic);
+            riarma(s); /* B3: niente lampo residuo alla caduta del cancello */
             s->sospeso = 1u;
             s->inviluppo = 0u;
             st->last_y = 0;
@@ -493,28 +536,37 @@ void sgp_idle_task5(void *task, void *data)
         }
     }
 
-    /* 3b. Accento con la posa B. Non tutte le specie vi chiudono gli occhi. */
+    /* 3b. Accento con la posa B: NON un battito di ciglia. Per il 99,3-99,65%
+     * delle viste misurate e' un cambio di posa intero (arti, ali, testa,
+     * sagoma, A3); e' il motivo per cui v5d lo tiene per il tempo che il
+     * gioco stesso usa per lo stesso fotogramma (par.bin, --variante) invece
+     * che per 2-3 tick. Vedi README.md §v5d e AUDIT-2026-09-14.md. */
     if ((flags & SGP_F_POSA) != 0u) {
-        u32 p;
+        u32 p = 0u;
         if (s->blink_left != 0u) {
             s->blink_left = (u8)(s->blink_left - 1u);
             p = 1u;
         } else if (s->blink_wait != 0u) {
             s->blink_wait = (u8)(s->blink_wait - 1u);
-            p = 0u;
-        } else {
+        } else if (((u32)st->last_idx - (u32)SGP_PICCO_IDX)
+                   < (u32)SGP_PICCO_N) {
+            /* v5d — ARMATO E AL PICCO. Quando l'attesa arriva a zero la voce
+             * resta armata e l'accento parte solo nel tick in cui la fase e'
+             * al massimo della tavola: il cambio di posa cade nell'istante di
+             * quiete del respiro invece di sommarsi al suo spostamento.
+             * Si rilegge `st->last_idx`, scritto poche righe sopra, invece di
+             * tenere vivo `idx` fino a qui: misurato, costa 16 B in meno.
+             * L'attesa si allunga al piu' di un ciclo di respiro. */
             u32 r = lcg(s);
-            u32 dur = (u32)SGP_PAR[PAR_BLINK_DUR] + (r & 1u); /* 2 o 3 */
+            u32 dur = (u32)SGP_PAR[PAR_BLINK_DUR] + (r & 1u);
             s->blink_cnt = (u8)(s->blink_cnt + 1u);
             if (s->blink_cnt >= SGP_PAR[PAR_RARO_OGNI]) {
                 s->blink_cnt = 0u;
                 dur += (u32)SGP_PAR[PAR_RARO_PIU];
-                st->rari = st->rari + 1u;
             }
             s->blink_left = (u8)(dur - 1u);
             s->blink_wait = (u8)((u32)SGP_PAR[PAR_BLINK_MIN]
                                  + ((r >> 4) & (u32)SGP_PAR[PAR_BLINK_MASK]));
-            st->blinks = st->blinks + 1u;
             p = 1u;
         }
         setattr5(pic, POKEPIC_ANIM_STEP, (int)p);

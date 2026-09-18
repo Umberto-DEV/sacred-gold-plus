@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Compila ANIM2 v5c: moto lento, HUD fermo e ciclo di vita della cattura.
+"""Compila ANIM2 v5d: moto lento, HUD fermo, ciclo di vita della cattura e
+accento di posa B ancorato al respiro.
 
 Blocco 2048 B a 0x023DB500, codice <=1536 B, dati agli indirizzi di v5b.
 Cinque entrate: idle, stop/trampolina, avvio, politica e avvio cattura.
 Il preset 5c sostituisce gli esperimenti 5a/5b: sette stop di menu soppressi,
 nessuna estensione dei destructor. --passo 2/3/4 sceglie 0.25/0.375/0.5x.
+--variante V1/V2/V3 sceglie la TARATURA dell'accento di posa B (solo par.bin,
+stesso blob): V1 nativa 0,33 s, V2 leggibile 0,50 s, V3 lunga 1,0 s.
 Gli artefatti e il manifesto sono verificati dall'applicatore indipendente.
 GPL-3.0-or-later.
 """
@@ -92,11 +95,27 @@ TAB_U_V3 = (0, 5, 9, 13, 16, 16, 13, 9, 5, 0, -5, -9, -13, -16, -16, -13, -9, -5
 DEF_AMP = (3, 3, 4, 4)
 DEF_SCA = (4, 6, 6, 6)
 DEF_FASE = (0, 9, 5, 14)
-DEF_BLINK_MIN = 70
-DEF_BLINK_MASK = 63
-DEF_BLINK_DUR = 2
+# v5d — le tre tarature dell'accento di posa B, tutte a parita' di codice.
+# Un tick = 2 fotogrammi video = 33,3 ms (A1 §1.1, tre fonti indipendenti).
+# Il gioco stesso, negli script `a/1/8/0`, tiene la posa B per una mediana di
+# 10 chiamate = 0,33 s e piu' spesso di tutto 15 = 0,50 s (A1 §1.3); la v5c ne
+# teneva 2-3 tick = 0,067-0,100 s (A2 §3: 4-6 fotogrammi misurati), da 3,3x a
+# 7,5x meno di qualunque durata nativa. V1 e' la taratura che riporta l'accento
+# dentro quell'intervallo; V2 e V3 servono al confronto a schermo.
+VARIANTI = {
+    "V1": {"blink_dur": 10, "raro_piu": 5},   # 0,33 s (raro 0,50 s) — nativa
+    "V2": {"blink_dur": 15, "raro_piu": 5},   # 0,50 s (raro 0,67 s) — leggibile
+    "V3": {"blink_dur": 30, "raro_piu": 0},   # 1,00 s — lunga, per confronto
+}
+DEF_VARIANTE = "V1"
+DEF_BLINK_MIN = 120       # attesa 120..247 tick = 4,00..8,23 s
+DEF_BLINK_MASK = 127
 DEF_RARO_OGNI = 3
-DEF_RARO_PIU = 3
+
+# Gli indici in cui `tab_u` vale il massimo: il blob li confronta con due sole
+# istruzioni (`SGP_PICCO_IDX`/`SGP_PICCO_N` in sgp_anim5.h) e non puo'
+# cercarli. Se la tavola cambia forma, il cancello qui sotto lo dice.
+PICCO = (4, 5)
 
 PAR_SOPPRIMI = 0x12
 PAR_ESTENDI = 0x14
@@ -106,6 +125,29 @@ PAR_PASSO = 0x17
 
 def sha(b):
     return hashlib.sha256(bytes(b)).hexdigest()
+
+
+def relativo(x):
+    """Il comando registrato nel manifesto non deve portare il percorso della
+    macchina che ha compilato: `.github/check_public.py` rifiuta i file
+    pubblici che contengono una home o uno scratch, e un manifesto con dentro
+    la cartella personale di chi compila non e' nemmeno confrontabile fra due
+    macchine.
+
+    Tocca SOLO i percorsi assoluti. La versione precedente chiamava
+    `Path(x).resolve()` su ogni elemento di `comando`, flag compresi: da CWD
+    `source/` un flag come `-Oz` si risolveva in `source/-Oz`, un nome
+    comando come `clang` in `source/clang` (A8b A1). Un percorso assoluto
+    dentro il repo diventa relativo; uno fuori (es. `--uscita` fuori
+    dall'albero) resta ridotto al solo nome del file, mai al percorso
+    assoluto intero."""
+    p = Path(x)
+    if not p.is_absolute():
+        return x
+    try:
+        return str(p.resolve().relative_to(REPO))
+    except (ValueError, OSError):
+        return p.name
 
 
 def tabella_u():
@@ -176,12 +218,23 @@ def main():
     ap.add_argument("--amp", type=quattro, default=DEF_AMP)
     ap.add_argument("--sca", type=quattro, default=DEF_SCA)
     ap.add_argument("--fase", type=quattro, default=DEF_FASE)
+    ap.add_argument("--variante", choices=sorted(VARIANTI), default=DEF_VARIANTE,
+                    help="taratura dell'accento di posa B (solo par.bin)")
     ap.add_argument("--blink-min", type=int, default=DEF_BLINK_MIN)
     ap.add_argument("--blink-mask", type=int, default=DEF_BLINK_MASK)
-    ap.add_argument("--blink-dur", type=int, default=DEF_BLINK_DUR)
+    ap.add_argument("--blink-dur", type=int, default=None)
     ap.add_argument("--raro-ogni", type=int, default=DEF_RARO_OGNI)
-    ap.add_argument("--raro-piu", type=int, default=DEF_RARO_PIU)
+    ap.add_argument("--raro-piu", type=int, default=None)
     args = ap.parse_args()
+    for nome, valore in VARIANTI[args.variante].items():
+        if getattr(args, nome) is None:
+            setattr(args, nome, valore)
+    # B3 — se un flag esplicito ha spostato un parametro che la variante
+    # controlla (blink_dur/raro_piu) lontano dal suo preset, il manifesto non
+    # puo' piu' etichettare la build come "V1"/"V2"/"V3" tal quale: sarebbe
+    # una variante che non corrisponde ai propri numeri.
+    variante_modificata = any(getattr(args, nome) != valore
+                              for nome, valore in VARIANTI[args.variante].items())
     out = args.uscita
     out.mkdir(parents=True, exist_ok=True)
 
@@ -195,6 +248,35 @@ def main():
         raise SystemExit(
             "R3 ROSSO: il sito DISTRUZIONE (0x02258E98) non si puo' sopprimere: "
             "il SysTask punta alla struttura che quella funzione libera.")
+
+    # --- cancello NEGATIVO, prima di ogni altro controllo (A8b B4) --------
+    # Questi parametri finiscono impacchettati come byte non firmati in
+    # `par_bin` (assegnazione diretta in un bytearray o `bytes(...)`): senza
+    # questo cancello un valore negativo non dava un ROSSO leggibile ma un
+    # ValueError di libreria a meta' scrittura di par.bin.
+    negativi = {}
+    for nome, valore in (("blink-min", args.blink_min),
+                         ("blink-mask", args.blink_mask),
+                         ("blink-dur", args.blink_dur),
+                         ("raro-ogni", args.raro_ogni),
+                         ("raro-piu", args.raro_piu)):
+        if valore < 0:
+            negativi[nome] = valore
+    for nome, valori in (("amp", args.amp), ("sca", args.sca), ("fase", args.fase)):
+        for i, v in enumerate(valori):
+            if v < 0:
+                negativi["%s%d" % (nome, i)] = v
+    if negativi:
+        raise SystemExit(
+            "NEGATIVO ROSSO: questi parametri non possono essere negativi "
+            "(diventano byte non firmati in par.bin): %s" % negativi)
+
+    if args.raro_ogni < 2:
+        raise SystemExit(
+            "RARO ROSSO: --raro-ogni deve valere almeno 2. Con 0 o 1 "
+            "`blink_cnt >= SGP_PAR[PAR_RARO_OGNI]` e' vero fin dal primo "
+            "giro (blink_cnt parte da 0 e viene incrementato PRIMA del "
+            "confronto): ogni accento diventerebbe raro, non uno su N.")
 
     codice = args.base + OFF_CODICE
     canarino = args.base + OFF_CANARINO
@@ -211,6 +293,45 @@ def main():
     if any(x < 0 or x > 8 for x in args.sca):
         raise SystemExit("SCALA ROSSO: --sca deve restare fra 0 e 8, "
                          "entro la finestra di proprieta' dell'idle.")
+
+    # --- cancelli dell'accento di posa B (A1 §6.2) ------------------------
+    # Quattro difetti certi che il compilatore accettava in silenzio, piu' la
+    # lettura fuori tabella di --fase (A8b M3). Costo in ROM: zero.
+    if args.blink_dur < 1:
+        raise SystemExit(
+            "BLINK ROSSO: --blink-dur deve valere almeno 1. Con 0 il blob "
+            "calcola `blink_left = (u8)(0 - 1) = 255`: una posa B di 8,5 s "
+            "circa una volta su due (A1 §3.2 B2).")
+    if not (0 <= args.blink_mask <= 255) or (args.blink_mask & (args.blink_mask + 1)):
+        raise SystemExit(
+            "BLINK ROSSO: --blink-mask deve essere della forma 2^n-1 "
+            "(0,1,3,7,...,255): il blob la usa come MASCHERA, non come modulo, "
+            "e un valore come 100 da' 36 valori su 101 con dei buchi "
+            "(A1 §3.2 B4). Ricevuto %d." % args.blink_mask)
+    if args.blink_min + args.blink_mask > 255:
+        raise SystemExit(
+            "BLINK ROSSO: blink_min + blink_mask = %d > 255. `blink_wait` e' "
+            "un u8: la somma verrebbe troncata e un'attesa lunga diventerebbe "
+            "brevissima, senza avvisi (A1 §3.2 B1)."
+            % (args.blink_min + args.blink_mask))
+    if args.blink_dur + 1 + args.raro_piu > 255:
+        raise SystemExit(
+            "BLINK ROSSO: blink_dur + 1 + raro_piu = %d > 255. La durata "
+            "massima finisce in `blink_left`, che e' un u8."
+            % (args.blink_dur + 1 + args.raro_piu))
+    if any(not (0 <= f < FASI) for f in args.fase):
+        raise SystemExit(
+            "FASE ROSSO: ogni --fase deve stare fra 0 e %d. Il blob somma "
+            "questo valore all'indice della tavola e con --fase 200 legge "
+            "dentro lo STATO e la VOCE 0 (A8b M3, verificata). Ricevuto %s."
+            % (FASI - 1, list(args.fase)))
+    massimo = max(vu)
+    if tuple(i for i, v in enumerate(vu) if v == massimo) != PICCO:
+        raise SystemExit(
+            "PICCO ROSSO: il massimo della tavola sta agli indici %s, il blob "
+            "aspetta %s (SGP_PICCO_IDX/SGP_PICCO_N in sgp_anim5.h). L'accento "
+            "di posa B partirebbe fuori dal punto di quiete del respiro."
+            % (tuple(i for i, v in enumerate(vu) if v == massimo), PICCO))
 
     # --- cancello M-MONO, prima di compilare ------------------------------
     mono = {}
@@ -268,11 +389,11 @@ def main():
 
     manifesto = {
         "pacchetto": "SGP-1.2.1-ANIM-MOTO-01",
-        "fase": "v5c-rifinitura-moto-menu-hud-cattura",
+        "fase": "v5d-accento-posa-b",
         "eredita": "SGP-1.2-ANIM-SOLIDO-01 (v4, blob in ROM a 0x023D8B00) + "
                    "SGP-1.2.1-ANIM-SEGNALE-01 (il segnale moveActive) + "
                    "SGP-1.2.1-ANIM-FASI-01 (i nove lr, misurati sui byte).",
-        "comando": comando,
+        "comando": [relativo(x) for x in comando],
         "avvisi_compilatore": avvisi,
         "compilatore": subprocess.run([args.cc, "--version"], text=True,
                                       capture_output=True).stdout.splitlines()[0],
@@ -291,9 +412,18 @@ def main():
             "par": {"byte": len(pb), "sha256": sha(pb),
                     "amp": list(args.amp), "sca": list(args.sca),
                     "fase": list(args.fase),
+                    "variante": (args.variante + " (modificata)"
+                                if variante_modificata else args.variante),
+                    "variante_modificata": variante_modificata,
                     "blink_min": args.blink_min, "blink_mask": args.blink_mask,
                     "blink_dur": args.blink_dur, "raro_ogni": args.raro_ogni,
                     "raro_piu": args.raro_piu,
+                    "posa_b_tick": [args.blink_dur, args.blink_dur + 1],
+                    "posa_b_rara_tick": [args.blink_dur + args.raro_piu,
+                                         args.blink_dur + args.raro_piu + 1],
+                    "attesa_tick": [args.blink_min,
+                                    args.blink_min + args.blink_mask],
+                    "picco_tab_u": list(PICCO),
                     "passo": args.passo, "velocita_relativa": args.passo / 8,
                     "periodo_tick": FASI * 8 // args.passo,
                     "sopprimi": hex(sopprimi), "estendi": hex(estendi),

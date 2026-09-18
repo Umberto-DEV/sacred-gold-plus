@@ -1,5 +1,9 @@
 # What changed
 
+## Unreleased
+
+- Optional battle motion: the B-pose accent now holds the pose for the time the game itself uses for the same frame (0.33–1.00 s depending on tuning, chosen with `--variante`) instead of 2–3 ticks, and starts only at the breathing motion's resting peak. See the [v5d notes](source/features/anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026).
+
 ## 1.2.1 — updated 15 September 2026
 
 - Expanded all Bag pockets to whole six-slot pages: 252/42/30/102/66/12/30/60 slots. Existing saves import; extra slots are stored in a checked save extension and are unavailable to older ROMs.
