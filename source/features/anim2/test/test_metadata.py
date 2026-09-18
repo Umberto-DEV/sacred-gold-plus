@@ -237,7 +237,9 @@ class CompilaAnim5Test(unittest.TestCase):
         casi = (
             ["--blink-min", "-1"],
             ["--raro-piu", "-1"],
-            ["--amp", "-1,3,4,4"],
+            # forma `--amp=` perche' argparse (fino a Python 3.13) tratta
+            # "-1,3,4,4" come un'opzione, non come un numero negativo
+            ["--amp=-1,3,4,4"],
         )
         for argv in casi:
             with self.subTest(argv=" ".join(argv)):
