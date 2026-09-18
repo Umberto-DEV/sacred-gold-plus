@@ -14,8 +14,8 @@
     "estratto_il": "2026-09-13"
   },
   "testi": {
-    "nota": "1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (c_titolo = \"Sacred Gold Plus 1.2.1\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica.",
-    "costruito_il": "2026-09-13",
+    "nota": "Dalla 1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (oggi c_titolo = \"Sacred Gold Plus 1.2.2\"; nella 1.2.1 era \"Sacred Gold Plus 1.2.1\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica. Ricostruiti il 19/09/2026 per la 1.2.2: cambia solo `c_titolo`, la misura resta 886 B (EN) / 944 B (IT) e voci-{EN,IT}.bin sono invariati.",
+    "costruito_il": "2026-09-19",
     "charmap": "<pret checkout>/charmap.txt",
     "contenuto_bytes": {
       "testi-EN.bin": 886,

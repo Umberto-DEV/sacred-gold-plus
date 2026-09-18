@@ -422,18 +422,20 @@
       "nome": "sgp.opzioni.testi",
       "base": "0x023DA800",
       "bytes": 1024,
-      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (13/09/2026: la schermata al Continua dice «Sacred Gold Plus 1.2.1»)",
+      "proprietario": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (13/09/2026: la schermata al Continua dice «Sacred Gold Plus 1.2.1») / 1.2.2 (19/09/2026: la schermata al Continua dice «Sacred Gold Plus 1.2.2»)",
       "tipo": "dati",
       "zona": "1.2",
       "pubblico": false,
       "pianta": {
-        "+0x000": "blob dei testi della lingua della ROM, v3 con la versione 1.2.1: 886 B (EN) / 944 B (IT) su 1008 (via il gergo NPC/SLOT)",
+        "+0x000": "blob dei testi della lingua della ROM, v3 con la versione 1.2.2: 886 B (EN) / 944 B (IT) su 1008 (via il gergo NPC/SLOT)",
         "+0x3F0": "canarino 0xCA5A1500|i, 16 B, DENTRO il blocco -- INVARIATO"
       },
       "ancore": [],
-      "nota": "v3: 'sha256' e' la ROM EN 1.2.1, il PRIMO 'sha256_precedenti' e' la IT 1.2.1 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). Aggiornato 13/09/2026 per la 1.2.1; prima 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
-      "sha256": "1d55f090946557a45d68cb88c2bcf002ebef27de28c6f3bf3c0e3a61e2470732",
+      "nota": "v3: 'sha256' e' la ROM EN 1.2.2, il PRIMO 'sha256_precedenti' e' la IT 1.2.2 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2.1 (EN poi IT), la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). Aggiornato 19/09/2026 per la 1.2.2 (cambia solo `c_titolo`, la misura del blob resta 886/944 B); prima 13/09/2026 per la 1.2.1 e 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
+      "sha256": "3f0d2613b4aec23cfb615add5fe5022c4e866f68b26e075c4ec4621cad86d369",
       "sha256_precedenti": [
+        "ccf454556ea3eb901b499ae0e9c5196413ec10b4cd1ebfdd07bc998a54c1a8f5",
+        "1d55f090946557a45d68cb88c2bcf002ebef27de28c6f3bf3c0e3a61e2470732",
         "426deff48db0922902516aa576c732d04627bf363174965c57c5c98a774803cf",
         "bb5f639953e45e2aa316935dff4f0044c04116922c2fb3c100fad04043438222",
         "8749ad326c594959335b5ef00575f4282278a7255e94fd64405bcc71ac14e2e9",
@@ -487,7 +489,7 @@
       "zona": "1.2",
       "pubblico": false,
       "formato": {
-        "+0x000": "blob Thumb dei comandi 127 e 125, 622 B",
+        "+0x000": "blob Thumb dei comandi 127 e 125, 658 B (nella 1.2.1 erano 622: la 1.2.2 sposta la spia «ho scartato» da x800D a x800A e la scrive sempre)",
         "+0x5E0": "puntatori ai comandi originali, 8 B",
         "+0x5F0": "staffetta di esecuzione, 16 B",
         "+0x600": "120 chiavi permissive u32, zero termina la tabella",
@@ -496,8 +498,9 @@
       "impronte_parziali": [
         {
           "offset": 0,
-          "bytes": 622,
-          "sha256": "905d124e8593d47cba965b49cd2985009674f763f241abf3900419020f66091e"
+          "bytes": 658,
+          "sha256": "315f86bd89c49634d11bb7ef1c86746636d84af62b913a84ad2bc0b16ddf7b9e",
+          "nota": "blob 1.2.2 (658 B). Era 905d124e..., 622 B, nella 1.2.1: la spia «ho scartato qualcosa» stava su VAR_SPECIAL_x800D (LAST_TALKED, che scrive il motore) ed e' passata a x800A, scritta sempre dal gancio del comando 125."
         },
         {
           "offset": 2032,
