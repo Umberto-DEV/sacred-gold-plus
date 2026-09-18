@@ -105,7 +105,7 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | `sgp.anim2` (continuous battle motion, v5) | `0x023DB500` | `0x800` | `0x023DBD00` | 2048 B reserved | integrated in 1.2.1 |
 | `sgp.borsa_lotta` (Bag cache in battle) | `0x023DBD00` | `0x100` | `0x023DBE00` | 162/256 | applied |
 | `sgp.squadra_lotta` (party move cache in battle) | `0x023DBE00` | `0x100` | `0x023DBF00` | 200/256 | applied |
-| `sgp.capacita_borsa` (expanded Bag capacity) | `0x023DBF00` | `0x2C00` | `0x023DEB00` | 3184/11264 | applied |
+| `sgp.capacita_borsa` (expanded Bag capacity) | `0x023DBF00` | `0x2C00` | `0x023DEB00` | 3584/11264 (code; the 4808 B of state live at `+0x1800`) | applied |
 | free (`libero.1.2.finale`) | `0x023DEB00` | `0x40` | `0x023DEB40` | — | **free** |
 
 Zone 1.1, `0x023DEB40` to `0x023E0000`, is frozen: no block moves, no block changes size,
