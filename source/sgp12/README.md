@@ -1,7 +1,7 @@
 # sgp12 — libreria consolidata per la ROM Sacred Gold Plus 1.2.2
 
-Obiettivo: `costruisci.py` riproduce la ROM 1.2.2 da una base 1.1 con UN comando,
-`verifica.py` la ricontrolla con UN comando. **Verificato il 13/09/2026**: da
+Obiettivo: `costruisci.py` riproduce la ROM 1.2.2 dalla propria HeartGold
+ORIGINALE con UN comando, `verifica.py` la ricontrolla con UN comando. **Verificato il 13/09/2026**: da
 `base-1.1-{EN,IT}.nds` produce ROM IDENTICHE, sha256 per sha256, alla ROM
 DEFINITIVA `$SGP_ROM_DIR/sgp-1.2.2-{EN,IT}.nds` (§4) — **con animazioni v4,
 credito, etichetta guida spenta, versione in gioco 1.2.2, pagina Opzioni v4,
@@ -17,18 +17,43 @@ uno strumento di lettura testo: solo script che leggono/scrivono i byte.
 ## I comandi
 
 ```
-python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.2-EN.nds --lingua EN
-python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.2-IT.nds --lingua IT
+python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"   # una volta sola, stadio 0
 
-python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base base-1.1-EN.nds --lingua EN
+python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita sgp-1.2.2-EN.nds
+python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita sgp-1.2.2-IT.nds
+
+python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 
 python3 -m sgp12.estrai_build --rom sgp-1.2.2-EN.nds --lingua EN   # rigenera i build canonici (§4b)
 ```
 
-(da dentro `source/`, con quell'interprete — vedi sopra). `verifica.py`
-con `--base`/`--lingua` ricostruisce internamente la ROM e la confronta con
-quella data (`costruzione_identica`): è così che verifica una ROM di release
-vera senza bisogno di ROM intermedie salvate a parte.
+(da dentro `source/`, con quell'interprete — vedi sopra). `--lingua` non serve
+piu': la dice lo sha256 di `--base`, e se la si passa deve coincidere.
+`verifica.py` con `--base` rifa' lo stesso percorso del costruttore, stadio 0
+compreso, e confronta il risultato con la ROM data (`costruzione_identica`): è
+così che verifica una ROM di release vera senza bisogno di ROM intermedie
+salvate a parte.
+
+## Lo stadio 0 (`base11.json`, `rom.prepara_base`, `scarica_base.py`)
+
+I diciassette blocchi partono da una base 1.1, che fino alla 1.2.2 era un
+artefatto intermedio che chi ricostruiva doveva gia' possedere. Ora e' il
+costruttore a ricavarla, come PRIMO stadio, dalla HeartGold originale piu' un
+delta xdelta pubblico (asset della release `base-1.1`). Il delta contiene solo
+DIFFERENZE: non e' una ROM e senza la HeartGold della sua lingua non serve a
+niente. Nessuna ROM e' distribuita da questo repository.
+
+| pezzo | cosa fa |
+|---|---|
+| `base11.json` | il pin TRACCIATO: per EN e IT, sha256+byte della HeartGold accettata, nome/sha256/byte/URL del delta, sha256+byte della base 1.1 che ne deve uscire, e le opzioni di decodifica (`-d -D -R -s`, quelle del manifest 1.1) |
+| `rom.classifica_base(sha)` | funzione PURA: `originale` / `base-1.1` / `sconosciuta`, e la lingua. E' la regola che decide se lo stadio 0 serve, si salta o rifiuta, e si prova senza una ROM |
+| `rom.prepara_base(percorso, ...)` | lo stadio 0: riconosce, cerca il delta (`--delta` o `$SGP_ROM_DIR`), ne verifica lo sha256, lo applica con `xdelta3` in una cartella temporanea, verifica lo sha256 dell'uscita. Tre impronte, tre cancelli; una sola che non torna e' un `Rifiuto` |
+| `scarica_base.py` | l'UNICO punto di rete del repository, opt-in: scarica i delta e il `SHA256SUMS` della release (deposto come `SHA256SUMS-base-1.1`, per non coprire quello delle ROM), verifica, e cancella cio' che non combacia |
+| `test_base11.py` | 45 test di CLASSE A: pin, riconoscimento, ogni rifiuto, e `scarica_base` contro un `http.server` locale. Nessuna ROM, nessuna rete, nessun `xdelta3` vero (pin sintetico e decodificatore finto) |
+
+Senza `xdelta3` nel PATH il rifiuto dice quali pacchetti installare
+(`brew install xdelta`, `sudo apt install xdelta3`). Una base 1.1 passata
+direttamente a `--base` resta accettata: lo stadio 0 si salta con un avviso.
 
 ## 1. La libreria (moduli in cima, non per blocco)
 

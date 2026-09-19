@@ -8,7 +8,7 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 
 | Folder | What it is |
 | --- | --- |
-| `sgp12/` | The library. One command builds 1.2.2 from a 1.1 base, one command checks the result. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
+| `sgp12/` | The library. One command builds 1.2.2 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -54,7 +54,24 @@ Without a usable compiler the affected tests SKIP, with their count kept in the 
 
 Two inputs stay outside this repository.
 
-**Your game file.** A Sacred Gold Plus 1.1 ROM, English or Italian, in a private folder. Point `SGP_ROM_DIR` at that folder; the tools expect `base-1.1-EN.nds` and `base-1.1-IT.nds` there. Never copy a ROM, save, BIOS or dump into this checkout.
+**Your game file.** An **unmodified Pokémon HeartGold ROM**, US or Italian — the retail game you dumped from your own cartridge. That is the only game file the build needs; no intermediate ROM of ours is required, and none is distributed. The two the tools recognise are:
+
+| Language | File as commonly named | SHA-256 |
+| --- | --- | --- |
+| EN | `Pokemon - HeartGold Version.nds` | `65f02a56…0105` |
+| IT | `Pokemon - Versione Oro HeartGold.nds` | `013d04f5…0ce1` |
+
+Keep it in a private folder and point `SGP_ROM_DIR` at that folder. Never copy a ROM, save, BIOS or dump into this checkout. The full pin — both SHA-256s, their sizes, and what each one must produce — is `sgp12/base11.json`.
+
+**Stage 0 and `xdelta3`.** The blocks are applied to a 1.1 base, which the builder now derives from your ROM as its first step ("stage 0") instead of asking you for it. Stage 0 applies a public **xdelta patch**: a file of *differences* only, useless without the HeartGold it belongs to, and not a ROM. Install `xdelta3` (`brew install xdelta`, or `sudo apt install xdelta3`) and fetch the two patches once:
+
+```sh
+cd source && ../.venv/bin/python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"
+```
+
+That command is the only place in this repository that opens a network connection, and nothing calls it for you. It downloads the patches named in `sgp12/base11.json` from the `base-1.1` release, checks each against the pinned SHA-256, and deletes anything that does not match rather than leaving it in the folder. You can equally download the two files by hand from the release page and drop them in `$SGP_ROM_DIR` under the same names, or pass one with `--delta`.
+
+If you already have a 1.1 ROM, `--base` still takes it: stage 0 is skipped with a warning. Any other ROM is refused by SHA-256, with the accepted ones listed.
 
 **The reference metadata.** `charmap.txt` and `tools/py_scripts/scrcmd.json` from the reference disassembly, at the pinned revision. Both files are included in its checkout:
 
@@ -71,15 +88,17 @@ These files are not redistributed here: their licensing was not established to o
 `sgp12` is a package inside `source/`, so every command below runs `python -m sgp12....`: it needs `source/` as the working directory, which is one level below where "Prepare" creates `.venv`. Every command in this README that touches `sgp12` is written the same way — `cd source &&`, then the venv interpreter as `../.venv/bin/python3` — so it can be copied and run from the repository root without a separate `cd` step to remember:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.costruisci --base "$SGP_ROM_DIR/base-1.1-EN.nds" \
-        --uscita /tmp/sgp-1.2.2-EN.nds --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.costruisci \
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita /tmp/sgp-1.2.2-EN.nds
 cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.2-EN.nds \
-        --base "$SGP_ROM_DIR/base-1.1-EN.nds" --lingua EN
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
-The build is deterministic: the same base gives the same bytes. `verifica` rebuilds the ROM internally from the same base, compares it with the one you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Use `IT` and the Italian base for the other language. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
+`--lingua` is no longer needed: the language comes from the ROM's SHA-256, and if you pass `--lingua` it has to agree. Use the Italian HeartGold for the Italian build.
 
-The blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache and expanded Bag capacity — seventeen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
+The build is deterministic: the same ROM gives the same bytes. Stage 0 checks all three fingerprints — your ROM, the patch, and the 1.1 base that comes out of it — before a single block runs, and records them in the build's JSON report under `stadio0`. `verifica` repeats the whole thing, stage 0 included, compares the result with the ROM you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
+
+After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache and expanded Bag capacity — seventeen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
 
@@ -89,7 +108,22 @@ Class A — no game file, the same set CI runs:
 .venv/bin/python source/run_tests.py         # from the repository root
 ```
 
-Class B — with your own game file (same venv-from-root convention as above: `cd source &&`, then `../.venv/bin/python3`):
+Class B — with your own game file (same venv-from-root convention as above: `cd source &&`, then `../.venv/bin/python3`).
+
+What `$SGP_ROM_DIR` has to hold depends on which Class B suites you want:
+
+| Suite | Wants |
+| --- | --- |
+| `sgp12.test_lib.TestCostruisciIdentico` (the criterion-4 test: the build is byte-identical to the shipped ROM) | your HeartGold, `base-1.1-{EN,IT}.xdelta` and a `SHA256SUMS` naming `sgp-1.2.2-{EN,IT}.nds` — it runs stage 0 itself. A `base-1.1-{EN,IT}.nds` is still accepted instead and skips stage 0. |
+| the rare-candy, full-bag and bag-capacity suites | the built `sgp-1.2.2-{EN,IT}.nds` |
+| the per-block suites (overlay in place, block mutants, text width, `TestBlocchiVFinale`) | `base-1.1-{EN,IT}.nds` |
+
+The last row is the one exception to "the only input is your HeartGold": those suites open the 1.1 base directly, to compare a block against the stage that precedes it, and they have not been rewritten to derive it. They skip with an explicit reason when it is absent — a folder holding only the HeartGold and the patches runs everything else and skips those. Writing the base out once with the same patch is enough:
+
+```sh
+xdelta3 -d -D -R -s "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" \
+        "$SGP_ROM_DIR/base-1.1-EN.xdelta" "$SGP_ROM_DIR/base-1.1-EN.nds"
+```
 
 ```sh
 cd source && SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokeheartgold \
@@ -128,6 +162,8 @@ If the change needs space in the ARM9 reserve, claim it in [docs/arm9-reserve-re
 ## What must never be committed
 
 Game files, saves, save states, BIOS, firmware and memory dumps. Game text, game code, extracted tables, archives and graphics. Anything with a personal path or name in it. `.github/check_public.py` refuses a tracked `.nds`, `.sav`, `.bin` dump or `.dump` — the extension anywhere in the name, not only at the end — any tracked file over 2 MB that is not declared, any binary outside the screenshot gallery and our own small compiled blobs, any undeclared hidden folder, a blob that starts with a cartridge or game-container header, a personal path inside a binary, and a long unbroken base64 run inside a text file.
+
+The stage-0 patches are not tracked either, even though `.xdelta` is an allowed extension: they are release assets, downloaded on demand into your private folder. What lives in the tree is `sgp12/base11.json`, which is a few hundred bytes of fingerprints and URLs.
 
 Where a tool needs game data, it reads it from your file at build time. The text corrections are the clearest case: `sgp12/build/testi/REGOLE.json` records, for each correction, the message it belongs to, the SHA-256 the current text must have and the minimal edits — no sentence of the game. `features/texts/genera_correzioni.py` rebuilds the table the applier consumes from your own ROM, and the builder does it automatically when the table is absent.
 

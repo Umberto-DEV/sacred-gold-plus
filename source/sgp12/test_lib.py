@@ -706,29 +706,59 @@ def _sha_attesi():
     return attesi
 
 
+def _ingresso(lingua):
+    """Da che file parte la prova, cercato in `$SGP_ROM_DIR`.
+
+    Prima la HeartGold ORIGINALE della lingua, col suo delta: e' la via che
+    `source/README.md` documenta da quando esiste lo stadio 0, e l'unica che
+    non presuppone di avere gia' un artefatto intermedio. Se non c'e', la
+    vecchia `base-1.1-<lingua>.nds`, che resta accettata. Ritorna
+    `(percorso | None, spiegazione)`."""
+    voce = romlib.carica_pin()["basi"][lingua]
+    originale = ROM_DIR / voce["originale"]["nome"]
+    delta = ROM_DIR / voce["delta"]["nome"]
+    vecchia = ROM_DIR / ("base-1.1-%s.nds" % lingua)
+    if originale.is_file() and delta.is_file():
+        return originale, "HeartGold originale + %s (stadio 0)" % delta.name
+    if vecchia.is_file():
+        return vecchia, "base 1.1 gia' pronta (stadio 0 saltato)"
+    if originale.is_file():
+        return None, ("classe B: c'e' %s ma manca %s: "
+                      "`python3 -m sgp12.scarica_base --destinazione \"$SGP_ROM_DIR\"`"
+                      % (originale.name, delta.name))
+    return None, ("classe B: in $SGP_ROM_DIR non c'e' ne' %s ne' %s"
+                  % (originale.name, vecchia.name))
+
+
 @unittest.skipUnless(SHA256SUMS.exists(), "classe B: nessun SHA256SUMS in $SGP_ROM_DIR")
 @unittest.skipUnless(PRET_OK, PRET_MOTIVO)
 class TestCostruisciIdentico(unittest.TestCase):
-    """Criterio 4: `costruisci.py` da base-1.1-{EN,IT} deve produrre ROM
-    IDENTICHE, sha256 per sha256, a quelle di `$SGP_ROM_DIR/`.
+    """Criterio 4: `costruisci.py` dalla propria HeartGold ORIGINALE deve
+    produrre ROM IDENTICHE, sha256 per sha256, a quelle di `$SGP_ROM_DIR/`.
+    Lo stadio 0 (`rom.prepara_base`) e' dentro la prova, non prima: e' lui a
+    controllare che la ROM data sia quella del pin e che la base 1.1 che ne
+    esce abbia lo sha256 dichiarato, cosi' il test parte da cio' che un
+    giocatore ha davvero in mano. Una `base-1.1-*.nds` gia' pronta resta
+    accettata e salta lo stadio 0.
     Se in futuro la ROM cambia per la rifinitura in corso, questo test dice
     subito SE `sgp12/build/` va riallineato con `estrai_build.py` (vedi
     README.md §4): non va "corretto" abbassando la pretesa."""
 
     def _prova(self, lingua):
         attesi = _sha_attesi()
-        base_nome = "base-1.1-%s.nds" % lingua
         bersaglio_nome = BERSAGLIO % lingua
-        self.assertIn(base_nome, attesi)
-        self.assertIn(bersaglio_nome, attesi)
-        base_path = ROM_DIR / base_nome
-        base = base_path.read_bytes()
-        self.assertEqual(romlib.sha(base), attesi[base_nome],
-                         "%s non ha piu' lo sha256 registrato: aggiornare gli hash" % base_nome)
+        self.assertIn(bersaglio_nome, attesi,
+                      "$SGP_ROM_DIR/SHA256SUMS non registra %s" % bersaglio_nome)
+        percorso, via = _ingresso(lingua)
+        if percorso is None:
+            self.skipTest(via)
+        base, stadio0 = romlib.prepara_base(percorso, lingua)
+        self.assertEqual(stadio0["lingua"], lingua)
         rom, rapporto = costruisci_mod.costruisci(base, lingua, costruisci_mod.BUILD_DEFAULT)
         self.assertEqual(rapporto["uscita_sha256"], attesi[bersaglio_nome],
-                         "%s NON identica: sgp12/build/ non riflette piu' la ROM di lavoro "
-                         "(rieseguire estrai_build.py sulla ROM attuale)" % bersaglio_nome)
+                         "%s NON identica partendo da %s: sgp12/build/ non riflette piu' la "
+                         "ROM di lavoro (rieseguire estrai_build.py sulla ROM attuale)"
+                         % (bersaglio_nome, via))
 
     def test_identico_EN(self):
         self._prova("EN")

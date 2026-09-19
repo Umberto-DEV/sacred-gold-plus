@@ -6,7 +6,13 @@ verificare, e T1-T5 (`verifiche/test_riserva.py`, NON toccato:
 resta il rilettore indipendente della mappa della riserva).
 
 Uso:
-    python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base base-1.1-EN.nds --lingua EN
+    python3 -m sgp12.verifica sgp-1.2.2-EN.nds --base "Pokemon - HeartGold Version.nds"
+
+`--base` e' la propria HeartGold ORIGINALE: lo stadio 0 (`rom.prepara_base`) le
+applica il delta pubblico del pin `base11.json` e ne ricava la base 1.1, che e'
+il punto di partenza dei diciassette blocchi. E' la STESSA ricostruzione di
+`costruisci.py`, dallo stesso unico ingresso. Una base 1.1 gia' pronta resta
+accettata e salta lo stadio 0 con un avviso; la lingua si deduce dallo sha256.
 
 Senza `--base` la ricostruzione e i rilettori sono saltati con motivo
 esplicito (T1-T5 restano attivi: T1 non richiede una ROM).
@@ -46,7 +52,7 @@ import sys
 import traceback
 from pathlib import Path
 
-from .rom import Rifiuto, sha
+from .rom import Rifiuto, prepara_base, sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
                       opzioni, wifi, titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
@@ -169,16 +175,32 @@ def _verifica_costruzione(rom: bytes, base: bytes, lingua: str, build_dir: Path)
     }
 
 
-def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: str | None = None) -> dict:
+def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: str | None = None,
+             delta=None) -> dict:
     rom = Path(rom_path).read_bytes()
     esiti = {"rom": str(rom_path), "rom_sha256": sha(rom), "rilettori": {}}
 
     if base_path is not None:
-        base = Path(base_path).read_bytes()
-        if lingua:
-            esiti["costruzione_identica"] = _verifica_costruzione(rom, base, lingua, build_dir)
-        else:
-            esiti["costruzione_identica"] = {"saltato": "serve --lingua per ricostruire da --base"}
+        # Stadio 0, identico a quello di `costruisci.py`: l'ingresso e' la
+        # HeartGold originale, la base 1.1 e' un intermedio che nasce qui. Un
+        # `Rifiuto` dello stadio 0 non e' un traceback: e' un verdetto ROSSO
+        # con il motivo, come ogni altro cancello di questo comando.
+        try:
+            base, esiti["stadio0"] = prepara_base(Path(base_path), lingua, delta)
+            lingua = esiti["stadio0"]["lingua"]
+        except Rifiuto as e:
+            esiti["stadio0"] = {"esito": "ROSSO", "rifiuto": "%s: %s" % (type(e).__name__, e)}
+            esiti["costruzione_identica"] = {"saltato": "stadio 0 rifiutato"}
+            for nome in ORDINE_STADI:
+                esiti["rilettori"][nome] = {"saltato": "stadio 0 rifiutato"}
+            esiti["riletture_rosse"] = []
+            esiti["riletture_saltate"] = list(ORDINE_STADI)
+            esiti["copertura"] = "PARZIALE: stadio 0 rifiutato, nessun rilettore eseguito"
+            esiti["verdetto"] = "ROSSO"
+            return esiti
+        # Dopo lo stadio 0 la lingua c'e' sempre (la dice lo sha256 di --base):
+        # la vecchia diramazione «serve --lingua» non e' piu' raggiungibile.
+        esiti["costruzione_identica"] = _verifica_costruzione(rom, base, lingua, build_dir)
         esiti["rilettori"].update(_rilettori_di_libreria(base, build_dir, lingua))
     else:
         esiti["costruzione_identica"] = {"saltato": "manca --base"}
@@ -236,18 +258,19 @@ def _verdetto_finale(t1_t5_returncode: int, riletture_rosse: list, costruzione_o
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("rom")
-    ap.add_argument("--base", default=None)
-    ap.add_argument("--lingua", choices=("EN", "IT"), default=None)
+    ap.add_argument("--base", default=None,
+                    help="la HeartGold ORIGINALE (US o IT); una base 1.1 e' accettata e salta lo stadio 0")
+    ap.add_argument("--lingua", choices=("EN", "IT"), default=None,
+                    help="facoltativa: dedotta dallo sha256 di --base, e se data deve coincidere")
+    ap.add_argument("--delta", default=None,
+                    help="il delta dello stadio 0; senza, cercato in $SGP_ROM_DIR col nome del pin")
     ap.add_argument("--build", default=str(BUILD_DEFAULT))
     ap.add_argument("--json", default=None)
     a = ap.parse_args(argv)
 
-    lingua = a.lingua
-    if lingua is None and a.base:
-        lingua = "IT" if "-IT" in Path(a.base).name.upper() else "EN"
-
     try:
-        esiti = verifica(Path(a.rom), Path(a.base) if a.base else None, Path(a.build), lingua)
+        esiti = verifica(Path(a.rom), Path(a.base) if a.base else None, Path(a.build),
+                         a.lingua, a.delta)
     except Rifiuto as e:
         # Difesa aggiuntiva, come costruisci.py: `_verifica_costruzione` gia'
         # cattura il caso previsto (Rifiuto durante la ricostruzione), ma se

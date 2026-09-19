@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.2 da
-una base 1.1, applicando tutti i blocchi in ordine:
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.2
+dalla propria HeartGold ORIGINALE.
 
+    stadio 0: HeartGold originale --(delta xdelta pubblico)--> base 1.1
+    poi i diciassette blocchi:
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
     -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa
 
 Uso:
-    python3 -m sgp12.costruisci --base base-1.1-EN.nds --uscita sgp-1.2.2-EN.nds --lingua EN
-    python3 -m sgp12.costruisci --base base-1.1-IT.nds --uscita sgp-1.2.2-IT.nds --lingua IT
+    python3 -m sgp12.costruisci --base "Pokemon - HeartGold Version.nds" \\
+            --uscita sgp-1.2.2-EN.nds
+    python3 -m sgp12.costruisci --base "Pokemon - Versione Oro HeartGold.nds" \\
+            --uscita sgp-1.2.2-IT.nds
+
+`--base` e' la HeartGold originale: la lingua si DEDUCE dal suo sha256 (pin
+`base11.json`) e, se `--lingua` c'e', deve coincidere. Lo stadio 0 cerca il
+delta in `--delta`, altrimenti in `$SGP_ROM_DIR` col nome del pin
+(`python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"` lo scarica).
+Serve `xdelta3` nel PATH. Se `--base` e' invece una base 1.1 gia' pronta, lo
+stadio 0 si salta con un avviso.
 
 `--build` (default: `sgp12/build/`) e' la cartella con i blob gia' validati di
 ogni blocco (vedi README.md per la mappa) e `MAPPA-RISERVA-ARM9.json`.
 
 Richiede `ndspy` (`source/requirements.txt`): riserva, plus e testi lo usano.
 La ROM di partenza sta in una cartella privata, fuori da questo repository,
-e si passa con `--base`.
+e si passa con `--base`. Nessuna ROM e' distribuita da questo repository.
 """
 from __future__ import annotations
 
@@ -24,7 +35,7 @@ import sys
 import time
 from pathlib import Path
 
-from .rom import Rifiuto, sha
+from .rom import Rifiuto, prepara_base, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
                       titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
 
@@ -134,27 +145,40 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--base", required=True, help="base-1.1-{EN,IT}.nds")
+    ap.add_argument("--base", required=True,
+                    help="la HeartGold ORIGINALE (US o IT); una base 1.1 e' accettata e salta lo stadio 0")
     ap.add_argument("--uscita", required=True)
-    ap.add_argument("--lingua", choices=("EN", "IT"))
+    ap.add_argument("--lingua", choices=("EN", "IT"),
+                    help="facoltativa: dedotta dallo sha256 di --base, e se data deve coincidere")
+    ap.add_argument("--delta", default=None,
+                    help="il delta dello stadio 0; senza, cercato in $SGP_ROM_DIR col nome del pin")
     ap.add_argument("--build", default=str(BUILD_DEFAULT))
     ap.add_argument("--log-dir", default=None)
     ap.add_argument("--json", default=None)
     a = ap.parse_args(argv)
 
-    lingua = a.lingua
-    if lingua is None:
-        nome = Path(a.base).name.upper()
-        lingua = "IT" if "-IT" in nome else "EN"
-        print("--lingua non data: dedotta '%s' dal nome del file base" % lingua)
+    # Stadio 0: da `--base` alla base 1.1. La lingua esce da qui — dallo sha256
+    # della ROM, non piu' dal NOME del file, che chiunque puo' scrivere storto.
+    try:
+        base, stadio0 = prepara_base(Path(a.base), a.lingua, a.delta)
+    except Rifiuto as e:
+        print("RIFIUTO: %s" % e, file=sys.stderr)
+        return 2
+    lingua = stadio0["lingua"]
+    if stadio0.get("avviso"):
+        print(stadio0["avviso"], file=sys.stderr)
+    else:
+        print("STADIO 0: %s -> %s (delta %s, %.2f s)"
+              % (stadio0["base_originale"]["nome"], stadio0["base_1_1"]["nome"],
+                 stadio0["delta"]["nome"], stadio0["secondi"]), file=sys.stderr)
 
-    base = Path(a.base).read_bytes()
     try:
         rom, rapporto = costruisci(base, lingua, Path(a.build), Path(a.log_dir) if a.log_dir else None)
     except Rifiuto as e:
         print("RIFIUTO: %s" % e, file=sys.stderr)
         return 2
 
+    rapporto = {"stadio0": stadio0, **rapporto}
     Path(a.uscita).parent.mkdir(parents=True, exist_ok=True)
     Path(a.uscita).write_bytes(rom)
     testo = json.dumps(rapporto, indent=2, ensure_ascii=False) + "\n"

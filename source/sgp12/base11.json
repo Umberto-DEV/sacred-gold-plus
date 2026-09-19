@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "descrizione": "Stadio 0 della ricostruzione: da una HeartGold originale alla base 1.1. Ogni delta contiene SOLO le differenze fra le due immagini; non e' una ROM e non serve a niente senza la HeartGold della stessa lingua, che devi avere tu.",
+  "release": "base-1.1",
+  "url_base": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/",
+  "sha256sums": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/SHA256SUMS",
+  "encode_options": [
+    "-e",
+    "-A",
+    "-S",
+    "none",
+    "-D",
+    "-s"
+  ],
+  "decode_options": [
+    "-d",
+    "-D",
+    "-R",
+    "-s"
+  ],
+  "basi": {
+    "EN": {
+      "originale": {
+        "nome": "Pokemon - HeartGold Version.nds",
+        "etichetta": "Pokemon HeartGold (USA)",
+        "sha256": "65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105",
+        "byte": 134217728
+      },
+      "delta": {
+        "nome": "base-1.1-EN.xdelta",
+        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/base-1.1-EN.xdelta",
+        "sha256": "0bd20d17c8b18ee0a369d812b01facd83b00b3179d5fdca2ab149274b8248fc0",
+        "byte": 5747714
+      },
+      "base_1_1": {
+        "nome": "base-1.1-EN.nds",
+        "etichetta": "Sacred Gold Plus 1.1 EN",
+        "sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
+        "byte": 127104144
+      }
+    },
+    "IT": {
+      "originale": {
+        "nome": "Pokemon - Versione Oro HeartGold.nds",
+        "etichetta": "Pokemon HeartGold (Italia)",
+        "sha256": "013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1",
+        "byte": 134217728
+      },
+      "delta": {
+        "nome": "base-1.1-IT.xdelta",
+        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/base-1.1-IT.xdelta",
+        "sha256": "818bba0618da350440c6516a56ddc557c445cdbc79699835361866b3152c2014",
+        "byte": 16183741
+      },
+      "base_1_1": {
+        "nome": "base-1.1-IT.nds",
+        "etichetta": "Sacred Gold Plus 1.1 IT",
+        "sha256": "7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077",
+        "byte": 131906120
+      }
+    }
+  }
+}

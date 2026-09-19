@@ -22,7 +22,13 @@ Nessuna delle due stampa mai un byte di ROM: sono librerie.
 from __future__ import annotations
 
 import hashlib
+import json
+import os
+import shutil
 import struct
+import subprocess
+import tempfile
+import time
 from pathlib import Path
 
 
@@ -39,6 +45,20 @@ def sha(dati) -> str:
     """sha256 esadecimale di `dati` (era ridefinita, identica, in oltre 15 file
     del laboratorio 1.2: applica_*.py, rileggi_*.py, overlay_patch.py, ...)."""
     return hashlib.sha256(bytes(dati)).hexdigest()
+
+
+def sha_file(percorso) -> str:
+    """sha256 di un file letto a blocchi da 1 MiB.
+
+    `sha(Path(p).read_bytes())` tiene in memoria l'intera immagine solo per
+    farne l'impronta: 134 MB per riconoscere una HeartGold originale, che lo
+    stadio 0 poi non usa (xdelta3 legge il file da solo). Qui non si tiene in
+    memoria piu' di un blocco."""
+    h = hashlib.sha256()
+    with open(percorso, "rb") as f:
+        for blocco in iter(lambda: f.read(1 << 20), b""):
+            h.update(blocco)
+    return h.hexdigest()
 
 
 _BLOCCO_CONFRONTO = 1 << 20
@@ -98,6 +118,214 @@ def esigi_manifesto_descrive(man: dict, corpo, chiave: str = "blob",
     esigi(atteso_byte == len(corpo) and atteso_sha == sha(corpo),
           "%sBUILD: %s (%d B, %s) non corrisponde al manifesto (%s B, %s)"
           % (dove, file, len(corpo), sha(corpo)[:16], atteso_byte, str(atteso_sha)[:16]))
+
+
+# ------------------------------------------------------------------ STADIO 0
+#
+# I diciassette blocchi partono da una base 1.1. La base 1.1, pero', non e' una
+# ROM che si possa distribuire ne' una che si possa chiedere a chi ricostruisce:
+# era un artefatto intermedio, e chi non ce l'aveva non poteva ricostruire
+# niente. Lo stadio 0 toglie quel vincolo — l'unico ingresso e' la HeartGold
+# ORIGINALE della propria lingua, piu' un delta xdelta pubblico che contiene
+# SOLO le differenze fra quella ROM e la base 1.1.
+#
+# Il pin `base11.json` dice, per lingua: che sha256 ha la ROM originale
+# accettata, come si chiama il delta e che sha256 ha, che sha256 deve avere la
+# base 1.1 che ne esce. Tutte e tre le impronte sono controllate: una sola che
+# non torna e' un `Rifiuto`, mai una costruzione «quasi giusta».
+
+PIN_BASE11 = Path(__file__).resolve().parent / "base11.json"
+
+# Le chiavi che ogni lingua del pin deve avere, e cosa deve esserci dentro.
+_PIN_PARTI = ("originale", "delta", "base_1_1")
+
+
+def verifica_pin(pin: dict) -> dict:
+    """Il pin descrive davvero due tratte? Controllo STRUTTURALE, non di merito:
+    chiavi presenti, sha256 esadecimali di 64 caratteri, byte interi positivi.
+    Le dimensioni plausibili (una HeartGold e' 134 MB, non 12 B) sono un test,
+    non una regola di libreria: i test dello stadio 0 iniettano pin sintetici
+    con file di pochi byte, e devono poterlo fare."""
+    esigi(isinstance(pin, dict) and isinstance(pin.get("basi"), dict) and pin["basi"],
+          "PIN: `base11.json` non ha il dizionario 'basi'")
+    for chiave in ("encode_options", "decode_options"):
+        esigi(isinstance(pin.get(chiave), list) and all(isinstance(x, str) for x in pin[chiave]),
+              "PIN: '%s' deve essere una lista di stringhe" % chiave)
+    for lingua, voce in pin["basi"].items():
+        esigi(lingua in ("EN", "IT"), "PIN: lingua inattesa %r (solo EN e IT)" % lingua)
+        for parte in _PIN_PARTI:
+            d = voce.get(parte)
+            esigi(isinstance(d, dict), "PIN: %s manca della sezione '%s'" % (lingua, parte))
+            esigi(isinstance(d.get("nome"), str) and d["nome"],
+                  "PIN: %s/%s non ha un 'nome'" % (lingua, parte))
+            s = d.get("sha256")
+            esigi(isinstance(s, str) and len(s) == 64 and all(c in "0123456789abcdef" for c in s),
+                  "PIN: %s/%s non ha uno sha256 esadecimale di 64 caratteri: %r"
+                  % (lingua, parte, s))
+            esigi(isinstance(d.get("byte"), int) and d["byte"] > 0,
+                  "PIN: %s/%s non ha un conteggio 'byte' intero positivo" % (lingua, parte))
+        esigi(isinstance(voce["delta"].get("url"), str) and voce["delta"]["url"].startswith("https://"),
+              "PIN: %s/delta non ha un 'url' https" % lingua)
+    return pin
+
+
+def carica_pin(percorso=None) -> dict:
+    """Legge (e verifica) `sgp12/base11.json`. Nessuna cache: e' un file di un
+    paio di kilobyte, e i test devono poterne iniettare un altro."""
+    percorso = Path(percorso or PIN_BASE11)
+    esigi(percorso.is_file(), "PIN: manca %s" % percorso)
+    try:
+        pin = json.loads(percorso.read_text())
+    except ValueError as e:
+        raise Rifiuto("PIN: %s non e' JSON valido: %s" % (percorso, e)) from None
+    return verifica_pin(pin)
+
+
+def classifica_base(sha_hex: str, pin: dict | None = None) -> dict:
+    """Funzione PURA: dato uno sha256, dice che cos'e' quella ROM.
+
+    Ritorna `{"tipo": "originale"|"base-1.1"|"sconosciuta", "lingua": "EN"|"IT"|None,
+    "etichetta": str|None}`. Sta qui, separata da ogni lettura di file, perche'
+    e' la regola che decide se lo stadio 0 serve, si salta o rifiuta: va potuta
+    provare senza una ROM."""
+    pin = pin or carica_pin()
+    s = (sha_hex or "").strip().lower()
+    for lingua, voce in pin["basi"].items():
+        if s == voce["originale"]["sha256"]:
+            return {"tipo": "originale", "lingua": lingua,
+                    "etichetta": voce["originale"].get("etichetta", voce["originale"]["nome"])}
+        if s == voce["base_1_1"]["sha256"]:
+            return {"tipo": "base-1.1", "lingua": lingua,
+                    "etichetta": voce["base_1_1"].get("etichetta", voce["base_1_1"]["nome"])}
+    return {"tipo": "sconosciuta", "lingua": None, "etichetta": None}
+
+
+def _elenco_accettato(pin: dict) -> str:
+    righe = []
+    for lingua, voce in pin["basi"].items():
+        righe.append("  %s originale: %s (sha256 %s…, %d B)"
+                     % (lingua, voce["originale"]["nome"],
+                        voce["originale"]["sha256"][:16], voce["originale"]["byte"]))
+    for lingua, voce in pin["basi"].items():
+        righe.append("  %s base 1.1 gia' pronta: sha256 %s… (%d B)"
+                     % (lingua, voce["base_1_1"]["sha256"][:16], voce["base_1_1"]["byte"]))
+    return "\n".join(righe)
+
+
+def xdelta3_eseguibile() -> str:
+    """Il percorso di `xdelta3`, o un `Rifiuto` che dice come installarlo.
+
+    `SGP_XDELTA3` ha la precedenza: serve a una macchina che lo tiene fuori dal
+    PATH, e ai test, che ci mettono un finto decodificatore per provare lo
+    stadio 0 senza nessuna ROM."""
+    exe = os.environ.get("SGP_XDELTA3") or shutil.which("xdelta3")
+    esigi(exe, "STADIO 0: serve `xdelta3` per ricavare la base 1.1 dalla HeartGold "
+               "originale, e non e' nel PATH.\n"
+               "  macOS:          brew install xdelta\n"
+               "  Debian/Ubuntu:  sudo apt install xdelta3\n"
+               "  altrove:        https://github.com/jmacd/xdelta\n"
+               "Oppure passa a --base una base 1.1 gia' pronta, e lo stadio 0 si salta.")
+    return exe
+
+
+def trova_delta(lingua: str, delta=None, pin: dict | None = None, cartella=None) -> Path:
+    """Dove sta il delta dello stadio 0: `--delta` se dato, altrimenti
+    `$SGP_ROM_DIR/<nome del pin>`. Due posti soli, detti tutti e due quando
+    non lo si trova."""
+    pin = pin or carica_pin()
+    esigi(lingua in pin["basi"], "STADIO 0: lingua %r non nel pin" % lingua)
+    nome = pin["basi"][lingua]["delta"]["nome"]
+    if delta:
+        p = Path(delta)
+        esigi(p.is_file(), "STADIO 0: --delta %s non esiste" % p)
+        return p
+    if cartella is None:
+        cartella = os.environ.get("SGP_ROM_DIR")
+    cercati = []
+    if cartella:
+        p = Path(cartella) / nome
+        cercati.append(str(p))
+        if p.is_file():
+            return p
+    else:
+        cercati.append("$SGP_ROM_DIR non impostata")
+    raise Rifiuto(
+        "STADIO 0: manca il delta %s, cercato in:\n  %s\n"
+        "Scaricalo una volta sola con:\n"
+        "  python3 -m sgp12.scarica_base --destinazione \"$SGP_ROM_DIR\"\n"
+        "oppure indicalo con --delta <percorso>. E' un file di differenze, non una ROM: "
+        "vedi %s" % (nome, "\n  ".join(cercati), pin["basi"][lingua]["delta"]["url"]))
+
+
+def prepara_base(percorso, lingua: str | None = None, delta=None,
+                 pin: dict | None = None, cartella=None) -> tuple[bytes, dict]:
+    """STADIO 0 — da quello che sta in `--base` alla base 1.1 su cui girano i
+    diciassette blocchi.
+
+    Tre casi, tre esiti:
+      * HeartGold ORIGINALE riconosciuta -> applica il delta del pin con
+        `xdelta3` in una cartella temporanea, verifica che ne esca esattamente
+        la base 1.1 del pin e la restituisce;
+      * base 1.1 gia' riconosciuta -> la restituisce com'e', con un avviso:
+        lo stadio 0 non serve (compatibilita' con chi la base 1.1 ce l'ha);
+      * qualunque altro sha256 -> `Rifiuto`, con l'elenco di cio' che e'
+        accettato. Non si prova a costruire su una base che non si riconosce.
+
+    Ritorna `(byte della base 1.1, rapporto dello stadio 0)`; il rapporto
+    finisce nel JSON di `costruisci.py` e di `verifica.py`."""
+    pin = pin or carica_pin()
+    percorso = Path(percorso)
+    esigi(percorso.is_file(), "STADIO 0: --base %s non esiste" % percorso)
+    impronta = sha_file(percorso)
+    c = classifica_base(impronta, pin)
+    esigi(c["tipo"] != "sconosciuta",
+          "STADIO 0: la ROM data non e' riconosciuta (sha256 %s, %d B).\nAccettate:\n%s"
+          % (impronta, percorso.stat().st_size, _elenco_accettato(pin)))
+    esigi(lingua in (None, c["lingua"]),
+          "STADIO 0: --lingua %s, ma la ROM data e' %s (%s). La lingua si deduce dalla "
+          "ROM: o passi quella giusta, o togli --lingua." % (lingua, c["lingua"], c["etichetta"]))
+    lingua = c["lingua"]
+    voce = pin["basi"][lingua]
+
+    if c["tipo"] == "base-1.1":
+        return percorso.read_bytes(), {
+            "saltato": "base 1.1 fornita direttamente",
+            "avviso": "AVVISO: --base e' gia' la base 1.1 %s (%s…): lo stadio 0 non serve e "
+                      "non e' stato eseguito." % (lingua, impronta[:16]),
+            "lingua": lingua, "base_sha256": impronta, "base_bytes": percorso.stat().st_size}
+
+    d = trova_delta(lingua, delta, pin, cartella)
+    letto, byte = sha_file(d), d.stat().st_size
+    esigi(letto == voce["delta"]["sha256"] and byte == voce["delta"]["byte"],
+          "STADIO 0: %s non e' il delta che il pin dichiara: letto sha256 %s (%d B), atteso "
+          "%s (%d B). Scaricalo di nuovo con `python3 -m sgp12.scarica_base`; non applicare "
+          "un delta che non si riconosce." % (d, letto, byte, voce["delta"]["sha256"],
+                                              voce["delta"]["byte"]))
+
+    exe = xdelta3_eseguibile()
+    t0 = time.time()
+    with tempfile.TemporaryDirectory(prefix="sgp12-stadio0-") as tmp:
+        uscita = Path(tmp) / voce["base_1_1"]["nome"]
+        r = subprocess.run([exe, *pin["decode_options"], str(percorso), str(d), str(uscita)],
+                           capture_output=True, text=True)
+        esigi(r.returncode == 0,
+              "STADIO 0: xdelta3 ha rifiutato %s su %s (codice %d):\n%s"
+              % (d.name, percorso.name, r.returncode, (r.stderr or "").strip()[-600:]))
+        fuori = uscita.read_bytes()
+    secondi = round(time.time() - t0, 2)
+    ottenuto = sha(fuori)
+    esigi(ottenuto == voce["base_1_1"]["sha256"] and len(fuori) == voce["base_1_1"]["byte"],
+          "STADIO 0: la base ricostruita non e' quella del pin: sha256 %s (%d B), atteso "
+          "%s (%d B). Non si prosegue su una base che non e' quella attesa."
+          % (ottenuto, len(fuori), voce["base_1_1"]["sha256"], voce["base_1_1"]["byte"]))
+    return fuori, {
+        "eseguito": True, "lingua": lingua,
+        "base_originale": {"nome": percorso.name, "sha256": impronta,
+                           "byte": percorso.stat().st_size, "etichetta": c["etichetta"]},
+        "delta": {"percorso": str(d), "nome": d.name, "sha256": letto, "byte": byte},
+        "xdelta3": {"eseguibile": exe, "opzioni": list(pin["decode_options"])},
+        "base_1_1": {"nome": voce["base_1_1"]["nome"], "sha256": ottenuto, "byte": len(fuori)},
+        "secondi": secondi}
 
 
 # --------------------------------------------------------------------- CRC16

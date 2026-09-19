@@ -51,6 +51,7 @@ ROOT = SOURCE.parent
 SUITE = [
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib"]),
+    ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),
     ("ARM9 reserve register",  SOURCE, ["-m", "unittest", "verifiche.test_riserva"]),
     ("text codec / translation", SOURCE, ["-m", "unittest", "discover", "-s", "translation", "-p", "test_*.py"]),
     ("text width measurement", SOURCE, ["-m", "unittest", "discover", "-s", "quality-audit", "-p", "test_*.py"]),

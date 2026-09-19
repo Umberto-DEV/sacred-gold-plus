@@ -1,27 +1,75 @@
 # Rebuilding Sacred Gold Plus 1.2.2
 
-Two commands build a 1.2.2 ROM from your own 1.1 ROM and verify the result.
+Two commands build a 1.2.2 ROM from your own **unmodified HeartGold** ROM and verify the result.
 
-(The file keeps its `rebuilding-1.2.md` name: three other pages link to it, and the
-procedure is the same one, extended by one block.) This page is the
+(The file keeps its `rebuilding-1.2.md` name: several other pages link to it, and the
+procedure is the same one, extended.) This page is the
 step-by-step version: what you need, in what order, and what to do when a step refuses.
 
-No ROM is distributed here. You supply the base.
+No ROM is distributed here. You supply the retail game; everything else is either in this
+repository or is a file of differences.
 
 ---
 
-## 1. Start from your own 1.1 ROM
+## 1. Start from your own HeartGold ROM
 
-You need a Sacred Gold Plus **1.1** ROM, English or Italian. That file is your base; 1.2.2 is
-built by patching it.
+You need an **unmodified Pokémon HeartGold** ROM — the retail game, dumped from your own
+cartridge — in one of the two languages the project supports:
+
+| Language | File as commonly named | SHA-256 | Size |
+| --- | --- | --- | --- |
+| EN | `Pokemon - HeartGold Version.nds` | `65f02a56…0105` | 134,217,728 B |
+| IT | `Pokemon - Versione Oro HeartGold.nds` | `013d04f5…0ce1` | 134,217,728 B |
 
 Put it in a private folder **outside this repository** and pass its path with `--base`. Nothing
-in the build writes to the base, but keeping game files out of the working tree is a rule here,
+in the build writes to it, but keeping game files out of the working tree is a rule here,
 not a preference: ROMs, saves, BIOS images and dumps never enter this repository and are never
 opened as text.
 
-The appliers verify the base by content at every step, so an unexpected or already-patched base
-is refused rather than silently mangled.
+The language comes from that ROM's SHA-256, not from the file's name. `--lingua` is optional and,
+if you pass it, has to agree. A ROM whose SHA-256 is neither of the two — and is not a 1.1 base
+either — is refused, with the accepted ones listed.
+
+The appliers verify the base by content at every step too, so an unexpected or already-patched
+base is refused rather than silently mangled.
+
+## 1b. Stage 0: from HeartGold to the 1.1 base
+
+The seventeen blocks are written against a Sacred Gold Plus **1.1** base. That base used to be
+something you had to already own; it is now derived from your ROM as the build's first step.
+
+Stage 0 applies a public **xdelta patch**, published as an asset of the `base-1.1` release. A
+patch of this kind contains only the *differences* between two images: it is not a ROM, it
+carries no playable game, and it does nothing without the HeartGold it belongs to.
+
+Install the decoder and fetch the patches once:
+
+```sh
+brew install xdelta          # macOS
+sudo apt install xdelta3     # Debian / Ubuntu
+
+cd source && ../.venv/bin/python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"
+```
+
+`scarica_base` is the only command in this repository that opens a network connection, and
+nothing calls it for you. It reads the release's `SHA256SUMS`, refuses to go on if it disagrees
+with the tracked pin `source/sgp12/base11.json`, downloads each patch, and deletes anything whose
+SHA-256 does not match instead of leaving it behind. Downloading the two files by hand from the
+release page works just as well; so does `--delta <path>` for a copy kept elsewhere.
+
+What stage 0 checks, before any block runs:
+
+1. the ROM you passed has one of the pinned SHA-256s, and its language is the one you asked for;
+2. the patch found in `--delta` or in `$SGP_ROM_DIR` has the SHA-256 the pin declares;
+3. the image that comes out of `xdelta3 -d -D -R -s` has the SHA-256 of the 1.1 base for that
+   language (`281c2d68…` EN, `7b61646c…` IT).
+
+Any of the three failing is a refusal, not a warning. The base is written to a temporary folder
+that is removed when the build ends, and the three fingerprints are recorded in the JSON report
+under `stadio0`.
+
+If you already hold a 1.1 base, `--base` still accepts it and stage 0 is skipped with a warning
+saying so. Without `xdelta3` on the PATH the refusal names the two packages to install.
 
 ## 2. Install the Python dependencies
 
@@ -58,17 +106,20 @@ directory — one level below where step 2 creates `.venv`. Every command below 
 `source/README.md` uses, so each line can be copied and run from the repository root on its own:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-EN.nds> --uscita <out/sgp-1.2.2-EN.nds> --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.costruisci --base <base-1.1-IT.nds> --uscita <out/sgp-1.2.2-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.costruisci \
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita <out/sgp-1.2.2-EN.nds>
+cd source && ../.venv/bin/python3 -m sgp12.costruisci \
+        --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita <out/sgp-1.2.2-IT.nds>
 ```
 
-`--build` selects the folder holding the validated per-block blobs and the ARM9 reserve manifest
-(default `sgp12/build/`). `--log-dir` additionally writes a JSON record and an intermediate ROM
-after each block, which is what the step-by-step readers consume.
+`--delta` gives the stage-0 patch explicitly; without it, it is looked up in `$SGP_ROM_DIR` under
+the name the pin declares. `--build` selects the folder holding the validated per-block blobs and
+the ARM9 reserve manifest (default `sgp12/build/`). `--log-dir` additionally writes a JSON record
+and an intermediate ROM after each block, which is what the step-by-step readers consume.
 
 ### The block order
 
-The builder applies seventeen blocks, always in this order:
+After stage 0 the builder applies seventeen blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -95,22 +146,26 @@ motion block updates the original animation hooks; its reserved bytes must still
 
 ### The build is deterministic
 
-The same base, the same block folder and the same language produce a **byte-identical** ROM.
-There is no timestamp, no build id and no randomness in the output. Determinism is not a nicety
-here: it is what makes the verification below meaningful.
+The same HeartGold, the same patch, the same block folder and the same language produce a
+**byte-identical** ROM. There is no timestamp, no build id and no randomness in the output —
+stage 0 included, since applying a VCDIFF patch is a function of its two inputs. Determinism is
+not a nicety here: it is what makes the verification below meaningful.
 
 ## 5. Verify
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.2-EN.nds> --base <base-1.1-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.2-EN.nds> \
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
-`verifica` does three things:
+`verifica` does four things:
 
-- **`costruzione_identica`** — it rebuilds the ROM internally from `--base`, with the same
-  library the builder uses, and compares the result with the file you passed. This is the check
-  that matters: it says the ROM you have is exactly the one this toolchain produces. Without
-  `--base` and `--lingua` the rebuild is skipped, with an explicit reason.
+- **`stadio0`** — the same first step as the builder, from the same single input, with the same
+  three fingerprint checks. A refusal here is a RED verdict carrying the reason, not a traceback.
+- **`costruzione_identica`** — it rebuilds the ROM internally from the 1.1 base stage 0 produced,
+  with the same library the builder uses, and compares the result with the file you passed. This
+  is the check that matters: it says the ROM you have is exactly the one this toolchain produces.
+  Without `--base` the rebuild is skipped, with an explicit reason.
 - **every block reader** — each block has a reader that re-derives what the block wrote, from
   scratch, instead of trusting anything the applier produced. Several of them deliberately use a
   separate family of decoders from the applier, so a shared wrong constant cannot make both
@@ -169,8 +224,15 @@ actually have rather than copying it from a document. Preimages are always re-de
 current working ROM; a preimage copied out of an older note is how a postimage once got mistaken
 for a preimage.
 
-Two related failure modes worth naming:
+Three related failure modes worth naming:
 
+- **Stage 0 refuses.** It says which of the three fingerprints did not match. An unrecognised
+  `--base` means the ROM is not an unmodified HeartGold of either language — a trimmed dump, a
+  different region, or one that has already been through another tool. A patch whose SHA-256 is
+  wrong means a truncated or superseded download: fetch it again with `sgp12.scarica_base`, which
+  refuses and deletes rather than keeping a file it cannot vouch for. A decoded base with the
+  wrong SHA-256 means the patch and the ROM do not belong together. None of the three is worth
+  working around: every later step assumes the 1.1 base is exactly the pinned one.
 - **A block refuses because a recompressed overlay stream no longer fits its slot.** Do not
   relocate the overlay to get around it — see `docs/contracts.md` for why relocation is refused
   and what to try instead.
