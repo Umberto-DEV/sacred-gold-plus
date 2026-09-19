@@ -30,8 +30,8 @@
   "stato_byte": 16,
   "occupazione_totale_byte": 144,
   "simboli": {
-    "sgp_npc_hook": "0x23d8981",
-    "sgp_npc_tetto": "0x23d8901"
+    "sgp_npc_tetto": "0x23d8901",
+    "sgp_npc_hook": "0x23d8981"
   },
   "simboli_tolti": {
     "tolti": [
@@ -39,5 +39,8 @@
       "$t"
     ],
     "nota": "Restano fuori le due voci di MAPPATURA del compilatore (`$d`, `$t`): descrivono dove il blob passa da codice a dati, non una funzione, e nessuno le consuma. `sgp_npc_tetto` invece c'era ED ESISTE: era stato tolto insieme a loro (M10 della revisione R1) perche' il suo valore veniva COSTRUITO da `estrai_build.py` (`BLOCK_BASE + OFF_BLOB + 1`), non decodificato — ma dalla 1.2.1 questo blob non e' piu' un estratto: e' RICOMPILATO da `features/native-core/tools/compila_tutti.py --solo npc`, che il valore lo legge dalla tabella dei simboli dell'oggetto. Misurato: `nm` dell'oggetto da' `sgp_npc_tetto` a +0x00 e `sgp_npc_hook` a +0x80, cioe' 0x23d8901 e 0x23d8981. Il nome torna qui col valore vero, e `features/npc/tools/applica_npc.py` (ENTRATE_ATTESE: le due entrate del pacchetto) accetta di nuovo questo build."
-  }
+  },
+  "simboli_non_verificati_dalla_rom": [
+    "sgp_npc_tetto"
+  ]
 }

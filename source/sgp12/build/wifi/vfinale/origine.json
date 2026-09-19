@@ -1,15 +1,15 @@
 {
   "EN": {
     "lingua": "EN",
-    "rom": "<private>/roms/1.2.2-aggiornata-2026-09-19/sgp-1.2.2-EN.nds",
-    "sha256": "c550e949582a38ce8d6c6ff5cbd4be33461b9b2d37f87200ef9946039e3f65ec",
+    "rom": "<private>/roms/sgp-1.2.2-EN.nds",
+    "sha256": "37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150",
     "bytes": 127104144,
     "estratto_il": "2026-09-19"
   },
   "IT": {
     "lingua": "IT",
-    "rom": "<private>/roms/1.2.2-aggiornata-2026-09-19/sgp-1.2.2-IT.nds",
-    "sha256": "c7f006e8dbd0f8c2697f15ecf4f156dea6a56823d3f1b3016de46ad89c78dda0",
+    "rom": "<private>/roms/sgp-1.2.2-IT.nds",
+    "sha256": "c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a",
     "bytes": 131906120,
     "estratto_il": "2026-09-19"
   }

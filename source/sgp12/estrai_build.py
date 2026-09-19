@@ -158,11 +158,25 @@ def _scrivi(build_dir: Path, blocco: str, files: dict, origine: dict,
     esistente = json.loads(origine_path.read_text()) if origine_path.exists() else {}
     esistente[origine["lingua"]] = origine
     origine_path.write_text(json.dumps(esistente, indent=2, ensure_ascii=False) + "\n")
+    _scrivi_sha256sums(dest)
+
+
+def _scrivi_sha256sums(dest: Path) -> None:
+    """L'elenco `SHA256SUMS` della cartella di un blocco: un rigo per file, in
+    ordine di nome, escluso l'elenco stesso. Unica definizione, usata da
+    `_scrivi` e da `main` dopo la riscrittura di `origine.json`."""
     righe = []
     for p in sorted(dest.iterdir()):
         if p.is_file() and p.name not in ("SHA256SUMS",):
             righe.append("%s  %s" % (hashlib.sha256(p.read_bytes()).hexdigest(), p.name))
     (dest / "SHA256SUMS").write_text("\n".join(righe) + "\n")
+
+
+def _percorso_redatto(rom_path: Path) -> str:
+    """`<private>/<cartella>/<file>`: quanto basta a dire da quale ROM viene
+    l'estratto, senza il percorso di una macchina."""
+    parti = rom_path.resolve().parts
+    return "<private>/" + "/".join(parti[-2:]) if len(parti) >= 2 else "<private>/" + rom_path.name
 
 
 def _origine(rom_path: Path, rom: bytes, lingua: str) -> dict:
@@ -446,9 +460,23 @@ def main(argv=None):
     a = ap.parse_args(argv)
 
     esiti = estrai(Path(a.rom), a.lingua, Path(a.build))
-    # `_origine` scrive `<rom>` come segnaposto: qui si mette il percorso vero.
-    origine_reale = {"rom": str(Path(a.rom).resolve())}
+    # `_origine` scrive `<rom>` come segnaposto: qui si mette il percorso della
+    # ROM. REDATTO (19/09/2026): `origine.json` e' un file TRACCIATO e
+    # `.github/check_public.py` rifiuta un percorso di macchina (una cartella
+    # personale, una cartella temporanea); prima qui finiva `Path(a.rom).resolve()`
+    # intero e andava corretto a mano dopo ogni estrazione. Restano la cartella e il
+    # nome del file, che dicono da quale ROM viene il blob, sotto `<private>/`
+    # come nelle estrazioni gia' registrate.
+    origine_reale = {"rom": _percorso_redatto(Path(a.rom))}
     for nome in BLOCCHI:
+        if isinstance(esiti.get(nome), dict) and "errore" in esiti[nome]:
+            # Estrazione rifiutata: i file di quel blocco sono quelli PRECEDENTI
+            # (lo dice il messaggio in coda), quindi anche la loro provenienza
+            # deve restare quella. Prima `origine.json` veniva riscritta lo
+            # stesso e dichiarava estratto da questa ROM un blob che non lo era
+            # (successo ad `anim` sulla 1.2.2, dove anim2 ha ripuntato il
+            # gancio G2 e `sgp_idle_stop` non e' piu' decodificabile).
+            continue
         for sotto in ([nome] if nome != "wifi" else ["wifi/vfinale"]):
             p = Path(a.build) / sotto / "origine.json"
             if p.exists():
@@ -456,6 +484,11 @@ def main(argv=None):
                 if a.lingua in doc:
                     doc[a.lingua]["rom"] = origine_reale["rom"]
                 p.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+                # `_scrivi` aveva gia' calcolato SHA256SUMS con l'`origine.json`
+                # PRECEDENTE a questa riscrittura: il registro tracciato restava
+                # incoerente (`TestImpronteDichiarate` rosso) dopo ogni
+                # estrazione. Si ricalcola qui, sull'ultimo stato della cartella.
+                _scrivi_sha256sums(p.parent)
 
     testo = json.dumps(esiti, indent=2, ensure_ascii=False) + "\n"
     if a.json:

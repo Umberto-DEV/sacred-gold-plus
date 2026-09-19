@@ -36,7 +36,10 @@
  *   stesso indirizzo di heap, quindi `u->app != app` non scattava, e il flag
  *   `sugg` restava a 1 mentre l'init vanilla aveva azzerato il layer. Ora
  *   `opz_suggerimento` chiede alla TILEMAP se la riga c'e', e il flag e' solo
- *   uno specchio per la diagnostica.
+ *   uno specchio per la diagnostica. Nello stesso giro: le tre `Window` sullo
+ *   stack ricevono `pixels = 0` prima di `AddWindowParameterized`, che non le
+ *   scrive quando fallisce — il controllo `!w.pixels` leggeva pila non
+ *   inizializzata.
  */
 #include "sgp_ui.h"
 
@@ -252,6 +255,10 @@ static void opz_disegna_riga(void *bg, u32 r)
     String *s = u->stringa;
     u32 i, q, sel, colore;
 
+    /* v5: `AddWindowParameterized` (bg_window.c:1560) NON tocca la Window se
+     * il layer non ha tilemap o se Heap_Alloc fallisce: senza questo azzeramento
+     * il controllo su `pixels` leggeva un byte di pila mai scritto. */
+    w.pixels = 0;
     AddWindowParameterized(bg, &w, G_BG_MAIN1, G_PANNELLO_X,
                            (u32)u->ycont + G_PASSO_TILE * r,
                            G_W_TILE, G_H_TILE, G_PALETTE,
@@ -345,6 +352,7 @@ static void opz_suggerimento(void *app, u32 accendi)
     if (disegnato == accendi) {
         return;
     }
+    w.pixels = 0;                          /* v5: vedi opz_disegna_riga */
     AddWindowParameterized(bg, &w, G_BG_MAIN1, G_SUGG_X, G_SUGG_Y,
                            G_SUGG_W, G_SUGG_H, G_PALETTE, G_BASETILE);
     if (!w.pixels) {
@@ -408,6 +416,7 @@ static u32 opz_apri(void *app)
      * Il suo unico tile riempie tutte le celle del pannello, comprese quelle
      * fra una riga e l'altra: e' cio' che permette il passo di 24 px senza
      * pagare 24 tile per ogni riga vuota. */
+    w.pixels = 0;                          /* v5: vedi opz_disegna_riga */
     AddWindowParameterized(bg, &w, G_BG_MAIN1, G_PANNELLO_X, (u32)u->ycont,
                            1u, 1u, G_PALETTE, G_TILE_BIANCO);
     if (!w.pixels) {

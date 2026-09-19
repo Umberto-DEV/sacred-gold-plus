@@ -3,10 +3,12 @@
 e `sgp.opzioni.testi` 0x023DA800/1024 B) + ganci in ov054/ov036. Scrive
 direttamente la pianta v3 di `SGP-1.2-RIFINITURA-01` (applicata in luogo
 12/09/2026: ris/tab/tpl/stato spostati in avanti, canarino invariato a +0xFF0 —
-vedi `PIANTA` e MAPPA-RISERVA-ARM9.json). Gli SCOMPARTI non cambiano con la v4:
-cambia il blob, che dalla 1.2.1 e' 3632 B (v3 3628, v2 3348) perche'
-`opz_presente` applica a ogni voce la precondizione del chunk di D1 (A1 della
-revisione R2). Il codice qui dentro non cabla nessuna lunghezza di blob: la
+vedi `PIANTA` e MAPPA-RISERVA-ARM9.json). Gli SCOMPARTI non cambiano con la v4
+ne' con la v5: cambia il blob, che dalla 1.2.1 e' 3632 B (v3 3628, v2 3348)
+perche' `opz_presente` applica a ogni voce la precondizione del chunk di D1 (A1
+della revisione R2), e dalla 1.2.2 aggiornata (19/09/2026) e' 3664 B perche'
+`opz_suggerimento` decide dalla tilemap di MAIN_1 e le Window sullo stack
+azzerano `pixels`. Il codice qui dentro non cabla nessuna lunghezza di blob: la
 legge dal manifesto e la confronta con lo scomparto.
 
 `rileggi()` e' un adattatore: richiama per sottoprocesso `rileggi_opzioni_v3.py`
@@ -42,7 +44,8 @@ TESTI_CANARY_MOTIVO = 0xCA5A1500
 # v3 (SGP-1.2-RIFINITURA-01, applicata in luogo 12/09/2026): il codice cresce
 # da 3348 a 3628 B (tocco dello stilo, righe comandi, default chunk) e sposta
 # ris/tab/tpl/stato in avanti; il canarino a +0xFF0 resta DOVE ERA. La v4 della
-# 1.2.1 porta il codice a 3632 B e non muove nessuno scomparto. Pianta esatta:
+# 1.2.1 porta il codice a 3632 B, la v5 della 1.2.2 aggiornata a 3664 B, e
+# nessuna delle due muove uno scomparto. Pianta esatta:
 # source/docs/arm9-reserve-map.json, voce "sgp.opzioni".
 PIANTA = {"codice": (0x000, 0xEC0), "ris": (0xEC0, 0x60), "tab": (0xF20, 0x20),
           "tpl": (0xF40, 0x20), "stato": (0xF60, 0x60)}
