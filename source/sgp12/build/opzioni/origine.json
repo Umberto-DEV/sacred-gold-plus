@@ -1,17 +1,17 @@
 {
   "EN": {
     "lingua": "EN",
-    "rom": "<private>/roms/1.2-lavoro-2026-09-12/sgp-1.2-EN.nds",
-    "sha256": "0811e8c3600d9fb545e8dc1e5d9aca4bc5671f2fcb33daa71c21ff2b5205e49c",
+    "rom": "<private>/roms/1.2.2-aggiornata-2026-09-19/sgp-1.2.2-EN.nds",
+    "sha256": "c550e949582a38ce8d6c6ff5cbd4be33461b9b2d37f87200ef9946039e3f65ec",
     "bytes": 127104144,
-    "estratto_il": "2026-09-13"
+    "estratto_il": "2026-09-19"
   },
   "IT": {
     "lingua": "IT",
-    "rom": "<private>/roms/1.2-lavoro-2026-09-12/sgp-1.2-IT.nds",
-    "sha256": "f69154ccd0a929fa1a5fb9e8f8d024740bf94757fc869b29d7b6e1fe09f4ee8e",
+    "rom": "<private>/roms/1.2.2-aggiornata-2026-09-19/sgp-1.2.2-IT.nds",
+    "sha256": "c7f006e8dbd0f8c2697f15ecf4f156dea6a56823d3f1b3016de46ad89c78dda0",
     "bytes": 131906120,
-    "estratto_il": "2026-09-13"
+    "estratto_il": "2026-09-19"
   },
   "testi": {
     "nota": "Dalla 1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (oggi c_titolo = \"Sacred Gold Plus 1.2.2\"; nella 1.2.1 era \"Sacred Gold Plus 1.2.1\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica. Ricostruiti il 19/09/2026 per la 1.2.2: cambia solo `c_titolo`, la misura resta 886 B (EN) / 944 B (IT) e voci-{EN,IT}.bin sono invariati.",

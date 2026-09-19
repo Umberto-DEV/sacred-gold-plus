@@ -181,6 +181,26 @@ typedef struct String {                       /* pm_string.h:9-14 */
 /* funzioni interne dell'overlay 54 (app Opzioni) */
 #define OPZ_EVIDENZIA   FN(void (*)(void *, u32), 0x021E69D4u)
 
+/* --- il BgConfig del gioco: dove sta la tilemap di un layer ---------------- */
+/* v5 (19/09/2026). `AddWindowParameterized` (0x0201D40C) raggiunge il buffer
+ * della tilemap cosi' (disassemblato sulla ROM 1.2.2 IT):
+ *      0201d412  movs r0, #0x2c        ; passo di un `Background`
+ *      0201d416  muls r7, r0, r7       ; bgId * 0x2C
+ *      0201d41c  adds r1, r5, r7       ; bgConfig + bgId * 0x2C
+ *      0201d41e  ldr  r0, [r1, #8]     ; .tilemapBuffer
+ * cioe' `BgConfig { heapID u32; u16; u16; Background bgs[8]; }` con
+ * `Background.tilemapBuffer` a +0 e passo 0x2C — la stessa pianta di pret
+ * (bg_window.h). I cinque layer dell'app Opzioni sono testo 256x256
+ * (options_app.c, `BgTemplate templates[5]`): la cella (x, y) e' la u16 numero
+ * y*32 + x, e vale `tile | palette << 12` (PutWindowTilemap_TextMode).
+ * La pagina LEGGE una cella e basta: non scrive mai la tilemap direttamente. */
+#define BG_OFF_BGS    8u
+#define BG_STRIDE     0x2Cu
+#define BG_TILEMAP(bg, id) \
+    (*(u16 **)((u8 *)(bg) + BG_OFF_BGS + (id) * BG_STRIDE))
+#define BG_CELLE_RIGA 32u
+#define CELLA_TILE(c) ((c) & 0x3FFu)
+
 /* Cornice della finestra: la STESSA dell'app Opzioni, disegnata con le stesse due
  * funzioni e con il numero di cornice che il giocatore ha scelto nelle Opzioni
  * (campo `frame` del bitfield a OptionsApp_Data+0x18). Zero asset nuovi.
@@ -348,7 +368,11 @@ typedef struct SgpUiState {
     u8  vis[SGP_MAX_VOCI];  /* +0x04 indice reale di ogni voce visibile */
     u8  val[SGP_MAX_VOCI];  /* +0x0A valore in corso di modifica, per voce reale */
     u8  val0[SGP_MAX_VOCI]; /* +0x10 valore all'apertura, per annullare con B */
-    u8  sugg;          /* +0x16 1 = il suggerimento e' disegnato */
+    u8  sugg;          /* +0x16 specchio: 1 = la riga del suggerimento e' nella
+                        *       tilemap. v5: NON e' piu' la fonte della decisione
+                        *       (sopravviveva all'app Opzioni e mentiva al rientro);
+                        *       la fonte e' la cella della tilemap, vedi
+                        *       opz_suggerimento. */
     u8  ycont;         /* +0x17 geometria calcolata UNA volta in opz_visibili: */
     u8  altezza;       /*       riga e altezza del contenuto, in tile, e quante */
     u8  n_righe;       /*       righe ci sono. Ricalcolarle a ogni uso costava */

@@ -437,14 +437,56 @@ class G3Suggerimento(unittest.TestCase):
     def test_sparisce_quando_la_pagina_apre_e_torna_quando_chiude(self):
         b = tutto_presente(Banco())
         frame(b, 0)
+        self.assertEqual(b.cella(0, 22) & 0x3FF, BASETILE, "la riga e' nella tilemap")
         frame(b, K_SELECT)
         self.assertEqual(b.leggi_ui()["sugg"], 0)
         n = b.nomi_chiamate()
         self.assertIn("ClearWindowTilemapAndCopyToVram", n)
         self.assertLess(n.index("ClearWindowTilemapAndCopyToVram"),
                         n.index("FillBgTilemapRect"))
+        self.assertNotEqual(b.cella(0, 22) & 0x3FF, BASETILE,
+                            "con la pagina aperta la banda in basso e' del pannello")
         frame(b, K_B)
         self.assertEqual(b.leggi_ui()["sugg"], 1)
+        self.assertEqual(b.cella(0, 22) & 0x3FF, BASETILE, "chiusa la pagina, la riga torna")
+
+    def test_torna_quando_l_ospite_rinasce_allo_stesso_indirizzo(self):
+        """Il difetto della 1.2 → 1.2.2, riprodotto sul banco melonDS il
+        19/09/2026 (corsa `s1`, fotogrammi 20 e 21): si esce dal menu Opzioni,
+        si torna in gioco, si riapre il menu — e la riga «SELECT → PLUS» non
+        c'e' piu'. L'app rinasce allo stesso indirizzo di heap, il suo init ha
+        azzerato il layer, ma il flag `sugg` diceva ancora 1 e la pagina si
+        fidava del flag invece di guardare la tilemap."""
+        b = tutto_presente(Banco())
+        frame(b, 0)                                  # prima istanza: disegnata
+        self.assertEqual(b.cella(0, 22) & 0x3FF, BASETILE)
+        b.ospite_rinasce()                           # stesso `app`, layer azzerato
+        self.assertEqual(b.cella(0, 22), 0, "l'init vanilla ha azzerato il layer")
+        b.chiamate = []
+        r0, _ = frame(b, 0)
+        self.assertEqual(r0, 0, "nessun tasto: il fotogramma resta dell'ospite")
+        self.assertIn("AddWindowParameterized", b.nomi_chiamate(),
+                      "la tilemap e' vuota: la riga va ridisegnata")
+        self.assertEqual(b.cella(0, 22) & 0x3FF, BASETILE)
+        self.assertEqual(b.cella(0, 22) >> 12, 13, "palette 13, quella del font")
+        self.assertEqual(b.leggi_ui()["sugg"], 1)
+
+    def test_decide_la_tilemap_non_il_flag(self):
+        """Il flag `sugg` sopravvive all'ospite e puo' mentire in entrambi i
+        versi; la tilemap no. Flag a 1 con layer vuoto: si ridisegna. Flag a 0
+        con la riga a schermo: NON si ridisegna, e il flag si riallinea."""
+        b = tutto_presente(Banco())
+        frame(b, 0)
+        b.ospite_rinasce()
+        b.chiamate = []
+        frame(b, 0)
+        self.assertIn("AddWindowParameterized", b.nomi_chiamate())
+        b.uc.mem_write(IND["stato"] + 0x16, b"\x00")     # flag falso: «non disegnato»
+        b.chiamate = []
+        frame(b, 0)
+        self.assertNotIn("AddWindowParameterized", b.nomi_chiamate(),
+                         "la riga e' gia' nella tilemap: niente da ridisegnare")
+        self.assertEqual(b.leggi_ui()["sugg"], 1, "il flag e' uno specchio della tilemap")
 
 
 class G3Registri(unittest.TestCase):

@@ -29,6 +29,14 @@
  *       una finestra sottile per riga piu' un tile bianco condiviso.
  *   C2  la riga selezionata e' una barra piena, come nel menu vanilla, non solo
  *       una freccia (la freccia resta: e' il cursore del gioco).
+ *
+ * v5 (19/09/2026, 1.2.2 aggiornata): il suggerimento «SELECT → PLUS» torna a
+ *   OGNI ingresso nel menu Opzioni. Prima mancava dal secondo ingresso in poi
+ *   (misurato sul banco melonDS, ROM 1.2.2 IT): l'app Opzioni rinasce allo
+ *   stesso indirizzo di heap, quindi `u->app != app` non scattava, e il flag
+ *   `sugg` restava a 1 mentre l'init vanilla aveva azzerato il layer. Ora
+ *   `opz_suggerimento` chiede alla TILEMAP se la riga c'e', e il flag e' solo
+ *   uno specchio per la diagnostica.
  */
 #include "sgp_ui.h"
 
@@ -308,8 +316,33 @@ static void opz_suggerimento(void *app, u32 accendi)
     Window w;
     String *s;
     void *bg = APP_BGCONFIG(app);
+    u16 *cella;
+    u32 disegnato;
 
-    if (!bg || u->sugg == accendi) {
+    if (!bg) {
+        return;
+    }
+    /* v5. «E' a schermo?» lo dice la tilemap del layer, non un flag nostro.
+     * Il flag `sugg` vive nella riserva ARM9 e sopravvive all'app Opzioni; l'app
+     * invece muore e rinasce a ogni ingresso nel menu, il suo init azzera la
+     * tilemap (`BgClearTilemapBufferAndCommit`), e l'allocatore le ridà lo
+     * STESSO indirizzo: `u->app != app` non scattava, `sugg` diceva 1, e la riga
+     * non tornava finche' la pagina non veniva aperta e chiusa. Misurato sul
+     * banco melonDS (19/09/2026): seconda istanza a 0x022C0264 come la prima,
+     * `sugg` = 1, banda vuota nei fotogrammi 20 e 21.
+     * La cella (G_SUGG_X, G_SUGG_Y) contiene il tile G_BASETILE se e solo se la
+     * riga e' disegnata: nessuna finestra vanilla arriva a quel tile (finiscono
+     * a 0x274 escluso) e la pagina, che lo riusa, non coesiste mai con la riga.
+     * Senza tilemap non c'e' niente da fare: `AddWindowParameterized` uscirebbe
+     * a vuoto comunque (bg_window.c:1561). */
+    cella = BG_TILEMAP(bg, G_BG_MAIN1);
+    if (!cella) {
+        return;
+    }
+    cella += G_SUGG_Y * BG_CELLE_RIGA + G_SUGG_X;
+    disegnato = (CELLA_TILE(*cella) == G_BASETILE) ? 1u : 0u;
+    u->sugg = (u8)disegnato;
+    if (disegnato == accendi) {
         return;
     }
     AddWindowParameterized(bg, &w, G_BG_MAIN1, G_SUGG_X, G_SUGG_Y,

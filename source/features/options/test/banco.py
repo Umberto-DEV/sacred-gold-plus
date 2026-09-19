@@ -71,6 +71,20 @@ APP = 0x02200000
 BGCONFIG = 0x02201000
 FINTO_PIXEL = 0x02210000        # cio' che AddWindowParameterized "alloca"
 FINTA_STRINGA = 0x02220000
+# v5 (19/09/2026): il BgConfig finto ha una TILEMAP vera per il layer MAIN_1,
+# 32x32 celle u16 (2 KiB, layer testo 256x256 come i cinque dell'app Opzioni),
+# e gli stub di CopyWindowToVram / ClearWindowTilemapAndCopyToVram /
+# BgClearTilemapCommit / FillBgTilemapRect la scrivono come fa il gioco
+# (`PutWindowTilemap_TextMode`: cella = tile | palette << 12). Pianta di
+# BgConfig letta dal disassemblato di AddWindowParameterized (0x0201D40C):
+# heapID u32 + due u16 = 8 B, poi Background[8] da 0x2C B con `tilemapBuffer`
+# a +0 (`muls r7, #0x2c` ... `ldr r0, [r1, #8]`). E' la verita' di terreno che
+# la pagina interroga per sapere se il suggerimento e' a schermo: senza questa
+# tilemap il banco non poteva riprodurre il difetto del rientro nel menu.
+TILEMAP1 = 0x02240000
+TILEMAP_BYTE = 0x800
+BG_OFF_BGS, BG_STRIDE = 8, 0x2C
+CELLE_RIGA = 32
 
 FUNZIONI = {
     0x0201D40C: "AddWindowParameterized", 0x0201D520: "RemoveWindow",
@@ -126,6 +140,14 @@ class Banco:
             self.uc.mem_write(IND["testi"], (BUILD / f"testi-{lingua}.bin").read_bytes())
             self.uc.mem_write(IND["tab"], (BUILD / f"voci-{lingua}.bin").read_bytes())
         self.uc.mem_write(IND["ris"], bytes(96))
+
+        # BgConfig finto: heapID 38 e la tilemap del layer MAIN_1 (gli altri
+        # layer restano senza: come nel gioco, AddWindowParameterized su un
+        # layer senza tilemap non fa nulla).
+        self.uc.mem_write(BGCONFIG, struct.pack("<I", 38))
+        self.uc.mem_write(BGCONFIG + BG_OFF_BGS + BG_STRIDE * 1,
+                          struct.pack("<I", TILEMAP1))
+        self.uc.mem_write(TILEMAP1, bytes(TILEMAP_BYTE))
 
         # finta app: heapID 38, unk10 con cursore 0, bgConfig, 5 Window "in uso"
         self.uc.mem_write(APP, struct.pack("<I", 38))
@@ -210,6 +232,43 @@ class Banco:
                 "aperture": aperture, "eventi": eventi, "salvataggi": salv,
                 "esito": esito, "pixels": pixels}
 
+    # --- la tilemap di MAIN_1 ----------------------------------------------
+    def _tilemap_di(self, bgconfig, bgid):
+        if bgconfig != BGCONFIG:
+            return 0
+        return struct.unpack("<I", self.uc.mem_read(
+            bgconfig + BG_OFF_BGS + BG_STRIDE * bgid, 4))[0]
+
+    def cella(self, x, y):
+        """La cella (x, y) della tilemap di MAIN_1: tile nei 10 bit bassi,
+        palette nei 4 alti, esattamente come la scrive il gioco."""
+        return struct.unpack("<H", self.uc.mem_read(
+            TILEMAP1 + 2 * (y * CELLE_RIGA + x), 2))[0]
+
+    def _finestra(self, w):
+        """Legge una `Window` del gioco (bg_window.h:68-79, 16 B)."""
+        b = self.uc.mem_read(w, 16)
+        bg, bgid, x, y, wid, hei, pal, base, pix = struct.unpack("<IBBBBBBHI", b)
+        return {"bg": bg, "bgid": bgid, "x": x, "y": y, "w": wid, "h": hei,
+                "pal": pal, "base": base, "pixels": pix}
+
+    def _scrivi_rett(self, tm, x, y, w, h, primo, pal, incrementa):
+        for r in range(h):
+            for c in range(w):
+                tile = (primo + r * w + c) if incrementa else primo
+                v = 0 if primo is None else ((tile | (pal << 12)) & 0xFFFF)
+                self.uc.mem_write(tm + 2 * ((y + r) * CELLE_RIGA + (x + c)),
+                                  struct.pack("<H", v))
+
+    def ospite_rinasce(self):
+        """L'app Opzioni esce e rientra. Misurato sul banco melonDS il
+        19/09/2026 (ROM 1.2.2 IT, fixture 708b317a...): la nuova istanza nasce
+        allo STESSO indirizzo di heap della precedente (0x022C0264 entrambe le
+        volte), quindi `u->app == app`; il suo init vanilla azzera la tilemap di
+        ogni layer (`BgClearTilemapBufferAndCommit`, options_app.c:633). Lo stato
+        dell'interfaccia NON si tocca: e' quello che il gioco lascia davvero."""
+        self.uc.mem_write(TILEMAP1, bytes(TILEMAP_BYTE))
+
     def tasti(self, k, touch=0):
         self.uc.mem_write(NEWKEYS, struct.pack("<I", k))
         self.uc.mem_write(TOUCHNEW, struct.pack("<H", touch))
@@ -235,7 +294,33 @@ class Banco:
             uc.reg_write(UC_ARM_REG_R0, FINTA_STRINGA)
             uc.mem_write(FINTA_STRINGA, struct.pack("<HHI", regs[0], 0, 0xB6F8D2EC))
         elif nome == "AddWindowParameterized":
-            uc.mem_write(regs[1] + 12, struct.pack("<I", FINTO_PIXEL))
+            # bg_window.c:1560: senza tilemap del layer la finestra NON viene
+            # scritta (nemmeno `pixels`); altrimenti si compilano i campi
+            # come fa il gioco, cosi' gli stub sotto possono rileggerli.
+            if self._tilemap_di(regs[0], regs[2]):
+                uc.mem_write(regs[1], struct.pack("<IBBBBBBHI", regs[0], regs[2],
+                                                  regs[3], pila[0], pila[1], pila[2],
+                                                  pila[3], pila_ext[0], FINTO_PIXEL))
+        elif nome == "CopyWindowToVram":
+            f = self._finestra(regs[0])
+            tm = self._tilemap_di(f["bg"], f["bgid"])
+            if tm:                                  # PutWindowTilemap_TextMode
+                self._scrivi_rett(tm, f["x"], f["y"], f["w"], f["h"],
+                                  f["base"], f["pal"], True)
+        elif nome == "ClearWindowTilemapAndCopyToVram":
+            f = self._finestra(regs[0])
+            tm = self._tilemap_di(f["bg"], f["bgid"])
+            if tm:                                  # ClearWindowTilemapText
+                self._scrivi_rett(tm, f["x"], f["y"], f["w"], f["h"], None, 0, False)
+        elif nome == "BgClearTilemapCommit":
+            tm = self._tilemap_di(regs[0], regs[1])
+            if tm:
+                uc.mem_write(tm, bytes(TILEMAP_BYTE))
+        elif nome == "FillBgTilemapRect":
+            tm = self._tilemap_di(regs[0], regs[1])
+            if tm:                                  # r2 = tile, r3 = x; pila: y, w, h, pal
+                self._scrivi_rett(tm, regs[3], pila[0], pila[1], pila[2],
+                                  regs[2], pila[3], False)
         elif nome == "BgConfig_Alloc":
             uc.reg_write(UC_ARM_REG_R0, BGCONFIG)
         elif nome == "PaletteFadeFinished":

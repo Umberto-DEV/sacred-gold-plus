@@ -310,7 +310,7 @@
       "zona": "1.2",
       "pubblico": false,
       "pianta": {
-        "+0x000": "codice Thumb v4, 3632 B su 3776 (v3: 3628; v2: 3348). La v4 (1.2.1, A1 della revisione R2) applica in `opz_presente` la precondizione del chunk di D1 a OGNI voce, non solo alle due di D1: +4 B, e tutti i simboli dopo `opz_presente` si spostano di 4.",
+        "+0x000": "codice Thumb v5, 3656 B su 3776 (v4: 3632; v3: 3628; v2: 3348). La v5 (1.2.2 aggiornata, 19/09/2026) fa decidere a `opz_suggerimento` dalla tilemap di MAIN_1, non dal flag `sugg`: +24 B, e i simboli dopo `opz_suggerimento` si spostano di 24. La v4 (1.2.1, A1 della revisione R2) applica in `opz_presente` la precondizione del chunk di D1 a OGNI voce, non solo alle due di D1: +4 B, e tutti i simboli dopo `opz_presente` si spostano di 4.",
         "+0xEC0": "risorse grafiche da ov054, 84 B su 96",
         "+0xF20": "tabella delle voci, 24 B su 32",
         "+0xF40": "due OverlayManagerTemplate, 32 B su 32",
@@ -319,13 +319,13 @@
         "+0xFF0": "canarino 0xCA5A1400|i, 16 B, DENTRO il blocco -- INVARIATO"
       },
       "ancore": [],
-      "nota": "pagina Opzioni SGP (SELECT, 7 righe) e schermata al primo avvio; consumatore del chunk pubblico di SGP-1.2-PLUS-03 a 0x023D8710 (non possiede stato di gioco). Applicata in luogo da SGP-1.2-OPZIONI-05 con applica_opzioni_v2.py; rilettore rileggi_opzioni_v2.py verde (13/13) su EN e IT il 12/09/2026. impronte_parziali coprono +0x000..+0xEC0 e il canarino a +0xFF0; lo stato (+0xEC0, 96 B) e il margine (+0xF20, 208 B) sono dinamici/non assegnati e restano fuori. AGGIORNATO 12/09/2026: sostituita in luogo con la v3 di SGP-1.2-RIFINITURA-01 (applica_opzioni_v3.py --sostituisci, cancelli S1-S4/A0-A7 verdi EN+IT; rileggi_opzioni_v3.py L1-L9 verdi EN+IT). Gancio A (ov054 0x021E6820) ora punta a 0x023D9950 (era 0x023D9838 in v2); template B1/B2 (ov036) ora a 0x023D9F40/0x023D9F50 (erano 0x023D9EA0/0x023D9EB0 in v2): il codice v3 e' piu' lungo, i simboli si sono spostati. Dettagli in the private RIFINITURA-01 report §1. AGGIORNATO 13/09/2026 (1.2.1): blob v4, `opz_presente` con la precondizione unica del chunk (guardia di D1 e load_status ASSENTE o VALIDO) su tutte e cinque le voci. Gancio A (ov054 0x021E6820) ora punta a 0x023D9954 (era 0x023D9950 in v3); i due template B1/B2 (ov036) restano a 0x023D9F40/0x023D9F50, ma il loro CONTENUTO cambia perche' le sei funzioni di servizio si sono spostate di 4 B.",
+      "nota": "pagina Opzioni SGP (SELECT, 7 righe) e schermata al primo avvio; consumatore del chunk pubblico di SGP-1.2-PLUS-03 a 0x023D8710 (non possiede stato di gioco). Applicata in luogo da SGP-1.2-OPZIONI-05 con applica_opzioni_v2.py; rilettore rileggi_opzioni_v2.py verde (13/13) su EN e IT il 12/09/2026. impronte_parziali coprono +0x000..+0xEC0 e il canarino a +0xFF0; lo stato (+0xEC0, 96 B) e il margine (+0xF20, 208 B) sono dinamici/non assegnati e restano fuori. AGGIORNATO 12/09/2026: sostituita in luogo con la v3 di SGP-1.2-RIFINITURA-01 (applica_opzioni_v3.py --sostituisci, cancelli S1-S4/A0-A7 verdi EN+IT; rileggi_opzioni_v3.py L1-L9 verdi EN+IT). Gancio A (ov054 0x021E6820) ora punta a 0x023D9950 (era 0x023D9838 in v2); template B1/B2 (ov036) ora a 0x023D9F40/0x023D9F50 (erano 0x023D9EA0/0x023D9EB0 in v2): il codice v3 e' piu' lungo, i simboli si sono spostati. Dettagli in the private RIFINITURA-01 report §1. AGGIORNATO 13/09/2026 (1.2.1): blob v4, `opz_presente` con la precondizione unica del chunk (guardia di D1 e load_status ASSENTE o VALIDO) su tutte e cinque le voci. Gancio A (ov054 0x021E6820) ora punta a 0x023D9954 (era 0x023D9950 in v3); i due template B1/B2 (ov036) restano a 0x023D9F40/0x023D9F50, ma il loro CONTENUTO cambia perche' le sei funzioni di servizio si sono spostate di 4 B. AGGIORNATO 19/09/2026 (1.2.2 aggiornata): blob v5, la riga «SELECT → PLUS» del menu Opzioni si ridisegna a ogni ingresso perche' `opz_suggerimento` legge la tilemap di MAIN_1 invece del flag. Gancio A ora punta a 0x023D996C; template B1/B2 invariati di indirizzo, contenuto spostato di 24 B.",
       "impronte_parziali": [
         {
           "offset": 0,
           "bytes": 3776,
-          "sha256": "904ca1e7e5257c18b967441b9f161d75a3e087089f58f64bc4f445d43d52402a",
-          "nota": "scomparto del codice (+0x000..+0xEC0): blob v4 di 3632 B piu' 144 B di margine a zero, identico EN/IT. Era ca88ded7... con il blob v3 da 3628 B."
+          "sha256": "9714324a14bc77ceaf60bc9b51e1e9ef059af8578a3af77cf9ce4bd8d4d7c92e",
+          "nota": "scomparto del codice (+0x000..+0xEC0): blob v5 di 3656 B piu' 120 B di margine a zero, identico EN/IT. Era 904ca1e7... con il blob v4 da 3632 B, ca88ded7... con il v3 da 3628 B."
         },
         {
           "offset": 4080,
@@ -340,9 +340,9 @@
           "modulo": "ov054",
           "ram": "0x021E6820",
           "pre": "041c898c",
-          "post": "BL sgp_opz_hook (bersaglio 0x023D9954/+0x955 thumb, v4 1.2.1; era 0x023D9950 in v3)",
+          "post": "BL sgp_opz_hook (bersaglio 0x023D996C/+0x96D thumb, v5 1.2.2 aggiornata; era 0x023D9954 in v4, 0x023D9950 in v3)",
           "thumb": true,
-          "bersaglio": "sgp_opz_hook (+0x955 nel blocco sgp.opzioni, v4 1.2.1)",
+          "bersaglio": "sgp_opz_hook (+0x96D nel blocco sgp.opzioni, v5 1.2.2 aggiornata)",
           "nota": "gancio A, patchato con overlay_patch.py (ricompressione BLZ in luogo). Verificato: rileggi_opzioni_v2.py L1/L6a/L8."
         },
         {
