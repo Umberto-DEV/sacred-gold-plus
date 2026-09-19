@@ -20,6 +20,7 @@ import os
 import shutil
 import socketserver
 import stat
+import subprocess
 import sys
 import tempfile
 import threading
@@ -476,6 +477,22 @@ class TestScaricaBase(BancoStadio0):
         self.assertEqual(fuori, BASE11["EN"])
         self.assertEqual(rap["delta"]["percorso"],
                          str(self.dest / "base-1.1-EN.xdelta"))
+
+
+class TestVerificaSenzaBase(unittest.TestCase):
+    """`verifica ROM` senza `--base`: lo stadio 0 e' saltato, e lo dice nel
+    JSON come ogni altro stadio. Nessuna ROM, T1-T5 e' un doppio finto."""
+
+    def test_stadio0_saltato_e_dichiarato(self):
+        from . import verifica as verifica_mod
+        with tempfile.TemporaryDirectory() as d:
+            finta = Path(d) / "finta.nds"
+            finta.write_bytes(b"\x00" * 32)
+            ok = subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
+            with mock.patch.object(verifica_mod.subprocess, "run", return_value=ok):
+                esiti = verifica_mod.verifica(finta, None, verifica_mod.BUILD_DEFAULT)
+        self.assertEqual(esiti["stadio0"], {"saltato": "manca --base"})
+        self.assertEqual(esiti["verdetto"], "PARZIALE")
 
 
 class TestAnalizzaSha256sums(unittest.TestCase):

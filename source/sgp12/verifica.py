@@ -203,6 +203,7 @@ def verifica(rom_path: Path, base_path: Path | None, build_dir: Path, lingua: st
         esiti["costruzione_identica"] = _verifica_costruzione(rom, base, lingua, build_dir)
         esiti["rilettori"].update(_rilettori_di_libreria(base, build_dir, lingua))
     else:
+        esiti["stadio0"] = {"saltato": "manca --base"}
         esiti["costruzione_identica"] = {"saltato": "manca --base"}
         for nome in ORDINE_STADI:
             esiti["rilettori"][nome] = {"saltato": "manca --base"}
