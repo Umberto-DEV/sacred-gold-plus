@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.2
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.3
 dalla propria HeartGold ORIGINALE.
 
     stadio 0: HeartGold originale --(delta xdelta pubblico)--> base 1.1
@@ -9,9 +9,9 @@ dalla propria HeartGold ORIGINALE.
 
 Uso:
     python3 -m sgp12.costruisci --base "Pokemon - HeartGold Version.nds" \\
-            --uscita sgp-1.2.2-EN.nds
+            --uscita sgp-1.2.3-EN.nds
     python3 -m sgp12.costruisci --base "Pokemon - Versione Oro HeartGold.nds" \\
-            --uscita sgp-1.2.2-IT.nds
+            --uscita sgp-1.2.3-IT.nds
 
 `--base` e' la HeartGold originale: la lingua si DEDUCE dal suo sha256 (pin
 `base11.json`) e, se `--lingua` c'e', deve coincidere. Lo stadio 0 cerca il

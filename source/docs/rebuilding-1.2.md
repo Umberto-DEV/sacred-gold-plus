@@ -1,6 +1,6 @@
-# Rebuilding Sacred Gold Plus 1.2.2
+# Rebuilding Sacred Gold Plus 1.2.3
 
-Two commands build a 1.2.2 ROM from your own **unmodified HeartGold** ROM and verify the result.
+Two commands build a 1.2.3 ROM from your own **unmodified HeartGold** ROM and verify the result.
 
 (The file keeps its `rebuilding-1.2.md` name: several other pages link to it, and the
 procedure is the same one, extended.) This page is the
@@ -107,9 +107,9 @@ directory — one level below where step 2 creates `.venv`. Every command below 
 
 ```sh
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita <out/sgp-1.2.2-EN.nds>
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita <out/sgp-1.2.3-EN.nds>
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita <out/sgp-1.2.2-IT.nds>
+        --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita <out/sgp-1.2.3-IT.nds>
 ```
 
 `--delta` gives the stage-0 patch explicitly; without it, it is looked up in `$SGP_ROM_DIR` under
@@ -154,7 +154,7 @@ not a nicety here: it is what makes the verification below meaningful.
 ## 5. Verify
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.2-EN.nds> \
+cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.3-EN.nds> \
         --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
@@ -179,12 +179,12 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.2-EN.nds> \
 
 ## 6. Regenerating the canonical build blobs
 
-The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.2 ROM, not
+The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.3 ROM, not
 recompiled:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.2-EN.nds> --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.2-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.3-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.3-IT.nds> --lingua IT
 ```
 
 For every block that writes a blob at a fixed address, this reads the exact bytes out of the ROM

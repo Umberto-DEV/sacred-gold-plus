@@ -1,21 +1,21 @@
 {
   "EN": {
     "lingua": "EN",
-    "rom": "<private>/roms/sgp-1.2.2-EN.nds",
-    "sha256": "37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150",
+    "rom": "<private>/1.2.3/sgp-1.2.3-EN.nds",
+    "sha256": "05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9",
     "bytes": 127104144,
-    "estratto_il": "2026-09-19"
+    "estratto_il": "2026-09-20"
   },
   "IT": {
     "lingua": "IT",
-    "rom": "<private>/roms/sgp-1.2.2-IT.nds",
-    "sha256": "c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a",
+    "rom": "<private>/1.2.3/sgp-1.2.3-IT.nds",
+    "sha256": "12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0",
     "bytes": 131906120,
-    "estratto_il": "2026-09-19"
+    "estratto_il": "2026-09-20"
   },
   "testi": {
-    "nota": "Dalla 1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (oggi c_titolo = \"Sacred Gold Plus 1.2.2\"; nella 1.2.1 era \"Sacred Gold Plus 1.2.1\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica. Ricostruiti il 19/09/2026 per la 1.2.2: cambia solo `c_titolo`, la misura resta 886 B (EN) / 944 B (IT) e voci-{EN,IT}.bin sono invariati.",
-    "costruito_il": "2026-09-19",
+    "nota": "Dalla 1.2.1: testi-{EN,IT}.bin e voci-{EN,IT}.bin non sono piu' un estratto della ROM 1.2 ma l'uscita di features/options/tools/costruisci_testi.py da features/options/testi/testi.json (oggi c_titolo = \"Sacred Gold Plus 1.2.3\"; nella 1.2.2 era \"Sacred Gold Plus 1.2.2\"), riempita di zeri fino alla misura dello scomparto (1008 B per i testi, 32 B per la tabella delle voci). La forma grezza, non riempita, e' quella di features/options/prove/testi/, byte per byte identica. Ricostruiti il 20/09/2026 per la 1.2.3: cambia solo `c_titolo`, la misura resta 886 B (EN) / 944 B (IT) e voci-{EN,IT}.bin sono invariati.",
+    "costruito_il": "2026-09-20",
     "charmap": "<pret checkout>/charmap.txt",
     "contenuto_bytes": {
       "testi-EN.bin": 886,

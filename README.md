@@ -2,7 +2,7 @@
 
 **A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
 
-**Version 1.2.2** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
+**Version 1.2.3** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
 
 Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
 
@@ -16,6 +16,12 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
 | ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
 | ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
+
+## What's new in 1.2.3 — 20 September 2026
+
+- **The classic HeartGold camera in every real cave.** The native camera — the one the original game uses underground — is restored in **44 more maps**, on top of Mt. Mortar from 1.2: in Kanto, Rock Tunnel, Mt. Moon (including the Square entrance), Diglett's Cave, Cerulean Cave and the Seafoam Islands (including the Cinnabar Gym room); between the two regions, Tohjo Falls, Victory Road and Mt. Silver Cave; in Johto, Union Cave, Slowpoke Well, the Ice Path, the Whirl Islands, Dark Cave (Route 45 side), the Dragon's Den and Cliff Cave. With the Plus angled camera, ledges and walls in these caves hid paths and items; the native camera shows them as the original game intended. Outdoors, in towers, forests, the Lighthouse, the Safari Zone and the Ruins of Alph the Plus camera is unchanged. The exception table grows from 24 to 68 entries and moves inside the ARM9 reserve; no map data and no code instruction changes. **A save made inside one of these caves keeps the previous camera until the next map change.**
+- **The Fly landing was investigated and is not a ROM defect.** The landing in front of a Pokémon Center was captured frame by frame on the headless bench with the software renderer: 1.2.2 draws it exactly as 1.1 does, with NPC smoothing on or off. The flicker reported on Android comes from the emulator's OpenGL renderer; switching melonDS to the software renderer avoids it.
+- The in-game version now reads **Sacred Gold Plus 1.2.3**. The ZIP includes direct patch routes from both 1.2.2 editions.
 
 ## What's new in 1.2.2 — updated 19 September 2026 (second edition)
 
@@ -37,7 +43,7 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 - **Plus difficulty** extended to levels: tougher trainers and, separately, scaling wild Pokémon — both optional, both capped at level 100.
 - A **Sacred Gold Plus options page** (press SELECT during play); the game asks once, on Continue, whether you want to look at it.
-- The **classic HeartGold camera**, restored natively in eight indoor maps (Mahogany Town, Mt. Mortar) — no cheat needed.
+- The **classic HeartGold camera**, restored natively in eight indoor maps (Mahogany Town, Mt. Mortar) — no cheat needed. Since 1.2.3 it covers **52 maps**, the 44 caves added there included.
 - **Smoother towns**: fewer characters loaded at once when entering or leaving one.
 - **Optional animated Pokémon** in battle (off by default).
 - **Online server choice**: pick which Wi-Fi connection slot handles GTS and battles; Mystery Gift connects automatically.
@@ -49,18 +55,18 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 ## Download
 
-Get the ZIP for your language from the [**1.2.2 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.2):
+Get the ZIP for your language from the [**1.2.3 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.3):
 
 | Language | File |
 | --- | --- |
-| Italian | `Sacred-Gold-Plus-1.2.2-IT.zip` |
-| English | `Sacred-Gold-Plus-1.2.2-US.zip` |
+| Italian | `Sacred-Gold-Plus-1.2.3-IT.zip` |
+| English | `Sacred-Gold-Plus-1.2.3-US.zip` |
 
 Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
 
 ## Requirements
 
-- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04, 1.1 or 1.2.1** ROM (any camera) — you must obtain this yourself.
+- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.03, 1.04, 1.1, 1.2.1 or 1.2.2** ROM (any camera) — you must obtain this yourself.
 - A DS patching tool: a desktop program, an Android app, or a browser page (all free; links are in the package guide).
 - An emulator or a flashcart. The searchable picker and L+R toggle require [this fork’s melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1).
 
@@ -72,16 +78,16 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 ## Compatibility
 
-- **Saves:** existing 1.1/1.2/1.2.1 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
+- **Saves:** existing 1.1/1.2/1.2.1/1.2.2 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
 - **Cheats:** the game header is unchanged from 1.2, but import the updated catalogue to get the corrected codes. 1.1 catalogues have a different header. Every supplied code starts disabled.
 
 ## Source code and contributing
 
-Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.2 from an unmodified HeartGold ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/). The only game file you need is the retail game you already own — the first build step derives our 1.1 base from it with a published patch of differences, so no intermediate ROM of ours is needed and none is distributed.
+Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.3 from an unmodified HeartGold ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/). The only game file you need is the retail game you already own — the first build step derives our 1.1 base from it with a published patch of differences, so no intermediate ROM of ours is needed and none is distributed.
 
 - `main` is the development trunk. Fork, create a `feature/…` or `fix/…` branch, open a pull request.
 - Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
-- Finished versions are tags (`v1.2.2`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
+- Finished versions are tags (`v1.2.3`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
 - Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
 
 ## Credits
@@ -102,17 +108,19 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
+**Novità della 1.2.3 — 20 settembre 2026:** la **camera classica di HeartGold** è ripristinata in altre **44 mappe di grotta** oltre a Monte Scodella: a Kanto Tunnel Roccioso, Monte Luna (con l'ingresso della piazza), Grotta Diglett, Grotta Celeste e Isole Spumarine (compresa la palestra di Cinabro); fra le due regioni Cascate Tohjo, Via Vittoria e Grotta Argentea; a Johto Grotta Unione, Pozzo Slowpoke, Via del Ghiaccio, Isole Vortice, Grotta Oscura (lato Percorso 45), Covo dei Draghi e Grotta Rupe. La camera angolata di Plus nascondeva sentieri e oggetti dietro sporgenze e pareti; quella nativa li mostra come nel gioco originale. All'aperto, nelle torri, nei boschi, al Faro, nella Zona Safari e alle Rovine di Alph la camera Plus resta com'è. **Un salvataggio fatto dentro una di queste grotte conserva la camera precedente fino al primo cambio di mappa.** L'atterraggio del Volo davanti a un Centro Pokémon è stato analizzato fotogramma per fotogramma sul banco: la ROM 1.2.2 lo disegna identico alla 1.1, e lo sfarfallio visto su Android dipende dal renderer OpenGL dell'emulatore (con il renderer software non compare) — non è un difetto della ROM. Versione in gioco: **Sacred Gold Plus 1.2.3**.
+
 **Novità della 1.2.2 — aggiornamento del 19 settembre 2026 (seconda edizione):** nel menu Opzioni la riga «SELECT → PLUS» in basso a sinistra torna a **ogni** ingresso: prima compariva solo al primo ingresso della sessione e dopo aver aperto e chiuso la pagina, perché la pagina si fidava di un proprio segnalino che sopravviveva al menu; ora chiede alla tilemap del gioco se la riga c'è davvero. Difetto presente dalla 1.2. Chi ha installato la prima edizione del 19 settembre trova nello ZIP una tratta diretta da quella ROM. Inoltre, con le animazioni opzionali di lotta accese, la **seconda posa** dello sprite (per esempio Typhlosion che chiude la bocca) dura ora **0,33 s**, con un accento più lungo di **0,50 s** ogni tre, invece di 0,07–0,10 s: parte all'apice del respiro e non riappare a fine mossa. Con l'opzione spenta il gioco è identico alla 1.2.1 al byte. **Borsa espansa:** un salvataggio i cui settori dell'estensione non si erano potuti leggere, o che un convertitore ha normalizzato a un solo byte ripetuto, viene riscritto invece di perdere i 108 slot extra a ogni ricarica; uno slot esaurito o fuori intervallo viene svuotato dov'è. I dati estranei in quei settori non vengono mai sovrascritti. **«Borsa piena» falsa:** raccogliendo una Poké Ball a terra l'avviso «lasciato a terra» compariva a ogni raccolta riuscita, perché la spia «ho scartato qualcosa» stava su una variabile di script che scrive il gioco stesso; ora l'avviso compare solo quando l'oggetto viene davvero lasciato.
 
 **Novità della 1.2.1 — aggiornamento del 15 settembre 2026:** borsa principale da **252 slot, 42 pagine complete**. Tutte le tasche hanno capienza multipla di sei: strumenti 252, medicine 42, Ball 30, MT/MN 102, bacche 66, posta 12, strumenti lotta 30, strumenti base 60. Animazioni opzionali di lotta più fluide, con aperture di Borsa e Squadra più rapide; restano brevi pause di caricamento.
 
 **Selvatici:** nel [melonDS Android 2.1.1 di questo progetto](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1) scegli fra tutti i **493 Pokémon** con ricerca e imposti il livello **1–100**. Lascia il codice abilitato: in gioco parte spento, **L+R** lo attiva e una nuova pressione lo spegne. Vale per l'erba alta con Livelli selvatici OFF. Corretti anche i codici maschio/femmina + natura. Catalogo aggiornato: **2.110 codici in 67 cartelle**, con [rapporto di verifica](source/docs/cheat-catalogue-validation.md).
 
-**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella); città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
+**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella), che dalla 1.2.3 diventano 52 mappe con le 44 grotte aggiunte; città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
 
-**Download:** dalla [release 1.2.2](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.2), `Sacred-Gold-Plus-1.2.2-IT.zip` o `-US.zip`.
+**Download:** dalla [release 1.2.3](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.3), `Sacred-Gold-Plus-1.2.3-IT.zip` o `-US.zip`.
 
-**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04, 1.1 o 1.2.1 (qualsiasi camera); un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
+**Requisiti:** ROM HeartGold originale (USA o Italia) oppure Sacred Gold Plus 1.03, 1.04, 1.1, 1.2.1 o 1.2.2 (qualsiasi camera); un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
 
 **Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
 
