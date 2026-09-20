@@ -36,7 +36,10 @@ import time
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(QUI, "..", "..", "..", ".."))
-sys.path.insert(0, os.path.join(REPO, "SGP-1.2-RUNTIME-02/tools"))
+# `rsp.py` vive accanto, in `features/debug/tools/`. Il percorso qui era rimasto
+# `SGP-1.2-RUNTIME-02/tools`, cartella che non esiste piu' in questo checkout: il
+# modulo non si importava affatto e l'intero banco di campo era inutilizzabile.
+sys.path.insert(0, os.path.join(QUI, "..", "tools"))
 from rsp import Rsp, RspError  # noqa: E402  (client RSP di RUNTIME-02, riusato tale quale)
 
 # --- indirizzi gia' stabiliti dai cantieri precedenti -------------------------

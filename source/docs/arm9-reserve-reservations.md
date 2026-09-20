@@ -91,10 +91,12 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | block | address | size | end (excl.) | used | state |
 |---|---|---:|---|---|---|
 | header + base canary | `0x023D8000` | `0x40` | `0x023D8040` | 64/64 | applied |
-| camera exceptions + canary | `0x023D8040` | `0x40` | `0x023D8080` | 64/64 | applied |
+| free (`libero.1.2.basso`) | `0x023D8040` | `0x40` | `0x023D8080` | — | **free** — held the 24-entry camera table until 1.2.3 |
 | alignment padding | `0x023D8080` | `0x80` | `0x023D8100` | — | not assignable |
 | `sgp.plus` (Plus difficulty code and tables, save-chunk blob) | `0x023D8100` | `0x800` | `0x023D8900` | 756/2048 | applied |
-| `sgp.npc` + canary (NPC model cap) | `0x023D8900` | `0x200` | `0x023D8B00` | 288/512 | applied |
+| `sgp.npc` + canary (NPC model cap) | `0x023D8900` | `0x110` | `0x023D8A10` | 176/272 | applied |
+| camera exceptions + canary (1.2.3, 68 entries) | `0x023D8A10` | `0x98` | `0x023D8AA8` | 152/152 | applied — carved out of `libero.1.2` |
+| free (`libero.1.2`) | `0x023D8AA8` | `0x58` | `0x023D8B00` | — | **free** |
 | `sgp.anim` (procedural battle animation, v4) | `0x023D8B00` | `0x400` | `0x023D8F00` | 1024/1024 — **full** | applied |
 | `sgp.salvataggio` (save chunk buffer + canary) | `0x023D8F00` | `0x100` | `0x023D9000` | 48/256 | applied |
 | `sgp.opzioni` (Options page + Continue prompt, v4) | `0x023D9000` | `0x1000` | `0x023DA000` | 4052/4096 | applied |
@@ -113,18 +115,24 @@ and the two public addresses it holds are never touched. It is not open for rese
 
 ### Free space
 
-As of 18/09/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
+As of 20/09/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
 `libero` with `assegnabile: true` — the two `.md` pages used to disagree with the register and
 with each other; the register is the source of truth):
 
-- **304 B total**, in two disjoint blocks — nothing here is contiguous with anything else.
+- **216 B total**, in three disjoint blocks — nothing here is contiguous with anything else.
 - **64 B** at `0x023DEB00` (`libero.1.2.finale`), up to the zone 1.1 canary at `0x023DEB40`.
   What used to be free from `0x023DBD00` has since been taken by `sgp.borsa_lotta` (256 B),
   `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B), on top of the 256 B for Rare
   Candy, 2048 B for capped gifts and 2048 B for continuous battle motion already taken before
   this page's previous revision.
-- **240 B** at `0x023D8A10` (`libero.1.2`), between the NPC canary and `sgp.anim`. Usable only
-  for something that fits in it whole.
+- **88 B** at `0x023D8AA8` (`libero.1.2`), between the camera canary and `sgp.anim`. Usable
+  only for something that fits in it whole. It was 240 B at `0x023D8A10` until 1.2.3 moved the
+  camera exception table here: at 68 entries (136 B) the table no longer fitted in the 64 B
+  window C1 had carved at `0x023D8040`, and that window could not grow — above it sits the
+  alignment padding, which is not assignable, and then `sgp.plus`.
+- **64 B** at `0x023D8040` (`libero.1.2.basso`), the window the camera table has vacated.
+  Assignable again. Do not confuse it with the alignment padding that starts right above it
+  at `0x023D8080`, which is not.
 - Headroom inside blocks already allocated belongs to their owners, not to the free pool. The
   largest is 1 344 B in `sgp.wifi`; `sgp.plus` has 464 B free at `+0x630` and 236 B of growth
   margin at `+0x314`; `sgp.salvataggio` has 208 B. `sgp.anim` is full and any change to it

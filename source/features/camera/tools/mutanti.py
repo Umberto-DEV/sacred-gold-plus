@@ -132,10 +132,10 @@ def main():
                         'riga': 'ROSSI: %s' % ','.join(rossi)})
 
     uscita_mutata('M14-letterale-non-aggiornato', 0x023DEBD4, struct.pack('<I', 0x023DEB6C), 'R0')
-    uscita_mutata('M15-letterale-fine-alterato', 0x023DEBD8, struct.pack('<I', 0x023D8090), 'R2')
-    uscita_mutata('M16-una-voce-sbagliata', 0x023D8040 + 8, struct.pack('<H', 0x7741), 'R3')
+    uscita_mutata('M15-letterale-fine-alterato', 0x023DEBD8, struct.pack('<I', 0x023D8AB8), 'R2')
+    uscita_mutata('M16-una-voce-sbagliata', 0x023D8A10 + 8, struct.pack('<H', 0x7741), 'R3')
     uscita_mutata('M17-canarino-1.1-invaso', 0x023DEB50, b'\xff\xff\xff\xff', 'R4')
-    uscita_mutata('M29-canarino-di-coda-mancante', 0x023D8070, b'\x00\x00\x00\x00', 'R4')
+    uscita_mutata('M29-canarino-di-coda-mancante', 0x023D8A98, b'\x00\x00\x00\x00', 'R4')
     uscita_mutata('M30-tabella-1.1-dismessa-toccata', 0x023DEB6C, b'\xff\xff', 'R5')
     uscita_mutata('M18-repellente-alterato', 0x023DEBE0, b'\x00', 'R5')
     uscita_mutata('M19-map-header-alterato', 0x020F6BE0 + 24 * 119 + 20, b'\x00\xb0\x00\x00', 'R6')

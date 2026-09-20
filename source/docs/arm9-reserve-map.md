@@ -104,13 +104,14 @@ Zone 1.2 (`0x023D8000` upward):
 |---|---:|---|---|---|
 | `0x023D8000` | 32 | `canarino.basso` | base canary | no |
 | `0x023D8020` | 32 | `intestazione` | `SGP2` header: magic, schema, base, end, 16 B fingerprint of the register's stable part | no |
-| `0x023D8040` | 48 | `camera.eccezioni.1.2` | camera exception table (24 u16 LE entries, ascending) | no |
-| `0x023D8070` | 16 | `canarino.camera` | canary | no |
+| `0x023D8040` | 64 | `libero.1.2.basso` | free, assignable — the window C1 had carved for the camera table, returned in 1.2.3 | no |
 | `0x023D8080` | 128 | `padding.allineamento.d1` | alignment padding, not assignable | no |
 | `0x023D8100` | 2 048 | `sgp.plus` | Plus difficulty code and tables, plus the save-chunk code blob; 756 B used | no |
 | `0x023D8900` | 256 | `sgp.npc` | NPC model cap; 160 B used (blob 144 B from 1.2.1, state 16 B) | no |
 | `0x023D8A00` | 16 | `canarino.npc` | canary | no |
-| `0x023D8A10` | 240 | `libero.1.2` | gap | no |
+| `0x023D8A10` | 136 | `camera.eccezioni.1.2` | camera exception table (68 u16 LE entries, ascending); moved here in 1.2.3 | no |
+| `0x023D8A98` | 16 | `canarino.camera` | canary | no |
+| `0x023D8AA8` | 88 | `libero.1.2` | gap | no |
 | `0x023D8B00` | 1 024 | `sgp.anim` | procedural battle animation (v4); block **full**, 1024/1024 | no |
 | `0x023D8F00` | 256 | `sgp.salvataggio` | save chunk 32 B buffer plus canary (zero in ROM); 48 B used | no |
 | `0x023D9000` | 4 096 | `sgp.opzioni` | Options page and the Continue prompt (v4); 4052 B used | no |
@@ -141,10 +142,14 @@ Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 The zone 1.1 blocks hold the two public addresses in the project. They never move, and the
 anchors their public consumers use are never touched.
 
-Free space left in zone 1.2, recomputed from the register on 18/09/2026 (sum of the
+Free space left in zone 1.2, recomputed from the register on 20/09/2026 (sum of the
 `docs/arm9-reserve-map.json` blocks typed `libero` with `assegnabile: true` — do not trust a
-cached figure, recompute it): **304 B**, in two blocks — 240 B at `0x023D8A10`
-(`libero.1.2`) and 64 B at `0x023DEB00` (`libero.1.2.finale`). The pool that used to sit at
+cached figure, recompute it): **216 B**, in three blocks — 64 B at `0x023D8040`
+(`libero.1.2.basso`), 88 B at `0x023D8AA8` (`libero.1.2`) and 64 B at `0x023DEB00`
+(`libero.1.2.finale`). It was 304 B until 1.2.3 grew the camera exception table from 24 to
+68 entries: the table no longer fitted in the 64 B window C1 had carved at `0x023D8040`
+(above it sits `padding.allineamento.d1`, explicitly not assignable, and then `sgp.plus`),
+so it moved into `libero.1.2` and gave those 64 B back as `libero.1.2.basso`. The pool that used to sit at
 `0x023DAD00` is gone: `sgp.borsa` (2 048 B), `sgp.anim2` (2 048 B), `sgp.borsa_lotta` (256 B),
 `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B) have all been carved out of it
 since 1.2.1 — each in the same logical commit as its register entry, per the reservation
@@ -225,8 +230,9 @@ python3 verifiche/riserva_arm9.py <your rom.nds> --manifest docs/arm9-reserve-ma
 
 The path used to be written `../docs/arm9-reserve-map.json`, which from `source/` is the
 repository root, where there is no `docs/` folder: the command ended in a traceback. Against
-today's register (18/09/2026) the corrected command reports **304 B assignable** — the 240 B
-gap at `0x023D8A10` plus the 64 B block at `0x023DEB00` — and exits 0. (Earlier revisions of
+today's register (20/09/2026) the corrected command reports **216 B assignable** — 64 B at
+`0x023D8040`, the 88 B gap at `0x023D8AA8` and the 64 B block at `0x023DEB00` — and exits 0.
+(Earlier revisions of
 this page quoted 16 176 B / 15 936 B, from before `sgp.borsa`, `sgp.anim2`, `sgp.borsa_lotta`,
 `sgp.squadra_lotta` and `sgp.capacita_borsa` consumed the rest of the pool; that figure is
 stale and should not be reused.)

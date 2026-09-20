@@ -225,6 +225,124 @@ class TestMappaRiserva(unittest.TestCase):
                          "scritto nell'intestazione ARM9, quindi la ROM")
 
 
+class TestTabellaCamera(unittest.TestCase):
+    """Classe A, nessuna ROM: la tabella delle eccezioni camera della 1.2.3.
+    Sessantotto voci, ordinate, codificate e ridecodificate; le ventiquattro
+    che erano gia' in ROM conservate una per una — comprese le tre
+    deliberatamente «contro natura» (239->10, 396->12, 526->10), che un
+    generatore ingenuo riporterebbe al valore nativo in silenzio."""
+
+    def test_sessantotto_voci_e_nessun_motivo_di_rifiuto(self):
+        self.assertEqual(len(bloc_camera.CANONICA), 68)
+        self.assertEqual(bloc_camera.tabella_controlla(bloc_camera.CANONICA), [])
+
+    def test_le_ventiquattro_voci_gia_in_rom_sono_conservate(self):
+        for k, v in bloc_camera.VECCHIE.items():
+            self.assertEqual(bloc_camera.CANONICA.get(k), v, "voce vecchia %d persa" % k)
+        for k, v in bloc_camera.NUOVE_1_2.items():
+            self.assertEqual(bloc_camera.CANONICA.get(k), v, "voce 1.2 %d persa" % k)
+        self.assertEqual(len(bloc_camera.VECCHIE), 16)
+        self.assertEqual(len(bloc_camera.NUOVE_1_2), 8)
+        self.assertEqual(len(bloc_camera.NUOVE_1_2_3), 44)
+        # le tre contro natura: il nativo NON e' quello scritto in tabella
+        for k, v in ((239, 10), (396, 12), (526, 10)):
+            self.assertEqual(bloc_camera.CANONICA[k], v)
+
+    def test_le_44_voci_nuove_portano_tutte_alla_camera_nativa(self):
+        self.assertEqual(set(bloc_camera.NUOVE_1_2_3.values()), {0})
+        self.assertFalse(set(bloc_camera.NUOVE_1_2_3) & set(bloc_camera.VECCHIE))
+        self.assertFalse(set(bloc_camera.NUOVE_1_2_3) & set(bloc_camera.NUOVE_1_2))
+
+    def test_codifica_136_byte_crescenti_e_decodifica_identica(self):
+        b = bloc_camera.tabella_codifica(bloc_camera.CANONICA)
+        self.assertEqual(len(b), 136)
+        self.assertEqual(len(b), bloc_camera.ECC12_N)
+        dec, voci = bloc_camera.tabella_decodifica(b)
+        self.assertEqual(dec, bloc_camera.CANONICA)
+        self.assertEqual(voci, sorted(voci))
+        self.assertEqual(len(set(voci)), len(voci))
+        for k, v in bloc_camera.CANONICA.items():
+            self.assertIn((k << 4) | v, voci)
+
+    def test_le_costanti_di_zona_seguono_la_lunghezza_della_tabella(self):
+        """Se un giorno la tabella cresce ancora, questi tre devono muoversi
+        insieme: e' l'invariante «letterale di fine == base del blocco
+        successivo» su cui poggiano G5, R2 e `punta_a_blocco` di T3."""
+        self.assertEqual(bloc_camera.ECC12, 0x023D8A10)
+        self.assertEqual(bloc_camera.ECC12_N, 2 * len(bloc_camera.CANONICA))
+        self.assertEqual(bloc_camera.CAN_ECC12, bloc_camera.ECC12 + bloc_camera.ECC12_N)
+        self.assertEqual(bloc_camera.CAN_ECC12, 0x023D8A98)
+        self.assertEqual(bloc_camera.LIBERO12_DOPO,
+                         bloc_camera.CAN_ECC12 + bloc_camera.CAN_ECC12_N)
+        # il blocco deve finire dove comincia sgp.anim, senza mangiarlo
+        self.assertLessEqual(bloc_camera.LIBERO12_DOPO, 0x023D8B00)
+
+    def test_la_riserva_della_sola_zona_1_1_non_regge_la_tabella(self):
+        """Il motivo per cui `applica()` rifiuta il modo «in-luogo» (G0b):
+        non e' una scelta di gusto, e' aritmetica."""
+        self.assertGreater(len(bloc_camera.CANONICA) * 2, bloc_camera.ECC11_NUOVA_N)
+
+
+class TestRegistroCamera(unittest.TestCase):
+    """Classe A: il registro della riserva deve DESCRIVERE la tabella nuova.
+    R3 dell'analisi del gancio: un registro non aggiornato non rompe la ROM
+    subito, rompe la prossima prenotazione — ed e' esattamente il difetto che
+    il registro esiste per impedire."""
+
+    def _blocchi(self):
+        import json
+        return {b["nome"]: b for b in json.loads(MANIFEST.read_text())["blocchi"]}
+
+    def test_la_tabella_e_registrata_alla_nuova_base(self):
+        b = self._blocchi()["camera.eccezioni.1.2"]
+        self.assertEqual(int(b["base"], 16), bloc_camera.ECC12)
+        self.assertEqual(b["bytes"], bloc_camera.ECC12_N)
+        atteso = __import__("hashlib").sha256(
+            bloc_camera.tabella_codifica(bloc_camera.CANONICA)).hexdigest()
+        self.assertEqual(b["sha256"], atteso,
+                         "lo sha256 nel registro non e' quello della tabella che il blocco scrive")
+
+    def test_il_canarino_segue_la_tabella(self):
+        b = self._blocchi()["canarino.camera"]
+        self.assertEqual(int(b["base"], 16), bloc_camera.CAN_ECC12)
+        self.assertEqual(b["bytes"], bloc_camera.CAN_ECC12_N)
+        from .riserva import canarino
+        atteso = __import__("hashlib").sha256(
+            canarino(0xCA5A1100, bloc_camera.CAN_ECC12_N // 4)).hexdigest()
+        self.assertEqual(b["sha256"], atteso)
+
+    def test_le_due_ancore_puntano_dove_puntano_i_letterali(self):
+        """Le ancore del registro sono i due letterali di pool che `applica()`
+        riscrive: se qui e nel blocco dicono due cose diverse, T3 se ne accorge
+        solo con una ROM in mano — questo test se ne accorge senza."""
+        b = self._blocchi()["camera.eccezioni.1.2"]
+        ancore = {a["dove"]: a for a in b["ancore"]}
+        self.assertEqual(sorted(ancore), ["0x023DEBD4", "0x023DEBD8"])
+        self.assertEqual(int(ancore["0x023DEBD4"]["vale"], 16), bloc_camera.ECC12)
+        self.assertEqual(int(ancore["0x023DEBD8"]["vale"], 16), bloc_camera.CAN_ECC12)
+        self.assertEqual(ancore["0x023DEBD8"].get("punta_a_blocco"), "canarino.camera")
+
+    def test_il_serbatoio_libero_e_stato_scalato_e_restituito(self):
+        b = self._blocchi()
+        libero = b["libero.1.2"]
+        self.assertEqual(int(libero["base"], 16), bloc_camera.LIBERO12_DOPO)
+        self.assertEqual(int(libero["base"], 16) + libero["bytes"], 0x023D8B00)
+        self.assertTrue(libero.get("assegnabile"))
+        basso = b["libero.1.2.basso"]
+        self.assertEqual(int(basso["base"], 16), bloc_camera.LIBERO12_BASSO)
+        self.assertEqual(basso["bytes"], bloc_camera.LIBERO12_BASSO_N)
+        self.assertTrue(basso.get("assegnabile"),
+                        "la finestra liberata deve tornare assegnabile, non restare un limbo")
+        self.assertTrue(basso.get("tutto_zero"))
+
+    def test_lo_sha_precedente_del_gancio_non_e_stato_buttato(self):
+        cod = self._blocchi()["camera.codice"]
+        self.assertIn("845058bba53aa7e947788a9e88329c656199121ee334787e85bc7e791902818a",
+                      cod["sha256_precedenti"],
+                      "lo sha256 della 1.2/1.2.1/1.2.2 deve restare accettato da T2")
+        self.assertNotEqual(cod["sha256"], cod["sha256_precedenti"][0])
+
+
 class TestRiservaCanarino(unittest.TestCase):
     def test_formula_canarino(self):
         from .riserva import canarino
@@ -302,6 +420,19 @@ class TestBloccoCamera(unittest.TestCase):
         out2, log2 = bloc_camera.applica(out)
         self.assertEqual(log2.get("esito"), "gia-applicato")
         self.assertEqual(out2, out)
+
+    def test_modo_in_luogo_rifiutato_non_scrive_una_tabella_troncata(self):
+        """G0b: su una base 1.1 SENZA riserva 1.2 il blocco sceglie il modo
+        «in-luogo», che offre 48 B — 24 voci. La tabella ne ha 68. Deve
+        rifiutare NOMINANDO il motivo, non scrivere le prime 24 e tacere:
+        una tabella troncata sarebbe pure crescente e supererebbe R3."""
+        base = BASE_EN.read_bytes()
+        with self.assertRaises(romlib.Rifiuto) as e:
+            bloc_camera.applica(base)
+        messaggio = str(e.exception)
+        self.assertIn("G0b", messaggio)
+        self.assertIn("in-luogo", messaggio)
+        self.assertIn("68", messaggio)
 
 
 @unittest.skipUnless(BASE_EN.exists() and BASE_IT.exists(), "mancano le ROM base 1.1 EN/IT")

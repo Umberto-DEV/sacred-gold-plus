@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""APPLICATORE C1 — tabella delle eccezioni camera da 16 a 24 voci.
+"""APPLICATORE C1 — tabella delle eccezioni camera da 16 a 68 voci.
 
     python3 tools/applica_camera.py <base.nds> <uscita.nds> [--json log.json]
                                     [--tabella id:val,...] [--diagnostica]
@@ -7,17 +7,20 @@
 DUE MODI, scelti LEGGENDO la base, non da un'opzione:
 
   «zona-1.2»  la base ha la riserva estesa di F0 (sezione di autoload 0x023D8000/32768).
-              La tabella nuova, 48 B, va in zona 1.2 a 0x023D8040, seguita da 16 B di
-              canarino 0xCA5A1100|i come prescrive MAPPA-RISERVA-ARM9.json. In zona 1.1
+              La tabella nuova, 136 B (68 voci), va in zona 1.2 a 0x023D8A10 — dentro
+              `libero.1.2`, l'unico blocco libero e assegnabile abbastanza grande —
+              seguita da 16 B di canarino 0xCA5A1100|i come prescrive
+              MAPPA-RISERVA-ARM9.json. La vecchia finestra di C1 (0x023D8040, 64 B)
+              resta a zero e torna al serbatoio come `libero.1.2.basso`. In zona 1.1
               cambiano SOLTANTO due letterali del pool (CAM_EXC, CAM_EXC_END): nessun
               blocco si muove, il canarino 1.1 resta di 32 B, la tabella vecchia resta
-              dov'e' byte per byte e diventa un reperto morto.  72 byte scritti.
+              dov'e' byte per byte e diventa un reperto morto.  160 byte scritti.
 
-  «in-luogo»  la base e' una 1.1 senza riserva estesa. La tabella nuova, 48 B, entra in
-              zona 1.1 a 0x023DEB5C consumando i 12 B di padding e l'ULTIMA PAROLA del
-              canarino, che passa da 32 a 28 B; cambia un solo letterale (CAM_EXC).
-              52 byte scritti. E' la strada di ripiego: si usa solo se F0 non ha ancora
-              prodotto una candidata.
+  «in-luogo»  la base e' una 1.1 senza riserva estesa. Ritaglia 48 B in zona 1.1 a
+              0x023DEB5C consumando i 12 B di padding e l'ULTIMA PAROLA del canarino,
+              che passa da 32 a 28 B. DALLA 1.2.3 NON E' PIU' PRATICABILE: 48 B tengono
+              24 voci, la tabella ne ha 68, e la zona 1.1 non puo' crescere. G0b
+              RIFIUTA, nominando il motivo, invece di scrivere una tabella troncata.
 
 In nessuno dei due modi si scrive un byte di istruzione. Idempotente: sulla propria
 uscita rifiuta con «gia' applicato» (G0, per primo). I cancelli sono in CRITERI.md §2 e
@@ -53,9 +56,10 @@ MAPHDR, MAPHDR_N, STRIDE = 0x020F6BE0, 540, 24
 RIS12_BASE, RIS12_N = 0x023D8000, 32768
 CAN12, CAN12_N = 0x023D8000, 32
 HDR12, HDR12_N = 0x023D8020, 32
-ECC12, ECC12_N = 0x023D8040, 48            # il blocco nuovo, ritagliato dal basso
-CAN_ECC12, CAN_ECC12_N = 0x023D8070, 16    # canarino di coda, 0xCA5A1100|i
-LIBERO12_DOPO = CAN_ECC12 + CAN_ECC12_N
+LIBERO12_BASSO, LIBERO12_BASSO_N = 0x023D8040, 64   # la finestra di C1, RESTITUITA
+ECC12, ECC12_N = 0x023D8A10, 2 * len(T.CANONICA)    # 68 voci -> 136 B, dentro libero.1.2
+CAN_ECC12, CAN_ECC12_N = ECC12 + ECC12_N, 16        # canarino di coda 0xCA5A1100|i
+LIBERO12_DOPO = CAN_ECC12 + CAN_ECC12_N             # 0x023D8AA8, 88 B fino a sgp.anim
 
 # --- zona 1.1, modo di ripiego
 ECC11_NUOVA, ECC11_NUOVA_N = 0x023DEB5C, 48
@@ -82,9 +86,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('base'); ap.add_argument('uscita'); ap.add_argument('--json')
     ap.add_argument('--tabella', default='',
-                    help='sostituisce le 24 voci; i cancelli restano TUTTI attivi')
+                    help='sostituisce le 68 voci; i cancelli restano TUTTI attivi')
     ap.add_argument('--diagnostica', action='store_true',
-                    help='con --tabella, rilassa il SOLO cancello «contiene le 24 voci '
+                    help='con --tabella, rilassa il SOLO cancello «contiene le 68 voci '
                          'canoniche». Serve alle ROM diagnostiche e a nient\'altro.')
     a = ap.parse_args()
 
@@ -115,6 +119,17 @@ def main():
         return 2
     log['modo'], log['tabella_a'] = modo, '0x%08X' % ecc
     print('MODO: %s   tabella a 0x%08X (%d B)' % (modo, ecc, ecc_n))
+
+    if modo == 'in-luogo' and len(nuova) * 2 > ecc_n:
+        print('RIFIUTATO — G0b: modo «in-luogo»: la riserva della sola zona 1.1 offre '
+              '%d B a 0x%08X (%d voci al massimo), ma la tabella ne ha %d (%d B). Dalla '
+              '1.2.3 serve una base con la riserva 1.2 (sezione di autoload 0x%08X/%d): '
+              'applicare prima il blocco RISERVA.'
+              % (ecc_n, ecc, ecc_n // 2, len(nuova), len(nuova) * 2, RIS12_BASE, RIS12_N))
+        log['esito'], log['motivo'] = 'rifiutato', 'G0b: in-luogo non regge %d voci' % len(nuova)
+        if a.json:
+            Path(a.json).write_text(json.dumps(log, indent=1))
+        return 2
 
     try:
         # ---------------- G0 idempotenza, PER PRIMO
@@ -183,12 +198,14 @@ def main():
             if (r.u32(HDR12 + 8), r.u32(HDR12 + 12)) != (RIS12_BASE, 0x023E0000):
                 no('G11', 'l\'intestazione dichiara una riserva diversa da [0x%08X,0x023E0000)'
                    % RIS12_BASE)
-            n_libero = RIS11_BASE - ECC12
-            libero = r.leggi(ECC12, n_libero)
+            # da LIBERO12_BASSO, non da ECC12: la tabella si e' spostata in alto e
+            # partire da lei smetterebbe di controllare i byte sotto la nuova base.
+            n_libero = RIS11_BASE - LIBERO12_BASSO
+            libero = r.leggi(LIBERO12_BASSO, n_libero)
             if set(libero) != {0}:
                 no('G11', 'la zona libera 1.2 a 0x%08X non e\' tutta a zero (primo byte non '
                           'nullo a +%d): qualcun altro l\'ha gia\' occupata'
-                   % (ECC12, next(i for i, x in enumerate(libero) if x)))
+                   % (LIBERO12_BASSO, next(i for i, x in enumerate(libero) if x)))
             ok('G11', 'canarino basso 0xCA5A1000|i, intestazione «SGP2», %d B liberi a zero'
                % n_libero)
 
@@ -211,6 +228,9 @@ def main():
         if modo == 'zona-1.2':
             blocchi = [('canarino.basso', CAN12, CAN12_N),
                        ('intestazione', HDR12, HDR12_N),
+                       ('libero.1.2.basso', LIBERO12_BASSO, LIBERO12_BASSO_N),
+                       ('libero.1.2.medio', LIBERO12_BASSO + LIBERO12_BASSO_N,
+                        ECC12 - (LIBERO12_BASSO + LIBERO12_BASSO_N)),
                        ('camera.eccezioni.1.2', ECC12, ECC12_N),
                        ('canarino.camera', CAN_ECC12, CAN_ECC12_N),
                        ('libero.1.2', LIBERO12_DOPO, RIS11_BASE - LIBERO12_DOPO),

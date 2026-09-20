@@ -27,7 +27,9 @@ LIBERO11, LIBERO11_N, STATO = 0x023DFFE8, 20, 0x023DFFFC
 SITO, LIT_SITO = 0x0203B400, 0x0203B418
 MAPHDR, MAPHDR_N, STRIDE = 0x020F6BE0, 540, 24
 ARENA_HI_LIT = 0x020D2BB0
-ECC12, ECC12_N, CAN_ECC12, CAN_ECC12_N = 0x023D8040, 48, 0x023D8070, 16
+ECC12, ECC12_N = 0x023D8A10, 2 * len(T.CANONICA)   # 1.2.3: 68 voci -> 136 B
+CAN_ECC12, CAN_ECC12_N = ECC12 + ECC12_N, 16       # 0x023D8A98
+ECC11_NUOVA_N = 48                                  # modo in-luogo (fino alla 1.2.2)
 CAN12, CAN12_N = 0x023D8000, 32
 ECC11_NUOVA = 0x023DEB5C
 
@@ -113,7 +115,7 @@ def main():
     # R2 — il codice: 80 byte identici alla base, cambiano solo i letterali previsti
     cod_c, cod_b = c.b(COD, COD_N), b.b(COD, COD_N)
     pool = [struct.unpack_from('<I', cod_c, COD_TESTO + 2 + 4 * i)[0] for i in range(5)]
-    fine = ecc + (ECC12_N if modo == 'zona-1.2' else 48)
+    fine = ecc + (ECC12_N if modo == 'zona-1.2' else ECC11_NUOVA_N)
     pool_atteso = [0x0203B269, STATO, ecc, fine, MAPHDR]
     n_ist = sum(1 for _ in md.disasm(cod_c[:COD_TESTO], COD))
     dive = [COD + i for i in range(COD_N) if cod_c[i] != cod_b[i]]
@@ -127,9 +129,13 @@ def main():
     tab = c.b(ecc, fine - ecc)
     dec, voci = T.decodifica(tab)
     cresc = all(voci[i] < voci[i + 1] for i in range(len(voci) - 1))
-    R('R3', dec == attese and cresc and len(voci) == 24,
-      '%d voci a 0x%08X, crescenti=%s ; %s'
-      % (len(voci), ecc, cresc, ', '.join('%d->%d' % (k, dec[k]) for k in sorted(dec))))
+    # La lunghezza si misura sull'ATTESA, non su una costante: «24» cablato qui
+    # avrebbe dichiarato ROSSA la tabella giusta della 1.2.3 e VERDE una tabella di
+    # 24 voci su una ROM che ne deve avere 68.
+    R('R3', dec == attese and cresc and len(voci) == len(attese),
+      '%d voci a 0x%08X (attese %d), crescenti=%s ; %s'
+      % (len(voci), ecc, len(attese), cresc,
+         ', '.join('%d->%d' % (k, dec[k]) for k in sorted(dec))))
 
     # R4 — i canarini
     if modo == 'zona-1.2':

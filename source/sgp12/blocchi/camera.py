@@ -1,11 +1,31 @@
 #!/usr/bin/env python3
-"""Blocco CAMERA — tabella delle eccezioni camera, da 16 a 24 voci. Porta a
+"""Blocco CAMERA — tabella delle eccezioni camera, da 16 a 68 voci. Porta a
 `sgp12` di `SGP-1.2-CAMERA-01/tools/applica_camera.py` + `tabella.py` +
 `rileggi_camera.py` (stesse costanti, stessi cancelli G0-G11 / R0-R9).
 
+1.2.3 — la tabella passa da 24 a **68 voci** e SI SPOSTA. Le 44 voci nuove
+portano a `cameraType` 0 (la camera NATIVA) le grotte fra Johto e Kanto, le
+grotte di Kanto e le grotte «vere» di Johto, che con la camera Plus (tipo 11,
+il default del ramo Plus quando la ricerca fallisce) restavano inquadrate
+troppo da lontano, con i bordi scoperti ai margini. Le 24 voci gia' in ROM
+restano identiche, comprese le tre deliberatamente «contro natura»
+(239->10, 396->12, 526->10): il cancello G5 le difende.
+
+Collocazione nuova: `camera.eccezioni.1.2` a **0x023D8A10** (dentro
+`libero.1.2`, l'unico blocco libero e `assegnabile` abbastanza grande),
+136 B esatti (68 voci u16), seguita da `canarino.camera` a **0x023D8A98**
+(16 B, motivo 0xCA5A1100|i); il resto di `libero.1.2` fino a 0x023D8B00
+resta libero (88 B). La vecchia finestra 0x023D8040..0x023D8080 (64 B) torna
+a zero e si ridichiara `libero.1.2.basso`, di nuovo assegnabile. Cambiano
+SOLO i due letterali di pool del gancio (0x023DEBD4 e 0x023DEBD8): nessun
+byte di istruzione, come gia' fece C1.
+
 Due modi, scelti LEGGENDO la base (non da un'opzione): «zona-1.2» se la
 riserva estesa (blocco RISERVA di questo pacchetto) e' gia' presente,
-«in-luogo» altrimenti (ripiego dentro la sola zona 1.1).
+«in-luogo» altrimenti (ripiego dentro la sola zona 1.1). Dalla 1.2.3 il modo
+«in-luogo» NON e' piu' praticabile: i 48 B ritagliati in zona 1.1 tengono al
+massimo 24 voci e la zona 1.1 non puo' crescere. `applica()` RIFIUTA (G0b)
+invece di scrivere una tabella troncata.
 
 `rileggi()` e' indipendente da `applica()` per costruzione (non importa
 `tabella.py` dell'applicatore: qui `_Tabella` e' la STESSA classe, condivisa,
@@ -23,7 +43,65 @@ from ..riserva import canarino
 
 VECCHIE = {2: 4, 4: 4, 5: 4, 135: 1, 176: 0, 221: 3, 226: 4, 239: 10,
            244: 12, 282: 7, 340: 13, 379: 3, 396: 12, 404: 4, 486: 10, 526: 10}
-NUOVE = {119: 0, 250: 0, 251: 0, 252: 0, 116: 4, 247: 4, 248: 4, 249: 4}
+
+# 1.2 (C1): Monte Scodella -> camera nativa 0, negozio/covo di Mogania -> 4.
+NUOVE_1_2 = {119: 0, 250: 0, 251: 0, 252: 0, 116: 4, 247: 4, 248: 4, 249: 4}
+
+# 1.2.3: le 44 grotte del «perimetro B». Tutte a 0 = il `cameraType` NATIVO
+# letto da sMapHeaders, cioe' la stessa inquadratura del gioco originale.
+# Nessuna e' una route o una citta': l'assert sulle connection di
+# `field_warp_tasks.c` non viene mai valutato per queste mappe (si entra solo
+# per warp), vedi ANALISI-GANCIO §4.2.
+NUOVE_1_2_3 = {
+    99: 0,    # Grotta Unione 1F
+    106: 0,   # Grotta Diglett
+    107: 0,   # Monte Luna
+    108: 0,   # Tunnel Roccioso 1F
+    114: 0,   # Pozzo Slowpoke, ingresso
+    120: 0,   # Via del Ghiaccio 1F
+    121: 0,   # Isole Vortice 1F
+    122: 0,   # Grotta Argentea 1F
+    123: 0,   # Grotta Oscura, lato Percorso 45
+    124: 0,   # Via Vittoria 1F
+    125: 0,   # Covo dei Draghi, ingresso
+    126: 0,   # Cascate Tohjo
+    145: 0,   # Grotta Celeste 1F
+    146: 0,   # Isole Spumarine 1F
+    153: 0,   # Grotta Unione B1F
+    154: 0,   # Grotta Unione B2F
+    177: 0,   # Pozzo Slowpoke B1F
+    178: 0,   # Via Vittoria 2F
+    179: 0,   # Via Vittoria 3F
+    181: 0,   # Pozzo Slowpoke B2F
+    237: 0,   # Via del Ghiaccio B1F
+    238: 0,   # Via del Ghiaccio B2F
+    242: 0,   # Isole Vortice B1F
+    243: 0,   # Isole Vortice B2F
+    253: 0,   # Covo dei Draghi
+    298: 0,   # Cascate Tohjo, stanza nascosta
+    342: 0,   # Grotta Rupe
+    448: 0,   # Monte Luna, ingresso della piazza
+    450: 0,   # Grotta Celeste 2F
+    451: 0,   # Grotta Celeste B1F
+    452: 0,   # Tunnel Roccioso B1F
+    453: 0,   # Isole Spumarine B1F
+    454: 0,   # Isole Spumarine B2F
+    455: 0,   # Isole Spumarine B3F
+    456: 0,   # Isole Spumarine B4F
+    457: 0,   # Isole Spumarine, palestra di Cinabro
+    458: 0,   # Isole Spumarine, mappa inutilizzata
+    459: 0,   # Grotta Argentea, versante alto
+    460: 0,   # Grotta Argentea, versante basso
+    461: 0,   # Grotta Argentea, camera della Cinturforza
+    462: 0,   # Grotta Argentea, camera di Moltres
+    463: 0,   # Grotta Argentea 2F
+    464: 0,   # Grotta Argentea 3F
+    465: 0,   # Grotta Argentea, vetta
+}
+
+# `NUOVE` = tutto cio' che non c'era nella 1.1: G5 pretende ogni voce.
+NUOVE = dict(NUOVE_1_2)
+NUOVE.update(NUOVE_1_2_3)
 CANONICA = dict(VECCHIE)
 CANONICA.update(NUOVE)
 N_MAPPE = 540
@@ -83,9 +161,14 @@ MAPHDR, MAPHDR_N, STRIDE = 0x020F6BE0, 540, 24
 RIS12_BASE, RIS12_N = 0x023D8000, 32768
 CAN12, CAN12_N = 0x023D8000, 32
 HDR12, HDR12_N = 0x023D8020, 32
-ECC12, ECC12_N = 0x023D8040, 48
-CAN_ECC12, CAN_ECC12_N = 0x023D8070, 16
-LIBERO12_DOPO = CAN_ECC12 + CAN_ECC12_N
+# La finestra di C1 (0x023D8040, 48+16 B) e' TROPPO PICCOLA per 68 voci e non
+# puo' crescere: 0x023D8080 e' l'inizio di `padding.allineamento.d1`, dichiarato
+# non assegnabile, e subito dopo c'e' `sgp.plus`. Dalla 1.2.3 quei 64 B tornano
+# al serbatoio come `libero.1.2.basso` e la tabella vive in `libero.1.2`.
+LIBERO12_BASSO, LIBERO12_BASSO_N = 0x023D8040, 64
+ECC12, ECC12_N = 0x023D8A10, 2 * len(CANONICA)      # 68 voci -> 136 B
+CAN_ECC12, CAN_ECC12_N = ECC12 + ECC12_N, 16        # 0x023D8A98
+LIBERO12_DOPO = CAN_ECC12 + CAN_ECC12_N             # 0x023D8AA8, 88 B fino a sgp.anim
 
 ECC11_NUOVA, ECC11_NUOVA_N = 0x023DEB5C, 48
 CAN11_RIDOTTO = 28
@@ -118,6 +201,18 @@ def applica(rom: bytes, tabella: dict | None = None, diagnostica: bool = False) 
         no("G0", "la base non ha ne' la riserva 1.2 ne' quella 1.1: %s"
            % [("0x%08X" % s[0], s[1], s[2]) for s in r.sezioni])
     log["modo"] = modo
+
+    # G0b — il modo di ripiego non regge la tabella della 1.2.3. I 48 B ritagliati
+    # in zona 1.1 (0x023DEB5C) tengono 24 voci e non un byte di piu': la regola
+    # della zona 1.1 e' che nessun blocco si muove e nessuno cambia dimensione.
+    # Meglio rifiutare qui, nominando il motivo, che scrivere una tabella
+    # TRONCATA — che sarebbe pure crescente e supererebbe R3 su una base sbagliata.
+    if modo == "in-luogo" and len(nuova) * 2 > ecc_n:
+        no("G0b", "modo «in-luogo»: la riserva della sola zona 1.1 offre %d B a "
+                  "0x%08X (%d voci al massimo), ma la tabella ne ha %d (%d B). "
+                  "Dalla 1.2.3 questo blocco richiede una base con la riserva 1.2 "
+                  "(sezione di autoload 0x%08X/%d): applicare prima il blocco RISERVA."
+           % (ecc_n, ecc, ecc_n // 2, len(nuova), len(nuova) * 2, RIS12_BASE, RIS12_N))
 
     if r.leggi(ecc, ecc_n) == tabella_codifica(nuova):
         log["esito"] = "gia-applicato"
@@ -153,9 +248,14 @@ def applica(rom: bytes, tabella: dict | None = None, diagnostica: bool = False) 
         esigi(r.leggi(CAN12, CAN12_N) == canarino(0xCA5A1000, 8), "G11: canarino basso")
         esigi(r.leggi(HDR12, 4) == b"SGP2", "G11: intestazione magic")
         esigi((r.u32(HDR12 + 8), r.u32(HDR12 + 12)) == (RIS12_BASE, 0x023E0000), "G11: intestazione campi")
-        n_libero = RIS11_BASE - ECC12
-        esigi(set(r.leggi(ECC12, n_libero)) == {0}, "G11: zona libera 1.2 non a zero")
-        ok("G11", "canarino basso, intestazione, zona libera")
+        # NB: si parte da LIBERO12_BASSO (0x023D8040), non da ECC12: la tabella
+        # si e' spostata in alto e partire da lei smetterebbe di controllare i
+        # 2 512 B sotto la nuova base — proprio quelli dove vivevano la tabella
+        # di C1 e il suo canarino, che qui devono risultare ancora a zero.
+        n_libero = RIS11_BASE - LIBERO12_BASSO
+        esigi(set(r.leggi(LIBERO12_BASSO, n_libero)) == {0}, "G11: zona libera 1.2 non a zero")
+        ok("G11", "canarino basso, intestazione, %d B liberi a zero da 0x%08X"
+                  % (n_libero, LIBERO12_BASSO))
 
     motivi = tabella_controlla(nuova)
     esigi(not motivi, "G5: " + "; ".join(motivi))
@@ -168,7 +268,15 @@ def applica(rom: bytes, tabella: dict | None = None, diagnostica: bool = False) 
     ok("G5", "%d voci, crescenti" % len(nuova))
 
     if modo == "zona-1.2":
+        # La tabella non sta piu' in cima alla zona 1.2: cade IN MEZZO, dopo lo
+        # spazio che nella ROM finita ospitera' padding.allineamento.d1, sgp.plus,
+        # sgp.npc e canarino.npc — qui ancora tutto a zero, perche' `camera` e' il
+        # secondo blocco applicato. La lista lo dice invece di sommare in un solo
+        # «libero.1.2» tutto cio' che sta fra 0x023D8080 e la zona 1.1.
         blocchi = [("canarino.basso", CAN12, CAN12_N), ("intestazione", HDR12, HDR12_N),
+                   ("libero.1.2.basso", LIBERO12_BASSO, LIBERO12_BASSO_N),
+                   ("libero.1.2.medio", LIBERO12_BASSO + LIBERO12_BASSO_N,
+                    ECC12 - (LIBERO12_BASSO + LIBERO12_BASSO_N)),
                    ("camera.eccezioni.1.2", ECC12, ECC12_N), ("canarino.camera", CAN_ECC12, CAN_ECC12_N),
                    ("libero.1.2", LIBERO12_DOPO, RIS11_BASE - LIBERO12_DOPO),
                    ("canarino.1.1", CAN11, CAN11_N), ("padding", PAD11, PAD11_N),
@@ -303,7 +411,7 @@ def rileggi(base: bytes, candidata: bytes, attese: dict | None = None) -> dict:
     COD_TESTO = 62
     cod_c, cod_b = c.b(COD, COD_N), b.b(COD, COD_N)
     pool = [struct.unpack_from("<I", cod_c, COD_TESTO + 2 + 4 * i)[0] for i in range(5)]
-    fine = ecc + (ECC12_N if modo == "zona-1.2" else 48)
+    fine = ecc + (ECC12_N if modo == "zona-1.2" else ECC11_NUOVA_N)
     pool_atteso = [0x0203B269, STATO, ecc, fine, MAPHDR]
     n_ist = sum(1 for _ in md.disasm(cod_c[:COD_TESTO], COD))
     dive = [COD + i for i in range(COD_N) if cod_c[i] != cod_b[i]]
@@ -314,7 +422,11 @@ def rileggi(base: bytes, candidata: bytes, attese: dict | None = None) -> dict:
     tab = c.b(ecc, fine - ecc)
     dec, voci = tabella_decodifica(tab)
     cresc = all(voci[i] < voci[i + 1] for i in range(len(voci) - 1))
-    R("R3", dec == attese and cresc and len(voci) == 24, "tabella")
+    # La lunghezza si misura sull'ATTESA, non su una costante: «24» cablato qui
+    # avrebbe dichiarato ROSSA la tabella giusta della 1.2.3 e VERDE una tabella
+    # di 24 voci su una ROM che ne deve avere 68.
+    R("R3", dec == attese and cresc and len(voci) == len(attese),
+      "tabella: %d voci a 0x%08X (attese %d)" % (len(voci), ecc, len(attese)))
 
     testo = list(md.disasm(cod_c[:COD_TESTO], COD))
     prima_del_salto = [i for i in testo if i.address < 0x023DEBBA]
@@ -340,7 +452,7 @@ def rileggi(base: bytes, candidata: bytes, attese: dict | None = None) -> dict:
       "fuori dall'ARM9 identico alla base")
 
     diversi = [i for i in range(len(b.raw)) if b.raw[i] != c.raw[i]]
-    fine = ecc + (ECC12_N if modo == "zona-1.2" else 48)
+    fine = ecc + (ECC12_N if modo == "zona-1.2" else ECC11_NUOVA_N)
     leciti = set(range(c.o(ecc), c.o(ecc) + (fine - ecc))) | set(range(c.o(LIT_EXC), c.o(LIT_EXC) + 4))
     if modo == "zona-1.2":
         leciti |= set(range(c.o(CAN_ECC12), c.o(CAN_ECC12) + CAN_ECC12_N))
