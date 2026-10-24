@@ -28,11 +28,13 @@
 !.gitattributes
 !/.github/CODEOWNERS
 
-# The root carries only README and CHANGELOG besides LICENSE: no other notes
-# or folders at the top level (development notes stay in source/docs/).
+# The root carries README, CHANGELOG and shared assistant instructions besides
+# LICENSE; other development notes stay in source/docs/.
 /*.md
 !/README.md
 !/CHANGELOG.md
+!/AGENTS.md
+!/CLAUDE.md
 /docs/
 /release/
 /dist/

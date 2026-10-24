@@ -6,6 +6,8 @@
 
 Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
 
+Original project: [Sacred Gold Plus by NefariousnessNo3436](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) — the author’s announcement, with its documentation and downloads.
+
 This is a **patch**, not a ROM: you apply it to your own legally obtained game file. No game file is distributed here.
 
 ## Screenshots
@@ -17,49 +19,14 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 | ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
 | ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
 
-## What's new in 1.2.4 — 24 October 2026
+## Main features
 
-- Optional battle motion pauses while native fixed sprite copies exist, preventing the moving original from overlapping those copies.
-- Field movement skips the party search for Waterfall when its result cannot be used; surfing south keeps the original behavior.
-- The maintenance candidate allowed the reporting player to catch Latios at the Vermilion totem and they reported no further slowdowns. Event scripts are unchanged; this does not establish the old freeze's cause or cover every battle scenario.
-- Both language ZIPs now include all **19 recognized inputs**: original HeartGold US/IT; Plus 1.01, 1.02, 1.03; the four 1.04 variants; 1.1, 1.2.1, both 1.2.2 editions and 1.2.3 EN/IT. **38 routes**, verified with two decoders, plus unchanged original manuals and a current 1.2.4 PDF guide.
-- Community sources include the final build/read-back stage and [reproducible release packaging](source/distribution/README.md). Download the named player ZIP below; GitHub's automatic Source code archives contain developer sources.
-
-## What's new in 1.2.3 — 20 September 2026
-
-- **The classic HeartGold camera in every real cave.** The native camera — the one the original game uses underground — is restored in **44 more maps**, on top of Mt. Mortar from 1.2: in Kanto, Rock Tunnel, Mt. Moon (including the Square entrance), Diglett's Cave, Cerulean Cave and the Seafoam Islands (including the Cinnabar Gym room); between the two regions, Tohjo Falls, Victory Road and Mt. Silver Cave; in Johto, Union Cave, Slowpoke Well, the Ice Path, the Whirl Islands, Dark Cave (Route 45 side), the Dragon's Den and Cliff Cave. With the Plus angled camera, ledges and walls in these caves hid paths and items; the native camera shows them as the original game intended. Outdoors, in towers, forests, the Lighthouse, the Safari Zone and the Ruins of Alph the Plus camera is unchanged. The exception table grows from 24 to 68 entries and moves inside the ARM9 reserve; no map data and no code instruction changes. **A save made inside one of these caves keeps the previous camera until the next map change.**
-- **The Fly landing was investigated and is not a ROM defect.** The landing in front of a Pokémon Center was captured frame by frame on the headless bench with the software renderer: 1.2.2 draws it exactly as 1.1 does, with NPC smoothing on or off. The flicker reported on Android comes from the emulator's OpenGL renderer; switching melonDS to the software renderer avoids it.
-- The in-game version now reads **Sacred Gold Plus 1.2.3**. The ZIP includes direct patch routes from both 1.2.2 editions.
-
-## What's new in 1.2.2 — updated 19 September 2026 (second edition)
-
-- **The "SELECT → Plus" hint in the Options menu is back on every visit.** It used to show only on the first visit of a session and after opening and closing the page; leaving the menu and coming back lost it. The page now asks the game's own tilemap whether the line is there instead of trusting a flag that outlived the menu. Present since 1.2. If you installed the first 19 September build, the ZIP has a direct patch route from that game.
-- **The second battle pose is held, not flashed.** With optional battle motion on, the sprite's alternate pose (Typhlosion closing its mouth, for instance) now lasts **0.33 s**, with a longer **0.50 s** accent every third time, instead of 0.07–0.10 s. It starts at the resting point of the breathing cycle and no longer reappears at the end of a move. With the option off the game is byte-identical to 1.2.1.
-- **The expanded Bag no longer loses its extra slots in silence.** A save whose extension sectors could not be read once, or that a converter normalised to a single repeated byte, is written again instead of dropping the 108 extra slots at every reload, and a spent or out-of-range slot is emptied where it sits. Foreign data in those sectors is still never overwritten.
-- **No more false "Bag is full" on a pickup that worked.** Picking up a Poké Ball from the ground showed the "left behind" warning every time the item was in fact collected: the "I discarded something" flag lived on a script variable the game itself writes. The warning now appears only when the item really is left behind.
-
-## What's new in 1.2.1 — updated 15 September 2026
-
-- **42 full pages in the main Bag pocket:** 252 slots. All eight pockets have capacities divisible by six: items 252, medicine 42, Balls 30, TM/HM 102, berries 66, mail 12, battle items 30 and key items 60.
-- **Smoother optional battle motion.** Interpolated movement and corrected cleanup; shorter Bag and party loading pauses. In the tested EN/IT battles, Bag opening drops from 55 to 7 frames and party opening from 33 to 20. Brief loading pauses remain.
-- **Search all 493 wild Pokémon and choose a level from 1 to 100** with this project's [melonDS Android 2.1.1 build](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1). Leave the code enabled and press **L+R** to toggle it in game; it starts off. The selector works in grass with Wild levels off.
-- **Corrected male/female + nature cheats**, including Cute Charm. The catalogue contains 2,110 codes in 67 folders; the obsolete clean-ROM overlay patch was removed. Maximum-IV and manual species/level choices remain available. [Validation scope](source/docs/cheat-catalogue-validation.md).
-- Free gifts and pickups no longer block progress at a full item stack. Rare Candies can be used consecutively from the party menu. NPC smoothing changes take effect immediately and unavailable save options cannot be changed.
-- Existing saves import into the expanded Bag. **Older ROMs cannot access its extra slots; saving in an older ROM prevents automatic recovery of those slots.** Update using the game's normal save, not an old emulator savestate.
-
-## What's new (1.04 → 1.2)
-
-- **Plus difficulty** extended to levels: tougher trainers and, separately, scaling wild Pokémon — both optional, both capped at level 100.
-- A **Sacred Gold Plus options page** (press SELECT during play); the game asks once, on Continue, whether you want to look at it.
-- The **classic HeartGold camera**, restored natively in eight indoor maps (Mahogany Town, Mt. Mortar) — no cheat needed. Since 1.2.3 it covers **52 maps**, the 44 caves added there included.
-- **Smoother towns**: fewer characters loaded at once when entering or leaving one.
-- **Optional animated Pokémon** in battle (off by default).
-- **Online server choice**: pick which Wi-Fi connection slot handles GTS and battles; Mystery Gift connects automatically.
-- **200+ text corrections** in English and Italian.
-- A cleaner **title screen**, with a single credit line.
-- The **EV/IV guide** on a Pokémon's Ability page (in the summary) no longer shows an automatic "START Guide" label; press START there to open it.
-- **Bug fixes.**
-- **Saves from 1.1 are compatible.**
+- **English and Italian editions**, with translated dialogue and menus.
+- **Adjustable Plus difficulty:** optional trainer and wild Pokémon level scaling, configured from the Plus options page with SELECT.
+- **Optional Pokémon motion in battle**, switchable in the game settings.
+- **Classic HeartGold camera in 52 interior and cave maps**, with the wider Plus camera outdoors.
+- **Expanded Bag:** 252 slots in the main pocket and consecutive Rare Candy use from the party menu.
+- **Quality-of-life improvements:** an in-game EV/IV guide, Wi-Fi connection slot selection, text corrections and gameplay fixes.
 
 ## Download
 
@@ -70,7 +37,7 @@ Get the ZIP for your language from the [**1.2.4 release**](https://github.com/Um
 | Italian | `Sacred-Gold-Plus-1.2.4-IT.zip` |
 | English | `Sacred-Gold-Plus-1.2.4-US.zip` |
 
-Each ZIP contains the patch, the recommended cheats, the manuals and the installation guide for that language.
+Each ZIP contains all 19 supported patch routes, the recommended cheats, the unchanged original manuals and the updated installation guide for that language. Download the named player ZIP; GitHub’s automatic “Source code” archives contain developer sources.
 
 ## Requirements
 
@@ -93,7 +60,7 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.4 from an unmodified HeartGold ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/). The only game file you need is the retail game you already own — the first build step derives our 1.1 base from it with a published patch of differences, so no intermediate ROM of ours is needed and none is distributed.
 
-- The maintainer and coding assistants work directly on `main`, with reviewed changes and passing checks, without creating branches or pull requests. Community contributions from other accounts may still use pull requests.
+- The maintainer and coding assistants work **only on `main`, without creating branches or pull requests**, in every current and future chat or session. See the standing instructions in [AGENTS.md](AGENTS.md). Changes are reviewed and checked before publication; community contributions from other accounts may still use pull requests.
 - Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
 - Finished versions are tags (`v1.2.4`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
 - Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
@@ -114,21 +81,20 @@ This project's own tools and sources are licensed under [GPL-3.0-or-later](LICEN
 
 **Sacred Gold Plus** è una continuazione amatoriale di Sacred Gold Plus per Nintendo DS: tipo Folletto, nuove mosse Folletto e camera panoramica, con in più traduzione italiana, camera originale negli interni, difficoltà regolabile e correzioni.
 
+Progetto originale: [Sacred Gold Plus di NefariousnessNo3436](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) — il post dell’autore con documentazione e download.
+
 Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
 
-**Novità della 1.2.4 — 24 ottobre 2026:** corretto il coordinamento fra animazione opzionale e copie fisse degli sprite; eliminata la ricerca di Cascata quando il risultato non può essere usato. Nella prova del candidato la cattura di Latios ad Aranciopoli è riuscita e l’utente non ha più osservato i rallentamenti. Lo script del totem resta invariato; non è una diagnosi definitiva della causa del vecchio freeze. Ogni ZIP contiene tutte le **19 patch di ingresso** supportate, comprese le ROM originali e la 1.2.3, guide originali intatte e una guida PDF aggiornata. Sorgenti e strumenti di rilascio sono aggiornati alla 1.2.4.
+**Funzioni principali:**
 
-**Novità della 1.2.3 — 20 settembre 2026:** la **camera classica di HeartGold** è ripristinata in altre **44 mappe di grotta** oltre a Monte Scodella: a Kanto Tunnel Roccioso, Monte Luna (con l'ingresso della piazza), Grotta Diglett, Grotta Celeste e Isole Spumarine (compresa la palestra di Cinabro); fra le due regioni Cascate Tohjo, Via Vittoria e Grotta Argentea; a Johto Grotta Unione, Pozzo Slowpoke, Via del Ghiaccio, Isole Vortice, Grotta Oscura (lato Percorso 45), Covo dei Draghi e Grotta Rupe. La camera angolata di Plus nascondeva sentieri e oggetti dietro sporgenze e pareti; quella nativa li mostra come nel gioco originale. All'aperto, nelle torri, nei boschi, al Faro, nella Zona Safari e alle Rovine di Alph la camera Plus resta com'è. **Un salvataggio fatto dentro una di queste grotte conserva la camera precedente fino al primo cambio di mappa.** L'atterraggio del Volo davanti a un Centro Pokémon è stato analizzato fotogramma per fotogramma sul banco: la ROM 1.2.2 lo disegna identico alla 1.1, e lo sfarfallio visto su Android dipende dal renderer OpenGL dell'emulatore (con il renderer software non compare) — non è un difetto della ROM. Versione in gioco: **Sacred Gold Plus 1.2.3**.
+- **Edizioni italiana e inglese**, con dialoghi e menu tradotti.
+- **Difficoltà Plus regolabile:** livelli di allenatori e Pokémon selvatici configurabili dalla pagina Plus, accessibile con SELECT.
+- **Animazioni opzionali dei Pokémon in lotta**, attivabili dalle impostazioni del gioco.
+- **Camera classica di HeartGold in 52 mappe di interni e grotte**, con camera panoramica Plus all’aperto.
+- **Borsa espansa:** 252 slot nella tasca principale e uso consecutivo delle Caramelle Rare dal menu Squadra.
+- **Migliorie pratiche:** guida EV/IV nel gioco, scelta dello slot Wi-Fi, correzioni dei testi e del gioco.
 
-**Novità della 1.2.2 — aggiornamento del 19 settembre 2026 (seconda edizione):** nel menu Opzioni la riga «SELECT → PLUS» in basso a sinistra torna a **ogni** ingresso: prima compariva solo al primo ingresso della sessione e dopo aver aperto e chiuso la pagina, perché la pagina si fidava di un proprio segnalino che sopravviveva al menu; ora chiede alla tilemap del gioco se la riga c'è davvero. Difetto presente dalla 1.2. Chi ha installato la prima edizione del 19 settembre trova nello ZIP una tratta diretta da quella ROM. Inoltre, con le animazioni opzionali di lotta accese, la **seconda posa** dello sprite (per esempio Typhlosion che chiude la bocca) dura ora **0,33 s**, con un accento più lungo di **0,50 s** ogni tre, invece di 0,07–0,10 s: parte all'apice del respiro e non riappare a fine mossa. Con l'opzione spenta il gioco è identico alla 1.2.1 al byte. **Borsa espansa:** un salvataggio i cui settori dell'estensione non si erano potuti leggere, o che un convertitore ha normalizzato a un solo byte ripetuto, viene riscritto invece di perdere i 108 slot extra a ogni ricarica; uno slot esaurito o fuori intervallo viene svuotato dov'è. I dati estranei in quei settori non vengono mai sovrascritti. **«Borsa piena» falsa:** raccogliendo una Poké Ball a terra l'avviso «lasciato a terra» compariva a ogni raccolta riuscita, perché la spia «ho scartato qualcosa» stava su una variabile di script che scrive il gioco stesso; ora l'avviso compare solo quando l'oggetto viene davvero lasciato.
-
-**Novità della 1.2.1 — aggiornamento del 15 settembre 2026:** borsa principale da **252 slot, 42 pagine complete**. Tutte le tasche hanno capienza multipla di sei: strumenti 252, medicine 42, Ball 30, MT/MN 102, bacche 66, posta 12, strumenti lotta 30, strumenti base 60. Animazioni opzionali di lotta più fluide, con aperture di Borsa e Squadra più rapide; restano brevi pause di caricamento.
-
-**Selvatici:** nel [melonDS Android 2.1.1 di questo progetto](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1) scegli fra tutti i **493 Pokémon** con ricerca e imposti il livello **1–100**. Lascia il codice abilitato: in gioco parte spento, **L+R** lo attiva e una nuova pressione lo spegne. Vale per l'erba alta con Livelli selvatici OFF. Corretti anche i codici maschio/femmina + natura. Catalogo aggiornato: **2.110 codici in 67 cartelle**, con [rapporto di verifica](source/docs/cheat-catalogue-validation.md).
-
-**Novità della 1.2:** difficoltà Plus estesa ai livelli (selvatici e allenatori, tetto 100); pagina Opzioni Sacred Gold Plus (tasto SELECT), con domanda una tantum al Continua; camera classica ripristinata in otto interni (Mogania, Monte Scodella), che dalla 1.2.3 diventano 52 mappe con le 44 grotte aggiunte; città più fluide; Pokémon animati in lotta (spenti di default); scelta dello slot Wi-Fi per GTS e lotte, con Dono Segreto automatico; oltre 200 correzioni ai testi; titolo con un solo credito; nella pagina Abilità del riepilogo l'etichetta automatica «START Guida» non compare più (premi START per aprire la guida EV/IV); correzioni varie; **i salvataggi della 1.1 sono compatibili**.
-
-**Download:** dalla [release 1.2.4](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.4), `Sacred-Gold-Plus-1.2.4-IT.zip` o `-US.zip`.
+**Download:** dalla [release 1.2.4](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.4), `Sacred-Gold-Plus-1.2.4-IT.zip` o `Sacred-Gold-Plus-1.2.4-US.zip`. Ogni ZIP include tutte le 19 patch supportate, cheat consigliati, manuali originali intatti e guida di installazione aggiornata. Scarica questi pacchetti per giocare; gli archivi automatici “Source code” contengono i sorgenti per sviluppatori.
 
 **Requisiti:** una delle 19 ROM identificate nel manifest: HeartGold originale USA/Italia oppure Plus 1.01, 1.02, 1.03, 1.04 (entrambe le camere e lingue), 1.1, 1.2.1, 1.2.2 (entrambe le edizioni) o 1.2.3; un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
 
@@ -136,7 +102,7 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 
 **Compatibilità:** i salvataggi esistenti vengono importati. Gli slot aggiuntivi della Borsa usano un’estensione del salvataggio: tornando a una ROM vecchia, gli oggetti negli slot extra non sono disponibili; salvando con quella ROM non si recuperano automaticamente al ritorno. Carica il salvataggio normale del gioco, non un savestate precedente. L’intestazione è invariata dalla 1.2, ma importa il catalogo aggiornato per le correzioni. Tutti i codici sono spenti di default.
 
-**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il ramo di lavoro del manutentore e degli assistenti: le modifiche si verificano e si pubblicano direttamente lì, senza aprire branch o pull request per questo flusso; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub. L'unico ingresso è la **HeartGold originale** della propria lingua: il primo stadio della costruzione ne ricava la base 1.1 applicando una patch pubblica di sole differenze, quindi non serve nessuna ROM intermedia e nessuna ROM viene distribuita.
+**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). Il manutentore e gli assistenti lavorano **solo su `main`, senza creare branch o pull request**, anche in tutte le chat future: la regola permanente è in [AGENTS.md](AGENTS.md). Le modifiche si verificano e si pubblicano direttamente lì; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub. L'unico ingresso è la **HeartGold originale** della propria lingua: il primo stadio della costruzione ne ricava la base 1.1 applicando una patch pubblica di sole differenze, quindi non serve nessuna ROM intermedia e nessuna ROM viene distribuita.
 
 **Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
 

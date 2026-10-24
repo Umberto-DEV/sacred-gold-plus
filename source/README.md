@@ -169,7 +169,7 @@ Where a tool needs game data, it reads it from your file at build time. The text
 
 ## How changes get in
 
-`main` is the working branch for the maintainer and their coding assistants. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
+`main` is the only working branch for the maintainer and their coding assistants, in every current and future chat or session. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. The standing instructions are in [AGENTS.md](../AGENTS.md), also referenced by [CLAUDE.md](../CLAUDE.md). Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
 
 CI runs the Class A tests above on every push to any branch and on every pull request, including direct maintainer updates to `main`. A first run from a fork waits for the maintainer's approval. Class B needs your own game file and never runs on GitHub: run it locally and record what you ran and its result in the release validation document (or the pull request's "Class B tests run locally" line for an external contribution). "Not run" is acceptable; a claim that was not checked is not.
 
