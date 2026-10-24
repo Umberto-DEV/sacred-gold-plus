@@ -1,5 +1,10 @@
 # What changed
 
+## 1.2.5 — 24 October 2026
+
+- Show “Sacred Gold Plus 1.2.5” in the Plus options heading (Options → SELECT), so players can check the version after the one-time setup prompt has gone. Addresses [issue #6](https://github.com/Umberto-DEV/sacred-gold-plus/issues/6).
+- Display **V.1.2.5** on the upper title screen, aligned with **Developed by A FAN**, and restore the missing descender in **by**. Only version text and these title graphics change from 1.2.4 in each language. Save code, the native save layout, Plus settings and expanded Bag storage are unchanged; no new game or save conversion is needed. See the [validation and upgrade notes](source/docs/version-1.2.5.md).
+
 ## 1.2.4 — 24 October 2026
 
 - Coordinate optional battle idle animation with native OAM sprite copies: reset before copying, suspend while copies live, resume after the final owner is freed.

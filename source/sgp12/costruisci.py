@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.4
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.5
 dalla propria HeartGold ORIGINALE.
 
     stadio 0: HeartGold originale --(delta xdelta pubblico)--> base 1.1
-    poi i diciotto stadi:
+    poi i diciannove stadi:
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
-    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa -> manutenzione
+    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa -> manutenzione -> versione
 
 Uso:
     python3 -m sgp12.costruisci --base "Pokemon - HeartGold Version.nds" \\
-            --uscita sgp-1.2.4-EN.nds
+            --uscita sgp-1.2.5-EN.nds
     python3 -m sgp12.costruisci --base "Pokemon - Versione Oro HeartGold.nds" \\
-            --uscita sgp-1.2.4-IT.nds
+            --uscita sgp-1.2.5-IT.nds
 
 `--base` e' la HeartGold originale: la lingua si DEDUCE dal suo sha256 (pin
 `base11.json`) e, se `--lingua` c'e', deve coincidere. Lo stadio 0 cerca il
@@ -35,7 +35,7 @@ import sys
 import time
 from pathlib import Path
 
-from . import manutenzione
+from . import manutenzione, versione
 from .rom import Rifiuto, prepara_base, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
                       titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
@@ -143,6 +143,10 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     t0 = time.time()
     rom, _ = manutenzione.applica(rom, build_dir / "manutenzione")
     registra("manutenzione", t0, rom)
+
+    t0 = time.time()
+    rom, _ = versione.applica(rom)
+    registra("versione", t0, rom)
 
     return rom, {"lingua": lingua, "base_sha256": sha(base), "uscita_sha256": sha(rom),
                 "uscita_bytes": len(rom), "passi": passi}

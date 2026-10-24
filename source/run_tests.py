@@ -52,7 +52,7 @@ SUITE = [
     ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test_pack.py"]),
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
-    ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib"]),
+    ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione"]),
     ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),
     ("ARM9 reserve register",  SOURCE, ["-m", "unittest", "verifiche.test_riserva"]),
     ("text codec / translation", SOURCE, ["-m", "unittest", "discover", "-s", "translation", "-p", "test_*.py"]),

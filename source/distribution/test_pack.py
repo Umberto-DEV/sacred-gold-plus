@@ -20,7 +20,7 @@ class PackageTests(unittest.TestCase):
             p=Path(temp)/'a.zip';p.write_bytes(b'keep')
             with self.assertRaises(FileExistsError):pack.write_zip(p,{'guide':b'text'})
             self.assertEqual(p.read_bytes(),b'keep')
-    def test_all_previously_supported_inputs_and_123_are_present(self):
+    def test_all_previously_supported_inputs_and_124_are_present(self):
         ids={x['id'] for x in pack.config()['sources']}
-        self.assertEqual(len(ids),19)
-        self.assertTrue({'clean-us','clean-it','plus-1.01','plus-1.02','plus-1.03','plus-1.2.3-en','plus-1.2.3-it'}<=ids)
+        self.assertEqual(len(ids),21)
+        self.assertTrue({'clean-us','clean-it','plus-1.01','plus-1.02','plus-1.03','plus-1.2.3-en','plus-1.2.3-it','plus-1.2.4-en','plus-1.2.4-it'}<=ids)

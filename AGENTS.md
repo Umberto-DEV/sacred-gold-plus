@@ -36,3 +36,18 @@ Before committing, review the diff and run `git diff --check` and
 `.github/public-files.json` and the Git index before running the public-file
 check. Never commit ROMs, saves, BIOS, dumps, extracted game data or private
 workspace notes.
+
+## Preserve existing saves
+
+Forward compatibility with `.sav` files from previous patches is a release
+requirement. Updating must preserve progress, Pokémon, inventory (including
+expanded Bag slots) and existing Plus settings. Never require a new game,
+reset a save or clear settings to expose a new feature or version label.
+
+Keep save layouts and identifiers stable. Any necessary format change must
+include a lossless, tested migration that preserves older save data. Validate updates
+on copies of older saves through normal Continue, an in-game save and cold
+restart; include both languages, saves without Plus data and saves with Plus
+settings and Bag extensions. Preserve the original fixtures. Emulator savestates
+are not a substitute for these raw-save tests. Record the tested coverage and
+any limitations; do not infer universal compatibility from a single fixture.

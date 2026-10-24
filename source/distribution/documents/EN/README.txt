@@ -1,10 +1,10 @@
-SACRED GOLD PLUS 1.2.4 - 24 October 2026
+SACRED GOLD PLUS 1.2.5 - 24 October 2026
 
-This ZIP contains all 19 input patches to the English version, the original guides, manuals, installation instructions, cheats and license.
+This ZIP contains all 21 input patches to the English version, the original guides, manuals, installation instructions, cheats and license.
 
-Open HOW-TO-INSTALL.txt, choose ONE patch matching your ROM SHA-256, then read WHATS-NEW-1.2.4.txt. Do not apply multiple patches in sequence. Private ROM customizations are not included.
+Open HOW-TO-INSTALL.txt, choose ONE patch matching your ROM SHA-256, then read WHATS-NEW-1.2.5.txt. Do not apply multiple patches in sequence. Private ROM customizations are not included.
 
-Manual/Guide-1.2.4-EN.pdf is the current guide. The older 1.2 illustrated PDFs are preserved as historical references; use the 1.2.4 instructions for this release. Updated technical documentation and community sources are in the repository under source/.
+Manual/Guide-1.2.5-EN.pdf is the current guide. The older 1.2 illustrated PDFs are preserved as historical references; use the 1.2.5 instructions for this release. Updated technical documentation and community sources are in the repository under source/.
 
 No ROM, BIOS, save or emulator is included.
 

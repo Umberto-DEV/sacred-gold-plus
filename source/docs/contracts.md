@@ -6,6 +6,19 @@ the Thumb bit; sizes are decimal unless prefixed with `0x`.
 
 ---
 
+## Forward save compatibility
+
+Every update must preserve the user's existing raw `.sav`: trainer and story
+progress, Pokémon and storage, inventory, and Plus settings. In particular,
+expanded Bag data must survive an update as well as native slots. The version
+label is ROM data and must never depend on clearing or rewriting a save.
+Changes to save formats require a lossless, tested migration that preserves
+older save data. Release validation must use disposable copies of earlier saves,
+normal Continue, in-game saving and a fresh emulator boot, in both languages.
+Do not substitute an older emulator savestate for that sequence. Downgrading
+is a separate operation: older ROMs cannot preserve features they do not know
+(see the expanded Bag contract below).
+
 ## 1. Save chunk
 
 Sacred Gold Plus 1.2 keeps its own options in a 16-byte block that every feature reads and that

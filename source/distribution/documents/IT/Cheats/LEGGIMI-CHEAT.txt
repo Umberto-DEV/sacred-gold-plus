@@ -1,6 +1,6 @@
-1.2.4: codici e identita' melonDS invariati dalla 1.2.3. I file mantengono i codici precedenti; non e' stata ripetuta una prova in gioco di tutto il catalogo.
+1.2.5: codici e identita' melonDS invariati dalla 1.2.3. I file mantengono i codici precedenti; non e' stata ripetuta una prova in gioco di tutto il catalogo.
 
-I CHEAT DELLA 1.2.4 — AGGIORNAMENTO 20 SETTEMBRE 2026
+I CHEAT DELLA 1.2.5 — AGGIORNAMENTO 20 SETTEMBRE 2026
 
 Il catalogo Android contiene 2.110 codici in 67 cartelle. Tutti sono
 spenti all'importazione. Il file .mch per computer contiene soltanto i
@@ -67,7 +67,7 @@ con questa build. Gli altri gruppi conservano le proprie istruzioni.
 
 Questo aggiornamento tocca codice ARM9 vero (la tabella delle eccezioni
 della camera, cresciuta e spostata, e la stringa di versione), quindi
-l'intestazione della 1.2.4 non e' stata data per scontata uguale a
+l'intestazione della 1.2.5 non e' stata data per scontata uguale a
 quella della 1.2.2: e' stata misurata sulla ROM costruita ed e'
 risultata invariata, IPKE 19D1EEBB (EN) / IPKE 1C1F741C (IT). Il valore
 esatto sta in PACCHETTO.json. Questo file e' lo stesso catalogo della 1.2.2 col

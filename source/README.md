@@ -1,5 +1,7 @@
 # Build and contribute
 
+This folder builds **1.2.5**. See the [version fix and save validation](docs/version-1.2.5.md).
+
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
 
 Everything here rebuilds and checks the game from **your own** game file. No game file is distributed, and none is needed to run the tests that CI runs. How changes get in is at the end of this page.
@@ -8,7 +10,7 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 
 | Folder | What it is |
 | --- | --- |
-| `sgp12/` | The library. One command builds 1.2.4 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
+| `sgp12/` | The library. One command builds 1.2.5 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -27,7 +29,7 @@ python3 -m venv .venv
 .venv/bin/pip install -r source/requirements.txt
 ```
 
-The compiled-code suites need an ARM946E-S-capable C compiler. The shipped
+The compiled-code suites need an ARM946E-S-capable C compiler. The existing
 1.2.4 payloads were built with **Apple clang 21.0.0
 (`clang-2100.3.34.2`, Command Line Tools 27.0)**; each build manifest records
 its compiler. Other Clang releases may produce different bytes or exceed a
@@ -89,8 +91,8 @@ These files are not redistributed here: their licensing was not established to o
 
 ```sh
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita /tmp/sgp-1.2.4-EN.nds
-cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.4-EN.nds \
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita /tmp/sgp-1.2.5-EN.nds
+cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.5-EN.nds \
         --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
@@ -98,7 +100,7 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.4-EN.nds \
 
 The build is deterministic: the same ROM gives the same bytes. Stage 0 checks all three fingerprints — your ROM, the patch, and the 1.1 base that comes out of it — before a single block runs, and records them in the build's JSON report under `stadio0`. `verifica` repeats the whole thing, stage 0 included, compares the result with the ROM you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
 
-After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache and expanded Bag capacity — eighteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
+After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache, expanded Bag capacity, maintenance and the persistent version title — nineteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
 
@@ -114,8 +116,8 @@ What `$SGP_ROM_DIR` has to hold depends on which Class B suites you want:
 
 | Suite | Wants |
 | --- | --- |
-| `sgp12.test_lib.TestCostruisciIdentico` (the criterion-4 test: the build is byte-identical to the shipped ROM) | your HeartGold, `base-1.1-{EN,IT}.xdelta` and a `SHA256SUMS` naming `sgp-1.2.4-{EN,IT}.nds` — it runs stage 0 itself. A `base-1.1-{EN,IT}.nds` is still accepted instead and skips stage 0. |
-| the rare-candy, full-bag and bag-capacity suites | the built `sgp-1.2.4-{EN,IT}.nds` |
+| `sgp12.test_lib.TestCostruisciIdentico` (the criterion-4 test: the build is byte-identical to the shipped ROM) | your HeartGold, `base-1.1-{EN,IT}.xdelta` and a `SHA256SUMS` naming `sgp-1.2.5-{EN,IT}.nds` — it runs stage 0 itself. A `base-1.1-{EN,IT}.nds` is still accepted instead and skips stage 0. |
+| the rare-candy, full-bag and bag-capacity suites | the built candidate; set `SGP_CAR_ROM_NOME=sgp-1.2.5-%s.nds`, `SGP_BORSA_ROM_NOME=sgp-1.2.5-%s.nds`, or the capacity suite’s explicit `SGP_CAPACITY_ROM` and `SGP_CAPACITY_BUILD` |
 | the per-block suites (overlay in place, block mutants, text width, `TestBlocchiVFinale`) | `base-1.1-{EN,IT}.nds` |
 
 The last row is the one exception to "the only input is your HeartGold": those suites open the 1.1 base directly, to compare a block against the stage that precedes it, and they have not been rewritten to derive it. They skip with an explicit reason when it is absent — a folder holding only the HeartGold and the patches runs everything else and skips those. Writing the base out once with the same patch is enough:
@@ -130,7 +132,7 @@ cd source && SGP_ROM_DIR=/path/to/private/roms SGP_PRET_SOURCE=/path/to/pokehear
     ../.venv/bin/python3 -m unittest sgp12.test_lib -v
 cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/overlay/test -v
 cd source && SGP_ROM_DIR=/path/to/private/roms ../.venv/bin/python3 -m unittest discover -s features/caramelle/test -v
-cd source && SGP_RISERVA_ROM=/tmp/sgp-1.2.4-EN.nds SGP_RISERVA_COMPLETA=1 \
+cd source && SGP_RISERVA_ROM=/tmp/sgp-1.2.5-EN.nds SGP_RISERVA_COMPLETA=1 \
     ../.venv/bin/python3 -m unittest verifiche.test_riserva -v
 ```
 
@@ -147,7 +149,7 @@ exists: a public checkout normally does not have one, since releases are built a
 the maintainer's machine. That single skip is expected and does not need `SGP_CHEATS` set; see
 `source/verifiche/test_riserva.py` for what it checks when the folder is there.
 
-The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, so it reads `sgp-1.2.4-{EN,IT}.nds` out of `SGP_ROM_DIR`; without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
+The rare-candy suite (`features/caramelle/test/`) runs the shipped ARM9 under Unicorn starting from the hook site itself, set `SGP_CAR_ROM_NOME=sgp-1.2.5-%s.nds` and point `SGP_ROM_DIR` at those private files (the historical default name is 1.2.2). Without them it skips with a reason. Its mutants (`features/caramelle/tools/mutanti.py`) build their own starting ROMs by undoing the block on a copy, so they need nothing else. Every mutant tool first runs the suite **unmutated**: a mutant only counts as killed if that baseline was green and the mutated run went red *having executed tests*. A red run with no test executed is a broken harness, not a gate that worked, and it is reported as NOT EVALUABLE.
 
 The native-code suite recompiles the shipped C sources and compares them with the blobs that go into the ROM. Those bytes are only reproducible on the toolchain that produced them, which each `build/*/manifesto.json` names; on a different compiler (vendor or major version) the byte-for-byte tests **skip with the two identities printed**, and what stays is the claim that holds anywhere: the blob compiles, fits its compartment and has no external symbols. The expanded-Bag build suite always requires byte-identical code and symbols. The current macOS CI keeps those assertions and every fixed-space limit enabled. A compiler mismatch can therefore fail the full suite; it is not permission to replace the validated payloads.
 
@@ -175,17 +177,17 @@ CI runs the Class A tests above on every push to any branch and on every pull re
 
 Finished versions are tags `vX.Y` with a GitHub release carrying the player ZIPs, built on the maintainer's machine from the verified ROM. Previews are tagged `vX.Y-rcN` and marked pre-release. Released bytes are never overwritten: a correction is a new release. There is no nightly build, because building the game needs a game file.
 
-## Final maintenance stage (1.2.4)
+## Final stages (1.2.4 maintenance and 1.2.5 title)
 
 After the existing stages, `sgp12.manutenzione` requires the exact published
 1.2.3 intermediate hash. It installs the copy-ownership barrier and Waterfall
-search guard, then updates the in-game title to 1.2.4. The options source and
+search guard, then updates the initial prompt title to 1.2.4. The options source and
 blobs retain the intermediate 1.2.3 title deliberately; the final title is
-specified in `sgp12/build/manutenzione/versione.json`. No intermediate ROM
+specified in `sgp12/build/manutenzione/versione.json`. The following `sgp12.versione` stage updates the menu title and the upper title-screen version label, including the corrected credit. No intermediate ROM
 needs to be kept on disk. Both the builder and verifier include this stage.
 
 The release-specific file checks, supported inputs and reproducible player
 ZIP tooling are documented in [distribution/README.md](distribution/README.md)
 (relative to this document's directory, use `source/distribution/README.md`
-from the repository root). The release was validated incrementally against
-the published 1.2.3 files; a new full build/runtime campaign was not run locally.
+from the repository root). The published 1.2.4 release was validated incrementally against
+the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/version-1.2.5.md); the packaging configuration describes all 21 supported input routes.

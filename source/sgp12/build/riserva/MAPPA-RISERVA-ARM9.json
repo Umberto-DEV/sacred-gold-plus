@@ -448,7 +448,7 @@
         "+0x3F0": "canarino 0xCA5A1500|i, 16 B, DENTRO il blocco -- INVARIATO"
       },
       "ancore": [],
-      "nota": "v3: 'sha256' e' la ROM EN 1.2.3, il PRIMO 'sha256_precedenti' e' la IT 1.2.3 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2.2 (EN poi IT), la coppia 1.2.1 (EN poi IT), la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). Aggiornato 20/09/2026 per la 1.2.3 (cambia solo `c_titolo`, la misura del blob resta 886/944 B); prima 19/09/2026 per la 1.2.2, 13/09/2026 per la 1.2.1 e 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
+      "nota": "v3: 'sha256' e' la ROM EN 1.2.3, il PRIMO 'sha256_precedenti' e' la IT 1.2.3 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2.2 (EN poi IT), la coppia 1.2.1 (EN poi IT), la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). 1.2.5: ultimi due hash EN/IT, titolo con versione anche nel menu Plus; nessuna modifica al codice o ai salvataggi. Aggiornato 20/09/2026 per la 1.2.3 (cambia solo `c_titolo`, la misura del blob resta 886/944 B); prima 19/09/2026 per la 1.2.2, 13/09/2026 per la 1.2.1 e 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
       "sha256": "89cec1cab2e7693e3a711d62e6e5a1022c38cf8cc772b7ba77ad7b2a4c3fc498",
       "sha256_precedenti": [
         "46b4a93cde8044caaf598d03e28db73abf7629f6a2ffbeb8b8f3bd4aede1b431",
@@ -461,7 +461,9 @@
         "bb5f639953e45e2aa316935dff4f0044c04116922c2fb3c100fad04043438222",
         "8749ad326c594959335b5ef00575f4282278a7255e94fd64405bcc71ac14e2e9",
         "7290205181a42dd1bd6f1450f8523f198542fad06f44a5e4963451a1a3cf9db9",
-        "32a3da0343e0db8c0da95268f8e1f49dbd946db18158be1f5bb3765da4345640"
+        "32a3da0343e0db8c0da95268f8e1f49dbd946db18158be1f5bb3765da4345640",
+        "b864dd8e98d550f442476a411f38903dc1ce0ce86f8b20308e8f1bb5a82d0d3f",
+        "c43ee42130471d85dcd8fed9274ee7a740167c3d67b39fd330f1cdff83d9b081"
       ]
     },
     {

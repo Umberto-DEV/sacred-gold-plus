@@ -1,6 +1,6 @@
-1.2.4: cheat codes and melonDS identity are unchanged from 1.2.3. The existing codes are preserved; the entire catalogue has not been retested in game.
+1.2.5: cheat codes and melonDS identity are unchanged from 1.2.3. The existing codes are preserved; the entire catalogue has not been retested in game.
 
-THE 1.2.4 CHEATS — UPDATED 20 SEPTEMBER 2026
+THE 1.2.5 CHEATS — UPDATED 20 SEPTEMBER 2026
 
 The Android catalogue contains 2,110 codes in 67 folders, all disabled.
 The desktop .mch contains only the seven folder 00 codes; it is not an
@@ -63,7 +63,7 @@ incompatible clean-ROM overlay workaround was removed. Other folders
 keep their own instructions. Some inherited names/notes remain Italian.
 
 This update touches real ARM9 code (the larger, relocated camera
-exception table and the version string), so the 1.2.4 header was not
+exception table and the version string), so the 1.2.5 header was not
 assumed to match 1.2.2's: it was measured on the built ROM and came out
 unchanged, IPKE 19D1EEBB (EN) / IPKE 1C1F741C (IT). The exact value is
 in PACCHETTO.json. This file is the same 1.2.2 catalogue

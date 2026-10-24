@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1.2.4",
+  "version": "1.2.5",
   "sources": [
     {
       "id": "clean-us",
@@ -115,17 +115,29 @@
       "label": "Sacred Gold Plus 1.2.3 IT",
       "sha256": "12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0",
       "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.4-en",
+      "label": "Sacred Gold Plus 1.2.4 EN",
+      "sha256": "d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.4-it",
+      "label": "Sacred Gold Plus 1.2.4 IT",
+      "sha256": "d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0",
+      "bytes": 131906120
     }
   ],
   "targets": {
     "EN": {
-      "name": "Sacred Gold Plus 1.2.4 EN.nds",
-      "sha256": "d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548",
+      "name": "Sacred Gold Plus 1.2.5 EN.nds",
+      "sha256": "a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e",
       "bytes": 127104144
     },
     "IT": {
-      "name": "Sacred Gold Plus 1.2.4 IT.nds",
-      "sha256": "d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0",
+      "name": "Sacred Gold Plus 1.2.5 IT.nds",
+      "sha256": "bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4",
       "bytes": 131906120
     }
   },

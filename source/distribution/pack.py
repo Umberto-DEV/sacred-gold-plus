@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build reproducible 1.2.4 player ZIPs. No ROM is packaged or downloaded."""
+"""Build reproducible 1.2.5 player ZIPs. No ROM is packaged or downloaded."""
 import argparse
 import hashlib
 import json
@@ -63,14 +63,14 @@ def reference_members(lang, reference_dir, guide_dir, cfg):
         # Original manuals and historical illustrated guides stay byte-identical.
         for name in z.namelist():
             if name.startswith('Cheats/'):
-                members[name.replace('1.2.3', '1.2.4')] = z.read(name).replace(b'1.2.3', b'1.2.4')
+                members[name.replace('1.2.3', '1.2.5')] = z.read(name).replace(b'1.2.3', b'1.2.5')
         license_name = 'LICENZA.txt' if lang == 'IT' else 'LICENSE.txt'
         members[license_name] = z.read(license_name)
         history = 'NOVITA-1.2.3.txt' if lang == 'IT' else 'WHATS-NEW-1.2.3.txt'
         members['Manual/'+history] = z.read(history)
     for p in sorted((HERE/'documents'/lang).rglob('*.txt')):
         members[p.relative_to(HERE/'documents'/lang).as_posix()] = p.read_bytes()
-    members[f'Manual/Guide-1.2.4-{lang}.pdf'] = (guide_dir/f'Guide-1.2.4-{lang}.pdf').read_bytes()
+    members[f'Manual/Guide-1.2.5-{lang}.pdf'] = (guide_dir/f'Guide-1.2.5-{lang}.pdf').read_bytes()
     return members
 
 
@@ -118,7 +118,7 @@ def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3
             inventory = {n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in sorted(members.items())}
             members['CONTENTS.json'] = (json.dumps({'version':cfg['version'],'files':inventory},indent=2)+'\n').encode()
             tag = 'US' if lang == 'EN' else 'IT'
-            archive = output/f'Sacred-Gold-Plus-1.2.4-{tag}.zip'
+            archive = output/f'Sacred-Gold-Plus-1.2.5-{tag}.zip'
             write_zip(archive, members)
             results.append({'file':archive.name,'bytes':archive.stat().st_size,'sha256':digest(archive),
                             'members':len(members),'routes':len(rows)})

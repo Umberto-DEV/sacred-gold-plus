@@ -1,4 +1,4 @@
-INSTALLAZIONE 1.2.4
+INSTALLAZIONE 1.2.5
 
 1. Chiudi il gioco e fai una copia del tuo salvataggio prima di sostituire la ROM.
 2. Calcola lo SHA-256 della ROM di partenza. Scegli la riga esatta nell'elenco sotto; il nome del file non basta. Non usare ROM modificate, gia' personalizzate, trimmate o di una revisione non riconosciuta.
@@ -6,15 +6,15 @@ INSTALLAZIONE 1.2.4
 4. Associa alla nuova ROM il tuo .sav corrente, mantenendo il nome base previsto dall'emulatore. Non creare un nuovo salvataggio sopra quello esistente. Avvia dal menu Continua: non caricare un vecchio salvataggio rapido dell'emulatore.
 
 Esempio xdelta3 (sostituisci i nomi):
-  xdelta3 -d -D -R -s "origine.nds" "Patch/from-clean-it.xdelta" "Sacred Gold Plus 1.2.4 IT.nds"
+  xdelta3 -d -D -R -s "origine.nds" "Patch/from-clean-it.xdelta" "Sacred Gold Plus 1.2.5 IT.nds"
 
 Controllo SHA-256: macOS shasum -a 256; Linux sha256sum; Windows PowerShell Get-FileHash -Algorithm SHA256.
 
 Questo ZIP produce la ROM italiana da tutti gli ingressi elencati, anche quelli inglesi. Per ottenere l'inglese scarica lo ZIP US. La lingua delle patch e' quella di destinazione.
 
 DESTINAZIONE
-Sacred Gold Plus 1.2.4 IT.nds
-SHA-256 d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
+Sacred Gold Plus 1.2.5 IT.nds
+SHA-256 bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4
 131906120 bytes
 
 INGRESSI SUPPORTATI
@@ -95,4 +95,12 @@ Sacred Gold Plus 1.2.3 IT
 Patch/from-plus-1.2.3-it.xdelta
 SHA-256 12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0
 
-Le varianti storiche 1.03 Fix e Fix Camera Classica non sono supportate: manca una preimmagine verificata. Non forzare l'applicazione.
+Sacred Gold Plus 1.2.4 EN
+Patch/from-plus-1.2.4-en.xdelta
+SHA-256 d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548
+
+Sacred Gold Plus 1.2.4 IT
+Patch/from-plus-1.2.4-it.xdelta
+SHA-256 d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
+
+Le vecchie varianti 1.03 Fix e Fix Classic Camera non sono supportate: manca un ingresso verificato. Non forzare la patch.

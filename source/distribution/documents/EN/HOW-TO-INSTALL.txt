@@ -1,4 +1,4 @@
-INSTALLATION 1.2.4
+INSTALLATION 1.2.5
 
 1. Close the game and back up your current save before replacing the ROM.
 2. Calculate your source ROM SHA-256. Match the exact entry below; filenames are not sufficient. Modified, customized, trimmed or unrecognized revisions are not accepted.
@@ -6,15 +6,15 @@ INSTALLATION 1.2.4
 4. Associate the existing .sav with the new ROM using the basename expected by your emulator. Do not overwrite it with a new save. Start from Continue, not an older emulator quick state.
 
 xdelta3 example (replace the filenames):
-  xdelta3 -d -D -R -s "source.nds" "Patch/from-clean-us.xdelta" "Sacred Gold Plus 1.2.4 EN.nds"
+  xdelta3 -d -D -R -s "source.nds" "Patch/from-clean-us.xdelta" "Sacred Gold Plus 1.2.5 EN.nds"
 
 SHA-256 tools: macOS shasum -a 256; Linux sha256sum; Windows PowerShell Get-FileHash -Algorithm SHA256.
 
 This ZIP produces English from every listed input, including Italian inputs. Download the IT ZIP to produce Italian. The ZIP language is the output language.
 
 TARGET
-Sacred Gold Plus 1.2.4 EN.nds
-SHA-256 d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548
+Sacred Gold Plus 1.2.5 EN.nds
+SHA-256 a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e
 127104144 bytes
 
 SUPPORTED INPUTS
@@ -94,5 +94,13 @@ SHA-256 05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9
 Sacred Gold Plus 1.2.3 IT
 Patch/from-plus-1.2.3-it.xdelta
 SHA-256 12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0
+
+Sacred Gold Plus 1.2.4 EN
+Patch/from-plus-1.2.4-en.xdelta
+SHA-256 d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548
+
+Sacred Gold Plus 1.2.4 IT
+Patch/from-plus-1.2.4-it.xdelta
+SHA-256 d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
 
 Historical 1.03 Fix and Fix Classic Camera variants are unsupported: no verified input is available. Do not force patch application.

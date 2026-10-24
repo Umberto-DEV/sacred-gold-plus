@@ -1,0 +1,11 @@
+WHAT IS NEW IN 1.2.5
+
+V.1.2.5 is visible on the upper title screen, alongside the Sacred Gold Plus logo and flying Ho-Oh. The version is also available in Options > SELECT > Plus after settings have been saved. No new game is needed.
+
+Save compatibility: keep your existing .sav. Save code, the native format, Plus settings and expanded Bag storage are unchanged from 1.2.4. Only version text and title-screen label graphics have changed; the logo, palettes and animations remain intact. The version aligns with Developed by A FAN; the missing descender in by is corrected.
+
+Mac validation: seven load/save/cold-restart cases with older saves, including non-default settings and the 252nd Bag slot. Keep a backup and start through Continue, not an older emulator quick state.
+
+Includes all 1.2.4 sprite-copy and Waterfall-search fixes and earlier features. Game speed is unchanged. This is not a full new playthrough and does not establish the cause of the WaterMelonDS rendering report.
+
+Each ZIP contains 21 input patches, including 1.2.4 EN/IT ROMs. Every route is checked with xdelta3 and RomPatcher.js. Original manuals and credits are preserved.

@@ -1,0 +1,11 @@
+NOVITA 1.2.5
+
+La versione V.1.2.5 e' visibile nello schermo superiore del titolo, con il logo Sacred Gold Plus e Ho-Oh in volo. E' consultabile anche in Opzioni > SELECT > Plus dopo il salvataggio delle impostazioni. Non serve una nuova partita.
+
+Compatibilita' salvataggi: l'aggiornamento conserva il .sav esistente. Il codice di salvataggio, il formato nativo, le impostazioni Plus e l'estensione della Borsa restano invariati dalla 1.2.4. Sono cambiati soltanto i testi della versione e la sua grafica nel titolo; logo, palette e animazioni restano intatti. La versione e' allineata al credito Developed by A FAN; la y di by ora ha il tratto inferiore corretto.
+
+Verifica sul Mac: sette cicli caricamento/salvataggio/riavvio con salvataggi precedenti, compresi impostazioni personalizzate e 252esimo slot della Borsa. Conserva un backup e riparti da Continua, non da un vecchio stato rapido dell'emulatore.
+
+Include tutte le correzioni 1.2.4 alle copie degli sprite in lotta e alla ricerca di Cascata, oltre alle funzionalita' delle versioni precedenti. Non modifica la velocita' del gioco. Non e' una nuova partita completa di collaudo e non dimostra la causa della segnalazione su WaterMelonDS.
+
+Ogni ZIP contiene 21 patch di ingresso, comprese le ROM 1.2.4 EN/IT. Ogni percorso viene verificato con xdelta3 e RomPatcher.js. Sono preservati i manuali originali e i crediti.

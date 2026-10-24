@@ -11,7 +11,7 @@ from sgp12.rom import Rifiuto
 
 class IntegrazioneTests(unittest.TestCase):
     def test_stage_is_part_of_public_verifier(self):
-        self.assertEqual(verifica.ORDINE_STADI[-1], 'manutenzione')
+        self.assertEqual(verifica.ORDINE_STADI[-2], 'manutenzione')
 
     def test_memory_applier_preserves_other_bytes(self):
         change = m.Cambio(2, b'cd', b'XY', 'test')

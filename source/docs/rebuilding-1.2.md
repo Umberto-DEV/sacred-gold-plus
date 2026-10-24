@@ -1,6 +1,6 @@
-# Rebuilding Sacred Gold Plus 1.2.4
+# Rebuilding Sacred Gold Plus 1.2.5
 
-Two commands build a 1.2.4 ROM from your own **unmodified HeartGold** ROM and verify the result.
+Two commands build a 1.2.5 ROM from your own **unmodified HeartGold** ROM and verify the result.
 
 (The file keeps its `rebuilding-1.2.md` name: several other pages link to it, and the
 procedure is the same one, extended.) This page is the
@@ -35,7 +35,7 @@ base is refused rather than silently mangled.
 
 ## 1b. Stage 0: from HeartGold to the 1.1 base
 
-The seventeen blocks are written against a Sacred Gold Plus **1.1** base. That base used to be
+The nineteen blocks are written against a Sacred Gold Plus **1.1** base. That base used to be
 something you had to already own; it is now derived from your ROM as the build's first step.
 
 Stage 0 applies a public **xdelta patch**, published as an asset of the `base-1.1` release. A
@@ -107,9 +107,9 @@ directory — one level below where step 2 creates `.venv`. Every command below 
 
 ```sh
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita <out/sgp-1.2.4-EN.nds>
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita <out/sgp-1.2.5-EN.nds>
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita <out/sgp-1.2.4-IT.nds>
+        --base "$SGP_ROM_DIR/Pokemon - Versione Oro HeartGold.nds" --uscita <out/sgp-1.2.5-IT.nds>
 ```
 
 `--delta` gives the stage-0 patch explicitly; without it, it is looked up in `$SGP_ROM_DIR` under
@@ -119,7 +119,7 @@ and an intermediate ROM after each block, which is what the step-by-step readers
 
 ### The block order
 
-After stage 0 the builder applies seventeen blocks, always in this order:
+After stage 0 the builder applies nineteen blocks, always in this order:
 
 1. **reserve** — carves and records the ARM9 reserve the native blocks allocate from
 2. **camera** — the camera behaviour change
@@ -139,6 +139,9 @@ After stage 0 the builder applies seventeen blocks, always in this order:
 16. **battle party move cache** — reuses the battle MoveTbl while preparing the party menu. The measured opening pause falls from 33 to 20 frames with animations ON; OFF retains the native getters. See the [implementation and validation](../features/squadra-lotta/README.md).
 17. **expanded Bag capacity** — 252 main-pocket slots and complete six-cell pages in every pocket, with a generation-bound save extension. See the [save contract and tests](../features/capacita-borsa/README.md).
 
+18. **maintenance** — the frozen 1.2.4 stage, coordinating native sprite copies and the Waterfall check.
+19. **persistent version** — the data-only 1.2.5 stage: the Plus options heading and initial prompt share the release title; V.1.2.5 appears on the upper title screen, aligned with the corrected credit. The full-image reader permits only the version text and its title graphics; all save code stays unchanged.
+
 The order matters: later blocks read the reserve map the first block wrote, and blocks that
 patch the same overlay run in a declared sequence, the second applier working on the ROM the
 first one produced. The gift block computes site keys after the script changes. The final
@@ -154,7 +157,7 @@ not a nicety here: it is what makes the verification below meaningful.
 ## 5. Verify
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.4-EN.nds> \
+cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.5-EN.nds> \
         --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
@@ -179,12 +182,12 @@ cd source && ../.venv/bin/python3 -m sgp12.verifica <out/sgp-1.2.4-EN.nds> \
 
 ## 6. Regenerating the canonical build blobs
 
-The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.4 ROM, not
+The per-block blobs under `source/sgp12/build/` are extracted from a finished 1.2.5 ROM, not
 recompiled:
 
 ```sh
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.4-EN.nds> --lingua EN
-cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.4-IT.nds> --lingua IT
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.5-EN.nds> --lingua EN
+cd source && ../.venv/bin/python3 -m sgp12.estrai_build --rom <sgp-1.2.5-IT.nds> --lingua IT
 ```
 
 For every block that writes a blob at a fixed address, this reads the exact bytes out of the ROM
@@ -249,17 +252,20 @@ Three related failure modes worth naming:
 - `source/README.md` — repository layout, tests and how to work on the sources.
 - `source/sgp12/README.md` — the library itself, block by block.
 
-## Final maintenance stage (1.2.4)
+## Final maintenance and version stages (1.2.4–1.2.5)
 
 After the existing stages, `sgp12.manutenzione` requires the exact published
 1.2.3 intermediate hash. It installs the copy-ownership barrier and Waterfall
-search guard, then updates the in-game title to 1.2.4. The options source and
-blobs retain the intermediate 1.2.3 title deliberately; the final title is
-specified in `sgp12/build/manutenzione/versione.json`. No intermediate ROM
-needs to be kept on disk. Both the builder and verifier include this stage.
+search guard, then updates the initial prompt title to 1.2.4. The options source
+and blobs retain the intermediate 1.2.3 title deliberately; the maintenance title
+is specified in `sgp12/build/manutenzione/versione.json`. The following
+`sgp12.versione` stage shows 1.2.5 in the Plus menu and upper title screen and
+corrects the credit. No intermediate ROM needs to be kept on disk. Both the
+builder and verifier include these stages.
 
 The release-specific file checks, supported inputs and reproducible player
 ZIP tooling are documented in [distribution/README.md](../distribution/README.md)
 (relative to this document's directory, use `source/distribution/README.md`
-from the repository root). The release was validated incrementally against
-the published 1.2.3 files; a new full build/runtime campaign was not run locally.
+from the repository root). The historical 1.2.4 release was validated
+incrementally against the published 1.2.3 files. The 1.2.5 build and older-save
+campaign are recorded in [version-1.2.5.md](version-1.2.5.md).

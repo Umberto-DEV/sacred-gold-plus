@@ -1,8 +1,8 @@
-# Reproduce the 1.2.4 player downloads
+# Reproduce the 1.2.5 player downloads
 
-The two player ZIPs each contain all 19 recognized input routes, including both
+The two player ZIPs each contain all 21 recognized input routes, including both
 retail HeartGold languages and every previously supported Plus image through
-1.2.3. The ZIP language selects the output language. The historical 1.03 Fix
+1.2.4. The ZIP language selects the output language. The historical 1.03 Fix
 variants remain excluded: no verified input is available. Recognition uses the
 whole-file SHA-256; personal modifications and trimmed ROMs are not accepted.
 
@@ -16,8 +16,8 @@ only their version labels change. `CONTENTS.json` records each member's hash.
 
 ## Inputs
 
-- The two 1.2.4 target ROMs, built with `sgp12.costruisci` from your own games.
-- The 19 source files you own, matching `release.json`.
+- The two 1.2.5 target ROMs, built with `sgp12.costruisci` from your own games.
+- The 21 source files you own, matching `release.json`.
 - The two unmodified [1.2.3 reference ZIPs](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.3), with the hashes in `release.json`.
 - xdelta3 and Node.js, plus [RomPatcher.js](https://github.com/marcrobledo/RomPatcher.js) checked out at the commit in `release.json`.
 - To render the current two-page PDF guides: reportlab 4.4.9. It is only a release-tool dependency, not needed to build the game or run core tests. `guide.py` uses standard PDF fonts and invariant metadata.
@@ -42,7 +42,7 @@ automatic Source code archives are developer source packages; players should
 download the named IT or US ZIP.
 
 The original manuals, Game Guide and illustrated 1.2 guides remain historical
-references. Current installation instructions, release notes and the 1.2.4
+references. Current installation instructions, release notes and the 1.2.5
 PDF guide are generated from `documents/`. Never translate or rewrite the
 original manuals while updating the release's own instructions.
 
@@ -52,8 +52,7 @@ original manuals while updating the release's own instructions.
 python -m unittest discover -s source/distribution -p test_pack.py
 ```
 
-File reconstruction is not a runtime test or a save-compatibility campaign.
-See [1.2.4 validation](../docs/release-1.2.4.md). No new emulator or device
-installation is part of this publishing workflow. The native idle behavior
-is covered by the maintenance tests and the limited player report recorded
-there; a complete new playthrough has not been performed.
+File reconstruction is distinct from game and save validation. See the
+[1.2.5 validation](../docs/version-1.2.5.md) for the final build, title-screen,
+menu and older-save tests. Every package route is decoded using two independent
+decoders. Existing original manuals and their fingerprints remain unchanged.
