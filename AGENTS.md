@@ -51,3 +51,12 @@ restart; include both languages, saves without Plus data and saves with Plus
 settings and Bag extensions. Preserve the original fixtures. Emulator savestates
 are not a substitute for these raw-save tests. Record the tested coverage and
 any limitations; do not infer universal compatibility from a single fixture.
+
+## Release-page format
+
+Use `source/distribution/RELEASE-NOTES-TEMPLATE.md` for player-facing GitHub
+releases. Present the game as a whole: current features, screenshots, downloads,
+community contributions and credits. Keep maintenance notes to **Some bugs fixed.**
+Detailed per-version changes and validation belong in the changelog and source
+documentation. Update the overview when gameplay features change. Editing release
+descriptions must not replace published ZIPs, checksums or tags.

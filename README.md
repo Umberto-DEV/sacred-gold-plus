@@ -21,6 +21,8 @@ Captured on the local melonDS test bench. Each image shows one DS screen; the bo
 | ![Plus options — English (bottom screen)](images/11-plus-options-english-bottom.png)<br>Plus options — English (bottom screen) | ![Plus options — Italian (bottom screen)](images/12-plus-options-italian-bottom.png)<br>Plus options — Italian (bottom screen) |
 | ![EV viewer in the Pokémon summary](images/13-ev-viewer-top.png)<br>EV viewer in the Pokémon summary | ![IV viewer in the Pokémon summary](images/14-iv-viewer-top.png)<br>IV viewer in the Pokémon summary |
 | ![In-game EV/IV guide (bottom screen)](images/15-ev-iv-guide-bottom.png)<br>In-game EV/IV guide (bottom screen) | ![Version 1.2.5 title screen](images/17-version-title-top.png)<br>Version 1.2.5 title screen |
+| ![Goldenrod City — exploring the city.](images/18-goldenrod-city.png)<br>Goldenrod City — exploring the city. | ![Violet City — outside the Poké Mart.](images/19-violet-city.png)<br>Violet City — outside the Poké Mart. |
+| ![Lake of Rage — a rainy day by the water.](images/20-lake-of-rage.png)<br>Lake of Rage — a rainy day by the water. | ![Blackthorn City — the entrance to Dragon's Den.](images/21-blackthorn-city.png)<br>Blackthorn City — the entrance to Dragon's Den. |
 
 <details>
 <summary>More locations, interiors and guide controls</summary>
@@ -31,6 +33,8 @@ Captured on the local melonDS test bench. Each image shows one DS screen; the bo
 | ![National Park](images/06-national-park.png)<br>National Park | ![Professor Elm's laboratory](images/07-elms-lab.png)<br>Professor Elm's laboratory |
 | ![Inside a Pokémon Center](images/08-pokemon-center.png)<br>Inside a Pokémon Center | ![Mt. Mortar — native indoor camera](images/09-mt-mortar.png)<br>Mt. Mortar — native indoor camera |
 | ![Guide controls (bottom screen)](images/16-guide-controls-bottom.png)<br>Guide controls (bottom screen) |  |
+| ![Inside the Ecruteak Dance Theater.](images/22-dance-theater.png)<br>Inside the Ecruteak Dance Theater. | ![Inside Sprout Tower.](images/23-sprout-tower.png)<br>Inside Sprout Tower. |
+| ![Inside the Violet City Poké Mart.](images/24-violet-pokemart.png)<br>Inside the Violet City Poké Mart. | ![Inside a house at the Lake of Rage.](images/25-lakeside-house.png)<br>Inside a house at the Lake of Rage. |
 
 </details>
 

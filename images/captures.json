@@ -170,6 +170,78 @@
       "game_version": "1.2.5",
       "sha256": "8402881b45f53873aea4a53a347563d185e922c8e96e9beb8f1f1baa91a1b8a1",
       "source_capture_sha256": "f28273d3fd001f86881a6d8cfa661ead241e457221e6c618ddc3563a94056550"
+    },
+    {
+      "file": "18-goldenrod-city.png",
+      "screen": "top",
+      "caption": "Goldenrod City — exploring the city.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "b8b43f852af1411833f4af964fcd8c4508d266be73809801f1dc0f09a2f66cf7",
+      "source_capture_sha256": "a853e81c79da9240f1d39b8aa97d413cc9bdd022db5852df111a44ca8024e9a6"
+    },
+    {
+      "file": "19-violet-city.png",
+      "screen": "top",
+      "caption": "Violet City — outside the Poké Mart.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "87258cba01f3e64099524fcc0a64d06e3a57d863c983c2e83c281dbbbee05db3",
+      "source_capture_sha256": "9b5a81c086f7106170f9da0a1b1c4e7024f5d7c258001f4734179e0b17c04f3c"
+    },
+    {
+      "file": "20-lake-of-rage.png",
+      "screen": "top",
+      "caption": "Lake of Rage — a rainy day by the water.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "99050a099c37362f2b4556b18daf8d830f67963613f38716cb82ddfca94dfaa1",
+      "source_capture_sha256": "34a1f74bcbb056b948a27f0ce457cf9cec03d584c89c047834520093c1fb9eba"
+    },
+    {
+      "file": "21-blackthorn-city.png",
+      "screen": "top",
+      "caption": "Blackthorn City — the entrance to Dragon's Den.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "ea6070a7d88d88b345f374cdf7b907dd745b58441646ce4eae4ff7239930609b",
+      "source_capture_sha256": "66f22ecbaa7441941f3bfccd93241babd01f3e44a004ed511e8318ca118dc74a"
+    },
+    {
+      "file": "22-dance-theater.png",
+      "screen": "top",
+      "caption": "Inside the Ecruteak Dance Theater.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "050e219112714609a416c81d250136a697ee5b154a07f387eba70e5183a2f8f8",
+      "source_capture_sha256": "e97264167e7eb3f11f16a300d7850daaa0a034ce2992bcfb18746f1de92d221c"
+    },
+    {
+      "file": "23-sprout-tower.png",
+      "screen": "top",
+      "caption": "Inside Sprout Tower.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "246dcc533405dfa4763a920c78be33ea814536dc34eb2e698b97060ff7fa23a3",
+      "source_capture_sha256": "4f10ec3027f1c715062e53181d1c386031c38a958c097bf75d9b42e0c18e23c2"
+    },
+    {
+      "file": "24-violet-pokemart.png",
+      "screen": "top",
+      "caption": "Inside the Violet City Poké Mart.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "6cb8fd5a07fb43e91906e9522543b113091281a351fd52db39604929450e8880",
+      "source_capture_sha256": "39e6b225f4bd190c615d2b92440cf8f6abb780a2959cdfdd13ce967650447658"
+    },
+    {
+      "file": "25-lakeside-house.png",
+      "screen": "top",
+      "caption": "Inside a house at the Lake of Rage.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "4c29efbb55c2005c6e769e770086cffb5c8dd9ca08659826ccb86426d121e08c",
+      "source_capture_sha256": "cd7094b796bb1f620a9bc039458cdac9decc91f68e80a583efec102e5f114daf"
     }
   ]
 }

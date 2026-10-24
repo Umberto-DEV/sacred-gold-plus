@@ -56,3 +56,18 @@ File reconstruction is distinct from game and save validation. See the
 [1.2.5 validation](../docs/version-1.2.5.md) for the final build, title-screen,
 menu and older-save tests. Every package route is decoded using two independent
 decoders. Existing original manuals and their fingerprints remain unchanged.
+
+## Player-facing release pages
+
+Use [RELEASE-NOTES-TEMPLATE.md](RELEASE-NOTES-TEMPLATE.md) for every release.
+The page introduces the current game with its features, screenshots, downloads
+and credits. Keep maintenance notes to **Some bugs fixed.**; retain the detailed
+technical record in `CHANGELOG.md` and the release validation document. Update the
+feature overview when the game gains or changes a feature.
+
+Replace `{{VERSION}}` with the published version and `{{IMAGE_BASE_URL}}` with the
+image directory URL at a full, published commit SHA. Review the screenshots and
+their captions against `images/captures.json`, and check every link before
+publishing. Refresh any screenshot that displays an older version number.
+Only update the release description when refreshing its presentation;
+published ZIPs, checksums and tags remain immutable.
