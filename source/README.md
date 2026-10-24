@@ -169,9 +169,9 @@ Where a tool needs game data, it reads it from your file at build time. The text
 
 ## How changes get in
 
-`main` is the development trunk and stays green. Work on a `feature/…` or `fix/…` branch (from a fork or from this repository) and open a pull request against `main`; it needs the CI run to pass and a review, and the history stays linear.
+`main` is the working branch for the maintainer and their coding assistants. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
 
-CI runs the Class A tests above on every push to any branch and on every pull request, so your branch gets the same checks as `main`. A first run from a fork waits for the maintainer's approval. Class B needs your own game file and never runs on GitHub: run it locally and write what you ran, and what it said, on the pull request's "Class B tests run locally" line. "Not run" is acceptable; a claim that was not checked is not.
+CI runs the Class A tests above on every push to any branch and on every pull request, including direct maintainer updates to `main`. A first run from a fork waits for the maintainer's approval. Class B needs your own game file and never runs on GitHub: run it locally and record what you ran and its result in the release validation document (or the pull request's "Class B tests run locally" line for an external contribution). "Not run" is acceptable; a claim that was not checked is not.
 
 Finished versions are tags `vX.Y` with a GitHub release carrying the player ZIPs, built on the maintainer's machine from the verified ROM. Previews are tagged `vX.Y-rcN` and marked pre-release. Released bytes are never overwritten: a correction is a new release. There is no nightly build, because building the game needs a game file.
 

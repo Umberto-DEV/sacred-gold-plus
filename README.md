@@ -93,7 +93,7 @@ Each ZIP contains the patch, the recommended cheats, the manuals and the install
 
 Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.4 from an unmodified HeartGold ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/). The only game file you need is the retail game you already own — the first build step derives our 1.1 base from it with a published patch of differences, so no intermediate ROM of ours is needed and none is distributed.
 
-- `main` is the development trunk. Fork, create a `feature/…` or `fix/…` branch, open a pull request.
+- The maintainer and coding assistants work directly on `main`, with reviewed changes and passing checks, without creating branches or pull requests. Community contributions from other accounts may still use pull requests.
 - Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
 - Finished versions are tags (`v1.2.4`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
 - Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
@@ -136,7 +136,7 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 
 **Compatibilità:** i salvataggi esistenti vengono importati. Gli slot aggiuntivi della Borsa usano un’estensione del salvataggio: tornando a una ROM vecchia, gli oggetti negli slot extra non sono disponibili; salvando con quella ROM non si recuperano automaticamente al ritorno. Carica il salvataggio normale del gioco, non un savestate precedente. L’intestazione è invariata dalla 1.2, ma importa il catalogo aggiornato per le correzioni. Tutti i codici sono spenti di default.
 
-**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il tronco di sviluppo; si lavora su un branch e si apre una pull request; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub. L'unico ingresso è la **HeartGold originale** della propria lingua: il primo stadio della costruzione ne ricava la base 1.1 applicando una patch pubblica di sole differenze, quindi non serve nessuna ROM intermedia e nessuna ROM viene distribuita.
+**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). `main` è il ramo di lavoro del manutentore e degli assistenti: le modifiche si verificano e si pubblicano direttamente lì, senza aprire branch o pull request per questo flusso; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub. L'unico ingresso è la **HeartGold originale** della propria lingua: il primo stadio della costruzione ne ricava la base 1.1 applicando una patch pubblica di sole differenze, quindi non serve nessuna ROM intermedia e nessuna ROM viene distribuita.
 
 **Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
 
