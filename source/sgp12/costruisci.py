@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.3
+"""sgp12.costruisci — UN comando per costruire la ROM Sacred Gold Plus 1.2.4
 dalla propria HeartGold ORIGINALE.
 
     stadio 0: HeartGold originale --(delta xdelta pubblico)--> base 1.1
-    poi i diciassette blocchi:
+    poi i diciotto stadi:
     riserva -> camera -> plus+chunk -> testi -> npc -> anim -> opzioni -> wifi
-    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa
+    -> titolo -> credito -> guida -> caramelle -> borsa -> anim2 -> borsa_lotta -> squadra_lotta -> capacita_borsa -> manutenzione
 
 Uso:
     python3 -m sgp12.costruisci --base "Pokemon - HeartGold Version.nds" \\
-            --uscita sgp-1.2.3-EN.nds
+            --uscita sgp-1.2.4-EN.nds
     python3 -m sgp12.costruisci --base "Pokemon - Versione Oro HeartGold.nds" \\
-            --uscita sgp-1.2.3-IT.nds
+            --uscita sgp-1.2.4-IT.nds
 
 `--base` e' la HeartGold originale: la lingua si DEDUCE dal suo sha256 (pin
 `base11.json`) e, se `--lingua` c'e', deve coincidere. Lo stadio 0 cerca il
@@ -35,6 +35,7 @@ import sys
 import time
 from pathlib import Path
 
+from . import manutenzione
 from .rom import Rifiuto, prepara_base, sha
 from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wifi,
                       titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
@@ -138,6 +139,10 @@ def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None =
     t0 = time.time()
     rom, _ = capacita_borsa.applica(rom, build_dir / "capacita_borsa", manifest_path=manifest)
     registra("capacita_borsa", t0, rom)
+
+    t0 = time.time()
+    rom, _ = manutenzione.applica(rom, build_dir / "manutenzione")
+    registra("manutenzione", t0, rom)
 
     return rom, {"lingua": lingua, "base_sha256": sha(base), "uscita_sha256": sha(rom),
                 "uscita_bytes": len(rom), "passi": passi}

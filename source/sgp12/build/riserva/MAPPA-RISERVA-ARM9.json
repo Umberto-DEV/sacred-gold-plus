@@ -117,17 +117,17 @@
       "pubblico": false
     },
     {
-      "nome": "libero.1.2.basso",
+      "nome": "sgp.cascata",
       "base": "0x023D8040",
       "bytes": 64,
-      "proprietario": "(nessuno)",
-      "tipo": "libero",
+      "proprietario": "source/features/manutenzione",
+      "tipo": "codice+canarino",
       "zona": "1.2",
-      "tutto_zero": true,
       "ancore": [],
       "pubblico": false,
-      "nota": "la finestra che C1 aveva ritagliato per camera.eccezioni.1.2 (48 B) e canarino.camera (16 B). Dalla 1.2.3 la tabella ha 68 voci e non ci sta piu': e' stata spostata in libero.1.2 (0x023D8A10) e questi 64 B tornano al serbatoio, di nuovo assegnabili. Non confonderlo con padding.allineamento.d1, che comincia subito sopra (0x023D8080) e NON e' assegnabile.",
-      "assegnabile": true
+      "nota": "1.2.4: wrapper Cascata; riusa la finestra liberata dalla camera nella 1.2.3. Eccezione di allineamento: finestra storica di 64 B, senza espansione della riserva.",
+      "assegnabile": false,
+      "sha256": "d832f739e70aec369a527dd46278f74fdced69a1b3e351b315ae468b4828378f"
     },
     {
       "nome": "padding.allineamento.d1",
@@ -449,8 +449,10 @@
       },
       "ancore": [],
       "nota": "v3: 'sha256' e' la ROM EN 1.2.3, il PRIMO 'sha256_precedenti' e' la IT 1.2.3 (non e' una revisione storica: T2 verifica un file alla volta e i due sono varianti di lingua); seguono la coppia 1.2.2 (EN poi IT), la coppia 1.2.1 (EN poi IT), la coppia 1.2 (EN poi IT) e la coppia v2 (EN poi IT). Aggiornato 20/09/2026 per la 1.2.3 (cambia solo `c_titolo`, la misura del blob resta 886/944 B); prima 19/09/2026 per la 1.2.2, 13/09/2026 per la 1.2.1 e 12/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-01.",
-      "sha256": "e63c597a83238ff02fab589b3783610167329d374c3eb94f58f25dfd91bb455d",
+      "sha256": "89cec1cab2e7693e3a711d62e6e5a1022c38cf8cc772b7ba77ad7b2a4c3fc498",
       "sha256_precedenti": [
+        "46b4a93cde8044caaf598d03e28db73abf7629f6a2ffbeb8b8f3bd4aede1b431",
+        "e63c597a83238ff02fab589b3783610167329d374c3eb94f58f25dfd91bb455d",
         "c98164a9f9e5f1e250f94adff940c9a0e38fb1761fe7a106ca12f782ac58dc3f",
         "3f0d2613b4aec23cfb615add5fe5022c4e866f68b26e075c4ec4621cad86d369",
         "ccf454556ea3eb901b499ae0e9c5196413ec10b4cd1ebfdd07bc998a54c1a8f5",
@@ -583,6 +585,11 @@
           "offset": 1632,
           "bytes": 64,
           "sha256": "a2f7660dca7c567bf130a0a1bb6eee0e3087a81632e3d8148414c3a2a6281b50"
+        },
+        {
+          "offset": 1888,
+          "bytes": 160,
+          "sha256": "6926e17b5530f5d4edbd644438d6a9557bbac370ec3ad04994a1d3bc7f8a5ef9"
         }
       ],
       "ancore": [],
@@ -608,7 +615,21 @@
           "nota": "fermata prima del task nativo di cattura (Pokédex/soprannome)"
         }
       ],
-      "nota": "Usa il bit anim esistente, spento per default. Il blocco v4 resta invariato per ricostruire lo stadio precedente. Il rilettore anim2 verifica i ganci nell overlay compresso, i dati e il padding."
+      "nota": "Usa il bit anim esistente, spento per default. Il blocco v4 resta invariato per ricostruire lo stadio precedente. Il rilettore anim2 verifica i ganci nell overlay compresso, i dati e il padding.",
+      "prenotazione_manutenzione": {
+        "proprietario": "source/features/manutenzione",
+        "stato": {
+          "base": "0x023DBBC0",
+          "bytes": 4,
+          "uso": "contatore copie, precedentemente riservato"
+        },
+        "coda": {
+          "base": "0x023DBC60",
+          "bytes": 160,
+          "uso": "wrapper copie OAM e canarino"
+        },
+        "condizione_applicazione": "1.2.4: applicato nello stadio finale; il contatore è inizialmente zero"
+      }
     },
     {
       "nome": "sgp.borsa_lotta",

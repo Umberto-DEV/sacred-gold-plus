@@ -12,6 +12,7 @@ Uso (da dentro `source/`):
 (serve ndspy: vedi `source/requirements.txt`.)
 """
 import os
+import hashlib
 import random
 import struct
 import subprocess
@@ -39,7 +40,7 @@ SHA256SUMS = ROM_DIR / "SHA256SUMS"
 # Nome della ROM bersaglio dentro $SGP_ROM_DIR. E' una COSTANTE DI VERSIONE:
 # la 1.2.3 costruisce `sgp-1.2.3-{EN,IT}.nds`. Va aggiornata quando cambia la
 # versione, mai aggirata rendendo il confronto facoltativo.
-BERSAGLIO = "sgp-1.2.3-%s.nds"
+BERSAGLIO = "sgp-1.2.4-%s.nds"
 BUILD_RISERVA = Path(__file__).resolve().parent / "build" / "riserva"
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
 MANIFEST = BUILD_RISERVA / "MAPPA-RISERVA-ARM9.json"
@@ -322,18 +323,19 @@ class TestRegistroCamera(unittest.TestCase):
         self.assertEqual(int(ancore["0x023DEBD8"]["vale"], 16), bloc_camera.CAN_ECC12)
         self.assertEqual(ancore["0x023DEBD8"].get("punta_a_blocco"), "canarino.camera")
 
-    def test_il_serbatoio_libero_e_stato_scalato_e_restituito(self):
+    def test_il_serbatoio_camera_e_riusato_da_cascata_124(self):
         b = self._blocchi()
         libero = b["libero.1.2"]
         self.assertEqual(int(libero["base"], 16), bloc_camera.LIBERO12_DOPO)
         self.assertEqual(int(libero["base"], 16) + libero["bytes"], 0x023D8B00)
         self.assertTrue(libero.get("assegnabile"))
-        basso = b["libero.1.2.basso"]
+        basso = b["sgp.cascata"]
         self.assertEqual(int(basso["base"], 16), bloc_camera.LIBERO12_BASSO)
         self.assertEqual(basso["bytes"], bloc_camera.LIBERO12_BASSO_N)
-        self.assertTrue(basso.get("assegnabile"),
-                        "la finestra liberata deve tornare assegnabile, non restare un limbo")
-        self.assertTrue(basso.get("tutto_zero"))
+        self.assertFalse(basso.get("assegnabile"))
+        self.assertFalse(basso.get("tutto_zero"))
+        self.assertEqual(basso["sha256"], hashlib.sha256(
+            (BUILD_DEFAULT / "manutenzione/cascata.bin").read_bytes()).hexdigest())
 
     def test_lo_sha_precedente_del_gancio_non_e_stato_buttato(self):
         cod = self._blocchi()["camera.codice"]

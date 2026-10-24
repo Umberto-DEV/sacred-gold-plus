@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "version": "1.2.4",
+  "sources": [
+    {
+      "id": "clean-us",
+      "label": "Pokemon HeartGold (USA)",
+      "sha256": "65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105",
+      "bytes": 134217728
+    },
+    {
+      "id": "clean-it",
+      "label": "Pokemon HeartGold (Italy)",
+      "sha256": "013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1",
+      "bytes": 134217728
+    },
+    {
+      "id": "plus-1.01",
+      "label": "Sacred Gold Plus 1.01 English",
+      "sha256": "f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6",
+      "bytes": 126978016
+    },
+    {
+      "id": "plus-1.02",
+      "label": "Sacred Gold Plus 1.02 English",
+      "sha256": "020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b",
+      "bytes": 126976992
+    },
+    {
+      "id": "plus-1.03",
+      "label": "Sacred Gold Plus 1.03 English",
+      "sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
+      "bytes": 126979552
+    },
+    {
+      "id": "plus-1.04-en-plus",
+      "label": "Sacred Gold Plus 1.04 US New Angle",
+      "sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-en-classic",
+      "label": "Sacred Gold Plus 1.04 US Normal Angle",
+      "sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-it-plus",
+      "label": "Sacred Gold Plus 1.04 IT New Angle",
+      "sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
+      "bytes": 131840584
+    },
+    {
+      "id": "plus-1.04-it-classic",
+      "label": "Sacred Gold Plus 1.04 IT Normal Angle",
+      "sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
+      "bytes": 131840584
+    },
+    {
+      "id": "plus-1.1-en",
+      "label": "Sacred Gold Plus 1.1 English",
+      "sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.1-it",
+      "label": "Sacred Gold Plus 1.1 Italian",
+      "sha256": "7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.1-en",
+      "label": "Sacred Gold Plus 1.2.1 English",
+      "sha256": "09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.1-it",
+      "label": "Sacred Gold Plus 1.2.1 Italian",
+      "sha256": "8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.2-en-prima",
+      "label": "Sacred Gold Plus 1.2.2 English (19 September build)",
+      "sha256": "03e32bc9aed7aa53188145ab802c0ab0567abc8e3d97f8607464aacc21146762",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.2-it-prima",
+      "label": "Sacred Gold Plus 1.2.2 Italian (19 September build)",
+      "sha256": "d862fe4d7b6cb8aea027fa5c700aa7146ce9b361488a310df25db5c00b812122",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.2-en",
+      "label": "Sacred Gold Plus 1.2.2 English (second edition)",
+      "sha256": "37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.2-it",
+      "label": "Sacred Gold Plus 1.2.2 Italian (second edition)",
+      "sha256": "c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.3-en",
+      "label": "Sacred Gold Plus 1.2.3 EN",
+      "sha256": "05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.3-it",
+      "label": "Sacred Gold Plus 1.2.3 IT",
+      "sha256": "12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0",
+      "bytes": 131906120
+    }
+  ],
+  "targets": {
+    "EN": {
+      "name": "Sacred Gold Plus 1.2.4 EN.nds",
+      "sha256": "d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548",
+      "bytes": 127104144
+    },
+    "IT": {
+      "name": "Sacred Gold Plus 1.2.4 IT.nds",
+      "sha256": "d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0",
+      "bytes": 131906120
+    }
+  },
+  "references": {
+    "EN": {
+      "name": "Sacred-Gold-Plus-1.2.3-US.zip",
+      "sha256": "7b96cd37d96048315b7c8db5fb91da7b150826c4da344090e62658749ebfca30",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.3/Sacred-Gold-Plus-1.2.3-US.zip"
+    },
+    "IT": {
+      "name": "Sacred-Gold-Plus-1.2.3-IT.zip",
+      "sha256": "d9d32be19edf3eb28510f2261e9415ad11db87748c48908f06602033e00a2320",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.3/Sacred-Gold-Plus-1.2.3-IT.zip"
+    }
+  },
+  "original_documents": {
+    "Evolution Changes.pdf": {
+      "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf",
+      "bytes": 87217
+    },
+    "Important Item Locations.pdf": {
+      "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a",
+      "bytes": 154315
+    },
+    "Pokemon Changes.pdf": {
+      "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb",
+      "bytes": 309462
+    },
+    "Pokemon Locations.pdf": {
+      "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477",
+      "bytes": 1510542
+    },
+    "Special Event Guide.pdf": {
+      "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd",
+      "bytes": 674044
+    },
+    "SS_SG Trainer Pokemon by @JD48096761.txt": {
+      "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05",
+      "bytes": 98420
+    }
+  },
+  "rompatcher_commit": "3183884086825c3a57c72026234debcef1e2240c"
+}

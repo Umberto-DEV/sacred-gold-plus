@@ -144,7 +144,7 @@ anchors their public consumers use are never touched.
 
 Free space left in zone 1.2, recomputed from the register on 20/09/2026 (sum of the
 `docs/arm9-reserve-map.json` blocks typed `libero` with `assegnabile: true` — do not trust a
-cached figure, recompute it): **216 B**, in three blocks — 64 B at `0x023D8040`
+cached figure, recompute it): **152 B**, in three blocks — 64 B at `0x023D8040`
 (`libero.1.2.basso`), 88 B at `0x023D8AA8` (`libero.1.2`) and 64 B at `0x023DEB00`
 (`libero.1.2.finale`). It was 304 B until 1.2.3 grew the camera exception table from 24 to
 68 entries: the table no longer fitted in the 64 B window C1 had carved at `0x023D8040`
@@ -230,7 +230,7 @@ python3 verifiche/riserva_arm9.py <your rom.nds> --manifest docs/arm9-reserve-ma
 
 The path used to be written `../docs/arm9-reserve-map.json`, which from `source/` is the
 repository root, where there is no `docs/` folder: the command ended in a traceback. Against
-today's register (20/09/2026) the corrected command reports **216 B assignable** — 64 B at
+today's register (20/09/2026) the corrected command reports **152 B assignable** — 64 B at
 `0x023D8040`, the 88 B gap at `0x023D8AA8` and the 64 B block at `0x023DEB00` — and exits 0.
 (Earlier revisions of
 this page quoted 16 176 B / 15 936 B, from before `sgp.borsa`, `sgp.anim2`, `sgp.borsa_lotta`,
@@ -247,3 +247,5 @@ a register block falls outside the section.
 separate, frozen build input consumed by `sgp12.costruisci` when it lays down the reserve
 block. It is part of the reproducible build: editing it casually breaks the byte-identical
 rebuild. Register changes go in `docs/arm9-reserve-map.json`.
+
+The 1.2.4 maintenance stage occupies the former 64-byte low window with `sgp.cascata`; see the reservation table for the explicit inherited-alignment exception and ANIM2 tail usage.

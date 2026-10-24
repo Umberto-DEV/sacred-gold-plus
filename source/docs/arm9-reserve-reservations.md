@@ -91,7 +91,7 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | block | address | size | end (excl.) | used | state |
 |---|---|---:|---|---|---|
 | header + base canary | `0x023D8000` | `0x40` | `0x023D8040` | 64/64 | applied |
-| free (`libero.1.2.basso`) | `0x023D8040` | `0x40` | `0x023D8080` | — | **free** — held the 24-entry camera table until 1.2.3 |
+| `sgp.cascata` (Waterfall search guard) | `0x023D8040` | `0x40` | `0x023D8080` | 24 B code + 24 B padding + 16 B canary | applied in 1.2.4; reuses the historic 64 B window |
 | alignment padding | `0x023D8080` | `0x80` | `0x023D8100` | — | not assignable |
 | `sgp.plus` (Plus difficulty code and tables, save-chunk blob) | `0x023D8100` | `0x800` | `0x023D8900` | 756/2048 | applied |
 | `sgp.npc` + canary (NPC model cap) | `0x023D8900` | `0x110` | `0x023D8A10` | 176/272 | applied |
@@ -115,11 +115,11 @@ and the two public addresses it holds are never touched. It is not open for rese
 
 ### Free space
 
-As of 20/09/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
+As of 24/10/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
 `libero` with `assegnabile: true` — the two `.md` pages used to disagree with the register and
 with each other; the register is the source of truth):
 
-- **216 B total**, in three disjoint blocks — nothing here is contiguous with anything else.
+- **152 B total**, in two disjoint blocks — nothing here is contiguous with anything else.
 - **64 B** at `0x023DEB00` (`libero.1.2.finale`), up to the zone 1.1 canary at `0x023DEB40`.
   What used to be free from `0x023DBD00` has since been taken by `sgp.borsa_lotta` (256 B),
   `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B), on top of the 256 B for Rare
@@ -130,9 +130,6 @@ with each other; the register is the source of truth):
   camera exception table here: at 68 entries (136 B) the table no longer fitted in the 64 B
   window C1 had carved at `0x023D8040`, and that window could not grow — above it sits the
   alignment padding, which is not assignable, and then `sgp.plus`.
-- **64 B** at `0x023D8040` (`libero.1.2.basso`), the window the camera table has vacated.
-  Assignable again. Do not confuse it with the alignment padding that starts right above it
-  at `0x023D8080`, which is not.
 - Headroom inside blocks already allocated belongs to their owners, not to the free pool. The
   largest is 1 344 B in `sgp.wifi`; `sgp.plus` has 464 B free at `+0x630` and 236 B of growth
   margin at `+0x314`; `sgp.salvataggio` has 208 B. `sgp.anim` is full and any change to it
@@ -141,3 +138,7 @@ with each other; the register is the source of truth):
 Alignment padding (`0x023D8080`, 128 B) and the zone 1.1 hole (`0x023DFFE8`, 20 B) are marked
 not assignable in the register and are excluded from every free-space figure, including the
 one `source/verifiche/riserva_arm9.py` reports.
+
+### 1.2.4 maintenance
+
+The 64-byte historic window at `0x023D8040` is now owned by `sgp.cascata`. Its inherited alignment is an explicit exception to the allocation rule; the reserve does not grow. ANIM2 owns the 160-byte wrapper at `0x023DBC60` (144 bytes code, 16-byte canary) inside its existing block, and the copy counter at `0x023DBBC0`. Final-stage fingerprints are in the register. No existing public address moves.

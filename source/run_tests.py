@@ -49,6 +49,8 @@ ROOT = SOURCE.parent
 
 # (name, working directory, unittest arguments)
 SUITE = [
+    ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
+    ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test_pack.py"]),
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib"]),
     ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),

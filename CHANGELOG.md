@@ -1,5 +1,15 @@
 # What changed
 
+## 1.2.4 — 24 October 2026
+
+- Coordinate optional battle idle animation with native OAM sprite copies: reset before copying, suspend while copies live, resume after the final owner is freed.
+- Skip the field party search for Waterfall outside Surf moving south. No FPS unlock or gameplay-speed change.
+- A player completed the previously blocked Latios encounter with the maintenance candidate and reported no further slowdowns. The old freeze happened after battle started; event scripts and flags are unchanged, and its specific cause remains unproven.
+- Integrate maintenance and the 1.2.4 title into the public build and read-back chain. Preserve all existing save formats and public addresses.
+- Ship 19 input routes in each language ZIP, including original HeartGold US/IT and all previously recognized Plus versions through 1.2.3. Every route is checked with xdelta3 and the pinned RomPatcher.js.
+- Preserve original manuals and trainer reference byte for byte. Include current installation instructions, checksums, a 1.2.4 PDF guide and public reproducible packaging tools.
+
+
 ## 1.2.3 — 20 September 2026
 
 - **The classic HeartGold camera in every real cave.** The native camera — the one the original game uses underground — is restored in **44 more maps**, on top of the eight indoor maps 1.2 already covered (Mahogany Town, Mt. Mortar). In Kanto: Rock Tunnel (1F and B1F), Mt. Moon and its Square entrance, Diglett's Cave, Cerulean Cave (1F, 2F, B1F) and the Seafoam Islands (1F to B4F, including the Cinnabar Gym room). Between the two regions: Tohjo Falls (both rooms), Victory Road (1F, 2F, 3F) and Mt. Silver Cave (all floors and the outdoor ledges). In Johto: Union Cave (1F, B1F, B2F), Slowpoke Well (entrance, B1F, B2F), the Ice Path (1F, B1F, B2F), the Whirl Islands (1F, B1F, B2F), Dark Cave on the Route 45 side, the Dragon's Den and its entrance, and Cliff Cave. With the Plus angled camera these caves hid paths and items behind ledges and walls; the native camera shows them as the original game intended. Outdoors, in towers, forests, the Lighthouse, the Safari Zone and the Ruins of Alph the Plus camera is unchanged, and the Plus wide camera is still what you get everywhere else. The exception table grows from 24 to 68 entries and moves from `0x023D8040` into the ARM9 reserve at `0x023D8A10`, where it has room to grow; the hook's only change is the two pool literals that point at it. No map data and no code instruction changes: the ROM differs from 1.2.2 by 208 bytes for the camera plus the one byte of the version string. Verified on all 540 map headers in both languages, with the read-back, 30 mutants and a three-cave run on the headless bench. **A save made inside one of these caves keeps the previous camera until the next map change** — the map's camera type is frozen in the field data when the save is written. This is the behaviour Mt. Mortar has had since 1.2, not a new defect.

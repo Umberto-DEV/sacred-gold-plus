@@ -1,0 +1,98 @@
+INSTALLAZIONE 1.2.4
+
+1. Chiudi il gioco e fai una copia del tuo salvataggio prima di sostituire la ROM.
+2. Calcola lo SHA-256 della ROM di partenza. Scegli la riga esatta nell'elenco sotto; il nome del file non basta. Non usare ROM modificate, gia' personalizzate, trimmate o di una revisione non riconosciuta.
+3. Apri Rom Patcher JS (https://www.marcrobledo.com/RomPatcher.js/) oppure xdelta3. Seleziona la ROM e la patch indicata. Salva l'uscita come nuovo file e verifica lo SHA-256 di destinazione.
+4. Associa alla nuova ROM il tuo .sav corrente, mantenendo il nome base previsto dall'emulatore. Non creare un nuovo salvataggio sopra quello esistente. Avvia dal menu Continua: non caricare un vecchio salvataggio rapido dell'emulatore.
+
+Esempio xdelta3 (sostituisci i nomi):
+  xdelta3 -d -D -R -s "origine.nds" "Patch/from-clean-it.xdelta" "Sacred Gold Plus 1.2.4 IT.nds"
+
+Controllo SHA-256: macOS shasum -a 256; Linux sha256sum; Windows PowerShell Get-FileHash -Algorithm SHA256.
+
+Questo ZIP produce la ROM italiana da tutti gli ingressi elencati, anche quelli inglesi. Per ottenere l'inglese scarica lo ZIP US. La lingua delle patch e' quella di destinazione.
+
+DESTINAZIONE
+Sacred Gold Plus 1.2.4 IT.nds
+SHA-256 d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
+131906120 bytes
+
+INGRESSI SUPPORTATI
+
+Pokemon HeartGold (USA)
+Patch/from-clean-us.xdelta
+SHA-256 65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105
+
+Pokemon HeartGold (Italy)
+Patch/from-clean-it.xdelta
+SHA-256 013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1
+
+Sacred Gold Plus 1.01 English
+Patch/from-plus-1.01.xdelta
+SHA-256 f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6
+
+Sacred Gold Plus 1.02 English
+Patch/from-plus-1.02.xdelta
+SHA-256 020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b
+
+Sacred Gold Plus 1.03 English
+Patch/from-plus-1.03.xdelta
+SHA-256 78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
+
+Sacred Gold Plus 1.04 US New Angle
+Patch/from-plus-1.04-en-plus.xdelta
+SHA-256 3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248
+
+Sacred Gold Plus 1.04 US Normal Angle
+Patch/from-plus-1.04-en-classic.xdelta
+SHA-256 ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760
+
+Sacred Gold Plus 1.04 IT New Angle
+Patch/from-plus-1.04-it-plus.xdelta
+SHA-256 217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4
+
+Sacred Gold Plus 1.04 IT Normal Angle
+Patch/from-plus-1.04-it-classic.xdelta
+SHA-256 9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a
+
+Sacred Gold Plus 1.1 English
+Patch/from-plus-1.1-en.xdelta
+SHA-256 281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d
+
+Sacred Gold Plus 1.1 Italian
+Patch/from-plus-1.1-it.xdelta
+SHA-256 7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077
+
+Sacred Gold Plus 1.2.1 English
+Patch/from-plus-1.2.1-en.xdelta
+SHA-256 09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b
+
+Sacred Gold Plus 1.2.1 Italian
+Patch/from-plus-1.2.1-it.xdelta
+SHA-256 8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a
+
+Sacred Gold Plus 1.2.2 English (19 September build)
+Patch/from-plus-1.2.2-en-prima.xdelta
+SHA-256 03e32bc9aed7aa53188145ab802c0ab0567abc8e3d97f8607464aacc21146762
+
+Sacred Gold Plus 1.2.2 Italian (19 September build)
+Patch/from-plus-1.2.2-it-prima.xdelta
+SHA-256 d862fe4d7b6cb8aea027fa5c700aa7146ce9b361488a310df25db5c00b812122
+
+Sacred Gold Plus 1.2.2 English (second edition)
+Patch/from-plus-1.2.2-en.xdelta
+SHA-256 37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150
+
+Sacred Gold Plus 1.2.2 Italian (second edition)
+Patch/from-plus-1.2.2-it.xdelta
+SHA-256 c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a
+
+Sacred Gold Plus 1.2.3 EN
+Patch/from-plus-1.2.3-en.xdelta
+SHA-256 05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9
+
+Sacred Gold Plus 1.2.3 IT
+Patch/from-plus-1.2.3-it.xdelta
+SHA-256 12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0
+
+Le varianti storiche 1.03 Fix e Fix Camera Classica non sono supportate: manca una preimmagine verificata. Non forzare l'applicazione.

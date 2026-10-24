@@ -1,0 +1,73 @@
+1.2.4: cheat codes and melonDS identity are unchanged from 1.2.3. The existing codes are preserved; the entire catalogue has not been retested in game.
+
+THE 1.2.4 CHEATS — UPDATED 20 SEPTEMBER 2026
+
+The Android catalogue contains 2,110 codes in 67 folders, all disabled.
+The desktop .mch contains only the seven folder 00 codes; it is not an
+XML file and cannot be renamed into one.
+
+POKEMON AND LEVEL PICKER
+
+Install this project's melonDS Android 2.1.1:
+https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1
+Import the .xml through Settings > Cheats > Import cheats. While
+playing, open Pause > Cheats, then folder 40.
+
+1. Tap Choose Pokémon and level.
+2. Search all 493 species by name or National Dex number, select a level
+   from 1 to 100, press Enable and return to the game.
+3. Leave the code enabled in melonDS. The in-game selector starts off:
+   press L+R to turn it on. Release both buttons and press L+R again to
+   turn it off. A message confirms its state.
+4. Walk in tall grass. Turn Wild levels off in the game options
+   (SELECT) to get the exact level you selected.
+
+No Balls are used and L does not need to be held. Turning the managed
+selector off restores normal encounters. Restarting or loading a state
+turns it off again. Unown requires a completed Ruins of Alph puzzle;
+alternate forms retain game prerequisites. Surf, fishing, Rock Smash
+and Headbutt are outside this selector's scope.
+
+Restart once if you used older species/level codes in this session.
+The previous Master Ball entries also open the new picker in this
+melonDS build. On emulators without the picker, the default code sets
+Pikachu at level 5 directly, without L+R. Manual choices remain: ONE
+species in folders 50–59 and ONE level in 49; follow their notes and hold
+L for the species. Maximum wild IVs remains in folder 40.
+
+NATURE AND GENDER: FOLDERS 44–46
+
+All 75 codes were corrected. Folder 44 selects nature;45/46 also select
+male/female while L is held before entering an encounter. Release L
+before disabling a gender code. Use only one choice across these three
+folders: melonDS 2.1.1 disables other new choices automatically. Do not
+combine them with shiny/PID modifiers. Single-gender and genderless
+species keep their gender; Cute Charm is covered. The PID changes also
+affect shiny distribution. Follow each code's restoration instructions;
+L+R controls the species/level selector.
+
+VALIDATION AND LIMITS
+
+All 2,113 previous codes were structurally checked in EN/IT and executed
+separately on the melonDS core in field and battle contexts with their
+button conditions:11,780 short runs without console stops. This does
+not certify every effect in every game event. Targeted checks cover
+encounters, capture, gender/nature, map changes, saving and restoration.
+WFC, Pokewalker, backlight, minigames and events need their own contexts;
+remaining coverage limits are listed in the report:
+https://github.com/Umberto-DEV/sacred-gold-plus
+source/docs/cheat-catalogue-validation.md
+
+Three old Master Ball species entries are replaced by one picker. The
+incompatible clean-ROM overlay workaround was removed. Other folders
+keep their own instructions. Some inherited names/notes remain Italian.
+
+This update touches real ARM9 code (the larger, relocated camera
+exception table and the version string), so the 1.2.4 header was not
+assumed to match 1.2.2's: it was measured on the built ROM and came out
+unchanged, IPKE 19D1EEBB (EN) / IPKE 1C1F741C (IT). The exact value is
+in PACCHETTO.json. This file is the same 1.2.2 catalogue
+under the new name, rebuilt to match that header. Version 1.1
+catalogues have a different header. Plus options open with SELECT and
+are not cheats. Keep a backup of your save: disabling a code does not
+undo changes already saved.

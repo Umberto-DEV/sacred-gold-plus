@@ -1,0 +1,77 @@
+1.2.4: codici e identita' melonDS invariati dalla 1.2.3. I file mantengono i codici precedenti; non e' stata ripetuta una prova in gioco di tutto il catalogo.
+
+I CHEAT DELLA 1.2.4 — AGGIORNAMENTO 20 SETTEMBRE 2026
+
+Il catalogo Android contiene 2.110 codici in 67 cartelle. Tutti sono
+spenti all'importazione. Il file .mch per computer contiene soltanto i
+sette codici del gruppo 00; non rinominarlo in .xml.
+
+SELETTORE POKEMON E LIVELLO
+
+Installa melonDS Android 2.1.1 di questo progetto:
+https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1
+Importa il file .xml da Impostazioni > Cheat > Importa cheat.
+Durante la partita apri Pausa > Cheat e la cartella 40.
+
+1. Tocca Scegli Pokémon e livello.
+2. Cerca per nome o numero Pokedex, scegli fra tutte le 493 specie e
+   imposta il livello da 1 a 100. Premi Attiva e torna al gioco.
+3. Il codice rimane abilitato in melonDS, ma in gioco parte spento.
+   Premi L+R per attivarlo. Rilascia entrambi i tasti; una nuova
+   pressione L+R lo spegne. Un messaggio conferma lo stato.
+4. Cammina nell'erba alta. Per ottenere il livello scelto, spegni
+   Livelli selvatici nelle opzioni del gioco (SELECT).
+
+Non servono Master Ball o Ultra Ball e non occorre tenere L premuto.
+Il selettore gestito ripristina gli incontri normali quando lo spegni.
+Riavvio e caricamento di stato lo riportano spento. Unown richiede un
+puzzle completato nelle Rovine d'Alfa; le forme alternative mantengono
+le condizioni del gioco. Surf, pesca, Frantumaroccia e Testata non
+fanno parte di questo selettore.
+
+Se usavi i vecchi codici, riavvia una volta prima del nuovo selettore.
+Anche le vecchie voci che contavano Master Ball aprono la nuova lista
+nella versione aggiornata di melonDS. Su emulatori senza questa
+funzione, il codice predefinito imposta direttamente Pikachu livello 5,
+senza comando L+R. Restano le scelte manuali: UNA specie nelle cartelle
+50–59 e UN livello nella 49; segui le loro note e tieni L per la specie.
+Il trucco degli IV massimi resta nella cartella 40.
+
+NATURA E SESSO: GRUPPI 44–46
+
+I 75 codici sono stati corretti. Il gruppo 44 imposta la natura; 45 e 46
+impostano anche maschio/femmina tenendo L prima dell'incontro. Rilascia L
+prima di disabilitare questi ultimi. Usa una sola voce fra tutti e tre
+i gruppi: melonDS 2.1.1 esclude automaticamente le altre nuove voci.
+Non combinarli con codici cromatici/PID. Le specie monosesso o asessuate
+mantengono il proprio genere; Incantevole è gestito. Le modifiche al
+PID cambiano anche la distribuzione dei cromatici. Leggi la nota della
+voce per il ripristino; L+R riguarda il selettore di specie/livello.
+
+VERIFICHE E LIMITI
+
+Tutti i 2.113 codici precedenti sono stati controllati strutturalmente
+in EN/IT ed eseguiti separatamente sul core melonDS, in campo e in lotta,
+con i tasti previsti:11.780 prove brevi senza arresti. Questo controllo
+non certifica ogni effetto in ogni evento del gioco. Sono state fatte
+prove specifiche di incontri, catture, natura/sesso, cambio mappa,
+salvataggio e ripristino. Le funzioni WFC, Pokewalker, retroilluminazione,
+minigiochi ed eventi richiedono il relativo contesto e restano indicate
+come copertura parziale nel rapporto:
+https://github.com/Umberto-DEV/sacred-gold-plus
+source/docs/cheat-catalogue-validation.md
+
+Le tre vecchie scelte basate sulle Master Ball sono sostituite da una
+voce; è rimossa la patch overlay destinata a ROM originali, incompatibile
+con questa build. Gli altri gruppi conservano le proprie istruzioni.
+
+Questo aggiornamento tocca codice ARM9 vero (la tabella delle eccezioni
+della camera, cresciuta e spostata, e la stringa di versione), quindi
+l'intestazione della 1.2.4 non e' stata data per scontata uguale a
+quella della 1.2.2: e' stata misurata sulla ROM costruita ed e'
+risultata invariata, IPKE 19D1EEBB (EN) / IPKE 1C1F741C (IT). Il valore
+esatto sta in PACCHETTO.json. Questo file e' lo stesso catalogo della 1.2.2 col
+nome nuovo, ricostruito in base a quell'intestazione. I file 1.1 hanno
+un'intestazione diversa. Le opzioni Plus si aprono con SELECT e non sono
+cheat. Conserva una copia del salvataggio; spegnere un codice non annulla
+modifiche che ha già salvato.

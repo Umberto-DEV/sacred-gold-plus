@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "stato": "candidato; verifica in gioco non eseguita",
+  "compilatore": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "parti": {
+    "copie": {
+      "base": 37600352,
+      "bytes": 160,
+      "codice_bytes": 144,
+      "limite_codice": 144,
+      "sha256": "6926e17b5530f5d4edbd644438d6a9557bbac370ec3ad04994a1d3bc7f8a5ef9",
+      "sorgente": "source/features/manutenzione/sorgenti/copie.S",
+      "sorgente_sha256": "2c97481811b5ef45720905d716e7a3ffd6f3660a659d76005fa11e2260b122fd",
+      "simboli": {
+        "sgp_copia_inizio": 37600353,
+        "sgp_copia_fine": 37600391,
+        "sgp_idle_copie": 37600411
+      }
+    },
+    "cascata": {
+      "base": 37584960,
+      "bytes": 64,
+      "codice_bytes": 24,
+      "limite_codice": 48,
+      "sha256": "d832f739e70aec369a527dd46278f74fdced69a1b3e351b315ae468b4828378f",
+      "sorgente": "source/features/manutenzione/sorgenti/cascata.S",
+      "sorgente_sha256": "7c15515222f840204e3003888032003cf3d0ec0306dad5393a3ceba823ba89d9",
+      "simboli": {
+        "sgp_cerca_cascata": 37584961
+      }
+    }
+  },
+  "compila_sha256": "8f50595a94f31d8693a3db8db412c7dcb5f2c5bb3feb8468d98713f886b80ffe"
+}

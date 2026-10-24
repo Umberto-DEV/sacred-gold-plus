@@ -1,0 +1,11 @@
+WHAT IS NEW IN 1.2.4
+
+Battle motion: optional idle animation returns to rest before the engine creates a fixed Pokemon copy and stays suspended until the final copy is destroyed. This prevents the moving original from overlapping the fixed copy in the affected paths.
+
+Movement: skip the party search for Waterfall whenever its result cannot be used. Surfing south still runs the original search. Game speed and the FPS limiter are unchanged.
+
+Vermilion totem: the user successfully caught Latios with the maintenance revision and reported that the previous slowdowns were no longer present. The old freeze occurred after battle had begun. Event scripts and flags are unchanged; the specific cause of the old freeze has not been established. Not all animation scenarios or cities have been tested.
+
+The public 1.2.4 carries the same fixes as the tested candidate, an updated title and no private customizations. It introduces no new save format.
+
+Every supported input patch has been checked for exact file reconstruction with xdelta3 and RomPatcher.js. This is not a full playthrough.

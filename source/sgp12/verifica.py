@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""sgp12.verifica — UN comando per verificare una ROM 1.2.3: confronta la ROM
+"""sgp12.verifica — UN comando per verificare una ROM 1.2.4: confronta la ROM
 data con quella che `costruisci.py` produce dalla stessa base (criterio 4),
 esegue i rilettori disponibili in `sgp12.blocchi` sugli stadi che sanno
 verificare, e T1-T5 (`verifiche/test_riserva.py`, NON toccato:
 resta il rilettore indipendente della mappa della riserva).
 
 Uso:
-    python3 -m sgp12.verifica sgp-1.2.3-EN.nds --base "Pokemon - HeartGold Version.nds"
+    python3 -m sgp12.verifica sgp-1.2.4-EN.nds --base "Pokemon - HeartGold Version.nds"
 
 `--base` e' la propria HeartGold ORIGINALE: lo stadio 0 (`rom.prepara_base`) le
 applica il delta pubblico del pin `base11.json` e ne ricava la base 1.1, che e'
-il punto di partenza dei diciassette blocchi. E' la STESSA ricostruzione di
+il punto di partenza dei diciotto stadi. E' la STESSA ricostruzione di
 `costruisci.py`, dallo stesso unico ingresso. Una base 1.1 gia' pronta resta
 accettata e salta lo stadio 0 con un avviso; la lingua si deduce dallo sha256.
 
@@ -52,6 +52,7 @@ import sys
 import traceback
 from pathlib import Path
 
+from . import manutenzione
 from .rom import Rifiuto, prepara_base, sha
 from . import costruisci as costruisci_mod
 from .blocchi import (riserva, camera, npc, plus_chunk, testi as testi_mod, anim,
@@ -67,7 +68,7 @@ CODICI_USCITA = {"VERDE": 0, "PARZIALE": 2, "ROSSO": 1}
 
 
 ORDINE_STADI = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim", "opzioni",
-                "wifi", "titolo", "credito", "guida", "caramelle", "borsa", "anim2", "borsa_lotta", "squadra_lotta", "capacita_borsa")
+                "wifi", "titolo", "credito", "guida", "caramelle", "borsa", "anim2", "borsa_lotta", "squadra_lotta", "capacita_borsa", "manutenzione")
 
 
 def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> dict:
@@ -147,6 +148,8 @@ def _rilettori_di_libreria(base: bytes, build_dir: Path, lingua: str | None) -> 
     stadio("capacita_borsa", lambda r: _con(capacita_borsa.applica(r, build_dir / "capacita_borsa",
                                                             manifest_path=manifest),
                                         lambda d: capacita_borsa.rileggi(r, d, build_dir / "capacita_borsa")))
+    stadio("manutenzione", lambda r: _con(manutenzione.applica(r, build_dir / "manutenzione"),
+                                          lambda d: manutenzione.rileggi(r, d, build_dir / "manutenzione")))
     return out
 
 
