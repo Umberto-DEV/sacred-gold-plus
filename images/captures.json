@@ -1,0 +1,175 @@
+{
+  "captured_on": "2026-10-24",
+  "game_version": "1.2.5, except the unchanged wild-battle view captured in 1.2.4",
+  "platform": "Physical Mac (macOS ARM64), local melonDS test harness, software renderer",
+  "method": "Actual emulated game frames. Single-screen crop only; 4x integer nearest-neighbour scaling. No generative images, recolouring, reconstructed content or added text. Some scenic locations reached using the existing development warp tool on a disposable session. Input ROM and save files were not edited. Battle and summary views were reached with normal controls.",
+  "game_rom_sha256": {
+    "1.2.5": {
+      "EN": "a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e",
+      "IT": "bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4"
+    },
+    "1.2.4": {
+      "EN": "d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548"
+    }
+  },
+  "source_links": [
+    "https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5",
+    "https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md",
+    "https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/"
+  ],
+  "images": [
+    {
+      "file": "01-ecruteak-city.png",
+      "screen": "top",
+      "caption": "Ecruteak City — exploring Johto in Sacred Gold Plus 1.2.5.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "95ccdea14bc602fd26a7282acdef3ef06e6dde5ffde286a07df428511d78cf98",
+      "source_capture_sha256": "98ef4b00163c89f51b829514e3cdc278e542517ccdf22f74e48e895e2493fcc3",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "02-new-bark-town.png",
+      "screen": "top",
+      "caption": "New Bark Town — back where the journey begins.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "366dae81d096e8bef6e5fd787ef7912f88d8c8baa48a3bfe7e7e777e53780019",
+      "source_capture_sha256": "3fe06d89803fbec10bbd4c9dad3f2dda1ad797aaacab9ed38b4c36ea7ff76e79",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "03-bellchime-trail.png",
+      "screen": "top",
+      "caption": "Bellchime Trail — autumn colours on the way to Bell Tower.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "e393990016aa1b49dad553ababeb1a268bbcd94f4a3080471ee94adacc7265a7",
+      "source_capture_sha256": "cd683798d437aa108b02e9f20037112d472b185ac18002942c88f8505f9b870b",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "04-olivine-city.png",
+      "screen": "top",
+      "caption": "Olivine City — outside the lighthouse.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "7d4203452b9dd9ebc972af46e4878148904d9e39c4eaa14f0f0c84eec888b949",
+      "source_capture_sha256": "03e1570cb0e0ba1f9c281bad151adc708a01357d26f7cbb934a61e84ceb788a6",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "05-cherrygrove-city.png",
+      "screen": "top",
+      "caption": "Cherrygrove City — the wider Plus camera outdoors.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "1d370c163af3d979ba37f4b349d054a5c8383a1d623edc9e430e3c90195c2082",
+      "source_capture_sha256": "7f2122afb59e079dca4b34912eed5648ef0c053e839f9508bce932aaaaff1662",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "06-national-park.png",
+      "screen": "top",
+      "caption": "National Park — a stop by the flower beds.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "1b9dee5bf3afb589377636b2bb4ce22a8d59c58e2fcbf42f339f32dc1e3ab71b",
+      "source_capture_sha256": "c4ac0933aaaf1adb2cf67454b0c482cffe79879c8a6156cace3bc27d564dc64b",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "07-elms-lab.png",
+      "screen": "top",
+      "caption": "Inside Professor Elm's laboratory.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "40405d0d72354e4af7ec8b51892c5d43912c97e3a4042e5c93b13c6a4628910c",
+      "source_capture_sha256": "c81d56b7a37fa74bf2afa516b57d6740e3310f45b1ef01cc0c136815aa92bdbc",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "08-pokemon-center.png",
+      "screen": "top",
+      "caption": "A look inside a Pokémon Center in the current build.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "fd921f6d44a2c97e6ecc6746bc0056e96360138e485dd8412410f76a2c4ff0f2",
+      "source_capture_sha256": "617da3a8a588289fd62205a2633e584b6aabc23a0b101f4c3e99177b5517ef7d",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "09-mt-mortar.png",
+      "screen": "top",
+      "caption": "Mt. Mortar — the classic HeartGold camera restored natively in affected caves and interiors.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "5e61d505ec05decddeb5433895f703f655e3080dc2549c0c12dc9c3cc0843e86",
+      "source_capture_sha256": "a3f30c19f96d2e78f4bb362a519b22e8f479683c4caf51ff474b2a92dc0fe594",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "10-wild-battle.png",
+      "screen": "top",
+      "caption": "A wild battle: Typhlosion meets Combee. Captured in 1.2.4; battle graphics are unchanged in 1.2.5.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "840742831e6dfe071c32bf28713eabd121696696401c56c45649c7c9798c8c5c",
+      "source_capture_sha256": "93f09e2b7a204a2b0d2f3b32c58da42cd66e13e2a272ecd1604247a5c1945de6",
+      "game_version": "1.2.4"
+    },
+    {
+      "file": "11-plus-options-english-bottom.png",
+      "screen": "bottom",
+      "caption": "Plus options — difficulty, wild levels, Pokémon motion, NPC smoothing and Wi-Fi slot selection. Press SELECT in Options. Version 1.2.5 remains visible after setup.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "6089a42d1ac529839667758738252a22e272fe3e4898f9f89df7316f8366ce4e",
+      "source_capture_sha256": "1b1e1f7e349d4162ec5bfce1c557be675712af79a3e49c909870adb328ec2b04",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "12-plus-options-italian-bottom.png",
+      "screen": "bottom",
+      "caption": "The Plus options page in Italian. Both English and Italian editions are available. Version 1.2.5 remains visible after setup.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "d12a7d9108db0cc81664d04353bb3a2f289f5b20166c95de0e9d3d85427ac24e",
+      "source_capture_sha256": "df4b52eb2bb2ebafd1bb75e70d13c8a05243edd29d3ebc0032e8032fdd5dd8d3",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "13-ev-viewer-top.png",
+      "screen": "top",
+      "caption": "EVs displayed directly in the Pokémon summary — no cheat required.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "c128199bc35d01749af798555d977dd196589f1beb0a4938b769c48ce082674f",
+      "source_capture_sha256": "4074e47640effb291a42cbe13ab7a37439b794a229b97ed99009192ec38e05d1",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "14-iv-viewer-top.png",
+      "screen": "top",
+      "caption": "IVs displayed directly in the Pokémon summary — no cheat required.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "422ef1aabcfd0e293256427980fd748d4e959466c1084cced33c6dcc98f03eac",
+      "source_capture_sha256": "b3a147e363381fcf62b7e83fb2c703823ce6102568f3ec0acf576eec3a41a5a2",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "15-ev-iv-guide-bottom.png",
+      "screen": "bottom",
+      "caption": "The in-game guide explains EVs and IVs. Open it with START on the summary stats page.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "e5e7a70bc1909017aa957c49bdad7f5959ab434958755f72b7366a823c4d3034",
+      "source_capture_sha256": "9d21413b649b879c9302cc49f7904705b3e58eebad658f3c5f93c1fda8fbabc0",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "16-guide-controls-bottom.png",
+      "screen": "bottom",
+      "caption": "The guide also explains the controls: L for EVs, R for IVs and SELECT to restore the normal stats.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "sha256": "1a4151e718aea5b2bd38294a77ddd5dbf7174720954ed96e9cd3653b5d0624e9",
+      "source_capture_sha256": "dfc5ba63f8f93b09bd7aea612cb79782e5adb31fa5dbc81bed7407148746d999",
+      "game_version": "1.2.5"
+    },
+    {
+      "file": "17-version-title-top.png",
+      "screen": "top",
+      "caption": "V.1.2.5 on the title screen, aligned with the corrected Developed by A FAN credit.",
+      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
+      "game_version": "1.2.5",
+      "sha256": "8402881b45f53873aea4a53a347563d185e922c8e96e9beb8f1f1baa91a1b8a1",
+      "source_capture_sha256": "f28273d3fd001f86881a6d8cfa661ead241e457221e6c618ddc3563a94056550"
+    }
+  ]
+}

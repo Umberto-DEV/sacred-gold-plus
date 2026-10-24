@@ -12,12 +12,29 @@ This is a **patch**, not a ROM: you apply it to your own legally obtained game f
 
 ## Screenshots
 
+Captured on the local melonDS test bench. Each image shows one DS screen; the bottom screens demonstrate the Plus settings and guide.
+
 | | |
 | --- | --- |
-| ![Title screen](images/01-title-screen.png)<br>Title screen | ![Cherrygrove City](images/02-overworld-cherrygrove.png)<br>Exploring Cherrygrove City |
-| ![A trainer battle with Plus difficulty on](images/03-battle-plus-difficulty.png)<br>A trainer battle with Plus difficulty on | ![The Sacred Gold Plus options page](images/04-options-page.png)<br>The Sacred Gold Plus options page |
-| ![The wide camera indoors, with the top screen letterboxed](images/06-camera-before.png)<br>Indoors before: the wide camera letterboxes the top screen | ![The classic HeartGold camera restored indoors](images/07-camera-after.png)<br>Indoors after: the classic camera, restored natively |
-| ![The prompt shown once on Continue](images/05-continue-prompt.png)<br>The one-time prompt on Continue | |
+| ![Ecruteak City](images/01-ecruteak-city.png)<br>Ecruteak City | ![Bellchime Trail](images/03-bellchime-trail.png)<br>Bellchime Trail |
+| ![New Bark Town](images/02-new-bark-town.png)<br>New Bark Town | ![Wild battle](images/10-wild-battle.png)<br>Wild battle |
+| ![Plus options — English (bottom screen)](images/11-plus-options-english-bottom.png)<br>Plus options — English (bottom screen) | ![Plus options — Italian (bottom screen)](images/12-plus-options-italian-bottom.png)<br>Plus options — Italian (bottom screen) |
+| ![EV viewer in the Pokémon summary](images/13-ev-viewer-top.png)<br>EV viewer in the Pokémon summary | ![IV viewer in the Pokémon summary](images/14-iv-viewer-top.png)<br>IV viewer in the Pokémon summary |
+| ![In-game EV/IV guide (bottom screen)](images/15-ev-iv-guide-bottom.png)<br>In-game EV/IV guide (bottom screen) | ![Version 1.2.5 title screen](images/17-version-title-top.png)<br>Version 1.2.5 title screen |
+
+<details>
+<summary>More locations, interiors and guide controls</summary>
+
+| | |
+| --- | --- |
+| ![Olivine City](images/04-olivine-city.png)<br>Olivine City | ![Cherrygrove City](images/05-cherrygrove-city.png)<br>Cherrygrove City |
+| ![National Park](images/06-national-park.png)<br>National Park | ![Professor Elm's laboratory](images/07-elms-lab.png)<br>Professor Elm's laboratory |
+| ![Inside a Pokémon Center](images/08-pokemon-center.png)<br>Inside a Pokémon Center | ![Mt. Mortar — native indoor camera](images/09-mt-mortar.png)<br>Mt. Mortar — native indoor camera |
+| ![Guide controls (bottom screen)](images/16-guide-controls-bottom.png)<br>Guide controls (bottom screen) |  |
+
+</details>
+
+The locations are part of the existing game. All views were captured in 1.2.5 except the wild battle, captured in 1.2.4 with unchanged battle graphics. These are actual game frames, cropped to one screen and enlarged 4× without smoothing. [Capture details and image hashes](images/captures.json).
 
 ## Main features
 
