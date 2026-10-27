@@ -1,11 +1,50 @@
-WHAT IS NEW IN 1.2.5
+SACRED GOLD PLUS
+What's New in 1.2.5 | English edition
 
-V.1.2.5 is visible on the upper title screen, alongside the Sacred Gold Plus logo and flying Ho-Oh. The version is also available in Options > SELECT > Plus after settings have been saved. No new game is needed.
+YOUR GUIDE TO THE CURRENT GAME
+An independent fan continuation of Sacred Gold Plus, built on Drayano's Sacred Gold for Nintendo DS. This overview covers the features included in 1.2.5, including additions from earlier Plus releases. They are not all new in this update.
 
-Save compatibility: keep your existing .sav. Save code, the native format, Plus settings and expanded Bag storage are unchanged from 1.2.4. Only version text and title-screen label graphics have changed; the logo, palettes and animations remain intact. The version aligns with Developed by A FAN; the missing descender in by is corrected.
+1. YOUR GAME, YOUR SETTINGS
 
-Mac validation: seven load/save/cold-restart cases with older saves, including non-default settings and the 252nd Bag slot. Keep a backup and start through Continue, not an older emulator quick state.
+Open the game's Options menu and press SELECT to open the Plus page. Choose your preferred trainer difficulty, wild Pokemon level scaling, Pokemon motion in battle, character loading and Wi-Fi connection slot. Save your choices with the command shown on the screen. These settings are part of the game; they do not require cheats.
 
-Includes all 1.2.4 sprite-copy and Waterfall-search fixes and earlier features. Game speed is unchanged. This is not a full new playthrough and does not establish the cause of the WaterMelonDS rendering report.
+Plus difficulty offers optional trainer level increases. Wild level scaling has its own setting, so you can choose the two separately. Levels stay capped at 100.
 
-Each ZIP contains 21 input patches, including 1.2.4 EN/IT ROMs. Every route is checked with xdelta3 and RomPatcher.js. Original manuals and credits are preserved.
+The current version, V.1.2.5, is shown on the upper title screen and in Options > SELECT > Plus. Your existing save and settings carry forward; you do not need a new game or a settings reset to see the version.
+
+2. MORE COMFORTABLE EXPLORATION
+
+The game uses the classic HeartGold camera in 52 interiors and caves, with the wider Plus camera outdoors. This is built into the game and does not need a camera cheat.
+
+Character loading can be spread across frames when entering towns. The Bag and party menus reuse data already loaded for battles. These changes reduce work at those transitions; they do not change the game's overall speed.
+
+The main Bag pocket has 252 slots, with expanded capacity in other pockets. After using a Rare Candy from the party menu, you can keep using candies without reopening the menu for every item. Evolution and move-learning prompts still follow the normal game flow.
+
+3. KNOW YOUR POKEMON
+
+In the Pokemon summary, press L to inspect EVs and R to inspect IVs; press SELECT to return to the normal stats. The in-game EV/IV guide explains these values and the controls. No EV/IV cheat is required.
+
+Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Sacred Gold Plus project. This continuation also includes English and Italian editions, text corrections and gameplay fixes.
+
+Optional Pokemon motion moves the existing battle sprites while waiting for actions or choosing commands. It yields to move, entrance and fainting animations. Enable or disable it on the Plus page.
+
+4. KEEP YOUR ADVENTURE
+
+Updating preserves existing normal in-game saves. Back up your ROM and save, apply ONE matching patch, then load the updated ROM with Continue. The separate installation PDF explains the exact steps and how to check SHA-256. Never use an old emulator savestate to resume after replacing the ROM.
+
+Keep your backup if you go back to an older ROM. Older games do not expose the extra Bag slots; saving there can prevent those items from being recovered automatically when returning to the newer game.
+
+Cheats are optional and start disabled. If you use them, read Cheats/ABOUT-CHEATS.txt. Older 1.1 cheat catalogues use a different header. The original third-party catalogue is supplied with its credits and has not been fully validated by this project.
+
+Wi-Fi connection-slot selection does not itself provide an online service. Third-party services and your emulator's network support are separate; follow their current documentation.
+
+LATEST UPDATE
+
+Some bugs fixed.
+
+Read How-to-install-1.2.5-EN.pdf in this folder to install or update. The original gameplay manuals in Manual retain their authors' credits and may describe differences from Plus. Technical changes, tested save coverage and limitations are documented in the repository:
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/source/docs/version-1.2.5.md
+
+CREDITS
+
+Drayano; mikelan / Mikelan98; NefariousnessNo3436; @JD48096761 and the original contributors. This is an independent fan continuation, not an official handover. Full credits and rights are in the installation guide and license. All pictures are actual game captures; the 1.2.4 wild-battle capture has unchanged battle graphics in 1.2.5.

@@ -51,26 +51,28 @@ The locations are part of the existing game. All views were captured in 1.2.5 ex
 
 ## Download
 
-Get the ZIP for your language from the [**1.2.5 release**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5):
+Choose the language you want to **play in**. Both packages work on **Windows and macOS**:
 
-| Language | File |
+| Edition | Download 1.2.5 |
 | --- | --- |
-| Italian | `Sacred-Gold-Plus-1.2.5-IT.zip` |
-| English | `Sacred-Gold-Plus-1.2.5-US.zip` |
+| **English** | [**Download English ZIP**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-US.zip) |
+| **Italiano** | [**Scarica ZIP italiano**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-IT.zip) |
 
-Each ZIP contains all 21 supported patch routes, the recommended cheats, the unchanged original manuals and the updated installation guide for that language. Download the named player ZIP; GitHub’s automatic “Source code” archives contain developer sources.
+[Release page and all downloads](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5). Use the named player ZIP above. GitHub's automatic **Source code** archives are developer files and are not needed to play.
 
-## Requirements
+## Install for the first time
 
-- An unmodified **Pokémon HeartGold** ROM, US or Italian, **or** an existing **Sacred Gold Plus 1.01, 1.02, 1.03, 1.04, 1.1, 1.2.1, 1.2.2, 1.2.3 or 1.2.4** ROM (any camera) — you must obtain this yourself.
-- A DS patching tool: a desktop program, an Android app, or a browser page (all free; links are in the package guide).
-- An emulator or a flashcart. The searchable picker and L+R toggle require [this fork’s melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1).
+1. **Extract the ZIP.** Windows: right-click → **Extract All**. Mac: double-click. Open **Sacred Gold Plus 1.2.5** inside the extracted download.
+2. **Read `How-to-install-1.2.5-EN.pdf`** (English) or **`Come-installare-1.2.5-IT.pdf`** (Italian). This illustrated guide sits directly in the main folder, beside **Whats-New-1.2.5-EN.pdf** / **Novita-1.2.5-IT.pdf**. Follow its numbered steps, screenshots and SHA-256 reference list.
+3. **Identify your own HeartGold `.nds`.** The guide shows how to calculate its SHA-256 in your browser or with built-in Windows/Mac commands, and exactly which expected value to compare. A matching filename is not enough. Use your own cartridge backup; do not download pirated ROMs.
+4. **Choose one patch.** For a matching original USA HeartGold: `Patch/From Clean ROM/US/from-clean-us.xdelta`. For a matching Italian original: `Patch/From Clean ROM/IT/from-clean-it.xdelta`. You do **not** need Sacred Gold or an older Plus version first.
+5. **Apply it with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/).** Select your checked `.nds` under **ROM file**, the matching `.xdelta` under **Patch file**, then **Apply patch**. Leave **Fix ROM checksum** off in Settings. Verify the new file's SHA-256 against the guide's **finished game** value, then open it in your DS emulator.
 
-## Install
+**The ZIP edition chooses the final language. The US/IT subfolder chooses the language of your starting ROM.** For example, the English ZIP can produce English from either a supported USA or Italian original.
 
-1. Back up your game file and your save.
-2. Open the ZIP, pick the patch matching your current file from its `Patch` folder, and apply it with one of the supported tools.
-3. Follow `HOW-TO-INSTALL.txt` (English) or `COME-INSTALLARE.txt` (Italian) inside the package for the full step-by-step guide.
+**Already playing Plus?** Back up your current ROM and save, then use the `From Plus` folder for your current version and language. All 21 supported paths go directly to 1.2.5; apply only one patch. Older 1.01, 1.02 and 1.03 inputs exist only in English. The guide also distinguishes the 1.04 camera variants and the two 1.2.2 editions by their SHA-256.
+
+**What you need:** your own supported HeartGold or Plus `.nds`, a patcher and a DS emulator/flashcart. ROMs, BIOS and emulators are not included. Cheats are optional. The searchable cheat picker and L+R toggle require [this fork's melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1); this is separate from patch installation.
 
 ## Compatibility
 
@@ -119,11 +121,19 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 - **Borsa espansa:** 252 slot nella tasca principale e uso consecutivo delle Caramelle Rare dal menu Squadra.
 - **Migliorie pratiche:** guida EV/IV nel gioco, scelta dello slot Wi-Fi, correzioni dei testi e del gioco.
 
-**Download:** dalla [release 1.2.5](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5), `Sacred-Gold-Plus-1.2.5-IT.zip` o `Sacred-Gold-Plus-1.2.5-US.zip`. Ogni ZIP include tutte le 21 patch supportate, cheat consigliati, manuali originali intatti e guida di installazione aggiornata. Scarica questi pacchetti per giocare; gli archivi automatici “Source code” contengono i sorgenti per sviluppatori.
+**Download 1.2.5:** [**Edizione italiana**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-IT.zip) · [**English edition**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-US.zip). Entrambi gli ZIP funzionano su Windows e Mac. Scegli la lingua in cui vuoi giocare; gli archivi automatici “Source code” sono per sviluppatori.
 
-**Requisiti:** una delle 21 ROM identificate nel manifest: HeartGold originale USA/Italia oppure Plus 1.01, 1.02, 1.03, 1.04 (entrambe le camere e lingue), 1.1, 1.2.1, 1.2.2 (entrambe le edizioni), 1.2.3 o 1.2.4; un programma di patching (guide nel pacchetto); il selettore con ricerca e L+R richiede melonDS Android 2.1.1 di questo progetto.
+**Prima installazione:**
 
-**Installazione:** (1) backup di gioco e salvataggio; (2) applica la patch giusta dalla cartella `Patch` con uno dei programmi supportati; (3) segui `COME-INSTALLARE.txt` nel pacchetto per la guida completa.
+1. Estrai lo ZIP: su Windows clic destro → **Estrai tutto**, su Mac doppio clic. Apri la cartella **Sacred Gold Plus 1.2.5**.
+2. Leggi **`Come-installare-1.2.5-IT.pdf`**: è la guida illustrata da seguire, direttamente nella cartella principale insieme a **Novita-1.2.5-IT.pdf**. Contiene passaggi numerati, schermate e riferimenti SHA-256.
+3. Controlla lo **SHA-256** del tuo HeartGold `.nds`: la guida spiega come calcolarlo e dove trovare il valore atteso. Il nome del file non basta. Usa la copia della tua cartuccia; non scaricare ROM piratate.
+4. Per la ROM originale italiana corrispondente scegli `Patch/From Clean ROM/IT/from-clean-it.xdelta`; per quella USA scegli `Patch/From Clean ROM/US/from-clean-us.xdelta`. Non serve installare prima Sacred Gold o una vecchia Plus.
+5. Su [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/) scegli il `.nds` in **ROM file** e il `.xdelta` in **Patch file**, poi premi **Apply patch**. Lascia **Fix ROM checksum** spento in Settings. Controlla lo SHA del nuovo file usando il valore del **gioco ottenuto** nella guida e aprilo nel tuo emulatore DS.
+
+**La lingua dello ZIP è quella del risultato; US/IT dentro Patch identifica la ROM di partenza.** Lo ZIP italiano produce il gioco italiano anche partendo dall'originale USA supportato.
+
+**Aggiornamento:** salva nel gioco, chiudi l'emulatore e copia ROM e salvataggio in un backup. Scegli la cartella `From Plus` della tua versione e lingua attuali. Le 21 patch portano direttamente alla 1.2.5: ne basta una. La guida distingue anche le varianti della camera 1.04 e le due edizioni 1.2.2; 1.01–1.03 hanno solo ingressi inglesi verificati. Cheat, emulatore e BIOS non servono per applicare la patch; per giocare occorre configurare il proprio emulatore o flashcart.
 
 **Compatibilità:** i salvataggi esistenti vengono importati. Gli slot aggiuntivi della Borsa usano un’estensione del salvataggio: tornando a una ROM vecchia, gli oggetti negli slot extra non sono disponibili; salvando con quella ROM non si recuperano automaticamente al ritorno. Carica il salvataggio normale del gioco, non un savestate precedente. L’intestazione è invariata dalla 1.2, ma importa il catalogo aggiornato per le correzioni. Tutti i codici sono spenti di default.
 
@@ -131,4 +141,4 @@ Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalme
 
 **Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
 
-**Licenza:** strumenti di questo progetto sotto [GPL-3.0-or-later](LICENSE); Pokémon, il gioco originale e i contributi di terzi restano dei rispettivi proprietari — crediti completi in `LEGGIMI.txt` nel pacchetto.
+**Licenza:** strumenti di questo progetto sotto [GPL-3.0-or-later](LICENSE); Pokémon, il gioco originale e i contributi di terzi restano dei rispettivi proprietari — crediti completi in `Come-installare-1.2.5-IT.pdf` nel pacchetto.

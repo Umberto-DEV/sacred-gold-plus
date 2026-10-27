@@ -1,106 +1,262 @@
-INSTALLAZIONE 1.2.5
+SACRED GOLD PLUS 1.2.5 - COME INSTALLARE
+Edizione italiana | Windows e macOS
 
-1. Chiudi il gioco e fai una copia del tuo salvataggio prima di sostituire la ROM.
-2. Calcola lo SHA-256 della ROM di partenza. Scegli la riga esatta nell'elenco sotto; il nome del file non basta. Non usare ROM modificate, gia' personalizzate, trimmate o di una revisione non riconosciuta.
-3. Apri Rom Patcher JS (https://www.marcrobledo.com/RomPatcher.js/) oppure xdelta3. Seleziona la ROM e la patch indicata. Salva l'uscita come nuovo file e verifica lo SHA-256 di destinazione.
-4. Associa alla nuova ROM il tuo .sav corrente, mantenendo il nome base previsto dall'emulatore. Non creare un nuovo salvataggio sopra quello esistente. Avvia dal menu Continua: non caricare un vecchio salvataggio rapido dell'emulatore.
+INIZIA QUI
+Ti servono il tuo file di gioco Pokemon HeartGold (.nds) e UNA sola patch di questo pacchetto. Non devi installare prima Sacred Gold originale o una vecchia versione Plus. La guida spiega anche come aggiornare un gioco Plus esistente. Non serve iniziare una nuova partita.
 
-Esempio xdelta3 (sostituisci i nomi):
-  xdelta3 -d -D -R -s "origine.nds" "Patch/from-clean-it.xdelta" "Sacred Gold Plus 1.2.5 IT.nds"
+Percorso rapido per la prima installazione:
+1. Estrai lo ZIP e apri la cartella "Sacred Gold Plus 1.2.5".
+2. Controlla lo SHA-256 del tuo file HeartGold seguendo il punto 2.
+3. Per la ROM originale USA corrispondente scegli Patch > From Clean ROM > US. Per la ROM originale italiana corrispondente scegli Patch > From Clean ROM > IT.
+4. In Rom Patcher JS scegli il tuo .nds come "ROM file", il .xdelta nella cartella scelta come "Patch file", poi premi "Apply patch".
+5. Controlla il nuovo file (punto 5), poi aprilo nel tuo emulatore DS.
 
-Controllo SHA-256: macOS shasum -a 256; Linux sha256sum; Windows PowerShell Get-FileHash -Algorithm SHA256.
+Questo ZIP crea sempre il gioco in ITALIANO, anche partendo da una ROM inglese. Le cartelle US/IT DENTRO Patch indicano la ROM di partenza, non la lingua in cui vuoi giocare. Per ottenere il gioco in inglese scarica invece lo ZIP US.
 
-Questo ZIP produce la ROM italiana da tutti gli ingressi elencati, anche quelli inglesi. Per ottenere l'inglese scarica lo ZIP US. La lingua delle patch e' quella di destinazione.
+1. SCARICA, ESTRAI E PREPARA I FILE
 
-DESTINAZIONE
-Sacred Gold Plus 1.2.5 IT.nds
-SHA-256 bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4
-131906120 bytes
+Pagina ufficiale dei download:
+https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5
+Scegli "Italiano" e scarica Sacred-Gold-Plus-1.2.5-IT.zip. Per giocare in inglese scegli Sacred-Gold-Plus-1.2.5-US.zip. Entrambi funzionano su Windows e Mac. I download automatici "Source code (zip)" e "Source code (tar.gz)" sono per sviluppatori: non sono i pacchetti per giocare.
 
-INGRESSI SUPPORTATI
+Windows: in Download fai clic destro sullo ZIP, scegli "Estrai tutto..." e poi "Estrai". Apri la cartella estratta, non l'anteprima dello ZIP compresso.
+Mac: fai doppio clic sullo ZIP nel Finder. Se Safari lo ha già estratto, apri la cartella ottenuta. Al suo interno apri "Sacred Gold Plus 1.2.5", poi Come-installare-1.2.5-IT.pdf. Novita-1.2.5-IT.pdf presenta le funzioni attuali del gioco. Entrambi i PDF sono nella cartella principale, subito visibili.
+
+Una ROM è il file del gioco che termina in .nds. Una patch è un file .xdelta con le modifiche: da sola non è un gioco. Un .sav contiene i tuoi progressi. Uno .zip è solo un contenitore compresso. Se la tua ROM è in un archivio, estrai prima il .nds. Non selezionare ZIP, patch o salvataggi al posto della ROM.
+
+Usa una copia ricavata dalla tua cartuccia di HeartGold. Non scaricare ROM piratate: questo progetto non fornisce ROM né link per scaricarle. Se hai solo la cartuccia, crearne un file si chiama "dump". Su un 3DS/2DS già configurato per GodMode9, questa guida spiega come copiare il .nds completo sulla scheda SD e poi sul computer:
+https://3ds.hacks.guide/dumping-titles-and-game-cartridges.html#dumping-a-game-cartridge
+Leggi i prerequisiti della guida; un normale computer non legge direttamente una cartuccia DS. Conserva intatto il .nds originale, senza ridurne le dimensioni ("trim").
+
+Stai aggiornando? Salva all'interno del vecchio gioco, chiudi completamente l'emulatore e copia ROM e salvataggio corrente in una cartella di backup prima di procedere. Non modificare quella copia di sicurezza.
+
+2. RICONOSCI LA TUA ROM CON LO SHA-256
+
+Lo SHA-256 è un'impronta di 64 caratteri calcolata dal CONTENUTO di un file. Identifica esattamente gioco, regione e revisione. Il nome del file, l'etichetta di un download o la scritta "USA" nel nome non bastano. Rinominare il file non cambia l'impronta e non rende compatibile una ROM diversa.
+
+Dove trovo il MIO SHA? Lo calcoli dal tuo .nds già estratto usando UNO dei metodi qui sotto. Non è un codice stampato sulla cartuccia. Il procedimento è identico per qualsiasi file locale, indipendentemente dal nome o dalla provenienza; un hash non dimostra il possesso o il diritto di usare una copia.
+
+Dove trovo lo SHA ATTESO? In fondo a questa guida, "RIFERIMENTO A - ROM DI PARTENZA" elenca i file supportati e la patch per ciascuno. Prima della patch confronta con quell'elenco. Dopo la patch confronta invece con "RIFERIMENTO B - GIOCO OTTENUTO". È normale che lo SHA iniziale e quello finale siano diversi. Il file separato SHA256SUMS della release serve a verificare gli ZIP scaricati, non la ROM.
+
+Metodo dal browser (senza installare app o scrivere comandi, Windows e Mac):
+a. Apri https://emn178.github.io/online-tools/sha256_checksum.html
+b. Verifica il titolo "SHA256 File Checksum". Lascia Input Type = File, Output Encoding = Hex e HMAC disattivato.
+c. Premi il pulsante per scegliere il file in "Input" e seleziona il tuo .nds, oppure trascinalo in quell'area. Il sito elabora i file locali nel browser senza caricarli su un server.
+d. Attendi i 64 caratteri in "Output". Se necessario premi "Hash". Premi "Copy" per copiarli.
+e. In questa guida premi Ctrl+F (Windows) o Command+F (Mac), incolla tutto il risultato e cerca la corrispondenza nel Riferimento A. Le lettere maiuscole e minuscole hanno lo stesso significato.
+
+Metodo offline su Mac:
+Apri Spotlight (Command+Spazio), cerca Terminale e aprilo. Scrivi quanto segue, con uno spazio alla fine:
+  shasum -a 256
+Trascina il tuo .nds dal Finder nel Terminale: verrà inserito il percorso completo. Premi Invio. Copia i primi 64 caratteri del risultato, non il nome del file. Il comando legge il file senza modificarlo.
+
+Metodo offline su Windows:
+Fai clic destro sul .nds e scegli "Copia come percorso" (in alcune versioni tieni premuto Maiusc mentre fai clic destro). Apri Windows PowerShell dal menu Start. Scrivi il comando sotto sostituendo il percorso di esempio fra gli apici singoli con quello copiato. Togli le virgolette doppie esterne copiate e mantieni gli apici singoli. Se il nome contiene un apostrofo, raddoppialo all'interno degli apici.
+  (Get-FileHash -Algorithm SHA256 -LiteralPath 'C:\Giochi\HeartGold.nds').Hash
+Premi Invio e copia i 64 caratteri risultanti. Il comando legge il file senza modificarlo. Su Linux puoi usare sha256sum seguito dal percorso del .nds tra virgolette.
+
+Non confrontare SHA-1, MD5 o CRC32 con SHA-256: sono calcoli diversi. Rom Patcher JS mostra quegli altri codici, quindi per questa guida usa uno dei metodi appena descritti.
+
+3. SCEGLI UNA SOLA PATCH
+
+Trova lo SHA-256 identico nel Riferimento A. Il percorso sotto il nome del gioco indica la patch da selezionare. Ogni percorso parte dall'interno di "Sacred Gold Plus 1.2.5"; il simbolo > nelle istruzioni significa "apri la cartella successiva".
+
+HeartGold originale e non modificato è indicato come "Clean ROM" (clean = mai modificata con patch). La copia USA con lo SHA corrispondente usa:
+  Patch/From Clean ROM/US/from-clean-us.xdelta
+La copia italiana con lo SHA corrispondente usa:
+  Patch/From Clean ROM/IT/from-clean-it.xdelta
+Una ROM europea in inglese non è automaticamente quella USA. SoulSilver, Sacred Gold di Drayano senza Plus, altre regioni e file ridotti o personalizzati non hanno un percorso supportato se l'intero hash non corrisponde.
+
+Giochi già a Plus? Apri "From Plus" seguito dalla tua versione ATTUALE e dalla sua lingua attuale (US = inglese, IT = italiano). Per 1.01, 1.02 e 1.03 sono verificati solo gli ingressi inglesi, quindi non c'è una cartella IT. Manteniamo la numerazione originale: 1.01, non 1.0.1. La 1.04 distingue anche le varianti della camera; la 1.2.2 distingue le due edizioni. Se non sai quale hai, lo decide lo SHA.
+
+Applica soltanto IL .xdelta corrispondente. Ogni patch porta direttamente alla 1.2.5: non applicare clean, 1.1 e altre patch una dopo l'altra. Non devi scaricare le vecchie release. Se la ROM corrisponde già al Riferimento B, possiedi già questa edizione della 1.2.5 e non devi applicare patch.
+
+4. APPLICA LA PATCH NEL BROWSER
+
+Apri il sito ufficiale Rom Patcher JS:
+https://www.marcrobledo.com/RomPatcher.js/
+È il metodo consigliato su Windows e Mac: non devi installare un'applicazione. La patch viene applicata localmente nel browser.
+
+a. Resta nella modalità "Apply patch" e lascia "Creator mode" spento.
+b. In "ROM file" scegli il .nds di partenza di cui hai controllato lo SHA. Attendi che venga letto.
+c. In "Patch file" scegli l'UNICO .xdelta individuato al punto 3. Non selezionare l'intera cartella Patch o manifest.json.
+d. In "Settings" lascia "Fix ROM checksum" SPENTO. Chiudi Settings facendo clic all'esterno. Non aggiungere/rimuovere intestazioni e non disattivare i controlli se usi un altro programma.
+e. Premi "Apply patch" e attendi il download del nuovo .nds. Potrebbe avere il nome originale seguito da "(patched)". Cercalo nell'elenco Download del browser.
+f. Salvalo come NUOVO file. Puoi rinominarlo "Sacred Gold Plus 1.2.5 IT.nds". Mantieni l'estensione .nds e non sovrascrivere la ROM originale o il salvataggio.
+
+Le schermate nel PDF mostrano i campi prima di scegliere i file. I pulsanti per scegliere i file possono seguire la lingua del computer. L'aspetto del sito può cambiare: fai riferimento ai nomi dei campi.
+
+5. VERIFICA IL RISULTATO E GIOCA
+
+Calcola nuovamente lo SHA-256, questa volta del NUOVO .nds. Deve corrispondere esattamente al Riferimento B. Il solo messaggio "patch applicata" o il download riuscito non sono il controllo finale. Se lo SHA è diverso, non sostituire il tuo gioco: leggi Risoluzione dei problemi.
+
+Prima partita: apri il tuo emulatore DS, scegli la funzione Apri/Carica ROM e seleziona il nuovo .nds. La patch e lo ZIP non si possono giocare. Segui la configurazione prevista dall'emulatore: qui non sono inclusi emulatore o BIOS. I cheat sono facoltativi; non servono per installare o giocare.
+
+Aggiornamento con salvataggio: con l'emulatore chiuso, associa una COPIA del salvataggio esistente al nuovo gioco. Molti emulatori collegano i file con lo stesso nome prima dell'estensione, per esempio:
+  Sacred Gold Plus 1.2.5 IT.nds
+  Sacred Gold Plus 1.2.5 IT.sav
+Usa la cartella dei salvataggi prevista dall'emulatore oppure la funzione Importa salvataggio se li gestisce internamente. Un .dsv o un salvataggio gestito dall'app può richiedere importazione/esportazione: cambiare l'estensione non lo converte. Non sovrascrivere il vecchio salvataggio con uno nuovo vuoto.
+
+Avvia normalmente la nuova ROM e scegli Continua. Controlla progressi, squadra, Borsa (compresi gli slot aggiuntivi) e impostazioni Plus, salva nel gioco, chiudi del tutto l'emulatore e riapri con Continua. Non caricare un vecchio savestate/salvataggio rapido dell'emulatore. Se manca Continua, fermati e correggi l'associazione del salvataggio: non iniziare una nuova partita e non azzerare le impostazioni. V.1.2.5 appare nello schermo superiore del titolo e in Opzioni > SELECT > Plus.
+
+Conserva il backup. Salvare con una ROM vecchia può rendere inaccessibili gli slot aggiuntivi della Borsa e impedirne il recupero automatico tornando alla ROM nuova.
+
+RISOLUZIONE DEI PROBLEMI
+
+Nessuna corrispondenza dello SHA iniziale: assicurati di avere calcolato il .nds estratto e non lo ZIP. Controlla se coincide già con il Riferimento B. Altrimenti regione, revisione o modifiche sono diverse. Rinominare il file, scegliere una patch simile o forzare i controlli non risolve. Ricrea una copia completa della tua cartuccia. Puoi anche applicare la patch a quella ROM pulita e associare al risultato il tuo salvataggio Plus esistente.
+
+"Checksum mismatch", "source too short" o errore durante la patch: ricontrolla lo SHA iniziale e il percorso esatto nel Riferimento A. Non disattivare la verifica dei checksum. Se i file corrispondono ma il browser fatica, prova un browser desktop aggiornato o il metodo facoltativo xdelta3 qui sotto.
+
+SHA finale diverso: controlla di aver usato lo ZIP della lingua desiderata e il nuovo file ottenuto, con "Fix ROM checksum" spento e senza applicare altre patch dopo. Estrai nuovamente lo ZIP ufficiale e riparti da un file supportato intatto. Lo SHA finale corrispondente conferma gli stessi byte del gioco, qualunque sia il nome del file.
+
+Serve aiuto? Segnala SHA-256 iniziale, nome dello ZIP, percorso della patch, programma/browser usato e messaggio di errore esatto qui:
+https://github.com/Umberto-DEV/sacred-gold-plus/issues
+Non caricare ROM o salvataggi.
+
+FACOLTATIVO - XDELTA3 DA RIGA DI COMANDO
+
+Il metodo nel browser basta per chi è alle prime armi. Se usi già la riga di comando, xdelta3 offre un'alternativa offline. Progetto ufficiale e download:
+https://github.com/jmacd/xdelta
+
+Su Mac, se hai già Homebrew, esegui "brew install xdelta". Su Windows ottieni xdelta3 dalle release del progetto ufficiale e usa il nome reale dell'eseguibile (può contenere versione o architettura). Se non trovi un eseguibile adatto al tuo computer, usa il metodo nel browser. Apri Terminale/PowerShell nella cartella estratta "Sacred Gold Plus 1.2.5". Sostituisci origine.nds con il percorso completo della ROM controllata e il percorso della patch con quello del Riferimento A. Le virgolette servono se i percorsi contengono spazi.
+
+Esempio Mac (partenza da HeartGold italiana):
+  xdelta3 -d -D -R -s "origine.nds" "Patch/From Clean ROM/IT/from-clean-it.xdelta" "patched.nds"
+Esempio Windows PowerShell (xdelta3.exe in questa cartella):
+  .\xdelta3.exe -d -D -R -s "origine.nds" "Patch/From Clean ROM/IT/from-clean-it.xdelta" "patched.nds"
+Scegli un nome nuovo per il file ottenuto. Torna al punto 5 e controllane lo SHA-256.
+
+RIFERIMENTO A - ROM DI PARTENZA
+
+Questa è una lista da consultare, non un elenco di download o di operazioni da eseguire. Ogni voce indica (1) il file che possiedi già, (2) l'unica patch da usare e (3) lo SHA-256 atteso PRIMA della patch. Cerca una sola corrispondenza completa. US significa USA/inglese; IT significa italiano. Tutti questi percorsi producono il gioco italiano quando usati da questo ZIP IT.
 
 Pokemon HeartGold (USA)
-Patch/from-clean-us.xdelta
-SHA-256 65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105
+Patch/From Clean ROM/US/from-clean-us.xdelta
+SHA-256: 65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105
 
 Pokemon HeartGold (Italy)
-Patch/from-clean-it.xdelta
-SHA-256 013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1
+Patch/From Clean ROM/IT/from-clean-it.xdelta
+SHA-256: 013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1
 
 Sacred Gold Plus 1.01 English
-Patch/from-plus-1.01.xdelta
-SHA-256 f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6
+Patch/From Plus 1.01/US/from-plus-1.01.xdelta
+SHA-256: f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6
 
 Sacred Gold Plus 1.02 English
-Patch/from-plus-1.02.xdelta
-SHA-256 020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b
+Patch/From Plus 1.02/US/from-plus-1.02.xdelta
+SHA-256: 020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b
 
 Sacred Gold Plus 1.03 English
-Patch/from-plus-1.03.xdelta
-SHA-256 78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
+Patch/From Plus 1.03/US/from-plus-1.03.xdelta
+SHA-256: 78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1
 
 Sacred Gold Plus 1.04 US New Angle
-Patch/from-plus-1.04-en-plus.xdelta
-SHA-256 3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248
+Patch/From Plus 1.04/US/New Angle/from-plus-1.04-en-plus.xdelta
+SHA-256: 3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248
 
 Sacred Gold Plus 1.04 US Normal Angle
-Patch/from-plus-1.04-en-classic.xdelta
-SHA-256 ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760
+Patch/From Plus 1.04/US/Normal Angle/from-plus-1.04-en-classic.xdelta
+SHA-256: ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760
 
 Sacred Gold Plus 1.04 IT New Angle
-Patch/from-plus-1.04-it-plus.xdelta
-SHA-256 217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4
+Patch/From Plus 1.04/IT/New Angle/from-plus-1.04-it-plus.xdelta
+SHA-256: 217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4
 
 Sacred Gold Plus 1.04 IT Normal Angle
-Patch/from-plus-1.04-it-classic.xdelta
-SHA-256 9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a
+Patch/From Plus 1.04/IT/Normal Angle/from-plus-1.04-it-classic.xdelta
+SHA-256: 9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a
 
 Sacred Gold Plus 1.1 English
-Patch/from-plus-1.1-en.xdelta
-SHA-256 281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d
+Patch/From Plus 1.1/US/from-plus-1.1-en.xdelta
+SHA-256: 281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d
 
 Sacred Gold Plus 1.1 Italian
-Patch/from-plus-1.1-it.xdelta
-SHA-256 7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077
+Patch/From Plus 1.1/IT/from-plus-1.1-it.xdelta
+SHA-256: 7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077
 
 Sacred Gold Plus 1.2.1 English
-Patch/from-plus-1.2.1-en.xdelta
-SHA-256 09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b
+Patch/From Plus 1.2.1/US/from-plus-1.2.1-en.xdelta
+SHA-256: 09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b
 
 Sacred Gold Plus 1.2.1 Italian
-Patch/from-plus-1.2.1-it.xdelta
-SHA-256 8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a
+Patch/From Plus 1.2.1/IT/from-plus-1.2.1-it.xdelta
+SHA-256: 8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a
 
 Sacred Gold Plus 1.2.2 English (19 September build)
-Patch/from-plus-1.2.2-en-prima.xdelta
-SHA-256 03e32bc9aed7aa53188145ab802c0ab0567abc8e3d97f8607464aacc21146762
+Patch/From Plus 1.2.2/US/First Edition 2026-09-19/from-plus-1.2.2-en-prima.xdelta
+SHA-256: 03e32bc9aed7aa53188145ab802c0ab0567abc8e3d97f8607464aacc21146762
 
 Sacred Gold Plus 1.2.2 Italian (19 September build)
-Patch/from-plus-1.2.2-it-prima.xdelta
-SHA-256 d862fe4d7b6cb8aea027fa5c700aa7146ce9b361488a310df25db5c00b812122
+Patch/From Plus 1.2.2/IT/First Edition 2026-09-19/from-plus-1.2.2-it-prima.xdelta
+SHA-256: d862fe4d7b6cb8aea027fa5c700aa7146ce9b361488a310df25db5c00b812122
 
 Sacred Gold Plus 1.2.2 English (second edition)
-Patch/from-plus-1.2.2-en.xdelta
-SHA-256 37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150
+Patch/From Plus 1.2.2/US/Second Edition/from-plus-1.2.2-en.xdelta
+SHA-256: 37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150
 
 Sacred Gold Plus 1.2.2 Italian (second edition)
-Patch/from-plus-1.2.2-it.xdelta
-SHA-256 c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a
+Patch/From Plus 1.2.2/IT/Second Edition/from-plus-1.2.2-it.xdelta
+SHA-256: c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a
 
 Sacred Gold Plus 1.2.3 EN
-Patch/from-plus-1.2.3-en.xdelta
-SHA-256 05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9
+Patch/From Plus 1.2.3/US/from-plus-1.2.3-en.xdelta
+SHA-256: 05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9
 
 Sacred Gold Plus 1.2.3 IT
-Patch/from-plus-1.2.3-it.xdelta
-SHA-256 12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0
+Patch/From Plus 1.2.3/IT/from-plus-1.2.3-it.xdelta
+SHA-256: 12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0
 
 Sacred Gold Plus 1.2.4 EN
-Patch/from-plus-1.2.4-en.xdelta
-SHA-256 d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548
+Patch/From Plus 1.2.4/US/from-plus-1.2.4-en.xdelta
+SHA-256: d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548
 
 Sacred Gold Plus 1.2.4 IT
-Patch/from-plus-1.2.4-it.xdelta
-SHA-256 d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
+Patch/From Plus 1.2.4/IT/from-plus-1.2.4-it.xdelta
+SHA-256: d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0
 
-Le vecchie varianti 1.03 Fix e Fix Classic Camera non sono supportate: manca un ingresso verificato. Non forzare la patch.
+Le varianti storiche 1.03 Fix / Fix Classic Camera non hanno un ingresso verificato e non sono supportate. Non forzare una patch.
+
+RIFERIMENTO B - GIOCO OTTENUTO
+
+Usa questa impronta soltanto DOPO la patch. Identifica il .nds italiano 1.2.5 creato da questo ZIP, non la ROM iniziale, il .xdelta o lo ZIP.
+
+Sacred Gold Plus 1.2.5 IT.nds
+SHA-256: bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4
+131906120 bytes
+
+ALTRI FILE E CREDITI
+
+I due PDF aggiornati sono nella cartella principale. Manual contiene i riferimenti originali del gioco, conservati intatti; non contiene vecchie guide di installazione o vecchi PDF delle novità. I cheat sono facoltativi: prima leggi Cheats/LEGGIMI-CHEAT.txt. LICENZA.txt contiene la licenza. Patch/manifest.json e Patch/CONTENTS.json sono registri tecnici di verifica: non devi aprirli o modificarli per installare.
+
+CREDITI
+
+Drayano, che ha fatto Sacred Gold e Storm Silver.
+
+mikelan (Mikelan98), sul cui lavoro sul tipo Folletto si appoggia questa
+linea di progetti.
+
+NefariousnessNo3436, che ha fatto Sacred Gold Plus e le aggiunte della
+1.03, e che ha dato il permesso di continuare questo lavoro con credito.
+
+@JD48096761, che ha compilato il riferimento sugli allenatori incluso in
+Manual, con il credito a u/ittapubas indicato li'.
+
+Marc Robledo, autore di Rom Patcher JS, uno dei programmi consigliati per
+applicare la patch.
+
+Le cinque guide PDF in Manual sono originali non modificati e restano
+accreditate a Drayano e ai contributori originali.
+
+Il catalogo storico di codici Action Replay tenuto nella cartella Cheats
+e' materiale di terze parti. I crediti originali restano validi. Questo
+progetto non ne rivendica la paternita' e non lo ha verificato.
+
+I nomi dei Pokemon, il materiale del gioco originale e i contributi di
+terzi restano dei rispettivi titolari. La citazione non trasferisce quei
+diritti.
+
+Questa continuazione e' curata da un solo appassionato, con l'aiuto di
+strumenti di intelligenza artificiale per indagine, traduzione, script di
+prova e documentazione. Non e' un passaggio di consegne ufficiale e non
+e' avallata dagli autori qui sopra. Il numero 1.2.5 appartiene a questa
+continuazione.

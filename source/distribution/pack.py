@@ -9,11 +9,55 @@ import tempfile
 import zipfile
 
 HERE = Path(__file__).resolve().parent
-STAMP = (2026, 10, 24, 0, 0, 0)
+STAMP = (2026, 10, 27, 0, 0, 0)
 
 
 def config():
     return json.loads((HERE / 'release.json').read_text())
+
+
+def guide_names(lang, cfg):
+    version = cfg['version']
+    return ([f'Come-installare-{version}-IT.pdf', f'Novita-{version}-IT.pdf']
+            if lang == 'IT' else [f'How-to-install-{version}-EN.pdf', f'Whats-New-{version}-EN.pdf'])
+
+
+def patch_path(source_id):
+    """Folders describe the input ROM; the ZIP edition selects the output."""
+    parts = source_id.split('-')
+    if parts[0] == 'clean':
+        folder = 'From Clean ROM/' + parts[1].upper()
+    else:
+        version = parts[1]
+        language = 'IT' if 'it' in parts else 'US'
+        folder = f'From Plus {version}/{language}'
+        if version == '1.04':
+            folder += '/Normal Angle' if parts[-1] == 'classic' else '/New Angle'
+        elif version == '1.2.2':
+            folder += '/First Edition 2026-09-19' if parts[-1] == 'prima' else '/Second Edition'
+    return f'Patch/{folder}/from-{source_id}.xdelta'
+
+
+def install_text(lang, cfg):
+    name = 'COME-INSTALLARE.txt' if lang == 'IT' else 'HOW-TO-INSTALL.txt'
+    text = (HERE / 'documents' / lang / name).read_text(encoding='utf-8')
+    # Fail packaging if a handwritten guide drifts from the actual routes.
+    for source in cfg['sources']:
+        if patch_path(source['id']) not in text or source['sha256'] not in text:
+            raise ValueError('Installation guide is missing source: ' + source['id'])
+    if cfg['targets'][lang]['sha256'] not in text:
+        raise ValueError('Installation guide has an outdated output fingerprint')
+    return text
+
+
+def finalize_members(members, manifest):
+    members = dict(members)
+    members['Patch/manifest.json'] = (json.dumps(manifest, indent=2, ensure_ascii=False) + '\n').encode()
+    inventory = {n: {'bytes': len(b), 'sha256': hashlib.sha256(b).hexdigest()}
+                 for n, b in sorted(members.items())}
+    members['Patch/CONTENTS.json'] = (json.dumps({'version': manifest['version'], 'files': inventory}, indent=2) + '\n').encode()
+    root = 'Sacred Gold Plus ' + manifest['version'] + '/'
+    return {root + name: data for name, data in members.items()}
 
 
 def digest(path):
@@ -54,23 +98,26 @@ def run(args):
 
 
 def reference_members(lang, reference_dir, guide_dir, cfg):
+    install_text(lang, cfg)
     ref = cfg['references'][lang]
     path = reference_dir / ref['name']
     if digest(path) != ref['sha256']: raise ValueError('Reference ZIP hash mismatch')
     with zipfile.ZipFile(path) as z:
-        members = {n: z.read(n) for n in z.namelist() if n.startswith('Manual/')}
+        originals = {'Manual/' + n for n in cfg['original_documents']} | {'Manual/Game Guide.txt'}
+        members = {n: z.read(n) for n in z.namelist() if n in originals}
         for name, pin in cfg['original_documents'].items(): verify_bytes(members['Manual/'+name], pin)
-        # Original manuals and historical illustrated guides stay byte-identical.
         for name in z.namelist():
             if name.startswith('Cheats/'):
                 members[name.replace('1.2.3', '1.2.5')] = z.read(name).replace(b'1.2.3', b'1.2.5')
         license_name = 'LICENZA.txt' if lang == 'IT' else 'LICENSE.txt'
         members[license_name] = z.read(license_name)
-        history = 'NOVITA-1.2.3.txt' if lang == 'IT' else 'WHATS-NEW-1.2.3.txt'
-        members['Manual/'+history] = z.read(history)
     for p in sorted((HERE/'documents'/lang).rglob('*.txt')):
-        members[p.relative_to(HERE/'documents'/lang).as_posix()] = p.read_bytes()
-    members[f'Manual/Guide-1.2.5-{lang}.pdf'] = (guide_dir/f'Guide-1.2.5-{lang}.pdf').read_bytes()
+        relative = p.relative_to(HERE/'documents'/lang)
+        # Root text files are authoring sources for the two player-facing PDFs.
+        if len(relative.parts) > 1 and 'History' not in relative.parts:
+            members[relative.as_posix()] = p.read_bytes()
+    for name in guide_names(lang, cfg):
+        members[name] = (guide_dir / name).read_bytes()
     return members
 
 
@@ -106,7 +153,7 @@ def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3
                 verify_file(decoded, target); decoded.unlink()
                 if result['result'] != 'PASS' or result['patch_sha256'] != hashlib.sha256(raw).hexdigest():
                     raise ValueError('Independent decoder failed')
-                name = 'Patch/from-'+source['id']+'.xdelta'
+                name = patch_path(source['id'])
                 members[name] = raw
                 rows.append({'file': name, 'source': source, 'bytes':len(raw), 'sha256':hashlib.sha256(raw).hexdigest()})
                 patch.unlink()
@@ -114,9 +161,7 @@ def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3
             manifest = {'schema':1, 'version':cfg['version'], 'language':lang,
                         'target':target, 'patches':rows,
                         'decoders':['xdelta3','RomPatcher.js'], 'rompatcher_commit':cfg['rompatcher_commit']}
-            members['Patch/manifest.json'] = (json.dumps(manifest,indent=2,ensure_ascii=False)+'\n').encode()
-            inventory = {n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in sorted(members.items())}
-            members['CONTENTS.json'] = (json.dumps({'version':cfg['version'],'files':inventory},indent=2)+'\n').encode()
+            members = finalize_members(members, manifest)
             tag = 'US' if lang == 'EN' else 'IT'
             archive = output/f'Sacred-Gold-Plus-1.2.5-{tag}.zip'
             write_zip(archive, members)

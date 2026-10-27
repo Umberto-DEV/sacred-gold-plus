@@ -12,7 +12,7 @@ target, deletes temporary decoded ROMs, then writes deterministic ZIPs and
 reads every member back. No ROM, save, BIOS or emulator is packaged. Original
 PDFs and the trainer reference are checked against independent historical
 fingerprints. Cheat codes are inherited unchanged from the pinned 1.2.3 ZIPs;
-only their version labels change. `CONTENTS.json` records each member's hash.
+only their version labels change. `Patch/CONTENTS.json` records each member's hash.
 
 ## Inputs
 
@@ -20,7 +20,7 @@ only their version labels change. `CONTENTS.json` records each member's hash.
 - The 21 source files you own, matching `release.json`.
 - The two unmodified [1.2.3 reference ZIPs](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.3), with the hashes in `release.json`.
 - xdelta3 and Node.js, plus [RomPatcher.js](https://github.com/marcrobledo/RomPatcher.js) checked out at the commit in `release.json`.
-- To render the current two-page PDF guides: reportlab 4.4.9. It is only a release-tool dependency, not needed to build the game or run core tests. `guide.py` uses standard PDF fonts and invariant metadata.
+- To render the four current illustrated player PDFs: reportlab 4.4.9. It is only a release-tool dependency, not needed to build the game or run core tests. `guide.py` renders the installation and current-feature texts in each language, including all source and target fingerprints in the installation PDFs. It uses standard PDF fonts, invariant metadata and the real website captures in `images/install-*.jpg`. No screenshot contains a loaded ROM.
 
 Create a private JSON mapping each source ID in `release.json` to its local
 path, plus `target-EN` and `target-IT`. Do not commit this mapping or the ROMs.
@@ -41,9 +41,24 @@ output includes two named ZIPs, `SHA256SUMS` and `verification.json`. GitHub's
 automatic Source code archives are developer source packages; players should
 download the named IT or US ZIP.
 
-The original manuals, Game Guide and illustrated 1.2 guides remain historical
-references. Current installation instructions, release notes and the 1.2.5
-PDF guide are generated from `documents/`. Never translate or rewrite the
+Every ZIP has one explicit `Sacred Gold Plus 1.2.5/` root on both Windows and
+macOS. Start with `How-to-install-1.2.5-EN.pdf` or `Come-installare-1.2.5-IT.pdf`.
+The matching `Whats-New-1.2.5-EN.pdf` / `Novita-1.2.5-IT.pdf` sits beside it.
+No root README or installation TXT competes with those entry points.
+Credits are included in the PDFs. The root texts under `documents/` are
+authoring sources only, not ZIP members. Old installation and feature-overview
+PDFs are omitted from the new packages; original gameplay manuals remain
+unchanged under `Manual/`.
+
+Patch paths are grouped as `Patch/From Clean ROM/{US,IT}/` or
+`Patch/From Plus <version>/{US,IT}/`, with additional variant folders for
+1.04 and 1.2.2. Legacy 1.01-1.03 only have a verified US input. Folder languages
+identify the **source**, while the ZIP edition identifies the **target**.
+Manifest and inventory paths are relative to the versioned root, not to the
+folder containing their JSON file. `install_text()` refuses packaging if a
+source, target fingerprint or patch path is missing from the current guide.
+
+The four 1.2.5 PDFs are generated from `documents/`. Never translate or rewrite the
 original manuals while updating the release's own instructions.
 
 ## Checks and scope
@@ -71,3 +86,31 @@ their captions against `images/captures.json`, and check every link before
 publishing. Refresh any screenshot that displays an older version number.
 Only update the release description when refreshing its presentation;
 published ZIPs, checksums and tags remain immutable.
+
+## Source archives
+
+GitHub automatically adds Source code ZIP/tar.gz links to every release; they
+cannot be removed as uploaded assets. Direct player-download links are placed
+at the beginning of the release description and in the README. `.gitattributes`
+excludes `AGENTS.md` and `CLAUDE.md` from newly generated archives of revisions
+containing that rule, while keeping the instructions in the Git checkout.
+The archive-mode public-file check accounts for exactly those omissions.
+The existing `v1.2.5` tag is not moved: its source archives still reflect its
+original tree. A push to main cannot change those old archives.
+
+## Installation references
+
+Checked on 27 October 2026:
+
+- [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/) and its
+  [source](https://github.com/marcrobledo/RomPatcher.js): browser field names,
+  xdelta support and local processing. SHA-1 shown there is not SHA-256.
+- [SHA256 File Checksum](https://emn178.github.io/online-tools/sha256_checksum.html):
+  File/Hex mode with HMAC off, calculated locally in the browser.
+- [Microsoft Get-FileHash](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash):
+  SHA256 and LiteralPath for filenames containing wildcard characters.
+- [xdelta](https://github.com/jmacd/xdelta): optional command-line alternative.
+- [Dumping your game cartridge](https://3ds.hacks.guide/dumping-titles-and-game-cartridges.html#dumping-a-game-cartridge):
+  NDS cartridge copying on a console already configured for GodMode9.
+- [GitHub releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases):
+  automatic source archive links belong to the release tag.

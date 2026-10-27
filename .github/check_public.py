@@ -103,6 +103,10 @@ def check(root=ROOT):
         actual = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().rstrip('\0').split('\0'))
     else:
         actual = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts}
+        # git archive omits these checkout-only instructions via export-ignore.
+        # In a real Git checkout the complete tracked-file contract above stays
+        # strict; source archives may omit only these two documented files.
+        allowed -= {'AGENTS.md', 'CLAUDE.md'} - actual
     if actual != allowed:
         raise ValueError('Unexpected or missing public files; review the public file list')
     for name in sorted(actual):

@@ -4,3 +4,8 @@
 # regardless of how git's content-based detection classifies a given file.
 *.pdf binary
 *.nds binary
+
+# Assistant instructions belong to the checkout, not downloadable source archives.
+AGENTS.md export-ignore
+CLAUDE.md export-ignore
+*.jpg -text

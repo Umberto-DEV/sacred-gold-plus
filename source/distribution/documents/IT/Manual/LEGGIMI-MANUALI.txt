@@ -1,1 +1,3 @@
-Le cinque guide PDF originali di Sacred Gold / Storm Silver e il riferimento allenatori sono conservati byte per byte, con crediti originali. Restano in inglese e possono descrivere differenze rispetto a Plus. Game Guide.txt e i PDF illustrati della 1.2 sono riferimenti storici. Per le istruzioni e le correzioni correnti leggi Guide-1.2.5-IT.pdf e i documenti 1.2.5 nella radice.
+Inizia da Come-installare-1.2.5-IT.pdf nella cartella principale. Novita-1.2.5-IT.pdf nella stessa cartella presenta le funzioni attuali del gioco.
+
+Le cinque guide PDF originali di Sacred Gold / Storm Silver e il riferimento allenatori sono conservati byte per byte con i crediti originali. Restano in inglese e possono descrivere differenze rispetto a Plus. Game Guide.txt è un riferimento storico sul gioco. Le vecchie guide di installazione e i vecchi PDF delle novità sono esclusi dal pacchetto per non confonderli con le istruzioni correnti. I cheat sono facoltativi.

@@ -1,11 +1,50 @@
-NOVITA 1.2.5
+SACRED GOLD PLUS
+Novità della 1.2.5 | Edizione italiana
 
-La versione V.1.2.5 e' visibile nello schermo superiore del titolo, con il logo Sacred Gold Plus e Ho-Oh in volo. E' consultabile anche in Opzioni > SELECT > Plus dopo il salvataggio delle impostazioni. Non serve una nuova partita.
+LA GUIDA AL GIOCO ATTUALE
+Una continuazione amatoriale indipendente di Sacred Gold Plus, basata su Sacred Gold di Drayano per Nintendo DS. Questa panoramica presenta le funzioni incluse nella 1.2.5, comprese quelle introdotte dalle versioni Plus precedenti. Non sono tutte novità di questo aggiornamento.
 
-Compatibilita' salvataggi: l'aggiornamento conserva il .sav esistente. Il codice di salvataggio, il formato nativo, le impostazioni Plus e l'estensione della Borsa restano invariati dalla 1.2.4. Sono cambiati soltanto i testi della versione e la sua grafica nel titolo; logo, palette e animazioni restano intatti. La versione e' allineata al credito Developed by A FAN; la y di by ora ha il tratto inferiore corretto.
+1. IL GIOCO CON LE TUE IMPOSTAZIONI
 
-Verifica sul Mac: sette cicli caricamento/salvataggio/riavvio con salvataggi precedenti, compresi impostazioni personalizzate e 252esimo slot della Borsa. Conserva un backup e riparti da Continua, non da un vecchio stato rapido dell'emulatore.
+Apri il menu Opzioni del gioco e premi SELECT per entrare nella pagina Plus. Scegli difficoltà degli allenatori, livelli dei Pokemon selvatici, movimento dei Pokemon in lotta, caricamento dei personaggi e slot della connessione Wi-Fi. Salva con il comando indicato sullo schermo. Sono impostazioni del gioco: non richiedono cheat.
 
-Include tutte le correzioni 1.2.4 alle copie degli sprite in lotta e alla ricerca di Cascata, oltre alle funzionalita' delle versioni precedenti. Non modifica la velocita' del gioco. Non e' una nuova partita completa di collaudo e non dimostra la causa della segnalazione su WaterMelonDS.
+La difficoltà Plus consente aumenti opzionali dei livelli degli allenatori. La crescita dei livelli dei selvatici ha una regolazione separata: puoi scegliere le due impostazioni indipendentemente. Il limite resta il livello 100.
 
-Ogni ZIP contiene 21 patch di ingresso, comprese le ROM 1.2.4 EN/IT. Ogni percorso viene verificato con xdelta3 e RomPatcher.js. Sono preservati i manuali originali e i crediti.
+V.1.2.5 è visibile nello schermo superiore del titolo e in Opzioni > SELECT > Plus. Il tuo salvataggio e le tue impostazioni vengono conservati: non serve iniziare una nuova partita o azzerare le opzioni per vedere la versione.
+
+2. ESPLORAZIONE PIÙ COMODA
+
+La camera classica di HeartGold è presente in 52 interni e grotte; all'aperto resta la camera panoramica Plus. È una funzione integrata e non richiede un cheat per la camera.
+
+Il caricamento dei personaggi può essere distribuito su più fotogrammi all'ingresso nelle città. Borsa e Squadra riutilizzano dati già caricati durante le lotte. Questi interventi riducono il lavoro nei passaggi interessati; non cambiano la velocità generale del gioco.
+
+La tasca principale della Borsa ha 252 slot, con capacità ampliata anche nelle altre tasche. Dopo una Caramella Rara dal menu Squadra puoi continuare a usarne altre senza riaprire il menu a ogni oggetto. Evoluzioni e apprendimento delle mosse seguono il normale flusso del gioco.
+
+3. CONOSCI I TUOI POKEMON
+
+Nel riepilogo del Pokemon premi L per vedere gli EV e R per vedere gli IV; SELECT riporta alle statistiche normali. La guida EV/IV integrata spiega valori e comandi. Non serve un cheat EV/IV.
+
+Tipo Folletto, nuove mosse Folletto e camera esterna panoramica provengono dal progetto Sacred Gold Plus originale. Questa continuazione include anche le edizioni italiana e inglese, correzioni dei testi e del gioco.
+
+Il movimento opzionale dei Pokemon anima gli sprite esistenti durante l'attesa e la scelta dei comandi in lotta. Lascia il posto alle animazioni delle mosse, di ingresso e di KO. Puoi attivarlo o disattivarlo dalla pagina Plus.
+
+4. CONSERVA LA TUA AVVENTURA
+
+L'aggiornamento conserva i normali salvataggi del gioco. Fai una copia di sicurezza di ROM e salvataggio, applica UNA sola patch corrispondente e avvia la nuova ROM con Continua. Il PDF di installazione spiega i passaggi esatti e il controllo SHA-256. Non riprendere da un vecchio savestate dell'emulatore dopo aver sostituito la ROM.
+
+Conserva il backup se torni a una ROM precedente. I vecchi giochi non mostrano gli slot aggiuntivi della Borsa; salvando con quelli, gli oggetti extra possono non essere recuperati automaticamente al ritorno alla versione nuova.
+
+I cheat sono facoltativi e partono disattivati. Se li usi, leggi Cheats/LEGGIMI-CHEAT.txt. I cataloghi della 1.1 usano un'intestazione diversa. Il catalogo originale di terzi mantiene i crediti e non è stato completamente verificato da questo progetto.
+
+La scelta dello slot Wi-Fi non fornisce da sola un servizio online. I servizi di terzi e il supporto di rete dell'emulatore sono aspetti separati: consulta le loro istruzioni aggiornate.
+
+ULTIMO AGGIORNAMENTO
+
+Alcuni bug corretti.
+
+Per installare o aggiornare leggi Come-installare-1.2.5-IT.pdf in questa cartella. I manuali originali in Manual mantengono i crediti degli autori e possono descrivere differenze rispetto a Plus. Modifiche tecniche, copertura dei salvataggi provati e limiti sono documentati nel repository:
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/source/docs/version-1.2.5.md
+
+CREDITI
+
+Drayano; mikelan / Mikelan98; NefariousnessNo3436; @JD48096761 e i contributori originali. È una continuazione amatoriale indipendente, non un passaggio di consegne ufficiale. Crediti completi e diritti sono nella guida di installazione e nella licenza. Le immagini sono catture reali del gioco; la lotta catturata nella 1.2.4 ha la stessa grafica nella 1.2.5.

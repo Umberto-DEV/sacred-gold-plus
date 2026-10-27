@@ -7,9 +7,15 @@ Available in **English and Italian**.
 | Edition | Player package |
 | --- | --- |
 | English | [Download the English patch package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v{{VERSION}}/Sacred-Gold-Plus-{{VERSION}}-US.zip) |
-| Italian | [Download the Italian patch package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v{{VERSION}}/Sacred-Gold-Plus-{{VERSION}}-IT.zip) |
+| Italiano | [Scarica il pacchetto italiano](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v{{VERSION}}/Sacred-Gold-Plus-{{VERSION}}-IT.zip) |
 
-These packages contain patches and installation instructions. You need your own game file; no ROM is distributed.
+**Windows and Mac:** choose the edition you want to play in, download its ZIP and extract it. Open **Sacred Gold Plus {{VERSION}}**, then **How-to-install-{{VERSION}}-EN.pdf** (English) or **Come-installare-{{VERSION}}-IT.pdf** (Italian). The installation PDF has numbered steps and real screenshots. **Whats-New-{{VERSION}}-EN.pdf** / **Novita-{{VERSION}}-IT.pdf** is beside it and introduces the current game features. `Manual` contains the original gameplay references.
+
+**New to patching?** You can start directly from your own original HeartGold `.nds`; you do not need Sacred Gold or an older Plus version first. The guide shows how to check the ROM's SHA-256, choose **one** patch from `Patch/From Clean ROM/US` or `IT`, apply it with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), and verify the finished game. The ZIP selects the final game language; the US/IT folder selects the starting ROM language.
+
+**Updating Plus?** Back up your game and save, then follow the guide's `From Plus` route for your existing version. Resume with **Continue** using the normal in-game save.
+
+Use the two player ZIP links above. GitHub's automatic **Source code (zip / tar.gz)** files are for developers and are not needed to play. No ROM is included: use your own cartridge backup and do not download pirated ROMs.
 
 ## Game features
 

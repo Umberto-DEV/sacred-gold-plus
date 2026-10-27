@@ -42,6 +42,7 @@
 
 # images/: only the reviewed 1.2 gallery screenshots.
 !/images/*.png
+!/images/install-*.jpg
 
 __pycache__/
 .venv/
