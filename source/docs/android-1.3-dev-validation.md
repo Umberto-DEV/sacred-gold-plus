@@ -5,7 +5,6 @@ sul dispositivo fisico sono nel [rapporto dedicato](device-1.3-validation.md).
 Gli hash, i conteggi e i limiti della campagna seguente restano riferiti alle
 revisioni qui identificate.
 
-
 La campagna funzionale Android è conclusa con **49 checkpoint accettati**: **45 con SAVE nativo e riavvio a freddo**, più **quattro rifiuti con l’intero file invariato**. La matrice distingue le scene Android dalle prove ARM e dai controlli dei dati, conservando i limiti di ogni risultato. È la verifica di un candidato privato **1.3 DEV**, senza pubblicazione di release o sostituzione di tag, ZIP o file già distribuiti.
 
 Le tappe precedenti restano documentate nel [playtest v5](playtest-1.3-dev.md), nella [verifica delle interfacce v8](ui-1.3-dev-validation.md), nella [diagnosi di stabilità](deep-debug-2026-10-28.md) e nella [verifica iniziale v4](validation-1.3-dev.md). I loro pin e conteggi identificano campagne distinte.

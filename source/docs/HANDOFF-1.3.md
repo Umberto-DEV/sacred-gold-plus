@@ -2,8 +2,9 @@
 
 Punto di ripartenza aggiornato al **29 ottobre 2026**. La versione pubblicata è
 **1.2.5**; la candidata **1.3**, ora identificata nel gioco come **V1.3**,
-ha sorgenti su `main`, una campagna Android e prove su dispositivo fisico. Le nuove idee devono partire dal codice e dalle prove qui
-indicati, mantenendo aggiornato il confronto fra le due versioni.
+ha sorgenti su `main`, una campagna Android e prove su dispositivo fisico. Le
+nuove idee devono partire dal codice e dalle prove qui indicati, mantenendo
+aggiornato il confronto fra le due versioni.
 
 ## Documenti da leggere
 
@@ -18,7 +19,8 @@ indicati, mantenendo aggiornato il confronto fra le due versioni.
 
 I rapporti v4, v5, v8 e della diagnosi del 28 ottobre conservano prove storiche.
 Le loro versioni interne non indicano automaticamente il candidato più recente:
-per identificarlo usare il rapporto Android sopra collegato e gli hash.
+per identificarlo usare il rapporto «Candidata V1.3 e dispositivo fisico» sopra
+collegato e gli hash.
 
 ## Stato del lavoro e della CI
 
@@ -31,9 +33,13 @@ successo. Non sono stati pubblicati release, tag o nuovi download.
 Il successivo aggiornamento visivo prepara nome e versione: **Pokémon Sacred
 Gold Plus** nella libreria, icona originale conservata, **V1.3** nel titolo e
 nelle impostazioni Plus. Il rapporto del dispositivo identifica le nuove ROM e
-il confronto integrale con le precedenti. La suite locale passa con **809 test
-Class A eseguiti e 52 skip**; la CI di questa correzione deve essere verificata
-sul relativo commit dopo il push. Prima di intervenire rileggere
+il confronto integrale con le precedenti. È pubblicato nel commit
+[`94ef03e`](https://github.com/Umberto-DEV/sacred-gold-plus/commit/94ef03e2977e6ef6b802f58e4eaf7b77cf0c1224),
+con [CI verde sullo stesso SHA](https://github.com/Umberto-DEV/sacred-gold-plus/actions/runs/40934647598):
+**Public files** e **Class A tests (no game file)** conclusi con successo.
+La suite locale passa con **809 test Class A eseguiti e 52 skip**. Gli eventuali
+commit successivi di sola documentazione non cambiano i byte delle candidate
+identificate nel rapporto. Prima di intervenire rileggere
 `git status --short --branch` e i diff.
 
 Una nuova sessione aperta nella stessa cartella locale può leggere codice,

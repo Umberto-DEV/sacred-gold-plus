@@ -2,7 +2,7 @@
 
 ## 1.3.0 — in development, not released
 
-Status recorded on **29 October 2026**. The candidate still identifies itself as
+Status recorded on **29 October 2026**. The candidate now identifies itself as
 **V1.3**; this display label does not publish a release, and 1.2.5 downloads remain unchanged.
 The [complete 1.2.5 → 1.3.0 change register, in Italian](source/docs/novita-1.3.0.md)
 records the before/after behavior, all 67 affected species, fixes, inherited
