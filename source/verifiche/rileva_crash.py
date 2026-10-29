@@ -13,7 +13,8 @@ Il secondo da solo non basta: il contatore si ferma anche durante un caricamento
 bloccante legittimo, che in questo progetto e' gia' stato scambiato per un guasto.
 
 Uso:   python3 rileva_crash.py <corsa>/frames.csv [...]
-Esce 1 se almeno una corsa e' in crash, 0 altrimenti: usabile come cancello.
+Esce 1 per crash, cappio fisso o traccia inutilizzabile. STALLO resta
+inconclusivo: servono anche verifiche dello stato di gioco raggiunto.
 """
 import csv
 import sys
@@ -52,17 +53,23 @@ def esamina(percorso):
         return "VIVO", (f"{len(righe)} fotogrammi; il contatore avanzava ancora a {len(coda)} "
                         f"fotogrammi dalla fine (vblank da {vb[0]} a {vb[-1]})")
 
-    pc_distinti = {r["arm9_pc"].strip() for r in coda}
-    pc = next(iter(pc_distinti))
-    frame_stop = num(coda[0]["frame"])
-    if len(pc_distinti) == 1 and VETTORE_LO <= num(pc) < VETTORE_HI:
-        return "CRASH", (f"dal fotogramma {frame_stop}: PC fisso a {pc} per {len(coda)} fotogrammi, "
+    # Il vblank puo' fermarsi durante il caricamento PRIMA dell'eccezione.
+    # Quei primi PC variabili non devono nascondere un successivo cappio fisso.
+    pc = num(righe[-1]["arm9_pc"])
+    inizio_fisso = len(righe) - 1
+    while inizio_fisso > ultimo_avanzamento and num(righe[inizio_fisso - 1]["arm9_pc"]) == pc:
+        inizio_fisso -= 1
+    fissa = righe[inizio_fisso:]
+    frame_stop = num(fissa[0]["frame"])
+    if len(fissa) >= SOGLIA_CODA and VETTORE_LO <= pc < VETTORE_HI:
+        return "CRASH", (f"dal fotogramma {frame_stop}: PC fisso a {pc:#x} per {len(fissa)} fotogrammi, "
                          f"vblank congelato a {vb[-1]}")
-    if len(pc_distinti) == 1:
-        return "BLOCCATO", (f"dal fotogramma {frame_stop}: PC fisso a {pc} (fuori dal vettore) "
-                            f"per {len(coda)} fotogrammi, vblank congelato: cappio, non eccezione")
-    return "STALLO", (f"dal fotogramma {frame_stop}: vblank fermo per {len(coda)} fotogrammi ma "
-                      f"{len(pc_distinti)} PC distinti: caricamento bloccante, non un crash")
+    if len(fissa) >= SOGLIA_CODA:
+        return "BLOCCATO", (f"dal fotogramma {frame_stop}: PC fisso a {pc:#x} (fuori dal vettore) "
+                            f"per {len(fissa)} fotogrammi, vblank congelato: cappio, non eccezione")
+    pc_distinti = {num(r["arm9_pc"]) for r in coda}
+    return "STALLO", (f"dal fotogramma {num(coda[0]['frame'])}: vblank fermo per {len(coda)} fotogrammi ma "
+                      f"{len(pc_distinti)} PC distinti; esito inconclusivo: verificare stato e avanzamento")
 
 
 def main(argv):
@@ -76,7 +83,7 @@ def main(argv):
         except OSError as e:
             esito, dettaglio = "ILLEGGIBILE", str(e)
         print(f"{esito:12s} {p}\n             {dettaglio}")
-        if esito in ("CRASH", "ILLEGGIBILE", "VUOTO", "INCOMPLETO"):
+        if esito in ("CRASH", "BLOCCATO", "ILLEGGIBILE", "VUOTO", "INCOMPLETO"):
             peggiore = 1
     return peggiore
 

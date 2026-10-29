@@ -2,6 +2,25 @@
 
 This folder builds **1.2.5**. See the [version fix and save validation](docs/version-1.2.5.md).
 
+The private **1.3 development** successor has a separate
+[builder and feature guide](sgp13/README.md). It starts from a verified 1.2.5
+copy and does not replace the published release pipeline.
+Per riprendere il lavoro in una nuova sessione, partire dal
+[passaggio di consegne 1.3](docs/HANDOFF-1.3.md): stato Git/CI, prove e documenti da aggiornare.
+Il [registro delle novità 1.2.5 → 1.3.0](docs/novita-1.3.0.md) raccoglie
+il confronto prima/dopo, le specie interessate e le correzioni integrate.
+La [verifica funzionale Android del 29 ottobre 2026](docs/android-1.3-dev-validation.md)
+registra il candidato corrente, 49 checkpoint accettati, prove native e limiti.
+Il [playtest sistematico v5](docs/playtest-1.3-dev.md) e la successiva
+[verifica delle interfacce v8](docs/ui-1.3-dev-validation.md) conservano i risultati
+delle tappe precedenti.
+The earlier [focused stability investigation](docs/deep-debug-2026-10-28.md) and its
+[execution plan](docs/deep-debug-2026-10-28-plan.md) separate the reported 1.2.5
+legendary-event freezes from a reproduced 1.3 save-admission defect.
+The [debug and optimization handoff](docs/HANDOFF-debug-optimization.md) defines
+the measurement, research, regression and evidence method for this work and
+for a separate emulator investigation.
+
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
 
 Everything here rebuilds and checks the game from **your own** game file. No game file is distributed, and none is needed to run the tests that CI runs. How changes get in is at the end of this page.

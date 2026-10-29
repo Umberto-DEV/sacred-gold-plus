@@ -1,0 +1,3986 @@
+{
+  "schema": 1,
+  "provenance": "Original player instructions based on 1.2.5 EN/IT live script and event bindings; see guide-content-sources.md. No PDF prose reproduced.",
+  "categories": [
+    {
+      "id": 2,
+      "title": {
+        "EN": "Items and TMs",
+        "IT": "Strumenti e MT"
+      },
+      "entries": [
+        {
+          "id": 1328,
+          "title": {
+            "EN": "{item:328}: {move:264}",
+            "IT": "{item:328}: {move:264}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:148} Poke Mart. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:148}, Pokémon Market. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1329,
+          "title": {
+            "EN": "{item:329}: {move:337}",
+            "IT": "{item:329}: {move:337}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Sunday first prize in the Goldenrod Department Store 6F drawing. Each draw costs 300; winning is not guaranteed."
+              ],
+              "IT": [
+                "- Primo premio di domenica alla lotteria del 5º piano del Centro Commerciale di Fiordoropoli. Ogni estrazione costa 300; la vincita non è garantita."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1330,
+          "title": {
+            "EN": "{item:330}: {move:352}",
+            "IT": "{item:330}: {move:352}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the Fisherman inside the {map:180} Pokémon Center.",
+                "- Answer Yes when he asks whether you like Water-type Pokémon."
+              ],
+              "IT": [
+                "- Parla al Pescatore nel Centro Pokémon del {map:180}.",
+                "- Rispondi Sì quando chiede se ti piacciono i Pokémon di tipo Acqua."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1331,
+          "title": {
+            "EN": "{item:331}: {move:347}",
+            "IT": "{item:331}: {move:347}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In the {map:131} Pokémon Center, talk to the left of the two men standing together below the nurse’s counter.",
+                "- He gives a TM for strengthening special stats.",
+                "- If you are wearing the Team Rocket uniform, change back and return."
+              ],
+              "IT": [
+                "- Nel Centro Pokémon di {map:131}, parla all’uomo a sinistra dei due affiancati sotto il bancone dell’infermiera.",
+                "- Ti dona una MT per potenziare le statistiche speciali.",
+                "- Se indossi la divisa del Team Rocket, cambiati e torna da lui."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1332,
+          "title": {
+            "EN": "{item:332}: {move:46}",
+            "IT": "{item:332}: {move:46}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- On northern {map:180}, talk to the large man who likes roaring.",
+                "- He gives the TM when you first speak to him."
+              ],
+              "IT": [
+                "- Nella parte nord del {map:180}, parla all’uomo robusto che ama ruggire.",
+                "- Ti dona la MT al primo incontro."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1333,
+          "title": {
+            "EN": "{item:333}: {move:92}",
+            "IT": "{item:333}: {move:92}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Defeat Petrel during the Team Rocket encounter inside {map:228}.",
+                "- Receive the TM he drops after the battle; it is awarded automatically."
+              ],
+              "IT": [
+                "- Sconfiggi Maxus durante l’incontro con il Team Rocket nella {map:228}.",
+                "- La MT lasciata dopo la lotta viene raccolta automaticamente."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1334,
+          "title": {
+            "EN": "{item:334}: {move:258}",
+            "IT": "{item:334}: {move:258}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1335,
+          "title": {
+            "EN": "{item:335}: {move:339}",
+            "IT": "{item:335}: {move:339}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In the {map:131} Pokémon Center, talk to the right of the two men standing together below the nurse’s counter.",
+                "- The martial artist gives a TM for strengthening physical stats.",
+                "- If you are wearing the Team Rocket uniform, change back and return."
+              ],
+              "IT": [
+                "- Nel Centro Pokémon di {map:131}, parla all’uomo a destra dei due affiancati sotto il bancone dell’infermiera.",
+                "- Il lottatore ti dona una MT per potenziare le statistiche fisiche.",
+                "- Se indossi la divisa del Team Rocket, cambiati e torna da lui."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1336,
+          "title": {
+            "EN": "{item:336}: {move:331}",
+            "IT": "{item:336}: {move:331}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:180}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:180}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1337,
+          "title": {
+            "EN": "{item:337}: {move:237}",
+            "IT": "{item:337}: {move:237}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Carry the Unown Report and catch at least seven different Unown forms.",
+                "- Visit the {map:209} Research Center and talk to the reward researcher near the left wall."
+              ],
+              "IT": [
+                "- Porta con te {item:469} e cattura almeno sette forme diverse di Unown.",
+                "- Nel centro ricerche delle {map:209}, parla al ricercatore dei premi vicino alla parete sinistra."
+              ],
+              "reference": 1469
+            }
+          ]
+        },
+        {
+          "id": 1338,
+          "title": {
+            "EN": "{item:338}: {move:241}",
+            "IT": "{item:338}: {move:241}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1339,
+          "title": {
+            "EN": "{item:339}: {move:269}",
+            "IT": "{item:339}: {move:269}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1340,
+          "title": {
+            "EN": "{item:340}: {move:58}",
+            "IT": "{item:340}: {move:58}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find it in Ice Path B1F. Another copy is in Seafoam Islands B4F.",
+                "- Buy more for 4000 coins each at Goldenrod Game Corner."
+              ],
+              "IT": [
+                "- Si trova al P1S della Via Gelata. Un'altra copia è al P4S delle Isole Spumarine.",
+                "- Puoi comprarne altre per 4000 gettoni al Casinò di Fiordoropoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1341,
+          "title": {
+            "EN": "{item:341}: {move:59}",
+            "IT": "{item:341}: {move:59}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1342,
+          "title": {
+            "EN": "{item:342}: {move:63}",
+            "IT": "{item:342}: {move:63}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1343,
+          "title": {
+            "EN": "{item:343}: {move:113}",
+            "IT": "{item:343}: {move:113}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1344,
+          "title": {
+            "EN": "{item:344}: {move:182}",
+            "IT": "{item:344}: {move:182}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1345,
+          "title": {
+            "EN": "{item:345}: {move:240}",
+            "IT": "{item:345}: {move:240}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1346,
+          "title": {
+            "EN": "{item:346}: {move:202}",
+            "IT": "{item:346}: {move:202}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:187}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:187}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1347,
+          "title": {
+            "EN": "{item:347}: {move:219}",
+            "IT": "{item:347}: {move:219}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1348,
+          "title": {
+            "EN": "{item:348}: {move:218}",
+            "IT": "{item:348}: {move:218}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1349,
+          "title": {
+            "EN": "{item:349}: {move:76}",
+            "IT": "{item:349}: {move:76}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1350,
+          "title": {
+            "EN": "{item:350}: {move:231}",
+            "IT": "{item:350}: {move:231}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:140} Poke Mart. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:140}, Pokémon Market. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1351,
+          "title": {
+            "EN": "{item:351}: {move:85}",
+            "IT": "{item:351}: {move:85}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find it on the shore beside Olivine Lighthouse. Another copy is in Cerulean Cave 2F.",
+                "- Buy more for 4000 coins each at Goldenrod Game Corner."
+              ],
+              "IT": [
+                "- Si trova sulla riva accanto al Faro di Olivinopoli. Un'altra copia è al 1º piano della Grotta Celeste.",
+                "- Puoi comprarne altre per 4000 gettoni al Casinò di Fiordoropoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1352,
+          "title": {
+            "EN": "{item:352}: {move:87}",
+            "IT": "{item:352}: {move:87}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1353,
+          "title": {
+            "EN": "{item:353}: {move:89}",
+            "IT": "{item:353}: {move:89}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:221} 2F."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:221}, 1º piano."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1354,
+          "title": {
+            "EN": "{item:354}: {move:216}",
+            "IT": "{item:354}: {move:216}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1355,
+          "title": {
+            "EN": "{item:355}: {move:91}",
+            "IT": "{item:355}: {move:91}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 4F. Check the second clerk where present.",
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 3º piano. Se presente, parla al secondo commesso.",
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1356,
+          "title": {
+            "EN": "{item:356}: {move:94}",
+            "IT": "{item:356}: {move:94}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:209}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:209}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1357,
+          "title": {
+            "EN": "{item:357}: {move:247}",
+            "IT": "{item:357}: {move:247}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk at Lavender Poké Mart."
+              ],
+              "IT": [
+                "- Comprala dal secondo commesso al Pokémon Market di Lavandonia."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1358,
+          "title": {
+            "EN": "{item:358}: {move:280}",
+            "IT": "{item:358}: {move:280}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the martial artist in the northwest part of {map:184}.",
+                "- He gives the TM after demonstrating his punches."
+              ],
+              "IT": [
+                "- Parla al lottatore nella parte nord-ovest del {map:184}.",
+                "- Ti dona la MT dopo aver mostrato i suoi pugni."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1359,
+          "title": {
+            "EN": "{item:359}: {move:104}",
+            "IT": "{item:359}: {move:104}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the Prize Corner beside the {map:144} Game Corner.",
+                "- Exchange 4,000 coins at the left prize counter."
+              ],
+              "IT": [
+                "- Visita l’edificio dei premi accanto al Casinò di {map:144}.",
+                "- Scambia 4.000 gettoni al bancone dei premi a sinistra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1360,
+          "title": {
+            "EN": "{item:360}: {move:115}",
+            "IT": "{item:360}: {move:115}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1361,
+          "title": {
+            "EN": "{item:361}: {move:351}",
+            "IT": "{item:361}: {move:351}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the man who wants to rock out in the {map:129} Pokémon Center, below the nurse’s counter.",
+                "- Either answer is accepted; he gives you the TM."
+              ],
+              "IT": [
+                "- Nel Centro Pokémon di {map:129}, parla all’uomo appassionato di rock sotto il bancone dell’infermiera.",
+                "- Qualunque risposta va bene: ti dona la MT."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1362,
+          "title": {
+            "EN": "{item:362}: {move:53}",
+            "IT": "{item:362}: {move:53}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find it on {map:230}. Another copy is on Route 28.",
+                "- Buy more for 4000 coins each at Goldenrod Game Corner."
+              ],
+              "IT": [
+                "- Si trova sul {map:230}. Un'altra copia è sul Percorso 28.",
+                "- Puoi comprarne altre per 4000 gettoni al Casinò di Fiordoropoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1363,
+          "title": {
+            "EN": "{item:363}: {move:188}",
+            "IT": "{item:363}: {move:188}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Clear the Team Rocket hideout in Mahogany Town.",
+                "- Return to the {map:191} gatehouse and talk to the man behind the counter."
+              ],
+              "IT": [
+                "- Libera il covo del Team Rocket a Mogania.",
+                "- Torna al varco del {map:191} e parla all’uomo dietro il bancone."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1364,
+          "title": {
+            "EN": "{item:364}: {move:201}",
+            "IT": "{item:364}: {move:201}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1365,
+          "title": {
+            "EN": "{item:365}: {move:126}",
+            "IT": "{item:365}: {move:126}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1366,
+          "title": {
+            "EN": "{item:366}: {move:317}",
+            "IT": "{item:366}: {move:317}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:210} B1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:210}, P1S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1367,
+          "title": {
+            "EN": "{item:367}: {move:332}",
+            "IT": "{item:367}: {move:332}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:182}.",
+                "- Pick up the item ball at: {map:216} 2F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:182}.",
+                "- Raccogli la sfera strumento: {map:216}, 1º piano."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1368,
+          "title": {
+            "EN": "{item:368}: {move:259}",
+            "IT": "{item:368}: {move:259}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:156}."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:156}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1369,
+          "title": {
+            "EN": "{item:369}: {move:263}",
+            "IT": "{item:369}: {move:263}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Friday first prize in the Goldenrod Department Store 6F drawing. Each draw costs 300; winning is not guaranteed."
+              ],
+              "IT": [
+                "- Primo premio di venerdì alla lotteria del 5º piano del Centro Commerciale di Fiordoropoli. Ogni estrazione costa 300; la vincita non è garantita."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1370,
+          "title": {
+            "EN": "{item:370}: {move:290}",
+            "IT": "{item:370}: {move:290}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:135}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:135}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1371,
+          "title": {
+            "EN": "{item:371}: {move:156}",
+            "IT": "{item:371}: {move:156}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Accept the Spearow carrying Mail from the guard in the {map:183} gatehouse beside {map:131}.",
+                "- Bring that Spearow to the drowsy man on {map:179} and hand it over with its Mail. Keep another Pokémon in your party."
+              ],
+              "IT": [
+                "- Accetta lo Spearow con un Messaggio dalla guardia del varco del {map:183}, vicino a {map:131}.",
+                "- Portalo all’uomo assonnato sul {map:179} e consegnalo con il Messaggio. Tieni un altro Pokémon in squadra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1372,
+          "title": {
+            "EN": "{item:372}: {move:213}",
+            "IT": "{item:372}: {move:213}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:143} Poke Mart. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:143}, Pokémon Market. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1373,
+          "title": {
+            "EN": "{item:373}: {move:168}",
+            "IT": "{item:373}: {move:168}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the thief at the northwest edge of {map:129}.",
+                "- He gives you the TM."
+              ],
+              "IT": [
+                "- Parla al ladro nella parte nord-ovest di {map:129}.",
+                "- Ti dona la MT."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1374,
+          "title": {
+            "EN": "{item:374}: {move:211}",
+            "IT": "{item:374}: {move:211}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:212} outside."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:212}, esterno."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1375,
+          "title": {
+            "EN": "{item:375}: {move:285}",
+            "IT": "{item:375}: {move:285}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1376,
+          "title": {
+            "EN": "{item:376}: {move:289}",
+            "IT": "{item:376}: {move:289}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:213} B3F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:213}, P3S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1377,
+          "title": {
+            "EN": "{item:377}: {move:315}",
+            "IT": "{item:377}: {move:315}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:206} B1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:206}, P1S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1378,
+          "title": {
+            "EN": "{item:378}: {move:355}",
+            "IT": "{item:378}: {move:355}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 4F. Check the second clerk where present.",
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 3º piano. Se presente, parla al secondo commesso.",
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1379,
+          "title": {
+            "EN": "{item:379}: {move:411}",
+            "IT": "{item:379}: {move:411}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1380,
+          "title": {
+            "EN": "{item:380}: {move:412}",
+            "IT": "{item:380}: {move:412}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1381,
+          "title": {
+            "EN": "{item:381}: {move:206}",
+            "IT": "{item:381}: {move:206}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:220} from Route 45."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:220}, lato Percorso 45."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1382,
+          "title": {
+            "EN": "{item:382}: {move:362}",
+            "IT": "{item:382}: {move:362}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:167}."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:167}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1383,
+          "title": {
+            "EN": "{item:383}: {move:374}",
+            "IT": "{item:383}: {move:374}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:200} 1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:200}, piano terra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1384,
+          "title": {
+            "EN": "{item:384}: {move:451}",
+            "IT": "{item:384}: {move:451}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Return {item:481} to the Power Plant manager. He gives TM57 and {item:441}."
+              ],
+              "IT": [
+                "- Restituisci {item:481} al direttore della Centrale Elettrica. Ricevi la MT57 e {item:441}."
+              ],
+              "reference": 1481
+            },
+            {
+              "EN": [
+                "- Wednesday first prize in the Goldenrod Department Store 6F drawing. Each draw costs 300; winning is not guaranteed."
+              ],
+              "IT": [
+                "- Primo premio di mercoledì alla lotteria del 5º piano del Centro Commerciale di Fiordoropoli. Ogni estrazione costa 300; la vincita non è garantita."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1385,
+          "title": {
+            "EN": "{item:385}: {move:203}",
+            "IT": "{item:385}: {move:203}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the Prize Corner beside the {map:144} Game Corner.",
+                "- Exchange 2,000 coins at the left prize counter."
+              ],
+              "IT": [
+                "- Visita l’edificio dei premi accanto al Casinò di {map:144}.",
+                "- Scambia 2.000 gettoni al bancone dei premi a sinistra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1386,
+          "title": {
+            "EN": "{item:386}: {move:406}",
+            "IT": "{item:386}: {move:406}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:141} Poke Mart. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:141}, Pokémon Market. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1387,
+          "title": {
+            "EN": "{item:387}: {move:409}",
+            "IT": "{item:387}: {move:409}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:187}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:187}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1388,
+          "title": {
+            "EN": "{item:388}: {move:261}",
+            "IT": "{item:388}: {move:261}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to Fantina inside the {map:133} Poké Mart.",
+                "- She gives the TM as a gift."
+              ],
+              "IT": [
+                "- Parla a Fannie nel Pokémon Market di {map:133}.",
+                "- Ti dona la MT."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1389,
+          "title": {
+            "EN": "{item:389}: {move:318}",
+            "IT": "{item:389}: {move:318}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:154}.",
+                "- Pick up the item ball at: {map:186}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:154}.",
+                "- Raccogli la sfera strumento: {map:186}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1390,
+          "title": {
+            "EN": "{item:390}: {move:373}",
+            "IT": "{item:390}: {move:373}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:188}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:188}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1391,
+          "title": {
+            "EN": "{item:391}: {move:153}",
+            "IT": "{item:391}: {move:153}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Bring one {item:504} to the man in the Underground Path linking Routes 5 and 6.",
+                "- Agree to give him the candy in exchange for the TM."
+              ],
+              "IT": [
+                "- Porta un’{item:504} all’uomo nel Sotterraneo tra i Percorsi 5 e 6.",
+                "- Accetta di dargli la caramella in cambio della MT."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1392,
+          "title": {
+            "EN": "{item:392}: {move:421}",
+            "IT": "{item:392}: {move:421}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:133}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:133}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1393,
+          "title": {
+            "EN": "{item:393}: {move:371}",
+            "IT": "{item:393}: {move:371}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:183}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:183}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1394,
+          "title": {
+            "EN": "{item:394}: {move:278}",
+            "IT": "{item:394}: {move:278}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:144}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:144}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1395,
+          "title": {
+            "EN": "{item:395}: {move:416}",
+            "IT": "{item:395}: {move:416}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the Prize Corner beside the {map:144} Game Corner.",
+                "- Exchange 15,000 coins at the left prize counter."
+              ],
+              "IT": [
+                "- Visita l’edificio dei premi accanto al Casinò di {map:144}.",
+                "- Scambia 15.000 gettoni al bancone dei premi a sinistra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1396,
+          "title": {
+            "EN": "{item:396}: {move:397}",
+            "IT": "{item:396}: {move:397}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:158}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:158}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1397,
+          "title": {
+            "EN": "{item:397}: {move:148}",
+            "IT": "{item:397}: {move:148}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to Blissey beside the nurse’s counter in the {map:158} Pokémon Center.",
+                "- It gives you the TM for free."
+              ],
+              "IT": [
+                "- Parla a Blissey accanto al bancone dell’infermiera nel Centro Pokémon del {map:158}.",
+                "- Ti dona la MT gratuitamente."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1398,
+          "title": {
+            "EN": "{item:398}: {move:444}",
+            "IT": "{item:398}: {move:444}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1399,
+          "title": {
+            "EN": "{item:399}: {move:419}",
+            "IT": "{item:399}: {move:419}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:217} B2F."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:217}, P2S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1400,
+          "title": {
+            "EN": "{item:400}: {move:86}",
+            "IT": "{item:400}: {move:86}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to Volkner on the ground floor of Olivine’s {map:212}.",
+                "- He gives you the TM before leaving."
+              ],
+              "IT": [
+                "- Parla a Corrado al piano terra del {map:212} di Olivinopoli.",
+                "- Ti dona la MT prima di andarsene."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1401,
+          "title": {
+            "EN": "{item:401}: {move:360}",
+            "IT": "{item:401}: {move:360}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the Prize Corner beside the {map:144} Game Corner.",
+                "- Exchange 10,000 coins at the left prize counter."
+              ],
+              "IT": [
+                "- Visita l’edificio dei premi accanto al Casinò di {map:144}.",
+                "- Scambia 10.000 gettoni al bancone dei premi a sinistra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1402,
+          "title": {
+            "EN": "{item:402}: {move:14}",
+            "IT": "{item:402}: {move:14}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the {map:131} Game Corner.",
+                "- Exchange 1,000 coins with the prize attendant on the right."
+              ],
+              "IT": [
+                "- Visita il Casinò di {map:131}.",
+                "- Scambia 1.000 gettoni con l’addetta ai premi a destra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1403,
+          "title": {
+            "EN": "{item:403}: {move:446}",
+            "IT": "{item:403}: {move:446}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:216} 1F.",
+                "- Pick up the item ball at: {map:219} lower mountainside."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:216}, piano terra.",
+                "- Raccogli la sfera strumento: {map:219}, parte bassa del versante."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1404,
+          "title": {
+            "EN": "{item:404}: {move:244}",
+            "IT": "{item:404}: {move:244}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:224}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:224}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1405,
+          "title": {
+            "EN": "{item:405}: {move:445}",
+            "IT": "{item:405}: {move:445}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1406,
+          "title": {
+            "EN": "{item:406}: {move:399}",
+            "IT": "{item:406}: {move:399}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:213} B2F."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:213}, P2S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1407,
+          "title": {
+            "EN": "{item:407}: {move:157}",
+            "IT": "{item:407}: {move:157}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:209} southeast chamber, second room."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:209}, seconda stanza della sala a sud-est."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1408,
+          "title": {
+            "EN": "{item:408}: {move:404}",
+            "IT": "{item:408}: {move:404}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1409,
+          "title": {
+            "EN": "{item:409}: {move:214}",
+            "IT": "{item:409}: {move:214}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:131} warehouse."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:131}, magazzino."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1410,
+          "title": {
+            "EN": "{item:410}: {move:363}",
+            "IT": "{item:410}: {move:363}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Speak to the farmer in the farmhouse on {map:187}.",
+                "- In the stable, give the sick Miltank seven {item:155}.",
+                "- Return to the farmer’s wife in the farmhouse to receive the TM."
+              ],
+              "IT": [
+                "- Parla al fattore nella casa della fattoria sul {map:187}.",
+                "- Nella stalla, dai sette {item:155} al Miltank malato.",
+                "- Torna dalla moglie del fattore nella casa per ricevere la MT."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1411,
+          "title": {
+            "EN": "{item:411}: {move:398}",
+            "IT": "{item:411}: {move:398}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Defeat Ariana during the Team Rocket encounter on {map:195}.",
+                "- The TM she drops is awarded automatically after the battle."
+              ],
+              "IT": [
+                "- Sconfiggi Athena durante l’incontro con il Team Rocket sul {map:195}.",
+                "- La MT lasciata dopo la lotta viene raccolta automaticamente."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1412,
+          "title": {
+            "EN": "{item:412}: {move:138}",
+            "IT": "{item:412}: {move:138}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find the sleepy man at the southwest edge of {map:139}.",
+                "- Talk to him to receive the TM from his dream."
+              ],
+              "IT": [
+                "- Trova l’uomo assonnato all’estremità sud-ovest di {map:139}.",
+                "- Parlagli per ricevere la MT del suo sogno."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1413,
+          "title": {
+            "EN": "{item:413}: {move:447}",
+            "IT": "{item:413}: {move:447}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 4F. Check the second clerk where present.",
+                "- Buy it at: {map:131} Department Store, 5F. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 3º piano. Se presente, parla al secondo commesso.",
+                "- Acquistala qui: {map:131}, Centro Commerciale, 4º piano. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1414,
+          "title": {
+            "EN": "{item:414}: {move:207}",
+            "IT": "{item:414}: {move:207}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:144} Department Store, 3F. Check the second clerk where present.",
+                "- Pick up the item ball at: {map:212} 4F."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:144}, Centro Commerciale, 2º piano. Se presente, parla al secondo commesso.",
+                "- Raccogli la sfera strumento: {map:212}, 3º piano."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1415,
+          "title": {
+            "EN": "{item:415}: {move:365}",
+            "IT": "{item:415}: {move:365}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:188}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:188}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1416,
+          "title": {
+            "EN": "{item:416}: {move:369}",
+            "IT": "{item:416}: {move:369}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:139} Poke Mart. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:139}, Pokémon Market. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1417,
+          "title": {
+            "EN": "{item:417}: {move:164}",
+            "IT": "{item:417}: {move:164}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit the {map:131} Game Corner.",
+                "- Exchange 1,000 coins with the prize attendant on the right."
+              ],
+              "IT": [
+                "- Visita il Casinò di {map:131}.",
+                "- Scambia 1.000 gettoni con l’addetta ai premi a destra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1418,
+          "title": {
+            "EN": "{item:418}: {move:430}",
+            "IT": "{item:418}: {move:430}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball at: {map:157}."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento: {map:157}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1419,
+          "title": {
+            "EN": "{item:419}: {move:433}",
+            "IT": "{item:419}: {move:433}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it at: {map:134} souvenir shop. Check the second clerk where present."
+              ],
+              "IT": [
+                "- Acquistala qui: {map:134}, negozio di souvenir. Se presente, parla al secondo commesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1420,
+          "title": {
+            "EN": "{item:420}: {move:15}",
+            "IT": "{item:420}: {move:15}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In {map:214}, help recover both escaped Farfetch’d.",
+                "- The charcoal maker rewards you with the HM when both have returned."
+              ],
+              "IT": [
+                "- Nel {map:214}, aiuta a recuperare entrambi i Farfetch’d fuggiti.",
+                "- Il carbonaio ti dona la MN dopo il loro ritorno."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1421,
+          "title": {
+            "EN": "{item:421}: {move:19}",
+            "IT": "{item:421}: {move:19}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Defeat Chuck in the {map:130} Gym, then leave the Gym.",
+                "- His wife outside gives you the HM."
+              ],
+              "IT": [
+                "- Sconfiggi Furio nella Palestra di {map:130}, poi esci.",
+                "- Sua moglie, fuori dalla Palestra, ti dona la MN."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1422,
+          "title": {
+            "EN": "{item:422}: {move:57}",
+            "IT": "{item:422}: {move:57}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- At the Dance Theater in {map:133}, defeat the Team Rocket Grunt harassing the Kimono Girl.",
+                "- The man with Psyduck rewards you with the HM as you leave the stage."
+              ],
+              "IT": [
+                "- Al Teatro di Danza di {map:133}, sconfiggi la Recluta Rocket che disturba la Kimono Girl.",
+                "- L’uomo con Psyduck ti dona la MN quando lasci il palco."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1423,
+          "title": {
+            "EN": "{item:423}: {move:70}",
+            "IT": "{item:423}: {move:70}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Walk past the western Mt. Mortar entrance on {map:190}.",
+                "- The Hiker who bumps into you gives you the HM."
+              ],
+              "IT": [
+                "- Passa davanti all’ingresso occidentale del Monte Scodella sul {map:190}.",
+                "- L’Avventuriero che ti urta ti dona la MN."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1424,
+          "title": {
+            "EN": "{item:424}: {move:250}",
+            "IT": "{item:424}: {move:250}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Finish stopping Team Rocket’s radio transmitter in the Mahogany hideout.",
+                "- Lance gives you the HM on B2F after the Electrode sequence."
+              ],
+              "IT": [
+                "- Ferma il trasmettitore del Team Rocket nel covo di Mogania.",
+                "- Dopo la sequenza degli Electrode, Lance ti dona la MN al P2S."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1425,
+          "title": {
+            "EN": "{item:425}: {move:249}",
+            "IT": "{item:425}: {move:249}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the large man on the Violet City side of {map:184}.",
+                "- He gives you the HM if it is not already in your Bag."
+              ],
+              "IT": [
+                "- Parla all’uomo robusto sul {map:184}, dal lato di Violapoli.",
+                "- Ti dona la MN se non è già nella Borsa."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1426,
+          "title": {
+            "EN": "{item:426}: {move:127}",
+            "IT": "{item:426}: {move:127}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball in the first room of {map:217}.",
+                "- It is in the northeast section of the ice-puzzle area."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento nella prima stanza della {map:217}.",
+                "- Si trova nella parte nord-est della zona con il ghiaccio."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1427,
+          "title": {
+            "EN": "{item:427}: {move:431}",
+            "IT": "{item:427}: {move:431}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Earn the Earth Badge, completing all sixteen badges.",
+                "- Leave the Viridian Gym and receive Oak’s call.",
+                "- Visit Oak in his Pallet Town lab to receive the HM."
+              ],
+              "IT": [
+                "- Ottieni la Medaglia Terra e completa tutte e sedici le Medaglie.",
+                "- Esci dalla Palestra di Smeraldopoli e ricevi la chiamata di Oak.",
+                "- Vai da Oak nel suo laboratorio a Biancavilla per ricevere la MN."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1458,
+          "title": {
+            "EN": "{item:458}",
+            "IT": "{item:458}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Reach Cinnabar Island and use Rock Climb to reach the summit.",
+                "- Pick up the item ball. It also reveals Lv.70 Heatran.",
+                "- Exchange the Stone with the woman in Lavender Town's southwest house. Catching Heatran is not required for the trade."
+              ],
+              "IT": [
+                "- Raggiungi l'Isola Cannella e usa Scalaroccia per salire in cima.",
+                "- Raccogli la sfera strumento: appare anche Heatran al L.70.",
+                "- Scambia la pietra con la donna nella casa a sud-ovest di Lavandonia. Non serve aver catturato Heatran."
+              ],
+              "reference": 1455
+            }
+          ]
+        },
+        {
+          "id": 1455,
+          "title": {
+            "EN": "{item:455}",
+            "IT": "{item:455}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Obtain {item:458} at the top of Cinnabar Island.",
+                "- Take it to the woman in Lavender Town's southwest house and accept the trade.",
+                "- Keep the Flute in the Bag for the Celebi and Jirachi events. It is not consumed by those encounters."
+              ],
+              "IT": [
+                "- Ottieni {item:458} sulla cima dell'Isola Cannella.",
+                "- Portala alla donna nella casa a sud-ovest di Lavandonia e accetta lo scambio.",
+                "- Tieni il Flauto nella Borsa per gli eventi di Celebi e Jirachi. Questi incontri non lo consumano."
+              ],
+              "reference": 1458
+            }
+          ]
+        },
+        {
+          "id": 1441,
+          "title": {
+            "EN": "{item:441}",
+            "IT": "{item:441}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Return {item:481} to the Power Plant manager.",
+                "- He gives you TM57 and {item:441}.",
+                "- Finish Cynthia's earlier requests in Goldenrod's Archaeology Center, then speak to her about Sinjoh Ruins. The Chain is not consumed."
+              ],
+              "IT": [
+                "- Restituisci {item:481} al direttore della Centrale Elettrica.",
+                "- Ricevi la MT57 e {item:441}.",
+                "- Completa le richieste precedenti di Camilla al Centro Archeologico di Fiordoropoli, poi parlale delle Rovine Sinjoh. La Catena non viene consumata."
+              ],
+              "reference": 2480
+            }
+          ]
+        },
+        {
+          "id": 1082,
+          "title": {
+            "EN": "{item:82}",
+            "IT": "{item:82}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk on Goldenrod Department Store 2F.",
+                "- Sprout Tower's elder also offers one evolution item after your battle. That choice is a one-time reward."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al 1º piano del Centro Commerciale di Fiordoropoli.",
+                "- Anche l'anziano della Torre Sprout offre uno strumento evolutivo dopo la lotta. Puoi scegliere una sola ricompensa."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1083,
+          "title": {
+            "EN": "{item:83}",
+            "IT": "{item:83}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk on Goldenrod Department Store 2F.",
+                "- Sprout Tower's elder also offers one evolution item after your battle. That choice is a one-time reward."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al 1º piano del Centro Commerciale di Fiordoropoli.",
+                "- Anche l'anziano della Torre Sprout offre uno strumento evolutivo dopo la lotta. Puoi scegliere una sola ricompensa."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1084,
+          "title": {
+            "EN": "{item:84}",
+            "IT": "{item:84}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk on Goldenrod Department Store 2F.",
+                "- Sprout Tower's elder also offers one evolution item after your battle. That choice is a one-time reward."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al 1º piano del Centro Commerciale di Fiordoropoli.",
+                "- Anche l'anziano della Torre Sprout offre uno strumento evolutivo dopo la lotta. Puoi scegliere una sola ricompensa."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1085,
+          "title": {
+            "EN": "{item:85}",
+            "IT": "{item:85}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk on Goldenrod Department Store 2F."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al 1º piano del Centro Commerciale di Fiordoropoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1107,
+          "title": {
+            "EN": "{item:107}",
+            "IT": "{item:107}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk at Blackthorn Poké Mart."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al Pokémon Market di Ebanopoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1108,
+          "title": {
+            "EN": "{item:108}",
+            "IT": "{item:108}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk at Blackthorn Poké Mart."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al Pokémon Market di Ebanopoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1109,
+          "title": {
+            "EN": "{item:109}",
+            "IT": "{item:109}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy it from the second clerk at Blackthorn Poké Mart."
+              ],
+              "IT": [
+                "- Acquistala dal secondo commesso al Pokémon Market di Ebanopoli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1080,
+          "title": {
+            "EN": "{item:80}",
+            "IT": "{item:80}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit Olivine City's northwest house from 04:00 to 19:59.",
+                "- The giver shares one daily reward with {item:81}: choose the time for the stone you want."
+              ],
+              "IT": [
+                "- Visita la casa a nord-ovest di Olivinopoli dalle 04:00 alle 19:59.",
+                "- Il regalo giornaliero è condiviso con {item:81}: scegli l'orario in base alla pietra desiderata."
+              ],
+              "reference": 1081
+            }
+          ]
+        },
+        {
+          "id": 1081,
+          "title": {
+            "EN": "{item:81}",
+            "IT": "{item:81}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Visit Olivine City's northwest house from 20:00 to 03:59.",
+                "- The giver shares one daily reward with {item:80}: receiving either uses that day's gift."
+              ],
+              "IT": [
+                "- Visita la casa a nord-ovest di Olivinopoli dalle 20:00 alle 03:59.",
+                "- Il regalo giornaliero è condiviso con {item:80}: riceverne una esaurisce il dono del giorno."
+              ],
+              "reference": 1080
+            }
+          ]
+        },
+        {
+          "id": 1467,
+          "title": {
+            "EN": "{item:467}",
+            "IT": "{item:467}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Receive it after certain in-game trades.",
+                "- Early example: bring Rhyhorn to the trade house in Violet City. Trade it for Gligar to receive an Orb.",
+                "- These are finite gifts; not every NPC trade awards an Orb."
+              ],
+              "IT": [
+                "- Si riceve dopo alcuni scambi con personaggi del gioco.",
+                "- Esempio iniziale: porta Rhyhorn nella casa degli scambi a Violapoli. Scambialo per Gligar e ricevi una Sfera.",
+                "- Sono doni limitati: non ogni scambio assegna una Sfera."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1454,
+          "title": {
+            "EN": "{item:454}",
+            "IT": "{item:454}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find an item ball on Route 42 near the Apricorn trees.",
+                "- Another is on Route 27, beyond the whirlpool."
+              ],
+              "IT": [
+                "- Si trova in una sfera strumento sul Percorso 42 vicino agli alberi di Ghicocche.",
+                "- Un'altra è sul Percorso 27, oltre il mulinello."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1433,
+          "title": {
+            "EN": "{item:433}",
+            "IT": "{item:433}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Choose Leafeon when Sprout Tower's elder offers an evolution item.",
+                "- Another copy is in an item ball in Ilex Forest."
+              ],
+              "IT": [
+                "- Scegli Leafeon quando l'anziano della Torre Sprout offre uno strumento evolutivo.",
+                "- Un'altra copia è in una sfera strumento nel Bosco di Lecci."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1439,
+          "title": {
+            "EN": "{item:439}",
+            "IT": "{item:439}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Choose Glaceon when Sprout Tower's elder offers an evolution item.",
+                "- Another copy is in an item ball on Ice Path 1F."
+              ],
+              "IT": [
+                "- Scegli Glaceon quando l'anziano della Torre Sprout offre uno strumento evolutivo.",
+                "- Un'altra copia è in una sfera strumento al piano terra della Via Gelata."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1438,
+          "title": {
+            "EN": "{item:438}",
+            "IT": "{item:438}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Choose Espeon when Sprout Tower's elder offers an evolution item.",
+                "- Another copy is in an item ball on Route 42."
+              ],
+              "IT": [
+                "- Scegli Espeon quando l'anziano della Torre Sprout offre uno strumento evolutivo.",
+                "- Un'altra copia è in una sfera strumento sul Percorso 42."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1436,
+          "title": {
+            "EN": "{item:436}",
+            "IT": "{item:436}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Choose Umbreon when Sprout Tower's elder offers an evolution item.",
+                "- Another copy is in the second room of the southeast entrance at Ruins of Alph, behind the LIGHT puzzle."
+              ],
+              "IT": [
+                "- Scegli Umbreon quando l'anziano della Torre Sprout offre uno strumento evolutivo.",
+                "- Un'altra copia è nella seconda stanza dell'ingresso sud-est delle Rovine d'Alfa, oltre l'enigma della LUCE."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1533,
+          "title": {
+            "EN": "{item:533}",
+            "IT": "{item:533}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Become Champion and go to Olivine Harbour for your first trip to Kanto.",
+                "- Oak gives you the Capsule during the port event.",
+                "- Take it to Cynthia at Goldenrod's Archaeology Center. Complete her starter request first if needed."
+              ],
+              "IT": [
+                "- Diventa Campione e vai al porto di Olivinopoli per il primo viaggio a Kanto.",
+                "- Oak ti dà la Capsula durante l'evento al porto.",
+                "- Portala a Camilla al Centro Archeologico di Fiordoropoli. Se necessario, completa prima la sua richiesta sullo starter."
+              ],
+              "reference": 2377
+            }
+          ]
+        },
+        {
+          "id": 1453,
+          "title": {
+            "EN": "{item:453}",
+            "IT": "{item:453}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- After Earth Badge, try sleeping in your New Bark bedroom to trigger the nightmare.",
+                "- Catch Lv.50 Cresselia at Mt. Moon Square to receive the Wing. Return when the Clefairy dance is absent.",
+                "- Return to your bed with the Wing for Darkrai."
+              ],
+              "IT": [
+                "- Dopo la Medaglia Terra, prova a dormire nella tua camera a Borgo Foglianova per attivare l'incubo.",
+                "- Cattura Cresselia al L.50 nella piazza di Monteluna per ricevere l'Ala. Torna quando non c'è la danza dei Clefairy.",
+                "- Torna al tuo letto con l'Ala per incontrare Darkrai."
+              ],
+              "reference": 2491
+            }
+          ]
+        },
+        {
+          "id": 1298,
+          "title": {
+            "EN": "{item:298}",
+            "IT": "{item:298}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Inspect the dirt pile between trees on {map:230}.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Esamina il mucchio di terra tra gli alberi sul {map:230}.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1299,
+          "title": {
+            "EN": "{item:299}",
+            "IT": "{item:299}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- On {map:226} 1F, show the man a Phione in the first party slot, then a Manaphy in that slot.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Al piano terra della {map:226}, mostra all'uomo prima Phione e poi Manaphy al primo posto in squadra.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1300,
+          "title": {
+            "EN": "{item:300}",
+            "IT": "{item:300}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- After restoring {map:201}, inspect its bottom-right bookcase.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Dopo aver riparato la {map:201}, esamina la libreria in basso a destra.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1301,
+          "title": {
+            "EN": "{item:301}",
+            "IT": "{item:301}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Lead with Bellossom, speak to the dancer on Route 39 and let Bellossom dance. You also receive TM53.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Metti Bellossom al primo posto, parla con la ballerina sul Percorso 39 e lascialo danzare. Ricevi anche la MT53.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1302,
+          "title": {
+            "EN": "{item:302}",
+            "IT": "{item:302}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Inspect the snow pile outside {map:231}.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Esamina il mucchio di neve all'esterno delle {map:231}.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1303,
+          "title": {
+            "EN": "{item:303}",
+            "IT": "{item:303}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Receive the Karate King's Tyrogue in {map:216} B1F. Take the Plate it holds. Leave a free party slot.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Ricevi Tyrogue dal Re del Karate al P1S del {map:216}. Prendi la Lastra che tiene. Lascia un posto libero in squadra.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1304,
+          "title": {
+            "EN": "{item:304}",
+            "IT": "{item:304}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- After the Plain Badge, inspect the bin in Elm's Lab and accept the item.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Dopo la Medaglia Piana, esamina il cestino nel laboratorio di Elm e accetta lo strumento.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1305,
+          "title": {
+            "EN": "{item:305}",
+            "IT": "{item:305}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Use Rock Climb to reach the upper item ball in {map:197}.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Usa Scalaroccia per raggiungere la sfera strumento in alto nella {map:197}.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1306,
+          "title": {
+            "EN": "{item:306}",
+            "IT": "{item:306}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Inspect the snow pile directly in front of Red at the summit of Mt. Silver. You do not need to beat Red for this pickup.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Esamina il mucchio di neve davanti a Rosso sulla vetta del Monte Argento. Non serve battere Rosso per raccoglierla.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1307,
+          "title": {
+            "EN": "{item:307}",
+            "IT": "{item:307}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In Mr. Psychic's house in Saffron, show the new visitor a leading Alakazam, Gardevoir, Metagross or Gallade.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Nella casa del Signor Psiche a Zafferanopoli, mostra al nuovo ospite Alakazam, Gardevoir, Metagross o Gallade al primo posto.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1308,
+          "title": {
+            "EN": "{item:308}",
+            "IT": "{item:308}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- During the Bug-Catching Contest, inspect the grass where the north-center trainer normally stands.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Durante la Gara Pigliamosche, esamina l'erba dove normalmente si trova l'Allenatore al centro-nord.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1309,
+          "title": {
+            "EN": "{item:309}",
+            "IT": "{item:309}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Inspect the dirt pile to the right of Pewter Museum, near the lower-right ledge corner.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Esamina il mucchio di terra a destra del Museo di Plumbeopoli, vicino all'angolo in basso a destra del gradino.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1310,
+          "title": {
+            "EN": "{item:310}",
+            "IT": "{item:310}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In Lavender's House of Memories, agree to pay respects for the older woman.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Alla Casa Memoria di Lavandonia, accetta di rendere omaggio per la donna anziana.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1311,
+          "title": {
+            "EN": "{item:311}",
+            "IT": "{item:311}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Complete the elder's test in {map:222} and receive Dragonair. Take its held Plate. Leave a free party slot.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Completa la prova dell'anziano nella {map:222} e ricevi Dragonair. Prendi la Lastra che tiene. Lascia un posto libero in squadra.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1312,
+          "title": {
+            "EN": "{item:312}",
+            "IT": "{item:312}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Give the woman on Lighthouse 1F fifteen regular Poke Balls and one {item:280}. Her failed experiment produces the Plate.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Dai alla donna al piano terra del Faro quindici Poké Ball normali e un {item:280}. Dopo il suo esperimento fallito ottieni la Lastra.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1313,
+          "title": {
+            "EN": "{item:313}",
+            "IT": "{item:313}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Steven gives it during your first meeting in the Ecruteak-Route 38 gatehouse.",
+                "- Keep it in the Bag for the Arceus event."
+              ],
+              "IT": [
+                "- Rocco la consegna durante il primo incontro nel passaggio tra Amarantopoli e il Percorso 38.",
+                "- Tienila nella Borsa per l'evento di Arceus."
+              ],
+              "reference": 2493
+            }
+          ]
+        },
+        {
+          "id": 1111,
+          "title": {
+            "EN": "{item:111}",
+            "IT": "{item:111}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Cynthia gives one at the Ilex Forest-Route 34 gatehouse.",
+                "- After Earth Badge, the S.S. Aqua captain can provide another.",
+                "- Each Spiritomb attempt consumes one."
+              ],
+              "IT": [
+                "- Camilla ne dona una nel passaggio tra il Bosco di Lecci e il Percorso 34.",
+                "- Dopo la Medaglia Terra, il capitano della M/N Acqua può fornirne un'altra.",
+                "- Ogni tentativo con Spiritomb ne consuma una."
+              ],
+              "reference": 2442
+            }
+          ]
+        },
+        {
+          "id": 1233,
+          "title": {
+            "EN": "{item:233}",
+            "IT": "{item:233}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the second man in the north house in Olivine City. No trade is needed."
+              ],
+              "IT": [
+                "- Parla con il secondo uomo nella casa a nord di Olivinopoli. Non serve uno scambio."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1221,
+          "title": {
+            "EN": "{item:221}",
+            "IT": "{item:221}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the man in Mahogany Pokemon Center.",
+                "- Another copy is an item ball in Slowpoke Well B1F."
+              ],
+              "IT": [
+                "- Parla con l'uomo nel Centro Pokémon di Mogania.",
+                "- Un'altra copia è in una sfera strumento al P1S del Pozzo Slowpoke."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1235,
+          "title": {
+            "EN": "{item:235}",
+            "IT": "{item:235}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Talk to the man in Blackthorn Pokemon Center.",
+                "- Another copy is an item ball on Mt. Mortar 2F."
+              ],
+              "IT": [
+                "- Parla con l'uomo nel Centro Pokémon di Ebanopoli.",
+                "- Un'altra copia è in una sfera strumento al 1º piano del Monte Scodella."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1252,
+          "title": {
+            "EN": "{item:252}",
+            "IT": "{item:252}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Catch at least 14 different Unown forms, then claim the research assistant's reward at Ruins of Alph. You need the Unown Report.",
+                "- If the earlier 7-form reward is pending, receive it and speak again.",
+                "- Alternative: after clearing Team Rocket from the Safari Zone entrance, talk to the man in its Pokemon Center."
+              ],
+              "IT": [
+                "- Cattura almeno 14 forme diverse di Unown e chiedi la ricompensa all'assistente nelle Rovine d'Alfa. Serve {item:469}.",
+                "- Se devi ancora ricevere il premio per 7 forme, ritiralo e parla di nuovo.",
+                "- In alternativa, libera l'ingresso della Zona Safari dal Team Rocket e parla all'uomo nel suo Centro Pokémon."
+              ],
+              "reference": 1469
+            }
+          ]
+        },
+        {
+          "id": 1324,
+          "title": {
+            "EN": "{item:324}",
+            "IT": "{item:324}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball in Team Rocket Headquarters B3F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento al P3S del Covo del Team Rocket."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1321,
+          "title": {
+            "EN": "{item:321}",
+            "IT": "{item:321}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball on Victory Road 1F.",
+                "- Another copy is in Mt. Mortar's back room on 1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento al piano terra della Via Vittoria.",
+                "- Un'altra copia è nella stanza posteriore al piano terra del Monte Scodella."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1322,
+          "title": {
+            "EN": "{item:322}",
+            "IT": "{item:322}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball on Route 44.",
+                "- Another copy is in Cerulean Cave B1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento sul Percorso 44.",
+                "- Un'altra copia è al P1S della Grotta Celeste."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1323,
+          "title": {
+            "EN": "{item:323}",
+            "IT": "{item:323}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball on Ice Path 1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento al piano terra della Via Gelata."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1325,
+          "title": {
+            "EN": "{item:325}",
+            "IT": "{item:325}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Enter Dark Cave from the Blackthorn / Route 45 side and collect the item ball.",
+                "- Another copy is outside Mt. Silver."
+              ],
+              "IT": [
+                "- Entra nella Grotta Scura dal lato di Ebanopoli e del Percorso 45, poi raccogli la sfera strumento.",
+                "- Un'altra copia è all'esterno del Monte Argento."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1226,
+          "title": {
+            "EN": "{item:226}",
+            "IT": "{item:226}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Show the woman in Goldenrod Magnet Train station a Clamperl in the first party slot. She gives both DeepSea items.",
+                "- Another source is a hidden item on Route 47's beach near the Cliff Cave exit."
+              ],
+              "IT": [
+                "- Mostra alla donna nella stazione del Supertreno di Fiordoropoli un Clamperl al primo posto in squadra. Ricevi entrambi gli strumenti Abissi.",
+                "- Puoi anche cercarlo nascosto sulla spiaggia del Percorso 47, vicino all'uscita della Grotta Falesia."
+              ],
+              "reference": 1227
+            }
+          ]
+        },
+        {
+          "id": 1227,
+          "title": {
+            "EN": "{item:227}",
+            "IT": "{item:227}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Show a leading Clamperl to the woman in Goldenrod Magnet Train station to receive both DeepSea items.",
+                "- Another source is a hidden item on Route 47's beach, toward Embedded Tower."
+              ],
+              "IT": [
+                "- Mostra un Clamperl al primo posto in squadra alla donna nella stazione del Supertreno di Fiordoropoli: ricevi entrambi gli strumenti Abissi.",
+                "- Puoi anche cercarlo nascosto sulla spiaggia del Percorso 47, verso la Torre Occulta."
+              ],
+              "reference": 1226
+            }
+          ]
+        },
+        {
+          "id": 1326,
+          "title": {
+            "EN": "{item:326}",
+            "IT": "{item:326}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In Cianwood's central house, agree with the Sneasel enthusiast. You do not need to show a Sneasel."
+              ],
+              "IT": [
+                "- Nella casa centrale di Fiorlisopoli, dai ragione all'appassionato di Sneasel. Non serve mostrargli un Sneasel."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1327,
+          "title": {
+            "EN": "{item:327}",
+            "IT": "{item:327}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- In Cianwood's central house, agree with the Gligar enthusiast. You do not need to show a Gligar."
+              ],
+              "IT": [
+                "- Nella casa centrale di Fiorlisopoli, dai ragione all'appassionato di Gligar. Non serve mostrargli un Gligar."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1110,
+          "title": {
+            "EN": "{item:110}",
+            "IT": "{item:110}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball on Route 34.",
+                "- Another copy is in Rock Tunnel B1F."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento sul Percorso 34.",
+                "- Un'altra copia è al P1S del Tunnel Roccioso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1280,
+          "title": {
+            "EN": "{item:280}",
+            "IT": "{item:280}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Pick up the item ball on Route 27.",
+                "- Keep one for the woman's {item:312} exchange in Olivine Lighthouse."
+              ],
+              "IT": [
+                "- Raccogli la sfera strumento sul Percorso 27.",
+                "- Conservane uno per lo scambio di {item:312} con la donna nel Faro di Olivinopoli."
+              ],
+              "reference": 1312
+            }
+          ]
+        },
+        {
+          "id": 1481,
+          "title": {
+            "EN": "{item:481}",
+            "IT": "{item:481}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- During the Power Plant theft quest, confront the Rocket in Cerulean Gym and defeat him on Route 24.",
+                "- Return to the Gym and inspect the black object by the pool.",
+                "- Return the Part to the Power Plant manager for TM57 and {item:441}."
+              ],
+              "IT": [
+                "- Durante la ricerca del pezzo rubato alla Centrale Elettrica, affronta il Rocket nella Palestra di Celestopoli e sconfiggilo sul Percorso 24.",
+                "- Torna nella Palestra ed esamina l'oggetto nero vicino alla piscina.",
+                "- Riporta il pezzo al direttore della Centrale Elettrica: ricevi la MT57 e {item:441}."
+              ],
+              "reference": 1441
+            }
+          ]
+        },
+        {
+          "id": 1469,
+          "title": {
+            "EN": "{item:469}",
+            "IT": "{item:469}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Solve a stone-panel puzzle at {map:209}, then drop into the underground hall.",
+                "- During your first descent, the researcher gives you the Report.",
+                "- Keep it for the research rewards, including TMs and {item:252}."
+              ],
+              "IT": [
+                "- Risolvi un enigma delle lastre alle {map:209}, poi scendi nella sala sotterranea.",
+                "- Alla prima discesa, il ricercatore ti dona l’UnownBloc.",
+                "- Conservalo per i premi della ricerca, tra cui MT e {item:252}."
+              ],
+              "reference": 1252
+            }
+          ]
+        },
+        {
+          "id": 1113,
+          "title": {
+            "EN": "{item:113}",
+            "IT": "{item:113}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy for 10,000 after earning your first Badge. Visit the consultant in the Violet or Blackthorn Poke Mart.",
+                "- One Cap sets one chosen IV to 31. The advanced service can choose any value from 0 to 31 instead.",
+                "- Canceling, invalid choices and unchanged values cost nothing."
+              ],
+              "IT": [
+                "- Acquistalo per 10.000 dopo la prima Medaglia dal consulente del Pokémon Market di Violapoli o Ebanopoli.",
+                "- Un tappo porta un IV scelto a 31. Il servizio avanzato permette invece di scegliere un valore da 0 a 31.",
+                "- Annullare, scelte non valide e valori invariati non consumano tappi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 1114,
+          "title": {
+            "EN": "{item:114}",
+            "IT": "{item:114}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Buy for 50,000 after winning the League. Visit the consultant in the Violet or Blackthorn Poke Mart.",
+                "- One Cap sets all six IVs to 31. Check the preview before confirming.",
+                "- Also earned at the eighth and sixteenth Badges, League victories and the first victory over Red. Claim rewards from a consultant."
+              ],
+              "IT": [
+                "- Acquistalo per 50.000 dopo la Lega dal consulente del Pokémon Market di Violapoli o Ebanopoli.",
+                "- Un tappo porta tutti e sei gli IV a 31. Controlla il riepilogo prima di confermare.",
+                "- Si ottiene anche con l'ottava e la sedicesima Medaglia, le vittorie alla Lega e la prima vittoria contro Rosso. Ritira i premi dal consulente."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": {
+        "EN": "Special Pokemon",
+        "IT": "Pokémon speciali"
+      },
+      "entries": [
+        {
+          "id": 2251,
+          "title": {
+            "EN": "{pokemon:251}",
+            "IT": "{pokemon:251}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: {item:455}.",
+                "- Examine the shrine in Ilex Forest with the Flute in the Bag.",
+                "- Save before accepting the encounter with Lv.45 Celebi.",
+                "- Running or defeating it uses this opportunity."
+              ],
+              "IT": [
+                "Requisito: {item:455}.",
+                "- Esamina il santuario nel Bosco di Lecci con il Flauto nella Borsa.",
+                "- Salva prima di accettare l'incontro con Celebi al L.45.",
+                "- Fuggire o sconfiggerlo esaurisce questa occasione."
+              ],
+              "reference": 1455
+            }
+          ]
+        },
+        {
+          "id": 2385,
+          "title": {
+            "EN": "{pokemon:385}",
+            "IT": "{pokemon:385}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: Earth Badge and {item:455}.",
+                "- Speak to Misa, the Kimono Girl in Ecruteak City. She makes Jirachi available.",
+                "- Visit Mt. Mortar B1F and wake Jirachi using the Flute."
+              ],
+              "IT": [
+                "Requisiti: Medaglia Terra e {item:455}.",
+                "- Parla con Misa, la Kimono Girl ad Amarantopoli: rende disponibile Jirachi.",
+                "- Raggiungi il P1S del Monte Scodella e sveglia Jirachi usando il Flauto."
+              ],
+              "reference": 1455
+            },
+            {
+              "EN": [
+                "- Save before choosing a wish.",
+                "- Choose the battle to encounter Lv.45 Jirachi.",
+                "- Choosing money, coins or Rare Candies uses the same wish and gives up this encounter.",
+                "- Running or defeating Jirachi also uses the opportunity."
+              ],
+              "IT": [
+                "- Salva prima di scegliere un desiderio.",
+                "- Scegli la lotta per incontrare Jirachi al L.45.",
+                "- Scegliere denaro, gettoni o Caramelle Rare consuma lo stesso desiderio e rinuncia a questo incontro.",
+                "- Anche fuggire o sconfiggere Jirachi esaurisce l'occasione."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2386,
+          "title": {
+            "EN": "{pokemon:386}",
+            "IT": "{pokemon:386}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirement: Earth Badge.",
+                "- Go to the meteorites on Route 3 between 00:00 and 03:59.",
+                "- Approach the center tile from the north, walking south.",
+                "- Deoxys appears at Lv.60. Running or defeating it leaves another attempt available; capturing it ends this event."
+              ],
+              "IT": [
+                "Requisito: Medaglia Terra.",
+                "- Vai ai meteoriti sul Percorso 3 tra le 00:00 e le 03:59.",
+                "- Entra nella casella centrale da nord, camminando verso sud.",
+                "- Deoxys appare al L.60. Dopo una fuga o sconfitta puoi riprovare; catturarlo conclude l'evento."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2480,
+          "title": {
+            "EN": "Uxie, Mesprit, Azelf",
+            "IT": "Uxie, Mesprit, Azelf"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: {item:441} and Cynthia's earlier requests.",
+                "- At Goldenrod's Archaeology Center, complete her Sinnoh-starter follow-up and the Regi hunt.",
+                "- Talk to Cynthia again with the Chain in the Bag. Accept the trip to Sinjoh Ruins."
+              ],
+              "IT": [
+                "Requisiti: {item:441} e richieste precedenti di Camilla.",
+                "- Al Centro Archeologico di Fiordoropoli, completa la richiesta sullo starter di Sinnoh e la caccia ai Regi.",
+                "- Riparla con Camilla con la Catena nella Borsa. Accetta il viaggio alle Rovine Sinjoh."
+              ],
+              "reference": 2377
+            },
+            {
+              "EN": [
+                "- On Mystri Stage, encounter Uxie, Mesprit and Azelf at Lv.50.",
+                "- Catch these three event Pokemon to unlock the next stage. Traded copies do not complete these encounters.",
+                "- If you run or defeat one, leave and return for another attempt."
+              ],
+              "IT": [
+                "- Sul Tre Are incontri Uxie, Mesprit e Azelf al L.50.",
+                "- Cattura questi tre Pokémon dell'evento per sbloccare la fase successiva. Le copie scambiate non completano gli incontri.",
+                "- Se fuggi o ne sconfiggi uno, esci e rientra per riprovare."
+              ],
+              "reference": 2483
+            }
+          ]
+        },
+        {
+          "id": 2483,
+          "title": {
+            "EN": "Dialga, Palkia, Giratina",
+            "IT": "Dialga, Palkia, Giratina"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: Earth Badge and all three Lake Trio captures on Mystri Stage.",
+                "- Step into the center of Mystri Stage to reveal the three encounters.",
+                "- Dialga, Palkia and Giratina are Lv.70. Each capture grants its matching Orb.",
+                "- After a failed attempt, leave and return to try that encounter again."
+              ],
+              "IT": [
+                "Requisiti: Medaglia Terra e cattura del trio dei laghi alle Tre Are.",
+                "- Cammina al centro del Palco per far apparire i tre incontri.",
+                "- Dialga, Palkia e Giratina sono al L.70. Ogni cattura dona la sfera corrispondente.",
+                "- Dopo un tentativo fallito, esci e rientra per riprovare."
+              ],
+              "reference": 2480
+            }
+          ]
+        },
+        {
+          "id": 2493,
+          "title": {
+            "EN": "{pokemon:493}",
+            "IT": "{pokemon:493}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: finish the Lake Trio and creation trio encounters.",
+                "- Complete the National Pokédex and the special Mew, Celebi, Jirachi, Deoxys, Darkrai and Shaymin encounters.",
+                "- Carry all 16 Plates in the Bag. Plates held by Pokemon do not count."
+              ],
+              "IT": [
+                "Requisiti: completa gli incontri del trio dei laghi e del trio della creazione.",
+                "- Completa il Pokédex Nazionale e gli eventi speciali di Mew, Celebi, Jirachi, Deoxys, Darkrai e Shaymin.",
+                "- Porta tutte le 16 Lastre nella Borsa. Quelle tenute dai Pokémon non contano."
+              ],
+              "reference": 1298
+            },
+            {
+              "EN": [
+                "- Return to the center of Mystri Stage.",
+                "- Save before accepting the final challenge: Arceus is Lv.100.",
+                "- Capturing Arceus and running or defeating it lead to different endings. Treat this as a one-time choice."
+              ],
+              "IT": [
+                "- Torna al centro delle Tre Are.",
+                "- Salva prima di accettare la sfida finale: Arceus è al L.100.",
+                "- Catturare Arceus oppure fuggire o sconfiggerlo porta a finali diversi. Considerala una scelta unica."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2151,
+          "title": {
+            "EN": "{pokemon:151}",
+            "IT": "{pokemon:151}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Find Mew in {map:224}. Speak to it at each new hiding place.",
+                "- At the fourth position, battle Lv.45 Mew.",
+                "- If you run or defeat it, leave the area and find it again for another attempt."
+              ],
+              "IT": [
+                "- Trova Mew nel {map:224}. Parlagli ogni volta che cambia nascondiglio.",
+                "- Alla quarta posizione affronti Mew al L.45.",
+                "- Se fuggi o lo sconfiggi, esci dalla zona e cercalo di nuovo per riprovare."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2491,
+          "title": {
+            "EN": "{pokemon:491}",
+            "IT": "{pokemon:491}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: Earth Badge and {item:453}.",
+                "- Try sleeping in your New Bark bedroom after Earth Badge. The nightmare makes Cresselia available.",
+                "- Catch Lv.50 Cresselia at Mt. Moon Square and obtain its Wing."
+              ],
+              "IT": [
+                "Requisiti: Medaglia Terra e {item:453}.",
+                "- Dopo la Medaglia Terra, prova a dormire nella tua camera a Borgo Foglianova. L'incubo rende disponibile Cresselia.",
+                "- Cattura Cresselia al L.50 nella piazza di Monteluna e ottieni la sua Ala."
+              ],
+              "reference": 1453
+            },
+            {
+              "EN": [
+                "- Return to your bedroom bed with the Wing in the Bag.",
+                "- Battle Lv.50 Darkrai. The Wing is not consumed.",
+                "- Running or defeating Darkrai allows another attempt. Capturing it restores the usual bed behavior."
+              ],
+              "IT": [
+                "- Torna al letto nella tua camera con l'Ala nella Borsa.",
+                "- Affronta Darkrai al L.50. L'Ala non viene consumata.",
+                "- Dopo una fuga o sconfitta puoi riprovare. Catturarlo ripristina il normale funzionamento del letto."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2492,
+          "title": {
+            "EN": "{pokemon:492}",
+            "IT": "{pokemon:492}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirements: Earth Badge and {item:455}.",
+                "- Speak to the younger woman in Goldenrod's Flower Shop.",
+                "- Find Shaymin in National Park and accept the Flute prompt for a Lv.45 battle.",
+                "- Save beforehand. Running or defeating it allows a retry; avoid losing your entire party."
+              ],
+              "IT": [
+                "Requisiti: Medaglia Terra e {item:455}.",
+                "- Parla con la donna più giovane dal Fiorista di Fiordoropoli.",
+                "- Trova Shaymin al Parco Nazionale e accetta di suonare il Flauto: lo affronti al L.45.",
+                "- Salva prima. Puoi riprovare dopo una fuga o sconfitta; evita di perdere tutta la squadra."
+              ],
+              "reference": 1455
+            }
+          ]
+        },
+        {
+          "id": 2377,
+          "title": {
+            "EN": "Regirock, Regice, Registeel",
+            "IT": "Regirock, Regice, Registeel"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirement: {item:533}.",
+                "- Visit Cynthia in Goldenrod's Archaeology Center.",
+                "- Show a Sinnoh starter family in the first party slot. Leave two free party slots to receive her other starters.",
+                "- Talk again and give her the Capsule to reveal the Regis."
+              ],
+              "IT": [
+                "Requisito: {item:533}.",
+                "- Vai da Camilla al Centro Archeologico di Fiordoropoli.",
+                "- Metti uno starter di Sinnoh o una sua evoluzione al primo posto. Lascia due posti liberi per ricevere gli altri starter.",
+                "- Riparlale e consegna la Capsula per far apparire i Regi."
+              ],
+              "reference": 1533
+            },
+            {
+              "EN": [
+                "- Regirock: Mt. Mortar B1F, Lv.40.",
+                "- Regice: Ice Path B2F, Lv.40.",
+                "- Registeel: Dark Cave on the Blackthorn/Route 45 side, Lv.40.",
+                "- Catch all three. If you run or defeat one, leave and return for another attempt.",
+                "- Then bring {item:441} to Cynthia for Sinjoh Ruins."
+              ],
+              "IT": [
+                "- Regirock: P1S del Monte Scodella, L.40.",
+                "- Regice: P2S della Via Gelata, L.40.",
+                "- Registeel: Grotta Scura dal lato di Ebanopoli/Percorso 45, L.40.",
+                "- Catturali tutti. Dopo una fuga o sconfitta, esci e rientra per riprovare.",
+                "- Poi porta {item:441} a Camilla per le Rovine Sinjoh."
+              ],
+              "reference": 1441
+            }
+          ]
+        },
+        {
+          "id": 2479,
+          "title": {
+            "EN": "{pokemon:479}",
+            "IT": "{pokemon:479}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- After the Plain Badge, inspect the downstairs TV in your New Bark house.",
+                "- Agree to thump it to encounter Lv.20 Rotom.",
+                "- If you run or defeat it, you can try again until captured."
+              ],
+              "IT": [
+                "- Dopo la Medaglia Piana, esamina la TV al piano terra della tua casa a Borgo Foglianova.",
+                "- Accetta di darle un colpo per incontrare Rotom al L.20.",
+                "- Dopo una fuga o sconfitta puoi riprovare finché non lo catturi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2442,
+          "title": {
+            "EN": "{pokemon:442}",
+            "IT": "{pokemon:442}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Obtain {item:111} from Cynthia at the Ilex Forest-Route 34 gatehouse.",
+                "- In Azalea, examine the top of Slowpoke Well's ladder and agree to throw it in.",
+                "- Each Lv.20 Spiritomb attempt consumes one Keystone."
+              ],
+              "IT": [
+                "- Ottieni {item:111} da Camilla nel passaggio tra il Bosco di Lecci e il Percorso 34.",
+                "- Ad Azalina, esamina la cima della scala del Pozzo Slowpoke e accetta di lanciarla.",
+                "- Ogni tentativo contro Spiritomb al L.20 consuma una Roccianima."
+              ],
+              "reference": 1111
+            }
+          ]
+        },
+        {
+          "id": 2185,
+          "title": {
+            "EN": "{pokemon:185}",
+            "IT": "{pokemon:185}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- After the Plain Badge and Flower Shop events, use {item:447} on the tree blocking Route 36.",
+                "- Sudowoodo is Lv.25."
+              ],
+              "IT": [
+                "- Dopo la Medaglia Piana e gli eventi dal Fiorista, usa {item:447} sull'albero che blocca il Percorso 36.",
+                "- Sudowoodo è al L.25."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2131,
+          "title": {
+            "EN": "{pokemon:131}",
+            "IT": "{pokemon:131}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Surf to Union Cave B2F on Friday.",
+                "- Lapras appears at Lv.25. It can return on later Fridays."
+              ],
+              "IT": [
+                "- Usa Surf per raggiungere il P2S della Grotta di mezzo di venerdì.",
+                "- Lapras appare al L.25. Può tornare nei venerdì successivi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2130,
+          "title": {
+            "EN": "{pokemon:130}",
+            "IT": "{pokemon:130}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Follow the story to the red Gyarados in the Lake of Rage.",
+                "- This encounter is shiny and Lv.40."
+              ],
+              "IT": [
+                "- Segui la storia fino al Gyarados rosso nel Lago d'Ira.",
+                "- Questo incontro è cromatico e al L.40."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2143,
+          "title": {
+            "EN": "{pokemon:143}",
+            "IT": "{pokemon:143}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Obtain the Kanto radio expansion through the story.",
+                "- Play the Poké Flute channel beside Snorlax on Route 11, right of Diglett's Cave.",
+                "- Snorlax is Lv.60."
+              ],
+              "IT": [
+                "- Ottieni l'espansione della radio di Kanto seguendo la storia.",
+                "- Riproduci il canale del Poké Flauto vicino a Snorlax sul Percorso 11, a destra della Grotta Diglett.",
+                "- Snorlax è al L.60."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2133,
+          "title": {
+            "EN": "{pokemon:133}",
+            "IT": "{pokemon:133}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Meet Cynthia outside Mr. Pokémon's house on Route 30 early in the story.",
+                "- She gives you Eevee at Lv.5."
+              ],
+              "IT": [
+                "- Incontra Camilla fuori dalla casa di Mr. Pokémon sul Percorso 30 all'inizio della storia.",
+                "- Ti dona Eevee al L.5."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2351,
+          "title": {
+            "EN": "{pokemon:351}",
+            "IT": "{pokemon:351}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Meet Bill in Ecruteak Pokémon Center.",
+                "- Then visit his Goldenrod house with a free party slot.",
+                "- Receive Lv.25 Castform holding {item:243}."
+              ],
+              "IT": [
+                "- Incontra Bill al Centro Pokémon di Amarantopoli.",
+                "- Poi vai nella sua casa a Fiordoropoli con un posto libero in squadra.",
+                "- Ricevi Castform al L.25 con {item:243}."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2447,
+          "title": {
+            "EN": "{pokemon:447}",
+            "IT": "{pokemon:447}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Speak to Riley in Mahogany's east house with a free party slot.",
+                "- Accept the Riolu Egg and hatch it by walking."
+              ],
+              "IT": [
+                "- Parla con Marisio nella casa a est di Mogania con un posto libero in squadra.",
+                "- Accetta l'Uovo di Riolu e fallo schiudere camminando."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2148,
+          "title": {
+            "EN": "{pokemon:148}",
+            "IT": "{pokemon:148}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Return to the elder in Dragon's Den after completing the test and its story sequence.",
+                "- Leave a free party slot to receive Lv.45 Dragonair holding {item:311}.",
+                "- Your test answers determine whether it knows ExtremeSpeed."
+              ],
+              "IT": [
+                "- Torna dall'anziano nella Tana del Drago dopo la prova e la relativa sequenza della storia.",
+                "- Lascia un posto libero per ricevere Dragonair al L.45 con {item:311}.",
+                "- Le risposte alla prova determinano se conosce Extrarapido."
+              ],
+              "reference": 1311
+            }
+          ]
+        },
+        {
+          "id": 2025,
+          "title": {
+            "EN": "{pokemon:25}",
+            "IT": "{pokemon:25}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Speak to Caitlin on Cianwood beach.",
+                "- Your first party Pokemon must have maximum friendship. Leave one free party slot.",
+                "- Receive Lv.26 Pikachu with Surf, Fly and Wish."
+              ],
+              "IT": [
+                "- Parla con Catlina sulla spiaggia di Fiorlisopoli.",
+                "- Il primo Pokémon della squadra deve avere l'amicizia al massimo. Lascia un posto libero.",
+                "- Ricevi Pikachu al L.26 con Surf, Volo e Desiderio."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2236,
+          "title": {
+            "EN": "{pokemon:236}",
+            "IT": "{pokemon:236}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Defeat the Karate King in Mt. Mortar B1F.",
+                "- Leave a free party slot to receive Lv.10 Tyrogue holding {item:303}."
+              ],
+              "IT": [
+                "- Sconfiggi il Re del Karate al P1S del Monte Scodella.",
+                "- Lascia un posto libero per ricevere Tyrogue al L.10 con {item:303}."
+              ],
+              "reference": 1303
+            }
+          ]
+        },
+        {
+          "id": 2144,
+          "title": {
+            "EN": "{pokemon:144}",
+            "IT": "{pokemon:144}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Reach Seafoam Islands B4F.",
+                "- Articuno waits there at Lv.60. Save before the encounter."
+              ],
+              "IT": [
+                "- Raggiungi il P4S delle Isole Spumarine.",
+                "- Articuno ti aspetta al L.60. Salva prima dell'incontro."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2145,
+          "title": {
+            "EN": "{pokemon:145}",
+            "IT": "{pokemon:145}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Earn the Earth Badge.",
+                "- Find Lv.60 Zapdos outside the Power Plant on Route 10."
+              ],
+              "IT": [
+                "- Ottieni la Medaglia Terra.",
+                "- Trova Zapdos al L.60 fuori dalla Centrale Elettrica sul Percorso 10."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2146,
+          "title": {
+            "EN": "{pokemon:146}",
+            "IT": "{pokemon:146}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Catch Heatran at Cinnabar Island.",
+                "- Return inside the former Cinnabar Gym in Seafoam Islands.",
+                "- Moltres appears at Lv.60. If you run or defeat it, leave and return to try again."
+              ],
+              "IT": [
+                "- Cattura Heatran all'Isola Cannella.",
+                "- Torna nell'ex Palestra dell'Isola Cannella alle Isole Spumarine.",
+                "- Moltres appare al L.60. Se fuggi o lo sconfiggi, esci e rientra per riprovare."
+              ],
+              "reference": 1458
+            }
+          ]
+        },
+        {
+          "id": 2150,
+          "title": {
+            "EN": "{pokemon:150}",
+            "IT": "{pokemon:150}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Reach the deepest basement of Cerulean Cave.",
+                "- Mewtwo is Lv.75.",
+                "- After catching it, revisit its position for an extra battle."
+              ],
+              "IT": [
+                "- Raggiungi il sotterraneo più profondo della Grotta Celeste.",
+                "- Mewtwo è al L.75.",
+                "- Dopo averlo catturato, torna nella sua posizione per una lotta extra."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2486,
+          "title": {
+            "EN": "{pokemon:486}",
+            "IT": "{pokemon:486}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Bring Regirock, Regice and Registeel in your party to Mt. Silver.",
+                "- Examine the tablet in the main 1F room to open the path.",
+                "- Enter the former Moltres chamber and challenge Lv.75 Regigigas."
+              ],
+              "IT": [
+                "- Porta Regirock, Regice e Registeel in squadra al Monte Argento.",
+                "- Esamina la tavoletta nella stanza principale al piano terra per aprire il passaggio.",
+                "- Entra nell'ex stanza di Moltres e affronta Regigigas al L.75."
+              ],
+              "reference": 2377
+            }
+          ]
+        },
+        {
+          "id": 2489,
+          "title": {
+            "EN": "{pokemon:489}",
+            "IT": "{pokemon:489}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Surf on Route 40 or Route 41.",
+                "- Rare Phione encounters are Lv.30."
+              ],
+              "IT": [
+                "- Usa Surf sul Percorso 40 o sul Percorso 41.",
+                "- Gli incontri rari con Phione sono al L.30."
+              ],
+              "reference": 1299
+            }
+          ]
+        },
+        {
+          "id": 2490,
+          "title": {
+            "EN": "{pokemon:490}",
+            "IT": "{pokemon:490}"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Earn the Earth Badge.",
+                "- Speak to Izumi on Route 40 beach with a free party slot.",
+                "- Accept the Manaphy Egg. Refusing the initial offer does not consume the gift."
+              ],
+              "IT": [
+                "- Ottieni la Medaglia Terra.",
+                "- Parla con Izumi sulla spiaggia del Percorso 40 con un posto libero in squadra.",
+                "- Accetta l'Uovo di Manaphy. Rifiutare la prima offerta non esaurisce il dono."
+              ],
+              "reference": 1299
+            }
+          ]
+        },
+        {
+          "id": 3005,
+          "title": {
+            "EN": "Shiny final forms",
+            "IT": "Forme finali cromatiche"
+          },
+          "pages": [
+            {
+              "EN": [
+                "Requirement: Earth Badge.",
+                "- Save before using the radio in Tohjo Falls' hidden room.",
+                "- Choose one Lv.60 shiny encounter. Running or defeating it uses this opportunity."
+              ],
+              "IT": [
+                "Requisito: Medaglia Terra.",
+                "- Salva prima di usare la radio nella stanza nascosta delle Cascate Tohjo.",
+                "- Scegli un incontro cromatico al L.60. Fuggire o sconfiggerlo esaurisce l'occasione."
+              ]
+            },
+            {
+              "EN": [
+                "- Sixteen Hours: Dragonite.",
+                "- The Black Rock: Tyranitar.",
+                "- Menacing Boom: Salamence.",
+                "- Cross Attack: Metagross.",
+                "- Jaws on Land: Garchomp."
+              ],
+              "IT": [
+                "- Sedici ore: Dragonite.",
+                "- La roccia nera: Tyranitar.",
+                "- Boato minaccioso: Salamence.",
+                "- Attacco incrociato: Metagross.",
+                "- Fauci terrestri: Garchomp."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 3001,
+          "title": {
+            "EN": "Kanto starters",
+            "IT": "Starter di Kanto"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Quiz: Juggler in Violet Pokémon Center. Answers: Yes, Yes, No, No.",
+                "- Choose Bulbasaur, Charmander or Squirtle at Lv.10.",
+                "- Later, show that starter or an evolution in the first party slot to Oak in the Route 12 house. Leave two free slots for the other starters."
+              ],
+              "IT": [
+                "- Quiz: Giocoliere al Centro Pokémon di Violapoli. Risposte: Sì, Sì, No, No.",
+                "- Scegli Bulbasaur, Charmander o Squirtle al L.10.",
+                "- In seguito mostra lo starter o una sua evoluzione al primo posto a Oak nella casa sul Percorso 12. Lascia due posti liberi per gli altri starter."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 3002,
+          "title": {
+            "EN": "Hoenn starters",
+            "IT": "Starter di Hoenn"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Quiz: Juggler in Azalea Pokémon Center. Answers: Yes, No, No, Yes.",
+                "- Choose Treecko, Torchic or Mudkip at Lv.15.",
+                "- Later, show that starter or an evolution in the first party slot to Steven in Pewter's southwest house. Leave two free slots."
+              ],
+              "IT": [
+                "- Quiz: Giocoliere al Centro Pokémon di Azalina. Risposte: Sì, No, No, Sì.",
+                "- Scegli Treecko, Torchic o Mudkip al L.15.",
+                "- In seguito mostra lo starter o una sua evoluzione al primo posto a Rocco nella casa a sud-ovest di Plumbeopoli. Lascia due posti liberi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 3003,
+          "title": {
+            "EN": "Sinnoh starters",
+            "IT": "Starter di Sinnoh"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Quiz: Juggler in Goldenrod Pokémon Center. Answers: No, No, No, Yes.",
+                "- Choose Turtwig, Chimchar or Piplup at Lv.20.",
+                "- After becoming Champion, show that starter family in the first party slot to Cynthia at the Archaeology Center. Leave two free slots."
+              ],
+              "IT": [
+                "- Quiz: Giocoliere al Centro Pokémon di Fiordoropoli. Risposte: No, No, No, Sì.",
+                "- Scegli Turtwig, Chimchar o Piplup al L.20.",
+                "- Dopo essere diventato Campione, mostra uno di questi starter o la sua evoluzione al primo posto a Camilla al Centro Archeologico. Lascia due posti liberi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 3004,
+          "title": {
+            "EN": "Johto starters",
+            "IT": "Starter di Johto"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Choose Chikorita, Cyndaquil or Totodile at Elm's Lab at the start.",
+                "- Later, speak to Elm in Saffron's Silph Co. with two free party slots to receive the other two at Lv.10."
+              ],
+              "IT": [
+                "- Scegli Chikorita, Cyndaquil o Totodile nel laboratorio di Elm all'inizio.",
+                "- In seguito parla con Elm alla Silph di Zafferanopoli con due posti liberi per ricevere gli altri due al L.10."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2243,
+          "title": {
+            "EN": "Raikou, Entei, Suicune",
+            "IT": "Raikou, Entei, Suicune"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Enter the Burned Tower B1F story scene to release Raikou and Entei as roaming Pokemon.",
+                "- Follow Suicune's usual sightings through the regions.",
+                "- Its final Route 25 encounter near Bill's cottage is Lv.40."
+              ],
+              "IT": [
+                "- Segui la scena della storia al P1S della Torre Bruciata per liberare Raikou ed Entei come Pokémon erranti.",
+                "- Segui i normali avvistamenti di Suicune nelle due regioni.",
+                "- L'incontro finale sul Percorso 25 vicino alla casa di Bill è al L.40."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2250,
+          "title": {
+            "EN": "Ho-Oh and Lugia",
+            "IT": "Ho-Oh e Lugia"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Follow the ordinary Wing and Kimono Girl story requirements.",
+                "- Ho-Oh: Bell Tower roof, Lv.50.",
+                "- Lugia: Whirl Islands' deepest chamber, Lv.70.",
+                "- These encounters do not use the Azure Flute."
+              ],
+              "IT": [
+                "- Segui i normali requisiti della storia legati alle Ali e alle Kimono Girl.",
+                "- Ho-Oh: cima della Torre Campana, L.50.",
+                "- Lugia: stanza più profonda delle Isole Vorticose, L.70.",
+                "- Questi incontri non usano il Flauto Cielo."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2383,
+          "title": {
+            "EN": "Groudon, Kyogre, Rayquaza",
+            "IT": "Groudon, Kyogre, Rayquaza"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Defeat Red, then visit Oak's Pallet lab for his Legendary Trainer discussion.",
+                "- See Mr. Pokémon to receive the Red Orb.",
+                "- Visit Embedded Tower off Route 47 and catch Lv.70 Groudon: the Orb becomes Blue.",
+                "- Re-enter and catch Lv.70 Kyogre: the Orb becomes Jade.",
+                "- Re-enter again for Lv.75 Rayquaza."
+              ],
+              "IT": [
+                "- Sconfiggi Rosso, poi vai da Oak nel laboratorio di Biancavilla per il dialogo sull'Allenatore Leggendario.",
+                "- Vai da Mr. Pokémon per ricevere la Sfera Rossa.",
+                "- Visita la Torre Occulta dal Percorso 47 e cattura Groudon al L.70: la Sfera diventa Blu.",
+                "- Rientra e cattura Kyogre al L.70: la Sfera diventa Verde.",
+                "- Rientra ancora per Rayquaza al L.75."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2380,
+          "title": {
+            "EN": "Latias and Latios",
+            "IT": "Latias e Latios"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Recover Copycat's doll from Vermilion Fan Club. Meet Steven outside to release roaming Latias.",
+                "- Show Latias in the first party slot to Steven in Pewter's southwest house. Receive {item:536}.",
+                "- Have the expert at Goldenrod's Archaeology Center polish it into {item:225}."
+              ],
+              "IT": [
+                "- Recupera la bambola di Copiona dal Pokémon Fan Club di Aranciopoli. Incontra Rocco fuori per liberare Latias errante.",
+                "- Mostra Latias al primo posto a Rocco nella casa a sud-ovest di Plumbeopoli. Ricevi {item:536}.",
+                "- Falla lavorare all'esperto del Centro Archeologico di Fiordoropoli per ottenere {item:225}."
+              ]
+            },
+            {
+              "EN": [
+                "- With {item:225}, inspect the raised plaque in Vermilion for Lv.40 Latios.",
+                "- Save first: running or defeating Latios spends this opportunity."
+              ],
+              "IT": [
+                "- Con {item:225}, esamina la targa rialzata ad Aranciopoli per incontrare Latios al L.40.",
+                "- Salva prima: fuggire o sconfiggere Latios esaurisce l'occasione."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": {
+        "EN": "Training",
+        "IT": "Allenamento"
+      },
+      "entries": [
+        {
+          "id": 4001,
+          "title": {
+            "EN": "IVs and Bottle Caps",
+            "IT": "IV e tappi"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Where: consultants in the Violet and Blackthorn Poke Marts. Choose training rules in their settings before using the service.",
+                "- Select a party Pokemon, the service and a stat if needed. Review current and proposed values, then confirm.",
+                "- These are real IV edits. Breeding and Hidden Power can change. Eggs cannot be trained. Save the game to keep changes."
+              ],
+              "IT": [
+                "- Dove: consulenti nei Pokémon Market di Violapoli ed Ebanopoli. Prima scegli le regole nelle loro impostazioni.",
+                "- Scegli un Pokémon della squadra, il servizio e, se serve, la statistica. Controlla i valori attuali e proposti, poi conferma.",
+                "- Gli IV cambiano davvero: possono cambiare ereditarietà e Introforza. Le Uova sono escluse. Salva per conservare le modifiche."
+              ],
+              "reference": 1113
+            }
+          ]
+        },
+        {
+          "id": 4002,
+          "title": {
+            "EN": "EV rules and quick training",
+            "IT": "EV: regole e allenamento"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Where: the training consultant inside the Route 34 Day Care. Quick training edits a party Pokemon.",
+                "- Classic: at most 252 EVs in each stat and 510 total. Unlimited: at most 252 in all six stats; this breaks normal balance.",
+                "- Choose a target from 0 to 252. Added EVs cost 100 each; lowering a stat or resetting all EVs is free.",
+                "- A stricter mode is refused if any owned Pokemon or active course target exceeds its limits. Existing values are never silently cut. Original rules allow older saves to lower excess values first."
+              ],
+              "IT": [
+                "- Dove: consulente dentro la Pensione del Percorso 34. L'allenamento rapido modifica un Pokémon in squadra.",
+                "- Classic: massimo 252 EV per statistica e 510 totali. Unlimited: massimo 252 in tutte e sei; altera il normale equilibrio del gioco.",
+                "- Scegli un obiettivo da 0 a 252. Ogni EV aggiunto costa 100; ridurre una statistica o azzerare tutti gli EV è gratis.",
+                "- Regole più restrittive vengono rifiutate se un Pokémon posseduto o un corso attivo supera i limiti. Nessun valore viene tagliato senza scelta. Le regole originali consentono ai vecchi salvataggi di ridurre prima gli EV in eccesso."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 4003,
+          "title": {
+            "EN": "Day Care courses",
+            "IT": "Corsi della Pensione"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- First deposit one or two Pokemon with the Day Care lady. Then enroll each deposited slot with the training consultant.",
+                "- Free courses give one level every two hours, up to Lv.100. Optionally choose one EV stat and a target: it gains 32 EVs per completed hour, stopping at that target.",
+                "- Walking growth earned before enrollment is kept. Later steps still support breeding but do not add training experience.",
+                "- Courses preserve moves. Check projected progress with the consultant; withdraw normally from the Day Care to receive it."
+              ],
+              "IT": [
+                "- Deposita prima uno o due Pokémon dalla signora della Pensione. Poi iscrivi ciascun posto a un corso dal consulente.",
+                "- I corsi gratuiti danno un livello ogni due ore, fino al L.100. Puoi scegliere anche una statistica EV e un obiettivo: guadagna 32 EV ogni ora intera, fino al valore scelto.",
+                "- La crescita ottenuta camminando prima dell'iscrizione resta. I passi successivi servono ancora alla riproduzione, ma non aggiungono esperienza al corso.",
+                "- I corsi conservano le mosse. Controlla i progressi previsti dal consulente; ritira normalmente il Pokémon dalla Pensione per riceverli."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 4004,
+          "title": {
+            "EN": "Real time or playtime",
+            "IT": "Tempo reale o di gioco"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Real time is the default: courses follow the console or emulator clock, including time while the game is closed.",
+                "- Playtime counts only when the native game timer advances. Fast-forward can accelerate it.",
+                "- You may change the clock choice in training settings without losing progress already earned. Moving a clock backward adds no progress and starts counting from the new time.",
+                "- No penalty is applied for changing the device or emulator clock. Save after enrolling or changing settings."
+              ],
+              "IT": [
+                "- Il tempo reale è predefinito: i corsi seguono l'orologio della console o dell'emulatore, anche mentre il gioco è chiuso.",
+                "- Il tempo di gioco conta solo quando avanza il timer del gioco. L'avanzamento rapido può accelerarlo.",
+                "- Puoi cambiare orologio nelle impostazioni del servizio senza perdere i progressi già ottenuti. Spostarlo indietro non aggiunge progressi e fa ripartire il conteggio dal nuovo orario.",
+                "- Non ci sono penalità per modificare l'orologio del dispositivo o dell'emulatore. Salva dopo iscrizioni o modifiche alle impostazioni."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 4005,
+          "title": {
+            "EN": "Remote course status",
+            "IT": "Controllo a distanza"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Call the Day Care through the Pokegear contact to check enrolled Pokemon away from the building.",
+                "- The course report shows the projected level and, for EV courses, the chosen stat's current and target values.",
+                "- Remaining time describes the whole course, including its level goal; it is not the wait until the next EV increase. Withdraw at the Day Care to apply progress."
+              ],
+              "IT": [
+                "- Chiama il contatto della Pensione nel Pokégear per controllare i Pokémon iscritti anche da lontano.",
+                "- Il resoconto mostra il livello previsto e, nei corsi EV, il valore attuale e l'obiettivo della statistica scelta.",
+                "- Il tempo restante riguarda l'intero corso, incluso l'obiettivo di livello; non è l'attesa fino al prossimo aumento EV. Ritira il Pokémon alla Pensione per applicare i progressi."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 4006,
+          "title": {
+            "EN": "Earn and claim Caps",
+            "IT": "Premi e ritiro dei tappi"
+          },
+          "pages": [
+            {
+              "EN": [
+                "- Claim earned Caps from a Poke Mart consultant. First Johto Gym victories give two Silver Caps each; Kanto Gyms give three each.",
+                "- The eighth and sixteenth Badges also give one Gold Cap each. First League victory: four Silver and two Gold; later victories: four Silver and one Gold.",
+                "- First victory over Red: three Gold Caps. Old saves can claim historical one-time milestones once; earlier repeated League clears are not paid retroactively.",
+                "- Rewards that do not fit in the Bag remain pending. Make space and return to claim them. Ordinary trainers and wild Pokemon give no Caps."
+              ],
+              "IT": [
+                "- Ritira i tappi guadagnati dal consulente del Pokémon Market. La prima vittoria in ogni Palestra di Johto dà due tappi argento; a Kanto ne dà tre.",
+                "- L'ottava e la sedicesima Medaglia danno anche un tappo oro ciascuna. Prima vittoria alla Lega: quattro argento e due oro; successive: quattro argento e uno oro.",
+                "- Prima vittoria contro Rosso: tre tappi oro. I vecchi salvataggi possono ritirare una volta i traguardi già raggiunti; le vecchie rivincite alla Lega non vengono pagate retroattivamente.",
+                "- I premi che non entrano nella Borsa restano in attesa. Fai spazio e torna a ritirarli. Allenatori comuni e Pokémon selvatici non danno tappi."
+              ],
+              "reference": 1114
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

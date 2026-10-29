@@ -1,0 +1,177 @@
+{
+  "schema": 1,
+  "status": "development; runtime validation required",
+  "inherits": "arm9-reserve-map.json",
+  "preservation_contract": "Existing public addresses and compartment boundaries remain stable. The space stage preserves their bytes; later stages apply only their separately guarded in-place updates.",
+  "base": "0x023C8000",
+  "end": "0x023E0000",
+  "arena_literal": "0x020D2BB0",
+  "preserved_region": [
+    "0x023D8000",
+    "0x023E0000"
+  ],
+  "blocks": [
+    {
+      "name": "shiny.guard.lower",
+      "base": "0x023C8000",
+      "bytes": 16,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "shiny.header",
+      "base": "0x023C8010",
+      "bytes": 240,
+      "owner": "sgp13.space",
+      "kind": "metadata"
+    },
+    {
+      "name": "shiny.core",
+      "base": "0x023C8100",
+      "bytes": 4096,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.native",
+      "base": "0x023C9100",
+      "bytes": 8192,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.api-config",
+      "base": "0x023CB100",
+      "bytes": 256,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.state",
+      "base": "0x023CB200",
+      "bytes": 1536,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.extended",
+      "base": "0x023CB800",
+      "bytes": 8192,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.shiny-text",
+      "base": "0x023CD800",
+      "bytes": 4096,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.shiny-state",
+      "base": "0x023CE800",
+      "bytes": 256,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.search",
+      "base": "0x023CE900",
+      "bytes": 4096,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "event-flags.runtime",
+      "base": "0x023CF900",
+      "bytes": 1536,
+      "owner": "sgp13.event_flags",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.guard.upper",
+      "base": "0x023CFF00",
+      "bytes": 256,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "guard.lower",
+      "base": "0x023D0000",
+      "bytes": 16,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "development.header",
+      "base": "0x023D0010",
+      "bytes": 240,
+      "owner": "sgp13.space",
+      "kind": "metadata"
+    },
+    {
+      "name": "training.code",
+      "base": "0x023D0100",
+      "bytes": 12032,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "training.state",
+      "base": "0x023D3000",
+      "bytes": 4096,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "field-guide.code",
+      "base": "0x023D4000",
+      "bytes": 8192,
+      "owner": "sgp13.guide",
+      "kind": "reserved"
+    },
+    {
+      "name": "trainer-strategy.code",
+      "base": "0x023D6000",
+      "bytes": 2048,
+      "owner": "sgp13.teams",
+      "kind": "reserved"
+    },
+    {
+      "name": "training.extension",
+      "base": "0x023D6800",
+      "bytes": 3328,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.navigation",
+      "base": "0x023D7500",
+      "bytes": 512,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.context",
+      "base": "0x023D7700",
+      "bytes": 1024,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "field-guide.config-state",
+      "base": "0x023D7B00",
+      "bytes": 1024,
+      "owner": "sgp13.guide",
+      "kind": "reserved"
+    },
+    {
+      "name": "guard.upper",
+      "base": "0x023D7F00",
+      "bytes": 256,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    }
+  ],
+  "note": "Existing blocks and public addresses remain fixed. New code must fit its assigned compartment, with bounded heap use. Reserved blocks are zero until their owner installs validated code. This manifest is not used to rebuild 1.2.5."
+}

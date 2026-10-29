@@ -1,0 +1,884 @@
+{
+  "schema": 1,
+  "stats_order": [
+    "HP",
+    "Atk",
+    "Def",
+    "Spe",
+    "SpA",
+    "SpD"
+  ],
+  "preimages": {
+    "a/0/0/2": "5f193d2eacddf0ffef9daf7acebd35dcdb21c30f59ab497759c3b7cc335f2d40",
+    "a/0/1/1": "744e04cad9270122e7961042a5e554461fc56169bd928940878fa465b8d810e4"
+  },
+  "changes": [
+    {
+      "species": 19,
+      "name": "Rattata",
+      "source_sha256": "26d8d442ede0235e3db34f555398b85bf77574712201f655ab6452680938ae0a",
+      "stats": [
+        35,
+        60,
+        40,
+        72,
+        25,
+        40
+      ],
+      "abilities": [
+        55,
+        62
+      ]
+    },
+    {
+      "species": 20,
+      "name": "Raticate",
+      "source_sha256": "03a79fae754da888e0bfa8e07e02d2268a02aeb2dc4931445ae0b88f3180da2b",
+      "stats": [
+        75,
+        96,
+        65,
+        107,
+        50,
+        75
+      ],
+      "abilities": [
+        55,
+        62
+      ]
+    },
+    {
+      "species": 73,
+      "name": "Tentacruel",
+      "source_sha256": "601b99b36952dcdcef8167244a3cdc63cb48234df547d96f7a17685737ba90a1",
+      "stats": [
+        80,
+        70,
+        75,
+        100,
+        85,
+        120
+      ],
+      "abilities": [
+        29,
+        64
+      ]
+    },
+    {
+      "species": 132,
+      "name": "Ditto",
+      "source_sha256": "651423f5131afeafc7c9336bc51e613edd2ce4e7b86db5da654cbf6cd0c5dda9",
+      "stats": [
+        75,
+        48,
+        65,
+        48,
+        48,
+        65
+      ],
+      "abilities": [
+        7,
+        0
+      ]
+    },
+    {
+      "species": 164,
+      "name": "Noctowl",
+      "source_sha256": "e969f69cd0d3b836094c8ef32cf4f6f0068c5f068604e883329694bc5f19cb84",
+      "stats": [
+        100,
+        50,
+        65,
+        70,
+        96,
+        96
+      ],
+      "abilities": [
+        15,
+        110
+      ]
+    },
+    {
+      "species": 166,
+      "name": "Ledian",
+      "source_sha256": "9271208c050d3f68396ff4d5cb511cd1bc6b9d5ba3051c18ac9c177d9644a1ae",
+      "stats": [
+        65,
+        100,
+        60,
+        85,
+        35,
+        110
+      ],
+      "abilities": [
+        89,
+        48
+      ]
+    },
+    {
+      "species": 168,
+      "name": "Ariados",
+      "source_sha256": "7d83d3b9f3644fc87273981548fe49695b0aedb48e7d2e16da60e2278fa0da21",
+      "stats": [
+        80,
+        100,
+        75,
+        80,
+        60,
+        70
+      ],
+      "abilities": [
+        97,
+        15
+      ]
+    },
+    {
+      "species": 206,
+      "name": "Dunsparce",
+      "source_sha256": "04600e7703f5d75b4fa8148e58b5617c7d1580f75cbd7e1046c41a064a3a2cb8",
+      "stats": [
+        110,
+        90,
+        80,
+        45,
+        65,
+        75
+      ],
+      "abilities": [
+        32,
+        50
+      ]
+    },
+    {
+      "species": 219,
+      "name": "Magcargo",
+      "source_sha256": "232d022dd4d273215e2e140bd2875a1abeb47c59fb793c7972813c5c20d45817",
+      "stats": [
+        65,
+        50,
+        135,
+        30,
+        115,
+        110
+      ],
+      "abilities": [
+        116,
+        49
+      ]
+    },
+    {
+      "species": 222,
+      "name": "Corsola",
+      "source_sha256": "cf69847db835e603d6ae10adff49627d6da3d010ede2a097e76dda0e5cf0f9f7",
+      "stats": [
+        70,
+        55,
+        115,
+        35,
+        105,
+        110
+      ],
+      "abilities": [
+        55,
+        30
+      ]
+    },
+    {
+      "species": 225,
+      "name": "Delibird",
+      "source_sha256": "acb9bbf699d52a0447a24960f5958785730f103c06b9e3debcf5265b207a6b7e",
+      "stats": [
+        65,
+        85,
+        60,
+        95,
+        70,
+        60
+      ],
+      "abilities": [
+        72,
+        101
+      ]
+    },
+    {
+      "species": 267,
+      "name": "Beautifly",
+      "source_sha256": "0d25dc27603413dd0ef533ba89a3f97e76b7f1af60e4589430a01c37acdc6147",
+      "stats": [
+        70,
+        70,
+        60,
+        85,
+        110,
+        70
+      ],
+      "abilities": [
+        68,
+        19
+      ]
+    },
+    {
+      "species": 269,
+      "name": "Dustox",
+      "source_sha256": "5bcda5b47232e9cc7fef46800054f31765e8f4a8f7c140b2e6c7819df566d6e3",
+      "stats": [
+        70,
+        50,
+        85,
+        65,
+        75,
+        110
+      ],
+      "abilities": [
+        19,
+        14
+      ]
+    },
+    {
+      "species": 301,
+      "name": "Delcatty",
+      "source_sha256": "8ca9af692af92aca96a72f659a22ce47a52bfc358b1c2639c2f2d9fbfc753021",
+      "stats": [
+        80,
+        75,
+        70,
+        95,
+        95,
+        75
+      ],
+      "abilities": [
+        56,
+        96
+      ]
+    },
+    {
+      "species": 336,
+      "name": "Seviper",
+      "source_sha256": "5957efa85c44bccf518f22f862f247558f5616dd72175008982b0c9648aaafb1",
+      "stats": [
+        80,
+        105,
+        65,
+        75,
+        105,
+        65
+      ],
+      "abilities": [
+        61,
+        0
+      ]
+    },
+    {
+      "species": 402,
+      "name": "Kricketune",
+      "source_sha256": "d06017e23ed93032f3880eb466c6230a99d4d16ce1d02c60cde217d01aa0d9db",
+      "stats": [
+        85,
+        106,
+        70,
+        80,
+        55,
+        70
+      ],
+      "abilities": [
+        68,
+        101
+      ]
+    },
+    {
+      "species": 457,
+      "name": "Lumineon",
+      "source_sha256": "0c7751c468048a527e22ab5ab2c81425fe6b511b7810d349fa8785c983b9f148",
+      "stats": [
+        79,
+        69,
+        81,
+        101,
+        94,
+        91
+      ],
+      "abilities": [
+        33,
+        114
+      ]
+    },
+    {
+      "species": 22,
+      "name": "Fearow",
+      "source_sha256": "a70e3a6f35298b050b4789cbee6de7ede4eb621e73f49cedd92f03b1b4031f60",
+      "stats": [
+        65,
+        105,
+        65,
+        105,
+        61,
+        61
+      ],
+      "abilities": [
+        51,
+        97
+      ]
+    },
+    {
+      "species": 24,
+      "name": "Arbok",
+      "source_sha256": "bda8775e47dd5139bfa615366edc3b03793479448bad196a6f38e1bc19544e33",
+      "stats": [
+        70,
+        106,
+        69,
+        86,
+        65,
+        79
+      ],
+      "abilities": [
+        22,
+        61
+      ]
+    },
+    {
+      "species": 28,
+      "name": "Sandslash",
+      "source_sha256": "7e929a85eb69903fa8d4b866dc128ec2493728af3c258f285f4c5cde44efe2dd",
+      "stats": [
+        85,
+        100,
+        110,
+        65,
+        45,
+        65
+      ],
+      "abilities": [
+        8,
+        0
+      ]
+    },
+    {
+      "species": 55,
+      "name": "Golduck",
+      "source_sha256": "aec62636f259640a55c3edfc2312df940c787c304b39e52562b4306948118cbc",
+      "stats": [
+        80,
+        82,
+        78,
+        90,
+        105,
+        80
+      ],
+      "abilities": [
+        6,
+        13
+      ]
+    },
+    {
+      "species": 57,
+      "name": "Primeape",
+      "source_sha256": "5725cab0a2024261a629e58c99b5eb0f9c09c001908f9fcc21e095408b40c45b",
+      "stats": [
+        65,
+        105,
+        60,
+        105,
+        60,
+        70
+      ],
+      "abilities": [
+        72,
+        83
+      ]
+    },
+    {
+      "species": 85,
+      "name": "Dodrio",
+      "source_sha256": "72ca0340190d8de0579bebd85b1c0a257aafc98f8b5ba3c345201d68b8c59327",
+      "stats": [
+        60,
+        110,
+        70,
+        110,
+        60,
+        60
+      ],
+      "abilities": [
+        77,
+        48
+      ]
+    },
+    {
+      "species": 87,
+      "name": "Dewgong",
+      "source_sha256": "230ee01046f62e168c072bda508dca06015ca69084e2eec9f90f18d2443a5dc2",
+      "stats": [
+        90,
+        70,
+        90,
+        70,
+        90,
+        95
+      ],
+      "abilities": [
+        47,
+        93
+      ]
+    },
+    {
+      "species": 97,
+      "name": "Hypno",
+      "source_sha256": "77a60b0dbe41c7c8738b5b6cb72ad77fe4f20dc2169d70ff64aa66b3a2935e37",
+      "stats": [
+        95,
+        73,
+        80,
+        67,
+        73,
+        115
+      ],
+      "abilities": [
+        15,
+        108
+      ]
+    },
+    {
+      "species": 99,
+      "name": "Kingler",
+      "source_sha256": "3da4fef0bcef86e092499b7f1cecad53e99f07c53ae6270e6ac9affb8e2996cd",
+      "stats": [
+        65,
+        130,
+        115,
+        75,
+        50,
+        60
+      ],
+      "abilities": [
+        52,
+        61
+      ]
+    },
+    {
+      "species": 154,
+      "name": "Meganium",
+      "source_sha256": "188389eaf05147a1e92229f09a5324d0c16693cbc9c763212a25424c47847e2c",
+      "stats": [
+        80,
+        82,
+        100,
+        80,
+        83,
+        100
+      ],
+      "abilities": [
+        65,
+        30
+      ]
+    },
+    {
+      "species": 165,
+      "name": "Ledyba",
+      "source_sha256": "0da015e602a958418c54acfa67afb2dac9838dec35613d4dfa1cb519969c02b0",
+      "stats": [
+        40,
+        40,
+        30,
+        55,
+        40,
+        80
+      ],
+      "abilities": [
+        68,
+        48
+      ]
+    },
+    {
+      "species": 178,
+      "name": "Xatu",
+      "source_sha256": "edd62577cac201f5c5a2098f2ca563be8bf3279619436daec0c90aff98626aac",
+      "stats": [
+        65,
+        75,
+        70,
+        95,
+        105,
+        80
+      ],
+      "abilities": [
+        28,
+        48
+      ]
+    },
+    {
+      "species": 191,
+      "name": "Sunkern",
+      "source_sha256": "1b1252b7f616a418f8de7f06a268c78e7b030b0c1e8c992ab85fc67e5e4f59b9",
+      "stats": [
+        40,
+        30,
+        40,
+        30,
+        30,
+        40
+      ],
+      "abilities": [
+        34,
+        94
+      ]
+    },
+    {
+      "species": 210,
+      "name": "Granbull",
+      "source_sha256": "974c2813b25b47a6ce5f07d2045a71f7066eb8fbb5aacca3454afcd9daaa7af9",
+      "stats": [
+        90,
+        120,
+        75,
+        45,
+        60,
+        70
+      ],
+      "abilities": [
+        22,
+        95
+      ]
+    },
+    {
+      "species": 224,
+      "name": "Octillery",
+      "source_sha256": "f4f7b7cc42175ec0bc58c08e5db1bb1b3db4ee4375db961b60f7cd209f993ef9",
+      "stats": [
+        75,
+        105,
+        75,
+        45,
+        115,
+        75
+      ],
+      "abilities": [
+        21,
+        97
+      ]
+    },
+    {
+      "species": 234,
+      "name": "Stantler",
+      "source_sha256": "9bf31acfc1303182b058920859be2ad7ed7f6d5893b4a42450d7cd8a8aa6c8ba",
+      "stats": [
+        73,
+        100,
+        62,
+        85,
+        85,
+        75
+      ],
+      "abilities": [
+        22,
+        119
+      ]
+    },
+    {
+      "species": 261,
+      "name": "Poochyena",
+      "source_sha256": "0808654ca299cef4056c906032c68115bfcb393062ac582031e1ca5ae24163ca",
+      "stats": [
+        35,
+        60,
+        35,
+        40,
+        30,
+        30
+      ],
+      "abilities": [
+        50,
+        95
+      ]
+    },
+    {
+      "species": 262,
+      "name": "Mightyena",
+      "source_sha256": "82fc80d0142104a6db83d4d84780fb32a96d1abb32a6449250a361de1116a38e",
+      "stats": [
+        70,
+        110,
+        70,
+        85,
+        60,
+        60
+      ],
+      "abilities": [
+        22,
+        95
+      ]
+    },
+    {
+      "species": 295,
+      "name": "Exploud",
+      "source_sha256": "70fb6d1ac58018f126b717d4cdd601b9503d7025008cff9494c5bb605b25c20d",
+      "stats": [
+        104,
+        91,
+        63,
+        68,
+        105,
+        73
+      ],
+      "abilities": [
+        43,
+        113
+      ]
+    },
+    {
+      "species": 306,
+      "name": "Aggron",
+      "source_sha256": "253c385ece1ce2f0da2c50311ee0679cb776e639db0d843bce20cb2e0567fe02",
+      "stats": [
+        80,
+        110,
+        180,
+        50,
+        60,
+        70
+      ],
+      "abilities": [
+        5,
+        69
+      ]
+    },
+    {
+      "species": 317,
+      "name": "Swalot",
+      "source_sha256": "66143b30fed9c8f277f3fb8d563fd717f6994d0cf517b46895101e08d64df139",
+      "stats": [
+        110,
+        83,
+        88,
+        55,
+        83,
+        88
+      ],
+      "abilities": [
+        64,
+        60
+      ]
+    },
+    {
+      "species": 321,
+      "name": "Wailord",
+      "source_sha256": "e6ab1eae06d8b8042777df6aad8d5c587a77791a93ddc746eb48d95d33e45aac",
+      "stats": [
+        180,
+        90,
+        50,
+        60,
+        90,
+        50
+      ],
+      "abilities": [
+        46,
+        12
+      ]
+    },
+    {
+      "species": 323,
+      "name": "Camerupt",
+      "source_sha256": "e9693bf6de3f0c96f223fe6edd552828822f1d850d3e1134421b2b1578eedd2e",
+      "stats": [
+        85,
+        100,
+        70,
+        40,
+        105,
+        75
+      ],
+      "abilities": [
+        83,
+        116
+      ]
+    },
+    {
+      "species": 326,
+      "name": "Grumpig",
+      "source_sha256": "1271851bb221ba3574de0191d7ca1abc711e38ee867f35be488c0f923dd9f1d2",
+      "stats": [
+        80,
+        45,
+        75,
+        80,
+        95,
+        110
+      ],
+      "abilities": [
+        47,
+        20
+      ]
+    },
+    {
+      "species": 329,
+      "name": "Vibrava",
+      "source_sha256": "c322a366e835fb21a5a1a2f45c19cf472e8d99a3cd090e5dd2b6c616c40547b3",
+      "stats": [
+        60,
+        75,
+        55,
+        70,
+        60,
+        55
+      ],
+      "abilities": [
+        26,
+        26
+      ]
+    },
+    {
+      "species": 337,
+      "name": "Lunatone",
+      "source_sha256": "f5c996dff449ca0d1622407c1550e330619d6f84a7f3fb78849f90960f8237ca",
+      "stats": [
+        80,
+        55,
+        65,
+        70,
+        115,
+        85
+      ],
+      "abilities": [
+        26,
+        0
+      ]
+    },
+    {
+      "species": 338,
+      "name": "Solrock",
+      "source_sha256": "68f170197576157708840ef261ebd3199392f469b04fac6cd072613388fb181e",
+      "stats": [
+        80,
+        115,
+        85,
+        70,
+        55,
+        65
+      ],
+      "abilities": [
+        26,
+        0
+      ]
+    },
+    {
+      "species": 340,
+      "name": "Whiscash",
+      "source_sha256": "ce30dd007ab8cbf0e60152123e75e28765adb423bf01a78f6cbab767f1be3609",
+      "stats": [
+        110,
+        93,
+        83,
+        60,
+        76,
+        76
+      ],
+      "abilities": [
+        12,
+        107
+      ]
+    },
+    {
+      "species": 354,
+      "name": "Banette",
+      "source_sha256": "b965282120ac0b4ed1b43e7a24533c50436d13cd34c13da5426bdae05c967bf1",
+      "stats": [
+        74,
+        120,
+        65,
+        65,
+        103,
+        68
+      ],
+      "abilities": [
+        15,
+        119
+      ]
+    },
+    {
+      "species": 389,
+      "name": "Torterra",
+      "source_sha256": "9b7d9f411bb745094e455a05b2fd0a810dd90fdcee6480ab7958f9ebfb0faa66",
+      "stats": [
+        105,
+        109,
+        105,
+        56,
+        75,
+        85
+      ],
+      "abilities": [
+        65,
+        75
+      ]
+    },
+    {
+      "species": 411,
+      "name": "Bastiodon",
+      "source_sha256": "51f5ea1a3fee26380cc0d2b0593fd823d3956ab79fa100b97bedeee9c75f4183",
+      "stats": [
+        70,
+        72,
+        168,
+        30,
+        47,
+        138
+      ],
+      "abilities": [
+        5,
+        43
+      ]
+    },
+    {
+      "species": 416,
+      "name": "Vespiquen",
+      "source_sha256": "767c549e7b40b0c79094d678f0efb16da6ef44989c4ad1fd006e5f3943653bfc",
+      "stats": [
+        80,
+        90,
+        102,
+        40,
+        80,
+        102
+      ],
+      "abilities": [
+        46,
+        0
+      ]
+    },
+    {
+      "species": 432,
+      "name": "Purugly",
+      "source_sha256": "a36d0be886000c1edd31067c6f6299834ece6eb5db2c22839874b10e7e3ac376",
+      "stats": [
+        100,
+        95,
+        70,
+        112,
+        64,
+        59
+      ],
+      "abilities": [
+        47,
+        20
+      ]
+    },
+    {
+      "species": 477,
+      "name": "Dusknoir",
+      "source_sha256": "31f12c7a17deaa306754a086371d1c904e1d080eb221693d093fa73fcec8f65e",
+      "stats": [
+        60,
+        100,
+        135,
+        45,
+        65,
+        135
+      ],
+      "abilities": [
+        46,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "mode": "existing Plus difficulty only",
+  "teams": [
+    {
+      "trainer_id": 21,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "2165afd57d7e9cff09dbe236b4081fa19029e8755815bf5fafdcdc8e77a4a4eb",
+      "moves": [
+        {
+          "offset": 100,
+          "before": 206,
+          "after": 450
+        }
+      ]
+    },
+    {
+      "trainer_id": 31,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "2096c9d5a3943dca51dec0ea9b0b006387f2fb5b0d6778a49f58c2803806395c",
+      "moves": [
+        {
+          "offset": 102,
+          "before": 325,
+          "after": 247
+        }
+      ]
+    },
+    {
+      "trainer_id": 32,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "03df312faca35cdb867513503effa947e05c1a0649899b1a944c36893140b812",
+      "moves": [
+        {
+          "offset": 26,
+          "before": 329,
+          "after": 156
+        }
+      ]
+    },
+    {
+      "trainer_id": 33,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "701e542834f8d6a283890a94404201d9f7dfc222a3189278b2d2138491c8dbad",
+      "moves": [
+        {
+          "offset": 26,
+          "before": 209,
+          "after": 435
+        },
+        {
+          "offset": 98,
+          "before": 21,
+          "after": 89
+        },
+        {
+          "offset": 100,
+          "before": 397,
+          "after": 360
+        }
+      ]
+    },
+    {
+      "trainer_id": 34,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "4bfe62cfddc19cc603131926291df285ad7588ab8f0398e460d52fa583ffa155",
+      "moves": [
+        {
+          "offset": 8,
+          "before": 99,
+          "after": 280
+        }
+      ]
+    },
+    {
+      "trainer_id": 244,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "630de408577b0c708617171db42a4d68d49069ed03a376ea49819f9dafb0abf4",
+      "moves": [
+        {
+          "offset": 10,
+          "before": 63,
+          "after": 127
+        }
+      ]
+    },
+    {
+      "trainer_id": 245,
+      "type": 3,
+      "count": 6,
+      "bytes": 108,
+      "source_sha256": "957ae8872b6d64750e657c791508175d461fd7434beb2d77f6f73865e7971bf3",
+      "moves": [
+        {
+          "offset": 102,
+          "before": 384,
+          "after": 94
+        }
+      ]
+    }
+  ]
+}

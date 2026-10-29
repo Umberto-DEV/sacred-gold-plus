@@ -37,6 +37,15 @@ Before committing, review the diff and run `git diff --check` and
 check. Never commit ROMs, saves, BIOS, dumps, extracted game data or private
 workspace notes.
 
+## Continuity between sessions
+
+For 1.3 work, read [the current handoff](source/docs/HANDOFF-1.3.md), the linked
+change register and validation report before editing. Do not assume a new chat
+inherits earlier conversations or that local changes are already committed.
+Keep `source/docs/novita-1.3.0.md`, `CHANGELOG.md` and the handoff current when
+behavior or validation status changes. Record new test evidence with the exact
+candidate identity; preserve historical reports and their limitations.
+
 ## Preserve existing saves
 
 Forward compatibility with `.sav` files from previous patches is a release
@@ -60,3 +69,22 @@ community contributions and credits. Keep maintenance notes to **Some bugs fixed
 Detailed per-version changes and validation belong in the changelog and source
 documentation. Update the overview when gameplay features change. Editing release
 descriptions must not replace published ZIPs, checksums or tags.
+
+## Keep local storage bounded
+
+- Keep at most two retained generated builds per required language/target: the
+  current verified candidate and the previous verified fallback. Replace the
+  fallback only after the new candidate passes its checks. A pending candidate
+  may exist temporarily during validation; prune it or promote it when done.
+- Coordinate shared output paths with other active chats before cleanup. Do not
+  duplicate ROM/APK trees or whole evidence folders across temporary, local and
+  Downloads directories. Reference a canonical copy instead.
+- Delete reproducible intermediate ROMs, extracted build data and obsolete build
+  directories after each run, including failed runs. Keep small reports, hashes
+  and reproducer scripts; retain a large diagnostic only while it is necessary.
+- Before a large build or capture, check free space and expected peak usage. Keep
+  at least 10 GiB free after the planned work; if the budget cannot be met, clean
+  known disposable outputs first or report the limitation. Bound log/dump runs.
+- Never remove original ROM inputs, BIOS, original saves, save fixtures, unique
+  evidence, source changes or Git history to meet this limit. Published release
+  assets remain immutable. Stop producers before deleting their outputs.

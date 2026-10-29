@@ -141,7 +141,9 @@ They live in `source/verifiche/` and are meant to be used as exit-code gates, no
 python3 source/verifiche/rileva_crash.py runs/<name>/frames.csv [...]
 ```
 
-Exits 1 if at least one run is in a crash.
+Exits 1 for an exception, a sustained fixed-PC loop outside the vector, or an
+unusable trace. A changing-PC `STALLO` remains inconclusive and needs a separate
+assertion that the intended gameplay state was reached.
 
 **The process exit code is not a verdict.** This script exists because a defect stayed invisible
 for hours: the game had taken an exception, but the harness's return code stayed 0, the emulator
@@ -157,6 +159,17 @@ Neither sign alone is enough. The CPU passes through the vector during normal op
 legitimate blocking load — which has already been mistaken for a fault in this project. What
 identifies a crash is the *tail*: from some frame on, the counter stops and the PC does not
 change. A short stall is noise and is ignored.
+
+The detector measures the final constant-PC suffix independently of the first
+stopped-vblank frame. A loading transition can stop vblank before taking an
+exception; its earlier changing PC samples must not hide a later frozen suffix.
+Six ROM-free regression cases cover this boundary, ordinary vector visits and
+inconclusive blocking loads. The 1.3 playtest found this diagnostic gap during
+an instrumented debugger warp; normal-input controls are reported separately
+from instrumented scene setup. `BLOCCATO` is a conservative rejection of a
+sustained fixed-PC sample sequence, not proof of an irreversible deadlock:
+sampling can alias a legitimate busy loop. Inspect the reached state and a
+longer observation before diagnosing the game.
 
 ### `collauda_repellente.py` — did the fixed behaviour actually happen?
 

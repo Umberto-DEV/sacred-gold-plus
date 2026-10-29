@@ -1,0 +1,39 @@
+{
+  "reference_revision": "0985e8718df4f25e64d6507d89c0c97c0d288981",
+  "arm9": {
+    "0x2041074": {
+      "size": 112,
+      "sha256": "38c00738e1663c313973e1663ee4dda49d066a5b06d67f5a7b9a2698255c556e"
+    },
+    "0x201d978": {
+      "size": 16,
+      "sha256": "c4abdc8c41039c9f35c0a229ffc760fe31f335c4f404797ceaeb3ec2fd1ab3ef"
+    },
+    "0x200bba0": {
+      "size": 16,
+      "sha256": "50810dd21169f7293e8188da7ac946f9ec97e5e2b0e15c43c714a2e83e06d9a6"
+    },
+    "0x20200a8": {
+      "size": 16,
+      "sha256": "983b44d610c9ae772368d6fca6f542671153dfc3536d0adae4ef508e70e4b7b0"
+    },
+    "0x202ad3c": {
+      "size": 16,
+      "sha256": "ce3580cb5eaeeaba1810be03fe72e79df7d0eb7f263526273ae10acd4f40aec4"
+    },
+    "0x200f450": {
+      "size": 16,
+      "sha256": "11c86558736f605f7e673ab59661120df0c6c654d6252f3868ae884f32af58da"
+    }
+  },
+  "overlay1": {
+    "0x21f43e8": {
+      "size": 28,
+      "sha256": "91823e69e58682284abcfd81a84d587c48a4ddd3498beb97a250aca4e40a5a57"
+    },
+    "0x21f2ff0": {
+      "size": 16,
+      "sha256": "9e76a447cea39d588a201141761c1e64f10b0f51b84697d1e9b5f22fa76dd7b9"
+    }
+  }
+}

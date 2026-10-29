@@ -55,6 +55,7 @@ SUITE = [
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione"]),
     ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),
     ("ARM9 reserve register",  SOURCE, ["-m", "unittest", "verifiche.test_riserva"]),
+    ("runtime crash and freeze gate", SOURCE, ["-m", "unittest", "verifiche.test_runtime_gate"]),
     ("text codec / translation", SOURCE, ["-m", "unittest", "discover", "-s", "translation", "-p", "test_*.py"]),
     ("text width measurement", SOURCE, ["-m", "unittest", "discover", "-s", "quality-audit", "-p", "test_*.py"]),
     ("EV/IV guide (1.1)",      SOURCE, ["-m", "unittest", "discover", "-s", "native-guide", "-p", "test_*.py"]),
@@ -93,6 +94,35 @@ SUITE_CLASSE_B = [
     ("battle party native move data", SOURCE / "features/squadra-lotta/test", ["-m", "unittest", "discover", "-p", "test_native_data.py"]),
     ("bag capacity native ARM", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_arm.py"]),
     ("bag capacity reader mutants", SOURCE / "features/capacita-borsa/test", ["-m", "unittest", "discover", "-p", "test_reader.py"]),
+]
+
+# The successor pipeline is separate from the reproducible 1.2.5 builder, but
+# its source-only tests belong to the same mandatory project check. Keep tests
+# that require private cartridges out of Class A.
+SUITE += [
+    ("1.3 event flag storage", SOURCE, ["-m", "unittest", "sgp13.test_event_flags"]),
+    ("1.3 recoverable save feedback", SOURCE, ["-m", "unittest", "sgp13.test_save_ui"]),
+    ("1.3 conditional balance probabilities", SOURCE, ["-m", "unittest", "sgp13.test_balance_math"]),
+    ("1.3 guarded learnset additions", SOURCE, ["-m", "unittest", "sgp13.test_learnsets"]),
+    ("1.3 species balance", SOURCE, ["-m", "unittest", "sgp13.test_species.SpeciesTests", "sgp13.test_species.BalanceAuditTests"]),
+    ("1.3 shiny core and adapters", SOURCE / "features/shiny/test", ["-m", "unittest", "test_core", "test_native_owner", "test_native_routes", "test_native_search", "test_native_abort", "test_native_install.InstallTests"]),
+    ("1.3 finite PID reference", SOURCE, ["-m", "unittest", "sgp13.test_shiny_pid"]),
+    ("1.3 build and guide facts", SOURCE, ["-m", "unittest", "sgp13.test_space.SpaceTests", "sgp13.test_resources", "sgp13.test_caught", "sgp13.test_content", "sgp13.test_build", "sgp13.test_title", "sgp13.test_consultant", "sgp13.test_mew"]),
+    ("1.3 training rules", SOURCE / "features/training/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
+    ("1.3 training adapters", SOURCE / "features/training-native/test", ["-m", "unittest", "test_transaction", "test_transaction_arm", "test_ownership", "test_scripts", "test_save_composition", "test_shiny_owner"]),
+    ("1.3 native guide", SOURCE / "features/field-guide/test", ["-m", "unittest", "test_content", "test_native", "test_failures", "test_hooks", "test_font_cache"]),
+    ("1.3 trainer strategies", SOURCE / "features/trainer-strategy/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
+    ("1.3 Plus presentation", SOURCE / "features/plus-ui/test", ["-m", "unittest", "test_context", "test_navigation", "test_extended.ExtendedMenu"]),
+]
+SUITE_CLASSE_B += [
+    ("1.3 native event flags", SOURCE, ["-m", "unittest", "sgp13.test_event_flags_rom"]),
+    ("1.3 real species statistics", SOURCE, ["-m", "unittest", "sgp13.test_species.ActualTableTests"]),
+    ("1.3 native shiny constructors", SOURCE / "features/shiny/test", ["-m", "unittest", "test_native_constructor", "test_native_options", "test_native_install.CartridgeInstallTests"]),
+    ("1.3 native shiny text widths", SOURCE / "features/plus-ui/test", ["-m", "unittest", "test_extended.ExtendedText"]),
+    ("1.3 real save feedback callers", SOURCE, ["-m", "unittest", "sgp13.test_save_ui_rom"]),
+    ("1.3 cartridge and hooks", SOURCE, ["-m", "unittest", "sgp13.test_space.RealRomTests", "sgp13.test_caught_arm", "sgp13.test_teams_arm", "sgp13.test_mew_rom"]),
+    ("1.3 guide composition", SOURCE / "features/field-guide/test", ["-m", "unittest", "test_install_ranges"]),
+    ("1.3 native training", SOURCE / "features/training-native/test", ["-m", "unittest", "test_native"]),
 ]
 
 CONTA = re.compile(r"^Ran (\d+) tests?", re.M)

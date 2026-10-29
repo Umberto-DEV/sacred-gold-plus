@@ -1,0 +1,1161 @@
+{
+  "provenance": "Pinned native audit 0985e8718df4f25e64d6507d89c0c97c0d288981; independently matched EN/IT integration candidates",
+  "languages": {
+    "EN": {
+      "ranges": [
+        {
+          "kind": "arm9",
+          "address": "0x0206E108",
+          "length": 68,
+          "sha256": "39b359c819abba5c9c235eedc4cefd48997058153ce551f27ddf98bfc3dcac04"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206E14C",
+          "length": 160,
+          "sha256": "10f211341e16360f8cf96ec03a08bcf864246a0def171d0e24e3615d8b4f7482"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206DE38",
+          "length": 720,
+          "sha256": "4fc428d9d423ddcced338c56650cbdc32a8097a698e856ac7461844bacfe725a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02070068",
+          "length": 36,
+          "sha256": "3e012e445c067c5938e1d4dbe4b2c94e6ce466bf0b341215d6766551d1605f41"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050C8A",
+          "length": 30,
+          "sha256": "bc96a3c51bd64fc93d12632ff541c3921b8b493725fde627d39bdc3e97541153"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205E048",
+          "length": 48,
+          "sha256": "a8425e9e86feb40a1468f5b2fbe52d087a1ee884e4ae048673473879429579a5"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247A18",
+          "length": 332,
+          "sha256": "b862cf9f67cc6f14ac102ed7e46c0b04fb363378e10a48b6c959823145b0eb2d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247B64",
+          "length": 572,
+          "sha256": "1e0586312e6b439cb1b497fabd2d6218515aee38bb30d9f24f7d36049498503b"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224855C",
+          "length": 84,
+          "sha256": "b6ae112ef4e8f7270e73bece063e2fe3de54bace44e8614d0b8aee94818ccc08"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246C94",
+          "length": 4,
+          "sha256": "6621fdbb261e05c049e0bc3be5d74e966b4d6dd32c675c1e2e739cc50918f1b3"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02000CC8",
+          "length": 4,
+          "sha256": "ca943cf8f8fa07cddf6bd264ea7a9e3aa61b6a1ae1a44916ffbedd63f264649d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DE80",
+          "length": 4,
+          "sha256": "fbcac0d6cfb66aeeadfe7610b41d263e3276f434cb0b2f0a5bf84e57600c053c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DEA6",
+          "length": 4,
+          "sha256": "d649805af57f186fb37db28999be5b5b3171a60af0f076408b2a09306827825d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DED6",
+          "length": 4,
+          "sha256": "193d5274b84e037cfc39280a3b90631e0a835658c26da54d27649931aa6f5229"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E0D0",
+          "length": 4,
+          "sha256": "25f6815a867a02d98b3b59e58ffffa2d71c40b8d8cbd325e58c753600782aa6c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02055276",
+          "length": 4,
+          "sha256": "1e79812181d3e830382a4fae9ffc7d9d61c11b3585013e44ab4fceb08c385861"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028EA8",
+          "length": 16,
+          "sha256": "1d7e560850711ad3589f27031daa0360eac7df1c99ad1182c2b77ab70f129099"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020650E8",
+          "length": 92,
+          "sha256": "ebaa257354178803810364b3cd1a014a66d2a0d9da0c33eb9f578225198ffd29"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020649B8",
+          "length": 176,
+          "sha256": "2232bb0a3142bb0b29d779e032c4a82f5c63298b793fd63098b3941b9511b7ef"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E13C",
+          "length": 32,
+          "sha256": "b235d359e2c32c17f6cb8936c62043b584a317828998eaecc4739b9bc9d91d73"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246A84",
+          "length": 520,
+          "sha256": "eae9f9129a4f5e872dacc2a75094b27182a6d4a5870c1439d34d0309ed8d2290"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224762C",
+          "length": 96,
+          "sha256": "e121f316029188446abd72661f43f16c50d32f5839f357cd327184bd8bb04c56"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248618",
+          "length": 128,
+          "sha256": "c6fd3dfa6cf6e6d07fa3a35b177d4c3d830b34fb3ab40f182def30b179e4f8f0"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205104C",
+          "length": 4,
+          "sha256": "d1074887ec2694d8605031f2f055394a61677d56f2f7c3bedbf4515f876cdefe"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020510BC",
+          "length": 4,
+          "sha256": "c3d2600ff127019f054c7eef9de56c0c7e61a0ac57d194d28943ca2bf5d2f106"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051252",
+          "length": 4,
+          "sha256": "b416d2eee856fe559f7d8be36cbe0c1aed999442f55fdd1dbeb344377c4b9ffc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051020",
+          "length": 128,
+          "sha256": "92db2bcff3614c3c889936c6b1703bfe1ad2be9826462112347c66f7cc359388"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247F30",
+          "length": 108,
+          "sha256": "6d4d3a1770bb41c0fbf61a392deeb05e509158d9d879650955a9b1bafd7f3674"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051020",
+          "length": 110,
+          "sha256": "967eb6477e1984803168ed7a192e87221d92358afcc2de5b7113af780c803fa4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02043E52",
+          "length": 10,
+          "sha256": "80dae50c8bedb37ade87ce418aeca4cb2c0475250b7748b344934e259ea4b69d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02043EAE",
+          "length": 10,
+          "sha256": "d563025dca66f0837b380b3c9bcda93715a23cab2f631927eb72434b972a6813"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203FD60",
+          "length": 8,
+          "sha256": "bce16350e4c52dab581fe17c41f6632394764f9d7c18dc2412efcd39c1eb1749"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205F5A4",
+          "length": 32,
+          "sha256": "2220a6735bf88bff08feee6408719918c677be206de2dae9cc3b812bffe14b3e"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC2C4",
+          "length": 4,
+          "sha256": "a7ddd513d149ea16fdd4db3f82267f83087aeaddd06b5dde5468adb704205fc4"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC434",
+          "length": 34,
+          "sha256": "4d60814a59ca379389f5ec4c99dda26d360ab6531fdcfcf8ea1deb56b93a20d9"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC498",
+          "length": 22,
+          "sha256": "c18b4da90228a53d1ce0e0a3589d7be59d78766eab278843ae452629b7e96193"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC418",
+          "length": 22,
+          "sha256": "cf099afc83511d3f7639b582e887fc89ab370709fe65f79e47b9f07ed2f2da46"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224734C",
+          "length": 38,
+          "sha256": "97b57d16b83f802e026e841a1279f7816b2295ffe6d2d2b8b6f4af92fe6e7117"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x022470A0",
+          "length": 208,
+          "sha256": "adcf5fcd7fa10d90b56307c727e301942238e2732989f9edf31ded085283199b"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247374",
+          "length": 176,
+          "sha256": "261ef87763fc36d09cbfad9d91acb2ab596a53543662b7d5b45155af5a2b5679"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248244",
+          "length": 76,
+          "sha256": "69f6d091fc1178dc245a07624194c686260ef07308a6eb8f0ec1d18517c7db21"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246A84",
+          "length": 32,
+          "sha256": "74059d86073229bf89e159c4cd66b8d65c86ccfb8222eeafca43738a6093a4fe"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B58",
+          "length": 32,
+          "sha256": "96a7f9165bdc791fbd2344ffd16db1b55657dc9087c464fcd059bd1d091d0b68"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B00",
+          "length": 32,
+          "sha256": "8e5d40edc79017698875359e8138095e89db11a3a900b347fdb9af7dca84d54f"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B9C",
+          "length": 32,
+          "sha256": "1586e6010fd3c00b7ea30fad9a0e83ee7ce91d55057772e8a030c4f24e63af55"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246AD4",
+          "length": 32,
+          "sha256": "fe45fd52cc712b4613cf233d37f61dd8073956ed7a0294eff5a50570c598ae85"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246BD8",
+          "length": 32,
+          "sha256": "c453cf8e00e4f2bf882b478411181777bc897873d00847d972672fc0716ca45d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248618",
+          "length": 32,
+          "sha256": "af7bbb3ebc7431b21e8a953950abcd1f80cf1e4a345db02b99d208b271ab4851"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247B64",
+          "length": 32,
+          "sha256": "f1ecd89ff631676628d6432f4793c713f3d1b7f86c4ccada3d20b2ef76089f11"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247F30",
+          "length": 32,
+          "sha256": "1f5f3b55ee07bf9d0aed5b2ab22a2ff5a15a12dd77d2ae1894bb024890517637"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224762C",
+          "length": 32,
+          "sha256": "ec5a6aa61159d5b8e2fcd1e5e9ebb9131709ea960e18bb385a60407bff2cc11d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x022482A4",
+          "length": 32,
+          "sha256": "4cb79788d26ed344d32b9530388e8c367f73186637d13966bd36c8456db9d13e"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020518D8",
+          "length": 32,
+          "sha256": "22bf16cde883c5559a6e723452dda1357f7eb4ce67c3bcef3f2c7c2cf443f690"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051F00",
+          "length": 32,
+          "sha256": "1e831d04cbe04f08a91840acb95ff49f834d2c4c03774a678291e54905ff3e11"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02052544",
+          "length": 32,
+          "sha256": "79ad15c8b542cac5904f0cc1b4388820cf11667b7e59af1ea21b789ba95b841a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051BF8",
+          "length": 32,
+          "sha256": "83128d6c831f2586422df236badebe327aab1f5b35fd6415da1ec0dbd9882a9a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050B08",
+          "length": 32,
+          "sha256": "82900f88c04087d4f5652456b9297f26502880cd8a7930fbe4c470c59f70f0d9"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203B8B8",
+          "length": 32,
+          "sha256": "4bc8c2b3511ece2f3e3c78eebcc01decd94bc741a9b9884298629b11ef5e2ae4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020649B8",
+          "length": 32,
+          "sha256": "f94d3915b001f1a6ab51ac6850cc26fed5b28f3556a73750faf71d9b7fc379bc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020650E8",
+          "length": 32,
+          "sha256": "69a5b7169f4388bfd81db41fdaf8eac40b4e485ab6818c93335798bacdd51eab"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0207879C",
+          "length": 32,
+          "sha256": "95bb2b5ff4a6a0456cb0686b74a23de46e0ff949d626bc01635168a5adf16766"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020784B0",
+          "length": 32,
+          "sha256": "5e2db2eb208b5ff18765afebb41af7bde4ca63b236df43abaa2e84264e73eabb"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202A634",
+          "length": 32,
+          "sha256": "9ccd2ac056c32eb0bd703b36f76f72a4013532ba561c4f2ecdf7126efb7bb020"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202A044",
+          "length": 32,
+          "sha256": "c426c1e92b007d00b60a0903c4902f39e190705997e11f9dc15a6bb1dd9a4e93"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028EA8",
+          "length": 32,
+          "sha256": "24a3eb545a1b6ba9ec1188b6cd03378665e49f9f6400970582e7258a1e75b049"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028E9C",
+          "length": 32,
+          "sha256": "c4e67231986f37bd7d5e5fb756ed4ce85029440328d696cc7711ae9a9d42a9bf"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028F84",
+          "length": 32,
+          "sha256": "bab4f83d30fbf5ad78dc55cd3feb93a6933ae35055436e1e5e07500da2824f3c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C67C",
+          "length": 12,
+          "sha256": "1d0f3c9fcae48b8826c3bd2e2e0ba4bcbb6605c769edd9d8bd3f7f22c3f14033"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C688",
+          "length": 12,
+          "sha256": "9e7a8c53b75b963077682c38f74a1a7789a01a5d2bf4cf4e489b6fb976d20e59"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C654",
+          "length": 12,
+          "sha256": "5caebca7850d635ac50cd5b070dd02acf791769999d0f13326914e3320ba30cf"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074640",
+          "length": 4,
+          "sha256": "a78fc9996461c9de89dede305a4ebaddf18e69f73df2a59a239610bf4bdef4cd"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206E250",
+          "length": 32,
+          "sha256": "a553a3f0bbe14dfee1ebd062027a90759201de68153e581224894ba268240f24"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201FD2C",
+          "length": 12,
+          "sha256": "8f303c720384de46eb4b512915a6cd3f65c0ca4cd09622ea94ec8e65323bf3db"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201BB68",
+          "length": 32,
+          "sha256": "1acf4f1ec91dcb609e4f44a8fe5197a902bd28dd354e693b588a0c3d2399cf93"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201CB04",
+          "length": 32,
+          "sha256": "4e36e548197f7238c5098b614348df975be25e4914e41f415002040928178b85"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02022C60",
+          "length": 32,
+          "sha256": "12c13ed4f9e47be3ca077d2b67b9a0b5692dfdd5b44f87d7329335f609e4aedc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074904",
+          "length": 32,
+          "sha256": "f6bce8cde94cccd335d0fef5f01821ee736fc9bb856aee3789c7885a7cf40c5d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201481C",
+          "length": 32,
+          "sha256": "4ca133f862b53a198bd1201277bf2e56aa0ed5fd5071a4b21803e735549ad3b4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050724",
+          "length": 32,
+          "sha256": "1a61a8a0d9f4a1b301fb2e9cb14b9b4dfd443c6bb364d65b1cac24df8615e3be"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DF34",
+          "length": 32,
+          "sha256": "b9644d80dcdcbc111fac90d5c41a292cb3dab74858428d5a11f3fe0f894bf3cd"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074644",
+          "length": 32,
+          "sha256": "ad8ad7c926fdfbccbe3ba360e866d3ab6ec1089a8e70ee24efa2afc62cc22c43"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066644",
+          "length": 32,
+          "sha256": "0900187b7fb902ffa4bd0febc08a5c6c1016f5e1513e7e0c4e5f7a64ed53fb2e"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020503D0",
+          "length": 32,
+          "sha256": "a4ce121577d263e0df63457b9ea42ad78b1bd393ee7b600b1b10aaff86eb2478"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E058",
+          "length": 32,
+          "sha256": "78892485a345bb6b97678df69f5e7e8f61e2e50c7b31bf2fd928642f06fcf6ca"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E15C",
+          "length": 32,
+          "sha256": "c0495c42b777013628d4f287de35205b1d0ac7d7d3560adef9db74c4cf349006"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DFE0",
+          "length": 32,
+          "sha256": "371e0fed098d8c796d5411c040f39116e64c7f25d815ddcbf4d10290d43ac4c3"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066860",
+          "length": 32,
+          "sha256": "fc2a27eef86936add24e382ee135cc75e6d24ea210b467f7613ea1513798beec"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02000E6C",
+          "length": 32,
+          "sha256": "611319baa89585b47b654864618db7bcb360427289e6b767534e9940dc7bc6bc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066870",
+          "length": 32,
+          "sha256": "e3c2d409d46f6355277a69e45663d99fdb0381b4dd68e3d13b117eb9271ce5eb"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202D0FC",
+          "length": 32,
+          "sha256": "4925dae3dbbf1bbc1de387896e33c8d474704b4de9253371f9fb6cfa3eb18562"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203EE14",
+          "length": 64,
+          "sha256": "1a8d50380f2aa5a8d438a5737963736ef9b3aab8c0ef3d483be395a2f69dd418"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DFB4",
+          "length": 42,
+          "sha256": "e5805c791517066994957c44ae47142f30fa10d4f3d20c77f7a20ed62601d709"
+        }
+      ],
+      "sites": {
+        "arm9:0x02000CC8": "00f0d0f8",
+        "arm9:0x0203DE80": "00f0aef8",
+        "arm9:0x0203DEA6": "00f09bf8",
+        "arm9:0x0203DED6": "00f0bff8",
+        "arm9:0x02055276": "e8f75dfe",
+        "arm9:0x0203E0D0": "00f044f8",
+        "arm9:0x0206E142": "fff779fe",
+        "arm9:0x0206E1E4": "fff728fe",
+        "arm9:0x02050C8E": "fff749fd",
+        "arm9:0x0205E05E": "cff74df8",
+        "arm9:0x0205104C": "f6f170ff",
+        "arm9:0x02043E52": "0df0e5f8",
+        "arm9:0x02043EAE": "0df0b7f8",
+        "overlay2:0x02247D96": "fff73ffe",
+        "overlay2:0x0224735C": "def5def8",
+        "overlay2:0x02247D3A": "90f159fa",
+        "overlay2:0x02247D9A": "0120",
+        "overlay1:0x021FC450": "29f664f8",
+        "overlay1:0x021FC454": "2de0",
+        "arm9:0x0203EE4A": "fff7e3ff"
+      }
+    },
+    "IT": {
+      "ranges": [
+        {
+          "kind": "arm9",
+          "address": "0x0206E108",
+          "length": 68,
+          "sha256": "39b359c819abba5c9c235eedc4cefd48997058153ce551f27ddf98bfc3dcac04"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206E14C",
+          "length": 160,
+          "sha256": "10f211341e16360f8cf96ec03a08bcf864246a0def171d0e24e3615d8b4f7482"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206DE38",
+          "length": 720,
+          "sha256": "4fc428d9d423ddcced338c56650cbdc32a8097a698e856ac7461844bacfe725a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02070068",
+          "length": 36,
+          "sha256": "3e012e445c067c5938e1d4dbe4b2c94e6ce466bf0b341215d6766551d1605f41"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050C8A",
+          "length": 30,
+          "sha256": "bc96a3c51bd64fc93d12632ff541c3921b8b493725fde627d39bdc3e97541153"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205E048",
+          "length": 48,
+          "sha256": "a8425e9e86feb40a1468f5b2fbe52d087a1ee884e4ae048673473879429579a5"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247A18",
+          "length": 332,
+          "sha256": "b862cf9f67cc6f14ac102ed7e46c0b04fb363378e10a48b6c959823145b0eb2d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247B64",
+          "length": 572,
+          "sha256": "1e0586312e6b439cb1b497fabd2d6218515aee38bb30d9f24f7d36049498503b"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224855C",
+          "length": 84,
+          "sha256": "b6ae112ef4e8f7270e73bece063e2fe3de54bace44e8614d0b8aee94818ccc08"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246C94",
+          "length": 4,
+          "sha256": "6621fdbb261e05c049e0bc3be5d74e966b4d6dd32c675c1e2e739cc50918f1b3"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02000CC8",
+          "length": 4,
+          "sha256": "ca943cf8f8fa07cddf6bd264ea7a9e3aa61b6a1ae1a44916ffbedd63f264649d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DE80",
+          "length": 4,
+          "sha256": "fbcac0d6cfb66aeeadfe7610b41d263e3276f434cb0b2f0a5bf84e57600c053c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DEA6",
+          "length": 4,
+          "sha256": "d649805af57f186fb37db28999be5b5b3171a60af0f076408b2a09306827825d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DED6",
+          "length": 4,
+          "sha256": "193d5274b84e037cfc39280a3b90631e0a835658c26da54d27649931aa6f5229"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E0D0",
+          "length": 4,
+          "sha256": "25f6815a867a02d98b3b59e58ffffa2d71c40b8d8cbd325e58c753600782aa6c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02055276",
+          "length": 4,
+          "sha256": "1e79812181d3e830382a4fae9ffc7d9d61c11b3585013e44ab4fceb08c385861"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028EA8",
+          "length": 16,
+          "sha256": "1d7e560850711ad3589f27031daa0360eac7df1c99ad1182c2b77ab70f129099"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020650E8",
+          "length": 92,
+          "sha256": "ebaa257354178803810364b3cd1a014a66d2a0d9da0c33eb9f578225198ffd29"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020649B8",
+          "length": 176,
+          "sha256": "2232bb0a3142bb0b29d779e032c4a82f5c63298b793fd63098b3941b9511b7ef"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E13C",
+          "length": 32,
+          "sha256": "b235d359e2c32c17f6cb8936c62043b584a317828998eaecc4739b9bc9d91d73"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246A84",
+          "length": 520,
+          "sha256": "eae9f9129a4f5e872dacc2a75094b27182a6d4a5870c1439d34d0309ed8d2290"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224762C",
+          "length": 96,
+          "sha256": "e121f316029188446abd72661f43f16c50d32f5839f357cd327184bd8bb04c56"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248618",
+          "length": 128,
+          "sha256": "c6fd3dfa6cf6e6d07fa3a35b177d4c3d830b34fb3ab40f182def30b179e4f8f0"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205104C",
+          "length": 4,
+          "sha256": "d1074887ec2694d8605031f2f055394a61677d56f2f7c3bedbf4515f876cdefe"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020510BC",
+          "length": 4,
+          "sha256": "c3d2600ff127019f054c7eef9de56c0c7e61a0ac57d194d28943ca2bf5d2f106"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051252",
+          "length": 4,
+          "sha256": "b416d2eee856fe559f7d8be36cbe0c1aed999442f55fdd1dbeb344377c4b9ffc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051020",
+          "length": 128,
+          "sha256": "92db2bcff3614c3c889936c6b1703bfe1ad2be9826462112347c66f7cc359388"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247F30",
+          "length": 108,
+          "sha256": "6d4d3a1770bb41c0fbf61a392deeb05e509158d9d879650955a9b1bafd7f3674"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051020",
+          "length": 110,
+          "sha256": "967eb6477e1984803168ed7a192e87221d92358afcc2de5b7113af780c803fa4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02043E52",
+          "length": 10,
+          "sha256": "80dae50c8bedb37ade87ce418aeca4cb2c0475250b7748b344934e259ea4b69d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02043EAE",
+          "length": 10,
+          "sha256": "d563025dca66f0837b380b3c9bcda93715a23cab2f631927eb72434b972a6813"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203FD60",
+          "length": 8,
+          "sha256": "bce16350e4c52dab581fe17c41f6632394764f9d7c18dc2412efcd39c1eb1749"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205F5A4",
+          "length": 32,
+          "sha256": "2220a6735bf88bff08feee6408719918c677be206de2dae9cc3b812bffe14b3e"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC2C4",
+          "length": 4,
+          "sha256": "a7ddd513d149ea16fdd4db3f82267f83087aeaddd06b5dde5468adb704205fc4"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC434",
+          "length": 34,
+          "sha256": "4d60814a59ca379389f5ec4c99dda26d360ab6531fdcfcf8ea1deb56b93a20d9"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC498",
+          "length": 22,
+          "sha256": "c18b4da90228a53d1ce0e0a3589d7be59d78766eab278843ae452629b7e96193"
+        },
+        {
+          "kind": "overlay1",
+          "address": "0x021FC418",
+          "length": 22,
+          "sha256": "cf099afc83511d3f7639b582e887fc89ab370709fe65f79e47b9f07ed2f2da46"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224734C",
+          "length": 38,
+          "sha256": "97b57d16b83f802e026e841a1279f7816b2295ffe6d2d2b8b6f4af92fe6e7117"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x022470A0",
+          "length": 208,
+          "sha256": "adcf5fcd7fa10d90b56307c727e301942238e2732989f9edf31ded085283199b"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247374",
+          "length": 176,
+          "sha256": "261ef87763fc36d09cbfad9d91acb2ab596a53543662b7d5b45155af5a2b5679"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248244",
+          "length": 76,
+          "sha256": "69f6d091fc1178dc245a07624194c686260ef07308a6eb8f0ec1d18517c7db21"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246A84",
+          "length": 32,
+          "sha256": "74059d86073229bf89e159c4cd66b8d65c86ccfb8222eeafca43738a6093a4fe"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B58",
+          "length": 32,
+          "sha256": "96a7f9165bdc791fbd2344ffd16db1b55657dc9087c464fcd059bd1d091d0b68"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B00",
+          "length": 32,
+          "sha256": "8e5d40edc79017698875359e8138095e89db11a3a900b347fdb9af7dca84d54f"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246B9C",
+          "length": 32,
+          "sha256": "1586e6010fd3c00b7ea30fad9a0e83ee7ce91d55057772e8a030c4f24e63af55"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246AD4",
+          "length": 32,
+          "sha256": "fe45fd52cc712b4613cf233d37f61dd8073956ed7a0294eff5a50570c598ae85"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02246BD8",
+          "length": 32,
+          "sha256": "c453cf8e00e4f2bf882b478411181777bc897873d00847d972672fc0716ca45d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02248618",
+          "length": 32,
+          "sha256": "af7bbb3ebc7431b21e8a953950abcd1f80cf1e4a345db02b99d208b271ab4851"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247B64",
+          "length": 32,
+          "sha256": "f1ecd89ff631676628d6432f4793c713f3d1b7f86c4ccada3d20b2ef76089f11"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x02247F30",
+          "length": 32,
+          "sha256": "1f5f3b55ee07bf9d0aed5b2ab22a2ff5a15a12dd77d2ae1894bb024890517637"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x0224762C",
+          "length": 32,
+          "sha256": "ec5a6aa61159d5b8e2fcd1e5e9ebb9131709ea960e18bb385a60407bff2cc11d"
+        },
+        {
+          "kind": "overlay2",
+          "address": "0x022482A4",
+          "length": 32,
+          "sha256": "4cb79788d26ed344d32b9530388e8c367f73186637d13966bd36c8456db9d13e"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020518D8",
+          "length": 32,
+          "sha256": "22bf16cde883c5559a6e723452dda1357f7eb4ce67c3bcef3f2c7c2cf443f690"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051F00",
+          "length": 32,
+          "sha256": "1e831d04cbe04f08a91840acb95ff49f834d2c4c03774a678291e54905ff3e11"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02052544",
+          "length": 32,
+          "sha256": "79ad15c8b542cac5904f0cc1b4388820cf11667b7e59af1ea21b789ba95b841a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02051BF8",
+          "length": 32,
+          "sha256": "83128d6c831f2586422df236badebe327aab1f5b35fd6415da1ec0dbd9882a9a"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050B08",
+          "length": 32,
+          "sha256": "82900f88c04087d4f5652456b9297f26502880cd8a7930fbe4c470c59f70f0d9"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203B8B8",
+          "length": 32,
+          "sha256": "4bc8c2b3511ece2f3e3c78eebcc01decd94bc741a9b9884298629b11ef5e2ae4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020649B8",
+          "length": 32,
+          "sha256": "f94d3915b001f1a6ab51ac6850cc26fed5b28f3556a73750faf71d9b7fc379bc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020650E8",
+          "length": 32,
+          "sha256": "69a5b7169f4388bfd81db41fdaf8eac40b4e485ab6818c93335798bacdd51eab"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0207879C",
+          "length": 32,
+          "sha256": "95bb2b5ff4a6a0456cb0686b74a23de46e0ff949d626bc01635168a5adf16766"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020784B0",
+          "length": 32,
+          "sha256": "5e2db2eb208b5ff18765afebb41af7bde4ca63b236df43abaa2e84264e73eabb"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202A634",
+          "length": 32,
+          "sha256": "9ccd2ac056c32eb0bd703b36f76f72a4013532ba561c4f2ecdf7126efb7bb020"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202A044",
+          "length": 32,
+          "sha256": "c426c1e92b007d00b60a0903c4902f39e190705997e11f9dc15a6bb1dd9a4e93"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028EA8",
+          "length": 32,
+          "sha256": "24a3eb545a1b6ba9ec1188b6cd03378665e49f9f6400970582e7258a1e75b049"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028E9C",
+          "length": 32,
+          "sha256": "c4e67231986f37bd7d5e5fb756ed4ce85029440328d696cc7711ae9a9d42a9bf"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02028F84",
+          "length": 32,
+          "sha256": "bab4f83d30fbf5ad78dc55cd3feb93a6933ae35055436e1e5e07500da2824f3c"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C67C",
+          "length": 12,
+          "sha256": "1d0f3c9fcae48b8826c3bd2e2e0ba4bcbb6605c769edd9d8bd3f7f22c3f14033"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C688",
+          "length": 12,
+          "sha256": "9e7a8c53b75b963077682c38f74a1a7789a01a5d2bf4cf4e489b6fb976d20e59"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0205C654",
+          "length": 12,
+          "sha256": "5caebca7850d635ac50cd5b070dd02acf791769999d0f13326914e3320ba30cf"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074640",
+          "length": 4,
+          "sha256": "a78fc9996461c9de89dede305a4ebaddf18e69f73df2a59a239610bf4bdef4cd"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0206E250",
+          "length": 32,
+          "sha256": "a553a3f0bbe14dfee1ebd062027a90759201de68153e581224894ba268240f24"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201FD2C",
+          "length": 12,
+          "sha256": "8f303c720384de46eb4b512915a6cd3f65c0ca4cd09622ea94ec8e65323bf3db"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201BB68",
+          "length": 32,
+          "sha256": "1acf4f1ec91dcb609e4f44a8fe5197a902bd28dd354e693b588a0c3d2399cf93"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201CB04",
+          "length": 32,
+          "sha256": "4e36e548197f7238c5098b614348df975be25e4914e41f415002040928178b85"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02022C60",
+          "length": 32,
+          "sha256": "12c13ed4f9e47be3ca077d2b67b9a0b5692dfdd5b44f87d7329335f609e4aedc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074904",
+          "length": 32,
+          "sha256": "f6bce8cde94cccd335d0fef5f01821ee736fc9bb856aee3789c7885a7cf40c5d"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0201481C",
+          "length": 32,
+          "sha256": "4ca133f862b53a198bd1201277bf2e56aa0ed5fd5071a4b21803e735549ad3b4"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02050724",
+          "length": 32,
+          "sha256": "1a61a8a0d9f4a1b301fb2e9cb14b9b4dfd443c6bb364d65b1cac24df8615e3be"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DF34",
+          "length": 32,
+          "sha256": "b9644d80dcdcbc111fac90d5c41a292cb3dab74858428d5a11f3fe0f894bf3cd"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02074644",
+          "length": 32,
+          "sha256": "ad8ad7c926fdfbccbe3ba360e866d3ab6ec1089a8e70ee24efa2afc62cc22c43"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066644",
+          "length": 32,
+          "sha256": "0900187b7fb902ffa4bd0febc08a5c6c1016f5e1513e7e0c4e5f7a64ed53fb2e"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x020503D0",
+          "length": 32,
+          "sha256": "a4ce121577d263e0df63457b9ea42ad78b1bd393ee7b600b1b10aaff86eb2478"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E058",
+          "length": 32,
+          "sha256": "78892485a345bb6b97678df69f5e7e8f61e2e50c7b31bf2fd928642f06fcf6ca"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203E15C",
+          "length": 32,
+          "sha256": "c0495c42b777013628d4f287de35205b1d0ac7d7d3560adef9db74c4cf349006"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DFE0",
+          "length": 32,
+          "sha256": "371e0fed098d8c796d5411c040f39116e64c7f25d815ddcbf4d10290d43ac4c3"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066860",
+          "length": 32,
+          "sha256": "fc2a27eef86936add24e382ee135cc75e6d24ea210b467f7613ea1513798beec"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02000E6C",
+          "length": 32,
+          "sha256": "611319baa89585b47b654864618db7bcb360427289e6b767534e9940dc7bc6bc"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x02066870",
+          "length": 32,
+          "sha256": "e3c2d409d46f6355277a69e45663d99fdb0381b4dd68e3d13b117eb9271ce5eb"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0202D0FC",
+          "length": 32,
+          "sha256": "4925dae3dbbf1bbc1de387896e33c8d474704b4de9253371f9fb6cfa3eb18562"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203EE14",
+          "length": 64,
+          "sha256": "1a8d50380f2aa5a8d438a5737963736ef9b3aab8c0ef3d483be395a2f69dd418"
+        },
+        {
+          "kind": "arm9",
+          "address": "0x0203DFB4",
+          "length": 42,
+          "sha256": "e5805c791517066994957c44ae47142f30fa10d4f3d20c77f7a20ed62601d709"
+        }
+      ],
+      "sites": {
+        "arm9:0x02000CC8": "00f0d0f8",
+        "arm9:0x0203DE80": "00f0aef8",
+        "arm9:0x0203DEA6": "00f09bf8",
+        "arm9:0x0203DED6": "00f0bff8",
+        "arm9:0x02055276": "e8f75dfe",
+        "arm9:0x0203E0D0": "00f044f8",
+        "arm9:0x0206E142": "fff779fe",
+        "arm9:0x0206E1E4": "fff728fe",
+        "arm9:0x02050C8E": "fff749fd",
+        "arm9:0x0205E05E": "cff74df8",
+        "arm9:0x0205104C": "f6f170ff",
+        "arm9:0x02043E52": "0df0e5f8",
+        "arm9:0x02043EAE": "0df0b7f8",
+        "overlay2:0x02247D96": "fff73ffe",
+        "overlay2:0x0224735C": "def5def8",
+        "overlay2:0x02247D3A": "90f159fa",
+        "overlay2:0x02247D9A": "0120",
+        "overlay1:0x021FC450": "29f664f8",
+        "overlay1:0x021FC454": "2de0",
+        "arm9:0x0203EE4A": "fff7e3ff"
+      }
+    }
+  }
+}

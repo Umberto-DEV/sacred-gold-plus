@@ -1,0 +1,44 @@
+{
+  "EN": {
+    "arm9": {
+      "0x20503b8": {
+        "bytes": 272,
+        "sha256": "62cd487dacb05f0b685f8046116d8dca67ef73e418f5605bb22be830bc38324d"
+      },
+      "0x20273b0": {
+        "bytes": 64,
+        "sha256": "aa02c58bdd451ab22b2efa647e4d00bfeac08594cc6dacef2f004809995945ad"
+      },
+      "0x2040438": {
+        "bytes": 88,
+        "sha256": "26a4d0e8d62f3e354213d040a0c71cc0d719abddd535cd49b10a2e17e2f2ed9a"
+      },
+      "0x20d3b84": {
+        "bytes": 152,
+        "sha256": "9abe25225d9c84e1a9d9cfa0fb8b40a8376329fd73717f6d6995a3cb0f49c2a5"
+      }
+    },
+    "continue_overlay36_sha256": "0592773d09be4bc664e3765d1add023eb6c4c641291ba7b3d53730cca68d8d0b"
+  },
+  "IT": {
+    "arm9": {
+      "0x20503b8": {
+        "bytes": 272,
+        "sha256": "62cd487dacb05f0b685f8046116d8dca67ef73e418f5605bb22be830bc38324d"
+      },
+      "0x20273b0": {
+        "bytes": 64,
+        "sha256": "aa02c58bdd451ab22b2efa647e4d00bfeac08594cc6dacef2f004809995945ad"
+      },
+      "0x2040438": {
+        "bytes": 88,
+        "sha256": "26a4d0e8d62f3e354213d040a0c71cc0d719abddd535cd49b10a2e17e2f2ed9a"
+      },
+      "0x20d3b84": {
+        "bytes": 152,
+        "sha256": "9abe25225d9c84e1a9d9cfa0fb8b40a8376329fd73717f6d6995a3cb0f49c2a5"
+      }
+    },
+    "continue_overlay36_sha256": "0592773d09be4bc664e3765d1add023eb6c4c641291ba7b3d53730cca68d8d0b"
+  }
+}
