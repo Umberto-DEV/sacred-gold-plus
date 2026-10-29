@@ -1,6 +1,6 @@
 # Novità della 1.3.0 rispetto alla 1.2.5
 
-Aggiornato al **29 ottobre 2026**. Questo documento registra le modifiche realmente integrate nella **candidata 1.3.0**, che nel gioco è ancora identificata come **1.3 DEV**. La 1.2.5 resta la versione pubblicata: questo registro non annuncia una nuova release.
+Aggiornato al **29 ottobre 2026**. Questo documento registra le modifiche realmente integrate nella **candidata 1.3.0**, che nel gioco è ora identificata come **V1.3**. La 1.2.5 resta la versione pubblicata: questo registro non annuncia una nuova release.
 
 Il confronto parte dalla **1.2.5 di Sacred Gold Plus**, che comprende già modifiche rispetto a HeartGold e ai Pokémon originali. Il dettaglio delle prove è nel [rapporto funzionale Android](android-1.3-dev-validation.md); qui sono raccolti il prima/dopo e il beneficio delle modifiche.
 
@@ -17,7 +17,7 @@ Il confronto parte dalla **1.2.5 di Sacred Gold Plus**, che comprende già modif
 | Allenatori Plus | Aumento dei livelli già disponibile. | Nove sostituzioni mirate di mosse in sette allenatori, in aggiunta al sistema di livelli esistente. |
 | Indicatore di cattura | Il controllo escludeva le lotte contro allenatori. | La Ball appare anche per i Pokémon degli allenatori quando il Pokédex registra la specie come catturata. |
 | Eventi e salvataggio | Percorsi con durata del movimento Mew, flag alti o esito SAVE problematici. | Correzioni mirate, protezione della Rubrica Amici e messaggio corretto quando SAVE viene rifiutato. |
-| Identificazione | Etichetta 1.2.5 introdotta nella versione pubblicata. | Etichetta di sviluppo 1.3 DEV; nuova infrastruttura di build e verifica dedicata alla candidata. |
+| Identificazione | Etichetta 1.2.5 introdotta nella versione pubblicata. | Etichetta V1.3 nel titolo e nelle impostazioni Plus; nome Pokémon Sacred Gold Plus nella libreria e icona originale conservata; build e verifica dedicate alla candidata. |
 
 ## 1. Guida di campo e interfacce
 
@@ -192,9 +192,16 @@ Il builder e i file della release pubblicata 1.2.5 restano separati da questo pe
 
 La campagna funzionale documenta **49 checkpoint accettati**: 45 con SAVE e riavvio completo e quattro con rifiuto e file intero conservato. Sono distribuiti fra candidate successive; il [rapporto](android-1.3-dev-validation.md) identifica gli hash e spiega quali prove si trasferiscono sui componenti rimasti identici.
 
-L’ultima esecuzione completa comprende **37 suite Class A, 806 esecuzioni riuscite e 52 skip**. Sono separati gli 86 controlli del codice installato, le 76 migrazioni in RAM e i controlli Class B, con i rispettivi limiti. I numeri non si sommano come se fossero tutti test diversi o tutti playtest Android.
+L’ultima esecuzione completa comprende **37 suite Class A, 809 esecuzioni riuscite e 52 skip**. Sono separati gli 86 controlli del codice installato, le 76 migrazioni in RAM e i controlli Class B, con i rispettivi limiti. I numeri non si sommano come se fossero tutti test diversi o tutti playtest Android.
 
 Su Android sono stati osservati, fra gli altri, modifica e persistenza di statistiche/IV/EV, uso di vitamine e bacche, servizi e corsi, catture Classic/Pro, catena e Search, Guida, Plus, Mew e scene di boss. Tecnico è stato acquisito normalmente e verificato dopo PC→squadra→SAVE→riavvio; il suo effetto numerico e il comportamento di Alternacura hanno prove ARM. Non sono state giocate 493 battaglie, tutte le combinazioni dei servizi o un’intera nuova avventura; le due scene boss finali sono prove UI senza SAVE della vittoria. La verifica del dispositivo fisico e delle sue prestazioni resta distinta dal banco Android Software 1x.
+
+La [verifica su dispositivo fisico e della candidata V1.3](device-1.3-validation.md)
+aggiunge prove su copie di un vecchio save IT con squadra, box, Plus e Borsa
+espansa. Il confronto completo delle ROM EN/IT conferma che la revisione visiva
+v4 cambia solo nome del banner, testi della versione e pixel dell’etichetta;
+il codice di gioco e di salvataggio rimane identico alla v3. Il salvataggio
+personale originale non viene sostituito dalla copia usata per le prove.
 
 **Già presenti nella 1.2.5 e mantenuti**, quindi non da presentare come novità della 1.3: Borsa ampliata, gestione ripetuta delle Caramelle Rare, animazioni opzionali in lotta, fluidità NPC, scelta del server Wi-Fi, scaling dei livelli Plus, camera e correzioni delle grotte, lettore/guida EV/IV della Summary, tipi e mosse Folletto ereditati. Non viene dichiarato un nuovo sblocco FPS o una correzione universale dei freeze e dei problemi grafici dell’emulatore.
 

@@ -3,7 +3,10 @@
 This package builds a private successor from an exact EN or IT **1.2.5** image.
 The published `sgp12` builder and release files remain unchanged. This is a
 development build, not a published release; runtime acceptance is separate from
-successful compilation.
+successful compilation. The current candidate displays **V1.3** on the title
+and Plus settings; the DS library banner reads **Pokémon Sacred Gold Plus** and
+retains the original icon and palette. See the [current candidate and physical
+device report](../docs/device-1.3-validation.md).
 
 ## Build
 

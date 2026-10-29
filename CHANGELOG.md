@@ -3,11 +3,12 @@
 ## 1.3.0 — in development, not released
 
 Status recorded on **29 October 2026**. The candidate still identifies itself as
-**1.3 DEV**; published 1.2.5 downloads remain unchanged.
+**V1.3**; this display label does not publish a release, and 1.2.5 downloads remain unchanged.
 The [complete 1.2.5 → 1.3.0 change register, in Italian](source/docs/novita-1.3.0.md)
 records the before/after behavior, all 67 affected species, fixes, inherited
 features and verification limits.
 
+- Show Pokémon Sacred Gold Plus in the ROM library while retaining the original icon; use V1.3 on the title screen and Plus settings.
 - Add a native field Guide with 429 entries and HGSS navigation, plus contextual Plus controls and a second Shiny page.
 - Add IV consultants, Silver/Gold Caps, milestone rewards, EV policies, quick training and optional timed Day Care courses.
 - Add native shiny Classic/Pro generation and targeted Search, with persistent target and chain state.
@@ -15,6 +16,8 @@ features and verification limits.
 - Add nine Plus-only move substitutions across seven trainers and extend the caught indicator to trainer Pokémon whose species is registered as caught.
 - Correct Mew movement lifetime, SAVE-refusal feedback, high-event-flag aliasing with the Pal Pad and the clipped English migration note; harden the new Training services against payment before storage refusal.
 - Preserve older save data through guarded forward migration. The [Android validation report](source/docs/android-1.3-dev-validation.md) distinguishes 49 accepted checkpoints, native-code evidence, skipped tests and remaining limits.
+
+The [physical-device report](source/docs/device-1.3-validation.md) records the current bilingual candidate hashes, a byte-level bridge from the previous build and controlled old-save checks on Android hardware.
 
 ## 1.2.5 — 24 October 2026
 

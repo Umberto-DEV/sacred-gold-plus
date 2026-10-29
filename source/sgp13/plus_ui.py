@@ -20,7 +20,7 @@ NAV_BASE, NAV_SIZE = 0x023D7500, 512
 OLD_CODE_SHA = '7fe2f381043e993168c6359accd5fa154498e5e35e9c368035bb700b23daf7c4'
 OLD_TEMPLATES = bytes.fromhex('099e3d02139e3d021d9e3d02ffffffff2d9e3d02379e3d02419e3d02ffffffff')
 FONT_PALETTE = bytes.fromhex('13376b29f55e9d08bf5e450fb347c07def765f5e7f730000000000000000ff7f')
-VERSION = '1.3-dev'
+VERSION = '1.3'
 # Verified native printer ownership ABI, identical in EN and IT. Includes the
 # task-table literal, bounds-sensitive active check and destructor wrappers.
 PRINTER_ARM9_GUARDS = (
@@ -199,7 +199,7 @@ def version_title(before, encode, language):
     if language == 'EN':
         words = encode('Change them in OPTIONS with SELECT.')
         strings[25] = struct.pack('<%dH' % len(words), *words)
-    words = encode('Sacred Gold Plus ' + VERSION)
+    words = encode('Sacred Gold Plus V' + VERSION)
     strings[0] = strings[20] = struct.pack('<%dH' % len(words), *words)
     result = bytearray(count * 2)
     seen = {}

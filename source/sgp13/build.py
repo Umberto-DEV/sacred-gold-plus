@@ -117,9 +117,13 @@ def build(base, output, charmap, work_dir, report_path=None):
         record('shiny', shiny_path, shiny_report)
         resource, resource_report = content.build_from_rom(shiny_path, language, charmap)
         (scratch / 'guide-content.bin').write_bytes(resource)
-        final = scratch / '06-guide.nds'
-        guide_report = guide.install(shiny_path, final, resource, language, charmap, scratch / 'guide')
-        record('guide', final, {**guide_report, 'source_content': resource_report})
+        guided = scratch / '06-guide.nds'
+        guide_report = guide.install(shiny_path, guided, resource, language, charmap, scratch / 'guide')
+        record('guide', guided, {**guide_report, 'source_content': resource_report})
+        final = scratch / '07-identity.nds'
+        branded, banner_report = title.apply_banner(guided.read_bytes())
+        final.write_bytes(branded)
+        record('identity', final, banner_report)
         # Final compositional invariants: every untouched FAT file, both native
         # executable components, original settings IDs and all boundary guards.
         composition = verify_composition(data, final, save_ui_receipt=save_ui_report)
@@ -157,7 +161,7 @@ def verify_composition(before, after_path, *, save_ui_receipt):
     import ndspy.narc
     import ndspy.rom
     from sgp12.rom import Arm9, Rom
-    from . import learnsets, species
+    from . import learnsets, species, title
     original = ndspy.rom.NintendoDSRom(before)
     updated = ndspy.rom.NintendoDSRom.fromFile(after_path)
     if len(original.files) != len(updated.files):
@@ -169,7 +173,7 @@ def verify_composition(before, after_path, *, save_ui_receipt):
     changed = {i for i, (a, b) in enumerate(zip(original.files, updated.files)) if a != b}
     if changed - allowed:
         raise ValueError('unexpected changed FAT files: ' + str(sorted(changed - allowed)))
-    if original.arm7 != updated.arm7 or original.iconBanner != updated.iconBanner:
+    if original.arm7 != updated.arm7 or title.update_banner(original.iconBanner) != updated.iconBanner:
         raise ValueError('unexpected ARM7/banner change')
     arm = Arm9(after_path)
     if arm.u32(space.ARENA) != space.RESERVE_BASE:

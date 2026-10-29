@@ -1,8 +1,8 @@
 # Riprendere lo sviluppo di Sacred Gold Plus 1.3
 
 Punto di ripartenza aggiornato al **29 ottobre 2026**. La versione pubblicata è
-**1.2.5**; la **1.3 DEV** è una candidata locale con una campagna funzionale
-Android conclusa. Le nuove idee devono partire dal codice e dalle prove qui
+**1.2.5**; la candidata **1.3**, ora identificata nel gioco come **V1.3**,
+ha sorgenti su `main`, una campagna Android e prove su dispositivo fisico. Le nuove idee devono partire dal codice e dalle prove qui
 indicati, mantenendo aggiornato il confronto fra le due versioni.
 
 ## Documenti da leggere
@@ -11,7 +11,8 @@ indicati, mantenendo aggiornato il confronto fra le due versioni.
 | --- | --- |
 | [Istruzioni del repository](../../AGENTS.md) e [build e controlli](../README.md) | Lavorare su `main`, preservare modifiche esistenti, salvataggi e spazio su disco. |
 | [Novità dalla 1.2.5 alla 1.3.0](novita-1.3.0.md) | Registro delle modifiche realmente integrate, con confronto prima/dopo e appendice delle specie. |
-| [Verifica Android del 29 ottobre](android-1.3-dev-validation.md) | Candidati identificati da hash, matrice delle funzioni, prove accettate e limiti. |
+| [Verifica Android del 29 ottobre](android-1.3-dev-validation.md) | Campagna funzionale precedente, identificata da hash, con matrice e limiti. |
+| [Candidata V1.3 e dispositivo fisico](device-1.3-validation.md) | Hash correnti EN/IT, nome e icona, versione, prove sul save e limiti. |
 | [Builder e funzioni 1.3](../sgp13/README.md) | Costruzione, componenti e contratti del codice corrente. |
 | [Metodo di debug e ottimizzazione](HANDOFF-debug-optimization.md) | Riproduzione, ricerca, misure, correzioni, regressioni e conservazione delle prove. |
 
@@ -21,30 +22,31 @@ per identificarlo usare il rapporto Android sopra collegato e gli hash.
 
 ## Stato del lavoro e della CI
 
-Il 29 ottobre è iniziata la pubblicazione dei **soli sorgenti 1.3 su `main`**,
-partendo da `809b6300622d58017d6ad0b3833ac53f73c13886`. Questo aggiornamento non
-crea una release, un tag o nuovi download. La revisione prima del commit ha
-confermato che codice, test e dati corrispondono al pacchetto già esaminato nella
-campagna Android; le differenze successive riguardano documentazione e manifest.
-L'esito della CI sul nuovo commit verrà registrato dopo il push. Prima di
-intervenire rileggere `git status --short --branch` e i diff.
+I sorgenti 1.3 sono stati pubblicati su `main` con il commit
+[`6512430`](https://github.com/Umberto-DEV/sacred-gold-plus/commit/6512430513ef639a9322f70a3f545ca03be9cc4c).
+La [CI di quel commit](https://github.com/Umberto-DEV/sacred-gold-plus/actions/runs/40926637779)
+è verde: **Public files** e **Class A tests (no game file)** hanno concluso con
+successo. Non sono stati pubblicati release, tag o nuovi download.
+
+Il successivo aggiornamento visivo prepara nome e versione: **Pokémon Sacred
+Gold Plus** nella libreria, icona originale conservata, **V1.3** nel titolo e
+nelle impostazioni Plus. Il rapporto del dispositivo identifica le nuove ROM e
+il confronto integrale con le precedenti. La suite locale passa con **809 test
+Class A eseguiti e 52 skip**; la CI di questa correzione deve essere verificata
+sul relativo commit dopo il push. Prima di intervenire rileggere
+`git status --short --branch` e i diff.
 
 Una nuova sessione aperta nella stessa cartella locale può leggere codice,
 documenti ed evidenze private conservate. Un nuovo clone contiene solo ciò che
 è stato pubblicato. La cronologia della conversazione non sostituisce questi
 file: fornire questo documento come punto di ingresso.
 
-La [run Public checks del 27 ottobre](https://github.com/Umberto-DEV/sacred-gold-plus/actions/runs/40582914096)
-è conclusa con successo sul commit indicato: entrambi i job, **Public files** e
-**Class A tests (no game file)**, sono verdi. Questo risultato precede le
-modifiche locali della 1.3.
-
 Il [workflow](../../.github/workflows/public-checks.yml) esegue
 `python source/run_tests.py --json class-a-results.json`. Il
 [runner locale aggiornato](../run_tests.py) comprende già le suite Class A della
 1.3: non occorre aggiungere uno stage al workflow per includerle. La pubblicazione
-comprende runner, dipendenze dei test e manifest; verificare la run sul nuovo
-SHA. Un risultato locale non certifica la futura esecuzione sul runner GitHub.
+comprende runner, dipendenze dei test e manifest. Verificare sempre che una run
+verde appartenga allo SHA pubblicato; un risultato locale non sostituisce la CI.
 
 ROM, salvataggi, BIOS ed evidenze private restano fuori dal repository pubblico.
 Le prove che richiedono tali input e la campagna Android si svolgono sul banco
@@ -64,9 +66,18 @@ Sono distribuiti fra più revisioni del candidato; il rapporto precisa quali
 prove valgono sui byte finali. Le verifiche dei dati, ARM e Android rispondono a
 domande diverse e non vanno sommate come se fossero tutte sessioni di gioco.
 
-Rimane da eseguire la prova controllata sul dispositivo fisico. Il banco Android
-ha usato un AVD ARM64 con Software 1x: non certifica driver, prestazioni o
-profilo Compute 6x del dispositivo. La candidata non è una release pubblicata.
+La prova su dispositivo fisico Android 13, melonDS Nightly 2.1.5 e Compute 6x
+ha verificato Continue, SAVE e riavvio a freddo su copie del vecchio save IT,
+oltre a titolo, Guida e Plus. Il rapporto collegato distingue v3 e v4 e il
+confronto dei dati. Il salvataggio originale resta invariato dopo la sostituzione
+della ROM. Questa prova limitata non certifica tutte le prestazioni, i driver o
+ogni vecchio save; rimangono i limiti della campagna AVD Software 1x.
+La candidata V1.3 non è una release pubblicata.
+
+Nel workspace originale, `local/notes/2026-10-29-device-1.3.md` indica le copie
+canoniche private, i backup e le prove grezze. Non fa parte del clone pubblico.
+Per giocare ripartire da **Continua**, senza caricare uno stato emulatore creato
+con una ROM precedente.
 
 ## Come continuare e aggiornare i documenti
 

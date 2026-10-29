@@ -57,7 +57,7 @@ class MigrationTextTests(unittest.TestCase):
                 old, new = self.strings(before), self.strings(after)
                 self.assertEqual(len(after), 1008)
                 self.assertEqual(new[25], self.encode(note))
-                self.assertEqual(new[0], self.encode('Sacred Gold Plus 1.3-dev'))
+                self.assertEqual(new[0], self.encode('Sacred Gold Plus V1.3'))
                 self.assertEqual(new[20], new[0])
                 changed = {0, 20, 25} if language == 'EN' else {0, 20}
                 self.assertEqual({i for i in range(29) if old[i] != new[i]}, changed)

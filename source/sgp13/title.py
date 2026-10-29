@@ -1,5 +1,7 @@
-"""Update only the existing project-owned title label to the development version."""
+"""Update version labels and library identity while preserving the native icon."""
 import hashlib
+import struct
+from ndspy._common import crc16
 from sgp12 import titolo_versione as previous
 
 # Original 5x7 letterforms, matching the footprint of the previous project label.
@@ -16,7 +18,7 @@ GLYPHS = {
 
 def pixels():
     canvas = [[0]*48 for _ in range(16)]
-    ink = [(i*6+x,y) for i,c in enumerate('1.3 DEV')
+    ink = [(i*6+x,y) for i,c in enumerate('V1.3')
            for y,row in enumerate(GLYPHS[c]) for x,value in enumerate(row) if value=='1']
     for x,y in ink: canvas[y+6][x+1]=4
     for x,y in ink: canvas[y+5][x]=14
@@ -44,4 +46,36 @@ def apply(data):
         raise ValueError('development title readback')
     if result[:start+848]!=data[:start+848] or result[start+1232:]!=data[start+1232:]:
         raise ValueError('changed bytes outside development label')
-    return result,{'label':'1.3 DEV','pixel_bytes':384,'save_and_code_unchanged':True}
+    return result,{'label':'V1.3','pixel_bytes':384,'save_and_code_unchanged':True}
+
+
+def update_banner(before):
+    """Change the six DS library titles, retaining all icon and palette bytes."""
+    if len(before) != 0x840 or before[:2] != b'\x01\x00':
+        raise ValueError('unsupported library banner format')
+    if struct.unpack_from('<H', before, 2)[0] != crc16(before[0x20:]):
+        raise ValueError('library banner checksum preimage')
+    old = 'Pokémon HeartGold\nNintendo'.encode('utf-16-le').ljust(256, b'\0')
+    new = 'Pokémon Sacred Gold Plus\nNintendo'.encode('utf-16-le').ljust(256, b'\0')
+    if any(before[i:i + 256] != old for i in range(0x240, 0x840, 256)):
+        raise ValueError('library title preimage')
+    result = bytearray(before)
+    for offset in range(0x240, 0x840, 256):
+        result[offset:offset + 256] = new
+    struct.pack_into('<H', result, 2, crc16(result[0x20:]))
+    return bytes(result)
+
+
+def apply_banner(data):
+    if len(data) < 0x200:
+        raise ValueError('missing DS header')
+    offset = struct.unpack_from('<I', data, 0x68)[0]
+    if offset < 0x200 or offset + 0x840 > len(data):
+        raise ValueError('library banner outside ROM')
+    before = data[offset:offset + 0x840]
+    updated = update_banner(before)
+    result = data[:offset] + updated + data[offset + len(updated):]
+    return result, {'title': 'Pokémon Sacred Gold Plus', 'languages': 6,
+                    'icon_palette_preserved': result[offset + 0x20:offset + 0x240] == before[0x20:0x240],
+                    'banner_sha256': hashlib.sha256(updated).hexdigest(),
+                    'save_and_code_unchanged': True}

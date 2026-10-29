@@ -2,7 +2,7 @@
 
 This folder builds **1.2.5**. See the [version fix and save validation](docs/version-1.2.5.md).
 
-The private **1.3 development** successor has a separate
+The **1.3 development** successor has a separate
 [builder and feature guide](sgp13/README.md). It starts from a verified 1.2.5
 copy and does not replace the published release pipeline.
 Per riprendere il lavoro in una nuova sessione, partire dal
@@ -10,7 +10,9 @@ Per riprendere il lavoro in una nuova sessione, partire dal
 Il [registro delle novità 1.2.5 → 1.3.0](docs/novita-1.3.0.md) raccoglie
 il confronto prima/dopo, le specie interessate e le correzioni integrate.
 La [verifica funzionale Android del 29 ottobre 2026](docs/android-1.3-dev-validation.md)
-registra il candidato corrente, 49 checkpoint accettati, prove native e limiti.
+registra la campagna funzionale precedente, 49 checkpoint accettati, prove native e limiti.
+La [verifica su dispositivo fisico](docs/device-1.3-validation.md) identifica le
+ROM correnti V1.3, il nuovo banner e le prove di conservazione del save.
 Il [playtest sistematico v5](docs/playtest-1.3-dev.md) e la successiva
 [verifica delle interfacce v8](docs/ui-1.3-dev-validation.md) conservano i risultati
 delle tappe precedenti.
