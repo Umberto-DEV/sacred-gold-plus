@@ -16,6 +16,9 @@ aggiornato il confronto fra le due versioni.
 | [Candidata V1.3 e dispositivo fisico](device-1.3-validation.md) | Hash correnti EN/IT, nome e icona, versione, prove sul save e limiti. |
 | [Builder e funzioni 1.3](../sgp13/README.md) | Costruzione, componenti e contratti del codice corrente. |
 | [Metodo di debug e ottimizzazione](HANDOFF-debug-optimization.md) | Riproduzione, ricerca, misure, correzioni, regressioni e conservazione delle prove. |
+| [Proposta meccaniche 1.3.1](mechanics-1.3.1-proposal.md) | Ricerca futura: box portatile, regali, comandi e rivincite; nessuna aggiunta ancora implementata. |
+| [Piano eseguibile meccaniche 1.3.1](superpowers/plans/2026-10-29-mechanics-1.3.1.md) | Audit del codice/byte V4 e ordine dei quattro sottoprogetti, prove prima/dopo, banco limitato e gate di accettazione. In attesa di revisione del piano. |
+| [Esplorazione grafica](graphics-engine-exploration.md) | Idee per mappe animate e distinzione fra contenuti nativi e nuovo renderer; fuori dall'intervento meccaniche. |
 
 I rapporti v4, v5, v8 e della diagnosi del 28 ottobre conservano prove storiche.
 Le loro versioni interne non indicano automaticamente il candidato più recente:
