@@ -1058,5 +1058,8 @@
   "source/verifiche/rileva_crash.py",
   "source/verifiche/riserva_arm9.py",
   "source/verifiche/test_riserva.py",
-  "source/verifiche/test_runtime_gate.py"
+  "source/verifiche/test_runtime_gate.py",
+  "source/sgp131/map_resources.py",
+  "source/sgp131/test_map_resources.py",
+  "source/sgp131/tools/NativeModelReadback.java"
 ]

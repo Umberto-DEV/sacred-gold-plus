@@ -24,6 +24,7 @@
 !/source/**/SHA256SUMS
 !/source/runtime/CMakeLists.txt
 !/source/runtime/LICENSE
+!/source/sgp131/tools/NativeModelReadback.java
 !LICENSE
 !.gitignore
 !.gitattributes

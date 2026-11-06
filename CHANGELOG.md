@@ -2,6 +2,17 @@
 
 ## 1.3.1
 
+The public source now includes the lossless map-resource codecs needed by
+Routes 43 and 44 repair and a read-only native-model validation bridge. Building
+no longer depends on an untracked authoring module. Synthetic codec tests and
+a clean-export import check cover this dependency boundary. This packaging
+correction preserves the game data and save layout; its exact rebuilt-ROM
+identities below were reproduced again from a clean public export.
+
+Historical aggregate test totals below count unittest skip events, including
+skipped subtests; they are not counts of independent test methods. Suite
+outcomes and explicit input limitations remain the coverage evidence.
+
 The 6 November battle-freeze successors are EN
 `50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665`
 and IT

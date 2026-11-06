@@ -17,14 +17,14 @@ import json
 import os
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 
 import ndspy.narc
 import ndspy.rom
 
-from sgp2 import coast
-from sgp2.formats import LandData, Matrix
+from .map_resources import LandData, Matrix
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -78,10 +78,29 @@ LANDS = {
 }
 JAVA = Path(os.environ["SGP_HG_F09_JAVA"]) if os.environ.get("SGP_HG_F09_JAVA") else None
 JAR = Path(os.environ["SGP_HG_F09_JAR"]) if os.environ.get("SGP_HG_F09_JAR") else None
+JAVA_SHA256 = "0f642542ea1f0be6957557c0db96653ec128113bb5a4aaa7c2534d1d72ddb51f"
+JAR_SHA256 = "f77a878f027b327eba85f5afdd13299ca066901f7d78fe3dfd89a00e9bba6ff4"
 
 
 def sha256(data):
     return hashlib.sha256(bytes(data)).hexdigest()
+
+
+def native_model_readback(java, jar, model):
+    """Use the public read-only bridge with the original external tool pins."""
+    if sha256(Path(jar).read_bytes()) != JAR_SHA256:
+        raise ValueError("pinned Java library required")
+    if sha256(Path(java).read_bytes()) != JAVA_SHA256:
+        raise ValueError("pinned Java executable required")
+    bridge = Path(__file__).with_name("tools") / "NativeModelReadback.java"
+    command = [str(java), "-Xmx256m", "-Djava.awt.headless=true", "--class-path",
+               str(jar), str(bridge), "readback", str(model)]
+    run = subprocess.run(command, capture_output=True, text=True, timeout=45)
+    if run.returncode != 0:
+        raise ValueError("Java native readback failed: " + run.stderr[-3000:])
+    if len(run.stdout) >= 4 * 1024 ** 2:
+        raise ValueError("Java diagnostics oversized")
+    return json.loads(run.stdout)
 
 
 def permission(land, x, z):
@@ -198,7 +217,7 @@ class InvisibleGrassExactRomTests(unittest.TestCase):
                 self.assertEqual(sha256(land.collision), identity["collision_sha256"])
                 model_path = temporary / f"land-{member}.nsbmd"
                 model_path.write_bytes(land.model)
-                decoded[member] = json.loads(coast._run(JAVA, JAR, "readback", model_path))
+                decoded[member] = native_model_readback(JAVA, JAR, model_path)
 
         for member, identity in LANDS.items():
             land = parsed[member]

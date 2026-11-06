@@ -162,6 +162,21 @@ Class A — no game file, the same set CI runs:
 .venv/bin/python source/run_tests.py         # from the repository root
 ```
 
+The runner also probes Class B, reporting missing private inputs as explicit
+skips. Its historical summary counts skip events, including separate skipped
+subtests; the displayed collected/run totals are not a census of distinct test
+methods. Compare suite results and their skip reasons across environments.
+All executed assertions must pass; a larger aggregate count does not establish
+broader coverage. Historical validation totals retain their original scope.
+
+The Route 43/44 repair's land/matrix codecs ship in `sgp131/map_resources.py`
+with synthetic tests. Its optional visual regression uses the public read-only
+`sgp131/tools/NativeModelReadback.java` bridge. Supply the exact Java and Nds4j
+inputs pinned in `sgp131/test_invisible_grass_rom.py` with `SGP_HG_F09_JAVA`
+and `SGP_HG_F09_JAR`; the two historical preimage ROMs can be supplied with
+`SGP_HG_F09_ROM_EN` and `SGP_HG_F09_ROM_IT`. Those optional inputs are not
+required to compose the repair or run the synthetic codec tests.
+
 Class B — with your own game file (same venv-from-root convention as above: `cd source &&`, then `../.venv/bin/python3`).
 
 What `$SGP_ROM_DIR` has to hold depends on which Class B suites you want:

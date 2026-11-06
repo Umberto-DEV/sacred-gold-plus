@@ -11,7 +11,7 @@ import struct
 import ndspy.narc
 import ndspy.rom
 
-from sgp2.formats import LandData
+from .map_resources import LandData
 
 
 ARCHIVE = "a/0/6/5"

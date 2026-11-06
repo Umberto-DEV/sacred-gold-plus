@@ -159,6 +159,7 @@ SUITE_CLASSE_B += [
 ]
 SUITE += [
     ("1.3.1 modern moves", SOURCE, ["-m", "unittest", "sgp131.test_modern_moves"], SOURCE_ENV),
+    ("1.3.1 map resource envelopes", SOURCE, ["-m", "unittest", "sgp131.test_map_resources"], SOURCE_ENV),
     ("1.3.1 inherited repair arithmetic and registration", SOURCE, ["-m", "unittest", "sgp131.test_lullaby", "sgp131.test_legacy_stage"], SOURCE_ENV),
     ("1.3.1 legendary scene-version selector", SOURCE, ["-m", "unittest", "sgp131.test_legendary_scene_version_rom.SelectorUnitTests"], SOURCE_ENV),
     ("1.3.1 AI scoring", SOURCE, ["-m", "unittest", "sgp131.test_ai_scoring"], SOURCE_ENV),

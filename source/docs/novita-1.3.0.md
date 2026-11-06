@@ -1,3 +1,17 @@
+## Sorgenti pubblici e verifiche — 6 novembre 2026
+
+Il codec delle mappe necessario alla riparazione dei percorsi 43 e 44 è ora incluso
+nei sorgenti pubblici, insieme al bridge di sola lettura per il controllo dei
+modelli. La compilazione non dipende più dal modulo sperimentale rimasto locale.
+I controlli su un export pulito verificano import e codec senza ROM; le prove
+con immagini autentiche passano in EN e IT. Due rebuild completi dall'export
+pubblico riproducono gli hash delle candidate indicate sotto. Non cambia
+il formato del salvataggio né vengono introdotte nuove funzioni di gioco.
+
+I conteggi storici del runner includono eventi di skip dei sotto-test: non sono
+un censimento di metodi indipendenti. Gli esiti delle singole suite e i limiti
+delle fixture restano la prova verificabile.
+
 ## Freeze durante la battaglia: correzione del ciclo tipi — 6 novembre 2026
 
 Le nuove candidate formali sono EN
@@ -11,8 +25,11 @@ già calcolato e salta l'intera chiamata; cambia un byte nell'overlay, senza
 modificare Pokémon, strumenti, difficoltà o formato del salvataggio.
 Venti scenari del ciclo nativo EN/IT distinguono prima e dopo; riproduzione
 melonDS senza JIT e controprova sul singolo byte confermano la causa.
-La convalida fisica IT su copia è in corso. Questa correzione non dimostra
-la risoluzione del vecchio freeze Latios. Dettagli e limiti in
+La convalida fisica IT su copia ha completato Continua, SAVE nativo e
+riavvio a freddo. La ROM ufficiale è stata aggiornata sul percorso esistente,
+conservando il checkpoint corrente; la prova di battaglia supera Weavile e
+Honchkrow, esegue un turno contro Houndoom e riapre il menu mosse. Questa
+correzione non dimostra la risoluzione del vecchio freeze Latios. Dettagli e limiti in
 [ai-scoring-1.3.1.md](ai-scoring-1.3.1.md).
 
 ## GUIDA e OPZIONI: risposta e transizioni — 1 novembre 2026
