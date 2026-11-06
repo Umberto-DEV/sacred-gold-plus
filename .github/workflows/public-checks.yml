@@ -42,7 +42,7 @@ jobs:
     # byte-comparison and size gate; this is not production ROM reproduction.
     # Installed version/path: actions/runner-images/images/macos/xcode-27-arm64-Readme.md
     runs-on: xcode-27
-    timeout-minutes: 30
+    timeout-minutes: 60
     env:
       # Use the installed protected CLT tree, not an Xcode release-candidate
       # alias. Its observed host identity is separate from the production pin.

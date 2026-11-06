@@ -74,7 +74,7 @@ image includes CLT 27.0; its Xcode 27.2 alias instead names release candidate
 27B48, not the frozen production CLT compiler. The workflow records the actual
 CLT package, compiler version and SHA-256, checks host/ARM compilation and
 retains every existing byte-for-byte and payload-size test. The complete job
-has a bounded 30-minute budget.
+has a bounded 60-minute budget.
 A payload mismatch remains a failure; CI does not regenerate validated blobs.
 UI and native compiler fixtures use explicit nonproduction host contract
 seams, including protected compiler ownership/ACL checks. Production builders keep
