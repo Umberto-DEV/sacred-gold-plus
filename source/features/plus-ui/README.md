@@ -1,4 +1,10 @@
-# Native Plus presentation
+# Native Plus presentation support
+
+This module supplies the underlying Plus controller reused by **1.3.1**. The
+current player interface is the unified settings UI in the
+[1.3.1 composer](../../sgp131/README.md). The older two-page presentation
+described below remains a guarded composition dependency and its historical
+component-test subject; it is not the current settings layout.
 
 This layer reuses the existing Options/Continue controller and save layout. It
 changes the Plus title and selection colors and supplies a two-line explanation
@@ -79,4 +85,4 @@ missing seen candidates have explicit feedback; absent storage never displays
 a valid shiny rate. All 493 native species names and both authored text banks
 are measured against the native font during installation.
 
-See [mechanics and integration evidence](../../docs/shiny-species-1.3.md).
+See [mechanics and integration evidence](../../docs/shiny-species-1.3.1.md).

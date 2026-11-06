@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "descrizione": "Stadio 0 della ricostruzione: da una HeartGold originale alla base 1.1. Ogni delta contiene SOLO le differenze fra le due immagini; non e' una ROM e non serve a niente senza la HeartGold della stessa lingua, che devi avere tu.",
-  "release": "base-1.1",
-  "url_base": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/",
-  "sha256sums": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/SHA256SUMS",
+  "descrizione": "Stage zero of the current reconstruction: each pinned delta converts an owned retail HeartGold image into the required1.1 base. Deltas contain differences only and require the matching original game.",
+  "release": "v1.3.1-r2",
+  "url_base": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/",
+  "sha256sums": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/SHA256SUMS",
   "encode_options": [
     "-e",
     "-A",
@@ -28,7 +28,7 @@
       },
       "delta": {
         "nome": "base-1.1-EN.xdelta",
-        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/base-1.1-EN.xdelta",
+        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/base-1.1-EN.xdelta",
         "sha256": "0bd20d17c8b18ee0a369d812b01facd83b00b3179d5fdca2ab149274b8248fc0",
         "byte": 5747714
       },
@@ -48,7 +48,7 @@
       },
       "delta": {
         "nome": "base-1.1-IT.xdelta",
-        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/base-1.1/base-1.1-IT.xdelta",
+        "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/base-1.1-IT.xdelta",
         "sha256": "818bba0618da350440c6516a56ddc557c445cdbc79699835361866b3152c2014",
         "byte": 16183741
       },

@@ -1,102 +1,46 @@
-# Impostazioni unificate 1.3.1: contratto di comportamento
+# Unified settings behavior in 1.3.1
 
-Scelte confermate: elenco continuo Gioco/Plus/Cromatici sul display superiore,
-display inferiore con Pokéball nativa statica, solo tasti fisici nelle
-impostazioni. La revisione richiesta il 30 ottobre sostituisce lo schermo nero
-e uniforma i simboli A/B/X/Y senza cambiare le azioni. Il contratto tecnico
-e le prove della composizione sono nel [rapporto UI](ui-1.3.1-validation.md).
+Settings use one continuous Game/Plus/Shiny list on the upper screen and a static native Poké Ball on the lower screen. Settings accept physical buttons. The 30 October revision replaced the black lower screen and unified A/B/X/Y symbols while retaining their actions. Composition evidence is in [UI validation](ui-1.3.1-validation.md).
 
-## Lista
+## List and input
 
-Sei impostazioni native (testo, effetti lotta, stile lotta, audio, comandi,
-cornice), cinque Plus e modalità Cromatici; Pro aggiunge Bersaglio e Ricerca Pro.
-Intestazioni non selezionabili, cursore per ID stabile, contatore voce/totale,
-titolo/versione/posizione in aree separate con un solo renderer. Classic
-nasconde i controlli Pro ma conserva il bersaglio; i reset esistenti di serie e
-carica avvengono al commit. Nessun nuovo ID persistente.
+The list contains six native settings (text, battle effects, battle style, sound, controls and frame), five Plus settings and Shiny mode. Pro adds Target and Pro Hunt. Section headings are not selectable. Stable row IDs, the item/total counter, title, version and position have separate areas under one renderer. Classic hides Pro controls while preserving the target. Existing chain/charge resets happen at commit; no persistent IDs are added.
 
-## Input
+| Button | Action |
+| --- | --- |
+| Up/Down | Previous/next row, without wrap; native directional repeat. |
+| Left/Right | Previous/next value, clamped at the ends; never changes section. |
+| L/R | First control in the previous/next section, without wrap. Up/Down still reaches every row. |
+| A | Opens a selector or confirms a local choice. An ordinary row never globally applies changes. |
+| B | Back; at the root, handles exit with pending changes. |
+| X | Explicit Apply confirmation from the root; ignored in selectors and Info. |
+| Y | Upper-screen Info; B returns to the same row. |
+| Touch | Ignored in every settings state. |
 
-| Tasto | Azione |
-|---|---|
-| Su/Giù | Voce precedente/successiva; no wrap, ripetizione direzionale nativa. |
-| Sinistra/Destra | Valore precedente/successivo; clamp agli estremi, non cambia sezione. |
-| L/R | Primo controllo della sezione precedente/successiva; no wrap. Tutto resta raggiungibile con Su/Giù. |
-| A | Apre selettore o conferma scelta locale, mai Apply globale da una riga ordinaria. |
-| B | Indietro; alla radice gestisce l'uscita con modifiche pendenti. |
-| X | Conferma esplicita Applica dalla radice; ignorato in selettori e Info. |
-| Y | Info superiori; B ritorna alla stessa voce. |
-| Touch | Ignorato in ogni stato delle impostazioni. |
+The local normalizer recovers raw L/R and distinguishes physical A from synthetic L=A. It leaves global input mode intact; a changed Controls value takes effect after Apply. One press produces one action, in this priority: B, real A, X, Y, L/R, direction. L+R and opposing directions cancel; new input overrides repeat in the same family. L+A preserves physical A. Entry and return wait for confirm-button release. Lid/resume tests must not reuse stale raw masks.
 
-Normalizzatore locale: recupera L/R raw e distingue A fisico da quello sintetico
-di L=A. Non cambia il modo globale; il nuovo modo Comandi vale dopo Applica.
-Una pressione genera una sola azione: priorità B, A reale, X, Y, L/R, direzione.
-L+R e direzioni opposte si annullano; input nuovo prevale sulla ripetizione della
-stessa famiglia. L+A conserva A reale. In apertura/ritorno attendere rilascio dei
-tasti di conferma; testare coperchio/ripresa senza riusare maschere raw stale.
+## Target and hunt
 
-## Bersaglio e ricerca
+Target lists locally seen species for the current method, plus None. An empty list explains recovery rather than claiming save corruption. A changes the draft and returns to Target; B discards only the selector's local choice and returns to that same row.
 
-Bersaglio: specie locali già viste per il metodo corrente più Nessuno. Lista
-vuota spiegata con recupero, non come errore di save. A aggiorna soltanto il
-draft e torna alla stessa riga Bersaglio; B scarta soltanto la scelta locale e
-torna alla stessa riga. Non rientrare implicitamente in un diverso pannello.
+Pro Hunt shows Pokémon, Method, Successes, Odds and Steps x/40. The last three are read-only state. Method and Target are editable; the command is **Prepare hunt**. It requires Pro, a valid species and 40 steps. A mode/target change that has not been applied has effective charge zero. A prepares only the draft, returns to Pro Hunt in the main list and marks it pending. X Apply lists changed groups and any prepared hunt. Only after confirmation, exit and an available field does the owner start the encounter under its existing conditions. Changing mode, species or method invalidates a prepared hunt. Rules are explained in Guide/Info rather than a separate settings row.
 
-Ricerca Pro: pannello superiore con Pokémon, Metodo, Successi, Probabilità e
-Passi x/40. Ultimi tre sono stato, non controlli modificabili. Metodo/Bersaglio
-modificabili; comando **Prepara ricerca**, non Avvia. Richiede Pro, specie valida
-e 40 passi; modo/bersaglio nuovi ancora da applicare hanno carica effettiva zero.
-A prepara solo il draft e torna alla riga Ricerca Pro della lista principale,
-stato Da applicare. X Applica
-elenca gruppi modificati ed eventuale ricerca preparata; solo dopo conferma,
-uscita e campo libero l'owner avvia l'incontro secondo le condizioni esistenti.
-Cambio modo/specie/metodo invalida la ricerca preparata. Rimuovere Regole dalle
-impostazioni; spiegazioni originali e verificate in Guida/Info.
+## Transaction
 
-## Transazione
+Native, Plus and Shiny have separate temporary snapshots/drafts and a dirty mask. Validate only changed groups: an absent Plus owner must not prevent native audio changes. Its controls remain readable but disabled.
 
-Snapshot/draft temporanei separati per Nativo, Plus e Cromatici, con dirty mask.
-Validare **solo i gruppi modificati**: un owner Plus assente non impedisce di
-modificare l'audio nativo. I suoi controlli restano leggibili ma disabilitati.
+Check application/generation, snapshot, value domains, owners and context. Prepare without side effects. Run the fallible Shiny part with refusal atomicity, then commit Native/Plus under valid preconditions with deterministic writes that cannot fail. If an adapter cannot establish this contract, it needs prepare/commit support before integration. Comparing all group bytes on refusal prevents partial application.
 
-Controllare app/generazione, snapshot, domini, owner e contesto; preparare senza
-side effect; eseguire la parte fallibile Cromatici provandone atomicità al
-rifiuto; poi confermare Nativo/Plus con precondizioni valide e scritture
-deterministiche non fallibili. Se l'audit non prova questo contratto, introdurre
-prepare/commit negli adapter prima dell'integrazione. Non concatenare tre vecchi
-pulsanti Apply. Confrontare i byte di tutti i gruppi sul rifiuto.
+Refusal preserves menu and draft, explains recovery and applies no other group. A clean root exits immediately with B. A dirty root offers Apply/Discard/Continue with Continue selected. Discard restores snapshot and preview; Continue retains the draft. Apply updates RAM/operating state; disk persistence follows normal SAVE.
 
-Un rifiuto conserva menu/draft e spiega il recupero, senza altri gruppi applicati.
-B alla radice esce subito se pulito; se dirty offre Applica/Scarta/Continua,
-preselezionando Continua. Scarta ripristina snapshot e preview; Continua conserva
-il draft. Apply aggiorna RAM/stato operativo; il file segue il normale SAVE.
+## Graphics lifecycle
 
-## Ciclo grafico
+Intercept before the first native presentation: input hook `0x021E6820` is too late. Authenticate lifecycle and entry through preimages, symbols and EN/IT bytes. One owner controls LCD swap, BG/OBJ, palettes, VBlank, Window, font and printer. The lower Poké Ball remains static in selectors, Info, confirmations and errors. Restore field/callback state and free only owned resources.
 
-Intercettare prima della prima presentazione nativa: il solo hook input
-`0x021E6820` è troppo tardi. Fissare lifecycle e ingresso con preimage, simboli e
-byte EN/IT; non presumere indirizzi. Un owner per LCD swap, BG/OBJ, palette,
-VBlank, Window, font e printer. Sotto resta la Pokéball statica anche in
-selettori, Info, conferme ed errori, senza controlli o testo. Verificare ingresso
-e transizioni; ripristinare campo/callback e liberare solo risorse proprie.
+Text/frame previews belong above; audio and preview changes are reversible. Printers must not write reassigned tiles. Allocation failure closes without Apply. Compose before transfer and update changed rows/values rather than clearing the visible panel for each move; no stale-title or partial-row frames are acceptable. The legacy payload used 3,772/3,776 bytes; the extension budget is 8,192. Measure before installation and reallocate only with a map, guards and composition proof.
 
-Preview testo/cornice nelle Info o in un'area superiore; audio/preview reversibili.
-Nessun printer scrive tile riassegnati. Allocazione fallita: chiusura senza Apply.
-Non cancellare il pannello visibile a ogni movimento: comporre prima di trasferire
-e aggiornare solo righe/valori cambiati. Niente frame con titolo vecchio o righe
-parziali. Legacy: 3.772/3.776 byte; estensione: limite 8.192. Dimensionare prima
-di installare; riallocazioni con mappa, guardie e composizione, mai padding libero
-presunto.
+## Acceptance requirements
 
-## Accettazione
+Cover EN/IT, every option/transition, edges/sections, normal/L=A, simultaneous/held input, empty/full lists, Classic↔Pro, absent/refusing owners, rollback/preview and inert touch. Native settings must work without Plus, without clearing or initializing settings to expose UI.
 
-EN/IT, tutte le opzioni e transizioni, estremi/sezioni, normale/L=A, input
-simultanei/mantenuti, liste vuote/piene, Classic↔Pro, owner assente/rifiuto,
-rollback/preview e touch senza effetti. Anche senza Plus le opzioni native
-restano usabili, senza azzerare o inizializzare impostazioni per mostrare la UI.
-
-Collaudo finale su **melonDS Android nel Mac**, prima/dopo, EN/IT e copie dei
-vecchi raw-save: Continua → UI → SAVE → avvio a freddo, confronto dati/opzioni/
-Borsa espansa. Identificare APK, profilo, ROM e strumento. FPS cap arrotondato e
-throughput headless non provano assenza di costo: campioni e scene comparabili,
-limiti e non valutabili espliciti. Ripetere UI sulla 1.3.1 composta dopo meccaniche.
+Final validation uses melonDS Android on the Mac, before/after, both languages and copies of older raw saves: Continue → UI → SAVE → cold startup, comparing progress, options and expanded Bag data. Record APK, profile, ROM and tool identities. Rounded capped FPS and headless throughput do not establish zero cost; use comparable scenes/samples and explicit limits. Repeat UI on the composed 1.3.1 after mechanics integration. Requirements are not evidence of completed coverage.

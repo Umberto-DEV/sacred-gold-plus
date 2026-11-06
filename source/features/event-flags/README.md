@@ -1,6 +1,6 @@
 # Native high event flags
 
-The original high event flags `3F00..3FFF` address bytes beyond the native flag
+This **1.3.1** dependency repairs event-state storage. The original high event flags `3F00..3FFF` address bytes beyond the native flag
 array, inside Pal Pad. The shared native getter now redirects that entire bank
 to reserved variables `415E..416F`. External script IDs, event objects and cached
 object IDs stay stable, including Mew `3FC8` and its Sinjoh reader.

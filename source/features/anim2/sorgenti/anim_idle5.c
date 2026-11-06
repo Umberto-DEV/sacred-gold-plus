@@ -540,7 +540,7 @@ void sgp_idle_task5(void *task, void *data)
      * delle viste misurate e' un cambio di posa intero (arti, ali, testa,
      * sagoma, A3); e' il motivo per cui v5d lo tiene per il tempo che il
      * gioco stesso usa per lo stesso fotogramma (par.bin, --variante) invece
-     * che per 2-3 tick. Vedi README.md §v5d e AUDIT-2026-09-14.md. */
+     * che per 2-3 tick. See README.md, B-pose accent and historical validation. */
     if ((flags & SGP_F_POSA) != 0u) {
         u32 p = 0u;
         if (s->blink_left != 0u) {

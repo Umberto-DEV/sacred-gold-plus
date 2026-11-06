@@ -1,5 +1,18 @@
 # What changed
 
+## 1.3.1 package revision 2
+
+Public documentation is maintained in English, including current per-bug
+technical dossiers. Obsolete standalone version reports are consolidated into
+current subject documentation, with original evidence hashes and limitations
+retained. Italian player-guide sources are private inputs; Italian PDFs remain
+in the player package. Distribution tools default to the current 25-route
+contract and accept an explicit private document bundle. Missing notices and
+missing language sources are rejected before producing incomplete outputs.
+Release-input URLs move to `v1.3.1-r2`; all game/input/base-delta fingerprints
+remain unchanged. No new game or save migration is introduced.
+
+
 ## 1.3.1
 
 Build-tool cleanup now preserves the original compiler guard failure when
@@ -1010,7 +1023,7 @@ The stale cold-retirement interval assertion is corrected;161 targeted checks
 pass. Runtime/save/performance acceptance is delegated and remains unclaimed.
 
 A [source-qualified retail HGSS catalogue](source/docs/known-bugs-hgss.md) and
-[twenty-case legacy hack register](source/docs/legacy-bugs-1.3.md) now distinguish
+[twenty-case legacy hack register](source/docs/legacy-bugs-1.3.1.md) now distinguish
 reports, code evidence and exact-candidate static checks. The inspected inert
 1.3.1 pending files retain the Lullaby path, Facade/Strength resources and
 several legacy script/data defects. The first research pass applied no gameplay fixes. The subsequent repairs
@@ -1166,7 +1179,7 @@ cover this test tool; it does not change game files or establish Android results
 
 Status recorded on **29 October 2026**. The candidate now identifies itself as
 **V1.3**; this display label does not publish a release, and 1.2.5 downloads remain unchanged.
-The [complete 1.2.5 → 1.3.0 change register, in Italian](source/docs/novita-1.3.0.md)
+The [complete 1.2.5 → 1.3.0 change register, in Italian](source/docs/whats-new-1.3.1.md)
 records the before/after behavior, all 67 affected species, fixes, inherited
 features and verification limits.
 
@@ -1177,9 +1190,9 @@ features and verification limits.
 - Audit all 493 species: change base stats for 50, add two second ability slots and 32 level/move entries across 29 species; 67 species are affected overall.
 - Add nine Plus-only move substitutions across seven trainers and extend the caught indicator to trainer Pokémon whose species is registered as caught.
 - Correct Mew movement lifetime, SAVE-refusal feedback, high-event-flag aliasing with the Pal Pad and the clipped English migration note; harden the new Training services against payment before storage refusal.
-- Preserve older save data through guarded forward migration. The [Android validation report](source/docs/android-1.3-dev-validation.md) distinguishes 49 accepted checkpoints, native-code evidence, skipped tests and remaining limits.
+- Preserve older save data through guarded forward migration. The [Android validation report](source/docs/android-validation.md) distinguishes 49 accepted checkpoints, native-code evidence, skipped tests and remaining limits.
 
-The [physical-device report](source/docs/device-1.3-validation.md) records the current bilingual candidate hashes, a byte-level bridge from the previous build and controlled old-save checks on Android hardware.
+The [physical-device report](source/docs/device-validation.md) records the current bilingual candidate hashes, a byte-level bridge from the previous build and controlled old-save checks on Android hardware.
 
 The V1.3 interface observations and later corrections retain their exact
 candidate scope in the [UI validation](source/docs/ui-1.3.1-validation.md).
@@ -1187,7 +1200,7 @@ candidate scope in the [UI validation](source/docs/ui-1.3.1-validation.md).
 ## 1.2.5 — 24 October 2026
 
 - Show “Sacred Gold Plus 1.2.5” in the Plus options heading (Options → SELECT), so players can check the version after the one-time setup prompt has gone. Addresses [issue #6](https://github.com/Umberto-DEV/sacred-gold-plus/issues/6).
-- Display **V.1.2.5** on the upper title screen, aligned with **Developed by A FAN**, and restore the missing descender in **by**. Only version text and these title graphics change from 1.2.4 in each language. Save code, the native save layout, Plus settings and expanded Bag storage are unchanged; no new game or save conversion is needed. See the [validation and upgrade notes](source/docs/version-1.2.5.md).
+- Display **V.1.2.5** on the upper title screen, aligned with **Developed by A FAN**, and restore the missing descender in **by**. Only version text and these title graphics change from 1.2.4 in each language. Save code, the native save layout, Plus settings and expanded Bag storage are unchanged; no new game or save conversion is needed. See the [validation and upgrade notes](source/docs/base-stage-validation.md).
 
 ## 1.2.4 — 24 October 2026
 
@@ -1215,7 +1228,7 @@ candidate scope in the [UI validation](source/docs/ui-1.3.1-validation.md).
 The initial 19 September build (morning) lacked the Options-menu hint fix above. The current [1.2.2 downloads](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.2) include it, and take the first-edition game as one of their patch sources. The game header remains unchanged.
 
 - **The expanded Bag no longer loses its extra slots in silence.** A save whose extension sectors could not be read once, or that a converter normalised to a single repeated byte, is written again instead of dropping the 108 extra slots at every reload. A spent or out-of-range slot is emptied where it sits, so nothing else changes position, and the game keeps the same cleaned inventory in memory. Foreign data in those two sectors is still never overwritten: the [feature notes](source/features/capacita-borsa/README.md) say how to tell and how to clear them by hand.
-- Optional battle motion: the B-pose accent now holds the pose for the time the game itself uses for the same frame (0.33–1.00 s depending on tuning, chosen with `--variante`) instead of 2–3 ticks, and starts only at the breathing motion's resting peak. See the [v5d notes](source/features/anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026).
+- Optional battle motion: the B-pose accent now holds the pose for the time the game itself uses for the same frame (0.33–1.00 s depending on tuning, chosen with `--variante`) instead of 2–3 ticks, and starts only at the breathing motion's resting peak. See the [v5d notes](source/features/anim2/README.md#b-pose-accent).
 - **A successful pickup no longer reports "Bag is full".** Picking a Poké Ball up off the ground showed the "left behind" message every time the item was in fact collected. The capacity check was not at fault: the capped-gift block kept its "I discarded something" flag on a script variable the engine writes itself with the id of the object you interacted with, which is `1` for a ground ball — the exact value the guard compares. The flag moved to a special variable no script and no engine path writes, and the hook now always sets it. The warning is shown only when the item really is left behind.
 - The in-game version now reads "Sacred Gold Plus 1.2.2" on the screen shown at Continue. The title screen and game header remain unchanged, so 1.2.1 cheat files still apply.
 - Tools and documents: the ARM9 reserve register is back in step with the blocks, `sgp12.verifica` tells PARTIAL apart from GREEN instead of reporting both as green, and the bench probes and scripts for the battle-animation phases were corrected.
@@ -1230,7 +1243,7 @@ The initial 19 September build (morning) lacked the Options-menu hint fix above.
 - Refined optional battle motion: the idle cycle runs at 0.375× with interpolated steps and a gradual restart; the name, level, HP and EXP panels stay still. Motion continues through menu selections and yields to native move, entrance and fainting animations.
 - Stops battle idle tasks before capture so they cannot animate the Pokémon reused by the Pokédex or nickname screen. Corrects cleanup when a Pokémon is replaced or the battle ends.
 - Reduced the battle Bag opening pause with optional battle motion enabled: the Bag reuses item data already loaded for the battle. Local English and Italian tests reduce the pause from about 0.9 to 0.12 seconds; short loading pauses remain. See the [implementation and checks](source/features/borsa-lotta/README.md).
-- Added regression coverage and a [source-backed animation audit](source/features/anim2/AUDIT-2026-09-14.md).
+- Added regression coverage and a [source-backed animation audit](source/features/anim2/README.md#historical-validation).
 
 ## 1.2.1 — initial release, 13 September 2026
 

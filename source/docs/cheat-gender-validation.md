@@ -1,100 +1,50 @@
-# Verifica codici natura e sesso dei selvatici — 15 settembre 2026
+# Wild nature and gender code validation
 
-## Esito e causa
+This is historical evidence from **15 September 2026** for the generators retained in the current source. It does not transfer played acceptance to a newer ROM.
 
-I gruppi 44, 45 e 46 vengono rigenerati da `source/cheats/gender.py` per
-Sacred Gold Plus 1.2.1 EN/IT. Le 25 nature mantengono nomi e ordine del catalogo.
+## Cause and correction
 
-Il vecchio gruppo 45 non modifica il PID dell'incontro riprodotto. Con lo stesso
-salvataggio e gli stessi input, senza codice e con «maschio + Decisa» premendo L,
-il gioco crea Kakuna livello 19 con PID `94332253`: natura 16 e femmina.
-Il payload agganciato a `020D3F60` scrive invece la word `0227E98C`, passando
-`28B9` a `2056`. Il suo indirizzo deriva da `*0211186C + F710`, estraneo al
-percorso di creazione osservato. Inoltre l'algebra del payload, `8200*k + c`,
-non garantisce il sesso: il byte basso attraversa entrambe le fasce di genere.
+`source/cheats/gender.py` regenerates groups 44, 45 and 46 for the authenticated EN/IT 1.2.1 inputs. The 25 nature names and catalogue order are preserved.
 
-Il vecchio gruppo 44 sostituisce anche lo shift che costruisce il PID con una
-scrittura della natura. La nuova versione conserva quel generatore nativo.
+Old group 45 did not change the reproduced encounter's PID. With identical save/input, both no code and male + Adamant with L created level-19 Kakuna, PID `94332253`, nature 16, female. The old `020D3F60` hook instead changed `0227E98C` from `28B9` to `2056`; its `*0211186C + F710` address was outside observed creation. Its `8200*k + c` arithmetic also crossed both gender ranges. Old group 44 replaced a PID-building shift with a nature write. The replacement preserves native PID generation.
 
-## Correzione
+The generator acts before encryption in native `CreateMonWithNature` (`0206E108`) and `CreateMonWithGenderNatureLetter` (`0206E14C`, used by Cute Charm). Two Action Replay comparisons authenticate original prologues before writing.
 
-La patch interviene prima della cifratura, sulle routine native
-`CreateMonWithNature` (`0206E108`) e `CreateMonWithGenderNatureLetter`
-(`0206E14C`), quest'ultima usata da Incantevole. Due confronti Action Replay
-verificano i prologhi originali prima di qualsiasi scrittura.
+- Group 44 is always active and replaces nature arguments while preserving native PID/gender generation.
+- Groups 45/46 require L before the encounter. The standard path keeps the random PID upper half and uses low half `00FF` for male or `0000` for female; the native loop accepts only the requested `PID % 25`. The Cute Charm path replaces the native gender/nature arguments.
+- Releasing L while 45/46 remains enabled restores the four original instructions. A new family entry first restores shared sites. Enable one entry from groups 44–46 at a time.
 
-- **44, natura:** sempre attivo, sostituisce gli argomenti natura; conserva il
-  generatore PID e il genere nativi.
-- **45/46, sesso + natura:** attivo tenendo L prima dell'incontro. Nel percorso
-  standard conserva la metà alta casuale del PID e fissa quella bassa a `00FF`
-  per maschio, `0000` per femmina. Il ciclo nativo accetta il PID solo quando
-  `PID % 25` coincide con la natura richiesta. Per Incantevole sostituisce gli
-  argomenti sesso e natura del generatore nativo dedicato.
-- Rilasciare L con 45/46 ancora abilitato ripristina le quattro istruzioni
-  originali. Ogni nuovo codice ripristina prima i siti condivisi, consentendo il
-  passaggio a un'altra voce della famiglia. Usare una sola voce dei gruppi 44–46.
+Existing Pokémon, encrypted data and checksums are untouched. No RAM payload, DMA hook or ROM modification is required. Fixed-gender/genderless species retain their biological gender. Groups 45/46 change PID and shiny distributions: do not combine them with shiny/PID codes. Restart after old codes or after disabling 44. Release L before disabling 45/46; otherwise restart.
 
-Non vengono scritti PID di Pokémon esistenti, checksum o dati cifrati. Non sono
-necessari payload in RAM, hook DMA o modifiche alla ROM. Le specie monosesso o
-asessuate mantengono il loro genere biologico. Per 45/46 cambia la distribuzione
-dei PID, quindi anche degli esiti cromatici; non combinarli con codici shiny/PID.
-Riavviare se si sono usati i vecchi codici, oppure dopo aver disabilitato 44.
-Per disabilitare 45/46 rilasciare prima L; se questo non è avvenuto, riavviare.
+## Evidence
 
-## Evidenze
+`test_gender.py` passed six host tests. `test_gender_arm.py` passed one ARM test per language, executing original ARM9 selection in Unicorn for 1,200 cases per ROM: 25 natures × three modes × eight gender ratios × two routines. Tests check PID, nature, gender, final creation arguments, stack and preserved registers. RNG, gender-ratio lookup and final creation are declared stubs. A separate enumeration of all 65,536 upper halves for both genders proves every nature is reachable. XML migration rejects unknown layouts and is idempotent.
 
-`source/cheats/test_gender.py`: **6 test host verdi**.
-`source/cheats/test_gender_arm.py`: **1 test ARM verde per lingua**, che esegue
-le istruzioni ARM9 originali con Unicorn per **1.200 casi per ROM**:
-25 nature × 3 modalità × 8 rapporti di genere × 2 routine. Sono controllati PID,
-natura, genere, parametri della creazione finale, stack e registri preservati.
-Il banco sostituisce soltanto RNG, lettura del rapporto di genere e creazione
-finale; la selezione del PID è codice ARM originale. Un test separato enumera
-le 65.536 metà alte per entrambi i sessi e dimostra che tutte le nature sono
-raggiungibili. La migrazione XML rifiuta layout sconosciuti ed è idempotente.
+Real SRAM-start runs used the melonDS Action Replay engine:
 
-Prove reali con avvio da SRAM e motore Action Replay del runtime melonDS:
+| Run | Created PID | Nature | Gender | Result |
+| --- | --- | --- | --- | --- |
+| EN, old 45 Adamant | `94332253` | 16 | female | Identical to no-code control. |
+| EN, new 45 Adamant | `B5B600FF` | 3 | male | Capture, Pokédex, storage, return to field and SAVE. |
+| IT, new 46 Adamant | `0C4C0000` | 3 | female | Capture, Pokédex, storage, return to field and SAVE. |
+| EN/IT, new 44 Adamant | `0C4C445C` | 3 | female | Encounter and native creation. |
 
-| Prova | PID creato | Natura | Sesso | Esito |
-|---|---|---|---|---|
-| EN, vecchio 45 Decisa | `94332253` | 16 | femmina | identico al controllo senza codice |
-| EN, nuovo 45 Decisa | `B5B600FF` | 3 | maschio | cattura, Pokédex, deposito, ritorno al campo e salvataggio |
-| IT, nuovo 46 Decisa | `0C4C0000` | 3 | femmina | cattura, Pokédex, deposito, ritorno al campo e salvataggio |
-| EN/IT, nuovo 44 Decisa | `0C4C445C` | 3 | femmina | incontro e creazione nativa |
+Captures used a Master Ball already in the fixture. No Pokémon or capture routine was manually forced. The saved record at `10B40` had checksum `4ABB` (EN male) or `EF7F` (IT female) and the PID supplied to native creation. Cold SRAM reload without cheats preserved both records and checksums. Field-return dumps confirmed restoration after L release.
 
-Le catture usano una Master Ball già presente nella fixture; nessuna forzatura
-manuale di Pokémon o della routine di cattura. Nelle SRAM salvate il record
-catturato è a offset `10B40`, con checksum valido `4ABB` (EN maschio) e `EF7F`
-(IT femmina). Il PID è identico a quello passato alla creazione nativa. Dopo riavvio da queste
-SRAM senza cheat, entrambi i record sono nuovamente presenti con PID e checksum
-corretti. I dump al ritorno al campo confermano inoltre il ripristino delle
-quattro istruzioni originali dopo il rilascio di L.
+Played inputs, before expanded Bag capacity:
 
-Build utilizzate per queste prove (precedenti all'ampliamento capacità Borsa):
+| Language | SHA-256 |
+| --- | --- |
+| EN | `30bbf4cf0105688218132c5aa4e8b9b3ec8de124961103f36cfbcb4c8e48a708` |
+| IT | `8f991bdd7f8abb80aaf25855a1708203e2194c222fbcdf4f1f33d2bab93b2610` |
 
-- EN SHA-256 `30bbf4cf0105688218132c5aa4e8b9b3ec8de124961103f36cfbcb4c8e48a708`.
-- IT SHA-256 `8f991bdd7f8abb80aaf25855a1708203e2194c222fbcdf4f1f33d2bab93b2610`.
+ROM/SRAM/dumps/fixture scripts/GDB traces remained private under `/tmp/sgp-final-20260915/gender/`.
 
-ROM, SRAM, dump, script di fixture e tracce GDB restano locali in
-`/tmp/sgp-final-20260915/gender/`, esclusi dai pacchetti pubblici.
+After Bag expansion, both final 17-stage ROMs repeated six host tests plus one ARM test per language, again 1,200 native cases each. This was ARM revalidation; live encounters remain attached to the earlier hashes.
 
-## Limiti
+| Language | Final 17-stage SHA-256 |
+| --- | --- |
+| EN | `09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b` |
+| IT | `8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a` |
 
-Le prove live coprono Kakuna e natura Decisa; le altre nature, i rapporti fissi
-e il percorso Incantevole sono verificati dal banco ARM. Non costituiscono una
-campagna completa di tutte le specie, dei doni o dei leggendari, né un collaudo
-sulla console fisica. L'esclusione reciproca nell'interfaccia dell'emulatore è
-un'integrazione distinta; il generatore fornisce codici e istruzioni d'uso.
-
-## Conferma sulla build finale a 17 stadi
-
-Dopo l'ampliamento capacità Borsa, la discovery dei due file `test_gender*.py`
-è stata ripetuta su entrambe le ROM finali: 6 test host + 1 test ARM verdi per
-lingua, ancora 1.200 casi nativi per ROM. I siti e i contratti del generatore
-restano validi. Questa ripetizione finale è ARM; gli incontri sesso/natura live
-restano quelli della build precedente descritti sopra.
-
-- EN SHA-256 `09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b`.
-- IT SHA-256 `8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a`.
-
-Log privati: `/tmp/sgp-final-20260915/regression-17/gender-{EN,IT}.log`.
+Private logs: `/tmp/sgp-final-20260915/regression-17/gender-{EN,IT}.log`. Live coverage is Kakuna/Adamant; other natures, fixed ratios and Cute Charm are ARM evidence. This is not every species, gift, legendary or physical-console coverage. Emulator UI mutual exclusion is a separate integration.

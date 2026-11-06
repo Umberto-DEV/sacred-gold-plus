@@ -10,7 +10,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, PageBreak,
                                Image, KeepTogether, Table, TableStyle)
-from pack import config, install_text, guide_names, documents_dir, image_file_bytes
+from pack import config, install_text, guide_names, document_text, image_file_bytes
 
 HERE = Path(__file__).resolve().parent
 INK = colors.HexColor('#26343a')
@@ -94,7 +94,7 @@ def folder_card(lang, cfg, st):
     return box
 
 
-def render_document(path, story, label, st, version='1.2.5'):
+def render_document(path, story, label, st, version='1.3.1'):
     if path.exists():
         raise FileExistsError(path)
     def frame(canvas, doc):
@@ -120,7 +120,7 @@ def install_guide(output, lang, cfg):
     st = styles()
     name = guide_names(lang, cfg)[0]
     title = ('How to install ' if lang == 'EN' else 'Come installare la ')+cfg['version']
-    title_image = cfg.get('title_images', {}).get(lang, '17-version-title-top.png')
+    title_image = cfg.get('title_images', {}).get(lang, f'1.3.1/title-{lang}.png')
     story = [paragraph('SACRED GOLD PLUS', st['Label']),
              picture(title_image, 285), Spacer(1, 16),
              paragraph(title, st['Title']),
@@ -177,15 +177,15 @@ def install_guide(output, lang, cfg):
 def news_guide(output, lang, cfg):
     st = styles()
     text_name = ('NOVITA-' if lang == 'IT' else 'WHATS-NEW-')+cfg['version']+'.txt'
-    text = (documents_dir(cfg)/lang/text_name).read_text(encoding='utf-8')
+    text = document_text(lang, text_name, cfg)
     title = ("What's New in " if lang == 'EN' else 'Novità della ')+cfg['version']
     story = [paragraph('SACRED GOLD PLUS', st['Label']),
-             picture(cfg.get('title_images', {}).get(lang, '17-version-title-top.png'), 350), Spacer(1, 24),
+             picture(cfg.get('title_images', {}).get(lang, f'1.3.1/title-{lang}.png'), 350), Spacer(1, 24),
              paragraph(title, st['Title']),
              paragraph('THE CURRENT GAME, AT A GLANCE' if lang == 'EN' else 'IL GIOCO ATTUALE, IN BREVE', st['Label'])]
     photographs = {
-        '1': [('11-plus-options-english-bottom.png' if lang=='EN' else '12-plus-options-italian-bottom.png',
-               'Options > SELECT > Plus' if lang=='EN' else 'Opzioni > SELECT > Plus')],
+        '1': [('1.3.1/options-EN.png',
+               'Current Plus options (English preview)' if lang=='EN' else 'Opzioni Plus attuali (anteprima inglese)')],
         '2': [('07-elms-lab.png', "Inside Professor Elm's lab" if lang=='EN' else 'Nel laboratorio del Prof. Elm'),
               ('18-goldenrod-city.png', 'Goldenrod City' if lang=='EN' else 'Fiordoropoli')],
         '3': [('13-ev-viewer-top.png', 'L: EV'), ('14-iv-viewer-top.png', 'R: IV')],
@@ -212,8 +212,13 @@ def news_guide(output, lang, cfg):
 
 
 def build(output, contract=None):
-    output.mkdir(parents=True, exist_ok=True)
     cfg = config(contract)
+    # Resolve both language inputs before creating even the first PDF.
+    for lang in ('EN', 'IT'):
+        install_text(lang, cfg)
+        news = ('NOVITA-' if lang == 'IT' else 'WHATS-NEW-') + cfg['version'] + '.txt'
+        document_text(lang, news, cfg)
+    output.mkdir(parents=True, exist_ok=True)
     for lang in ('EN', 'IT'):
         install_guide(output, lang, cfg)
         news_guide(output, lang, cfg)

@@ -1,270 +1,308 @@
-# AI dopo KO: punteggio e immunità del sostituto (1.3.1)
+# Post-KO AI: replacement scoring and immunity (1.3.1)
 
-Stato: modulo e prove pronti (`source/sgp131/ai_scoring.py`, revisione 5); **collegato al builder dopo UI e mosse**; prova Android della composizione ancora da completare.
+The implemented module and regressions are in `source/sgp131/ai_scoring.py`,
+revision 5, integrated into the builder after UI and move changes. Evidence
+below separates native unit execution, the later battle-loop correction and
+bounded Android scenes. A unit pass does not establish natural execution of
+every AI branch in a rendered battle.
 
-## Freeze nel calcolo dei tipi — 6 novembre 2026
+## Type-calculation battle freeze — 6 November 2026
 
-La candidata precedente poteva bloccare la battaglia durante il ritorno al
-menu mosse, con audio fermo su una nota. Il difetto è nel raccordo di
-`fairy_ai` a `ov12_02252054`, non nel formato del salvataggio. Il BL Thumb
-installato a `0x022520C6` occupa anche `0x022520C8`; il ramo di ritorno del
-ciclo a `0x02252138` conservava invece la destinazione retail `0x022520C8`.
-Dalla seconda iterazione eseguiva quindi il solo suffisso del BL, usando un
-LR estraneo. Il trace del primo errore mostra il salto nei dati a
-`0x023D7836` e il successivo data abort nel consumer abilità a `0x0223AB22`.
+The preceding candidate could freeze while returning to the move menu, with
+audio held on one note. The defect is in the `fairy_ai` integration at
+`ov12_02252054`, rather than the save format. The Thumb BL installed at
+`0x022520C6` also occupies `0x022520C8`; the loop backedge at `0x02252138`
+still targeted retail address `0x022520C8`. From the second iteration it
+therefore executed only the BL suffix with an unrelated LR. The first-error
+trace shows a jump into data at `0x023D7836`, followed by a data abort in the
+ability consumer at `0x0223AB22`.
 
-La correzione cambia soltanto il byte `C6` in `C8` del BNE a `0x02252138`
-(`D1C6` → `D1C8`), destinazione `0x022520CC`. Il fondo del ciclo ha già
-calcolato `r1 = 3*r4`, anche nel percorso sentinella: il rientro riusa questo
-indice e salta entrambe le metà della chiamata iniziale. Payload residente,
-ABI, tabella tipi, geometria ROM e layout save restano invariati. Il producer
-autentica anche il fondo ciclo completo e il readback verifica il ramo.
+The correction changes only byte `C6` to `C8` in the BNE at `0x02252138`
+(`D1C6` → `D1C8`), targeting `0x022520CC`. The loop tail already computes
+`r1 = 3*r4`, including its sentinel path: re-entry reuses that index and skips
+both halves of the initial call. Resident payload, ABI, type table, ROM
+geometry and save layout remain unchanged. The producer also authenticates
+the complete loop tail, and independent readback checks the branch.
 
-La regressione pubblica esegue la funzione nativa completa in Unicorn sulle
-V4 EN/IT, senza sostituire il ciclo con stub: dieci casi per lingua coprono
-resistenza, debolezza, immunità, neutralità, doppio tipo e Folletto. Prima del
-fix tutti i venti casi raggiungono il suffisso del BL; dopo ritornano con
-flag attesi, stack e registri preservati e una sola chiamata all'helper.
-Un mutante che ripristina il vecchio ramo è rifiutato anche con hash ROM
-aggiornato. Una seconda prova usa un core melonDS interprete, senza JIT né
-cheat, e una copia raw caricata con Continua: il combattimento naturale
-riproduce la stessa catena di errore; modificando solo quel byte nello stesso
-stato il menu torna a rispondere. La modifica RAM è una controprova causale,
-non una certificazione della build formale o del salvataggio.
+The public regression executes the complete native function in Unicorn on
+V4 EN/IT, without replacing the loop with a stub. Ten cases per language cover
+resistance, weakness, immunity, neutrality, dual typing and Fairy. Before the
+fix all twenty cases reach the BL suffix; afterward they return with expected
+flags, preserved stack/registers and exactly one helper call. A mutant that
+restores the old branch is rejected even when its ROM hash is updated.
+A separate experiment uses the melonDS interpreter, without JIT or cheats,
+and a copied raw save loaded through Continue. A natural battle reproduces
+the same fault chain; changing only that byte in the same state restores the
+menu. This RAM mutation is a causal control, not acceptance of the formal
+build or its save compatibility.
 
-Il difetto non dipende da Houndoom o dalla mappa della Lega: è nel ciclo
-comune dei controlli IA sui tipi. Sulla candidata IT i BL diretti verso
-`0x02252054` sono otto: sette nell'overlay 10 (`0x0221F78E`, `0x0221FA3A`,
-`0x0221FAC8`, `0x0221FC44`, `0x0221FCD4`, `0x0222017C`, `0x02220210`) e
-uno nella scelta del sostituto dopo KO dell'overlay 12 (`0x022589FC`).
-I primi sette appartengono alle routine `ov10_0221F62C`, `ov10_0221F7F0`
-e `ov10_02220010`; tutte condividono il callee corretto. La scansione dei
-BL decodificati concorda con i call site della decompilazione. Quando si
-raggiunge il ciclo difettoso, la seconda iterazione esegue il suffisso:
-nessun Pokémon Folletto è necessario per attivarlo. Sono distinti i percorsi
-che escono prima del ciclo, per esempio Scontro o Terra contro Levitazione.
-Le venti prove attestano il callee comune, non otto incontri naturali diversi;
-non estendono la diagnosi ai freeze di overworld, a ROM precedenti o a ogni
-possibile blocco dell'emulatore.
+The cause does not depend on Houndoom or the League map: it is in the shared
+AI type-check loop. On the IT candidate, eight direct BLs target `0x02252054`:
+seven in overlay 10 (`0x0221F78E`, `0x0221FA3A`, `0x0221FAC8`, `0x0221FC44`,
+`0x0221FCD4`, `0x0222017C`, `0x02220210`) and one in overlay 12's post-KO
+replacement selection (`0x022589FC`). The first seven belong to
+`ov10_0221F62C`, `ov10_0221F7F0` and `ov10_02220010`; all share the corrected
+callee. Decoded-BL scanning agrees with the decompilation's callsites. Once
+the faulty loop is reached, its second iteration executes the suffix; a Fairy
+Pokémon is not required. Early exits, such as Struggle or Ground against
+Levitate, are distinct paths. The twenty tests establish the shared callee,
+not eight separate natural encounters, overworld-freeze causes, older-ROM
+behavior or every possible emulator hang.
 
-Questa diagnosi riguarda il freeze della candidata 1.3.1 osservato alla Lega.
-Non attribuisce automaticamente la stessa causa al precedente blocco Latios,
-segnalato su versioni anteriori al raccordo `fairy_ai`.
+This diagnosis concerns the 1.3.1 candidate's League battle freeze. It does
+not establish the same cause for the historical Latios freeze, reported on
+versions predating the `fairy_ai` integration. **Latios is not proven fixed.**
 
-La successiva prova fisica usa l'esatta IT `c63cf9e9…afbedb`, con JIT e
-renderer compute preesistenti: su copia del raw save completa SAVE/cold,
-supera Weavile e Honchkrow, esegue un turno contro Houndoom e riapre le mosse.
-La ROM ufficiale è aggiornata in luogo e il save corrente ricarica il campo.
-La [verifica corrente](ui-1.3.1-validation.md) distingue questa scena dalle
-quattro celle di compatibilità host EN/IT e dai checkpoint storici.
+The subsequent physical test used exact IT `c63cf9e9…afbedb`, retaining the
+existing JIT and Compute settings. A raw-save copy completed SAVE/cold,
+passed Weavile and Honchkrow, played one turn against Houndoom and reopened
+the move menu. At that checkpoint the installed ROM was updated in place and
+the current personal save returned to the field. The
+[validation report](ui-1.3.1-validation.md) separates this scene from four
+host EN/IT compatibility cells and historical checkpoints. Neither this IT
+scene nor the later bounded EN Android smoke proves every AI behavior below.
 
-## Problema
+## Scoring and immunity defects
 
-Quando un Pokémon avversario va KO, `ov12_02258800` (overlay 12, `0x02258800..0x02258BA0`) sceglie il
-sostituto in due stadi. Il primo assegna a ogni candidato la somma di due risultati di
-`CalculateTypeEffectiveness` (`0x0225264C`): attacco del tipo 1 e del tipo 2 del candidato contro i due
-tipi del bersaglio visibile (40 neutro, 160 per 4x). La somma viene poi troncata a 8 bit con
-`lsls r0,#24; lsrs r0,#24` (`0x02258938`, `0x0225893A`) prima del confronto con il miglior punteggio.
+After an opposing Pokémon faints, `ov12_02258800` (overlay 12,
+`0x02258800..0x02258BA0`) chooses a replacement in two stages. Stage one sums
+two `CalculateTypeEffectiveness` results (`0x0225264C`): attacks of the
+candidate's first and second types against both visible target types
+(40 neutral, 160 for 4×). It then truncates the sum to eight bits using
+`lsls r0,#24; lsrs r0,#24` (`0x02258938`, `0x0225893A`) before comparing it
+with the best score.
 
-Un candidato i cui due tipi colpiscono entrambi 4x il bersaglio (tipico: monotipo, ma anche doppio come
-Lotta/Terra contro Roccia/Acciaio) vale 160 + 160 = 320, che diventa 64: il miglior candidato di tipo viene
-scartato in favore di uno più debole. Sui tipi 0..17 dell'helper reale i casi sono 142 su 104 976
-combinazioni (coppia candidato × coppia bersaglio), tutti esattamente 320; ogni altra somma resta ≤ 255. È il difetto documentato in pokeplatinum
-(`bugs_and_glitches.md`, «Post-KO switch-in AI scoring overflow»); qui è provato sui byte e sull'esecuzione,
-non per somiglianza. La tabella tipi della base V4 non contiene righe con il tipo 9 (Folletto): per questo
-helper il tipo 9 è neutro; le prove leggono comunque la tabella reale.
+A candidate whose two types both hit the target for 4× scores
+160 + 160 = 320, which becomes 64. This includes a duplicated monotype and
+combinations such as Fighting/Ground against Rock/Steel. The strongest type
+candidate can therefore lose to a weaker one. Across real helper types 0..17,
+142 of 104,976 candidate-pair × target-pair combinations overflow, all at
+exactly 320; every other sum is ≤255. This matches pokeplatinum's documented
+“Post-KO switch-in AI scoring overflow” in `bugs_and_glitches.md`, but is
+established here by bytes and execution, not resemblance. The V4 type table
+has no type-9 (Fairy) rows, so that helper treats type 9 as neutral; the tests
+still read the actual table.
 
-La stessa routine di cambio chiama `ov12_02252054` per stabilire se una mossa
-è superefficace. Se una tipologia rende la mossa immune e una riga successiva
-rende debole la seconda tipologia, il retail conserva insieme
-`NO_EFFECT|SUPER_EFFECTIVE`. Succede per Gligar/Elettro,
-Aerodactyl o Skarmory/Terra e Girafarig/Spettro. Il consumer può quindi
-scegliere una riserva con Thunderbolt contro Gligar invece di Geloraggio.
+The same switching routine calls `ov12_02252054` to test whether a move is
+super-effective. If one type grants immunity and a later row makes the second
+type weak, retail retains both `NO_EFFECT|SUPER_EFFECTIVE`. Examples include
+Gligar/Electric, Aerodactyl or Skarmory/Ground, and Girafarig/Ghost. The
+consumer can consequently choose a Thunderbolt reserve against Gligar instead
+of an Ice Beam reserve.
 
-Un difetto separato era nel gate `ov10_022203A4`: prima di valutare se cambiare,
-l'IA ripeteva controlli parziali per vincoli, Pedinombra, Arena Trap e
-Magnetismo invece di usare il contratto normale. Arena Trap bloccava quindi
-anche Volante, Levitazione e Magnet Rise; Shed Shell non prevaleva sui quattro
-rami. La revisione 4 sostituisce i 16 byte a `0x022203B4` con salvataggio di
-`r0/r1`, battler in `r2`, BL Thumb a `BattlerCanSwitch` (`0x02255920`) e rami
-verso le continuazioni originali `blocked/allowed`. La funzione di 536 byte è
-pin-nata con SHA-256 `2cc6ca06…5d1c0`; dopo vale `17cdabc8…f0db4`.
+## Switch admission and absorption abilities
 
-Il riproduttore privato esegue davvero overlay 10 e la routine autorevole
-dell'overlay 12 su sei immagini EN/IT. Copre 96 casi: i falsi blocchi
-divergono, mentre grounded, Iron Ball, Gravity, Pedinombra, Magnetismo, vincolo,
-Sand Veil e nessuna trappola restano coerenti. Le 42 divergenze includono anche
-Shed Shell contro gli altri rami; digest canonico `0a464755…3cf0a`. Gli stub
-sono limitati alle query foglia di abilità, tipi e strumento. Non è una lotta
-renderizzata.
+A separate defect affected gate `ov10_022203A4`. Before deciding to switch,
+the AI repeated partial checks for binding, Shadow Tag, Arena Trap and Magnet
+Pull instead of using the normal contract. Arena Trap therefore blocked
+Flying, Levitate and Magnet Rise; Shed Shell did not override the four
+branches. Revision 4 replaces 16 bytes at `0x022203B4` with preservation of
+`r0/r1`, the battler in `r2`, a Thumb BL to `BattlerCanSwitch` (`0x02255920`)
+and branches to the original blocked/allowed continuations. The 536-byte
+function is pinned by SHA-256 `2cc6ca06…5d1c0`; afterward it is
+`17cdabc8…f0db4`.
 
-Un terzo difetto, HG-B15, era nella routine `ov10_0221FE8C`: i confronti
-dell'abilità attiva e delle riserve ammettevano soltanto Fuocardore,
-Assorbacqua e Assorbivolt. Due BL Thumb a `0x0221FF10` e `0x0221FFC6`
-chiamano ora un helper di 20 byte a `0x0222B26C`, dopo la tabella static-init
-`0x0222B268..26C`. Il helper conserva il match esatto e aggiunge unicamente le
-coppie Assorbivolt/Elettrorapid e Assorbacqua/Pellearsa; Fuocardore non entra
-nel ramo normalizzato. La matrice nativa passa 96 casi su sei input EN/IT, con
-24 divergenze prima e zero dopo (`2fd8a4fd…db778`). Il flusso RNG esistente,
-l'ordine di scansione e i controlli KO/uovo restano invariati.
+The private reproducer really executes overlay 10 and overlay 12's authoritative
+routine on six EN/IT images. Its 96 cases expose the false blocks while
+retaining grounded, Iron Ball, Gravity, Shadow Tag, Magnet Pull, binding,
+Sand Veil and no-trap controls. The 42 divergences also include Shed Shell
+against the other branches; canonical digest `0a464755…3cf0a`. Stubs are
+limited to leaf ability/type/item queries. This is not a rendered battle.
 
-Un quarto difetto separato, AI-WEB-03, era nella sequenza Expert di Facade nel
-membro 0 di `a/0/9/9`. L'opcode status usava il token 0 (bersaglio), mentre lo
-script danno della mossa legge l'attaccante. Il test nativo esegue l'interprete
-overlay 10 sulle candidate EN/IT: prima della correzione il bersaglio alterato
-dà `+1` e l'utilizzatore alterato zero; il solo token a `+0x5B68` cambia 0→1 e
-la matrice segue l'utilizzatore. La maschera `0xD8` e il delta `+1` restano
-identici; sonno e congelamento sono controlli negativi. Il rematch Plus di
-Valerio/Falkner ha AI flags 7 e, nelle varianti A/B, Swellow con Fiammosfera e
-Facade. La prova isola la sequenza: dispatch naturale, scelta mossa, SAVE/cold
-e dispositivo restano aperti.
+HG-B15 was another defect in `ov10_0221FE8C`: active/reserve ability checks
+recognized only Flash Fire, Water Absorb and Volt Absorb. Two Thumb BLs at
+`0x0221FF10` and `0x0221FFC6` now call a 20-byte helper at `0x0222B26C`,
+after the static-init table `0x0222B268..26C`. It preserves exact matches and
+adds only the Volt Absorb/Motor Drive and Water Absorb/Dry Skin pairs; Flash
+Fire does not enter the normalized branch. The native matrix passes 96 cases
+on six EN/IT inputs, with 24 pre-fix divergences and none afterward
+(`2fd8a4fd…db778`). Existing RNG flow, scan order and fainted/Egg checks are
+unchanged.
 
-Un quinto difetto, AI-WEB-04, era nel dispatch Expert: la tabella elencava due
-volte effetto 151 (SolarBeam) e non inviava effetto 152 alla routine Thunder,
-pur presente e integra a `+0x58A4`. Il test nativo del dispatch reale EN/IT
-mostra che Thunder non legge la routine prima del fix. Una sola parola a
-`+0x2C00` cambia 151→152: dopo il fix pioggia assegna `+1`, sole con RNG 50
-assegna `-3`, il confine 49/50 è preservato e sereno resta neutro. SolarBeam e
-Thunderbolt sono negativi e non entrano nella routine. Sette trainer reali con
-Thunder hanno il bit Expert. Resistenza/immunità precomputata, scelta naturale,
-SAVE/cold e dispositivo restano aperti.
+## AI script corrections
 
-Un sesto difetto, AI-WEB-02, era nella sequenza Basic di Metal Burst. Prima
-del comando finale `CheckSortSpeed`, lo script tentava di anticipare l'ordine
-con due controlli Stall e due confronti dell'ID strumento 107. L'ID 107 è
-Pietrabrillo, non l'effetto ritardante 107; inoltre le scorciatoie Stall si
-contraddicono con Coda Lenta/Full Incense e con due utilizzatori di Stall. Il
-riproduttore esegue il vero interprete overlay 10, il `CheckSortSpeed` reale
-dell'overlay 12 e i dati strumenti autenticati EN/IT. I 30 scenari per lingua
-includono nessun effetto, Pietrabrillo, combinazioni miste, doppio Stall, due
-strumenti ritardanti, parità/RNG, Distortozona, Rapidartigli e Baccacrela. La correzione non sostituisce il
-motore d'ordine: rende nulli i quattro salti relativi a `+0x1DFC`, `+0x1E0C`,
-`+0x1E20` e `+0x1E30`, lasciando gli opcode intatti e facendo arrivare ogni
-caso al comando finale già presente. La matrice prima/dopo passa EN e IT e
-verifica anche cursore e terminazione; incontro naturale, scelta mossa e
-priorità nel contesto battaglia completo,
-SAVE/cold e dispositivo restano aperti.
+AI-WEB-03 affected Facade's Expert sequence in member 0 of `a/0/9/9`.
+The status opcode used token 0 (target), whereas the move's damage script
+reads the attacker. Native overlay-10 interpreter tests on EN/IT candidates
+show a statused target receiving `+1` and a statused user receiving zero before
+the correction. Only the token at `+0x5B68` changes 0→1; afterward the matrix
+follows the user. Mask `0xD8` and delta `+1` remain identical; sleep and freeze
+are negative controls. Falkner's Plus rematch has AI flags 7 and Swellow with
+Flame Orb and Facade in variants A/B. The proof isolates the sequence:
+natural dispatch, move choice, SAVE/cold and physical-device execution remain
+outside that unit's acceptance.
 
-## Prova prima / dopo (CPU, istruzioni native eseguite)
+AI-WEB-04 affected Expert dispatch. The table listed effect 151 (SolarBeam)
+twice and failed to send effect 152 to the intact Thunder routine at
+`+0x58A4`. Native EN/IT dispatch tests show Thunder missing that routine before
+the fix. One word at `+0x2C00` changes 151→152. Afterward rain gives `+1`,
+sun with RNG 50 gives `-3`, the 49/50 boundary is preserved and clear weather
+is neutral. SolarBeam and Thunderbolt are negative controls and do not enter
+the routine. Seven real trainers with Thunder have the Expert bit. Precomputed
+resistance/immunity, natural selection, SAVE/cold and physical-device
+execution remain outside that unit's acceptance.
 
-La funzione vera parte dall'ingresso in Unicorn con overlay 12 e ARM9 delle ROM V4 EN/IT. Scenario sintetico
-ispirato al piano (non un incontro naturale): allenatore con Rhyperior (Terra/Roccia, slot 2) e Machamp
-(Lotta/Lotta, slot 4), bersaglio Bastiodon (Roccia/Acciaio). I tipi sono letti dal personal NARC `a/0/0/2`
-della ROM. Entrambi hanno una mossa superefficace (stub dichiarato).
+AI-WEB-02 affected Metal Burst's Basic sequence. Before final
+`CheckSortSpeed`, the script tried to predict order with two Stall checks and
+two comparisons against item ID 107. That item is Shiny Stone, not delaying
+item effect 107. The Stall shortcuts also contradict Lagging Tail/Full Incense
+and two Stall users. The reproducer executes the real overlay-10 interpreter,
+overlay-12 `CheckSortSpeed` and authenticated EN/IT item data. Thirty scenarios
+per language include no effect, Shiny Stone, mixed combinations, double Stall,
+two delaying items, ties/RNG, Trick Room, Quick Claw and Custap Berry. The
+correction does not replace the ordering engine: it zeros the four relative
+jumps at `+0x1DFC`, `+0x1E0C`, `+0x1E20` and `+0x1E30`, leaving opcodes intact
+so every case reaches the existing final command. Before/after EN/IT matrices
+also check cursor and termination. Natural encounters, move selection,
+priority in full battle context, SAVE/cold and physical-device execution
+remain outside that unit's acceptance.
 
-| | Punteggi osservati nel vero CMP | Scelta |
-|---|---|---|
-| nativo | Rhyperior 180, Machamp 64 (320 & 0xFF) | slot 2 |
-| patchato | Rhyperior 180, Machamp 320 (in `[sp,#0x4c]` resta 64) | slot 4 |
+## Before/after proof with native CPU instructions
 
-Le prove sono in `source/sgp131/test_ai_scoring_rom.py` (Class B) e `test_ai_scoring.py` (Class A).
-I log RED (identità prima del fix, poi la variante a due NOP superata) e GREEN restano nelle note private del manutentore; i comandi per riprodurli sono quelli dei due moduli di test.
+The real function runs from its entry in Unicorn with V4 EN/IT overlay 12 and
+ARM9. The synthetic scenario is inspired by the test plan, rather than a
+natural encounter: a trainer has Rhyperior (Ground/Rock, slot 2) and Machamp
+(Fighting/Fighting, slot 4), against Bastiodon (Rock/Steel). Types are read from
+the ROM's personal NARC `a/0/0/2`. Both have a super-effective move through a
+declared stub.
 
-## Delta esatto (revisione 3: 10 byte dichiarati, 5 istruzioni)
+| Version | Scores observed at the real CMP | Choice |
+| --- | --- | --- |
+| Native | Rhyperior 180, Machamp 64 (320 & 0xFF) | Slot 2 |
+| Patched | Rhyperior 180, Machamp 320 (`[sp,#0x4c]` remains 64) | Slot 4 |
 
-Overlay 12 decodificato (base `0x022378C0`, `0x37380` byte). Prima: `r0` = somma, troncata e poi ricaricata.
+Regressions are in `source/sgp131/test_ai_scoring_rom.py` (Class B) and
+`test_ai_scoring.py` (Class A). Original RED identities, the rejected two-NOP
+variant and GREEN logs remain in the maintainer's private evidence. The two
+test modules contain the reproducing commands.
 
-| Indirizzo | Prima | Dopo |
-|---|---|---|
+## Exact delta: revision 3, ten declared bytes and five instructions
+
+Decoded overlay 12: base `0x022378C0`, length `0x37380` bytes. Before the
+correction, `r0` holds the sum, which is truncated and later reloaded.
+
+| Address | Before | After |
+| --- | --- | --- |
 | `0x02258938` | `0006` `lsls r0,r0,#24` | `0106` `lsls r1,r0,#24` |
 | `0x0225893A` | `000e` `lsrs r0,r0,#24` | `090e` `lsrs r1,r1,#24` |
 | `0x0225893C` | `1390` `str r0,[sp,#0x4c]` | `1391` `str r1,[sp,#0x4c]` |
 | `0x02258944` | `1398` `ldr r0,[sp,#0x4c]` | `c046` `nop` |
 | `0x02252202` | `0420` `movs r0,#4` | `0c20` `movs r0,#12` |
 
-- `r0` resta la somma ampia a 32 bit: la `cmp r1,r0` seguente (unsigned, `bhs`) la confronta con il miglior
-  punteggio e la `str r0,[sp,#0x48]` salva la somma ampia come nuovo miglior punteggio.
-- `[sp,#0x4c]` riceve lo stesso valore troncato a 8 bit di prima. Lo stadio 2 riusa quella parola
-  quando una mossa non ha valutazione del danno (id 0 o `ctx[0x3E1+16*mossa]==1`): vede lo stesso tipo di
-  valore nativo, non uno più largo. Una prima versione con due soli NOP (`0006000e`→`c046c046`) lasciava
-  la somma ampia anche in quella parola ed è stata scartata (mutante `superseded_two_nop`, rifiutato dal
-  rilettore e rilevato dai test).
-- `r1` non è vivo: dopo la `str` viene ricaricato con `ldr r1,[sp,#0x48]`, usato solo dalla `cmp`, e
-  né il ramo `bhs` (`0x02258960`: `ldr r0,[sp,#0x40]`…) né il ramo non preso lo leggono prima di riscriverlo.
-  Otto byte dichiarati, di cui cinque cambiano valore (`0x02258938`, `…3A`, `…3D`, `…44`, `…45`).
-- Il quinto halfword amplia il test da `NOT_VERY_EFFECTIVE` a
-  `NOT_VERY_EFFECTIVE|NO_EFFECT`: la cancellazione debole/resistente resta
-  uguale, ma l'immunità ha precedenza. Dei due byte dichiarati cambia solo
-  l'immediato a `0x02252202`; in totale sei byte logici cambiano.
-- Guardie: 20 byte a `0x02258934` e 32 byte a `0x022521F8`, più SHA-256 delle
-  due funzioni (`45b8c7da…69da84`, `eb5c3828…52a5`). Dopo la patch valgono
-  `d2cfa7a4…7369c2` e `11d5bacf…a9a2e0`; l'overlay patchato è
-  `daa14016…fdef19`, uguale in EN e IT.
-- Scrittura ROM: `sgp12.overlay.applica` ricomprime BLZ in luogo. Sulle V4 il flusso resta di 161 572 B
-  (slot 161 792 B): parola y9 `0x01027724`, voce FAT e lunghezza ROM invariate, CRC16 dell'header
-  invariato. Cambiano solo i byte del flusso compresso dell'overlay (93 419 byte diversi nel file; nessuna
-  modifica a FAT, y9 o header). ROM EN dopo `61f75f65…d59cf`, IT dopo
-  `16083d75…e6c37`.
-- `verify(before, after, receipt)` rilegge i byte senza usare l'esito dell'applicatore come oracolo:
-  due decoder BLZ (progetto e ndspy) concordi, preimage, esattamente i dieci byte dichiarati e zero
-  altri byte logici, voce y9 e tabella FAT coerenti, nessun'altra voce NitroFS/ARM9 diversa, padding
-  0xFF, CRC header.
+- `r0` retains the wide 32-bit sum. The following unsigned `cmp r1,r0` / `bhs`
+  compares it with the best score; `str r0,[sp,#0x48]` stores the wide new best.
+- `[sp,#0x4c]` receives the same eight-bit truncated value as before. Stage two
+  reuses it when a move has no damage evaluation (ID 0 or
+  `ctx[0x3E1+16*move]==1`), retaining the native-width value. An earlier two-NOP
+  version (`0006000e`→`c046c046`) also left the wide sum in that word and was
+  rejected: mutant `superseded_two_nop` fails readback and tests.
+- `r1` is not live: after the store it is reloaded with `ldr r1,[sp,#0x48]`,
+  used only by CMP, and neither the taken `bhs` branch
+  (`0x02258960`: `ldr r0,[sp,#0x40]`…) nor fallthrough reads it before rewriting
+  it. Eight bytes are declared for this part; five change value
+  (`0x02258938`, `…3A`, `…3D`, `…44`, `…45`).
+- The fifth halfword widens the check from `NOT_VERY_EFFECTIVE` to
+  `NOT_VERY_EFFECTIVE|NO_EFFECT`. Weakness/resistance cancellation remains
+  unchanged, while immunity takes precedence. Of its two declared bytes only
+  the immediate at `0x02252202` changes. Six logical bytes change in total.
+- Guards cover 20 bytes at `0x02258934`, 32 at `0x022521F8`, and both function
+  SHA-256 values (`45b8c7da…69da84`, `eb5c3828…52a5`). Post-fix values are
+  `d2cfa7a4…7369c2` and `11d5bacf…a9a2e0`; patched overlay
+  `daa14016…fdef19` is identical in EN/IT.
+- `sgp12.overlay.applica` recompresses BLZ in place. On V4 the stream remains
+  161,572 bytes in a 161,792-byte slot. y9 word `0x01027724`, FAT entry, ROM
+  length and header CRC16 remain unchanged. Only the compressed overlay stream
+  changes: 93,419 differing file bytes, with no FAT/y9/header change. Resulting
+  EN ROM hash `61f75f65…d59cf`, IT `16083d75…e6c37`.
+- `verify(before, after, receipt)` independently reads the bytes rather than
+  trusting the applier's verdict: project and ndspy BLZ decoders agree;
+  preimage, exactly ten declared bytes and zero other logical changes,
+  consistent y9/FAT, no other NitroFS/ARM9 entry changes, `0xFF` padding and
+  header CRC are checked.
 
-## Cosa non cambia
+## Preserved behavior
 
-Stessa chiamata RNG (`Battler_GetRandomOpposingBattlerId` una volta), stessi accessori, stessa sequenza di
-chiamate e argomenti per ogni decisione senza overflow (confronto su 400 scenari casuali), spareggi
-(vince il primo), esclusione di KO/uovo/vuoto, slot corrente e in attesa (`ctx+0x219C`, `+0x21A4`, anche
-del partner), controllo della mossa superefficace con ricaduta sul secondo candidato e poi sullo stadio di
-danno, caso 0 e 1 sostituti. Nessuna nuova conoscenza dell'AI, nessuna nuova allocazione, nessun gating
-Normale/Plus (correzione aritmetica comune).
+The same `Battler_GetRandomOpposingBattlerId` RNG call occurs once, with the
+same accessors, call sequence and arguments for non-overflow decisions
+(400 random scenarios). Ties still favor the first candidate. Fainted, Egg,
+empty, current and pending slots (`ctx+0x219C`, `+0x21A4`, including a partner)
+retain their exclusions. Super-effective-move checks, fallback to the second
+candidate and damage stage, and zero/one replacement cases are preserved.
+This common arithmetic correction adds no AI knowledge, allocation or
+Normal/Plus gate.
 
-Il troncamento a 8 bit del danno dello stadio 2 (`CalcMoveDamage`, danno > 255) **non è incluso**
-(test `test_stage_two_damage_conversion_is_not_part_of_the_fix`).
+Stage-two eight-bit damage truncation (`CalcMoveDamage`, damage >255) is
+**outside this correction**; see
+`test_stage_two_damage_conversion_is_not_part_of_the_fix`.
 
-Mutanti: ognuna delle cinque istruzioni lasciata originale, e la variante a due NOP, fanno fallire almeno
-un controllo comportamentale (`test_each_instruction_of_the_delta_is_load_bearing`). Composizione con la
-correzione Sguardofermo: finestre disgiunte, stessa immagine in entrambi gli ordini
-(`test_composes_with_keen_eye_seam_in_either_order`, indirizzo proprietario solo di prova).
+Leaving any of the five instructions unchanged, or using the two-NOP variant,
+fails a behavioral control
+(`test_each_instruction_of_the_delta_is_load_bearing`). The Keen Eye correction
+uses disjoint windows and produces the same image in either composition order
+(`test_composes_with_keen_eye_seam_in_either_order`, test-only owner address).
 
-## Stadio 2 e valore stantio
+## Stage two and the stale word
 
-Con questo delta la parola `[sp,#0x4c]` è sempre il valore a 8 bit dell'ultimo candidato valutato, come
-nativo (il test ne verifica l'uguaglianza a ogni confronto). Conseguenza dichiarata e non eliminabile da
-un delta così piccolo: quel «ultimo candidato valutato» dipende dall'ordine di eliminazione dello stadio 1,
-che con la correzione cambia proprio nei casi di overflow (nativo elimina per punteggio troncato, ora per
-punteggio vero). Esempio: Rhyperior 180 e Machamp 320, nessun superefficace, prima mossa di Rhyperior senza
-danno: nativo lascia 64 (Machamp), ora 180 (Rhyperior) e lo stadio 2 sceglie 2 invece di 4
-(`test_stage_two_inherits_the_new_stage_one_elimination_order`). Con due candidati a 320 (stesso ordine
-nativo e nuovo) lo stadio 2 coincide col nativo, mentre la versione a due NOP sceglieva diversamente
-(`test_stage_two_stale_word_and_choice_stay_native`). Un confronto differenziale su 1500 decisioni casuali
-(mosse id 0, flag `ctx` a 1, danno, immunità, KO/uovo/corrente/pending) coincide con il modello «stadio 1
-ampio, `[sp,#0x4c]` stretto».
+`[sp,#0x4c]` always holds the last evaluated candidate's eight-bit value, as in
+native code; the test checks equality at each comparison. That last candidate
+still depends on stage-one elimination order. Correcting an overflow changes
+that order because elimination now uses the true score. For Rhyperior 180 and
+Machamp 320, with no super-effective moves and Rhyperior's first move lacking
+damage, native leaves 64 (Machamp), whereas the correction leaves 180
+(Rhyperior); stage two then chooses slot 2 rather than 4
+(`test_stage_two_inherits_the_new_stage_one_elimination_order`). With two
+320-score candidates, native and corrected order match and stage two remains
+native; the rejected two-NOP version chose differently
+(`test_stage_two_stale_word_and_choice_stay_native`). A 1,500-decision random
+differential with move ID 0, `ctx` flag 1, damage, immunity, fainted/Egg/current/
+pending cases matches the model “wide stage one, narrow `[sp,#0x4c]`”.
 
-## Chiamanti (la correzione è globale)
+## Callers and global scope
 
-BL/BLX e puntatori letterali a `0x02258800` in ARM9 e in tutti i 129 overlay: gli unici chiamanti
-residenti insieme all'overlay 12 sono `ov010` a `0x022205FE` (AI allenatore, riga ~9207 dell'asm pret) e
-`ov012` a `0x0225F8E8` (controller avversario, `ov12_0225F8AC`, riga ~14203). Dunque singola, doppia,
-partner/multi e strutture usano la stessa funzione. Altre corrispondenze grezze (ov045, 049, 091, 092,
-093) sono in overlay che occupano la stessa RAM dell'overlay 12 e non sono mai residenti con esso.
+BL/BLX and literal-pointer scanning for `0x02258800` in ARM9 and all 129
+overlays finds only two callers resident with overlay 12: `ov010` at
+`0x022205FE` (trainer AI, around line 9207 of pret assembly) and `ov012` at
+`0x0225F8E8` (opponent controller `ov12_0225F8AC`, around line 14203).
+Singles, doubles, partner/multi and facilities therefore use the same function.
+Other raw matches in overlays 045, 049, 091, 092 and 093 occupy overlay 12's
+RAM range and are never resident with it.
 
-## Confini di esecuzione delle prove
+## Execution boundaries
 
-Stub Python agli ingressi nativi: `0x0223A7E4` GetBattleContext, `0x0223A7E0` GetBattleType, `0x0223AB6C`
-GetBattlerIdPartner, `0x02253DA0` GetRandomOpposingBattlerId, `0x0223A834` GetPartySize, `0x0223A880`
-GetPartyMon, `0x0206E540` GetMonData, `0x0224EDE0` GetBattlerVar, `0x02258BB4` tipo mossa, `0x022527CC`
-GetBattlerAbility, `0x02255830` GetBattlerHeldItemEffect, `0x02252054` controllo
-superefficace, `0x0223AB1C` GetFieldSide, `0x02256FF8` CalcMoveDamage e
-`0x02251D28` modificatori/immunità. Il consumer generale mantiene quello stub
-per `0x02252054`; le prove HG-B13 eseguono la funzione separatamente sui byte
-originali e corretti e ne inoltrano il risultato al consumer. Eseguiti nativamente:
-la funzione di scelta, `CalculateTypeEffectiveness` (`0x0225264C`) con il divisore `0x020F2998`, `MaskOfFlagNo`
-(`0x020726C0`). Verificati a ogni esecuzione: r4–r11, SP, area chiamante, contesto di battaglia non
-scritto e flag C del confronto uguale a `miglior ≥ punteggio` senza segno.
+Python stubs at native entries: `0x0223A7E4` GetBattleContext,
+`0x0223A7E0` GetBattleType, `0x0223AB6C` GetBattlerIdPartner,
+`0x02253DA0` GetRandomOpposingBattlerId, `0x0223A834` GetPartySize,
+`0x0223A880` GetPartyMon, `0x0206E540` GetMonData, `0x0224EDE0` GetBattlerVar,
+`0x02258BB4` move type, `0x022527CC` GetBattlerAbility,
+`0x02255830` GetBattlerHeldItemEffect, `0x02252054` super-effective check,
+`0x0223AB1C` GetFieldSide, `0x02256FF8` CalcMoveDamage and `0x02251D28`
+modifiers/immunity. The general consumer retains its `0x02252054` stub;
+HG-B13 tests separately execute the original/corrected function and forward
+its result to the consumer. Native execution includes the selection function,
+`CalculateTypeEffectiveness` (`0x0225264C`) with divisor `0x020F2998`, and
+`MaskOfFlagNo` (`0x020726C0`). Every run checks r4–r11, SP, caller area,
+unchanged battle context and compare carry equal to unsigned best ≥ score.
 
-## Limiti
+## Limits and later evidence
 
-Prova di CPU su scenari sintetici, non uno schermo emulato né una lotta naturale. Non provati: gameplay
-Android, vecchi salvataggi con Continua → SAVE → riavvio a freddo, durata della decisione su dispositivo
-e una candidata successore conservata. La composizione logica con Sguardofermo e la pipeline ROM EN/IT
-sono provate, ma non sostituiscono una lotta renderizzata. Vittorie o danni
-maggiori non sono una misura di intelligenza dell'AI.
+The scoring/script matrices are CPU proofs on synthetic scenarios, not
+rendered natural battles. Logical Keen Eye composition and the EN/IT ROM
+pipeline do not substitute for those battles. Unit tests do not measure
+decision duration on a device, validate every older save through
+Continue → SAVE → cold restart, or establish stage-two damage correctness.
+Wins or greater damage are not measurements of AI intelligence.
 
-## Verificatore BLZ — correzione di integrazione
+The later twenty-case type-loop regression and the named IT battle scene
+above address that separate integration freeze. The exact-current EN Android
+copied-save smoke in [Android validation](android-validation.md) preserves its
+own candidate/APK identity and 25 semantic checks; it does not execute or
+accept every AI unit. Historical Latios remains unisolated.
 
-Prima, un footer alterato che decodificava negli stessi byte logici poteva
-passare con hash aggiornati nella ricevuta. Ora il lettore richiede entrambi
-gli hash e la codifica BLZ canonica del progetto, derivata dai byte della ROM
-e dal limite FAT originale. Le suite mirate dati/receipt, native, chiamanti e
-mutanti passano senza skip; il negativo del footer copre EN e IT.
+## BLZ verifier integration correction
+
+Previously, a modified footer that decoded to the same logical bytes could
+pass after receipt hashes were updated. The reader now requires both hashes
+and the project's canonical BLZ encoding, derived from ROM bytes and the
+original FAT limit. Focused data/receipt, native, caller and mutant suites
+passed without skips; the footer negative covers EN and IT. These are the
+recorded suite results, not new runs performed for this English revision.

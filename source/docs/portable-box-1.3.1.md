@@ -1,217 +1,213 @@
-# Box portatile 1.3.1: R o tocco dalla squadra ordinaria al PC nativo
+# Portable storage in 1.3.1
 
-Stato: **ACTIVE_PRIVATE_CANDIDATE, NON-REGRESSIONE APERTA**. La candidata corrente IT e'
-`35d459e3fcf7cf127d6ff0aec94a5f502accfce390b2455b83fe189a5ca088f4`
-(159.029.292 byte); la corrispondente EN e'
-`02cccfbfc49b6addddba90385634ffdfde22b9ff3fbae3d85ae8f5603c5bf0af`
-(152.786.376 byte). Lo smoke fresco dell'esatta IT su melonDS Android sul Mac
-completa Continue→campo→Squadra→R→PC nativo→campo, senza SAVE. La copia raw
-esportata e la fixture originale conservano SHA-256
-`553925da5f1814b3ebba587f383b4197381d5bc040ba7b8d8208c1ca8a7fb3ce`.
-La coppia corrente include il successore da 2.952
-byte che corregge **SG-BOX-NULL**. Il predecessore IT `420ec8b8…f059a` aveva
-gia' dimostrato l'uso fisico del Box ma conteneva ancora il payload da 3.020
-byte; la successiva IT `171b53b6…d64a0` resta installata sul dispositivo finche' la
-candidata corrente non supera il gate fisico. Non va confusa con la candidata
-formale corrente.
-Le immagini con i flag a zero restano baseline tecniche della pipeline e non
-descrivono lo stato della ROM installata. Questo non equivale ancora a una
-release accettata: la campagna estesa di non-regressione resta aperta.
+**Portable storage is active in the current player profile.** R or its touch
+command in the ordinary field Party menu opens native PC storage. The current
+ROM identities and acceptance are maintained in
+[the validation report](ui-1.3.1-validation.md); Summary controls and configurable
+rematches remain separate, inactive owners. This document preserves the module's
+ABI, activation safeguards and the exact scope of older component/runtime checks.
 
-Le nuove candidate includono anche HG-T10: `legendary-scene-version` corregge
-tre seam dell'overlay 2 affinche' la scena Lugia in mappa 244 usi la versione
-8; Ho-Oh e le altre mappe conservano la 7. Il runtime sintetico EN/IT conferma
-i consumer Lugia e il controllo Ho-Oh EN, con originali e copie save invariati.
-Non e' una prova del freeze storico, della scena completa o del dispositivo fisico;
-geometria ROM, riserva residente e layout save restano invariati.
+## Player behavior
 
-Checkpoint storico precedente a HG-T10: EN `5c561184…2f15` e IT
-`c5a45d16…77f97` completavano lo smoke headless fino a `PC_RUNNING` in 4.332
-frame; 59/59 test ARM del feature bench, 26/26 package e 26/26 ROM erano verdi.
-La vecchia IT aveva inoltre un ciclo Android SAVE/cold su copia. Queste prove
-conservano i propri hash e non promuovono SAVE/cold o accettazione della coppia
-corrente. Identita' complete e limiti sono nel
-[rapporto UI](ui-1.3.1-validation.md).
+The ordinary Party selection prompt includes `R: Box`. A new physical R press
+(including L=A mode) or touch closes Party through native Cancel, opens PC mode 2
+(Move Pokémon), then reconstructs Party with its cursor on the same slot,
+clamped to the remaining count. B returns to the original field position.
+Deposit, withdrawal, moving, last-usable-Pokémon, Mail, Ball Capsule and full-Box
+rules remain native. The maintainer accepts native deposit/withdrawal healing of
+HP, PP and status; it is not disabled. No save field or setting is added.
 
-## Cosa fa
+## Hook and lifetime contract
 
-Nella squadra aperta dal menu di avvio (campo ordinario) compare nel prompt di scelta il comando
-`R: Box`. Un nuovo R fisico, anche con la mappatura L=A, oppure un tocco sul comando, chiude la squadra
-con il normale Annulla, apre il PC nativo in modalita 2 (Sposta Pokemon: deposito, ritiro, spostamento,
-controlli nativi su ultimo utilizzabile, Posta, capsula, box pieni) e, alla chiusura del PC, ricostruisce
-una nuova squadra con il cursore sullo stesso slot (limitato al numero di Pokemon rimasti). B porta poi al
-campo nella posizione originaria. La guarigione nativa di PS, PP e stato del deposito/ritiro e' accettata
-dal maintainer e non viene disabilitata. Nessun campo di salvataggio nuovo, nessuna opzione nuova.
+Technical baselines forward natively while activation words are zero. Active
+builds enable the following installed hooks:
 
-## Livelli di prova (non confonderli)
+| Hook | V4 site, EN=IT | Helper |
+| --- | --- | --- |
+|Party launch|BL to `FieldSystem_LaunchApplication` in `PartyMenu_LaunchApp_Unk1`, `0x0203E572`|`sgp_box_launch_app`: launch and bind field/owner/args, generation++, for all five start-menu callers including Summary return|
+|Other Party launch paths|No hook; lazy binding|`ensure_bound`: itemless Bag return (`start_menu.c:1074`) and refused held-item swap (`party_menu.c:2625`, context 10→0) require live identity|
+|State 1|BL to `PartyMenu_Subtask_MainNormal`, `0x0207909C`|`sgp_box_party_main`: validate/input/request `RETURN_0`, state 32|
+|Party return|Callback entry `0x0203CA9C`, eight-byte hook plus trampoline|`sgp_box_party_return`: consume request or run original callback|
+|PC return|Module-owned callback|`sgp_box_pc_return`|
+|Prompt|BL to `PrintMessageOnWindowEx` in `PrintMessageOnWindow32`, `0x0207DAD2`|`sgp_box_prompt_print`|
 
-| Livello | Cosa dimostra | Dove |
-|---|---|---|
-| Host Python | pin, layout ABI, codifica del trampolino, misure di compilazione, installer | `sgp131/test_portable.py` |
-| ARM in Unicorn sui byte V4 reali | codice installato + codice nativo avvolto, in un mondo sintetico (FieldSystem, proprietario del menu, PartyMenu, args) con servizi pesanti modellati | `features/portable-box/test/` |
-| ROM reali in memoria | installer, verifier, pin su EN/IT, nessun byte fuori dalle zone possedute | `sgp131/test_portable_rom.py` |
-| melonDS Android su Mac | **smoke fresco IT `35d459e3…88f4`** | Continue→campo→Squadra→R→PC nativo→campo; copia raw esportata invariata, nessun SAVE |
-| melonDS headless storico | **EN `5c561184…2f15` / IT `c5a45d16…77f97`** | fase `PC_RUNNING`, nessun crash in 4.332 frame e save-copy invariata; prova non trasferita ai nuovi hash |
-| Android fisico | **Gate della candidata corrente aperto** | la precedente IT `171b53b6…d64a0` resta installata; la nuova IT `35d459e3…88f4` non e' stata installata |
+The instruction-aware callback trampoline re-encodes the BL at entry+6 and
+resumes at entry+12. Resuming at+8 would enter the middle of that BL. With
+`requested=0`, the gate returns before any native call: r4–r11, SP, return value
+and observable memory match native behavior for all 32 `selectedAction` values
+and 25 contexts under Unicorn.
 
-## Ciclo di vita
+Lazy binding occurs on message 29 rendering or first input-enabled state 1 when
+context 0 has a completely live identity: `args->fieldSystem` and
+`args->fieldMoveCheckData - 0x370` identify the field/owner; current field task
+(`field+0x10`) has that owner environment; `owner+0x380` holds these args; owner
+waits for the application (state 5) and native Party callback `0x0203CA9D`.
+It never binds during a request or while PC is open. Itemless Bag return
+therefore shows `R: Box`. Refused item-swap return becomes ordinary before its
+context 0 prompt has printed, so R stays inactive until the next native message 29
+print. A probe-written request before binding is discarded and counted as a
+failure, never executed.
 
-Hook installati. Le baseline tecniche restano inerti quando le parole di
-attivazione sono zero; la coppia privata attiva sopra abilita il percorso:
+A valid request also requires the start-menu caller, no button animation and
+`ELIGIBLE` access policy. Its sequence is:
 
-| Hook | Sito V4 (EN = IT) | Funzione |
-|---|---|---|
-| lancio squadra | BL a `FieldSystem_LaunchApplication` dentro `PartyMenu_LaunchApp_Unk1`, `0x0203E572` | `sgp_box_launch_app`: lancia e fa `bind` (generazione++, identita di campo/proprietario/args) per tutti e cinque i chiamanti del menu di avvio, compreso il ritorno dal riepilogo |
-| squadre non lanciate da Unk1 | nessun hook: legame pigro | `ensure_bound`: ritorno dalla Borsa senza strumento (`start_menu.c` 1074) e scambio strumenti rifiutato (`party_menu.c` 2625, contesto 10 -> 0) vengono legati per **identita viva** (vedi sotto) |
-| stato 1 | BL a `PartyMenu_Subtask_MainNormal`, `0x0207909C` | `sgp_box_party_main`: valida, legge R/tocco, accetta la richiesta con `RETURN_0` e stato 32 |
-| ritorno squadra | ingresso del callback `0x0203CA9C` (8 byte + trampolino) | `sgp_box_party_return`: consuma la richiesta o lascia girare il callback nativo |
-| ritorno PC | callback del proprietario installato dal modulo | `sgp_box_pc_return` |
-| prompt | BL a `PrintMessageOnWindowEx` dentro `PrintMessageOnWindow32`, `0x0207DAD2` | `sgp_box_prompt_print` |
+1. Party state 1 chooses `RETURN_0`, state 32, native closing fade.
+2. On return, allocate 12-byte `PCBoxArgs` on heap `0x0B` **before** freeing Party
+   args. Failure drops the request and runs native callback with args still live.
+   Otherwise free once, launch `PCBox_LaunchApp` and set `sgp_box_pc_return`.
+3. PC return runs native full-Box notification `sub_02093070`, frees PC args once,
+   calls `PartyMenu_CreateArgs` directly, checks NULL before all dereferences,
+   initializes the three fields formerly set by its wrapper, and launches via
+   the Plus wrapper to rebind ownership. Cursor is clamped; native callback returns.
+4. Failed Party reconstruction calls `FieldSystem_LoadFieldOverlay` and chooses
+   `RETURN`, exactly the native Cancel pair, without launching/dereferencing NULL.
 
-Il trampolino del callback e' consapevole delle istruzioni: il BL a ingresso+6 viene ricodificato nel nuovo
-indirizzo e la ripresa avviene a ingresso+12 (mai a +8, che cadrebbe dentro il BL). Con `requested=0` il
-gate ritorna prima di qualunque chiamata nativa, quindi registri r4-r11, SP, valore di ritorno e memoria
-osservabile sono quelli nativi per tutti i 32 valori di `selectedAction` e i 25 contesti (prova Unicorn).
+The positional HM data at owner+`0x370` depends on avatar/front object/metatile.
+`FieldMove_InitCheckData` is deliberately not called: native Party→Summary→Party
+also preserves it. Reserved `refresh_field_data` stays 0 and has no reader.
 
-Legame pigro (squadre che `PartyMenu_LaunchApp_Unk1` non ha lanciato): al primo stampare del messaggio 29 o al primo stato 1
-con `input` attivo, se la squadra ha contesto 0 il modulo accetta il legame solo se **tutta** l'identita e' viva: `args->fieldSystem`
-e `args->fieldMoveCheckData - 0x370` nominano campo e proprietario, il task in corso del campo (`field+0x10`) ha esattamente quel
-proprietario come ambiente, il proprietario conserva questi args in `+0x380`, attende l'applicazione (stato 5) e ritorna dal
-callback nativo della squadra (`0x0203CA9D`). Mai mentre una richiesta e' in corso o il PC e' aperto. Risultato deterministico:
-la squadra della Borsa mostra sempre `R: Box`; dopo lo scambio strumenti rifiutato la squadra ritorna ordinaria ma il suffisso non
-era stato stampato in contesto 0, quindi R resta inattivo fino alla prossima stampa nativa del messaggio 29 (comportamento fisso).
-Una richiesta scritta dalla sonda PRIMA del legame viene scartata (contata come fallimento), mai eseguita.
+## Access policy
 
-Richiesta valida: il chiamante e' il menu di avvio, il contesto e' 0, `args->fieldSystem` e
-`args->fieldMoveCheckData - 0x370` identificano campo e proprietario, `owner+0x380 == args`, il proprietario
-e' in attesa dell'applicazione, nessuna animazione di tasto, politica ELIGIBLE. Poi:
+Access needs positive evidence of an ordinary field from the verified caller;
+unproven contexts remain denied until attested in the receipt.
 
-1. stato 1: `selectedAction = RETURN_0`, stato 32 (uscita nativa con dissolvenza);
-2. ritorno: **PCBoxArgs (12 byte, heap 0x0B) allocati prima di liberare gli args**; se l'allocazione fallisce
-   la richiesta cade e gira il callback nativo con gli args ancora vivi; altrimenti liberazione unica degli
-   args, `PCBox_LaunchApp`, callback del proprietario = `sgp_box_pc_return`;
-3. ritorno PC: notifica nativa di box pieno (`sub_02093070`), liberazione unica degli args del PC, chiamata
-   diretta al costruttore `PartyMenu_CreateArgs`, controllo del suo ritorno prima di ogni dereferenziazione,
-   inizializzazione dei tre campi che il wrapper nativo scriveva e lancio tramite il wrapper Plus (che ri-lega
-   il proprietario); cursore limitato al numero di Pokemon e callback nativo ripristinato;
-4. se la squadra non si puo' ricreare: `FieldSystem_LoadFieldOverlay` e stato `RETURN` (le stesse due
-   istruzioni del ramo Annulla nativo), senza chiamare il lanciatore con NULL.
+| Signal | Required source/value | Denial |
+| --- | --- | --- |
+|Owner `inhibitIconFlags +0x34C`, `unk_350`|Ordinary StartMenu: SAVE enabled, entries 7/RETIRE inhibited, no bits outside {Pokédex, Pokémon, Bag, 7, RETIRE, Pokégear}|`SPECIAL_ACTIVITY`: Safari, Bug-Catching Contest, Pal Park, Battle Tower partner room, Colosseum, Union|
+|`FieldSystem.mapLoadType +0x70`|`MAP_LOAD_TYPE_OVERWORLD=0`|`SPECIAL_ACTIVITY`, including special type 5|
+|`FieldSystem.frontierFsys +0xA0`|NULL; nonnull during Frontier activity (`scrcmd_9.c`)|`SPECIAL_ACTIVITY`|
+|`FieldSystem.linkBattleRuleset +0xA4`|No link ruleset|`SPECIAL_ACTIVITY`|
+|Escort mode|`Save_VarsFlags_CheckHaveFollower(Save_VarsFlags_Get(saveData))`, same as `ScrCmd_CheckEscortMode`, flag `0x961`|`SPECIAL_ACTIVITY`|
+|Avatar state +`0x18`|`travel_mask`, default `0b11` for walking/cycling|`UNPROVEN_TRAVEL`: Surf/other states|
+|Context evidence|Installer-written `context_proof=1` from measured capture with `sha256`, `origin`, `capture_file`, played `capture_rom_sha256`, `build_id`|`UNPROVEN_CONTEXT=5`|
 
-`FieldMove_InitCheckData` non viene chiamata: il blocco dati MN (+0x370 del proprietario) e' posizionale
-(dipende da avatar, oggetto davanti, metatile) e il percorso nativo squadra -> riepilogo -> squadra lo
-conserva senza ricalcolarlo. La parola `refresh_field_data` resta riservata a 0 e nessun codice la legge.
+Context evidence covers limitations of static signals: Elite Four challenge
+rooms, non-Frontier facilities, special maps using ordinary flags and travel.
+Without it the installer refuses `bridge`, `input` and `prompt`. Synthetic proof
+requires test-only `allow_synthetic_proof` and records `synthetic-for-test`.
+Battle/trade/event selections, Bag/TM/HM, move learning and evolution do not
+have a live ordinary start-menu context 0 and are not bound (`WRONG_OWNER`).
+Denial draws no command and allocates nothing. There is no reason label.
 
-## Politica di accesso (negata per default)
+## Native interface
 
-Il consenso richiede un segnale **positivo** di campo ordinario letto dai dati del chiamante verificato; tutto cio' che non e'
-dimostrabile staticamente resta `UNPROVEN` finche' una prova non e' attestata nella ricevuta.
+Native prompt `Choose a Pokemon.` / `Scegli un Pokemon.` stays in window 32,
+160×16 px at (16, 168), font 1. After printing it, the helper adds `R: Box` at local
+x 112 with the same font/colors: native prompt 98/97 px, gap 14/15 px, suffix 33 px
+ending 145 and 15 px right margin. It follows the Summary legend's button-label
+style without new palette/frame. Native Cancel at x≥200 is separated by 28 px from
+touch bounds `[124,172)×[168,184)`, disjoint from the real native rectangles at
+`0x02110104/0x02110128`. It draws only for message 29/window 32 and `ELIGIBLE`.
+Any other native message overwrites the whole window and removes it. Private
+font renders are design artifacts, not runtime captures.
 
-| Segnale | Origine | Rifiuto |
-|---|---|---|
-| `inhibitIconFlags` (+0x34C) e `unk_350` del proprietario | `StartMenu_Init` e varianti: ordinario = SAVE abilitato, voci 7 e RETIRE inibite, nessun bit fuori da {Pokedex, Pokemon, Borsa, 7, RETIRE, Pokegear} | `SPECIAL_ACTIVITY`: Safari, Gara Bug, Pal Park, stanza partner Torre Lotta, Colosseo, Union |
-| `FieldSystem.mapLoadType` (+0x70) | `MAP_LOAD_TYPE_OVERWORLD = 0` obbligatorio | `SPECIAL_ACTIVITY`: Safari, Union, Colosseo, Torre Lotta, tipo 5 |
-| `FieldSystem.frontierFsys` (+0xA0) | non nullo mentre gira una struttura della Frontiera (`scrcmd_9.c`) | `SPECIAL_ACTIVITY` |
-| `FieldSystem.linkBattleRuleset` (+0xA4) | regole di lotta in collegamento | `SPECIAL_ACTIVITY` |
-| modalita escort | `Save_VarsFlags_CheckHaveFollower(Save_VarsFlags_Get(saveData))`, la stessa lettura di `ScrCmd_CheckEscortMode` (flag script 0x961) | `SPECIAL_ACTIVITY` |
-| stato avatar (+0x18 dell'avatar) | `travel_mask` (predefinito 0b11: piedi e bici) | `UNPROVEN_TRAVEL`: Surf e ogni altro stato |
-| prova di contesto | parola `context_proof` = 1, scritta dall'installatore solo con una ricevuta `measured` che identifica la cattura (`sha256`, `origin`, `capture_file`, `capture_rom_sha256` della ROM giocata, `build_id`) | `UNPROVEN_CONTEXT` (5): tutto il resto |
+Accepted R/touch plays native `SEQ_SE_DP_SELECT` 1500, then the native Cancel
+fade. The command is text rather than a sprite: it has no press animation or
+drawn touch rectangle. Its visual feedback is immediate closure. A separate
+frame/highlight would require another window/sprite and separate UI validation.
 
-La prova di contesto copre cio' che i segnali statici non mostrano: stanze della sfida dei Superquattro, strutture fuori dalla
-Frontiera, mappe speciali che usano i flag ordinari, i casi di viaggio. Senza prova l'installatore **rifiuta** `bridge`, `input` e
-`prompt` (una ricevuta `synthetic` e' ammessa solo con l'interruttore di test `allow_synthetic_proof` e viene registrata come
-`synthetic-for-test`). Lotta, scambi, selezioni di eventi, Borsa/MT/MN, apprendimento, evoluzione non passano dal menu di avvio
-con contesto 0 e vivo: non vengono legate (`WRONG_OWNER`). Il rifiuto non mostra alcun comando e non alloca nulla (nessuno spazio
-per un testo del motivo: vedi Limiti).
+## Installer, allocation and receipts
 
-## Interfaccia (impeccable, piattaforma NDS nativa)
+```python
+portable.prepare(data, language, work, *, allocation, preimage_sha256,
+                 activation=None, context_proof=None, candidate_sha256=None,
+                 allow_synthetic_proof=False)  # returns (rom, receipt)
+portable.measure(work)
+portable.verify(before, after, receipt)
+```
 
-Prompt nativo (`Scegli un Pokemon.` / `Choose a Pokemon.`, finestra 32 da 160x16 a (16,168), font 1)
-invariato. Dopo la stampa nativa il modulo aggiunge `R: Box` a x locale 112 con lo stesso font e colori:
-prompt 98/97 px, scarto 14/15 px, suffisso 33 px che termina a 145, margine destro 15 px. Stessa forma
-`L: EV` della legenda del riepilogo; nessun colore o cornice nuovi (coerenza HGSS, nessuna nuova
-palette). Annulla nativo a x >= 200: separazione di 28 px dal rettangolo di tocco [124,172) x [168,184), che
-non interseca nessun rettangolo nativo (tabelle `0x02110104/0x02110128` lette dalla ROM). Il suffisso e'
-disegnato solo quando il messaggio e' il 29 sulla finestra 32 e la politica e' ELIGIBLE; ogni altro messaggio
-nativo riscrive tutta la finestra e lo cancella. Il rendering offline col font reale e' un artefatto
-privato della revisione, non pubblicato.
+The base must come from a `sgp131.reserve.allocate` receipt for
+`portable-box.runtime`, rechecked against current policy, same-language V4,
+unconditional owner names and exact allocation assignments; zero-looking memory
+is not ownership. The conditional slot becomes grantable only after
+`cold-ui-guide-retirement-v1` proves complete retirement of the old Guide.
+`preimage_sha256` must match the replaced input bytes. Earlier UI stages are
+accepted when consumed ranges match; `test_portable_rom.RealUiComposition`
+uses actual UI output. Guards pin native functions/ranges/hooks, require aligned
+single-segment ARM9 placement within the allocation and away from hooks, confine
+all deltas to five owned regions, and independently recompile during `verify`.
 
-Feedback del tocco e del tasto: all'accettazione suona il segnale nativo di conferma (`SEQ_SE_DP_SELECT`, 1500), poi la
-squadra si chiude con la normale dissolvenza dell'Annulla nativo. Il comando e' testo in una finestra, non uno sprite: non ha
-animazione di pressione e il rettangolo di tocco non e' disegnato. Il feedback visivo e' quindi la chiusura immediata; una
-cornice o un'evidenza del suffisso richiederebbe una finestra o uno sprite nuovi ed e' lasciata alla revisione designer sulle
-catture Android.
+Measured proof binds `capture_rom_sha256` to explicit `candidate_sha256` of the
+captured inert candidate and to declared `language`. The receipt records both
+hashes, `candidate_relation` (`stage-inert-output`/`composed-candidate`, recomputed
+from bytes) and `function_state` (`inert`/`active`, recomputed from installed
+words). Review/Android process status is not encoded as program state.
 
-## Installatore parametrico
+Defaults for `bridge`, `input`, `prompt`, `context_proof` are zero and
+`travel_mask=3`, preserving native behavior. Installer **and runtime** enforce
+input→bridge, prompt→bridge+input, and any enabled path→context proof. A visible
+nonfunctional command is rejected. Users cannot set proof manually.
+Reason 5 adds `UNPROVEN_CONTEXT` to 0–4 (`ELIGIBLE`, `WRONG_OWNER`, `BUSY`,
+`SPECIAL_ACTIVITY`, `UNPROVEN_TRAVEL`); it is recorded, not interpreted elsewhere.
+`verify(..., require_measured=True)` rejects test proof by default; tests alone
+opt out. The module validates evidence shape/identity, not capture existence.
 
-`portable.prepare(data, language, work, *, allocation, preimage_sha256, activation=None, context_proof=None,
-candidate_sha256=None, allow_synthetic_proof=False) -> (rom, receipt)`, `portable.measure(work)` (dimensione richiesta) e
-`portable.verify(before, after, receipt)`. La base non e' un indirizzo: e' l'assegnazione di una **ricevuta di
-`sgp131.reserve.allocate`** per `portable-box.runtime`, ricontrollata contro la politica di riserva in vigore (stessa politica,
-input V4 della stessa lingua, nomi non condizionali, assegnazioni identiche a quelle di `reserve.allocate`); mai scelta, mai
-dedotta da zeri. La mappa ufficiale puo' concedere lo slot condizionale soltanto
-dopo che la cold UI ha dimostrato il ritiro completo della vecchia Guida
-(`cold-ui-guide-retirement-v1`); senza quella prova l'installatore rifiuta.
-`preimage_sha256` e' obbligatorio e deve coincidere con i byte sostituiti nell'immagine in ingresso (che puo' essere gia' passata
-dalla UI: il modulo fissa solo intervalli di byte, mai l'intera ROM; prova con l'uscita reale della UI in
-`test_portable_rom.RealUiComposition`). Controlli: pin di ogni intervallo e funzione nativa (EN = IT), siti hook,
-base allineata e dentro un solo segmento ARM9, compartimento non sovrapposto agli hook e contenuto nell'assegnazione, preimmagine
-obbligatoria, nessun byte modificato fuori dalle cinque zone possedute, ricompilazione indipendente in `verify`.
-La prova di contesto `measured` e' legata a cio' che si e' misurato: `capture_rom_sha256` deve essere uguale all'argomento esplicito
-`candidate_sha256` (la ROM candidata inerte su cui e' stata fatta la cattura) e `language` alla lingua dichiarata; la ricevuta
-registra `candidate_sha256`, `capture_rom_sha256` e `candidate_relation` (`stage-inert-output` | `composed-candidate`, ricalcolato dai
-byte) e `function_state` (`inert` | `active`, ricalcolato da `verify` dalle parole di attivazione installate). Nessuno stato di
-processo (revisione, Android) e' scritto nel codice o nelle ricevute.
-Parole di attivazione (`bridge`, `input`, `prompt`, `travel_mask`, `context_proof`) tutte a zero/3 per default: installata, la ROM
-si comporta come la nativa. Coerenza imposta dall'installatore **e** dal codice: `input` richiede `bridge`; `prompt` richiede `bridge`
-e `input` (un'etichetta per un comando che non fa nulla e' rifiutata); `bridge`, `input` o `prompt` richiedono una prova di contesto.
-Un utente non puo' impostare `context_proof` a mano.
-`UNPROVEN_CONTEXT = 5` estende in modo additivo l'elenco dei motivi del piano (0-4: ELIGIBLE, WRONG_OWNER, BUSY, SPECIAL_ACTIVITY,
-UNPROVEN_TRAVEL): nessun consumatore interpreta il valore, il record lo registra soltanto.
-`portable.verify(before, after, receipt, require_measured=True)` rifiuta per default una ricevuta con prova `synthetic-for-test`; solo i
-test passano `require_measured=False`. La prova resta un'attestazione: il modulo ne controlla la forma e l'identita della cattura, non puo'
-verificarne l'esistenza.
+Clang 21 Thumb `-Oz` measurements: code/record/label 2908 bytes, trampoline 44,
+total 2952 aligned 4, maximum stack 48, transient record 64 plus config 32 inside
+that compartment, no extra allocated segment. PC args 12 bytes and native Party
+args `0x44` use heap `0x0B`; PC args free before reconstruction, Party args live
+with the rebuilt menu. The corrected 2952-byte payload fixes `SG-BOX-NULL`:
+NULL reconstruction returns to field without launch or dereference. Internal
+later overlay-manager allocations still need separate heap-pressure coverage.
 
-Misure (clang 21, Thumb, `-Oz`): codice+record+etichetta 2908 B, trampolino 44 B, compartimento 2952 B
-(allineamento 4), stack massimo 48 B, record transitorio 64 B + configurazione 32 B dentro il compartimento,
-nessun segmento allocato aggiuntivo. Heap: PCBoxArgs 12 B e PartyArgs nativi 0x44 B nell'heap 0x0B; il primo
-viene liberato prima della ricostruzione e il secondo resta al menu squadra ricreato. Un ritorno `NULL` del
-costruttore torna al campo senza lancio né dereferenziazione.
+## Validation boundaries
 
-## Sonde per il banco
+Host tests (`sgp131/test_portable.py`) cover pins/ABI/trampoline/compiler/installer.
+`features/portable-box/test/` executes installed/native ARM on synthetic
+FieldSystem/owner/Party/args with heavy services modeled.
+`sgp131/test_portable_rom.py` checks EN/IT installation/readback and full-image
+confinement in memory. None is physical-device coverage.
 
-`run_probe.py` e `verify_probe.py` (in `features/portable-box/tools/`) preparano e verificano la riesecuzione dell'harness. Il verifier ricalcola
-ogni verdetto dai `runtime.log` (hash, `READ` rilette, terza passata di riproduzione) e per `input-R`/`input-touch` richiede lo stesso blocco di
-osservazione del PC e che lo script contenga `tap R` oppure un tocco dentro [124,172) x [168,184). **L'autenticita non e' provabile offline**: un log
-e un'osservazione falsificati insieme e coerenti sono indistinguibili da una corsa vera; solo la riesecuzione dell'harness sugli stessi ROM, salvataggio e
-script lo dimostra. Le sonde non sono state eseguite su Android.
+Historical checkpoints retain these identities:
 
-## Limiti dichiarati
+- Before HG-T10: EN `5c561184…2f15` / IT `c5a45d16…77f97` reached `PC_RUNNING`
+  in 4332 headless frames with unchanged copied save, 59/59 feature ARM,
+  26/26 package and 26/26 ROM tests; that IT also had a separate Android SAVE/cold
+  cycle on a copy.
+- HG-T10 candidates: IT
+  `35d459e3fcf7cf127d6ff0aec94a5f502accfce390b2455b83fe189a5ca088f4`
+  (159029292 bytes), EN
+  `02cccfbfc49b6addddba90385634ffdfde22b9ff3fbae3d85ae8f5603c5bf0af`
+  (152786376 bytes). Exact IT melonDS Android on Mac smoke completed
+  Continue→field→Party→R→native PC→field without SAVE. Exported copy and original
+  fixture retained SHA-256
+  `553925da5f1814b3ebba587f383b4197381d5bc040ba7b8d8208c1ca8a7fb3ce`.
+  This pair also changed Lugia's map 244 scene resource version to 8 via three
+  overlay 2 seams, preserving Ho-Oh/other maps at 7, geometry/reserve/save layout.
+  Synthetic Lugia consumers/Ho-Oh control were not the full historical-freeze
+  reproduction, complete scene or physical-device test.
+- Older IT `420ec8b8…f059a` demonstrated physical Box use with the 3020-byte
+  predecessor; subsequent installed IT `171b53b6…d64a0` belonged to a later
+  historical checkpoint. Neither is a claim about today's installed files.
 
-- La prova Android del 1 novembre e la conferma d'uso chiudono l'affermazione
-  «funzione inattiva», ma non sostituiscono la campagna completa: manca una
-  rilettura fisica corrente dell'hash installato e restano da eseguire input R
-  e touch, deposito/ritiro/spostamento/annullamento,50 cicli per lingua,
-  pressione heap, contesti negati, SAVE e riavvio a freddo su copie di save.
-- Il banco ARM resta un mondo sintetico e modella i servizi pesanti; i suoi
-  risultati non vanno confusi con il collaudo fisico.
-- La prova di contesto non e' una misura che questo modulo possa produrre: finche' Codex non ne fornisce una `measured`
-  l'installatore rifiuta ogni attivazione. Superquattro, strutture non coperte dai segnali statici e viaggi particolari restano
-  `UNPROVEN` per costruzione.
-- `prompt_shown` e' dedotto dalle stampe della finestra 32: se un percorso nativo cancella la finestra senza
-  ristampare il messaggio 29, il flag resterebbe a 1 (misura richiesta a Codex).
-- Accompagnatore: il refresh e' quello nativo della chiusura squadra, non provato.
-- Nessun testo per il motivo del rifiuto: 48 px liberi non bastano; richiede una scelta del designer.
-- Il controllo copre il ritorno del costruttore PartyArgs; non dimostra le allocazioni interne successive del
-  gestore di overlay, che restano da esercitare sotto pressione heap sul dispositivo.
+Newer accepted checkpoints are recorded only in the current validation report;
+the above SAVE/cold/device results are not transferred to a successor hash.
+The broader matrix still distinguishes R/touch, deposit/withdraw/move/cancel,
+50 cycles per language, heap pressure, denied contexts, follower/HM/Surf policy,
+SAVE/cold on preserved copies. Follower refresh uses native Party-close behavior
+and requires its own observation. `prompt_shown` derives from window 32 printing;
+a native clear without message 29 reprint could leave it set and needs a targeted
+check. No reason text fits the 48 remaining pixels without a new design.
 
-## Correzioni post-review K (stato congelato)
+`features/portable-box/tools/run_probe.py` and `verify_probe.py` reproduce/check
+the harness. The verifier recalculates verdicts from `runtime.log` hashes,
+repeated READs and a third replay pass; input-R/touch require the same PC
+observation block plus `tap R` or an in-bounds touch in the script. Coordinated
+forged logs/observations cannot be distinguished offline from a genuine run;
+only rerunning the same ROM/save/script establishes that. These probe results
+are not Android runs.
 
-- **Cancello finale obbligatorio del builder** (`portable.candidate_gate(final_rom, receipt)`): lo sha256 della ROM finale con le parole/flag di attivazione di questo stadio
-  azzerate (`portable.inert_view`, funzione pura che cambia solo quelle parole) deve essere uguale a `candidate_sha256`, la candidata inerte su cui e' stata fatta la cattura.
-  Senza questo controllo `candidate_relation: composed-candidate` e' un'etichetta, non un'attestazione (il test mostra che una candidata inventata passa `prepare` e non il cancello).
-- **Preimmagine dello slot indipendente** (`portable.slot_preimage_from_v4(v4, language, allocation)`): l'hash atteso si calcola sulla V4 esatta, mai su `sha(rom[slot])` dell'immagine in
-  ingresso allo stadio (tautologico). Ricetta del builder: `pre = portable.slot_preimage_from_v4(v4, lang, alloc)`; se uno stadio intermedio lascia legittimamente residui nello slot, il suo hash
-  va fissato nel manifesto dello stadio e passato come `preimage_sha256`.
-- `clang` e (per controls) `charmap.txt` sono fissati per hash; `controls.verify(..., charmap=...)` ricompila il payload con geometria, variante e flag della ricevuta.
-- **Limiti noti**: il predicato dei chiamanti BL vede solo BL Thumb nel segmento statico (non BLX da ARM, chiamate da literal pool, overlay); `audit` e' valido solo PRIMA di `prepare`
-  (dopo l'installazione i tre siti e le loro funzioni non hanno piu' l'hash del pin); le callee transitive delle funzioni native non sono fissate (garanzia: lista chiusa di scritture degli altri stadi, provata contro la UI).
+The final builder must call `portable.candidate_gate(final_rom, receipt)`:
+`portable.inert_view` zeros only its activation words, and the resulting final
+hash must equal captured `candidate_sha256`. The relation label alone does not
+attest this; invented-candidate tests pass prepare but fail the gate.
+`portable.slot_preimage_from_v4(v4, language, allocation)` derives expected bytes
+from exact V4 instead of hashing the current input's own slot. Legitimate
+intermediate residue needs a fixed stage manifest hash as `preimage_sha256`.
+
+Clang is pinned by version/hash. The separate controls verifier also pins its
+charmap and rebuilds receipt geometry/variant/flags; that is not a portable-text
+ownership shortcut. Caller census sees static Thumb BLs, not ARM BLX/literal-pool/
+overlay calls. Pin audits run before installation; installed sites no longer
+match old pins. Transitive native callees remain outside individual pins; safety
+relies on the verified closed set of other-stage writes.

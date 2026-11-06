@@ -1,14 +1,17 @@
-# 1.3 development build
+# sgp13 — feature stages used by 1.3.1
 
-This package builds a private successor from an exact EN or IT **1.2.5** image.
-The published `sgp12` builder and release files remain unchanged. This is a
-development build, not a published release; runtime acceptance is separate from
-successful compilation. This guide describes the **V1.3** base and its physical
-device evidence. The later private **V1.3.1** candidate, its bug fixes and
-sampled save checks are identified in the
-[current validation report](../docs/ui-1.3.1-validation.md). The DS library
-banner reads **Pokémon Sacred Gold Plus** and retains the original icon and
-palette.
+This package remains a required dependency of the current **1.3.1** build. It
+composes the 1.3 feature stages from exact EN/IT **1.2.5** images. For the
+complete current build, use the [1.3.1 composition guide](../sgp131/README.md).
+That composer requires the two historical HF01 V4 intermediates, reconstructed
+by its authenticated bootstrap; this package's current sources instead install
+HF02. A fresh `sgp13.build` output is therefore not interchangeable with the
+bootstrap's pinned V4 input.
+
+The DS library banner reads **Pokémon Sacred Gold Plus** and retains the
+original icon/palette. Historical component campaigns keep their actual ROM
+identities and limits; current acceptance is recorded in the
+[1.3.1 validation report](../docs/ui-1.3.1-validation.md).
 
 ## Build
 
@@ -53,19 +56,20 @@ reported failure and choose a new report path rather than replacing the ROM.
   can reopen SAVE; a continuing refusal remains a failure. Previously, the
   touch-save caller displayed success despite the native FALSE result.
   The original success path and save format stay intact. The
-  [investigation](../docs/deep-debug-2026-10-28.md) records EN/IT rendered tests,
+  [investigation](../docs/stability-investigation-1.3.1.md) records EN/IT rendered tests,
   resource disposal and nine historical raw-save cycles, including active courses.
-  La successiva [campagna Android del 29 ottobre](../docs/android-1.3-dev-validation.md)
-  conclude 49 checkpoint, con i limiti e i pin correnti.
+  The historical [Android campaign](../docs/android-validation.md) records
+  49 checkpoints with their original candidate identities and limits.
 - The three Mew relocations wait for the incoming movement before ending the
   event script. Previously, its movement worker could access the destroyed
   script task and crash. The fix preserves event flags and existing saves;
-  the [investigation](../docs/deep-debug-2026-10-28.md) records runtime coverage
+  the [investigation](../docs/stability-investigation-1.3.1.md) records runtime coverage
   and distinguishes this defect from the separate Latios report.
 - The empty field-menu slot opens **Guide / Guida**. Four categories cover
-  evolutions, items and TMs, special events, and training. The 429 entries include
+  evolutions, items and TMs, special events, and training. The historical 1.3 builder's 429 entries include
   229 evolution entries generated from the input ROM, 156 item entries, 38 event
-  groups and six training topics. Native names and font metrics come from the
+  groups and six training topics. The current 1.3.1 successor has 467 selectable
+  entries. Native names and font metrics come from the
   input. Details use pages and item links, with touch and button navigation.
   Long lists support five-entry L/R jumps and touch arrows; short paragraphs
   remain together on a page.
@@ -93,19 +97,18 @@ reported failure and choose a new report path rather than replacing the ROM.
   contextual descriptions. Its preview handles an unfinished native Text Speed
   demonstration before drawing, and restores the original preview on close.
 - The existing Plus difficulty enables nine purposeful move changes across
-  seven trainers. [The rationale](../docs/trainer-strategy-1.3.md) lists every
+  seven trainers. [The rationale](../docs/trainer-strategy-1.3.1.md) lists every
   change and its limits. Normal difficulty retains the original parties.
 - Ariados learns Poison Fang at 23, Chimecho Psybeam at 22 and Kricketune Bug Bite
   at 14 in both difficulties. Existing moves remain available; the patch does
-  not edit owned Pokémon. Il
-  [censimento finale](../docs/shiny-species-1.3.md) contiene 493 decisioni:
-  67 specie interessate, 50 con statistiche cambiate, 51 record personal,
-  29 learnset con 32 aggiunte livello/mossa e due nuovi secondi slot abilità.
-  Il builder installa modalità shiny native, seconda pagina Plus e ricerca
-  specie. EV e abilità posseduti restano conservati; il calcolo nativo di
-  Continue aggiorna le statistiche selezionate. La
-  [verifica Android corrente](../docs/android-1.3-dev-validation.md) distingue
-  i campioni giocati dalle prove ARM e dai limiti residui.
+  not edit owned Pokémon. The [species census](../docs/shiny-species-1.3.1.md)
+  contains 493 decisions: 67 affected species, 50 with changed base stats,
+  51 personal records, 29 learnsets with 32 level/move additions and two new
+  second-ability slots. The builder installs native shiny modes, the second
+  Plus page and species search. Owned EVs and abilities are preserved; native
+  Continue recalculates selected stats. The
+  [Android evidence](../docs/android-validation.md) distinguishes played samples,
+  ARM execution and remaining limits.
 - The enemy caught indicator now also appears in trainer battles when the
   native Pokédex says that species has been caught. The intermittent wild-battle
   report has not been reproduced; this is not a claim that every reported
@@ -125,10 +128,10 @@ fixtures do not grant universal ownership: native activation and saving must
 check the actual save. Foreign or future data must not be overwritten. The
 training save coordinator runs after expanded-Bag writes and before the native
 save commit. A failed training write must prevent that commit and permit retry.
-Le operazioni mutanti 4–8 ricontrollano ora la destinazione prima di applicare
-servizi o addebiti; una preview rifiutata dall’operazione 4 va ricreata. La
-[campagna Android corrente](../docs/android-1.3-dev-validation.md) verifica il
-rifiuto prima di EV/denaro in EN/IT e separa gli altri rami ARM.
+Mutating operations 4–8 recheck the destination before service/payment; a preview
+refused by operation 4 must be recreated. The
+[Android campaign](../docs/android-validation.md) verifies EN/IT refusal before
+EV/money changes and distinguishes other ARM-covered branches.
 
 Do not use a savestate to establish save compatibility. Validate copies of raw
 older saves through Continue, native SAVE and cold restart, and compare progress,
@@ -167,10 +170,11 @@ tests do not replace emulator SAVE/cold-restart or physical-storage tests.
 The guide facts and research boundaries are recorded in
 [guide-content-sources.md](data/guide-content-sources.md). The exact
 initial candidate hashes, test counts and raw-save coverage are in
-[validation-1.3-dev.md](../docs/validation-1.3-dev.md). La
-[verifica funzionale Android del 29 ottobre](../docs/android-1.3-dev-validation.md)
-è il rapporto corrente: 45 SAVE/cold e quattro rifiuti con file intero invariato,
-con prove ARM, conteggi automatici e limiti distinti.
+[validation record](../docs/validation.md). The historical
+[Android campaign](../docs/android-validation.md) records 45 SAVE/cold cycles
+and four refusals with the entire raw save unchanged, separately identifying
+ARM checks, automatic counts and limits. Use the
+[current report](../docs/ui-1.3.1-validation.md) for successor acceptance.
 
 ## Local storage
 
@@ -193,8 +197,8 @@ variables `415E..416F` for the full `3F00..3FFF` bank and, in HF02, 24 unused
 bitmap bits for the finite Chatot-aliased story-gate family. It preserves Pal
 Pad and Chatot bytes, save-array sizes and event IDs.
 It composes with Training/Bag Continue, refuses foreign reservation ownership,
-and leaves save layouts and existing event IDs stable. La verifica Android EN/IT
-di prima relocation e cattura finale Mew conserva l’intera Rubrica Amici; il
-censimento più ampio dei flag resta una prova ARM nel
-[rapporto corrente](../docs/android-1.3-dev-validation.md). Compatibility is forward
-only; execution on an older ROM cannot synchronize later event changes safely.
+and leaves save layouts and existing event IDs stable. The historical EN/IT
+Android first-relocation/final-Mew-capture checks preserved the whole Pal Pad;
+the wider flag census remains ARM coverage in the
+[Android report](../docs/android-validation.md). Compatibility is forward only:
+an older ROM cannot safely synchronize later event changes.

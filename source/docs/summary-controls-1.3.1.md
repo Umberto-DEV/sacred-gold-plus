@@ -1,176 +1,158 @@
-# Comandi visibili nel riepilogo 1.3.1
+# Summary control legend in 1.3.1
 
-Unità 1 del piano interno: la legenda
-`L:EV SELECT:Stat. R:IV` nelle viste Statistiche, EV e IV del riepilogo. Stato:
-**sorgenti e prove host/ARM complete, hook inattivo finché non arrivano le misure
-runtime di finestre e tile, nessun collaudo Android**. Nessun campo di salvataggio,
-nessun nuovo ID, nessuna rimappatura dei tasti.
+The implemented legend is `L:EV SELECT:Stat. R:IV` for Summary Stats, EV and IV
+views. **This additional owner remains inert in the current player profile.**
+It introduces no save field, ID or key remapping. Host/ARM tests below establish
+component contracts; activation requires candidate-bound window/tile evidence.
+See [current validation](ui-1.3.1-validation.md) for the composed ROM's state.
 
-## Scelte e motivi
+## Reader and window ownership
 
-- **Il lettore installato non si tocca.** La V4 contiene un lettore EV/IV in ITCM
-  (payload `0x01FF8620`, 592 byte; lettore `0x01FF8658`, 448 byte) che legge i
-  **tasti fisici** (`gSystem.newKeysRaw` `0x021D1148`, repeat `0x021D114C`, letterale
-  `0x01FF87F8`): per questo L, R e SELECT funzionano anche con L=A. Il vecchio C
-  `native-eviv/eviv.c` legge i tasti elaborati (`0x021D1154`) e non va ricompilato: con
-  L=A perderebbe L (una prova su Unicorn lo dimostra riportando il letterale al valore
-  elaborato). Lettore, i due hook `0x02088B40`/`0x0208D178`, il wrapper dell'etichetta
-  `0x01FF9348` e le stringhe EV/IV restano **byte-identici**, fissati per intervalli e
-  per istruzioni complete in `data/controls-native-abi.json`.
-- **Una finestra sola, di proprietà del riepilogo.** `sgp_summary_controls_update(summary)`
-  crea (una volta), ridisegna e rimuove; `sgp_summary_controls_destroy(summary)` libera.
-  Il `Window` (16 byte) e il buffer pixel (1024 byte) stanno nello heap 19 del riepilogo;
-  un record residente di 32 byte (owner, generazione, finestra, ridisegni, flag) è il
-  solo stato. L'array nativo da 34 finestre non è esteso né toccato.
-- **Tre BL completi, nessuna istruzione spostata.** `0x0208CC5A` (stampa della pagina
-  Abilità) → `sgp_sc_redraw`: update, poi la funzione nativa, quindi l'hook ereditato del
-  lettore; `0x02089D78` (cambio pagina) e `0x0208C564` (uscita) → `sgp_sc_teardown`: destroy
-  prima di `sub_0208C4E0`. Sono gli **unici** chiamanti (scansione di tutti i BL e dei
-  puntatori dell'ARM9). Portata BL ±4 MiB: ogni base fino a `0x023E0000` è raggiungibile,
-  l'encoder rifiuta il resto.
-- **Quando disegna.** Pagina Abilità, non in uscita, `args` presente, modalità `args+0x12`
-  diversa da 3 e 4, nessuna mossa da imparare (`args+0x18 == 0`), Pokémon presente e non
-  uovo (`GetBoxMonData(mon, 76)`). Altrimenti non alloca e, se la finestra esisteva, la
-  rimuove. Mai su uovo, apprendimento mossa o altre pagine. Cambio pagina e uscita
-  chiamano `destroy` **prima** del teardown nativo: la finestra è liberata prima della
-  pagina e prima dello heap.
-- **Proprietà.** `generation` è solo diagnostica: non valida il riuso. L'unico percorso che
-  distrugge un riepilogo passa dai BL riscritti (scansione completa degli archi), perciò un
-  record con lo stesso `owner` ma finestra non liberata non può nascere; rileggere la finestra
-  per «controllarla» sarebbe lui stesso un accesso a memoria potenzialmente liberata, quindi non
-  è fatto. Solo il riepilogo che l'ha creata la libera; un record di un riepilogo
-  precedente (heap già distrutto) viene dimenticato senza accedere alla memoria. Allocazione
-  fallita: stato invariato e nessun accesso nullo (non usa `AllocWindows`, che non
-  controlla `Heap_Alloc`); si riprova al ridisegno successivo. Nota: `Heap_Alloc` restituisce
-  NULL, tranne che `AllocFail()` di pret resetta la console quando la comunicazione è attiva;
-  la richiesta è di 16 + 1024 byte sullo heap 19.
-- **Mai i tasti.** Il payload non contiene letterali di `gSystem` (controllato dal
-  rilettore): la legenda non dipende dalla modalità tasti.
-- **Modi tasti nativi realmente presenti** (`gSystem.buttonMode`, pret `system.h`): Normale,
-  Start=X, Scambio X/Y e L=A. Solo L=A nasconde L e R dai tasti elaborati; il lettore legge i
-  grezzi, quindi in tutti e quattro i modi L→EV, R→IV, SELECT→Statistiche (provato sul lettore
-  reale con i tasti elaborati calcolati come `ApplyButtonModeToInput`; Android: Normale e L=A).
-- **Dove il lettore c'è e la legenda no.** Apprendimento mossa (modi 3 e 4, e il modo 2 da MT
-  che apre già la pagina Abilità con `moveToLearn != 0`): L/R/SELECT continuano a funzionare
-  senza legenda, perché la finestra 17 e la quinta mossa occupano la zona in quelle modalità.
-  È una scelta conservativa del piano («mai su apprendimento mossa»), non una limitazione del
-  lettore.
+The installed V4 reader is preserved. Its ITCM payload is at `0x01FF8620`
+(592 bytes), with reader at `0x01FF8658` (448 bytes). It reads physical buttons:
+`gSystem.newKeysRaw` at `0x021D1148`, repeat at `0x021D114C`, literal at
+`0x01FF87F8`. L/R/SELECT therefore work even with L=A. Historical
+`native-eviv/eviv.c` instead reads mapped keys at `0x021D1154`; recompiling it
+would lose L in that mode, demonstrated by changing the literal under Unicorn.
+The reader, hooks `0x02088B40`/`0x0208D178`, label wrapper `0x01FF9348` and EV/IV
+strings stay byte-identical, pinned by ranges/full instructions in
+`data/controls-native-abi.json`.
 
-## Testo e misura
+`sgp_summary_controls_update(summary)` creates once, redraws and removes one
+owned window; `sgp_summary_controls_destroy(summary)` releases it. Its 16-byte
+`Window` and 1024-byte pixel buffer use Summary heap 19. A 32-byte resident record
+(owner, generation, window, redraws, flags) is the only state. The native 34-window
+array is neither extended nor modified.
 
-Font nativo 0, colori `0x000E0F00` (bianco con ombra, come «MOSSE LOTTA» e i titoli
-EV/IV), una riga. Testo identico in EN e IT (nomi dei tasti e sigle); codifica con la
-charmap pret, un carattere non mappato è errore.
+Only three complete BLs change:
 
-| Variante | Testo | Avanzamento | Finestra minima |
-|---|---|---:|---|
-| compatta (piano, predefinita) | `L:EV SELECT:Stat. R:IV` | 124 px | 16 tile = 128 px |
-| spaziata (leggibilità) | `L:EV  SELECT:Stat.  R:IV` | 132 px | 17 tile = 136 px |
+- `0x0208CC5A`, Skills-page rendering → `sgp_sc_redraw`: update, native function,
+  then inherited reader hook.
+- `0x02089D78`, page change, and `0x0208C564`, exit → `sgp_sc_teardown`: destroy
+  before native `sub_0208C4E0`.
 
-La base 955 e la posizione `(1,18)` sono la **proposta non provata** del piano: la ricevuta di
-un'installazione inerte le marca `geometry_source: proposal` (e `placement.proven: false`); non vanno lette come scelta.
-`prepare` rifiuta una finestra più stretta del testo («truncated») e registra avanzamento
-e larghezza nella ricevuta. Render offline EN/IT (font reale estratto dalla ROM in
-memoria, sfondo = schermo inferiore dello scatto IT del 29 ottobre, striscia a `(8,144)`)
-nel materiale privato `local/notes/cc-modern-mechanics/c8/C/legend-*.png`: la spaziata
-separa meglio i tre comandi; entrambe stanno nel rosso sotto il riquadro mosse, sopra le
-schede, senza troncamenti. Non sono catture di gioco: la verità resta lo scatto melonDS.
+A complete ARM9 BL/pointer census finds these as the only callers. Thumb BL
+range is ±4 MiB; bases through `0x023E0000` are reachable and the encoder rejects
+others. No instruction is relocated.
 
-## Posizione e tile: ancora da misurare
+Drawing requires the Skills/Stats page, no exit, present args, mode at `args+0x12`
+neither 3 nor 4, `args+0x18 == 0` (no move to learn), a present non-egg Pokémon via
+`GetBoxMonData(mon, 76)`. Otherwise it allocates nothing or removes its existing
+window. Page changes/exit destroy the legend before native page/heap teardown.
 
-Il riquadro proposto `(8,144,128×16)` dello schermo inferiore (layer `bgId 4`) si
-sovrappone, nelle tabelle statiche, a `page_skills.12` (quinta mossa), `page_skills.17`
-(messaggio `0xC2` mostrato da `sub_0208AFA0` con flag 1), `shared.14` e `shared.29`
-(ripulita a fine delle modalità speciali, `unk_02088288.s` righe 4913 e 5038). Possono
-essere vuote nella vista ordinaria, ma non è provato: `prepare(..., active=True)`
-rifiuta senza una `evidence` che le nomini nascoste (`hidden_windows`) e dichiari liberi
-i tile (`free_tiles`). L'evidence è legata a ciò che si è misurato: `capture_rom_sha256`
-(la ROM candidata INERTE su cui Codex ha fatto la cattura), che deve essere uguale all'argomento
-esplicito `candidate_sha256` di `prepare`, `build_id`, `language` uguale a quella dichiarata,
-`geometry` identica, `views` ⊇ {stats, ev, iv}, `button_modes` ⊇ {normal, L=A},
-`contexts` ⊇ {field, pc} e `captures` = riferimenti `{name, sha256}` alle catture; un record di
-un'altra ROM candidata, lingua o geometria, o senza questa copertura, è rifiutato e finisce intero nella
-ricevuta, che registra anche `candidate_sha256`, `capture_rom_sha256` e `candidate_relation`
-(`stage-inert-output` se la candidata è esattamente l'uscita inerte di questo stadio, ricalcolata dai byte;
-`composed-candidate` se è la ROM composta di tutti gli stadi, che questo modulo non può ricalcolare).
-L'evidence non è più legata all'hash dell'immagine in ingresso allo stadio (la V4): una cattura
-fatta sulla candidata non poteva mai attivare la legenda. Tile: le finestre native del layer 4 finiscono al 954, il
-tilemap ha 10 bit (limite 1023); la base proposta 955 (32 o 34 tile) ha spazio, ma le
-sole tabelle non provano l'assenza di altra grafica oltre 954. `sub_0208CBD4` svuota il
-tilemap del layer 4 (colonne 0..17, righe 1..23) a ogni disegno di pagina: la legenda
-si ridisegna a ogni ridisegno nativo. Nessun `baseTile` è scelto perché «sembra vuoto».
+`generation` is diagnostic, not a reuse guard. The complete destruction-edge
+census ensures every Summary destruction traverses the rewritten BLs. Therefore
+a live same-owner record cannot retain an unfreed window. Reading a possibly
+freed Window to validate it would itself be unsafe. Only its creator frees it;
+a stale previous-owner record is forgotten without touching the destroyed heap.
+Allocation failure leaves state intact/no NULL access and retries on next redraw.
+It does not use `AllocWindows`, which omits `Heap_Alloc` checking. Native
+`Heap_Alloc` normally returns NULL, but pret `AllocFail()` can reset during active
+communication; total request is 16+1024 bytes from heap 19.
 
-## Composizione: intervalli di byte, non hash della ROM
+The payload has no `gSystem` literals, enforced by readback. The legend itself
+is independent of button mode. Native modes are Normal, Start=X, X/Y swap and
+L=A; only L=A hides L/R from mapped input. The real raw reader passes all four
+modes using inputs computed like `ApplyButtonModeToInput`; historical Android
+reader checks cover Normal/L=A separately. Move-learning modes 3/4 and TM mode 2
+with `moveToLearn != 0` retain functional L/R/SELECT without the legend: window 17
+and a fifth move need that area. This is a conservative legend exclusion, not a
+reader limitation.
 
-`audit`/`prepare`/`verify` non confrontano più l'intera immagine con la V4: verificano solo gli
-**intervalli** che leggono o riscrivono (`controls.intervals()`: lettore e payload del visualizzatore,
-le due parole di aggancio, i corpi interi (estensione di funzione) delle dieci funzioni native chiamate e della funzione che contiene il sito `0x02089D78`, le quattro tabelle di
-finestre, i due descrittori BG, i letterali, e i tre siti BL, gli unici byte ARM9 riscritti oltre
-allo slot) più il completamento dei chiamanti BL dei quattro bersagli agganciati (predicato, non hash).
-Un altro stadio che lascia intatti quei byte (la UI, le altre meccaniche c8) può quindi precedere la
-legenda; uno che li tocca è rifiutato con il nome dell'intervallo. L'ordine UI → legenda è provato in
-`test_controls_rom.RealUiComposition` con l'uscita reale di `sgp131.ui.install`; l'ordine inverso
-(legenda → UI) è rifiutato dalla UI stessa (richiede la V4 esatta), non da questo modulo.
-Sovrapposizione con le scritture ARM9 di `sgp131/ui.py` (siti `0x0201A556`, `0x02000DB0`,
-`0x0203BFE4`, template `0x020FA354`, payload `0x023CB800`/`0x023D4000`/`0x023D6800`/`0x023D6E10`,
-semi e azzeramenti): **nessuna** (`test_controls.Intervals`). Lo slot `summary-controls.runtime`
-(`0x023D4C10`, 512 B) confina con la fine del payload Fieldbook (`0x023D4C00`) a 16 byte.
+## Text and geometry
 
-## Base e ricevute
+The same button names/abbreviations are encoded in EN/IT with pret charmap;
+unmapped characters fail. Native font 0 uses `0x000E0F00` (white/shadow, matching
+battle-move/EV/IV headings) in one line.
 
-La base non è più un indirizzo né un dizionario libero: `prepare(..., allocation=<ricevuta di
-sgp131.reserve.allocate per summary-controls.runtime>, preimage_sha256=...)`. La ricevuta è
-ricontrollata contro la politica di riserva in vigore (stessa politica, input V4 della stessa lingua,
-nomi non condizionali, assegnazioni identiche a quelle di `reserve.allocate`). Oggi la mappa ufficiale
-non può concederla (il proprietario `field-guide.code` è condizionale), quindi in produzione
-l'installatore rifiuta: i test usano una politica di prova dichiarata (`bench.declared_reserve`).
-La ricevuta riporta `function_state` (`inert`/`active`, ricalcolato da `verify` dalla parola di
-attivazione installata) e nessuno stato di processo (revisione, Android).
+| Variant | Literal text | Advance | Minimum window |
+| --- | --- | ---: | --- |
+|Compact, default|`L:EV SELECT:Stat. R:IV`|124 px|16 tiles =128 px|
+|Spaced|`L:EV  SELECT:Stat.  R:IV`|132 px|17 tiles =136 px|
 
-## Prove
+BaseTile 955 at (1, 18) is an **unproven proposal**, not an accepted placement.
+An inert installation records `geometry_source: proposal` and
+`placement.proven: false`. `prepare` rejects a window narrower than the text
+(`truncated`) and records advance/width. Private offline font renders over the
+29 October IT lower-screen capture show the spaced form separating commands
+more clearly, both fitting the red strip at (8, 144) above tabs/below moves.
+These composites are not gameplay captures.
 
-| Livello | Cosa prova | Stato |
-|---|---|---|
-| Host (nessuna ROM) | pin, confronto, encoder BL/hook, geometria, testo, contratto di `prepare` | eseguito |
-| ARM Unicorn su byte V4 EN/IT | `AddWindow`, `FillWindowPixelBuffer`, `ScheduleWindowCopyToVram`, `ClearWindowTilemapAndCopyToVram`, `WindowArray_Delete` reali; lettore EV/IV reale con tasti grezzi (Normale e L=A); flusso reale dal dispatcher e dall'uscita con ROM patchata | eseguito |
-| Android (melonDS) | resa, tile, finestre visibili, stati reali | **assente** |
+Static tables show the proposed lower-screen BG4 rectangle (8, 144, 128×16)
+overlapping `page_skills.12` (fifth move), `page_skills.17` (message `0xC2` from
+`sub_0208AFA0`, flag 1), `shared.14` and `shared.29` (special-mode cleanup in
+`unk_02088288.s:4913,5038`). They may be empty in normal views but that is not
+established by tables alone. `prepare(..., active=True)` requires `evidence`
+listing them under `hidden_windows` and the needed `free_tiles`.
 
-Il banco avvelena la memoria: i blocchi nuovi sono riempiti con `0xCD` (il buffer pixel deve
-risultare azzerato dalla legenda stessa) e i blocchi liberati con `0xDD`, con un hook che
-registra ogni lettura o scrittura su un intervallo liberato (uso dopo liberazione).
+Evidence binds `capture_rom_sha256` (the captured inert candidate) to explicit
+`candidate_sha256`, exact `build_id`, declared `language`, identical `geometry`,
+`views` containing {stats, ev, iv}, `button_modes` containing {normal, L=A},
+`contexts` containing {field, pc}, and `captures` with `{name, sha256}`. Wrong
+candidate/language/geometry or incomplete coverage is rejected; the entire
+evidence is retained in the receipt. It records both candidate/capture hashes
+and `candidate_relation`: `stage-inert-output` when recomputed from this stage's
+inert bytes, or `composed-candidate` for a full composition this module cannot
+recreate alone. Binding to the earlier V4 stage input would incorrectly reject
+captures of the actual candidate and is no longer used.
 
-Stub dichiarati e registrati: `Heap_Alloc`/`Heap_Free`, il printer
-(`AddTextPrinterParameterizedWithColor`, la sua pila non è misurata), `GetMon`,
-`GetBoxMonData`, i trasferimenti VRAM, e nel flusso dall'uscita il teardown nativo.
-Riepilogo, BgConfig e Pokémon sono sintetici e sparsi. Il sito di cambio pagina
-`0x02089D78` è provato solo per decodifica statica (stesso wrapper dell'uscita).
+Native BG4 windows end at 954; 10-bit tilemaps end at 1023. Base 955 with 32/34 tiles
+fits that numeric limit, but tables alone do not prove absence of other graphics
+above 954. `sub_0208CBD4` clears BG4 columns 0..17/rows 1..23 at every page redraw;
+the legend redraws with it. A tile is never claimed merely because it looks empty.
 
-## Scenari Android per Codex
+## Composition and receipts
 
-Fixture: copie dei salvataggi avanzati EN e IT con una squadra che contenga un uovo, un
-Pokémon con EV/IV non nulli e una mossa da imparare (livello o MT). Per ogni caso, schermo
-inferiore EN e IT e il record da 32 byte alla base assegnata (owner, generazione, finestra,
-ridisegni, flag).
+`audit`/`prepare`/`verify` pin consumed/modified ranges rather than an entire V4
+image. `controls.intervals()` includes the EV/IV reader/display payload, two
+hook words, full bodies of ten native callees plus the function containing
+`0x02089D78`, four Window tables, two BG descriptors, literals, and three BL sites
+(the only changed ARM9 bytes beyond the slot). A separate predicate checks the
+complete BL caller set of four hooked targets. A preceding stage that preserves
+these ranges is accepted; a conflict names its range.
 
-1. Continua → squadra → riepilogo → Abilità: legenda visibile, nessuna sovrapposizione con
-   riquadro mosse, schede ed ESCI; numeri e titolo invariati.
-2. Da Abilità: L (EV), R (IV), SELECT (Statistiche), ripetuti, con **Normale** e **L=A**:
-   i tasti rispondono come prima; la legenda resta identica e leggibile nelle tre viste.
-3. Cambio Pokémon (D-pad e tocco), cambio pagina e ritorno: nessun frammento fuori da
-   Abilità; ogni ritorno la ridisegna; `generazione` +1 per ingresso.
-4. Uscita (B/ESCI) e rientro, poi uscita dalla squadra: `owner` 0, nessuna finestra
-   residua, nessun blocco.
-5. Uovo: nessuna legenda; passare da Pokémon a uovo e viceversa.
-6. Apprendimento mossa (livello e MT): nessuna legenda, comportamento nativo invariato.
-7. Accesso dal campo e dal PC nativo (riepilogo annidato): stessi esiti, nessun residuo al
-   ritorno nel PC.
-8. Modalità selezione mossa (tocco sull'area mosse) attiva e non: nessuna sovrapposizione
-   con il messaggio della finestra 17.
-9. SAVE nativo e riavvio a freddo su copie dei salvataggi: nessuna differenza di dati.
-10. Misure da riportare: finestre e tile realmente usati in `(8,144)`–`(136,160)`, ultimo
-    tile in VRAM del layer 4, allocazioni dello heap 19 prima e dopo.
+`test_controls_rom.RealUiComposition` proves UI→legend using actual
+`sgp131.ui.install` output. Legend→UI is rejected by the UI's exact V4 requirement.
+No overlap exists with UI writes at `0x0201A556`, `0x02000DB0`, `0x0203BFE4`,
+template `0x020FA354`, payloads `0x023CB800`/`0x023D4000`/`0x023D6800`/
+`0x023D6E10`, seeds or zeroing (`test_controls.Intervals`). The 512-byte
+`summary-controls.runtime` slot at `0x023D4C10` begins 16 bytes beyond Fieldbook's
+`0x023D4C00` payload end.
 
-## Comandi
+`prepare(..., allocation=<reserve receipt>, preimage_sha256=...)` requires the
+`sgp131.reserve.allocate` receipt for `summary-controls.runtime`, rechecked
+against current policy, same-language V4 input, unconditional owner names and
+exact allocation assignments. The historical component campaign used explicit
+`bench.declared_reserve` because the then-current policy's `field-guide.code`
+parent was conditional. Production must prove retirement and obtain its own
+current policy allocation; a test policy is not production authorization.
+The receipt records `function_state` (`inert`/`active`) recomputed by `verify`
+from the installed activation word, not review/Android process labels.
+
+## Component validation and remaining activation coverage
+
+| Layer | Evidence | Status in this component campaign |
+| --- | --- | --- |
+|ROM-free host|Pins, comparison, BL encoder/hooks, geometry/text, prepare contract|Executed|
+|EN/IT V4 ARM Unicorn|Real AddWindow/FillWindowPixelBuffer/ScheduleWindowCopyToVram/ClearWindowTilemapAndCopyToVram/WindowArray_Delete, raw EV/IV reader, patched dispatcher/exit|Executed|
+|Android legend rendering|Actual tiles, visible windows and live states|Not established|
+
+The bench fills new blocks with `0xCD`, requiring the legend to clear its pixel
+buffer, and freed blocks with `0xDD`; a hook detects every access to freed ranges.
+Declared stubs: `Heap_Alloc`/`Heap_Free`,
+`AddTextPrinterParameterizedWithColor` (printer stack unmeasured), `GetMon`,
+`GetBoxMonData`, VRAM transfers, and native teardown in the exit flow. Summary,
+BgConfig and Pokémon are synthetic/scattered. Page-change site `0x02089D78`
+is checked statically only; it shares the tested exit wrapper.
+
+Activation coverage still requires preserved-copy EN/IT advanced saves with an
+egg, nonzero EV/IV and level/TM move learning. It must observe: legend at normal
+Stats without overlap; repeated L/R/SELECT with Normal/L=A; member/page changes,
+redraw/generation increment; B/Exit and Party exit with owner 0; egg and
+move-learning exclusions; field and nested PC paths; active/inactive move
+selection and window 17; native SAVE/cold restart with data preserved; actual
+BG4 tile/Window use at (8, 144)–(136, 160) and heap 19 allocations before/after.
+These are required coverage, not claimed completed runs.
 
 ```sh
 PYTHONPATH=source .venv/bin/python -m unittest sgp131.test_controls -v
@@ -178,14 +160,18 @@ PYTHONPATH=source SGP_CONTROLS_REQUIRE_INPUTS=1 .venv/bin/python -m unittest sgp
 PYTHONPATH=source SGP_CONTROLS_REQUIRE_INPUTS=1 .venv/bin/python -m unittest discover -s source/features/summary-controls/test -p 'test_*.py' -v
 ```
 
-## Correzioni post-review K (stato congelato)
+The final builder must call `controls.candidate_gate(final_rom, receipt)`.
+`controls.inert_view` zeros only this stage's activation words/flags; that final
+ROM hash must equal the captured `candidate_sha256`. Without it,
+`candidate_relation: composed-candidate` is only a label: tests show an invented
+candidate can pass prepare but fails this gate.
 
-- **Cancello finale obbligatorio del builder** (`controls.candidate_gate(final_rom, receipt)`): lo sha256 della ROM finale con le parole/flag di attivazione di questo stadio
-  azzerate (`controls.inert_view`, funzione pura che cambia solo quelle parole) deve essere uguale a `candidate_sha256`, la candidata inerte su cui e' stata fatta la cattura.
-  Senza questo controllo `candidate_relation: composed-candidate` e' un'etichetta, non un'attestazione (il test mostra che una candidata inventata passa `prepare` e non il cancello).
-- **Preimmagine dello slot indipendente** (`controls.slot_preimage_from_v4(v4, language, allocation)`): l'hash atteso si calcola sulla V4 esatta, mai su `sha(rom[slot])` dell'immagine in
-  ingresso allo stadio (tautologico). Ricetta del builder: `pre = controls.slot_preimage_from_v4(v4, lang, alloc)`; se uno stadio intermedio lascia legittimamente residui nello slot, il suo hash
-  va fissato nel manifesto dello stadio e passato come `preimage_sha256`.
-- `clang` e (per controls) `charmap.txt` sono fissati per hash; `controls.verify(..., charmap=...)` ricompila il payload con geometria, variante e flag della ricevuta.
-- **Limiti noti**: il predicato dei chiamanti BL vede solo BL Thumb nel segmento statico (non BLX da ARM, chiamate da literal pool, overlay); `audit` e' valido solo PRIMA di `prepare`
-  (dopo l'installazione i tre siti e le loro funzioni non hanno piu' l'hash del pin); le callee transitive delle funzioni native non sono fissate (garanzia: lista chiusa di scritture degli altri stadi, provata contro la UI).
+`controls.slot_preimage_from_v4(v4, language, allocation)` derives expected slot
+bytes from exact V4, never from the current input's own slot (a tautological check).
+If an intermediate stage legitimately leaves data there, its fixed manifest hash
+must instead supply `preimage_sha256`. Clang/charmap are pinned by hash;
+`controls.verify(..., charmap=...)` recompiles with receipt geometry/variant/flags.
+Known limits: the caller predicate sees static Thumb BL only, not ARM BLX,
+literal-pool or overlay calls. `audit` applies before prepare; installed sites/
+functions no longer match old pins. Transitive native callees are not individually
+pinned; composition relies on a verified closed list of other-stage writes.

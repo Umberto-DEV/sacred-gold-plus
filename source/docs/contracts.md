@@ -1,4 +1,4 @@
-# Sacred Gold Plus 1.2 — internal contracts
+# Sacred Gold Plus — internal contracts
 
 Five contracts that the rest of the project depends on. Each one states the rule, why it is
 written that way, and which public file implements it. Addresses are ARM9 RAM addresses without
@@ -415,7 +415,7 @@ Unicorn bench and mutants), applied by `source/sgp12/blocchi/caramelle.py`.
 
 - `docs/test-bench.md` — the headless runtime harness and the gates that judge a run.
 - `docs/arm9-reserve-map.md` — the ARM9 reserve layout every native block allocates from.
-- `docs/rebuilding-1.2.md` — building a 1.2 ROM from your own 1.1 base.
+- `docs/base-stage-build.md` — building a 1.2 ROM from your own 1.1 base.
 
 ## Expanded Bag (1.2.1)
 

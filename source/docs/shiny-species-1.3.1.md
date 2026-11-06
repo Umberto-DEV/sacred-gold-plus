@@ -1,4 +1,4 @@
-# Shiny modes and species changes in 1.3 development
+# Shiny modes and species changes in 1.3.1
 
 The development builder installs native Classic/Pro generation, a second Plus
 page, targeted search, versioned hunt persistence and balance interventions for
@@ -206,11 +206,7 @@ the party. It covers IDs 1–493 without changing saved-data layouts or identifi
 Native recalculation preserves damage, fainting, status and boxed identity; native
 withdrawal supplies current stats for boxed Pokemon.
 
-Il [rapporto Android del 29 ottobre 2026](android-1.3-dev-validation.md)
-registra i pin finali v3, 49 checkpoint accettati, acquisizione ordinaria di
-Kricketune/Tecnico e i confini delle prove Android/ARM. Le verifiche qui sotto
-restano risultati storici dei candidati balance-v1 e shiny-v4, con i propri
-hash e conteggi.
+The [29 October 2026 Android report](android-validation.md) records final v3 identities,49 accepted checkpoints,ordinary acquisition of Technician Kricketune and the Android/ARM evidence boundaries. Results below remain historical balance-v1/shiny-v4 findings with their own hashes and counts.
 
 ### Expanded candidate verification
 

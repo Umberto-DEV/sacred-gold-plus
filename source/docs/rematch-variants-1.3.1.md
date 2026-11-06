@@ -1,230 +1,269 @@
-# Rivincite variabili 1.3.1: Valerio e Raffaello
+# Configurable rematch teams in 1.3.1: Falkner and Bugsy
 
-Rapporto del piano interno. Stato: **SOURCE_READY_FOR_REVIEW; moduli e prove
-host/ARM complete, non ancora integrati nella candidata, nessun collaudo Android, nessuna prova di bilanciamento**.
-Nessun nuovo ID di mossa, abilita', strumento, opzione o formato di salvataggio.
+**This owner is implemented but remains inert in the current player profile.**
+Host/ARM tests establish the contracts below; Android context/balance acceptance
+is not established by them. No move/ability/item ID, setting or save format is
+added. Current composition and activation state are in
+[the build guide](../sgp131/README.md) and
+[validation report](ui-1.3.1-validation.md).
 
-## Cosa cambia
+## Behavior when activated
 
-Con la difficolta' Plus attiva, ogni volta che il gioco costruisce la squadra di Valerio (Falkner, ID 712) o di Raffaello
-(Bugsy, ID 713) in una lotta singola ordinaria, la squadra letta dall'archivio puo' essere sostituita per intero da una di
-due squadre complete, **A** o **B**, scritte a mano. In Normale e in ogni altro caso (altri allenatori, Lega, doppie, link,
-multi, tag, facility, indice nemico diverso da 1) il gioco resta nativo, byte per byte. Livelli, byte di difficolta' (IV 31),
-capsule, ricompense, orari, contatti e accessi non cambiano. Non si legge la squadra del giocatore, non c'e' contatore ne'
-stato persistente, non si usa ne' si avanza l'RNG.
+With Plus difficulty, eligible ordinary single battles against Falkner 712 or
+Bugsy 713 can replace the entire native party buffer with one of two authored
+six-member teams, A or B. Normal, other trainers, League, doubles/link/multi/tag/
+facility contexts and enemy indices other than the allowed one remain native.
+Base levels, difficulty byte (31 IV), capsules, rewards, schedules, contacts and
+entry routes stay unchanged. The module never reads the player's team, advances
+RNG, stores a counter or persists state.
 
-## Scelta della variante
+Selection is `variant = (seed ^ (seed >> 16) ^ trainer_id) & 1`, 0=A/1=B. `seed`
+is the LCRNG value already saved by the native constructor at `[sp+0x68]` and
+restored at `0x02073A8E`. This is a two-way selector, not a random generator.
+It replaces the whole 108-byte transient buffer once, before species/overrides/
+PID/ability are read; the buffer then stays fixed throughout battle. It does
+not guarantee alternation: consecutive battles, retries and cold boots may
+repeat the same team.
 
-`variante = (seed ^ (seed >> 16) ^ id_allenatore) & 1` (0 = A, 1 = B), con `seed` il seme LCRNG che il costruttore nativo ha
-gia' salvato prima di cominciare ([sp+0x68], poi ripristinato dal costruttore a 0x02073A8E). E' un selettore a due vie, non un
-generatore. La scelta avviene una volta, sostituendo l'intero buffer transitorio di 108 byte **prima** che il costruttore legga
-specie, override, PID o abilita'; da quel punto il buffer e' fisso per tutta la lotta. **Nessuna garanzia di alternanza**:
-incontri consecutivi, ritentativi e riavvii a freddo possono dare la stessa squadra o l'altra.
+## Team data
 
-## Le quattro squadre
+B applies its listed substitutions to A. Base levels are native, then adjusted
+by the unchanged Plus level hook. Aces remain Falkner's slot 6 Pidgeot and Bugsy's
+slot 2 Scizor at base level 72. Names below use the English game resources; the
+Italian build uses the same IDs and mechanics.
 
-La squadra B si ottiene applicando le sue trasformazioni alla A. Nomi come nel gioco (EN / IT). I livelli base sono quelli
-nativi (con Plus il livello e' poi adattato dal gancio livelli esistente, invariato). Gli assi restano Pidgeot (Valerio, slot 6)
-e Scizor (Raffaello, slot 2) a Lv 72.
+### Falkner (712)
 
-### Valerio / Falkner (712)
+#### Native baseline
 
-#### baseline
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Fearow / FEAROW | 68 | - / - | Roost, Drill Peck, Tailwind, Megahorn | Trespolo, Perforbecco, Ventoincoda, Megacorno |
-| 2 | Pelipper / PELIPPER | 64 | - / - | Spit Up, Air Slash, Tailwind, Hydro Pump | Sfoghenergia, Eterelama, Ventoincoda, Idropompa |
-| 3 | Swellow / SWELLOW | 68 | Flame Orb / Fiammosfera | Endeavor, Aerial Ace, Agility, Air Slash | Rimonta, Aeroassalto, Agilità, Eterelama |
-| 4 | Noctowl / NOCTOWL | 66 | - / - | Psycho Shift, Roost, Dream Eater, Nasty Plot | Psicotrasfer, Trespolo, Mangiasogni, Congiura |
-| 5 | Staraptor / STARAPTOR | 70 | - / - | Close Combat, Agility, Brave Bird, Double-Edge | Zuffa, Agilità, Baldeali, Sdoppiatore |
-| 6 | Pidgeot / PIDGEOT | 72 | Sitrus Berry / Baccacedro | Tailwind, Mirror Move, Air Slash, Brave Bird | Ventoincoda, Speculmossa, Eterelama, Baldeali |
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Fearow | 68 | - | Roost, Drill Peck, Tailwind, Megahorn |
+| 2 | Pelipper | 64 | - | Spit Up, Air Slash, Tailwind, Hydro Pump |
+| 3 | Swellow | 68 | Flame Orb | Endeavor, Aerial Ace, Agility, Air Slash |
+| 4 | Noctowl | 66 | - | Psycho Shift, Roost, Dream Eater, Nasty Plot |
+| 5 | Staraptor | 70 | - | Close Combat, Agility, Brave Bird, Double-Edge |
+| 6 | Pidgeot | 72 | Sitrus Berry | Tailwind, Mirror Move, Air Slash, Brave Bird |
+
 #### A
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Fearow / FEAROW | 68 | - / - | Roost, Drill Peck, Tailwind, Megahorn | Trespolo, Perforbecco, Ventoincoda, Megacorno |
-| 2 | Pelipper / PELIPPER | 64 | - / - | Ice Beam, Air Slash, Tailwind, Hydro Pump | Geloraggio, Eterelama, Ventoincoda, Idropompa |
-| 3 | Swellow / SWELLOW | 68 | Flame Orb / Fiammosfera | Endeavor, Aerial Ace, Agility, Facade | Rimonta, Aeroassalto, Agilità, Facciata |
-| 4 | Noctowl / NOCTOWL | 66 | - / - | Psychic, Roost, Air Slash, Nasty Plot | Psichico, Trespolo, Eterelama, Congiura |
-| 5 | Staraptor / STARAPTOR | 70 | - / - | Close Combat, Agility, Brave Bird, Double-Edge | Zuffa, Agilità, Baldeali, Sdoppiatore |
-| 6 | Pidgeot / PIDGEOT | 72 | Sitrus Berry / Baccacedro | Tailwind, Roost, Air Slash, Brave Bird | Ventoincoda, Trespolo, Eterelama, Baldeali |
-#### B
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Crobat / CROBAT | 68 | - / - | Roost, Brave Bird, U-turn, Cross Poison | Trespolo, Baldeali, Retromarcia, Velenocroce |
-| 2 | Pelipper / PELIPPER | 64 | - / - | Ice Beam, Air Slash, Tailwind, Hydro Pump | Geloraggio, Eterelama, Ventoincoda, Idropompa |
-| 3 | Swellow / SWELLOW | 68 | Flame Orb / Fiammosfera | Endeavor, Aerial Ace, Agility, Facade | Rimonta, Aeroassalto, Agilità, Facciata |
-| 4 | Noctowl / NOCTOWL | 66 | - / - | Psychic, Roost, Air Slash, Nasty Plot | Psichico, Trespolo, Eterelama, Congiura |
-| 5 | Staraptor / STARAPTOR | 70 | - / - | Close Combat, U-turn, Brave Bird, Double-Edge | Zuffa, Retromarcia, Baldeali, Sdoppiatore |
-| 6 | Pidgeot / PIDGEOT | 72 | Sitrus Berry / Baccacedro | Tailwind, Roost, Air Slash, Brave Bird | Ventoincoda, Trespolo, Eterelama, Baldeali |
-### Raffaello / Bugsy (713)
 
-#### baseline
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Yanmega / YANMEGA | 70 | - / - | Screech, U-turn, Air Slash, Bug Buzz | Stridio, Retromarcia, Eterelama, Ronzio |
-| 2 | Scizor / SCIZOR | 72 | Sitrus Berry / Baccacedro | Iron Head, Swords Dance, Feint, Night Slash | Metaltestata, Danzaspada, Fintoattacco, Nottesferza |
-| 3 | Heracross / HERACROSS | 68 | Damp Rock / Rocciaumida | Reversal, Feint, Megahorn, Horn Drill | Contropiede, Fintoattacco, Megacorno, Perforcorno |
-| 4 | Masquerain / MASQUERAIN | 70 | - / - | Air Slash, Whirlwind, Bug Buzz, Hydro Pump | Eterelama, Turbine, Ronzio, Idropompa |
-| 5 | Vespiquen / VESPIQUEN | 68 | - / - | Toxic, Defend Order, Destiny Bond, Air Slash | Tossina, Comandoscudo, Destinobbl., Eterelama |
-| 6 | Pinsir / PINSIR | 69 | - / - | Guillotine, Superpower, Megahorn, Close Combat | Ghigliottina, Troppoforte, Megacorno, Zuffa |
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Fearow | 68 | - | Roost, Drill Peck, Tailwind, Megahorn |
+| 2 | Pelipper | 64 | - | Ice Beam, Air Slash, Tailwind, Hydro Pump |
+| 3 | Swellow | 68 | Flame Orb | Endeavor, Aerial Ace, Agility, Facade |
+| 4 | Noctowl | 66 | - | Psychic, Roost, Air Slash, Nasty Plot |
+| 5 | Staraptor | 70 | - | Close Combat, Agility, Brave Bird, Double-Edge |
+| 6 | Pidgeot | 72 | Sitrus Berry | Tailwind, Roost, Air Slash, Brave Bird |
+
+#### B
+
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Crobat | 68 | - | Roost, Brave Bird, U-turn, Cross Poison |
+| 2 | Pelipper | 64 | - | Ice Beam, Air Slash, Tailwind, Hydro Pump |
+| 3 | Swellow | 68 | Flame Orb | Endeavor, Aerial Ace, Agility, Facade |
+| 4 | Noctowl | 66 | - | Psychic, Roost, Air Slash, Nasty Plot |
+| 5 | Staraptor | 70 | - | Close Combat, U-turn, Brave Bird, Double-Edge |
+| 6 | Pidgeot | 72 | Sitrus Berry | Tailwind, Roost, Air Slash, Brave Bird |
+
+### Bugsy (713)
+
+#### Native baseline
+
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Yanmega | 70 | - | Screech, U-turn, Air Slash, Bug Buzz |
+| 2 | Scizor | 72 | Sitrus Berry | Iron Head, Swords Dance, Feint, Night Slash |
+| 3 | Heracross | 68 | Damp Rock | Reversal, Feint, Megahorn, Horn Drill |
+| 4 | Masquerain | 70 | - | Air Slash, Whirlwind, Bug Buzz, Hydro Pump |
+| 5 | Vespiquen | 68 | - | Toxic, Defend Order, Destiny Bond, Air Slash |
+| 6 | Pinsir | 69 | - | Guillotine, Superpower, Megahorn, Close Combat |
+
 #### A
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Yanmega / YANMEGA | 70 | - / - | Protect, U-turn, Air Slash, Bug Buzz | Protezione, Retromarcia, Eterelama, Ronzio |
-| 2 | Scizor / SCIZOR | 72 | Sitrus Berry / Baccacedro | Iron Head, Swords Dance, Bug Bite, Night Slash | Metaltestata, Danzaspada, Coleomorso, Nottesferza |
-| 3 | Heracross / HERACROSS | 68 | - / - | Reversal, Rock Slide, Megahorn, Close Combat | Contropiede, Frana, Megacorno, Zuffa |
-| 4 | Masquerain / MASQUERAIN | 70 | - / - | Air Slash, Whirlwind, Bug Buzz, Hydro Pump | Eterelama, Turbine, Ronzio, Idropompa |
-| 5 | Vespiquen / VESPIQUEN | 68 | - / - | Toxic, Defend Order, Heal Order, Air Slash | Tossina, Comandoscudo, Comandocura, Eterelama |
-| 6 | Pinsir / PINSIR | 69 | - / - | X-Scissor, Superpower, Megahorn, Close Combat | Forbice X, Troppoforte, Megacorno, Zuffa |
+
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Yanmega | 70 | - | Protect, U-turn, Air Slash, Bug Buzz |
+| 2 | Scizor | 72 | Sitrus Berry | Iron Head, Swords Dance, Bug Bite, Night Slash |
+| 3 | Heracross | 68 | - | Reversal, Rock Slide, Megahorn, Close Combat |
+| 4 | Masquerain | 70 | - | Air Slash, Whirlwind, Bug Buzz, Hydro Pump |
+| 5 | Vespiquen | 68 | - | Toxic, Defend Order, Heal Order, Air Slash |
+| 6 | Pinsir | 69 | - | X-Scissor, Superpower, Megahorn, Close Combat |
+
 #### B
-| # | Species EN / IT | Lv | Item EN / IT | Moves EN | Moves IT |
-|--:|---|--:|---|---|---|
-| 1 | Yanmega / YANMEGA | 70 | - / - | Psychic, U-turn, Air Slash, Bug Buzz | Psichico, Retromarcia, Eterelama, Ronzio |
-| 2 | Scizor / SCIZOR | 72 | Sitrus Berry / Baccacedro | Iron Head, Swords Dance, Bug Bite, Night Slash | Metaltestata, Danzaspada, Coleomorso, Nottesferza |
-| 3 | Heracross / HERACROSS | 68 | - / - | Reversal, Rock Slide, Megahorn, Close Combat | Contropiede, Frana, Megacorno, Zuffa |
-| 4 | Forretress / FORRETRESS | 70 | - / - | Spikes, Rapid Spin, Gyro Ball, Earthquake | Punte, Rapigiro, Vortexpalla, Terremoto |
-| 5 | Vespiquen / VESPIQUEN | 68 | - / - | Toxic, Defend Order, Heal Order, Air Slash | Tossina, Comandoscudo, Comandocura, Eterelama |
-| 6 | Pinsir / PINSIR | 69 | - / - | X-Scissor, Superpower, Megahorn, Close Combat | Forbice X, Troppoforte, Megacorno, Zuffa |
 
-## Motivazioni
+| Slot | Species | Base level | Item | Moves |
+| ---: | --- | ---: | --- | --- |
+| 1 | Yanmega | 70 | - | Psychic, U-turn, Air Slash, Bug Buzz |
+| 2 | Scizor | 72 | Sitrus Berry | Iron Head, Swords Dance, Bug Bite, Night Slash |
+| 3 | Heracross | 68 | - | Reversal, Rock Slide, Megahorn, Close Combat |
+| 4 | Forretress | 70 | - | Spikes, Rapid Spin, Gyro Ball, Earthquake |
+| 5 | Vespiquen | 68 | - | Toxic, Defend Order, Heal Order, Air Slash |
+| 6 | Pinsir | 69 | - | X-Scissor, Superpower, Megahorn, Close Combat |
 
-- A rimuove combinazioni senza senso della squadra nativa: Spit Up senza Stockpile, Mirror Move in lotta singola, Psycho Shift e
-  Dream Eater senza supporto, due mosse OHKO (Guillotine, Horn Drill) e Feint inutile. Facade e Nasty Plot sono pressione
-  volutamente nuova, con strumenti e mosse gia' presenti.
-- B scambia: per Valerio il Fearow con un Crobat (pivot Veleno/Volante con U-turn) e Agility con U-turn su Staraptor; per Raffaello
-  Protect con Psychic su Yanmega e Masquerain (Coleottero/Acqua in questa hack, non Coleottero/Volante) con un Forretress
-  (Coleottero/Acciaio) che porta Spikes, Rapid Spin, Gyro Ball e Earthquake.
-- Nessun aumento uniforme di EV/IV, nessun effetto nuovo: tutti gli ID mossa sono 1..467 e i loro effetti sono quelli
-  dell'archivio `a/0/1/1` letto (Facade 263 effetto 169, Psychic 94 effetto 72, Protect 182 effetto 111, Bug Bite 450 effetto 224,
-  Rock Slide 157 effetto 31, Heal Order 456 effetto 32, X-Scissor 404 effetto 0, Spikes 191 effetto 112, Rapid Spin 229 effetto 129,
-  Gyro Ball 360 effetto 219, Earthquake 89 effetto 147, U-turn 369 effetto 228, Cross Poison 440 effetto 209, Ice Beam 58 effetto 5).
-  Gli ID con significato riutilizzato in questa hack (6, 27, 134, 140, 160, 169, 176) non compaiono in nessuna delle squadre e un
-  test lo asserisce. Feint (364) e Toxic (92) hanno dati diversi dal gioco originale (potenza/precisione) ma restano come sono.
-- Legalita': ogni coppia (specie, mossa) nuova e' apprendibile per livello, MT o MN secondo i dati correnti (learnset `a/0/3/3`,
-  compatibilita' MT in `a/0/0/2`, tabella MT a `0x021000CC`); le fonti esatte sono nel JSON e un cambio dei dati fa rifiutare la
-  configurazione. Tipi letti: Crobat Veleno/Volante, Forretress Coleottero/Acciaio, Masquerain Coleottero/Acqua.
+## Rationale and risks
 
-## Rischi dichiarati
+A removes unsupported combinations: Spit Up without Stockpile, Mirror Move in
+singles, unsupported Psycho Shift/Dream Eater, two OHKO moves (Guillotine/Horn
+Drill) and ineffective Feint. Facade/Nasty Plot intentionally add pressure using
+existing moves/items. B replaces Falkner's Fearow with Poison/Flying Crobat
+(U-turn pivot) and Staraptor Agility with U-turn; for Bugsy it replaces Yanmega
+Protect with Psychic and Bug/Water Masquerain (this hack's type, not Bug/Flying)
+with Bug/Steel Forretress carrying Spikes/Rapid Spin/Gyro Ball/Earthquake.
 
-- **Facade con Fiammosfera** (Swellow, Guts): in A e B Swellow ha Facade con lo strumento gia' presente; e' la minaccia fisica
-  piu' alta aggiunta (da misurare, non provata).
-- **Congiura (Nasty Plot) con Psychic e Eterelama** su Noctowl: setup + due attacchi speciali affidabili.
-- **Trappola di Punte** (Forretress, B di Raffaello) e Rapid Spin: la pressione dipende da come l'IA nativa usa questi effetti;
-  non si promette che non ripeta setup o recupero (Heal Order, Roost, Swords Dance): e' un rischio di ciclo da misurare.
-- Frana, Forbice X e Close Combat ampliano la copertura di Raffaello; Forretress aggiunge una nuova resistenza Acciaio nella squadra B.
-- Niente di cio' e' provato: non e' stato eseguito nessun confronto di bilanciamento. Vittoria del boss o danni maggiori non
-  dimostrerebbero IA migliore.
+There is no uniform EV/IV increase or new effect. Move IDs are 1..467 with current
+`a/0/1/1` effects: Facade 263/effect 169, Psychic 94/72, Protect 182/111,
+Bug Bite 450/224, Rock Slide 157/31, Heal Order 456/32, X-Scissor 404/0,
+Spikes 191/112, Rapid Spin 229/129, Gyro Ball 360/219, Earthquake 89/147,
+U-turn 369/228, Cross Poison 440/209, Ice Beam 58/5. Repurposed IDs
+6/27/134/140/160/169/176 never appear, enforced by a test. Feint 364 and Toxic 92
+retain the hack's existing power/accuracy differences from retail.
 
-## Come prepararsi (risorse verificate nei dati correnti)
+Each added species/move pair is legal by current level/TM/HM data:
+`a/0/3/3` learnsets, `a/0/0/2` TM compatibility and native TM table `0x021000CC`.
+Exact sources are pinned in JSON; changed data rejects the configuration. Type
+checks confirm Poison/Flying Crobat, Bug/Steel Forretress and Bug/Water Masquerain.
 
-Fonti: le voci della Guida 1.3.1 generate dall'audit statico delle acquisizioni (script, palle strumento, 30 inventari negozio);
-non e' una partita completa in emulatore. Le rivincite richiedono 16 badge (gate nativo); non e' stato verificato una per una che
-ogni zona sia gia' visitabile a quel punto, ne' sono state eseguite le acquisizioni.
+Unmeasured risks remain explicit: Guts Swellow's existing Flame Orb plus Facade
+is the largest added physical threat; Nasty Plot/Psychic/Air Slash gives Noctowl
+reliable special setup; Forretress Spikes/Rapid Spin and native AI choices may
+create setup/recovery loops (including Heal Order/Roost/Swords Dance). Bugsy's
+coverage broadens and B adds a Steel resistance. No balance comparison has been
+run; higher damage or a boss win would not by itself demonstrate better AI.
 
-- **Valerio (volanti: debolezza a Elettro, Ghiaccio, Roccia)** - almeno due vie reali:
-  1. MT80 Frana: palla strumento alle Rovine d'Alfa, seconda stanza della sala a sud-est (EN: Ruins of Alph southeast chamber, second room).
-  2. MT13 Geloraggio: Via Gelata P1S o Isole Spumarine P4S, oppure 4000 gettoni al Casino' di Fiordoropoli (EN: Ice Path B1F, Seafoam Islands B4F, Goldenrod Game Corner).
-  3. MT24 Fulmine: riva accanto al Faro di Olivinopoli o Grotta Celeste 1F, oppure 4000 gettoni (EN: shore beside Olivine Lighthouse, Cerulean Cave 2F).
-  4. MT12 Provocazione (blocca Congiura, Trespolo, Ventoincoda, Agilita'): acquistabile al Centro Commerciale di Azzurropoli, 2º piano (EN: Celadon Department Store 3F).
-  **Variante peggiore (B, con Crobat e U-turn)**: le vie 1-3 colpiscono tutti i volanti compreso Crobat; la 4 limita il setup di Noctowl e il recupero.
-- **Raffaello (coleotteri: debolezza a Fuoco, Volante, Roccia; Scizor e Forretress sono Coleottero/Acciaio, quindi la Roccia per loro e'
-  NEUTRA: x2 del Coleottero per x0,5 dell'Acciaio)** - vie reali con vantaggio di tipo, per specie:
-  1. **Fuoco, 4x su Scizor e Forretress, 2x su Heracross, Pinsir, Yanmega e Vespiquen** - tre fonti distinte (Guida 1.3.1; per la MT38 la
-     tabella negozio 7 della ROM, EN e IT, contiene l'oggetto 365, riletta in questa revisione):
-     - MT35 Lanciafiamme: Sentiero Din Don o Percorso 28, oppure 4000 gettoni al Casino' di Fiordoropoli (EN: Bellchime Trail, Route 28, Goldenrod Game Corner).
-     - MT38 Fuocobomba: in vendita al Centro Commerciale di Fiordoropoli, 4º piano (EN: Goldenrod Department Store 5F), accanto alla MT17 Protezione.
-     - MT50 Vampata: palla strumento nella Torre Bruciata P1S (EN: Burned Tower B1F).
-  2. **Roccia, 4x su Yanmega e Vespiquen, 2x su Pinsir (nessun vantaggio su Scizor, Forretress, Heracross)**: MT80 Frana (Rovine d'Alfa, seconda stanza della
-     sala a sud-est; EN: Ruins of Alph southeast chamber, second room) e MT39 Rocciotomba (Grotta di mezzo P1S; EN: Union Cave B1F).
-  3. **MT12 Provocazione** (come sopra, Centro Commerciale di Azzurropoli): impedisce Punte, Danzaspada, Tossina, Comandocura e Comandoscudo.
-  **Variante peggiore (B, con Forretress)**: contro Forretress e Scizor valgono la via 1 (almeno due fonti indipendenti: MT35 e MT38, piu' MT50) e,
-  per limitarne Punte e il recupero, la via 3; la Roccia (via 2) serve invece per Yanmega e Vespiquen. Le palle strumento (MT39, MT50, MT80, MT35 sul campo)
-  sono fonti statiche della Guida, non verificate in partita.
-- Per non dipendere da un solo oggetto nessuna delle due squadre richiede una specie rara o un contatore nascosto; la Guida non deve
-  promettere che una singola preparazione basti.
+## Preparation sources checked in game data
 
-## Meccanismo nativo e prove
+The Guide's static acquisition audit covers scripts/item balls and 30 shop
+inventories, not a full emulator playthrough. Rematches need 16 badges via the
+native gate; every source's reachability at that moment and the acquisitions
+themselves were not played.
 
-- Seam: `BL 0x020735E8` (lettore `TrainerData_ReadTrPoke`) a `0x0207363A` dentro `CreateNPCTrainerParty` (`0x02073604`), ripresa a
-  `0x0207363E`. Il wrapper salva r0-r2, r4-r7 e LR (8 parole, SP a 8 byte), chiama il lettore nativo **una volta**, poi (solo se tutte
-  le guardie concordano) applica il core e restituisce il risultato del lettore. I quattro ganci livelli (`0x02073718`, `0x02073802`,
-  `0x0207390C`, `0x02073A0C`) restano intatti.
-- Guardie: byte Plus `0x023D8700` (letto dalla funzione livelli Plus a `0x023D8134`), indice nemico in una whitelist esatta,
-  `BattleSetup.battleType` in una whitelist esatta di valori, coerenza di buffer/ID con il frame dell'host, formato 3 con 6
-  membri, buffer uguale byte per byte alla squadra nativa letta. **Il contesto reale (battleType, indice) NON e' ancora provato a
-  runtime**: il wrapper e' installato **inerte** (byte `active` = 0 nella config, delega pura) finche' Codex non fornisce
-  `context_proof` di una cattura reale (campi `capture_file`, `capture_rom_sha256`, `build_id`, con `capture_rom_sha256` uguale all'argomento esplicito `candidate_sha256` = la ROM candidata inerte su cui e' stata fatta la cattura); una prova sintetica del banco e' rifiutata salvo
-  argomento riservato ai test e la ricevuta la marca `synthetic`; i valori di riferimento (1, 1) non sono prove.
-- Memoria misurata: codice 1216 byte, config 716 byte nel modulo, stack del modulo 184 byte sotto l'SP dell'host (200 con il frame dello stub);
-  nessuna allocazione, nessuno stato persistente. **Il modulo non e' residente**: e' l'overlay segnaposto 126 (file da 20 byte mai caricato dal gioco),
-  riscritto dall'installatore (riga y9: finestra `0x0226B000`, non compresso; immagine 2048 B accodata alla cartuccia come file 126) e caricato per
-  la durata di una chiamata del seam da uno **stub residente di 60 byte** (`stub.S`, slot `c8.module-stubs` della mappa di riserva, base solo da una ricevuta
-  di `sgp131.reserve.allocate` ricontrollata contro la politica in vigore). Lo stub chiama `HandleLoadOverlay(126)`, esegue il modulo, e chiama
-  `UnloadOverlayByID(126)` su ogni percorso (successo, modulo inerte, finestra occupata, caricamento fallito); se il caricamento e' rifiutato o fallisce
-  gira il lettore nativo (nessuna variante). La finestra tocca solo l'overlay 12 (battaglia). Lo stub non scrive mai r4-r7 (r4 = BattleSetup per il modulo).
-  Costo: **ogni** costruzione di squadra di allenatore carica e scarica l'overlay (un filtro sull'id nello stub non entra nei 64 B): da misurare su dispositivo.
-  Non misurato: lo stack e il tempo reali del livello file system (`FS_LoadOverlayImage`), sostituito nel banco.
-- Prove ARM (Unicorn sui byte ARM9 reali EN/IT del candidato V4, nessuna ROM scritta): il costruttore reale
-  (CreateMon, cifratura, statistiche, LCRNG, ganci livelli) gira con soli stub dell'ambiente (allocatore, lettore di archivi, nome
-  della specie, handle NARC); le sei creature costruite (specie/forma, PID, sesso, abilita', natura, IV/EV, livello, mosse/PP,
-  strumento, capsule, checksum, struttura intera) coincidono con quelle del costruttore nativo alimentato dalla squadra scelta, per
-  EN/IT x Normale/Plus x A/B; seme globale, sequenze alloc/free, SP, registri e RAM coincidono; contesti non ordinari e
-  wrapper inerte coincidono col nativo; i sette allenatori della 1.3 sono invariati. Il test non e' una prova Android.
-- Indipendenza dall'ordine: viene letto solo il record di ciascuna mossa usata (mai il membro 261 di `a/0/1/1`, riscritto da
-  `modern_moves`), quindi l'installazione non dipende dall'ordine rispetto a Fuocofatuo.
+Falkner's Flying teams have several preparation routes:
 
-## Comandi di prova
+- TM80 Rock Slide: Ruins of Alph southeast chamber, second room.
+- TM13 Ice Beam: Ice Path B1F, Seafoam Islands B4F or 4000 Goldenrod Game Corner coins.
+- TM24 Thunderbolt: shore beside Olivine Lighthouse, Cerulean Cave 2F, or 4000 coins.
+- TM12 Taunt: Celadon Department Store 3F; limits Nasty Plot/Roost/Tailwind/Agility.
 
-    PYTHONPATH=source .venv/bin/python -m unittest sgp131.test_rematches -v                        # host, 26 test
-    (cd source/features/rematch-variants/test && ../../../../.venv/bin/python -m unittest test_variants -v)   # core C, 6 test
-    PYTHONPATH=source SGP_REMATCH_REQUIRE_INPUTS=1 .venv/bin/python -m unittest sgp131.test_rematches_rom -v   # ROM + Unicorn, 40 test
-    (cd source/features/rematch-variants/test && SGP_REMATCH_REQUIRE_INPUTS=1 ../../../../.venv/bin/python -m unittest test_hooks -v)  # 6 test
+Against B's Crobat/U-turn, the first three hit all Flying members; Taunt limits
+Noctowl setup/recovery. These routes do not require one rare species or a hidden
+counter, and no single preparation is promised sufficient.
 
-Regressione dei sette allenatori 1.3 con le basi 1.2.5 reali (senza la variabile il test salta):
-`SGP13_BASE_DIR=$PWD/local/roms/1.2.5 PYTHONPATH=source .venv/bin/python -B -m unittest sgp13.test_teams_arm -v`.
+Bugsy requires species-specific type accounting: Rock is **neutral** against
+Bug/Steel Scizor/Forretress (Bug 2× × Steel 0.5×), not super effective.
 
-I test ROM leggono i candidati V4 EN/IT (sha256 verificati) solo in memoria; `SGP_REMATCH_REQUIRE_INPUTS=1` fa fallire invece di
-saltare. lo slot di riserva `c8.module-stubs` (`0x023D59E0`, 192 B a zero nella V4 e nell'uscita UI) e' concesso nei test da una **politica di riserva di prova
-dichiarata** (`rom_fixture.declared_reserve`: versione e digest propri, rifiutata dalla politica vera, slot copiato dalla mappa); la politica vera non
-puo' concederlo (genitore condizionale). `test_rematches_rom.RealUiComposition` installa il modulo sull'uscita della UI vera.
+| Route | Checked sources and coverage |
+| --- | --- |
+|Fire|4× against Scizor/Forretress; 2× against Heracross/Pinsir/Yanmega/Vespiquen. TM35 Flamethrower: Bellchime Trail, Route 28 or 4000 coins. TM38 Fire Blast: Goldenrod Department Store 5F beside TM17 Protect (native shop 7 contains item 365 in EN/IT). TM50 Overheat: Burned Tower B1F item ball.|
+|Rock|4× against Yanmega/Vespiquen; 2× against Pinsir; no advantage on Scizor/Forretress/Heracross. TM80 Rock Slide as above; TM39 Rock Tomb at Union Cave B1F.|
+|Taunt|TM12 as above; prevents Spikes/Swords Dance/Toxic/Heal Order/Defend Order.|
 
-## Limiti
+Against B's Forretress/Scizor, independent Fire sources TM35/TM38/TM50 and Taunt
+are relevant; Rock helps against Yanmega/Vespiquen. Field pickups for TM39/50/80
+and TM35 are statically verified Guide sources, not played acquisitions.
 
-Niente alternanza garantita; nessun adattamento alla squadra del giocatore; la prova di bilanciamento (18 lotte per allenatore e
-lingua piu' baseline) e gli accessi naturali telefono/Dojo non sono stati eseguiti; vedi `local/notes/cc-modern-mechanics/c8/R/ANDROID-SCENARIOS.md`.
+## Native mechanism and ARM evidence
 
-## Testo per la Guida (proposta, da integrare da Codex)
+The seam replaces `BL 0x020735E8` (`TrainerData_ReadTrPoke`) at `0x0207363A`
+inside `CreateNPCTrainerParty` (`0x02073604`), resuming `0x0207363E`. The wrapper
+saves r0–r2, r4–r7, LR (eight words, 8-byte SP alignment), calls the reader **once**,
+conditionally applies the core, and returns the native result. Four Plus level
+hooks `0x02073718/0x02073802/0x0207390C/0x02073A0C` remain intact.
 
-- EN: `With Plus on, Falkner's and Bugsy's rematches use one of two prepared teams, chosen at random each time. Normal is unchanged.`
-- IT: `Con Plus attivo, le rivincite con Valerio e Raffaello usano una di due squadre preparate, scelta a caso ogni volta. In Normale non cambia nulla.`
+Guards require Plus byte `0x023D8700` (read by level function `0x023D8134`), exact
+enemy-index/battleType whitelists, coherent buffer/ID versus host frame, format 3,
+six members and byte-identical freshly read native party. It remains installed
+with `active=0` until real `context_proof` identifies `capture_file`,
+`capture_rom_sha256`, `build_id`, and explicit matching `candidate_sha256` of
+the captured inert candidate. Test-only synthetic proof is refused by default
+and marked `synthetic`; reference values (1, 1) are not measured evidence.
 
-## Correzioni post-review
+The module is a nonresident overlay 126 replacing a 20-byte unused placeholder.
+Its y9 window is `0x0226B000`, uncompressed; a 2048-byte image is appended as
+file 126. Measured code 1216 bytes/config 716; module stack 184 bytes below host SP,
+200 with stub frame, no allocations or persistent state. A 60-byte resident
+`stub.S` uses reserve owner `c8.module-stubs`, whose base must come from a
+policy-rechecked `sgp131.reserve.allocate` receipt. It calls
+`HandleLoadOverlay(126)`, runs the module, and calls `UnloadOverlayByID(126)`
+on success, inert, occupied-window and failed-load paths. Rejected/failed loading
+falls back to the native reader. Its RAM window overlaps only battle overlay 12;
+the stub never writes r4–r7 (`r4` is the module's BattleSetup).
 
-- **I1** `validate_context_proof` rifiuta le prove con `synthetic_harness_only` salvo `allow_synthetic=True` (solo test); per una prova reale
-  richiede `capture_file`, `capture_rom_sha256` (sha256, uguale a `candidate_sha256`) e `build_id`; la ricevuta registra `proof_origin` (`android`/`synthetic`),
-  `proof_sha256`, `candidate_sha256`, `capture_rom_sha256`, `function_state` (`inert`/`active`, ricalcolato dal byte `active` installato) e `candidate_relation`;
-  non scrive piu' stati di processo (il vecchio `context.status` e' stato rimosso). I test asseriscono `synthetic` e il rifiuto senza argomento.
-- **I2** La via Roccia non e' un vantaggio contro Scizor e Forretress (neutra): riscritta sopra. La variante peggiore di Raffaello ha tre fonti Fuoco
-  reali (MT35, MT38 acquistabile, MT50), verificate nella Guida e, per la MT38, nella tabella negozio 7. Nessuna modifica al set B.
-- **M1** la quota config e' una costante di compilazione (`REMATCH_CONFIG_BYTES`, uguale all'allocazione) e limita il core a runtime.
-- **M2** `test_hooks.AllTrainersSweep`: wrapper attivo contro nativo per un allenatore di ogni coppia (formato, membri) dell'archivio, Plus 0/1, due esiti del selettore, EN e IT: 0 differenze.
-- **M3** indice nemico limitato a 0..3 (wrapper e configurazione); `DirectGate` prova anche gli indici 4, 7 e 8 nel frame.
-- **M4** dell'archivio oggetti si pinnano i soli record 158, 273, 285 piu' il conteggio dei membri (non lo sha dell'intero `a/0/1/7`).
-- **M5/M6** comando con `SGP13_BASE_DIR` e percorso esplicito degli scenari Android (sopra).
-- **M7** il byte Plus e' 0/1 per contratto; il wrapper abilita solo `== 1` mentre la funzione livelli nativa tratta ogni valore non nullo come Plus. Il byte non
-  assume altri valori; se lo facesse le rivincite resterebbero native mentre i livelli Plus si applicherebbero.
+Every trainer-party construction loads/unloads this overlay: an ID filter does
+not fit the 64-byte stub budget. Device cost and real filesystem stack/timing
+(`FS_LoadOverlayImage`) remain unmeasured; that boundary is stubbed in the bench.
 
-## Correzioni post-review K (stato congelato)
+Unicorn executes real EN/IT V4 ARM9 construction (CreateMon, encryption, stats,
+LCRNG and level hooks), stubbing only allocator/archive reader/species-name/NARC
+handles. All six produced records match native construction from the selected
+team: species/form, PID, gender, ability, nature, IV/EV, level, moves/PP, item, capsules,
+checksum and full struct. Matrix: EN/IT × Normal/Plus × A/B. Global seed,
+alloc/free sequence, SP, registers, RAM match; excluded contexts/inert forwarding
+match native; seven existing 1.3 strategic trainers remain unchanged. This is not
+Android evidence. Only used move records are read, never Will-O-Wisp member 261,
+so `modern_moves` installation order does not matter.
 
-- **Dojo (B1).** La sequenza ereditata dello script 832 entra in 712/713 con `a4 = 1`: `SetupAndStartTrainerBattle` (V4 `0x02051370`, eseguita in Unicorn dai test)
-  costruisce `battleType` 0x1 per il telefono (`a4 = 0`) e 0x801 (`BATTLE_TYPE_11` aggiunto) per la sequenza. La lista bianca installata e' ora
-  {0x1, 0x801}, una voce per famiglia nel file di pin (`gate.context.families`); ogni altro valore (anche 0x800, 0x803, 0x13, 0x4B, 0x3...) resta nativo. La prova di
-  contesto porta il campo `family` (non piu' `entry`) per ogni osservazione, con la coppia famiglia/valore esatta, per entrambi gli allenatori e entrambe le famiglie.
-  La funzione e' fissata (184 byte, `setup`): se un altro stadio la cambia l'installazione e `verify` rifiutano. Il valore reale a runtime resta da catturare su Android.
-- **verify** rifiuta per default le ricevute con prova sintetica (`require_measured=True`), richiede `capture_rom_sha256 == candidate_sha256` nelle ricevute attive
-  e un'origine coerente. **Cancello finale obbligatorio del builder**: `rematches.candidate_gate(final_rom, receipt)`, cioe' lo sha256 della ROM finale con il byte di
-  attivazione azzerato (`inert_view`, pura: cambia solo il byte `active` dentro il file dell'overlay 126, trovato dalla FAT) deve essere uguale a `candidate_sha256` della prova; senza
-  questo cancello `candidate_relation: composed-candidate` e' un'etichetta, non un'attestazione.
-- `clang` fissato (versione e hash del binario) come in `controls.py`.
-- **Limiti**: il modulo cambia la riga y9 dell'overlay 126, la tabella dei file, la lunghezza della cartuccia e il CRC dell'header: i semi della UI (lunghezza, CRC y9) devono
-  includerlo (come per ogni stadio che accoda un file, vedi INTEGRATION.md); `audit`-style controlli dei pin valgono PRIMA di `install`.
+## Checks
+
+```sh
+PYTHONPATH=source .venv/bin/python -m unittest sgp131.test_rematches -v
+(cd source/features/rematch-variants/test && ../../../../.venv/bin/python -m unittest test_variants -v)
+PYTHONPATH=source SGP_REMATCH_REQUIRE_INPUTS=1 .venv/bin/python -m unittest sgp131.test_rematches_rom -v
+(cd source/features/rematch-variants/test && SGP_REMATCH_REQUIRE_INPUTS=1 ../../../../.venv/bin/python -m unittest test_hooks -v)
+SGP13_BASE_DIR=/private/path/1.2.5 PYTHONPATH=source .venv/bin/python -B -m unittest sgp13.test_teams_arm -v
+```
+
+Historical suite sizes: 26 host, 6 C core, 40 ROM/Unicorn, 6 hook tests. The final command
+checks seven existing trainers using exact 1.2.5 inputs; absent inputs skip.
+ROM suites read SHA-256-verified V4 EN/IT in memory only;
+`SGP_REMATCH_REQUIRE_INPUTS=1` makes missing inputs fail instead of skip.
+`rom_fixture.declared_reserve` is an explicit test policy with its own version/
+digest, rejected by the production policy. It grants copied map slot
+`c8.module-stubs` at `0x023D59E0`, 192 zero bytes in V4/UI output, while its parent
+was conditional. Production needs an independently granted current allocation.
+`test_rematches_rom.RealUiComposition` uses the actual UI output.
+
+No alternation or player-team adaptation is promised. The 18-battles-per-trainer/
+language plus baseline balance campaign and natural phone/Dojo entry paths
+are not established by this report.
+
+## Proof and post-review safeguards
+
+`validate_context_proof` rejects `synthetic_harness_only` unless test-only
+`allow_synthetic=True`. Measured proof requires matching candidate/capture SHA-256,
+`capture_file`, `build_id`; receipts record `proof_origin` (`android`/`synthetic`),
+`proof_sha256`, both hashes, `function_state` recomputed from installed `active`,
+and `candidate_relation`. Removed `context.status` process labels are not
+program state.
+
+`REMATCH_CONFIG_BYTES` is a compile-time bound equal to the allocation and limits
+the core at runtime. `test_hooks.AllTrainersSweep` compares active/native for
+one trainer per archive (format, count), Plus 0/1, both selector outcomes, EN/IT:
+zero differences. Enemy indices are bounded 0..3 in wrapper/config; `DirectGate`
+also exercises 4/7/8. Item pins cover records 158/273/285 and member count rather
+than the whole `a/0/1/7`. Plus is 0/1 by contract; wrapper requires `==1`, whereas
+the native level hook treats any nonzero as Plus. An invalid third value would
+retain native rematch teams while applying Plus levels.
+
+The inherited Dojo script 832 enters trainers 712/713 with `a4=1`.
+`SetupAndStartTrainerBattle` at V4 `0x02051370` (184-byte pinned `setup` function,
+executed in Unicorn) creates battleType `0x1` for phone (`a4=0`) and `0x801`
+(`BATTLE_TYPE_11`) for Dojo. Exact whitelist is `{0x1, 0x801}`, one entry per family
+in `gate.context.families`; all others (including `0x800`, `0x803`, `0x13`, `0x4B`, `0x3`)
+forward natively. Proof observations use `family`, not `entry`, and require exact
+family/value for both trainers and both families. A preceding stage changing
+`setup` is refused by installer/readback. These runtime values still require
+real Android capture before activation.
+
+`verify(require_measured=True)` defaults to refusing synthetic receipts and
+requires matching candidate/capture hashes and coherent origin when active.
+The final builder must call `rematches.candidate_gate(final_rom, receipt)`:
+`inert_view` zeros only `active` in overlay 126 found through FAT, and the final hash
+must equal proof `candidate_sha256`. The relation label alone is not attestation.
+Clang version/binary hash is pinned like `controls.py`.
+
+Overlay 126 modifies y9, FAT, cartridge length and header CRC. UI length/y9 CRC
+seeds must include this appended-file change; finalization must therefore run
+in the correct composition order. Pin audits apply before installation, not
+after the guarded sites have changed.

@@ -19,7 +19,7 @@ This ZIP always makes the ENGLISH game, even if your starting ROM is Italian. Th
 1. DOWNLOAD, EXTRACT AND PREPARE
 
 Official download page:
-https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.1
+https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.1-r2
 Choose "English" and download Sacred-Gold-Plus-1.3.1-US.zip. For Italian choose Sacred-Gold-Plus-1.3.1-IT.zip. Both work on Windows and Mac. The automatic "Source code (zip)" and "Source code (tar.gz)" downloads are for developers; they are not the player packages.
 
 Windows: right-click the ZIP in Downloads, choose "Extract All...", then "Extract". Open the extracted folder, not the compressed ZIP preview.

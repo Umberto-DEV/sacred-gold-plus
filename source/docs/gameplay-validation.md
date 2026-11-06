@@ -1,14 +1,13 @@
-# 1.3-dev systematic playtest — 28 October 2026
+# Gameplay validation evidence
 
-Aggiornamento del 29 ottobre 2026: la successiva
-[verifica funzionale Android](android-1.3-dev-validation.md) conclude la campagna
-corrente con 49 checkpoint accettati. Pin, conteggi, risultati e limiti di questa
-tappa precedente restano quelli documentati sotto.
+This current subject document retains historical tests needed to assess unchanged components. The current release is 1.3.1; these earlier results do not automatically accept a successor. See [current UI validation](ui-1.3.1-validation.md).
 
-The later [v8 interface integration](ui-1.3-dev-validation.md) records the UI
+The later [29 October Android campaign](android-validation.md) completed49 accepted checkpoints. This earlier evidence retains its own identities, counts, results and limits.
+
+The later [v8 interface integration](interface-validation.md) records the UI
 follow-up and its final candidate; the v5 evidence below remains unchanged.
 
-This is the follow-up to the [initial validation](validation-1.3-dev.md). The resulting private
+This is the follow-up to the [initial validation](validation.md). The resulting private
 candidate is **v5**, still displayed as **1.3 DEV**. No release was published and
 no published ZIP, tag or 1.2.5 input was changed. Work remains on `main`.
 

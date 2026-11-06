@@ -1,12 +1,11 @@
-# 1.3-dev interface integration validation
+# Interface integration validation evidence
 
-Aggiornamento del 29 ottobre 2026: la successiva
-[verifica funzionale Android](android-1.3-dev-validation.md) conclude la campagna
-corrente con 49 checkpoint accettati. Pin, conteggi, risultati e limiti di questa
-tappa precedente restano quelli documentati sotto.
+This current subject document retains historical tests needed to assess unchanged components. The current release is 1.3.1; these earlier results do not automatically accept a successor. See [current UI validation](ui-1.3.1-validation.md).
+
+The later [29 October Android campaign](android-validation.md) completed49 accepted checkpoints. This earlier evidence retains its own identities, counts, results and limits.
 
 28 October 2026. Final private candidate **v8**, built from unchanged 1.2.5 EN/IT.
-This records the interface follow-up to the [earlier systematic playtest](playtest-1.3-dev.md).
+This records the interface follow-up to the [earlier systematic playtest](gameplay-validation.md).
 It does not replace that report or relabel its battle observations as new runs.
 The [native interface contract](hgss-ui-contract.md) records the interface requirements.
 
@@ -133,6 +132,6 @@ the top frame row; all remaining visible border pixels match the native frame.
 These finite checks do not certify an entire adventure, every team/status/RNG
 combination, wireless/Pokéwalker, physical DS/mobile JIT, real multi-hour waits,
 all RTC courses, or power interruption on hardware. See the previous report for
-remaining balance coverage. This remains a private 1.3 DEV candidate; publication
+remaining balance coverage. At this historical checkpoint it remained a private1.3 DEV candidate; publication
 is separate. ROMs, saves, graphics, raw traces and private evidence stay outside
 Git.

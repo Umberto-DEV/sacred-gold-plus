@@ -1,105 +1,91 @@
-# Squadra in battaglia: riduzione della pausa di apertura
+# Battle Party cache
 
-Con le animazioni opzionali attive, il menu Squadra riusa la tabella delle
-mosse già caricata dalla battaglia. Nella fixture EN/IT la pausa del task idle
-scende da **33 a 20 frame**, circa **0,55 → 0,33 secondi** a 60 Hz, alla prima
-e alla seconda apertura. Rimane un caricamento visibile: non è movimento
-continuo in ogni fotogramma. La taratura del respiro anim2 a 0,375× resta invariata
-(v5c, e la [v5d](../anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026) non la tocca:
-cambia solo la posa B).
+This **1.3.1** dependency reuses the move table already loaded by the battle
+when optional battle animations are enabled. Historical EN/IT first/second
+openings reduced the idle-task pause from **33 to 20 frames** (about **0.55 to
+0.33 seconds** at 60 Hz). A visible load remains. The [anim 2](../anim2/README.md)
+0.375× breathing rate is unchanged; v5d adjusts only the separate B pose.
 
-**La cache è attiva solo con l'opzione «animazioni» accesa.** Quel byte
-(`0x023D8716` nel chunk di salvataggio Plus) è **spento per difetto**:
-`record()` in [squadra_cache.c:13](sorgenti/squadra_cache.c) lo controlla
-insieme al blocco opzioni valido, e con l'opzione OFF la funzione ritorna
-sempre il getter nativo. Con l'opzione spenta il percorso resta quello
-nativo: la riduzione 33→20 frame **non** si applica, come misurato di
-seguito nella riga «OFF».
+The animations byte at `0x023D8716` in the Plus save chunk is **off by default**.
+`record()` in [squadra_cache.c](sorgenti/squadra_cache.c) requires it and a valid
+options chunk. OFF always selects native getters; the 33→20 improvement applies
+only with animations enabled.
 
-## Causa e contratto
+## Native cause and contract
 
-`ov08_0221D184` prepara i dati dei sei Pokémon. Per ogni mossa occupata chiama
-`GetMoveMaxPP` e quattro volte `GetMoveAttr`: tipo, categoria, precisione e
-potenza. Ogni chiamata nativa rilegge il membro NARC della mossa; il loader
-esegue sette letture FS fra intestazioni, indice e contenuto. Il profilo GDB
-conferma le letture durante la pausa; una sonda limitata ai cinque getter
-ha misurato la riduzione prima dell'applicazione permanente.
+`ov08_0221D184` prepares six Pokémon. Each occupied move invokes `GetMoveMaxPP`
+and four `GetMoveAttr` calls (type/category/accuracy/power). Native calls reread
+the move's NARC member; each load performs seven FS reads for headers/index/data.
+GDB profiling confirmed those reads during the pause, and a five-getter probe
+measured the improvement before permanent installation.
 
-`BattleContext_New` ha già caricato con `LoadMoveTbl` i 468 record da 16 byte
-usati dalla battaglia. L'offset corretto è **`ctx + 0x3DE`**, verificato nel
-letterale passato al caricatore a `ov012:0x022486A8`. La successiva `itemData`
-è allineata separatamente: sottrarre la dimensione della tabella dal suo
-indirizzo darebbe un offset errato di due byte.
+`BattleContext_New` already loads 468 sixteen-byte records using `LoadMoveTbl`.
+The correct offset is **`ctx + 0x3DE`**, verified from the loader literal at
+`ov012:0x022486A8`. Later `itemData` is separately aligned; subtracting the
+move-table length from it would introduce a two-byte error.
 
-Il [blob](sorgenti/squadra_cache.c) intercetta cinque BL nella sola scansione
-Squadra: `0x0221D3DE`, `0x0221D3E8`, `0x0221D3F2`, `0x0221D3FC` e
-`0x0221D406`. Legge il contesto del menu da `[sp]` del chiamante, mantenendo
-stack allineato e registri preservati. Le guardie richiedono opzioni valide,
-animazioni ON, puntatori presenti e mossa nel range 0–467; il getter degli
-attributi accetta soltanto i quattro attributi previsti. Ogni altro caso
-conserva il getter originale. Non ci sono nuove allocazioni, cache persistenti
-o scritture ai dati delle mosse.
+The helper intercepts only five Party-scan BLs: `0x0221D3DE`, `0x0221D3E8`,
+`0x0221D3F2`, `0x0221D3FC`, `0x0221D406`. It gets the menu context from the
+caller's `[sp]` while preserving registers and stack alignment. Guards require
+valid options, animations ON, nonnull pointers and moveID 0–467; the attribute
+getter accepts only the four intended attributes. All other cases use the native
+getter. There are no new allocations, persistent caches or move-data writes.
 
-I PP mantengono la formula nativa, il limite di tre PP-Up e il risultato a
-8 bit. La divisione per cinque usa un'identità intera valida nel dominio
-0–765, verificata su tutti i 256 valori PP e sei valori PP-Up, inclusi quelli
-che richiedono il limite.
+PP retains the native formula, three-PP-Up clamp and 8-bit result. Division by
+five uses an integer identity valid over 0–765, checked for all 256 PP values and
+six PP-Up values including clamp cases. The **256-byte** block at `0x023DBE00`
+contains 200 code bytes, 40 zero-padding bytes and a 16-byte canary.
+[Compiler](tools/compila.py), [installer](../../sgp12/blocchi/squadra_lotta.py)
+and [independent readback](tools/rileggi.py) check provenance, fingerprints,
+reserve, preimages, targets and whole-image confinement. The overlay remains
+compressed in the same slot, with unchanged FAT and tail.
 
-Il blocco occupa **256 byte a `0x023DBE00`**: codice 200 byte, margine zero di
-40 byte, canarino di 16 byte. [Compilatore](tools/compila.py),
-[applicatore](../../sgp12/blocchi/squadra_lotta.py) e
-[rilettore indipendente](tools/rileggi.py) verificano provenienza, impronte,
-riserva, preimmagini, tutti i bersagli e confinamento dell'intera immagine.
-L'overlay resta compresso nello stesso slot, con FAT e coda inalterate.
+Reference: `pret/pokeheartgold` revision
+`0985e8718df4f25e64d6507d89c0c97c0d288981`, `asm/overlay_08.s`, `src/move.c`,
+`include/move.h`, `src/battle/battle_controller_player.c`.
 
-Sorgente nativo esaminato: `pret/pokeheartgold`, commit
-`0985e8718df4f25e64d6507d89c0c97c0d288981`, file `asm/overlay_08.s`,
-`src/move.c`, `include/move.h` e `src/battle/battle_controller_player.c`.
+## Historical validation: 15 September 2026
 
-## Verifica del 15 settembre 2026
+The fixture was level 49 Typhlosion versus level 19 Kakuna in National Park with
+six party members. Each replay cold-boots a copied save; animations are selected
+explicitly in RAM without changing Pokémon or moves.
 
-Fixture: Typhlosion livello 49 contro Kakuna livello 19 nel Parco Nazionale,
-con squadra di sei Pokémon. Ogni replay parte dalla ROM fredda e da una
-copia dello stesso salvataggio; l'opzione animazioni è impostata esplicitamente
-in RAM, senza alterare mosse o Pokémon.
-
-| Prova | Risultato |
+| Check | Recorded result |
 | --- | --- |
-| EN/IT, ON, due aperture | Plateau task 33→20 frame per apertura; menu e ritorni completati. |
-| EN/IT, OFF, due aperture | Plateau VBlank di 32 frame, percorso nativo conservato. Il plateau task ON della baseline è 33: sono due contatori distinti. |
-| ABI ARM, 10 test | Cinque contratti sul blob spedito e su quello ricompilato: valori, PP, limiti, opzioni, puntatori e stack/registri/Thumb. |
-| Equivalenza ARM nativa, una prova per lingua | Tutte le 468 mosse, quattro attributi e sei PP-Up confrontati con i getter originali. Intercettato soltanto il trasporto NARC; eseguite anche le istruzioni native di divisione. |
-| Dati live EN | 7.488 byte della tabella in RAM identici ai 468 membri NARC. |
-| Regressione offset | Il mutante `0x3E0` viene respinto dal confronto nativo: potenza della mossa 1 pari a 100 anziché 40. |
-| Cambio e fine lotta EN/IT | Due replay freddi: Typhlosion→Togetic, scelta mossa, KO e ritorno al campo entro il frame 9262; schermate e PP ispezionati. |
-| Build complete EN/IT | Ricostruzione byte-identica dalle basi 1.1; 16 rilettori verdi senza salti e T1–T5 della riserva superati. |
-| Bundle, 7 test | Provenienza, impronte delle due mappe, simboli, checksum e sovrapposizioni. |
-| Rilettore, 6 test per lingua | ROM valida accettata; alterazioni di codice, margine, canarino, metadati, header e coda FAT respinte. |
+| EN/IT ON, two openings | Task plateau 33→20 frames; menus/returns complete. |
+| EN/IT OFF, two openings | Native 32-VBlank-frame plateau. The ON baseline's 33 task frames are a different counter. |
+| ARM ABI, 10 tests | Five contracts on shipped/recompiled blobs: values, PP, bounds, options, pointers, stack/registers/Thumb. |
+| Native ARM equivalence, one/language | All 468 moves, four attributes, six PP-Up values match original getters. Only NARC transport is intercepted; native division executes. |
+| EN live data | All 7488 RAM table bytes match 468 NARC members. |
+| Offset regression | Native comparison rejects mutant `0x3E0`: move 1 power becomes 100 instead of 40. |
+| EN/IT switch/end | Two cold runs: Typhlosion→Togetic, move, KO, field return by frame 9262; screens/PP inspected. |
+| EN/IT full builds | Byte-identical reconstruction from 1.1 bases, 16 readbacks without skips, reserveT1–T5 passing. |
+| Bundle, 7 tests | Provenance, both maps' fingerprints, symbols, checksums, overlaps. |
+| Readback, 6 tests/language | Valid image accepted; code/padding/canary/metadata/header/FAT-tail mutants rejected. |
 
-Le prove sono in emulazione, su una fixture; non dimostrano compatibilità
-completa di ogni modalità, Safari, doppie o hardware. Restano letture di
-dati specie/esperienza, caricamenti grafici e pause durante i ritorni.
-L'ottimizzazione non modifica questi percorsi. L'audit animazioni precedente
-resta disponibile [qui](../anim2/AUDIT-2026-09-14.md).
+One emulated fixture does not establish all modes, Safari, doubles or hardware.
+Species/EXP reads, graphics loads and return pauses remain. The consolidated
+[animation notes](../anim2/README.md#historical-validation) preserve wider
+historical regressions; [current validation](../../docs/ui-1.3.1-validation.md)
+keeps acceptance tied to each exact ROM.
 
-## Riproduzione
+## Reproduce
 
 ```sh
 python3 source/features/squadra-lotta/tools/compila.py \
   --uscita source/sgp12/build/squadra_lotta
 python3 -m unittest discover -s source/features/squadra-lotta/test -p test_build.py
 python3 -m unittest discover -s source/features/squadra-lotta/test -p test_blob.py
-SGP_ROM_SQUADRA_PRIMA=/percorso/pre-squadra-EN.nds \
-SGP_ROM_SQUADRA_DOPO=/percorso/finale-EN.nds \
+SGP_ROM_SQUADRA_PRIMA=/path/to/pre-party-EN.nds \
+SGP_ROM_SQUADRA_DOPO=/path/to/post-party-EN.nds \
   python3 -m unittest discover -s source/features/squadra-lotta/test -p test_rilettore.py
-SGP_ROM_SQUADRA_DOPO=/percorso/finale-EN.nds \
+SGP_ROM_SQUADRA_DOPO=/path/to/post-party-EN.nds \
   python3 -m unittest discover -s source/features/squadra-lotta/test -p test_native_data.py
-python3 source/features/squadra-lotta/tools/copione.py /tmp/squadra.script
+python3 source/features/squadra-lotta/tools/copione.py /tmp/party.script
 ```
 
-Ripetere le prove su ROM con la coppia IT. Il copione richiede la fixture
-compatibile descritta in `anim2/tools/copioni.py`; `--off` ripete il percorso
-con animazioni disattivate. Unicorn richiede il permesso di eseguire codice
-JIT. ROM, salvataggi, stati, catture e dump rimangono privati. La verifica
-completa e riproducibile usa `sgp12.verifica` come nella
-[guida di ricostruzione](../../docs/rebuilding-1.2.md).
+Repeat ROM checks with IT. The script requires the fixture documented by
+`anim2/tools/copioni.py`; `--off` repeats with animations disabled. Unicorn
+requires executable JIT memory. Keep ROMs, saves, states, captures and dumps
+private. Use `sgp12.verifica` and the
+[base-stage guide](../../docs/base-stage-build.md) for complete reconstruction.

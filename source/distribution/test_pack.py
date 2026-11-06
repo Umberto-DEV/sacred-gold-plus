@@ -10,8 +10,18 @@ import unittest
 from unittest import mock
 import zipfile
 import pack
+from test_document_sources import write_private_document_fixture
 
 class PackageTests(unittest.TestCase):
+    def setUp(self):
+        self.document_temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.document_temp.cleanup)
+        root = Path(self.document_temp.name).resolve()
+        write_private_document_fixture(root, pack.config())
+        env = mock.patch.dict(os.environ, {'SGP_PLAYER_DOCUMENTS_DIR': str(root)})
+        env.start()
+        self.addCleanup(env.stop)
+
     def test_reference_rejects_methods_without_bounded_python_decompression(self):
         for method in (zipfile.ZIP_BZIP2, zipfile.ZIP_LZMA):
             with self.subTest(method=method), tempfile.TemporaryDirectory() as tmp:
@@ -86,7 +96,7 @@ class PackageTests(unittest.TestCase):
             cfg, reference, _ = self.reference_fixture(directory)
             with zipfile.ZipFile(reference, 'a') as archive:
                 archive.writestr('Cheats/Name-1.2.3.txt', b'first')
-                archive.writestr('Cheats/Name-1.2.5.txt', b'second')
+                archive.writestr('Cheats/Name-' + cfg['version'] + '.txt', b'second')
             cfg['references']['EN']['sha256'] = pack.digest(reference)
             with self.assertRaisesRegex(ValueError, 'collision'):
                 pack.reference_members('EN', directory, directory, cfg)
@@ -274,6 +284,7 @@ class PackageTests(unittest.TestCase):
 
     def reference_fixture(self, directory, lang='EN'):
         cfg = copy.deepcopy(pack.config())
+        cfg['cheats_policy'] = 'inherit-reference'
         original = b'original gameplay manual'
         cfg['original_documents'] = {'Evolution Changes.pdf': {
             'bytes': len(original), 'sha256': hashlib.sha256(original).hexdigest()}}
@@ -405,8 +416,7 @@ class PackageTests(unittest.TestCase):
                     z.writestr('Manual/Whats-New-1.2-EN.pdf', b'old news')
                     z.writestr(license_name, b'license')
                 cfg['references'][lang] = {'name': ref.name, 'sha256': pack.digest(ref)}
-                expected = (['How-to-install-1.2.5-EN.pdf', 'Whats-New-1.2.5-EN.pdf']
-                            if lang == 'EN' else ['Come-installare-1.2.5-IT.pdf', 'Novita-1.2.5-IT.pdf'])
+                expected = pack.guide_names(lang, cfg)
                 for name in expected:
                     (directory / name).write_bytes(b'current PDF')
                 members = pack.reference_members(lang, directory, directory, cfg)
@@ -479,7 +489,7 @@ class PackageTests(unittest.TestCase):
             with self.subTest(source=source):
                 self.assertEqual(pack.patch_path(source), expected)
         routes = [pack.patch_path(s['id']) for s in pack.config()['sources']]
-        self.assertEqual(len(set(routes)), 21)
+        self.assertEqual(len(set(routes)), 25)
         self.assertFalse(any('From Plus 1.01/IT' in p for p in routes))
 
     def test_extracted_package_has_versioned_root_and_resolvable_inventory(self):
@@ -505,9 +515,9 @@ class PackageTests(unittest.TestCase):
                 self.assertIn(pack.patch_path(source['id']), text)
                 self.assertIn(source['sha256'], text)
             self.assertIn(pack.config()['targets'][lang]['sha256'], text)
-            names = {p.name for p in (pack.HERE / 'documents' / lang).glob('*.txt')}
-            expected = ({'HOW-TO-INSTALL.txt', 'WHATS-NEW-1.2.5.txt'} if lang == 'EN'
-                        else {'COME-INSTALLARE.txt', 'NOVITA-1.2.5.txt'})
+            names = {p.name for p in (pack.documents_dir(pack.config()) / lang).glob('*.txt')}
+            expected = ({'HOW-TO-INSTALL.txt', 'WHATS-NEW-1.3.1.txt'} if lang == 'EN'
+                        else {'COME-INSTALLARE.txt', 'NOVITA-1.3.1.txt'})
             self.assertEqual(names, expected)
 
     def test_original_document_corruption_is_rejected(self):
@@ -526,5 +536,5 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(p.read_bytes(),b'keep')
     def test_all_previously_supported_inputs_and_124_are_present(self):
         ids={x['id'] for x in pack.config()['sources']}
-        self.assertEqual(len(ids),21)
+        self.assertEqual(len(ids),25)
         self.assertTrue({'clean-us','clean-it','plus-1.01','plus-1.02','plus-1.03','plus-1.2.3-en','plus-1.2.3-it','plus-1.2.4-en','plus-1.2.4-it'}<=ids)

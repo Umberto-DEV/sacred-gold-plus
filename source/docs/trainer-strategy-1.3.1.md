@@ -1,4 +1,4 @@
-# Strategic trainer changes in the 1.3 development build
+# Strategic trainer changes in 1.3.1
 
 The existing Plus difficulty setting now enables nine move substitutions across
 seven important trainers. Normal difficulty retains the original parties. This

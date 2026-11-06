@@ -1,10 +1,12 @@
-# 1.3 development validation — 28 October 2026
+# Validation methods and historical evidence
+
+This current subject document retains historical tests needed to assess unchanged components. The current release is 1.3.1; these earlier results do not automatically accept a successor. See [current UI validation](ui-1.3.1-validation.md).
 
 This records the initial v4 checkpoint. The subsequent
-[systematic playtest](playtest-1.3-dev.md) records the corrected v5 candidate and
+[systematic playtest](gameplay-validation.md) records the corrected v5 candidate and
 expanded coverage; hashes and observations below remain tied to v4.
 
-These are private development candidates, not a published release. They were
+These were private development candidates at this historical checkpoint. They were
 built on `main` from the exact 1.2.5 EN/IT images. Published ZIPs, tags, source
 payloads and the `sgp12` build route were not replaced.
 
@@ -32,7 +34,7 @@ The full run used the preceding composed checkpoint. Two subsequent resource
 corrections were checked independently: two coordinate bytes moved the Day Care
 consultant from `(6,7)` to the accessible floor at `(4,9)`; the 18 new phone
 messages gained a clearer course-time label and the native final input wait.
-Only event archive member302 and text-bank member660 changed. Every original
+Only event archive member 302 and text-bank member 660 changed. Every original
 phone message and the entire ARM9, ARM7, overlay table and all other FAT payloads
 remain identical. Native interaction verified the new position and phone wait.
 Final raw-save and Guide campaigns below use the exact candidate hashes above.

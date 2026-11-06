@@ -66,7 +66,7 @@ def add_member(members, name, data, *, authored_override=False):
 
 
 def config(path=None):
-    cfg = json.loads(Path(path or HERE / 'release.json').read_text())
+    cfg = json.loads(Path(path or HERE / 'release-1.3.1.json').read_text())
     path_token(cfg['version'])
     ids = [path_token(row['id']) for row in cfg['sources']]
     if len(ids) != len(set(ids)):
@@ -87,7 +87,25 @@ def documents_dir(cfg):
     relative = Path(cfg.get('documents', 'documents'))
     if relative.is_absolute() or '..' in relative.parts or relative.parts[0] != 'documents':
         raise ValueError('Documents must remain inside the distribution documents directory')
+    external = os.environ.get('SGP_PLAYER_DOCUMENTS_DIR')
+    if external:
+        root = Path(external)
+        if not root.is_absolute():
+            raise ValueError('SGP_PLAYER_DOCUMENTS_DIR must be an absolute path')
+        return root
     return HERE / relative
+
+
+def document_text(lang, name, cfg):
+    """Read public English or explicitly supplied private localization sources."""
+    if lang not in ('EN', 'IT'):
+        raise ValueError('Unsupported player document language')
+    try:
+        with guide_directory_descriptor(documents_dir(cfg) / lang) as descriptor:
+            return guide_file_bytes(descriptor, name).decode('utf-8')
+    except ValueError as exc:
+        raise ValueError('Player document unavailable: supply a complete private '
+                         'bundle with SGP_PLAYER_DOCUMENTS_DIR. ' + str(exc)) from exc
 
 
 def guide_names(lang, cfg):
@@ -114,7 +132,7 @@ def patch_path(source_id):
 
 def install_text(lang, cfg):
     name = 'COME-INSTALLARE.txt' if lang == 'IT' else 'HOW-TO-INSTALL.txt'
-    text = (documents_dir(cfg) / lang / name).read_text(encoding='utf-8')
+    text = document_text(lang, name, cfg)
     # Fail packaging if a handwritten guide drifts from the actual routes.
     for source in cfg['sources']:
         if patch_path(source['id']) not in text or source['sha256'] not in text:
@@ -122,6 +140,25 @@ def install_text(lang, cfg):
     if cfg['targets'][lang]['sha256'] not in text:
         raise ValueError('Installation guide has an outdated output fingerprint')
     return text
+
+
+def authored_notices(lang, cfg):
+    names = {
+        'EN': ('Cheats/ABOUT-CHEATS.txt', 'Manual/ABOUT-THESE-GUIDES.txt'),
+        'IT': ('Cheats/LEGGIMI-CHEAT.txt', 'Manual/LEGGIMI-MANUALI.txt'),
+    }
+    if lang not in names:
+        raise ValueError('Unsupported player document language')
+    result = {}
+    for name in names[lang]:
+        relative = Path(name)
+        try:
+            with guide_directory_descriptor(documents_dir(cfg) / lang / relative.parent) as descriptor:
+                result[name] = guide_file_bytes(descriptor, relative.name)
+        except ValueError as exc:
+            raise ValueError('Required player notice unavailable: supply a complete '
+                             'SGP_PLAYER_DOCUMENTS_DIR bundle. ' + str(exc)) from exc
+    return result
 
 
 def finalize_members(members, manifest):
@@ -451,6 +488,7 @@ def pinned_git_snapshot(checkout, commit):
 
 def reference_members(lang, reference_dir, guide_dir, cfg):
     install_text(lang, cfg)
+    notices = authored_notices(lang, cfg)
     ref = cfg['references'][lang]
     path = reference_dir / ref['name']
     reference = pinned_reference_bytes(path, ref)
@@ -490,11 +528,16 @@ def reference_members(lang, reference_dir, guide_dir, cfg):
         if len(licenses) != 1:
             raise ValueError('Reference license collision or missing license')
         add_member(members, license_name, read_member(licenses[0]))
+    for name, raw in notices.items():
+        add_member(members, name, raw, authored_override=True)
     for p in sorted((documents_dir(cfg)/lang).rglob('*.txt')):
         relative = p.relative_to(documents_dir(cfg)/lang)
         # Root text files are authoring sources for the two player-facing PDFs.
-        if len(relative.parts) > 1 and 'History' not in relative.parts:
-            add_member(members, relative.as_posix(), p.read_bytes(), authored_override=True)
+        if (len(relative.parts) > 1 and 'History' not in relative.parts
+                and relative.as_posix() not in notices):
+            with guide_directory_descriptor(p.parent) as descriptor:
+                raw = guide_file_bytes(descriptor, p.name)
+            add_member(members, relative.as_posix(), raw, authored_override=True)
     with guide_directory_descriptor(guide_dir) as guide_descriptor:
         for name in guide_names(lang, cfg):
             add_member(members, name, guide_file_bytes(guide_descriptor, name))
@@ -553,7 +596,7 @@ def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3
     (output/'verification.json').write_text(json.dumps({'version':cfg['version'],'assets':results,
         'status':cfg.get('status', 'file-reconstruction-verified'),
         'open_gates':cfg.get('open_gates', []),
-        'contract_sha256':digest(contract or HERE/'release.json'),
+        'contract_sha256':digest(contract or HERE/'release-1.3.1.json'),
         'scope':'File reconstruction with two decoders; no game runtime or save compatibility test.'},indent=2)+'\n')
     return results
 
@@ -562,6 +605,6 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ['inputs','references','guides','output','rompatcher']: p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--node',default='node');p.add_argument('--xdelta',default='xdelta3')
-    p.add_argument('--contract',type=Path,help='Explicit versioned contract; default remains published 1.2.5')
+    p.add_argument('--contract',type=Path,help='Versioned contract; default is current 1.3.1')
     a=p.parse_args()
     print(json.dumps(build(a.inputs,a.references,a.guides,a.output,a.rompatcher,a.node,a.xdelta,a.contract),indent=2))

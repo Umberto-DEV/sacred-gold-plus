@@ -1,4 +1,6 @@
-# Cheat catalogue validation — 1.2.1, 15 September 2026
+# Cheat catalogue validation
+
+Historical evidence from15September2026 on exact1.2.1 inputs;not new current-ROM or emulator acceptance.
 
 The updated catalogue contains **2,110 codes in 67 folders per language**.
 Every code was checked for syntax and ROM guards, then executed separately in
@@ -82,7 +84,7 @@ limited as described above.
 
 | Folder | Codes | Executions | RAM changed | RAM unchanged |
 |---|---:|---:|---:|---:|
-| 00 - Sacred Gold Plus 1.2.1 (verificati) | 7 | 16 | 13 | 3 |
+| 00 - Sacred Gold Plus 1.2.1 (verified) | 7 | 16 | 13 | 3 |
 | 01 - System · compatibility and boot | 1 | 2 | 2 | 0 |
 | 02 - System · WFC online services | 1 | 2 | 2 | 0 |
 | 03 - System · animations and speed | 2 | 4 | 4 | 0 |

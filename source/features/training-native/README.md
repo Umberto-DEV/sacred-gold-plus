@@ -1,6 +1,7 @@
 # Native training adapter
 
-This adapter installs the training core into the reserved 1.3 ARM9 compartment.
+This **1.3.1** dependency installs the training core into the reserved 1.3 ARM9
+compartment.
 The guarded builder is `source/sgp13/training.py`; it consumes private EN/IT ROMs
 and a build-time character map. No retail ROM, save or extracted asset is shipped.
 Existing 1.2.5 sources and save identifiers are unchanged.

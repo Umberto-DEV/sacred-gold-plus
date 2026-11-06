@@ -1,6 +1,6 @@
 # Extended levels — model only, not installed
 
-**The current ROM still has a level cap of 100.** This directory contains a
+**The current 1.3.1 ROM still has a level cap of 100.** This directory contains a
 ROM-free, tested contract for the requested level-150 feature. It deliberately
 does not install hooks, rewrite a ROM, or touch a save.
 

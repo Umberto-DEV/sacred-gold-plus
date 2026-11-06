@@ -1,191 +1,141 @@
-# Manutenzione 1.2.4
+# Battle-copy and field-input maintenance
 
-Questo aggiornamento è lo stadio finale della 1.2.4. Corregge due percorsi
-identificati nel codice, senza cambiare il formato di salvataggio. Il
-costruttore riproduce prima l'intermedio 1.2.3, verificato per SHA-256, poi
-applica questo stadio e aggiorna il titolo. L'applicatore autonomo accetta
-le immagini ufficiali 1.2.3 EN/IT; le patch della distribuzione coprono
-invece tutte le sorgenti elencate in `source/distribution/release.json`.
+This dependency remains in the **1.3.1** build chain. Originally introduced in
+1.2.4, it repairs two code paths without changing the save format. The base
+builder first reconstructs the SHA-256-pinned 1.2.3 intermediate, applies this
+stage and updates the title; later stages advance the final version. The
+standalone installer accepts only official 1.2.3 EN/IT images. Use the
+[current composition guide](../../sgp131/README.md) for a complete 1.3.1 build.
 
-## Animazioni in battaglia
+## Battle sprite copies
 
-Il motore usa copie OAM ferme dei Pokémon durante diversi effetti nativi.
-ANIM2 continuava a muovere l'originale anche quando una copia esisteva:
-`moveActive`, `animActive` e l'ingresso specie non coprono tutti questi casi.
-Questo spiega la doppia sagoma durante cambi e lanci della Ball.
+Native effects use stationary OAM copies of Pokémon. ANIM2 previously moved the
+original while a copy existed because `moveActive`, `animActive` and species
+entry did not cover every producer, explaining doubled silhouettes during
+switches and Ball throws.
 
-Il nuovo wrapper intercetta l'allocazione nel costruttore comune
-`ov07_0221FB90`, riporta a riposo tutti gli slot ANIM2 prima della lettura
-dei dati della copia e conta i proprietari ancora vivi. Il task non anima
-finché l'ultimo proprietario non viene distrutto. I due distruttori nativi
-decrementano il contatore dopo `Heap_Free`. Non vengono aggiunti task.
+The wrapper intercepts allocation in common constructor `ov07_0221FB90`, returns
+all ANIM2 slots to rest before copy data is read and counts live owners. The
+task waits until the last owner is destroyed; two native destructors decrement
+after `Heap_Free`. No task is added. The counter remains coherent with the
+option OFF. Enabling during a copy clears residual native-bounce `yOffset` but
+leaves native scale, pose and shadow alone. Cleanup uses existing `sgp_pulisci`
+ownership rules; resumption restarts phase, envelope and B-pose wait.
 
-Il contatore resta coerente anche con opzione spenta. Riaccendendola durante
-una copia viene azzerato l'eventuale `yOffset` residuo del bounce vanilla;
-scala, posa e ombra native non sono modificate dal wrapper del task.
-Il ripristino prima della copia usa le regole di proprietà già presenti in
-`sgp_pulisci`. La ripresa ricrea fase, inviluppo e attesa della posa B.
+Coverage includes single, collective, Ball and `SpriteToOAM` copies. It does
+not establish that every reported double image during fainting, dialogue, Bag
+use or escape has that same cause.
 
-La copertura comprende copie singole, collettive, Ball e `SpriteToOAM`.
-Non è una prova che ogni episodio osservato durante KO, dialoghi, borsa o
-fuga abbia lo stesso produttore della seconda immagine.
+## Waterfall search during movement
 
-## Ricerca di Cascata durante il movimento
+`FieldInput_Process` searched for a Waterfall user every update: up to six
+Pokémon, checking egg status and four moves each. Individual `GetMonData` calls
+may decrypt/re-encrypt the record. Its sole consumer, `ov01_021F24F4`, uses the
+result only while Surfing (state 2) south (direction 1). The wrapper skips the
+search elsewhere and calls the original with unchanged arguments/result in
+that case. Other field-move searches remain native; no Party cache is added.
+This removes CPU work. It is not an FPS/input-latency measurement, and earlier
+NPC-load improvements do not establish a fix for continuous city slowdown.
 
-`FieldInput_Process` cercava ogni aggiornamento un Pokémon con Cascata:
-fino a sei Pokémon, ciascuno con controllo Uovo e quattro mosse. I singoli
-`GetMonData` possono decifrare e ricifrare i dati del Pokémon.
+## Memory and application
 
-L'unico consumatore del bit ottenuto, `ov01_021F24F4`, può utilizzarlo solo
-in Surf (stato 2) andando a sud (direzione 1). Il wrapper salta la ricerca
-negli altri casi. In Surf verso sud richiama la funzione originale, con
-stessi argomenti e stesso risultato. Le altre ricerche delle mosse non
-cambiano; non si introduce una cache della squadra.
-
-È lavoro CPU eliminato, **non una misura di FPS o di latenza**. I precedenti
-interventi sul caricamento NPC riguardano soprattutto il passaggio tra zone
-e non dimostrano di risolvere il rallentamento continuo nelle città.
-
-## Memoria e applicazione
-
-| Uso | Indirizzo | Ingombro |
+| Owner | Address | Size |
 | --- | --- | --- |
-| Wrapper copie | `0x023DBC60` | 144 B codice + 16 B canarino, nella coda già assegnata ad ANIM2 |
-| Contatore copie | `0x023DBBC0` | 4 B precedentemente riservati nello stato ANIM2 |
-| Wrapper Cascata | `0x023D8040` | 24 B codice + 24 B padding + 16 B canarino, nella riserva libera della 1.2.3 |
+| Copy wrapper | `0x023DBC60` |144 code bytes +16-byte canary, existing ANIM2 tail |
+| Copy counter | `0x023DBBC0` |4 formerly reserved ANIM2 state bytes |
+| Waterfall wrapper | `0x023D8040` |24 code +24 padding +16 canary bytes, former 1.2.3 free reserve |
 
-Non cresce la riserva ARM9. Il build contiene soltanto codice compilato da
-questi sorgenti. Sei regioni di file sono modificate: titolo, due zone ARM9 e
-tre overlay compressi. Nell'immagine decompressa cambiano solo i cinque
-ganci dichiarati. Nel controllo EN/IT la ricompressione conserva esattamente
-le dimensioni dei file; FAT, header, altri asset e script restano invariati.
+The ARM9 reserve does not grow. The bundle contains code compiled from these
+sources. Six file regions change: title, two ARM9 regions and three compressed
+overlays; decompressed changes are confined to five declared hooks. EN/IT
+recompression preserves exact file sizes, FAT, header, unrelated assets/scripts.
 
-Dalla radice del repository, con l'ambiente già disponibile:
+From the root, using the project environment:
 
 ```sh
 .venv/bin/python3 source/features/manutenzione/compila.py \
   --uscita source/sgp12/build/manutenzione
-
 PYTHONPATH=source .venv/bin/python3 -m sgp12.manutenzione \
-  --base /percorso/privato/sgp-1.2.3-IT.nds --verifica
+  --base /private/path/sgp-1.2.3-IT.nds --verifica
 ```
 
-`--verifica` non scrive ROM. Per creare una sola immagine 1.2.4,
-sostituire `--verifica` con `--uscita /percorso/privato/sgp-manutenzione-IT.nds`.
-L'ingresso non viene sovrascritto. Output esistente, preimmagine diversa,
-build incoerente o spazio insufficiente causano un rifiuto. La scrittura
-legge blocchi da 1 MiB e rilegge l'intera uscita prima di dichiararla valida.
-Non produce ROM intermedie. Le varianti personali con altre patch sono
-rifiutate: non applicare saltando il controllo dell'impronta.
+`--verifica` writes no ROM. For the isolated base stage, replace it with
+`--uscita /private/path/sgp-maintenance-IT.nds`. The input is preserved. Existing
+output, wrong preimage, inconsistent bundle or insufficient space is rejected.
+Writing streams 1 MiB blocks and rereads the full output without intermediate
+ROMs. Personal variants are rejected; do not bypass the hash guard.
 
-## Verifiche e limiti
+## Historical checks and their limits
 
 ```sh
 .venv/bin/python3 -m unittest discover -s source/features/manutenzione -p 'test_*.py'
-```
-
-Le prove dei wrapper eseguono il piccolo codice ARM su memoria sintetica
-con Unicorn già installato, insieme al blob ANIM2 proprio. I confini con
-heap e renderer sono simulati. Non avviano il gioco, melonDS o un firmware.
-Su macOS il sandbox può terminare Unicorn durante `mem_map`: in tal caso
-serve un ambiente di esecuzione che consenta la memoria della libreria,
-non una reinstallazione. Le prove dell'applicatore usano file minuscoli.
-
-La prima verifica ha rilevato i difetti prima delle correzioni; dopo le
-correzioni passano 8 prove dei wrapper (20 combinazioni stato/direzione
-incluse), 9 dell'applicatore e 7 del verificatore del totem e dei flag.
-La suite leggera preesistente `sgp12.test_lib` ha eseguito 42 prove e
-saltato le 31 che richiedono ricostruzioni/fixture ROM; la verifica della
-mappa ha eseguito 3 prove strutturali e saltato 8 prove con fixture esterne.
-Questi skip sono intenzionali e non valgono come controlli superati.
-La preparazione sulle due ROM reali ha
-verificato preimmagini, spazi, ricompressione e rilettura indipendente in
-circa 1,1 secondi per lingua, con picco RSS complessivo di circa 97 MiB.
-Questa fase non ha misurato prestazioni né immagini del gioco. La successiva
-prova utente e la breve misura della presentazione sono descritte sotto.
-
-## Totem di Aranciopoli: controlli del codice e prima prova riuscita
-
-```sh
 .venv/bin/python3 -B source/features/manutenzione/verifica_totem.py
 ```
 
-Il verificatore legge i membri necessari a streaming, senza salvare asset.
-Usa il decoder già presente e il checkout pret locale; non installa nulla.
+Wrapper tests run real ARM and ANIM2 blobs on synthetic Unicorn memory with
+heap/renderer seams; no game, emulator or firmware runs. macOS sandbox failure
+at `mem_map` requires a JIT-capable environment, not reinstallation. Installer
+tests use tiny synthetic files. Historical results: 8 wrapper tests (including 20
+state/direction combinations), 9 installer tests and 7 totem/flag tests passing;
+`sgp12.test_lib` 42 run/31 private-input skips, map checks 3 run/8 external-fixture
+skips. Skips remain uncovered. Preparing both real ROMs checked preimages,
+space, recompression and independent readback at about 1.1 seconds/language and
+97 MiB peakRSS; it measured neither gameplay performance nor screens.
 
-1. **Dal tasto A all'avvio della lotta:** sei scenari per lingua, con/senza
-   Rugiada Anima e conferma/rinuncia. Le destinazioni dei salti, gli oggetti,
-   i movimenti e i messaggi risultano strutturalmente validi.
-2. **Parametri e ritorno dalla lotta:** dodici scenari per lingua, due
-   rami specie e sei esiti. Latios/Latias livello 40 sono validi; lo script
-   raggiunge `ReleaseAll/End` e usa `WhiteOut` per sconfitta/pareggio.
+### Vermilion totem investigation
 
-Questi sono controlli del bytecode e simulazioni del flusso: le attese
-native vengono assunte completate. **Non eseguono il motore durante la
-battaglia e non riproducono il freeze.** Sei prove aggiuntive con mutazioni
-in RAM verificano che il controllore rilevi salti, oggetti, specie, livelli
-e sblocchi alterati.
+The read-only verifier streams necessary members using the existing decoder
+and local pinned pret checkout; it saves no assets and installs nothing.
+Six scenarios per language cover A→battle with/without Soul Dew and accept/
+decline; 12 per language cover two species branches and six battle outcomes.
+Targets, objects, movement and messages are structurally valid, Latios/Latias
+level 40 is valid, the script reaches `ReleaseAll/End`, and loss/draw use
+`WhiteOut`. Six RAM-mutant tests detect changed jumps, objects, species, levels
+and unlocks.
 
-`LockAll` può attendere indefinitamente un movimento che non termina;
-durante la lotta il task attende la chiusura dell'applicazione di battaglia.
-Senza lo stato d'esecuzione del momento del blocco non è determinato quale
-attesa, se una di queste, rimanga pendente.
+These bytecode/flow checks assume native waits complete. They neither execute
+the battle engine nor reproduce the freeze. `LockAll` can wait on unfinished
+movement, and the battle task waits for the battle application; the original
+blocked execution state was not captured, so no pending wait was identified.
 
-È inoltre emerso un limite ereditato dall'hack: i flag `0x3FCA` e `0x3FAF`
-superano la struttura nativa `SaveVarsFlags`. Nei binari EN/IT accedono a
-due byte del PalPad, rispettivamente `+0xDD` bit 2 e `+0xD9` bit 7. La
-stessa gestione esiste già nelle basi Classic 1.04 e Plus 1.1. Potrebbe
-essere un riuso deliberato dell'hack; non prova che causi questo freeze.
-Cambiare gli ID senza censimento e gestione dei salvataggi preesistenti
-potrebbe alterare la progressione: non è stata applicata una rimappatura.
+The historical investigation found inherited high flags `0x3FCA` and `0x3FAF`
+outside `SaveVarsFlags`, targeting PalPad `+0xDD` bit 2 and `+0xD9` bit 7 in Classic 1.04
+and Plus 1.1. Six real native `Save_VarsFlags_SetFlagInArray` calls under Unicorn
+(three flags/language, including a valid control) confirmed the offsets and
+normal return with `_021D4150=0`; high flags reached `GF_AssertFail`, which then
+returned. This was not the user's freeze state or all execution conditions.
+No flag remap belonged to this maintenance stage. The later
+[event-state module](../event-flags/README.md) provides the current HF 02 solution;
+its evidence and compatibility constraints are separate.
 
-Una verifica separata esegue la vera `Save_VarsFlags_SetFlagInArray` delle
-ROM EN/IT con Unicorn su un salvataggio sintetico. Sei chiamate (tre flag
-per lingua, incluso un controllo valido) confermano gli offset fuori
-struttura e il ritorno regolare con `_021D4150=0`. Per i due flag alti viene
-raggiunta `GF_AssertFail`, che in questa condizione ritorna. Nessun mock
-sostituisce questi accessori; non è comunque lo stato catturato durante
-il freeze dell'utente, né una prova di tutti gli stati possibili.
+### 24 October 2026 user report
 
-Lo script e i flag del totem restano quindi invariati. Questi controlli
-da soli non dimostrano la risoluzione del blocco.
+After an explicitly requested in-place Android ROM update preserving the
+current save and personal ROM settings, the user reported catching Latios and
+no longer observing slowdown. They clarified the former freeze occurred after
+battle started. That candidate succeeded in the reported case; it did not
+identify the earlier cause or verify every animation-overlap scenario.
 
-## Prova utente sulla dispositivo Android del 24 ottobre 2026
+A subsequent roughly 30-second SurfaceFlinger sample had 16.763 ms median,
+16.767 ms 95 th percentile and no interval above 25 ms. These are Android surface
+presentation intervals, not DS logic FPS or input latency. The in-game location
+was not recorded, so this is no controlled city/baseline comparison. An initial
+log capture ended before gameplay; the app buffer and a new bounded capture
+were collected during the sample. Neither reproduced the old freeze. Logs and
+receipts remain private; no emulator/APK was installed for this check.
 
-Su successiva richiesta esplicita è stata sostituita la ROM sulla dispositivo Android,
-preservando il salvataggio corrente e le personalizzazioni della ROM già
-installata. L'utente ha avviato e giocato personalmente: riferisce di aver
-catturato Latios e di non osservare più i rallentamenti. Ha inoltre precisato
-che il vecchio blocco avveniva dopo l'inizio della lotta. Il caso segnalato
-ha quindi avuto esito positivo con il candidato; manca ancora una prova
-che attribuisca il vecchio freeze a una specifica modifica, e non sono
-stati confermati tutti gli scenari di sovrapposizione delle animazioni.
+The later [1.3.1 validation](../../docs/ui-1.3.1-validation.md) retains newer
+candidate identities. The historic Latios freeze is not established as fixed
+by these observations or by the distinct battle type-loop repair.
 
-Dopo il resoconto sono stati raccolti circa 30 secondi di tempi di
-presentazione SurfaceFlinger: intervallo mediano 16,763 ms, percentile 95
-16,767 ms, nessun intervallo oltre 25 ms. Sono tempi della superficie Android,
-non FPS della logica DS né misure di latenza dei comandi. La posizione nel
-gioco durante questa misura non è stata rilevata: non è un confronto
-controllato tra città né con la ROM precedente.
+## Reference sources
 
-La prima raccolta log si era interrotta prima dell'avvio della partita;
-è stato recuperato il buffer dell'app ed eseguita una nuova raccolta durante
-la misura. I log disponibili non contengono una riproduzione del vecchio
-freeze. La raccolta breve è conclusa; log e ricevute restano in `local/`,
-esclusi dal repository pubblico. Non sono stati installati emulatori o APK.
+Pinned `pret/pokeheartgold` revision
+`0985e8718df4f25e64d6507d89c0c97c0d288981`: `asm/overlay_07.s` (copy lifecycle),
+`src/pokepic.c`, `src/field/field_control.c`, `asm/overlay_01_021F1AFC.s`
+(Waterfall producer/consumer), and `src/script_pokemon_util.c`.
 
-## Riferimenti della diagnosi
-
-I riferimenti al motore sono nella revisione pret/pokeheartgold
-`0985e8718df4f25e64d6507d89c0c97c0d288981`, consultata localmente:
-`asm/overlay_07.s` (costruttore/distruttori copie),
-`src/pokepic.c` (renderer e attributi),
-`src/field/field_control.c` e `asm/overlay_01_021F1AFC.s`
-(produttore e consumatore del bit Cascata), `src/script_pokemon_util.c`.
-
-Segnalazioni pubbliche descrivono scatti anche nell'originale, ma non
-identificano da sole una causa comune:
-[Goldenrod e Vermilion, testimonianze del 2025](https://www.reddit.com/r/PokemonHGSS/comments/1k79vaq).
-La rimozione del limitatore FPS è una modifica distinta che può accelerare
-il gioco: [strumento dell'autore](https://github.com/ITotalJustice/pokemon-gen4-fps-unlocker).
-Non è stata inclusa in questo aggiornamento.
+[2025 Goldenrod/Vermilion reports](https://www.reddit.com/r/PokemonHGSS/comments/1k79vaq)
+describe slowdown in the original, but do not identify a shared cause. The
+[author's FPS-unlock tool](https://github.com/ITotalJustice/pokemon-gen4-fps-unlocker)
+is a separate speed-altering modification and is not included here.

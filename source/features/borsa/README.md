@@ -1,61 +1,51 @@
-# Borsa al tetto
+# Full-Bag gifts and pickups
 
-Questo modulo permette ai doni gratuiti e agli oggetti raccolti a terra di
-proseguire quando lo slot della Borsa è già al tetto. La quantità che entra
-viene aggiunta normalmente; l'eccedenza viene scartata e lo script mostra il
-messaggio dedicato. Negozi, premi a pagamento, scambi e altri siti fuori dal
-censimento restano sul comportamento originale.
+This module remains part of the **1.3.1** build chain. Free gifts and ground
+pickups can finish when an item stack is already full: the amount that fits is
+added normally, any excess is discarded, and the script shows the dedicated
+notice. Shops, paid rewards, trades and sites outside the audited census keep
+the original behavior.
 
-I tetti sono 999 per le tasche impilabili e 99 per MT/MN. Posta e oggetti
-chiave sono eccezioni esplicite e mantengono sempre il comportamento originale.
-La tabella contiene 110 siti permissivi identificati dai byte finali degli
-script; 106 chiavi restano invariate e quattro vengono rigenerate dopo
-l'inversione di REWARD-01.
+Stack limits are 999, or 99 for TMs/HMs. Mail and Key Items always retain native
+behavior. The table identifies 110 permissive sites from the final script bytes;
+106 keys remain unchanged and four are regenerated after the REWARD-01 reversal.
 
-L'API pubblica è il blocco composto `source/sgp12/blocchi/borsa.py`:
+The public composed API is `source/sgp12/blocchi/borsa.py`:
 
 ```python
 finale, rapporto = borsa.applica(rom, build_dir, lingua, manifest_path=None)
 verdetto = borsa.rileggi(rom, finale, build_dir, lingua)
 ```
 
-I quattro stadi sono `premi`, `testo199`, `appendici` e `arm9`. Il rilettore
-espone un rapporto distinto per ciascuno e rende `esito_finale: ROSSO` se cade
-anche una sola condizione o se il risultato differisce di un byte dalla
-ricostruzione attesa. Gli strumenti singoli in `tools/` restano disponibili
-per diagnosi; il costruttore usa l'API composta.
+Its four stages are `premi`, `testo199`, `appendici` and `arm9`. Independent
+readback reports each stage and returns `esito_finale: ROSSO` if any condition
+fails or the result differs by even one byte from the expected reconstruction.
+Individual tools remain available for diagnosis; the builder uses the composed API.
 
-Serve un checkout di `pret/pokeheartgold` al commit
-`0985e8718df4f25e64d6507d89c0c97c0d288981`, indicato con
-`SGP_PRET_SOURCE`. Il modulo legge `charmap.txt` e il file tracciato
-`tools/py_scripts/scrcmd.json`; non richiede ROM 1.03 né file sotto `local/`.
-
-La build ARM si riproduce con:
+Set `SGP_PRET_SOURCE` to `pret/pokeheartgold` revision
+`0985e8718df4f25e64d6507d89c0c97c0d288981`. The module reads `charmap.txt` and
+tracked `tools/py_scripts/scrcmd.json`; it needs neither a 1.03 ROM nor `local/` files.
 
 ```sh
 python3 source/features/borsa/tools/compila_borsa.py --uscita DIR
 python3 source/features/native-core/tools/compila_tutti.py --uscita DIR --solo borsa
-```
-
-La Classe B usa le basi private `base-1.1-{EN,IT}.nds` in `SGP_ROM_DIR` e
-ricostruisce pubblicamente tutti gli stadi fino a Caramelle:
-
-```sh
-SGP_ROM_DIR=/percorso/rom SGP_PRET_SOURCE=/percorso/pokeheartgold \
+SGP_ROM_DIR=/path/to/roms SGP_PRET_SOURCE=/path/to/pokeheartgold \
 python3 -m unittest discover -s source/features/borsa/test -v
-SGP_ROM_DIR=/percorso/rom \
+SGP_ROM_DIR=/path/to/roms \
 python3 source/features/borsa/tools/mutanti.py --uscita DIR/mutanti.json
 ```
 
-Il banco Unicorn esegue 27 casi sul codice ARM e uccide 12 mutanti a un bit.
-Le verifiche statiche e di contenitore coprono entrambe le lingue, le 110
-chiavi, i quattro rilettori, l'idempotenza, la lunghezza invariata e ogni byte
-fuori dalle regioni dichiarate. Il runtime su una raccolta di Percorso 29 è verificato in EN e IT con una
-fixture controllata: a 999 Pozioni la quantità resta 999, la Ball scompare e
-le due pagine dell'avviso nominano l'oggetto e spiegano lo scarto. A 998 la
-quantità sale a 999 senza avviso di scarto. Sulle stesse fixture e sul codice
-precedente, a 999 la raccolta resta bloccata e il flag non cambia.
+Class B uses private `base-1.1-{EN,IT}.nds` inputs in `SGP_ROM_DIR` and rebuilds
+all public stages through Rare Candy. The Unicorn bench executes 27 ARM cases
+and rejects 12 one-bit mutants. Static/container checks cover both languages,
+110 keys, four readbacks, idempotence, unchanged length and every byte outside
+the declared regions.
 
-Questa prova esercita il flusso condiviso delle Ball a terra; non è una prova
-runtime di tutti i 110 siti né di ogni dono NPC, scambio o acquisto. Questi
-percorsi sono coperti dalla classificazione, dai rilettori e dal banco ARM.
+The historical EN/IT Route 29 runtime fixture shows 999 Potions remaining at
+999, the ground Ball disappearing, and a two-page notice naming the discarded
+item. At 998, the count reaches 999 without that notice. On the same fixtures,
+the previous code blocks the pickup at 999 and leaves its flag unchanged.
+This exercises the shared ground-Ball flow, rather than every one of the 110
+sites or every NPC gift, trade or purchase. Those other paths have census,
+readback and ARM coverage. Historical evidence does not by itself accept a
+newer ROM; see [current validation](../../docs/ui-1.3.1-validation.md).

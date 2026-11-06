@@ -1,35 +1,34 @@
-# sgp12 — Sacred Gold Plus 1.2.4
+# sgp12 — base stages used by 1.3.1
 
-The public builder starts from the contributor's unmodified HeartGold US or
-Italian ROM. Stage 0 applies the pinned public base-1.1 delta. The existing
-feature stages reconstruct the published 1.2.3 intermediate; the final
-`manutenzione` stage applies the battle-copy barrier, Waterfall search guard
-and the 1.2.4 title. Intermediate options text still names 1.2.3 by design;
-`build/manutenzione/versione.json` specifies the final title transition.
+This package is a required dependency of the current **1.3.1** build. It
+reconstructs the exact 1.2.5 predecessor from your own unmodified US or Italian
+HeartGold ROM. Stage 0 applies the pinned public `base-1.1` delta; feature stages
+reconstruct 1.2.3, `manutenzione` adds the battle-copy barrier/Waterfall search
+guard and 1.2.4 title, and the final version stage produces 1.2.5. Intermediate
+title strings are intentional; later stages replace them.
 
-From the repository root, with the pinned dependencies already installed:
+For the player-ready version, follow the
+[1.3.1 composition guide](../sgp131/README.md), which explains the authenticated
+V4 bootstrap and the complete successor chain. These commands reproduce only
+its base dependency, using the pinned environment from the
+[developer guide](../README.md):
 
 ```sh
 cd source
-../.venv/bin/python3 -m sgp12.costruisci --base /path/to/HeartGold.nds --uscita /path/to/sgp-1.2.4.nds
-../.venv/bin/python3 -m sgp12.verifica /path/to/sgp-1.2.4.nds --base /path/to/HeartGold.nds
+../.venv/bin/python3 -m sgp12.costruisci --base /path/to/HeartGold.nds --uscita /private/path/sgp-1.2.5.nds
+../.venv/bin/python3 -m sgp12.verifica /private/path/sgp-1.2.5.nds --base /path/to/HeartGold.nds
 ```
 
-Set `SGP_ROM_DIR` for the pinned stage-0 delta and `SGP_PRET_SOURCE` for the
-reference metadata, as described in [the developer guide](../README.md).
-The current release pins are in [distribution/release.json](../distribution/release.json).
+Set `SGP_ROM_DIR` for the stage 0 delta and `SGP_PRET_SOURCE` for reference
+metadata. `verifica` independently rebuilds, checks every stage and runs reserve
+gates; a missing check produces `PARZIALE`, not complete acceptance. Detailed
+[base-stage instructions](../docs/base-stage-build.md) and
+[bounded base-stage validation](../docs/base-stage-validation.md) retain the
+exact predecessor identities and test limits. They do not accept a newer ROM.
 
-`verifica` rebuilds the result, checks each stage and runs the reserve gates.
-A missing check produces `PARZIALE`, not a complete passing verdict. Its
-full rebuild can be expensive; this release used incremental file validation
-and two-decoder patch round trips, without repeating a local full build or
-runtime campaign. See [release validation](../docs/release-1.2.4.md).
-
-For a lightweight update from an exact official 1.2.3 image:
-
-```sh
-../.venv/bin/python3 -m sgp12.manutenzione --base /path/to/sgp-1.2.3.nds --uscita /path/to/sgp-1.2.4.nds
-```
-
-This streams one output, rejects unknown input hashes and existing output
-files, and reads the output back. No save data is read or written.
+The standalone `sgp12.manutenzione` command remains available for guarded
+component diagnosis on an exact 1.2.3 input. It streams one new output, rejects
+unknown hashes/existing output and independently rereads it. It reads/writes no
+save data. Current 1.3.1 package routes are specified separately by
+[release-1.3.1.json](../distribution/release-1.3.1.json); default `release.json`
+is a historical build contract, not the current download version.

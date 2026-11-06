@@ -15,17 +15,17 @@ ancestor, without changing current game code or Git refs. Fresh EN/IT builds
 reproduce both exact V4 hashes. The 1.3.1 guide gives the complete commands;
 HF01 is a build intermediate upgraded to HF02 before player use.
 
-The [change register](docs/novita-1.3.0.md),
+The [change register](docs/whats-new-1.3.1.md),
 [bug list](../BUG-FIXES-1.3.1.md) and
 [current validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
-The [1.2.5 report](docs/version-1.2.5.md),
-[Android campaign of 29 October](docs/android-1.3-dev-validation.md),
-[earlier device campaign](docs/device-1.3-validation.md),
-[systematic playtest](docs/playtest-1.3-dev.md) and
-[earlier UI campaign](docs/ui-1.3-dev-validation.md) retain their original
+The [base-stage evidence](docs/base-stage-validation.md),
+[Android campaign of 29 October](docs/android-validation.md),
+[earlier device campaign](docs/device-validation.md),
+[systematic playtest](docs/gameplay-validation.md) and
+[earlier UI campaign](docs/interface-validation.md) retain their original
 candidate scope. Their results do not automatically accept the 1.3.1 successor.
-The [stability investigation](docs/deep-debug-2026-10-28.md) and
+The [stability investigation](docs/stability-investigation-1.3.1.md) and
 [test-bench guide](docs/test-bench.md) document the older defects and runtime method.
 
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
@@ -143,9 +143,9 @@ The builder never replaces an existing ROM, report or intermediate log. It
 publishes new files as private `0600` entries and requires `--log-dir`, when
 used, to be a private `0700` directory.
 
-The build is deterministic: the same ROM gives the same bytes. Stage 0 checks all three fingerprints — your ROM, the patch, and the 1.1 base that comes out of it — before a single block runs, and records them in the build's JSON report under `stadio0`. `verifica` repeats the whole thing, stage 0 included, compares the result with the ROM you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
+The build is deterministic: the same ROM gives the same bytes. Stage 0 checks all three fingerprints — your ROM, the patch, and the 1.1 base that comes out of it — before a single block runs, and records them in the build's JSON report under `stadio0`. `verifica` repeats the whole thing, stage 0 included, compares the result with the ROM you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Step-by-step instructions, including what to do when an applier refuses: [docs/base-stage-build.md](docs/base-stage-build.md).
 
-After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache, expanded Bag capacity, maintenance and the persistent version title — nineteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
+After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache, expanded Bag capacity, maintenance and the persistent version title — nineteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/base-stage-build.md](docs/base-stage-build.md#the-block-order) for what each one does.
 
 ## Run the tests
 
@@ -287,12 +287,11 @@ The release-specific file checks, supported inputs and reproducible player
 ZIP tooling are documented in [distribution/README.md](distribution/README.md)
 (relative to this document's directory, use `source/distribution/README.md`
 from the repository root). The published 1.2.4 release was validated incrementally against
-the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/version-1.2.5.md); the packaging configuration describes all 21 supported input routes.
+the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/base-stage-validation.md); the packaging configuration describes all 21 supported input routes.
 
 For 1.3.1 use the explicit [versioned contract](distribution/release-1.3.1.json)
 and [distribution instructions](distribution/README.md), with 25 direct input
-routes per language. Default `release.json` remains the historical 1.2.5
-contract. Package reconstruction and game/save acceptance are separate;
+routes per language. The default distribution contract is `release-1.3.1.json`. Package reconstruction and game/save acceptance are separate;
 [package validation](docs/package-1.3.1-validation.md) retains exact receipts
 and the limitations of each checkpoint. The current ROM fingerprints and
 battle-loop regression are in the [1.3.1 composition guide](sgp131/README.md).

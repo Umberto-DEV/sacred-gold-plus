@@ -1,8 +1,8 @@
-# Rebuilding Sacred Gold Plus 1.2.5
+# Building the authenticated base stages
 
 Two commands build a 1.2.5 ROM from your own **unmodified HeartGold** ROM and verify the result.
 
-(The file keeps its `rebuilding-1.2.md` name: several other pages link to it, and the
+(The file keeps its `base-stage-build.md` name: several other pages link to it, and the
 procedure is the same one, extended.) This page is the
 step-by-step version: what you need, in what order, and what to do when a step refuses.
 
@@ -136,7 +136,7 @@ After stage 0 the builder applies nineteen blocks, always in this order:
 11. **guide** — turns the automatic EV/IV guide label off
 12. **rare candy** — the Rare Candy stays in the party menu after use
 13. **capped gifts** — restores the old reward paths, adds the named-item warning and its script calls, then builds the permissive site table and installs the ARM9 hooks
-14. **continuous battle motion** — v5c slows the idle cycle to 0.375×, keeps the statistics panels still, preserves motion through menu selections, and stops it before capture or during native animations. v5d keeps that breathing tuning and replaces the blink with a B-pose accent anchored to its resting peak. See the [measured audit](../features/anim2/AUDIT-2026-09-14.md) and the [v5d notes](../features/anim2/README.md#v5d--accento-di-posa-b-18-settembre-2026).
+14. **continuous battle motion** — v5c slows the idle cycle to 0.375×, keeps the statistics panels still, preserves motion through menu selections, and stops it before capture or during native animations. v5d keeps that breathing tuning and replaces the blink with a B-pose accent anchored to its resting peak. See the [measured audit](../features/anim2/README.md#historical-validation) and the [v5d notes](../features/anim2/README.md#b-pose-accent).
 15. **battle Bag cache** — reuses the ItemData already loaded by the battle, avoiding repeated file reads while building the Bag list. Animation OFF and unavailable cache use the native getter. See the [implementation and validation](../features/borsa-lotta/README.md).
 16. **battle party move cache** — reuses the battle MoveTbl while preparing the party menu. The measured opening pause falls from 33 to 20 frames with animations ON; OFF retains the native getters. See the [implementation and validation](../features/squadra-lotta/README.md).
 17. **expanded Bag capacity** — 252 main-pocket slots and complete six-cell pages in every pocket, with a generation-bound save extension. See the [save contract and tests](../features/capacita-borsa/README.md).
@@ -270,4 +270,4 @@ ZIP tooling are documented in [distribution/README.md](../distribution/README.md
 (relative to this document's directory, use `source/distribution/README.md`
 from the repository root). The historical 1.2.4 release was validated
 incrementally against the published 1.2.3 files. The 1.2.5 build and older-save
-campaign are recorded in [version-1.2.5.md](version-1.2.5.md).
+campaign are recorded in [base-stage-validation.md](base-stage-validation.md).

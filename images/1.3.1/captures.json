@@ -1,12 +1,12 @@
 {
   "schema": 1,
   "date": "2026-11-06",
-  "scope": "Fresh presentation captures from exact battle-freeze successor builds; not gameplay or device acceptance",
+  "scope": "Current presentation gallery: each image retains its actual ROM/runtime identity, including historical portable-storage captures.",
   "images": [
     {
       "file": "title-EN.png",
       "sha256": "58ad535583f2127465e202a2085cee2a337ffc0766a858d2bb8a92456c8981c1",
-      "candidate_sha256": "50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665",
+      "candidate_sha256": "185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08",
       "language": "EN",
       "source_frame": 1982,
       "crop": [
@@ -16,7 +16,7 @@
         192
       ],
       "scale": 4,
-      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+      "method": "Fresh exact published1.3.1 local melonDS frame; top-screen crop and integer4x enlargement"
     },
     {
       "file": "party-EN.png",
@@ -51,7 +51,7 @@
     {
       "file": "title-IT.png",
       "sha256": "58ad535583f2127465e202a2085cee2a337ffc0766a858d2bb8a92456c8981c1",
-      "candidate_sha256": "c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb",
+      "candidate_sha256": "b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce",
       "language": "IT",
       "source_frame": 1982,
       "crop": [
@@ -61,7 +61,7 @@
         192
       ],
       "scale": 4,
-      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+      "method": "Fresh exact published1.3.1 local melonDS frame; top-screen crop and integer4x enlargement"
     },
     {
       "file": "party-IT.png",
@@ -92,6 +92,51 @@
       ],
       "scale": 4,
       "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "guide-EN.png",
+      "sha256": "2701252bce0d43fd1d814d987100fbe0741eaabbb59c61124e198bb0472db227",
+      "candidate_sha256": "185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08",
+      "apk_sha256": "d3cf208e4380c4e3060ca9f33a10d8d6d1c4621c3f36c1a037bbfff11a01a928",
+      "language": "EN",
+      "crop": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "scale": 4,
+      "method": "Actual publicUD2.1.11 Android15ARM6416KiB framebuffer; native top screen at integer4x scale"
+    },
+    {
+      "file": "options-EN.png",
+      "sha256": "857e658c7b5cbaaf8c1e928cab118c8cfb6625eb0a826467924592893b8833ed",
+      "candidate_sha256": "185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08",
+      "apk_sha256": "d3cf208e4380c4e3060ca9f33a10d8d6d1c4621c3f36c1a037bbfff11a01a928",
+      "language": "EN",
+      "crop": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "scale": 4,
+      "method": "Actual publicUD2.1.11 Android15ARM6416KiB framebuffer; native top screen at integer4x scale"
+    },
+    {
+      "file": "shiny-EN.png",
+      "sha256": "493373e9563dd77e840a2fdc290c257d1923dcea4f74ae2a9ba3f9e925091b4e",
+      "candidate_sha256": "185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08",
+      "apk_sha256": "d3cf208e4380c4e3060ca9f33a10d8d6d1c4621c3f36c1a037bbfff11a01a928",
+      "language": "EN",
+      "crop": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "scale": 4,
+      "method": "Actual publicUD2.1.11 Android15ARM6416KiB framebuffer; native top screen at integer4x scale"
     }
   ]
 }

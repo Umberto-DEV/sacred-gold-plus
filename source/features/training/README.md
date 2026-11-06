@@ -1,7 +1,8 @@
 # Training rules and journal core
 
-This folder contains the freestanding production C rules for the proposed native
-training integration. It does not install hooks, edit Pokémon, debit the Bag,
+This folder contains the freestanding production C rules used by the native
+training integration in **1.3.1**. It does not install hooks, edit Pokémon or debit
+the Bag,
 read clocks or write flash. Native adapters must perform those operations through
 validated game APIs. No ROM or save fixture is required for these core tests.
 

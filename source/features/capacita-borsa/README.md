@@ -1,133 +1,120 @@
-# Capacità Borsa — 1.2.1 (aggiornata nella 1.2.2)
+# Expanded Bag capacity
 
-| Tasca | Prima | Adesso | Pagine da 6 |
-|---|---:|---:|---:|
-| Principale |165|252|42|
-| Medicine |40|42|7|
-| Poké Ball |24|30|5|
-| MT/MN |101|102|17|
-| Bacche |64|66|11|
-| Messaggi |12|12|2|
-| Strumenti lotta |30|30|5|
-| Strumenti base |50|60|10|
+This module is retained in the **1.3.1** build chain. It adds distinct-item slots;
+stack limits remain 999, or 99 for TMs/HMs.
 
-Sono slot di oggetti distinti; i limiti quantità restano 999 (99 MT/MN).
-La schermata campo alloca nomi e ID per 252 elementi. Il sesto elemento della
-pagina 42 è selezionabile, utilizzabile, cestinabile e riempibile con le normali
-funzioni di aggiunta. La vista lotta enumera tramite il getter esteso.
+| Pocket | Native slots | Expanded slots | Six-row pages |
+| --- | ---: | ---: | ---: |
+| Items | 165 | 252 | 42 |
+| Medicine | 40 | 42 | 7 |
+| Poké Balls | 24 | 30 | 5 |
+| TMs/HMs | 101 | 102 | 17 |
+| Berries | 64 | 66 | 11 |
+| Mail | 12 | 12 | 2 |
+| Battle Items | 30 | 30 | 5 |
+| Key Items | 50 | 60 | 10 |
 
-## Architettura
+The field screen allocates names/IDs for 252 items. The sixth item on page 42
+can be selected, used, discarded and filled through normal add functions.
+The battle view enumerates through the extended getter.
 
-- `sorgenti/core.c`: rappresentazione 594 slot, import/export del layout nativo,
-  sincronizzazione per-slot tra scritture dirette del menu e indirizzi cheat.
-- `sorgenti/runtime.c`: instrada tutte le API Bag, inclusi oggetti privati di
-  battaglia/scambio, registrazione e ordinamento. Non cambia `Save_Bag_sizeof`.
-- `sorgenti/journal.c`: estensione 432 byte più 20 byte di metadati/checksum,
-  due copie per ciascuna banca flash, associate alla generazione del save e
-  alla CRC16 del blocco principale. Si prepara prima del commit nativo.
-- ARM9 riservato `0x023DBF00–0x023DEB00`; stato a `0x023DD700` (4808 byte).
+## Architecture
 
-## L'estensione non impedisce mai il salvataggio nativo
+- `sorgenti/core.c`: 594-slot representation, native-layout import/export and
+  per-slot synchronization between direct menu writes and cheat addresses.
+- `sorgenti/runtime.c`: routes all Bag APIs, including private battle/trade
+  objects, registration and sorting; `Save_Bag_sizeof` remains unchanged.
+- `sorgenti/journal.c`: 432-byte extension plus 20-byte metadata/checksum,
+  primary/mirror per flash bank, bound to native generation and main-block
+  CRC 16, prepared before native commit.
+- ARM9 reserve: `0x023DBF00–0x023DEB00`; state at `0x023DD700` (4808 bytes).
 
-**In lettura** ogni copia è classificata per conto suo; una copia inutilizzabile
-viene ignorata e, se nessuna è utilizzabile, l'estensione è ASSENTE e il gioco
-apre con i suoi 486 slot nativi. Settori con byte estranei — azzerati da un
-convertitore, da un backup di flashcart o da un editor di salvataggi — sono un
-caso normale e silenzioso. **Nessun percorso di caricamento apre la schermata
-nativa di errore di lettura.** L'esito finisce in `stato_caricamento`
-(`0x023DE9C0`, cioè `CapState + 0x12C0`); vince la prima riga che si applica:
+## Load and write behavior
 
-| condizione | inventario | `stato_caricamento` | `owned` |
-|---|---|---:|---:|
-| la copia primaria corrisponde a questo salvataggio | 594 slot dalla primaria (lo specchio non viene letto) | 1 | 1 |
-| lo specchio corrisponde a questo salvataggio | 594 slot dallo specchio | 2 | 1 |
-| una copia non è leggibile dalla flash | 486 slot nativi | 5 | 0 |
-| una copia è integra ma di un'altra generazione | 486 slot nativi | 3 | 1 |
-| una copia ha il nostro magic ma è danneggiata | 486 slot nativi | 4 | 0 |
-| una copia contiene byte che non sono nostri | 486 slot nativi | 6 | 0 |
-| entrambe le copie cancellate (0xFF) | 486 slot nativi | 0 | 0 |
+Each copy is classified independently. An unusable copy is ignored; if none is
+usable, the extension is absent and loading uses 486 native slots. Foreign bytes
+left by converters, flashcart backups or save editors are handled silently.
+No extension-load branch invokes the native read-error screen. The first matching
+row wins; `stato_caricamento` is at `0x023DE9C0` (`CapState + 0x12C0`).
 
-`rejected` (`CapState + 0x0C`) è **solo diagnostico**: «la flash non ha saputo
-leggere la banca da cui abbiamo caricato». Non blocca nulla. In particolare non
-vieta il salvataggio successivo: il caricamento legge la banca *attiva*, la
-scrittura tocca quella *inattiva*, e se anche quella è illeggibile lo dicono le
-due riletture di destinazione (`stato_scrittura` 4). Prima era un veto per tutta
-la sessione, e un solo settore illeggibile faceva sparire in silenzio i 108 slot.
+| Condition | Inventory | `stato_caricamento` | `owned` |
+| --- | --- | ---: | ---: |
+| Primary matches this save | 594 slots from primary; mirror is not read | 1 | 1 |
+| Mirror matches this save | 594 slots from mirror | 2 | 1 |
+| Flash copy cannot be read | 486 native slots | 5 | 0 |
+| Intact copy belongs to another generation | 486 native slots | 3 | 1 |
+| Our magic, damaged record | 486 native slots | 4 | 0 |
+| Foreign bytes | 486 native slots | 6 | 0 |
+| Both copies erased (`0xFF`) | 486 native slots | 0 | 0 |
 
-**In scrittura** ogni destinazione deve essere indipendentemente *rivendicabile*:
-cancellata (0xFF), **uniforme** — 452 byte tutti uguali, come li lascia un
-convertitore che azzera i settori inutilizzati o una card pulita con un motivo
-fisso — oppure già nostra. Byte estranei *non uniformi* non vengono mai
-sostituiti: nessuna delle due copie viene scritta e `stato_scrittura` resta 2.
-`cap_record_create` bonifica prima di scrivere — uno slot dell'estensione con
-quantità 0, con id 0 o id oltre 536, o con quantità oltre il limite della tasca
-viene **svuotato dov'è** (`{0, 0}`), senza far scalare nulla: ogni altro slot
-resta esattamente all'indice che aveva nella Borsa. Le stesse celle bonificate
-vengono riscritte anche nella Borsa in RAM (solo le celle dell'estensione: le
-486 native non si toccano mai), perché `{id, 0}` fa ancora dire «tasca non
-vuota» e un id oltre 536 può ancora arrivare alla tabella oggetti dal menu.
-Il compattamento nativo spinge in fondo alla tasca gli slot esauriti
-*conservandone l'id*, quindi `{id, 0}` finisce dentro l'estensione col gioco
-normale; scriverlo produceva un record che il nostro stesso validatore
-rifiutava, e da lì in poi il salvataggio falliva per sempre. Per la stessa
-ragione la rilettura dopo la scrittura è un **confronto byte per byte dei 452
-byte scritti**, non una seconda validazione di dominio. `stato_scrittura`
-(`CapState + 0x12C4`): 0 non tentata, 1 due copie scritte e verificate,
-2 dati estranei in una destinazione (niente scritto), 3 niente di usabile
-scritto, 4 flash illeggibile (saltata), 5 una sola copia verificata.
+`rejected` (`CapState + 0x0C`) is diagnostic: the active bank failed a flash
+read. It does not veto the next save, which writes the inactive bank. An unreadable
+destination is reported separately by `stato_scrittura=4`. The former session-wide
+veto could silently lose all 108 extra slots after one unreadable sector.
 
-### Se `stato_scrittura` resta 2 (dati estranei)
+Each write destination must independently be claimable: erased (`0xFF`), uniform
+(all 452 bytes equal), or already ours. A uniform sector may come from a converter
+or clean card. Foreign nonuniform bytes are never replaced: neither copy is
+written and `stato_scrittura` stays 2.
 
-È l'unico caso in cui l'estensione non viene più scritta finché la situazione
-non cambia: i 108 slot extra spariscono a ogni ricaricamento e il gioco riparte
-dai 486 nativi, senza alcun messaggio. La spia è `stato_scrittura` = 2
-(`0x023DE9C4`). Il rimedio è manuale e vale su una **copia** del salvataggio:
-riportare a `0xFF` i 452 byte all'inizio dei settori 48 e 112 (offset `0x30000`,
-`0x30200`, `0x70000`, `0x70200` del `.sav` da 512 KB) con un editor esadecimale,
-oppure azzerarli — un settore uniforme è rivendicabile. Al salvataggio successivo
-l'estensione torna a essere scritta. Non toccare nient'altro del file.
+Before serialization, `cap_record_create` clears invalid extension slots in place
+to `{0, 0}`: zero quantity/ID, ID above 536, or quantity above the pocket limit.
+It preserves every other slot index and applies the same cleanup to the RAM
+extension only; the 486 native slots are untouched. Native compaction retains the
+ID of exhausted slots, so normal play can produce `{id, 0}` in the extension.
+Previously this created a record rejected by its own validator, preventing future
+extension writes. Leaving those records in RAM could also make an empty pocket
+appear occupied or let an invalid ID reach the item table. Readback therefore
+compares the exact 452 written bytes, rather than repeating domain validation.
 
-**In ogni caso il salvataggio nativo parte e il suo risultato è quello
-restituito.** Il gancio non risponde mai `WRITE_STATUS_TOTAL_FAIL` di propria
-iniziativa: l'applicazione di salvataggio tattile scarta quel valore e scrive
-comunque «ha salvato il gioco», quindi un rifiuto dell'estensione perdeva
-l'intera sessione in silenzio. Il prezzo è limitato: se l'estensione non viene
-scritta, il salvataggio nativo commissiona comunque una nuova generazione, il
-vecchio record diventa «stale» e il caricamento successivo degrada ai 486 slot.
-- Overlay15 mantiene lo stesso slot FAT e dimensione compressa, verificata
-  con decompressione in luogo. Il reader separato non invoca l’applicatore.
+`stato_scrittura` (`CapState + 0x12C4`, `0x023DE9C4`) is 0 not attempted, 1 both
+copies written/verified, 2 foreign destination (no write), 3 no usable copy written,
+4 unreadable flash (skipped), or 5 one copy verified.
 
-Il [contratto salvataggi](../../docs/contracts.md#expanded-bag-121) specifica
-recupero, errori e compatibilità. **Salvare su una ROM precedente rende gli
-slot extra non recuperabili automaticamente al successivo caricamento 1.2.2.**
-Conservare il save 1.2.2 prima di tornare indietro.
+If status 2 persists, extra slots disappear on reload and the game uses 486 native
+slots without a message. The historical manual recovery procedure applies only
+to a **disposable save copy**: set the 452 bytes at each of `0x30000`, `0x30200`,
+`0x70000`, `0x70200` in the 512 KiB `.sav` to `0xFF` (or a uniform zero pattern),
+leaving all other bytes intact. A later native save can claim these destinations.
+This is a diagnostic repair procedure, not the normal update route; preserve an
+unaltered backup before any manual save editing.
 
-## Build e prove
+Native saving always runs and returns its own result. This hook never invents
+`WRITE_STATUS_TOTAL_FAIL`: the touch-save caller historically discarded it and
+showed success, silently losing the session. If the extension cannot be written,
+the native save can still advance generation; the old extension becomes stale
+and the next load falls back to 486 slots. Overlay 15 retains its original FAT slot
+and compressed length, independently checked by in-place decompression. Readback
+does not call the installer.
 
-```
+The [save contract](../../docs/contracts.md#expanded-bag-121) defines recovery and
+compatibility. **Saving with an older ROM can make the extra slots unavailable on
+re-upgrade.** Keep the newer raw save before any downgrade.
+
+## Build and validation
+
+```sh
 python source/features/capacita-borsa/tools/compila.py --uscita source/sgp12/build/capacita_borsa
 python -m unittest discover -s source/features/capacita-borsa/test -p test_core.py
 python -m unittest discover -s source/features/capacita-borsa/test -p test_journal.py
 python -m unittest discover -s source/features/capacita-borsa/test -p test_build.py
 ```
 
-La classe B usa `SGP_CAPACITY_ROM` (ROM finale privata), `SGP_CAPACITY_BEFORE`
-(stadio immediatamente precedente) e `SGP_CAPACITY_BUILD` (bundle compilato).
-`test_arm.py` esegue su Unicorn le funzioni ARM native modificate: 252° slot,
-copie private, read failure, 452 interruzioni di scrittura con riavvio e retry,
-mirror corrotto/erased, rifiuto dati estranei in entrambe le destinazioni,
-SRAM interamente a 0x00 e a 0xAA (caricata come assente, poi **rivendicata** dal
-salvataggio successivo), la matrice completa primaria×specchio (36 combinazioni,
-inclusa la lettura che fallisce), una lettura fallita al caricamento che **non**
-impedisce la scrittura nella banca inattiva, una rilettura che restituisce un
-record valido ma diverso da quello scritto, e il salvataggio con uno slot
-`{id, 0}` o `id > 536` nell'estensione. Il banco verifica che la ROM in prova
-contenga esattamente il `blob.bin` del bundle indicato.
-`test_reader.py` muta ABI, codice, stato, dimensione Bag nativa e conteggi UI.
+Class B inputs are `SGP_CAPACITY_ROM` (private final ROM),
+`SGP_CAPACITY_BEFORE` (preceding stage) and `SGP_CAPACITY_BUILD` (compiled bundle).
+`test_arm.py` executes modified native ARM functions in Unicorn: slot 252, private
+copies, read failure, all 452 interrupted-write points followed by restart/retry,
+corrupt/erased mirror, foreign data in either destination, uniform 00/AA SRAM,
+the 36 primary×mirror combinations including failed reads, failed active-bank
+read followed by inactive-bank save, valid-but-different readback, and invalid
+extension slots `{id, 0}` / `id > 536`. It verifies that the tested ROM contains
+the exact supplied `blob.bin`. `test_reader.py` mutates ABI, code, state, native
+Bag size and UI counts.
 
-Collaudo locale melonDS: fixture sintetica con 251 elementi nella tasca
-principale e un elemento finale; pagina 42 piena, rimozione via Cestina,
-aggiunta nativa riprendendo un oggetto tenuto da un Pokémon, salvataggio vero
-e riavvio freddo da SRAM con l’oggetto ancora nella sesta cella. La SRAM
-riesportata dopo il caricamento coincide byte per byte con quella salvata.
-ROM, SRAM, dump, savestate e catture restano privati.
+The historical local melonDS fixture filled the first 251 main-pocket slots and
+added a final item: page 42 was full, discard worked, native retrieval of a held
+item restored it, and native SAVE/cold SRAM restart kept it in the sixth cell.
+The re-exported SRAM matched the saved bytes exactly. This bounded fixture is
+not universal save compatibility or fresh acceptance of the 1.3.1 ROM. See
+[current validation](../../docs/ui-1.3.1-validation.md). ROMs, SRAM, dumps,
+savestates and captures remain private.

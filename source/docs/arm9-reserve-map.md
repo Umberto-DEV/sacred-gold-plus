@@ -1,4 +1,4 @@
-# ARM9 reserve map (1.2)
+# ARM9 reserve map
 
 Human-readable view of `docs/arm9-reserve-map.json`, which is the file the tests actually
 read. The JSON is the source of truth; this page is a summary of it.

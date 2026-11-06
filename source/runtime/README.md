@@ -1,4 +1,10 @@
-**Sacred Gold Plus Community 1: bounded runtime validation**
+# Headless runtime for 1.3.1 development
+
+This harness remains a developer tool for the current **1.3.1** source tree.
+Build it from the pinned core below; the recorded component campaigns keep
+those original binaries and ROM hashes. For current game acceptance, use the
+[1.3.1 validation report](../docs/ui-1.3.1-validation.md), not the older
+Community 1 receipts bundled with this kit.
 
 This kit contains the headless melonDS harness, observation hooks, input scripts and a sanitized account of the recorded tests. It contains no ROM, proprietary BIOS, save data, savestate, RAM dump, game screenshot or retail resource catalog. The synthetic player `TEST` save and the prepared Pokédex UI save used in the tests are not redistributed. Their hashes identify the original test inputs; reproducing the exact saved-file hashes requires those exact inputs.
 

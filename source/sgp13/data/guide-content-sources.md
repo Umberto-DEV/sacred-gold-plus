@@ -113,8 +113,9 @@ items already collected. The phone's remaining time is explicitly described as
 the entire course, including its level goal. Normal trainer and wild victories
 do not grant Caps in this implementation.
 
-With these additions there are 429 entries. Both language payloads are generated
-and measured against the native font; their current sizes are 113,212 bytes (EN)
+The historical 1.3 builder has 429 entries. The current 1.3.1 successor has 467
+selectable entries. Both historical language payloads were generated
+and measured against the native font; their measured sizes were 113,212 bytes (EN)
 and 118,752 bytes (IT), below the 131,072-byte content limit. The native controller
 already accepts a category count; the content compiler and independent validator
 now permit four categories. A roundtrip/bounds test and fourth-category cursor

@@ -14,7 +14,7 @@ These camera, Bag, difficulty and motion features were already available in 1.2.
 
 2. GUIDE AND EVERYDAY TOOLS
 
-Open Guide from the field menu for 429 entries covering evolutions, important items and TMs, special events and training. It uses the current game data and native Pokemon and item names. Browse category lists and linked detail pages with the buttons; L/R moves through lists in groups of five. Returning from a link restores your previous page and position.
+Open Guide from the field menu for 467 entries covering evolutions, important items and TMs, special events and training. It uses the current game data and native Pokemon and item names. Browse category lists and linked detail pages with the buttons; L/R moves through lists in groups of five. Returning from a link restores your previous page and position.
 
 The revised Plus settings and Guide use native-style windows, selection frames and contextual help. Apply confirms your Plus edits; cancelling keeps the previous settings. The Shiny page is part of this same settings flow.
 

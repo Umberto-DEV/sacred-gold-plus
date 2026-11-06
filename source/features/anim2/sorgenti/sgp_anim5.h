@@ -28,7 +28,7 @@
  * (3) la prima attesa e' sorteggiata per lottatore; (4) la voce ricorda il
  * `BattleSystem` che l'ha creata. I tempi stanno in par.bin (varianti
  * V1/V2/V3 di compila_anim2.py), non nel codice.
- * Vedi ../AUDIT-2026-09-14.md e ../README.md §v5d per cause, misure e limiti.
+ * See ../README.md for causes, measurements and validation limits.
  */
 #ifndef SGP_ANIM5_H
 #define SGP_ANIM5_H

@@ -6,8 +6,8 @@ Available in **English and Italian**.
 
 | Edition | Player package |
 | --- | --- |
-| English | [Download the English patch package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v{{VERSION}}/Sacred-Gold-Plus-{{VERSION}}-US.zip) |
-| Italiano | [Scarica il pacchetto italiano](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v{{VERSION}}/Sacred-Gold-Plus-{{VERSION}}-IT.zip) |
+| English | [Download the English patch package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/Sacred-Gold-Plus-{{VERSION}}-US.zip) |
+| Italian | [Download the Italian package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/Sacred-Gold-Plus-{{VERSION}}-IT.zip) |
 
 **Windows and Mac:** choose the edition you want to play in, download its ZIP and extract it. Open **Sacred Gold Plus {{VERSION}}**, then **How-to-install-{{VERSION}}-EN.pdf** (English) or **Come-installare-{{VERSION}}-IT.pdf** (Italian). The installation PDF has numbered steps and real screenshots. **Whats-New-{{VERSION}}-EN.pdf** / **Novita-{{VERSION}}-IT.pdf** is beside it and introduces the current game features. `Manual` contains the original gameplay references.
 
@@ -46,7 +46,7 @@ Actual game captures. Before publication, verify every 1.3.1 title, party and na
 | ![Goldenrod City]({{IMAGE_BASE_URL}}/18-goldenrod-city.png)<br>Goldenrod City | ![Lake of Rage]({{IMAGE_BASE_URL}}/20-lake-of-rage.png)<br>Lake of Rage |
 | ![Wild battle]({{IMAGE_BASE_URL}}/10-wild-battle.png)<br>A wild battle - historical capture | ![1.3.1 title]({{IMAGE_BASE_URL}}/1.3.1/title-EN.png)<br>English 1.3.1 title |
 | ![Party shortcut]({{IMAGE_BASE_URL}}/1.3.1/party-EN.png)<br>R: Box from the field party | ![Native storage]({{IMAGE_BASE_URL}}/1.3.1/pc-EN.png)<br>Native Pokemon storage |
-| ![Italian title]({{IMAGE_BASE_URL}}/1.3.1/title-IT.png)<br>Titolo italiano | ![Italian storage]({{IMAGE_BASE_URL}}/1.3.1/pc-IT.png)<br>Box nativo italiano |
+| ![Italian title]({{IMAGE_BASE_URL}}/1.3.1/title-IT.png)<br>Italian title | ![Italian storage]({{IMAGE_BASE_URL}}/1.3.1/pc-IT.png)<br>Native Italian storage |
 
 <details>
 <summary>More cities, interiors and game screens</summary>
@@ -56,7 +56,7 @@ Actual game captures. Before publication, verify every 1.3.1 title, party and na
 | ![New Bark Town]({{IMAGE_BASE_URL}}/02-new-bark-town.png)<br>New Bark Town | ![Olivine City]({{IMAGE_BASE_URL}}/04-olivine-city.png)<br>Olivine City |
 | ![Cherrygrove City]({{IMAGE_BASE_URL}}/05-cherrygrove-city.png)<br>Cherrygrove City | ![National Park]({{IMAGE_BASE_URL}}/06-national-park.png)<br>National Park |
 | ![Elm's laboratory]({{IMAGE_BASE_URL}}/07-elms-lab.png)<br>Professor Elm's laboratory | ![Pokémon Center]({{IMAGE_BASE_URL}}/08-pokemon-center.png)<br>Pokémon Center |
-| ![Mt. Mortar]({{IMAGE_BASE_URL}}/09-mt-mortar.png)<br>Mt. Mortar | ![Italian party shortcut]({{IMAGE_BASE_URL}}/1.3.1/party-IT.png)<br>Squadra: R apre il box |
+| ![Mt. Mortar]({{IMAGE_BASE_URL}}/09-mt-mortar.png)<br>Mt. Mortar | ![Italian party shortcut]({{IMAGE_BASE_URL}}/1.3.1/party-IT.png)<br>Party: R opens the Box |
 | ![Violet City]({{IMAGE_BASE_URL}}/19-violet-city.png)<br>Violet City | ![New Bark Town]({{IMAGE_BASE_URL}}/02-new-bark-town.png)<br>New Bark Town |
 | ![Blackthorn City]({{IMAGE_BASE_URL}}/21-blackthorn-city.png)<br>Dragon's Den entrance, Blackthorn City | ![Dance Theater]({{IMAGE_BASE_URL}}/22-dance-theater.png)<br>Ecruteak Dance Theater |
 | ![Sprout Tower]({{IMAGE_BASE_URL}}/23-sprout-tower.png)<br>Sprout Tower | ![Violet Poké Mart]({{IMAGE_BASE_URL}}/24-violet-pokemart.png)<br>Violet City Poké Mart |

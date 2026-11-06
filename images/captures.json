@@ -21,7 +21,7 @@
     {
       "file": "01-ecruteak-city.png",
       "screen": "top",
-      "caption": "Ecruteak City — exploring Johto in Sacred Gold Plus 1.2.5.",
+      "caption": "Ecruteak City \u2014 exploring Johto in Sacred Gold Plus 1.2.5.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "95ccdea14bc602fd26a7282acdef3ef06e6dde5ffde286a07df428511d78cf98",
       "source_capture_sha256": "98ef4b00163c89f51b829514e3cdc278e542517ccdf22f74e48e895e2493fcc3",
@@ -30,7 +30,7 @@
     {
       "file": "02-new-bark-town.png",
       "screen": "top",
-      "caption": "New Bark Town — back where the journey begins.",
+      "caption": "New Bark Town \u2014 back where the journey begins.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "366dae81d096e8bef6e5fd787ef7912f88d8c8baa48a3bfe7e7e777e53780019",
       "source_capture_sha256": "3fe06d89803fbec10bbd4c9dad3f2dda1ad797aaacab9ed38b4c36ea7ff76e79",
@@ -39,7 +39,7 @@
     {
       "file": "03-bellchime-trail.png",
       "screen": "top",
-      "caption": "Bellchime Trail — autumn colours on the way to Bell Tower.",
+      "caption": "Bellchime Trail \u2014 autumn colours on the way to Bell Tower.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "e393990016aa1b49dad553ababeb1a268bbcd94f4a3080471ee94adacc7265a7",
       "source_capture_sha256": "cd683798d437aa108b02e9f20037112d472b185ac18002942c88f8505f9b870b",
@@ -48,7 +48,7 @@
     {
       "file": "04-olivine-city.png",
       "screen": "top",
-      "caption": "Olivine City — outside the lighthouse.",
+      "caption": "Olivine City \u2014 outside the lighthouse.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "7d4203452b9dd9ebc972af46e4878148904d9e39c4eaa14f0f0c84eec888b949",
       "source_capture_sha256": "03e1570cb0e0ba1f9c281bad151adc708a01357d26f7cbb934a61e84ceb788a6",
@@ -57,7 +57,7 @@
     {
       "file": "05-cherrygrove-city.png",
       "screen": "top",
-      "caption": "Cherrygrove City — the wider Plus camera outdoors.",
+      "caption": "Cherrygrove City \u2014 the wider Plus camera outdoors.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "1d370c163af3d979ba37f4b349d054a5c8383a1d623edc9e430e3c90195c2082",
       "source_capture_sha256": "7f2122afb59e079dca4b34912eed5648ef0c053e839f9508bce932aaaaff1662",
@@ -66,7 +66,7 @@
     {
       "file": "06-national-park.png",
       "screen": "top",
-      "caption": "National Park — a stop by the flower beds.",
+      "caption": "National Park \u2014 a stop by the flower beds.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "1b9dee5bf3afb589377636b2bb4ce22a8d59c58e2fcbf42f339f32dc1e3ab71b",
       "source_capture_sha256": "c4ac0933aaaf1adb2cf67454b0c482cffe79879c8a6156cace3bc27d564dc64b",
@@ -84,7 +84,7 @@
     {
       "file": "08-pokemon-center.png",
       "screen": "top",
-      "caption": "A look inside a Pokémon Center in the current build.",
+      "caption": "A look inside a Pok\u00e9mon Center in the current build.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "fd921f6d44a2c97e6ecc6746bc0056e96360138e485dd8412410f76a2c4ff0f2",
       "source_capture_sha256": "617da3a8a588289fd62205a2633e584b6aabc23a0b101f4c3e99177b5517ef7d",
@@ -93,7 +93,7 @@
     {
       "file": "09-mt-mortar.png",
       "screen": "top",
-      "caption": "Mt. Mortar — the classic HeartGold camera restored natively in affected caves and interiors.",
+      "caption": "Mt. Mortar \u2014 the classic HeartGold camera restored natively in affected caves and interiors.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "5e61d505ec05decddeb5433895f703f655e3080dc2549c0c12dc9c3cc0843e86",
       "source_capture_sha256": "a3f30c19f96d2e78f4bb362a519b22e8f479683c4caf51ff474b2a92dc0fe594",
@@ -109,27 +109,9 @@
       "game_version": "1.2.4"
     },
     {
-      "file": "11-plus-options-english-bottom.png",
-      "screen": "bottom",
-      "caption": "Plus options — difficulty, wild levels, Pokémon motion, NPC smoothing and Wi-Fi slot selection. Press SELECT in Options. Version 1.2.5 remains visible after setup.",
-      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
-      "sha256": "6089a42d1ac529839667758738252a22e272fe3e4898f9f89df7316f8366ce4e",
-      "source_capture_sha256": "1b1e1f7e349d4162ec5bfce1c557be675712af79a3e49c909870adb328ec2b04",
-      "game_version": "1.2.5"
-    },
-    {
-      "file": "12-plus-options-italian-bottom.png",
-      "screen": "bottom",
-      "caption": "The Plus options page in Italian. Both English and Italian editions are available. Version 1.2.5 remains visible after setup.",
-      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
-      "sha256": "d12a7d9108db0cc81664d04353bb3a2f289f5b20166c95de0e9d3d85427ac24e",
-      "source_capture_sha256": "df4b52eb2bb2ebafd1bb75e70d13c8a05243edd29d3ebc0032e8032fdd5dd8d3",
-      "game_version": "1.2.5"
-    },
-    {
       "file": "13-ev-viewer-top.png",
       "screen": "top",
-      "caption": "EVs displayed directly in the Pokémon summary — no cheat required.",
+      "caption": "EVs displayed directly in the Pok\u00e9mon summary \u2014 no cheat required.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "c128199bc35d01749af798555d977dd196589f1beb0a4938b769c48ce082674f",
       "source_capture_sha256": "4074e47640effb291a42cbe13ab7a37439b794a229b97ed99009192ec38e05d1",
@@ -138,7 +120,7 @@
     {
       "file": "14-iv-viewer-top.png",
       "screen": "top",
-      "caption": "IVs displayed directly in the Pokémon summary — no cheat required.",
+      "caption": "IVs displayed directly in the Pok\u00e9mon summary \u2014 no cheat required.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "sha256": "422ef1aabcfd0e293256427980fd748d4e959466c1084cced33c6dcc98f03eac",
       "source_capture_sha256": "b3a147e363381fcf62b7e83fb2c703823ce6102568f3ec0acf576eec3a41a5a2",
@@ -163,18 +145,9 @@
       "game_version": "1.2.5"
     },
     {
-      "file": "17-version-title-top.png",
-      "screen": "top",
-      "caption": "V.1.2.5 on the title screen, aligned with the corrected Developed by A FAN credit.",
-      "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
-      "game_version": "1.2.5",
-      "sha256": "8402881b45f53873aea4a53a347563d185e922c8e96e9beb8f1f1baa91a1b8a1",
-      "source_capture_sha256": "f28273d3fd001f86881a6d8cfa661ead241e457221e6c618ddc3563a94056550"
-    },
-    {
       "file": "18-goldenrod-city.png",
       "screen": "top",
-      "caption": "Goldenrod City — exploring the city.",
+      "caption": "Goldenrod City \u2014 exploring the city.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "game_version": "1.2.5",
       "sha256": "b8b43f852af1411833f4af964fcd8c4508d266be73809801f1dc0f09a2f66cf7",
@@ -183,7 +156,7 @@
     {
       "file": "19-violet-city.png",
       "screen": "top",
-      "caption": "Violet City — outside the Poké Mart.",
+      "caption": "Violet City \u2014 outside the Pok\u00e9 Mart.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "game_version": "1.2.5",
       "sha256": "87258cba01f3e64099524fcc0a64d06e3a57d863c983c2e83c281dbbbee05db3",
@@ -192,7 +165,7 @@
     {
       "file": "20-lake-of-rage.png",
       "screen": "top",
-      "caption": "Lake of Rage — a rainy day by the water.",
+      "caption": "Lake of Rage \u2014 a rainy day by the water.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "game_version": "1.2.5",
       "sha256": "99050a099c37362f2b4556b18daf8d830f67963613f38716cb82ddfca94dfaa1",
@@ -201,7 +174,7 @@
     {
       "file": "21-blackthorn-city.png",
       "screen": "top",
-      "caption": "Blackthorn City — the entrance to Dragon's Den.",
+      "caption": "Blackthorn City \u2014 the entrance to Dragon's Den.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "game_version": "1.2.5",
       "sha256": "ea6070a7d88d88b345f374cdf7b907dd745b58441646ce4eae4ff7239930609b",
@@ -228,7 +201,7 @@
     {
       "file": "24-violet-pokemart.png",
       "screen": "top",
-      "caption": "Inside the Violet City Poké Mart.",
+      "caption": "Inside the Violet City Pok\u00e9 Mart.",
       "pixels": "1024x768; integer 4x nearest-neighbour from 256x192",
       "game_version": "1.2.5",
       "sha256": "6cb8fd5a07fb43e91906e9522543b113091281a351fd52db39604929450e8880",
@@ -243,5 +216,6 @@
       "sha256": "4c29efbb55c2005c6e769e770086cffb5c8dd9ca08659826ccb86426d121e08c",
       "source_capture_sha256": "cd7094b796bb1f620a9bc039458cdac9decc91f68e80a583efec102e5f114daf"
     }
-  ]
+  ],
+  "scope": "Retained scenery, battle and summary captures used by the current documentation; obsolete versioned title and replaced settings images are retired"
 }

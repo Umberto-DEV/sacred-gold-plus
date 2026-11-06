@@ -1,7 +1,8 @@
 # Native field Guide
 
-This is the field-menu Guide application, independent of Plus settings and the
-existing Summary EV/IV guide. It never reads or writes save structures.
+This **1.3.1** dependency provides the field-menu Guide application, independent
+of Plus settings and the existing Summary EV/IV guide. It never reads or writes
+save structures.
 
 `sgp13.guide.install` consumes an expanded 1.3 ROM, a validated language-specific
 content payload and the private reference charmap. It returns native hook and
