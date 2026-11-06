@@ -1,5 +1,18 @@
 # Bug ereditati e correzioni della candidata 1.3.1
 
+## Guida e Opzioni: pressioni duplicate — 6 novembre 2026
+
+La lettura condivisa confondeva heldKeys con newKeys e newKeys con il campo
+newAndRepeatedKeys. Una direzione mantenuta risultava quindi nuova a ogni
+frame. Corretti i due offset a `System+0x48` e `System+0x4C`, conservando la
+rimappatura e i timer nativi. I successori EN `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08`
+e IT `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` cambiano dieci byte per lingua:
+due immediati LDR e due CRC32. Save, Portable e altre risorse sono invariati.
+L'evidenza è analisi del codice, confronto completo e derivazione statica;
+nessuna nuova prova di gioco è dichiarata. I checkpoint di battaglia seguenti
+mantengono gli hash esatti sui quali furono eseguiti.
+
+
 ## Freeze battaglia: salto nel raccordo Folletto — 6 novembre 2026
 
 Le candidate correnti sono EN
@@ -13,7 +26,9 @@ layout save invariati. Venti casi del ciclo nativo EN/IT falliscono prima e
 passano dopo; un core interprete senza JIT riproduce la catena e la
 controprova sul solo byte ripristina la risposta del menu.
 [Diagnosi e limiti](source/docs/ai-scoring-1.3.1.md).
-Il test fisico sulla candidata IT esatta è in corso. Il freeze storico Latios
+La candidata IT del checkpoint ha completato Continua, SAVE nativo e cold
+Continue su copia; la battaglia supera Weavile/Honchkrow e un turno Houndoom,
+poi riapre il menu mosse. Non è copertura completa della Lega. Il freeze storico Latios
 su versioni precedenti non è attribuito automaticamente a questo difetto.
 
 ## Checkpoint storico HG-T10 — 5 novembre 2026

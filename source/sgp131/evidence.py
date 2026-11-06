@@ -116,6 +116,11 @@ def _activation_provenance(report):
         raise ValueError('partial activation provenance')
     _digest(report['mechanics_options_sha256'])
     result = report['activation']
+    if type(result) is dict and type(result.get('schema')) is int and result['schema'] == 2:
+        from . import input_lineage
+        input_lineage.validate_report(report)
+        _mechanics_input_provenance(report, activation)
+        return
     if (type(result) is not dict or set(result) != {'schema', 'active_owners', 'candidate_sha256', 'all_inert_sha256'}
             or type(result['schema']) is not int or result['schema'] != 1
             or type(result['active_owners']) is not list
@@ -129,6 +134,10 @@ def _activation_provenance(report):
             raise ValueError('activation inert root mismatch')
     elif result['candidate_sha256'] is not None:
         raise ValueError('inert owners cannot claim an activation candidate')
+    _mechanics_input_provenance(report, activation)
+
+
+def _mechanics_input_provenance(report, activation):
     if 'mechanics_inputs' in report:
         record = report['mechanics_inputs']
         if (type(record) is not dict or set(record) != {'path', 'bytes', 'sha256', 'options_sha256'}

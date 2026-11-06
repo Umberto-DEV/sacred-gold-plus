@@ -111,6 +111,8 @@ Conserva il backup. Salvare con una ROM vecchia può rendere inaccessibili gli s
 
 RISOLUZIONE DEI PROBLEMI
 
+Opzioni Plus e Guida ora usano la pressione singola e la ripetizione native.
+
 Nessuna corrispondenza dello SHA iniziale: assicurati di avere calcolato il .nds estratto e non lo ZIP. Controlla se coincide già con il Riferimento B. Altrimenti regione, revisione o modifiche sono diverse. Rinominare il file, scegliere una patch simile o forzare i controlli non risolve. Ricrea una copia completa della tua cartuccia. Puoi anche applicare la patch a quella ROM pulita e associare al risultato il tuo salvataggio Plus esistente.
 
 "Checksum mismatch", "source too short" o errore durante la patch: ricontrolla lo SHA iniziale e il percorso esatto nel Riferimento A. Non disattivare la verifica dei checksum. Se i file corrispondono ma il browser fatica, prova un browser desktop aggiornato o il metodo facoltativo xdelta3 qui sotto.
@@ -268,7 +270,7 @@ RIFERIMENTO B - GIOCO OTTENUTO
 Usa questa impronta soltanto DOPO la patch. Identifica il .nds italiano 1.3.1 creato da questo ZIP, non la ROM iniziale, il .xdelta o lo ZIP.
 
 Sacred Gold Plus 1.3.1 IT.nds
-SHA-256: c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb
+SHA-256: b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce
 159029292 bytes
 
 ALTRI FILE E CREDITI

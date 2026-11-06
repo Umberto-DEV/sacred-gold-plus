@@ -18,6 +18,8 @@ Apri Guida dal menu di campo: 429 voci su evoluzioni, strumenti importanti e MT,
 
 Le nuove Opzioni Plus e la Guida usano finestre in stile nativo, cornici di selezione e aiuti contestuali. Applica conferma le modifiche Plus; annullare conserva le impostazioni precedenti. La pagina Shiny fa parte della stessa gestione delle impostazioni.
 
+Opzioni Plus e Guida distinguono una singola pressione direzionale da un tasto tenuto premuto, usando la pausa iniziale e la ripetizione native del gioco. Sono corretti lo scorrimento troppo rapido e il salto di piu voci o pagine con una breve pressione.
+
 Il lettore EV/IV gia presente resta nel riepilogo del Pokemon: L mostra gli EV, R gli IV e SELECT ripristina le statistiche normali. Guida di campo e lettore del riepilogo sono strumenti distinti. Entrambi funzionano senza cheat.
 
 3. ALLENAMENTO, CONSULENTI IV E TAPPI

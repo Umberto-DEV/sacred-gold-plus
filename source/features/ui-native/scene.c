@@ -233,7 +233,8 @@ UiSceneResult ui_scene_main(UiSceneContext *x,unsigned *step) {
  if(fresh==PHYS_INVALID){if(x->role==2)((GuideApp *)c)->gesture.visible_epoch=0;return sc_hold(c,27);}
  unsigned busy=c->phase!=SC_IDLE || c->visible_epoch!=c->model_epoch || c->bg.pending!=UI_BG_NONE || c->bg.preparing!=UI_BG_NONE;
  unsigned mapped=0,repeated=0,mode=0;
- if(fresh==PHYS_FRESH){mapped=SW(SC_SYS+0x44);repeated=SW(SC_SYS+0x48);mode=SW(SC_SYS+0x34);c->suspended=0;}
+ /* Native System: newKeys +0x48, newAndRepeatedKeys +0x4C. */
+ if(fresh==PHYS_FRESH){mapped=SW(SC_SYS+0x48);repeated=SW(SC_SYS+0x4C);mode=SW(SC_SYS+0x34);c->suspended=0;}
  unsigned changed=0,result=0;
  if(x->role==1) {
   SettingsApp *a=(SettingsApp *)c;

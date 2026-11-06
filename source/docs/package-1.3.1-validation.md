@@ -1,8 +1,23 @@
 # Player package verification - 1.3.1
 
-## Freeze-fix packages - 6 November 2026
+## Input-repeat correction source checkpoint - 6 November 2026
 
-The current contract is `4b2edbf3648050bedd2287a30f11d3ea1a6e078e195515c731a85a3df69ced32`, targeting EN `50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665`
+The updated contract is `472b4b1d29ffc45bd96b2cbe35bd501a6a4d1679bf1bb54ce9d7a8c547101e6e`. Its intended full-ROM targets are:
+
+| Language | Bytes | SHA-256 |
+| --- | ---: | --- |
+| EN | 152786376 | `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` |
+| IT | 159029292 | `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` |
+
+This dated source checkpoint is not a completed package-verification receipt. The compiled outputs differ from the preceding freeze-only ROMs in exactly ten bytes: two native key-field load immediates in overlay54 and their two CRC32 fields. The complete Portable slot/hooks, all other 512 NitroFS files, FAT geometry and overlay records are unchanged. Static backprojection recovers the original measured inert roots. Original captures retain their original hashes and scope; this derivation adds no runtime measurement or device-installation claim.
+
+At this checkpoint, both normal guarded successor builds completed successfully and match the target identities above. Final PDF review and regeneration of the two player ZIPs are pending. No new tests or gameplay campaign were run for this input correction. New package acceptance requires all 25 routes per language to reconstruct the new targets with both decoders, archive readback, and final release checksums. The four TXT guides and installation target hashes have been updated; the earlier ZIP/PDF set remains a fallback. Final asset identities belong to the release checksum listing.
+
+**The 100/100 reconstruction result in the next section applies only to the historical 50ba/c63 freeze-only targets. It does not verify the new 185dc/b68ddd targets.** Historical source/test/runtime receipts below retain their original candidate scope and are not inherited as new acceptance.
+
+## Historical freeze-only package checkpoint - 6 November 2026
+
+The historical freeze-only contract was `4b2edbf3648050bedd2287a30f11d3ea1a6e078e195515c731a85a3df69ced32`, targeting EN `50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665`
 and IT `c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb`.
 Each of 25 routes per language reconstructs the complete target with both
 xdelta3 and the pinned RomPatcher.js decoder: **100/100 outputs match**.
@@ -42,22 +57,22 @@ skips. All 32 distribution tests were rerun against the final contract after
 the packaging/documentation updates made during that long run. The new
 bootstrap's three CLI gates and exact EN/IT V4 rebuilds are separate evidence.
 
-The receipts below are historical and do not identify the current packages.
+The older receipts below describe separate historical package checkpoints.
 
 
-> **Private draft; do not publish these artifacts.** The live contract has
+> **Historical private draft; not the input-repeat successor.** At that checkpoint the contract had
 > SHA-256
 > `ffef7552a6532d6b4ea8d68706b868109458f13ecb0c4d66a9216f6c148e4070`
 > and targets EN `02cccfbf…bf0af` (152,786,376 bytes) / IT
 > `35d459e3…088f4` (159,029,292 bytes), including `legendary-scene-version`.
-> The package is **not publishable until the exact current IT successor is
+> The package is **not publishable until the exact IT successor for that checkpoint is
 > validated on the maintainer's physical device** and the maintainer explicitly
 > approves publication. The 31 October receipt remains below as historical
-> evidence and does not identify the current draft.
+> evidence and did not identify that historical draft.
 
-## Current private draft - 5 November 2026
+## Historical private draft - 5 November 2026
 
-The current targets were rebuilt into a new offline player-package draft. Each
+The targets of that checkpoint were rebuilt into a new offline player-package draft. Each
 of the 25 source routes per language was decoded with both xdelta3 and the
 pinned RomPatcher.js implementation: 100 reconstructed outputs matched the
 complete target hash and size. Both ZIPs pass checksum verification and archive
@@ -68,7 +83,7 @@ readback, contain 39 members, and contain no ROM, save, BIOS or emulator.
 | Sacred-Gold-Plus-1.3.1-US.zip | 331419164 | `99f3e7d310c1ec0f3dda143af45aabe02fce5798f5722c44af3321ad18f3d23e` |
 | Sacred-Gold-Plus-1.3.1-IT.zip | 354446308 | `fbe6109c0bc504ff728e33b2c6bf58283f8dc31410d4254ff88fb601b3dd204d` |
 
-The four current PDFs were regenerated with reportlab 4.4.9 and all 40 pages
+The four PDFs for that checkpoint were regenerated with reportlab 4.4.9 and all 40 pages
 were rendered and visually reviewed. Installation guides retain the genuine
 1.2.5 route as an updater input while identifying the finished game as 1.3.1;
 that historical input must not be relabelled as a 1.3.1 source.
@@ -123,7 +138,7 @@ The existing 1.2.5 release contract and all published assets remain unchanged.
 ## Guides and images
 
 Four PDFs were rendered with reportlab 4.4.9 and all 40 pages visually reviewed.
-Installation is 12 pages per language; current features are 8 pages per language.
+Installation is 12 pages per language; the feature guides for that checkpoint were 8 pages per language.
 They include real patcher screenshots, exact source/target hashes, normal-save
 update instructions, credits and explicit offline-preparation status.
 
@@ -148,13 +163,13 @@ This preparation adds no global suite, Android, performance or gameplay PASS.
 The strict save audit and bounded reassessment retain their separate recorded
 results; patch decoding does not expand that coverage.
 
-No Action Replay catalogue is supplied. `Cheats/` contains current instructions;
+No Action Replay catalogue is supplied. `Cheats/` contains instructions for that checkpoint;
 old codes are not silently renamed for a changed candidate. Native EV/IV,
 training, shiny and storage features require no cheat.
 
 Public sources include the versioned contract, guide authoring sources,
 [reproduction inputs](../distribution/reproduction-1.3.1.json), tools and tests.
-The current public tree is checked separately from the outgoing history. A
+The public tree at that checkpoint was checked separately from its outgoing history. A
 normal push of the unreviewed local commit range remains disallowed: a clean
 publication proposal must exclude new internal intermediate commits while
 preserving already-published history. New image/download URLs remain pending

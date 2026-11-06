@@ -76,7 +76,7 @@ class SceneRomTests(unittest.TestCase):
         self.assertEqual(b.input(),SCENE_MORE)  # real release gate
         b.put(b.context+32,7)
         b.sample_data=(1,0,128,128,0,0);b.sample_event=1
-        b.put(0x021D1150,128);b.put(0x021D1154,0);b.put(0x021D1140,0)
+        b.put(0x021D1150,128);b.put(0x021D1154,128);b.put(0x021D1158,0);b.put(0x021D1140,0)
         self.assertEqual(b.scene('main',False),SCENE_MORE)
         for _ in range(600):
             if b.get(app+56)==16:break       # SC_WAIT
@@ -188,7 +188,7 @@ class SceneRomTests(unittest.TestCase):
         # by input(), with publication as the only suppressed component.
         b.put(b.context+32,7)
         b.sample_data=(1,0,128,128,0,0);b.sample_event=1
-        b.put(0x021D1150,128);b.put(0x021D1154,0);b.put(0x021D1140,0)
+        b.put(0x021D1150,128);b.put(0x021D1154,128);b.put(0x021D1158,0);b.put(0x021D1140,0)
         self.assertEqual(b.scene('main',False),SCENE_MORE)
         for _ in range(600):
             if b.get(app+56)==16:break       # SC_WAIT

@@ -260,7 +260,7 @@ class NativeSceneBench(nb.NativeBgBench):
     def input(self,key=0,held=None,flags=0,event=1,suspend=0,x=0,y=0,down=0,mode=0,mapped=None):
         self.put(self.context+32,7)
         self.sample_data=(self.sample_data[0]+1,suspend,key if held is None else held,key,0,flags);self.sample_event=event
-        self.put(0x021D1150,key if mapped is None else mapped);self.put(0x021D1154,0);self.put(0x021D1140,mode)
+        self.put(0x021D1150,key if held is None else held);self.put(0x021D1154,key if mapped is None else mapped);self.put(0x021D1158,0);self.put(0x021D1140,mode)
         self.put(0x021D116C,x,2);self.put(0x021D116E,y,2);self.put(0x021D1170,down,2)
         return self.scene('main')
     def idle(self):

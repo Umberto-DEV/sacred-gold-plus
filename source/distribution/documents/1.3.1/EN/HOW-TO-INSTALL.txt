@@ -111,6 +111,8 @@ Keep your backup. Saving with an older ROM can lose access to expanded Bag slots
 
 TROUBLESHOOTING
 
+Plus settings and Guide now use native single-press and hold-repeat timing.
+
 No matching starting hash: confirm you hashed the extracted .nds, not the ZIP. Check whether it already matches Reference B. Otherwise your region, revision or modifications differ. Renaming it, choosing a similar patch or forcing a checksum override will not fix that. Make a fresh untrimmed backup of your own cartridge. You can also patch that clean backup to 1.3.1 and associate your existing Plus save with the result.
 
 "Checksum mismatch", "source too short" or a patching error: recheck the starting hash and the exact patch path from Reference A. Do not turn off checksum validation. If the files match but your browser struggles, try a current desktop browser or the optional xdelta3 method below.
@@ -268,7 +270,7 @@ REFERENCE B - FINISHED GAME
 Use this fingerprint only AFTER applying the patch. It identifies the English 1.3.1 .nds created by this ZIP, not the starting ROM, the .xdelta or the ZIP.
 
 Sacred Gold Plus 1.3.1 EN.nds
-SHA-256: 50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665
+SHA-256: 185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08
 152786376 bytes
 
 ABOUT THE OTHER FILES AND CREDITS

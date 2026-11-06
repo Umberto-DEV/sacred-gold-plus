@@ -18,6 +18,8 @@ Open Guide from the field menu for 429 entries covering evolutions, important it
 
 The revised Plus settings and Guide use native-style windows, selection frames and contextual help. Apply confirms your Plus edits; cancelling keeps the previous settings. The Shiny page is part of this same settings flow.
 
+Plus settings and Guide distinguish a single direction press from a held direction, using the game's native initial delay and repeat cadence. This corrects overly fast scrolling and a brief press moving more than one item or page.
+
 The existing EV/IV reader remains in the Pokemon summary: L shows EVs, R shows IVs and SELECT returns to normal stats. The field Guide and the summary reader are separate tools. Both work without cheats.
 
 3. TRAINING, IV CONSULTANTS AND CAPS

@@ -254,9 +254,40 @@ CONTA = re.compile(r"^Ran (\d+) tests?", re.M)
 SALTI = re.compile(r"skipped=(\d+)")
 
 
+# Closed legacy test suites whose owned native producers need the observed
+# protected host compiler. Production commands never enter this test-only seam.
+NONPRODUCTION_NATIVE_SUITES = {
+    '1.3.1 read-only training UI owner': ('sgp13.training', 'sgp13.shiny_core', 'sgp13.shiny'),
+    '1.3.1 checked shiny UI owner': ('sgp13.training', 'sgp13.shiny_core', 'sgp13.shiny'),
+    '1.3.1 atomic settings owners': ('sgp13.training', 'sgp13.shiny_core', 'sgp13.shiny'),
+    '1.3 shiny core and adapters': ('sgp13.shiny_core', 'sgp13.shiny'),
+    '1.3 training adapters': ('sgp13.training', 'sgp131.bag_foreign'),
+    '1.3 native guide': ('sgp13.guide',),
+    '1.3 Plus presentation': ('sgp13.plus_ui', 'sgp13.shiny_core'),
+    '1.3 native shiny constructors': ('sgp13.shiny', 'sgp13.shiny_core'),
+    '1.3.1 portable box ROM': ('sgp131.portable',),
+    '1.3.1 rematch variants ROM': ('sgp131.rematches',),
+}
+NONPRODUCTION_NATIVE_COMMAND = """import importlib, sys, unittest
+source = sys.argv.pop(1)
+names = sys.argv.pop(1).split(',')
+sys.path.insert(0, source)
+from sgp131.test_ui import nonproduction_native_compiler_contract
+owners = [importlib.import_module(name) for name in names]
+print('Nonproduction protected host compiler contract: ' + ', '.join(names), flush=True)
+with nonproduction_native_compiler_contract(*owners):
+    unittest.main(module=None, argv=['unittest', *sys.argv[1:]])
+"""
+
+
 def esegui(nome, cwd, argv, env=None, classe_b=False):
     amb = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     amb.update(env or {})
+    if nome in NONPRODUCTION_NATIVE_SUITES:
+        if argv[:2] != ['-m', 'unittest']:
+            raise ValueError('host native contract requires the unchanged unittest entry point')
+        owners = NONPRODUCTION_NATIVE_SUITES[nome]
+        argv = ['-c', NONPRODUCTION_NATIVE_COMMAND, str(SOURCE), ','.join(owners), *argv[2:]]
     r = subprocess.run([sys.executable, *argv], cwd=str(cwd), env=amb,
                        text=True, capture_output=True)
     uscita = r.stdout + r.stderr

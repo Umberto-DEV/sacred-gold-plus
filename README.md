@@ -56,7 +56,7 @@ Further repairs address Sacred Gold/Plus behaviour and this continuation's own r
 
 - **Battle and AI:** Fairy matchups and Conversion 2, Ghost damage against Dragon/Dark, Iron Ball/Gravity interactions, move scoring and a type-check loop that could freeze battles when returning to the move menu.
 - **Pokémon and progression:** evolution parameters for Mantyke, Feebas, Burmy and Combee; selected fishing records; Mew's event movement; Steven's pending reward and the Ho-Oh/Lugia scene selectors.
-- **Items, saves and interface:** the Goldenrod Underground pickup quantity, full-Bag gift handling, Plus-settings recovery, extra Bag data protection, story flags that overlapped Friend Roster/Chatot data, and Guide/Options navigation and transitions.
+- **Items, saves and interface:** the Goldenrod Underground pickup quantity, full-Bag gift handling, Plus-settings recovery, extra Bag data protection, story flags that overlapped Friend Roster/Chatot data, and Guide/Options navigation, transitions and native button-repeat timing.
 
 Earlier fixes such as Garchomp's Rough Skin, Claydol's Fly and Scizor's Night Slash remain included. Specific scenarios have different test coverage; unresolved reports and historical limitations remain in the [bug list](BUG-FIXES-1.3.1.md), [hack research](source/docs/legacy-bugs-1.3.md), [changelog](CHANGELOG.md) and [validation report](source/docs/ui-1.3.1-validation.md).
 
@@ -146,7 +146,7 @@ Rispetto alla **Plus 1.03** trovi anche traduzione italiana, camera classica in 
 
 - **Lotta/IA:** tipo Folletto e Conversione2, Spettro contro Drago/Buio, Ferropalla/Gravità, punteggi delle mosse e ciclo dei tipi che poteva bloccare il ritorno al menu mosse.
 - **Pokémon/eventi:** parametri evolutivi di Mantyke, Feebas, Burmy e Combee; pesca, movimento di Mew, premio di Steven e selezione delle scene Ho-Oh/Lugia.
-- **Borsa/save/interfacce:** quantità del pickup nel Tunnel di Fiordoropoli, doni con Borsa piena, recupero delle impostazioni Plus, protezione degli slot extra e dei dati Rubrica/Chatot, navigazione e transizioni Guida/Opzioni.
+- **Borsa/save/interfacce:** quantità del pickup nel Tunnel di Fiordoropoli, doni con Borsa piena, recupero delle impostazioni Plus, protezione degli slot extra e dei dati Rubrica/Chatot, navigazione, transizioni e ripetizione nativa dei tasti in Guida/Opzioni.
 
 L'[elenco dei fix](BUG-FIXES-1.3.1.md), il [catalogo retail](source/docs/known-bugs-hgss.md), il [changelog](CHANGELOG.md) e la [validazione](source/docs/ui-1.3.1-validation.md) distinguono prove, limiti e segnalazioni ancora aperte. Non tutte le voci del catalogo sono bug corretti.
 

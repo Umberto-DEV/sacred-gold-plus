@@ -282,6 +282,8 @@ def final_gate(final_rom, options, owner_receipts, *, language):
         raise ValueError('activation: malformed owner activation locations') from error
     root = None if options is None else options.candidate_sha256
     digest = _sha(projected)
-    _need(root is None or root == digest, 'final all-inert ROM differs from the common captured candidate')
+    if root is not None and root != digest:
+        from . import input_lineage
+        return input_lineage.derive(final_rom, projected, options, language)
     return {'schema': 1, 'active_owners': [] if options is None else list(options.active_owners),
             'candidate_sha256': root, 'all_inert_sha256': digest}

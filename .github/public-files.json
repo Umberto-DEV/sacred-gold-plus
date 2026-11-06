@@ -889,6 +889,7 @@
   "source/sgp131/identity.py",
   "source/sgp131/igt.py",
   "source/sgp131/igt_verify.py",
+  "source/sgp131/input_lineage.py",
   "source/sgp131/invisible_grass.py",
   "source/sgp131/waterfall_facing.py",
   "source/sgp131/follower_menu_jump.py",

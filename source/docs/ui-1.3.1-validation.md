@@ -1,5 +1,28 @@
 # Verifiche delle unità sorgenti UI 1.3.1
 
+## Successore input nativo — 6 novembre 2026
+
+| Lingua | SHA-256 successore | Byte |
+| --- | --- | ---: |
+| EN | `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` | 152786376 |
+| IT | `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` | 159029292 |
+
+L'analisi del codice identifica `heldKeys` letto come nuova pressione. Il fix
+legge newKeys e newAndRepeatedKeys ai campi nativi corretti, conservando i timer
+iniziali/continui del gioco. Il confronto completo EN/IT distingue dieci byte:
+due immediati LDR nell'overlay 54 e due parole CRC32 Module96. Gli altri 512 file
+NitroFS, le attivazioni e tutto il payload Portable restano byte-identici.
+La retroproiezione integrale coincide con gli hash inerti misurati del
+checkpoint seguente. Il gate chiuso [input_lineage.py](../sgp131/input_lineage.py)
+registra questa sola derivazione statica: `runtime_acceptance: not-run`.
+
+Nessun nuovo test locale o ciclo di gioco, input timing, SAVE o cold Continue è
+stato eseguito per questo successore, su richiesta esplicita del maintainer.
+Non si trasferisce l'accettazione runtime dei vecchi hash ai nuovi. La CI e i
+readback di compilazione/ricostruzione pacchetti restano controlli distinti.
+I rapporti storici sottostanti sono conservati con le rispettive identità.
+
+
 ## Candidata freeze battaglia — 6 novembre 2026
 
 | Lingua | SHA-256 candidata formale | Byte | Owner runtime attivi |

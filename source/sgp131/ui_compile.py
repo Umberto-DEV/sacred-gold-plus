@@ -121,7 +121,7 @@ SOURCE_PINS = {
     "features/ui-native/physical.h": "9c609c01e6dd01f185ff68aad3a828b0d239e43b353c8168f084d80282b0c16a",
     "features/ui-native/resource.c": "1cc3baab34166d3272b8f8a5234e583b8df9f301b7a5d40325d58c241fa98abb",
     "features/ui-native/resource.h": "1ca2edf7a8f2d5e2f4cc4778ec79ad7a0f8741b52c97eea8754e7bf52ec34f18",
-    "features/ui-native/scene.c": "ca8cdff9740eba2024e93bcace024a660db6434a6a8f2c9322c35962a2c9d067",
+    "features/ui-native/scene.c": "2559f576012335564fb8ac18f4496d12228160de7ef4030791394dbd8f542b8d",
     "features/ui-native/scene.h": "fcfc70053708bab23089e493f67788f8d2a119e2eade2ec22a240c4b04fe870b",
     "features/ui-native/scene_admission.c": "8db4b2de013bda096eb4177b672774c81a1c25bdef487a8fbfed03175fd2601b",
     "features/ui-native/scene_admission.h": "189d90f7bad738edfc630f5fa131199b9d151cda672b4c8470475bb7b88d4f18",

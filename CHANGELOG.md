@@ -2,6 +2,17 @@
 
 ## 1.3.1
 
+Guide and Plus Options now read the native new-press and repeat fields rather
+than treating a held direction as another press on every frame. This restores
+the game's initial hold delay and repeat cadence without changing native timers.
+The corrected outputs are EN `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08`
+and IT `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce`. Whole-image comparison shows exactly
+two instruction bytes and two derived CRC32 words changed per language. A closed
+static lineage receipt preserves the old measured Portable identity; it does
+not claim a new runtime capture. No new local tests or gameplay campaign were
+run for this correction, as requested. CI remains a separate publication gate.
+The runtime/package evidence in the following checkpoint predates this input fix.
+
 The public source now includes the lossless map-resource codecs needed by
 Routes 43 and 44 repair and a read-only native-model validation bridge. Building
 no longer depends on an untracked authoring module. Synthetic codec tests and

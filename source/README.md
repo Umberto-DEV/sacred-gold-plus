@@ -78,7 +78,10 @@ has a bounded 60-minute budget.
 A payload mismatch remains a failure; CI does not regenerate validated blobs.
 UI and native compiler fixtures use explicit nonproduction host contract
 seams, including protected compiler ownership/ACL checks. Production builders keep
-their exact toolchain pins. Public-file checks remain on Ubuntu. Runner
+their exact toolchain pins. Ten explicitly listed legacy suites also use the
+existing protected host contract through the test runner, including isolated
+version/hash rejection cases. No production command uses this injection.
+Public-file checks remain on Ubuntu. Runner
 software is documented by
 [GitHub Actions](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
 

@@ -1,3 +1,21 @@
+## GUIDA e OPZIONI: ripetizione dei tasti — 6 novembre 2026
+
+Corretto il campionamento condiviso: `System+0x48` contiene le nuove pressioni,
+`System+0x4C` le nuove pressioni più la ripetizione nativa. Prima veniva letto
+`heldKeys` a `+0x44`, generando una nuova pressione ogni frame e salti multipli
+anche con una pressione breve. Restano i timer nativi iniziali e di ripetizione,
+la rimappatura e il resto del comportamento dei menu.
+
+Candidate corrette: EN `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08`,
+IT `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce`. Per lingua cambiano due byte
+d'istruzione e due CRC32 derivati, dieci byte totali; gli altri 512 file NitroFS,
+Portable, geometria e formato save sono identici. La retroproiezione delle sole
+quattro finestre ripristina integralmente le immagini inerti già misurate.
+La ricevuta schema 2 descrive questa derivazione statica, non una nuova misura
+runtime. Per richiesta del maintainer non sono stati avviati altri test locali
+né prove di gioco su questo successore. I checkpoint sotto mantengono i propri
+hash e limiti. La compilazione e la CI finale restano gate distinti.
+
 ## Sorgenti pubblici e verifiche — 6 novembre 2026
 
 Il codec delle mappe necessario alla riparazione dei percorsi 43 e 44 è ora incluso

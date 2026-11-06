@@ -20,8 +20,8 @@ EV/IV summary tools are retained from earlier versions.
 
 | Language | Current 1.3.1 player-profile SHA-256 | Bytes |
 | --- | --- | ---: |
-| EN | `50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665` | 152786376 |
-| IT | `c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb` | 159029292 |
+| EN | `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` | 152786376 |
+| IT | `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` | 159029292 |
 
 The [player-package contract](../distribution/release-1.3.1.json) pins the
 second table. A version label or filename does not establish byte identity.
@@ -174,8 +174,34 @@ composition, distinct from the player-profile outputs:
 
 | Language | All-inert projection SHA-256 |
 | --- | --- |
-| EN | `d2101c0e812802e03caa2fe9013d0bfbf947d19698b9cbc0bf62e36121d1b068` |
-| IT | `fd347c3887fee90cd817cb3634cc120ce40ff3418dfa2d538ac9044800ae6da5` |
+| EN | `949aafe759ab110a16d3d1fe17246bb7817c66c5b1257a20a69f9e50183d404e` |
+| IT | `e74f2368656010c420596ab222fd4cea4cffa217bd55d36c8968425ee31e4372` |
+
+## Native menu input correction and static lineage
+
+The current outputs also correct Guide/Options input sampling: `System+0x48`
+is newKeys, and `System+0x4C` is newAndRepeatedKeys. The predecessor read heldKeys
+as a new press, bypassing the native initial hold delay. Native start/continue
+repeat timers and button remapping are retained; no fixed delay is introduced.
+
+The prior measured all-inert roots remain EN
+`d2101c0e812802e03caa2fe9013d0bfbf947d19698b9cbc0bf62e36121d1b068`
+and IT `fd347c3887fee90cd817cb3634cc120ce40ff3418dfa2d538ac9044800ae6da5`.
+They are not captures of the new outputs. For these two exact player profiles,
+[input_lineage.py](input_lineage.py) admits a **static** derivation: exactly two
+LDR immediate bytes and two Module96 CRC32 words change. Restoring only those
+four closed byte windows must reproduce the whole measured inert predecessor.
+The gate additionally binds the exact new active/inert hashes, length, language,
+options digest, Portable-only profile and scene source pin. Unknown mutations
+still fail. The schema-2 receipt says `runtime_acceptance: not-run`; the original
+schema-1 identity gate and measured capture files remain unchanged.
+
+No new gameplay/input timing or SAVE/cold campaign was run for this small
+successor at the maintainer's request. Earlier runtime evidence below keeps its
+original identity and scope. Reproducing this exact static successor uses the
+same old measured Portable configuration and proof, without changing its root.
+Other candidates require their own measured evidence; this is not a generic
+permission to reuse captures.
 
 ## Portable activation requires measured evidence
 
