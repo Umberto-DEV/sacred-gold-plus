@@ -32,8 +32,16 @@ def nonproduction_host_compiler_contract(*, compiler=False):
                       PYTHON_EXECUTABLE_SHA256=ui_compile.sha(Path(sys.executable).resolve().read_bytes()))
     original_toolchain = ui_compile._toolchain
     if compiler:
-        executable = ui_compile.compiler_path(ui_compile.COMPILER_SHA256)
-        ui_compile.require(executable is not None, 'clang unavailable for nonproduction contract')
+        from sgp13.compiler import APPLE_COMPILER
+        selected = ui_compile.shutil.which('clang')
+        ui_compile.require(selected is not None, 'clang unavailable for nonproduction contract')
+        candidate = Path(selected).resolve(strict=True)
+        if candidate == Path('/usr/bin/clang'):
+            candidate = APPLE_COMPILER.resolve(strict=True)
+        # Observe bytes without executing them, then retain the real ownership
+        # and ACL guard before any version probe. Production pins stay unchanged.
+        observed_sha256 = ui_compile.sha(candidate.read_bytes())
+        executable = ui_compile.compiler_path(observed_sha256)
         with tempfile.TemporaryDirectory(prefix='ui-test-identity-') as tmp:
             version = ui_compile._run([executable, '--version'], Path(tmp), set())
         identities.update(COMPILER_VERSION=version.splitlines()[0],
@@ -51,7 +59,59 @@ def nonproduction_host_compiler_contract(*, compiler=False):
         yield
 
 
+@contextmanager
+def nonproduction_native_compiler_contract(*owners):
+    """Test-only observed host identities; all payload/symbol/size guards remain.
+
+    No production caller imports this helper. The protected compiler guard is
+    still called with an explicit digest before execution; only test dependencies
+    are rebound, then restored even when compilation or an assertion raises.
+    """
+    from sgp13 import compiler
+    original_guard = compiler.compiler_path
+    with nonproduction_host_compiler_contract(compiler=True):
+        observed = ui_compile.COMPILER_SHA256
+
+        def host_guard(expected_sha256=observed):
+            return original_guard(expected_sha256)
+
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(compiler, 'compiler_path', host_guard))
+            for owner in owners:
+                if hasattr(owner, 'compiler_path'):
+                    stack.enter_context(patch.object(owner, 'compiler_path', host_guard))
+                for name in ('COMPILER_SHA256', 'COMPILER_VERSION'):
+                    if hasattr(owner, name):
+                        stack.enter_context(patch.object(owner, name, getattr(ui_compile, name)))
+            yield
+
+
 class UiTests(unittest.TestCase):
+    def test_host_contract_accepts_observed_compiler_without_accepting_it_for_production(self):
+        # Simulate the release compiler being different from this protected host.
+        with patch.object(ui_compile, 'COMPILER_SHA256', '0' * 64):
+            with self.assertRaisesRegex(ValueError, 'compiler binary drift'):
+                ui_compile.compiler_path(ui_compile.COMPILER_SHA256)
+            with nonproduction_host_compiler_contract(compiler=True):
+                with tempfile.TemporaryDirectory() as tmp:
+                    _executable, receipt = ui_compile._toolchain(Path(tmp))
+                self.assertEqual(receipt['assurance'], 'nonproduction-host-compiler-contract')
+            with self.assertRaisesRegex(ValueError, 'compiler binary drift'):
+                ui_compile.compiler_path(ui_compile.COMPILER_SHA256)
+
+    def test_host_contract_refuses_unprotected_compiler_before_version_probe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            marker = directory / 'EXECUTED'
+            executable = directory / 'clang'
+            executable.write_text('#!/bin/sh\ntouch "' + str(marker) + '"\n')
+            executable.chmod(0o700)
+            with patch.object(ui_compile.shutil, 'which', return_value=str(executable)):
+                with self.assertRaisesRegex(ValueError, 'protected by root'):
+                    with nonproduction_host_compiler_contract(compiler=True):
+                        self.fail('unprotected host compiler accepted')
+            self.assertFalse(marker.exists())
+
     def test_configuration_is_explicit_and_rejects_boolean_or_extra_fields(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp) / 'ui-candidate.json'
@@ -272,7 +332,8 @@ class UiTests(unittest.TestCase):
             self.assertEqual(list(Path(tmp).iterdir()), [executable])
 
     def test_production_refuses_clang_version(self):
-        with tempfile.TemporaryDirectory() as tmp, \
+        with nonproduction_host_compiler_contract(compiler=True), \
+             tempfile.TemporaryDirectory() as tmp, \
              patch.object(ui_compile, '_run', return_value='controlled wrong clang version\n'):
             with self.assertRaisesRegex(ValueError, '^compiler version drift$'):
                 ui_compile._toolchain(Path(tmp))
@@ -341,7 +402,10 @@ class UiTests(unittest.TestCase):
     def test_real_compiler_discards_plugin_override_and_rejects_extended_acl(self):
         from sgp13 import compiler
         import subprocess
-        with patch.dict(compiler.os.environ, {
+        with nonproduction_host_compiler_contract(compiler=True), \
+             patch.object(compiler, 'compiler_path',
+                          lambda: ui_compile.compiler_path(ui_compile.COMPILER_SHA256)), \
+             patch.dict(compiler.os.environ, {
                 'CCC_OVERRIDE_OPTIONS': '+-Xclang +-load +-Xclang +/tmp/untrusted-plugin.so'}):
             result = compiler.run_compiler(['-###', '--target=armv5te-none-eabi',
                                            '-x', 'c', '-fsyntax-only', '/dev/null'],

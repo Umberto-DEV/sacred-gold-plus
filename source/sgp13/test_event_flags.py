@@ -8,6 +8,7 @@ import struct
 import tempfile
 import unittest
 from sgp13 import event_flags
+from sgp131.test_ui import nonproduction_native_compiler_contract
 
 STATE, SAVE, CHATOT = 0x02280000, 0x02290000, 0x022A0000
 STOP, STACK, DELEGATE = 0x023EF000, 0x023FF000, 0x023D1000
@@ -90,6 +91,9 @@ def expected_bank(legacy, chatot):
 class EventFlags(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        host = nonproduction_native_compiler_contract(event_flags)
+        host.__enter__()
+        cls.addClassCleanup(host.__exit__, None, None, None)
         cls.temp = tempfile.TemporaryDirectory(prefix='event-flags-test-')
         cls.addClassCleanup(cls.temp.cleanup)
         cls.blob, cls.symbols = event_flags.compile_native(cls.temp.name)

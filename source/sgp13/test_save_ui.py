@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 from sgp13 import save_ui
+from sgp131.test_ui import nonproduction_native_compiler_contract
 
 DATA = 0x02280000
 INPUT = 0x021d110c
@@ -82,6 +83,9 @@ class Callbacks:
 class SaveUiCallbacks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        host = nonproduction_native_compiler_contract(save_ui)
+        host.__enter__()
+        cls.addClassCleanup(host.__exit__, None, None, None)
         cls.temp = tempfile.TemporaryDirectory(prefix='sgp-save-ui-test-')
         cls.addClassCleanup(cls.temp.cleanup)
         cls.blob, cls.symbols = save_ui.compile_native(cls.temp.name)

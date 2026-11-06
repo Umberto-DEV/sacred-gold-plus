@@ -68,15 +68,19 @@ its compiler. Other Clang releases may produce different bytes or exceed a
 payload's fixed space limit even when they support the ARM target. A usable
 ARM target alone does not establish release reproducibility.
 
-CI runs the Class A suites on the official `xcode-27` macOS runner with
-Xcode 27.2 explicitly selected. It requires the exact Apple clang 21
-`clang-2100.4.1.1` binary and retains
-all existing byte-for-byte and payload-size tests; those tests establish
-whether the selected compiler reproduces the shipped artifacts. Public-file
-checks remain on Ubuntu. Runner software is documented by
+CI runs the ROM-free Class A suites on the official `xcode-27` macOS runner
+with `/Library/Developer/CommandLineTools` explicitly selected. The observed
+image includes CLT 27.0; its Xcode 27.2 alias instead names release candidate
+27B48, not the frozen production CLT compiler. The workflow records the actual
+CLT package, compiler version and SHA-256, checks host/ARM compilation and
+retains every existing byte-for-byte and payload-size test. The complete job
+has a bounded 30-minute budget.
+A payload mismatch remains a failure; CI does not regenerate validated blobs.
+UI and native compiler fixtures use explicit nonproduction host contract
+seams, including protected compiler ownership/ACL checks. Production builders keep
+their exact toolchain pins. Public-file checks remain on Ubuntu. Runner
+software is documented by
 [GitHub Actions](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
-The workflow checks version and SHA-256 before the suites; a different result
-remains a failing check rather than being accepted or regenerated.
 
 Check that your compiler supports the target with:
 
@@ -146,10 +150,11 @@ The 1.3/1.3.1 native stages authenticate the actual Apple CLT compiler before
 executing it, including version queries. The local pin is SHA-256
 `fc5e3cbba6ad54059295cad716aacb05ace8235f5f7a6031f1d8c15d24bd6d66`.
 Compiler and ancestors must be root-owned, not group/world writable and have
-no extended ACL. Compiler children use a restricted environment. The workflow
-now selects Xcode 27.2 and checks this exact version and binary digest; the
-first GitHub run remains the independent compatibility gate. Do not bypass the
-identity guard to obtain a green result.
+no extended ACL. Compiler children use a restricted environment. GitHub's
+Class A job checks a separately observed host compiler; its UI/native compiler
+contracts are explicitly nonproduction. The production identity guard remains enforced
+before execution, and a host-suite PASS does not establish release-byte
+reproduction or ROM acceptance.
 
 Class A — no game file, the same set CI runs:
 
@@ -210,10 +215,12 @@ current native/pixel and installer checks are recorded in the
 [UI validation report](docs/ui-1.3.1-validation.md). This does not replace the
 historical 1.2.5 payloads or their reproducibility checks.
 
-The in-progress 1.3.1 UI installer has separate assurance levels. Its ROM-free
-`sgp131.test_ui` suite explicitly uses the observed host toolchain for compiler
-contract tests, retaining source/library, size and symbol checks. Those test
-receipts are labelled nonproduction. Production `sgp131.ui` and `ui_verify`
+The 1.3.1 compiler tests have separate assurance levels. The ROM-free
+`sgp131.test_ui` seam authenticates the observed protected host toolchain for UI
+and selected native test fixtures. Source/library, golden payload, size, symbol
+and Unicorn assertions remain enabled. UI test receipts are labelled
+nonproduction; native fixture measurements are supporting host contracts.
+Production `sgp131.ui` and `ui_verify`
 retain exact interpreter/compiler and source pins; `sgp131.test_ui_rom` verifies
 the canonical private inputs under those pins. Passing the host contract suite
 does not certify a production ROM or a different toolchain. Current results and

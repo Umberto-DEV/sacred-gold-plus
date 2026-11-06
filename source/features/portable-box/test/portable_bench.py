@@ -96,8 +96,11 @@ def preimage_of(v4):
 
 
 def _measured_size():
+    # This is synthetic bench setup, not a production slot assignment or ROM receipt.
     import tempfile
-    with tempfile.TemporaryDirectory(prefix='portable-size-') as work:
+    from sgp131.test_ui import nonproduction_native_compiler_contract
+    with nonproduction_native_compiler_contract(portable), \
+         tempfile.TemporaryDirectory(prefix='portable-size-') as work:
         return portable.measure(work)['bytes']
 
 

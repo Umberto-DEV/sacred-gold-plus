@@ -17,6 +17,7 @@ from pathlib import Path
 import capstone
 
 from sgp131 import portable
+from sgp131.test_ui import nonproduction_native_compiler_contract
 from sgp131 import test_controls as _test_controls
 
 sys.path.insert(0, str(portable.FEATURE / 'test'))
@@ -203,6 +204,11 @@ class Trampoline(unittest.TestCase):
 
 
 class Compile(unittest.TestCase):
+    def setUp(self):
+        host = nonproduction_native_compiler_contract(portable)
+        host.__enter__()
+        self.addCleanup(host.__exit__, None, None, None)
+
     def test_payload_is_measured_deterministic_and_relocatable(self):
         with tempfile.TemporaryDirectory() as work:
             first, symbols1, receipt1 = portable.compile_native(work, 0x023E0000)

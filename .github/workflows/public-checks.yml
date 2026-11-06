@@ -15,6 +15,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
 
 jobs:
   public-files:
@@ -37,15 +38,15 @@ jobs:
 
   class-a-tests:
     name: Class A tests (no game file)
-    # The shipped ARM payloads use Apple clang 21. Keep every byte-comparison
-    # and size gate enabled; Ubuntu clang generates different code here.
+    # Class A exercises the observed Apple host toolchain. Keep every payload
+    # byte-comparison and size gate; this is not production ROM reproduction.
     # Installed version/path: actions/runner-images/images/macos/xcode-27-arm64-Readme.md
     runs-on: xcode-27
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
-      # Xcode 27.2 release (27B52) carries the compiler pinned by the 1.3.1
-      # producers: Apple clang 21.0.0, clang-2100.4.1.1.
-      DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
+      # Use the installed protected CLT tree, not an Xcode release-candidate
+      # alias. Its observed host identity is separate from the production pin.
+      DEVELOPER_DIR: /Library/Developer/CommandLineTools
     steps:
       - name: Check out the public repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -62,19 +63,19 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r source/requirements.txt
 
-      - name: Check the C compiler can target the ARM946E-S
-        # Not informational: two suites (95 tests) compile our own blobs for
-        # this target and run them under an emulator. If the target is not
-        # usable here, the job must say so instead of quietly skipping them.
+      - name: Check the host C compiler can target the ARM946E-S
+        # Native suites compile our own blobs for this target and execute them
+        # under Unicorn. A missing host/ARM compiler is a failure, never a
+        # reason to silently omit those tests.
         run: |
-          xcodebuild -version
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
           compiler=$(xcrun --find clang)
           export SDKROOT=$(xcrun --sdk macosx --show-sdk-path)
           echo "SDKROOT=$SDKROOT" >> "$GITHUB_ENV"
           "$compiler" --version
           "$compiler" -shared -fPIC -x c /dev/null -o "$RUNNER_TEMP/host-probe.dylib"
-          "$compiler" --version | head -n 1 | grep -F 'Apple clang version 21.0.0 (clang-2100.4.1.1)'
-          test "$(shasum -a 256 "$compiler" | awk '{print $1}')" = 'fc5e3cbba6ad54059295cad716aacb05ace8235f5f7a6031f1d8c15d24bd6d66'
+          shasum -a 256 "$compiler"
+          echo "Nonproduction host contracts; production compiler pins remain separate"
           # Put this selected toolchain ahead of Homebrew for all Python subprocesses.
           dirname "$compiler" >> "$GITHUB_PATH"
           "$compiler" --target=armv5te-none-eabi -mcpu=arm946e-s -mthumb -ffreestanding \

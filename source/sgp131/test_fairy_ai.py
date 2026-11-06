@@ -4,6 +4,7 @@ import os
 import shutil
 import tempfile
 import unittest
+from sgp131.test_ui import nonproduction_native_compiler_contract
 from pathlib import Path
 
 from sgp12.rom import bl_decode
@@ -94,6 +95,9 @@ class Compiler(unittest.TestCase):
             if os.environ.get('SGP_CI') == '1':
                 self.fail('clang required under SGP_CI=1')
             self.skipTest('clang unavailable')
+        host = nonproduction_native_compiler_contract(stage)
+        host.__enter__()
+        self.addCleanup(host.__exit__, None, None, None)
 
     def test_payload_is_exactly_148_bytes_at_the_fixed_slot(self):
         with tempfile.TemporaryDirectory() as work:
