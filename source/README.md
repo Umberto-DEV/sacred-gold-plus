@@ -287,7 +287,7 @@ The release-specific file checks, supported inputs and reproducible player
 ZIP tooling are documented in [distribution/README.md](distribution/README.md)
 (relative to this document's directory, use `source/distribution/README.md`
 from the repository root). The published 1.2.4 release was validated incrementally against
-the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/base-stage-validation.md); the packaging configuration describes all 21 supported input routes.
+the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/base-stage-validation.md); its historical packaging contract described 21 input routes.
 
 For 1.3.1 use the explicit [versioned contract](distribution/release-1.3.1.json)
 and [distribution instructions](distribution/README.md), with 25 direct input
