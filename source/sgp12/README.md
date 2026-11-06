@@ -30,5 +30,5 @@ The standalone `sgp12.manutenzione` command remains available for guarded
 component diagnosis on an exact 1.2.3 input. It streams one new output, rejects
 unknown hashes/existing output and independently rereads it. It reads/writes no
 save data. Current 1.3.1 package routes are specified separately by
-[release-1.3.1.json](../distribution/release-1.3.1.json); default `release.json`
-is a historical build contract, not the current download version.
+[release-1.3.1.json](../distribution/release-1.3.1.json), the default
+distribution contract.
