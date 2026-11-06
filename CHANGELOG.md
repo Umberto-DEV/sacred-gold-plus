@@ -12,6 +12,11 @@ missing language sources are rejected before producing incomplete outputs.
 Release-input URLs move to `v1.3.1-r2`; all game/input/base-delta fingerprints
 remain unchanged. No new game or save migration is introduced.
 
+The PDF-preflight test dependency is pinned as ReportLab 4.4.9, matching the
+renderer. The runtime README checksum is refreshed after its English translation.
+These correct the two failures of documentation candidate `396f79f` in
+[CI42292522688](https://github.com/Umberto-DEV/sacred-gold-plus/actions/runs/42292522688);
+all other suites in that run passed. The final source must pass a new full CI.
 
 ## 1.3.1
 

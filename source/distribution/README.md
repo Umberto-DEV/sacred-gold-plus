@@ -50,8 +50,8 @@ release manifest.
 - xdelta3, Node.js and a local
   [RomPatcher.js](https://github.com/marcrobledo/RomPatcher.js) checkout at the
   exact contract commit.
-- reportlab 4.4.9 to render illustrated PDFs. It is a release-tool dependency,
-  separate from game compilation and core tests.
+- ReportLab 4.4.9 for illustrated PDFs and distribution preflight tests.
+  It is pinned in `source/requirements.txt`; game compilation does not use it.
 - The private authoring bundle described above. The public English documents
   remain under `documents/1.3.1/EN/`.
 
