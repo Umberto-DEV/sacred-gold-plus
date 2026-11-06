@@ -8,8 +8,7 @@ tappa precedente restano quelli documentati sotto.
 28 October 2026. Final private candidate **v8**, built from unchanged 1.2.5 EN/IT.
 This records the interface follow-up to the [earlier systematic playtest](playtest-1.3-dev.md).
 It does not replace that report or relabel its battle observations as new runs.
-The [plan](ui-1.3-dev-plan.md) and [native interface contract](hgss-ui-contract.md)
-record the approved scope and reference research.
+The [native interface contract](hgss-ui-contract.md) records the interface requirements.
 
 | Language | Bytes | SHA-256 |
 |---|---:|---|

@@ -7,6 +7,7 @@ import re
 import struct
 import subprocess
 from build_lease_rom import BASES, HERE, ROOT, abi, digest, build_r5, require, replace_arm9, append_files, load_text, NintendoDSRom
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 # Build outputs never land inside this checkout: game files and build
 # products stay in a private folder of your own.
@@ -91,10 +92,11 @@ def build(source,charmap,out,pressure=False):
     require(base_sha in BASES,'Unknown complete Plus base')
     lang,r5_sha=BASES[base_sha]
     source_rom=NintendoDSRom(original)
-    abi(source_rom.loadArm9().sections[0].data);guide_abi(source_rom.loadArm9().sections[0].data)
+    source_main=ndspy_load_arm9_sicuro(source_rom)
+    abi(source_main.sections[0].data);guide_abi(source_main.sections[0].data)
     text,lines=texts(lang,charmap,source_rom)
     r5=build_r5(source,charmap,out/'r5');require(r5['rom_sha256']==r5_sha,'r5 reconstruction differs')
-    prior=NintendoDSRom((out/'r5'/r5['rom_file']).read_bytes());main=prior.loadArm9()
+    prior=NintendoDSRom((out/'r5'/r5['rom_file']).read_bytes());main=ndspy_load_arm9_sicuro(prior)
     before=[bytes(s.data) for s in main.sections]
     obj=out/'guide.o'
     command=['clang','--target=armv5te-none-eabi','-mcpu=arm946e-s','-mthumb','-Os','-ffreestanding','-fno-builtin','-fno-stack-protector','-fno-unwind-tables','-fno-asynchronous-unwind-tables','-fno-jump-tables','-Wall','-Wextra','-Werror','-c',str(HERE/'summary_guide.c'),'-o',str(obj)]
@@ -105,7 +107,7 @@ def build(source,charmap,out,pressure=False):
     arm9=main.save(compress=True)
     image=replace_arm9(original,arm9)
     image,_=append_files(image,{'a/0/2/7':prior.getFileByName('a/0/2/7')},reuse_existing=True)
-    checked=NintendoDSRom(image);actual=checked.loadArm9()
+    checked=NintendoDSRom(image);actual=ndspy_load_arm9_sicuro(checked)
     expected=bytearray(main.sections[0].data);table=0x02000000+sum(len(s.data) for s in main.sections)
     struct.pack_into('<II',expected,0xba0,table,table+24);struct.pack_into('<I',expected,0xbb4,0x02000000+len(arm9))
     require(actual.sections[0].data==expected and [bytes(s.data) for s in actual.sections[1:]]==[bytes(s.data) for s in main.sections[1:]],'Roundtrip differs')

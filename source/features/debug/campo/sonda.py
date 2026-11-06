@@ -23,6 +23,8 @@ import time
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, QUI)
+sys.path.insert(0, os.path.dirname(QUI))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 from banco import (Campo, RspSicuro, RspError, VBLANK, warp_robusto,  # noqa: E402
                    attendi_overworld, leggibile)
 
@@ -43,14 +45,16 @@ def main():
     ap.add_argument("--secondi", type=float, default=240.0)
     a = ap.parse_args()
 
-    os.makedirs(a.out, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
     cmd = [a.hg, "--rom", a.rom, "--out", a.out, "--gdb-port", str(a.porta),
            "--script", a.script]
     if a.sram:
         cmd += ["--sram", a.sram]
     t0 = time.time()
-    proc = subprocess.Popen(cmd, stdout=open(os.path.join(a.out, "hg-stdout.log"), "w"),
-                            stderr=open(os.path.join(a.out, "hg-stderr.log"), "w"))
+    stdout = outputs.open_new("hg-stdout.log")
+    stderr = outputs.open_new("hg-stderr.log")
+    proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
+    stdout.close(); stderr.close(); outputs.close()
     esito = {"comando": cmd, "passi": [], "tracciato": []}
 
     def passo(nome, **kw):
@@ -109,8 +113,7 @@ def main():
         proc.kill()
         esito["rc_hg_runtime"] = "ucciso dopo 300 s"
     esito["secondi"] = round(time.time() - t0, 2)
-    with open(a.json, "w") as f:
-        json.dump(esito, f, indent=2, ensure_ascii=False)
+    write_json_new(a.json, esito)
     print(json.dumps({k: v for k, v in esito.items()
                       if k not in ("passi", "tracciato")}, indent=2, ensure_ascii=False))
     return 0

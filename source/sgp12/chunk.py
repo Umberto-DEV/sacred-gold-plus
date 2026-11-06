@@ -28,8 +28,6 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
-from .rom import crc16
-
 # --- indirizzi RAM (CONTRATTO-CHUNK.md §1) ---------------------------------
 STATO_BASE = 0x023D8700         # sgp.plus +0x600, 32 B
 CHUNK_RAM = 0x023D8710          # copia in RAM del chunk, 16 B
@@ -114,9 +112,19 @@ _FOOTER = struct.Struct("<IIIHH")   # magic, saveno, size, idx, crc
 
 
 def calcola_crc_gioco(dati: bytes) -> int:
-    """`GF_CalcCRC16` (0x0201FF98): stesso CRC16 dell'header di cartuccia DS
-    (tabella a nibble, polinomio 0x8408), su un seme 0xFFFF — vedi `sgp12.rom.crc16`."""
-    return crc16(dati)
+    """`GF_CalcCRC16` at ``0x0201FF98``, normal CCITT with seed ``0xFFFF``.
+
+    Its ARM kernel at ``0x020E38E0`` shifts left and indexes the table with
+    ``byte ^ (crc >> 8)``.  This is deliberately distinct from the reflected
+    cartridge-header CRC in :mod:`sgp12.rom`.
+    """
+    crc = 0xFFFF
+    for byte in dati:
+        crc ^= byte << 8
+        for _ in range(8):
+            crc = (((crc << 1) ^ 0x1021) & 0xFFFF
+                   if crc & 0x8000 else (crc << 1) & 0xFFFF)
+    return crc
 
 
 def pack_footer(payload: bytes, saveno: int, idx: int) -> bytes:

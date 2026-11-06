@@ -112,7 +112,8 @@ def r5_rom_path(test):
 def r5_arm9(test):
     """Load a fresh MainCodeFile for the plain r5 ROM (mutated freely by tests)."""
     from ndspy.rom import NintendoDSRom
-    return NintendoDSRom.fromFile(str(r5_rom_path(test))).loadArm9()
+    from sgp12.blz import ndspy_load_arm9_sicuro
+    return ndspy_load_arm9_sicuro(NintendoDSRom.fromFile(str(r5_rom_path(test))))
 
 
 def lease_build(test):

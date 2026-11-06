@@ -18,7 +18,8 @@ import struct
 import tempfile
 from pathlib import Path
 
-from ..rom import Arm9, Rifiuto, bl_thumb, esigi, esigi_manifesto_descrive, sha
+from ..rom import (Arm9, Rifiuto, bl_thumb, esigi, esigi_manifesto_descrive,
+                   sha, valida_layout_arm9)
 from .. import overlay as ovp
 
 OV_CAMPO = 1
@@ -175,16 +176,8 @@ class _Arm9RO:
         self.off9 = struct.unpack_from("<I", raw, 0x20)[0]
         self.ram9 = struct.unpack_from("<I", raw, 0x28)[0]
         self.siz9 = struct.unpack_from("<I", raw, 0x2C)[0]
-        tab0, tab1, dati0 = struct.unpack_from("<3I", raw, self.off9 + 0xBA0)
-        self.segmenti = [(self.ram9, self.off9, dati0 - self.ram9)]
-        p = self.off9 + (tab0 - self.ram9)
-        fine = self.off9 + (tab1 - self.ram9)
-        off = self.off9 + (dati0 - self.ram9)
-        while p < fine:
-            ram, size, _bss = struct.unpack_from("<3I", raw, p)
-            self.segmenti.append((ram, off, size))
-            off += size
-            p += 12
+        _t0, _t1, _d0, _sections, self.segmenti = valida_layout_arm9(
+            raw, self.off9, self.ram9, self.siz9)
 
     def off(self, ram, n=1):
         for base, o, size in self.segmenti:
@@ -207,7 +200,7 @@ def _bl_decode(sito, quattro_byte):
     return (sito + 4 + addend) & 0xFFFFFFFE
 
 
-def _blz_forward(flusso):
+def _blz_forward(flusso, atteso=None):
     n = len(flusso)
     _pretendi(n >= 8 and n % 4 == 0, "BLZ: lunghezza %d non plausibile" % n)
     w0, w1 = struct.unpack("<II", flusso[n - 8:n])
@@ -219,6 +212,9 @@ def _blz_forward(flusso):
     prefisso = flusso[:n - enc_len]
     zona = flusso[n - enc_len:n - hdr_len]
     finale = n + inc_len
+    _pretendi(finale <= 0x400000, "BLZ: immagine oltre la RAM DS")
+    if atteso is not None:
+        _pretendi(finale == atteso, "BLZ: dimensione diversa dalla y9")
     z = bytes(reversed(zona))
     attesi = finale - len(prefisso)
     fuori = bytearray()
@@ -268,7 +264,7 @@ def _immagine_overlay(dati, e):
     corpo = dati[e["inizio"]:e["fine"]]
     if e["flag"] & 1:
         _pretendi(e["dim"] <= len(corpo), "y9 dichiara piu' byte compressi di quanti ne ha la FAT")
-        return _blz_forward(bytes(corpo[:e["dim"]]))
+        return _blz_forward(bytes(corpo[:e["dim"]]), e["ram_size"])
     return bytes(corpo)
 
 

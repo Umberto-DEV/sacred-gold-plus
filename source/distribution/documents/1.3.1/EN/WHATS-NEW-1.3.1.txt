@@ -1,0 +1,94 @@
+SACRED GOLD PLUS
+What's New in 1.3.1 | English edition
+
+YOUR ADVENTURE, WITH MORE CHOICES
+Explore Johto and Kanto in an independent continuation of Drayano's Sacred Gold and the original Sacred Gold Plus. Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Plus project. This guide introduces the current English and Italian editions and explains the additions since 1.2.5.
+
+1. THE GAME AND YOUR SETTINGS
+
+In Options, press SELECT for the Plus settings. Trainer difficulty and wild level scaling can be selected separately; levels stay capped at 100. Plus also controls Pokemon motion in battle, character loading and the Wi-Fi connection slot. Network services depend on your emulator and service provider.
+
+The classic HeartGold camera is built into 52 interiors and caves. Outdoors, the wider Plus view remains. The main Bag pocket offers 252 slots, with extra capacity in other pockets. Consecutive Rare Candy use keeps the party menu open while preserving normal evolution and move-learning prompts.
+
+These camera, Bag, difficulty and motion features were already available in 1.2.5. If you are coming from the original Plus 1.03, the continuation also adds Italian dialogue and interface work, an accented Italian naming keyboard, distributed NPC loading, battle-menu caches, Wi-Fi slot selection and over 200 text corrections. The new field tools below build on that foundation.
+
+2. GUIDE AND EVERYDAY TOOLS
+
+Open Guide from the field menu for 429 entries covering evolutions, important items and TMs, special events and training. It uses the current game data and native Pokemon and item names. Browse category lists and linked detail pages with the buttons; L/R moves through lists in groups of five. Returning from a link restores your previous page and position.
+
+The revised Plus settings and Guide use native-style windows, selection frames and contextual help. Apply confirms your Plus edits; cancelling keeps the previous settings. The Shiny page is part of this same settings flow.
+
+The existing EV/IV reader remains in the Pokemon summary: L shows EVs, R shows IVs and SELECT returns to normal stats. The field Guide and the summary reader are separate tools. Both work without cheats.
+
+3. TRAINING, IV CONSULTANTS AND CAPS
+
+IV consultants in the Violet and Blackthorn PokeMarts use Silver and Gold Caps. Silver changes one IV to 31 or an exact value from 0 to 31; Gold changes all six to 31. These are real IV changes and may affect breeding and Hidden Power. Cancelling, an unchanged value or a refused payment does not consume a Cap.
+
+Silver Caps cost 10,000 after the first Badge; Gold Caps cost 50,000 after the League. Each Johto Badge awards two Silver Caps; each Kanto Badge awards three. The eighth and sixteenth Badges also award a Gold Cap. The first League victory gives four Silver and two Gold; later victories give four Silver and one Gold. The first victory over Red gives three Gold.
+
+Eligible historical one-time rewards can be collected on an existing save; earlier League rematches are not paid retroactively. Full-Bag rewards remain pending instead of being discarded.
+
+At the Route 34 Day Care, quick EV training charges 100 per EV added; reductions and resets are free. Classic permits 252 per stat and 510 overall. Unlimited permits 252 in each stat after a balance warning. Switching to a stricter mode does not silently erase existing EVs: reduce incompatible values explicitly.
+
+Free courses for deposited Pokemon provide one level per two hours and optionally 32 EVs per hour toward a selected target. Choose real time or active playtime. The usual Day Care withdrawal fee still applies. Breeding remains step-based. Course results preserve known moves and are applied on withdrawal; the Day Care Pokegear contact reports projected progress.
+
+4. SHINY MODES AND SPECIES SEARCH
+
+The second Plus page offers Classic and Pro shiny profiles independently of difficulty. Classic uses 1/512 for eligible generation. In Pro, the selected target progresses from 1/4096 through 1/2048 and 1/1024 to 1/512 as its completed chain reaches 10, 20 and 40. The improved threshold applies to the next generated encounter. No threshold guarantees a shiny.
+
+Catching or defeating the target advances its chain. An ordinary different species, escape, loss or draw breaks it; excluded encounters suspend it. Changes to mode or target reset the chain and charge; cancelling an edit preserves them. Existing generated Pokemon are not rerolled.
+
+Search chooses a seen species from the area's native encounter pool, respecting available rods, terrain, time, forms and progression. It needs 40 valid steps. Prepare Search in the menu, confirm Apply and return to a free field. A successful Search spends the charge. A normal SAVE retains the mode, target, chain and random state; cold restart resets the charge.
+
+Eggs, gifts, starters, trades, Mystery Gift, roamers, trainer Pokemon, Safari, contests, double encounters and forced events retain their separate native paths. Eligible ordinary static encounters use their base shiny chance without a chain bonus.
+
+5. PORTABLE BOX
+
+From the ordinary field party menu, press R for the native Pokemon storage interface. The shortcut uses the game's PC application and its normal storage operations. Some game contexts prevent the shortcut; follow its in-game feedback and keep the normal save routine.
+
+The storage image illustrates this native interface opened from the party. It is an actual 1.3.1 game capture; the repository's capture record identifies the original image build.
+
+6. SPECIES, MOVES AND BATTLE RULES
+
+The 1.3 species review covers all 493 species and changes selected entries. It affects 67 species: 50 have stat changes, two gain a second ability slot and 29 learnsets receive 32 level/move additions. These categories overlap.
+
+Examples include improved early-game stats for Rattata/Raticate, more physical resilience and Sludge Bomb access for Tentacruel, better pre-Transform survival for Ditto, Technician as a second slot for newly generated Kricketune and Leaf Guard as a second slot for newly generated Meganium. Existing Pokemon keep their identity, IVs, EVs, moves and abilities. Affected stats are recalculated through the game's normal loading paths; added level-up moves are also available through the Move Reminder.
+
+Plus difficulty adds nine purposeful move substitutions across seven trainers. Normal retains its original parties. General species and learnset changes apply in both modes. The caught-species Ball is also shown in trainer battles when the Pokedex records the species as caught.
+
+Will-O-Wisp has 85 accuracy. Effective Keen Eye ignores the target's evasion changes while retaining the game's ability-suppression rules. These are selected changes, not a complete later-generation ruleset. The repository contains the full species and trainer comparison.
+
+7. CONTINUE YOUR ADVENTURE
+
+Keep your current normal save, progress and settings. Before updating, save in-game, fully close the emulator and locate the save it actually uses. Back up that raw save and the installed ROM. Apply one matching patch to a separate file and verify the complete finished-file SHA-256 in the installation PDF.
+
+Test the successor with a separate copy of your save: Continue, inspect progress, Pokemon, Bag including extra slots and Plus settings, SAVE in-game, close fully, cold-start and Continue again. Then replace only the installed ROM, keeping the same language, filename, location and emulator association. Keep your current personal save in its original location; never replace it with the test save.
+
+No new game or settings reset is required. If Continue is missing, stop and correct the save association. Do not load an old emulator savestate after changing the ROM. Keep the backup if returning to an older game, which may not expose extra Bag slots or newer data. This package includes no unverified cheat catalogue; read Cheats/ABOUT-CHEATS.txt.
+
+SOME BUGS FIXED.
+
+Retail fixes retained from earlier versions: Heavy Ball's neutral 102.4-204.7 kg band was already corrected in Plus 1.1; Hail after Snow Warning was already corrected in Plus 1.03. Fast Ball and Quick Ball follow their separate rules.
+
+Moves and Pokemon: repairs cover Fire Fang/Wonder Guard, Rage/Transform state, transformed-stat reloads, trainer alternate-form stats/abilities, Giratina's party stats after the PC, and AI checks for Dry Skin, Motor Drive, immunities and legal switches.
+
+Field and rewards: targeted fixes address interrupted poisoned-follower jumps, Waterfall facing, six invisible-grass tiles on Routes 43/44, the League guard after viewing GS Cup species, and Kurt/Pryce rewards with full pockets. Other repairs cover GB Sounds after evolution move-learning and playtime/Pokeathlon counters.
+
+MORE SOME BUGS FIXED.
+
+Battle and AI: Fairy matchups and Conversion 2, Ghost damage against Dragon/Dark, Iron Ball/Gravity interactions, selected move scoring and a type-check loop that could freeze the return to the move menu.
+
+Pokemon and events: evolution parameters for Mantyke, Feebas, Burmy and Combee; selected fishing records; Mew's movement; Steven's pending reward and Ho-Oh/Lugia scene selectors.
+
+Items, saves and interfaces: the Goldenrod Underground pickup quantity, full-Bag gifts, Plus-settings recovery, extra Bag data protection, story flags that overlapped Friend Roster/Chatot data, and Guide/Options navigation and transitions. Earlier fixes such as Garchomp's Rough Skin, Claydol's Fly and Scizor's Night Slash remain included.
+
+The detailed register distinguishes targeted code/data tests, played scenarios and unresolved reports. It does not claim that every historical bug or save has been tested:
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/BUG-FIXES-1.3.1.md
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/source/docs/known-bugs-hgss.md
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md
+
+CREDITS AND REFERENCES
+
+Drayano; mikelan / Mikelan98; NefariousnessNo3436; @JD48096761 and the original contributors. Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Plus project. The five original gameplay PDFs and trainer reference retain their authors' credits. They are historical gameplay references and may describe differences from the current Plus game.
+
+This is an independent fan continuation, not an official handover. AI-assisted tools including Codex support investigation, implementation, translation, testing and documentation. Third-party rights remain with their owners. Gallery images retain their original capture identities. No emulator, BIOS, save or ROM is included.

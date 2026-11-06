@@ -1,6 +1,7 @@
 """Native field Guide content compiler; consumes private game text at build time."""
 from __future__ import annotations
 import struct
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 
 TEXT_WIDTH = 208
 
@@ -99,7 +100,7 @@ def compile_native(output_dir):
     root=Path(__file__).resolve().parents[1]
     out=Path(output_dir);out.mkdir(parents=True,exist_ok=True)
     cmd=['clang','--target=armv5te-none-eabi','-mcpu=arm946e-s','-mthumb','-Oz','-ffreestanding','-fno-builtin','-fno-stack-protector','-fno-unwind-tables','-fno-asynchronous-unwind-tables','-fno-jump-tables','-Wall','-Werror','-c',str(root/'features/field-guide/sorgenti/guide.c'),'-o',str(out/'guide.o')]
-    subprocess.run(cmd,check=True,capture_output=True)
+    run_compiler(cmd[1:],check=True,capture_output=True)
     spec=importlib.util.spec_from_file_location('guide_text_loader',root/'features/options/tools/carica_text.py')
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
     blob,symbols=mod.load_text((out/'guide.o').read_bytes(),BASE,('guide_init','guide_main','guide_exit'))

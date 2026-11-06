@@ -15,6 +15,7 @@ from run_box_probe import open_summary
 def current_build(rom, observer):
     from thumb_object import load_text
     from ndspy.rom import NintendoDSRom
+    from sgp12.blz import ndspy_load_arm9_sicuro
     import hashlib
     meta = json.loads((rom.parent / 'build.json').read_text())
     require(meta['kind'] == 'private-native-summary-guide', 'Wrong build kind')
@@ -25,7 +26,7 @@ def current_build(rom, observer):
     require(sha(obj) == meta['object_sha256'], 'Stale object')
     code, symbols = load_text(obj.read_bytes(), meta['memory']['code_start'])
     require(hashlib.sha256(code).hexdigest() == meta['payload_sha256'] and symbols == meta['symbols'], 'Stale payload')
-    itcm = NintendoDSRom(rom.read_bytes()).loadArm9().sections[1].data
+    itcm = ndspy_load_arm9_sicuro(NintendoDSRom(rom.read_bytes())).sections[1].data
     require(itcm[0x880:0x880+len(code)] == code and itcm[0x1fc0:0x2000] == bytes(64), 'ROM code/state differs')
     require(hashlib.sha256(itcm[0x1b00:0x1b00+meta['text_bytes']]).hexdigest() == meta['text_sha256'], 'ROM text differs')
     obs = json.loads((observer.parent / 'observer.json').read_text())

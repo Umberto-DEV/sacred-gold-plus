@@ -97,6 +97,7 @@ VECCHIO = {
 }
 
 _nuovo = {}
+_nuovo_salva_fix = None
 
 
 def nuovo(nome):
@@ -116,6 +117,28 @@ def nuovo(nome):
                                       if not n.startswith("$")},
                              manifesto=v)
     return _nuovo[nome]
+
+
+def nuovo_salva_fix():
+    """Compila il successore 1.3.1 con la correzione SG-SV01 attiva.
+
+    Il blob 1.2.x resta una fixture storica riproducibile: la pipeline 1.3.1
+    abilita esplicitamente la nuova politica con la stessa define.
+    """
+    global _nuovo_salva_fix
+    if _nuovo_salva_fix is None:
+        d = Path(tempfile.mkdtemp(prefix="sgp-salva-fix-"))
+        atexit.register(shutil.rmtree, d, ignore_errors=True)
+        spec = dict(ct.BLOB["salva"])
+        spec["defs"] = list(spec["defs"]) + ["-DSGP_SAVE_WRITE_STATUS_FIX=1"]
+        m = ct.compila("salva-fix", spec, PACCHETTO / "sorgenti-v-finale", d)
+        _nuovo_salva_fix = {
+            "byte": (d / "salva-fix.bin").read_bytes(),
+            "simboli": {n: int(x, 16) for n, x in m["simboli"].items()
+                         if not n.startswith("$")},
+            "manifesto": m,
+        }
+    return _nuovo_salva_fix
 
 
 def vecchio(nome):
@@ -387,8 +410,9 @@ class QSalva(unittest.TestCase):
 
     def banco(self, quale):
         b = Banco()
-        spec = nuovo("salva") if quale == "nuovo" else vecchio("salva")
-        base = 0x023D8220 if quale == "nuovo" else 0x023D8730
+        spec = nuovo_salva_fix() if quale == "fix" else (
+            nuovo("salva") if quale == "nuovo" else vecchio("salva"))
+        base = 0x023D8220 if quale in ("nuovo", "fix") else 0x023D8730
         b.carica(base, spec["byte"])
         b.simboli = spec["simboli"]
         b.carica(STATO, bytes(32))
@@ -512,6 +536,88 @@ class QSalva(unittest.TestCase):
             n2 = struct.unpack("<I", b.settori[SET_A][20:24])[0]
             self.assertEqual(n2, (n1 + 1) & 0xFFFFFFFF)
 
+    def test_SG_SV01_esiti_delle_due_copie_non_vengono_dichiarati_validi(self):
+        """Una scrittura Plus fallita non puo' diventare VALID in RAM; una
+        sola copia riuscita resta invece rileggibile ma deve essere segnalata
+        come parziale. Il risultato vanilla resta 2: l'app di salvataggio
+        scarta un errore inventato dall'estensione e mostrerebbe comunque
+        «salvato», lasciando inoltre sporco il proprio manager."""
+        casi = (
+            # esiti WB, write_status, load_status, copie realmente presenti
+            ([0, 0], 3, 1, set()),
+            ([1, 0], 2, 2, {SET_A}),
+            ([0, 1], 2, 2, {SET_B}),
+            ([1, 1], 1, 2, {SET_A, SET_B}),
+        )
+        for esiti, write_status, load_status, copie in casi:
+            b = self.banco("fix")
+            self.carica(b)
+            b.scrittura_esiti = list(esiti)
+            ritorno = b.chiama(b.simboli["sgp_gancio_salva"], (0x12345678,))[0]
+            stato = b.leggi(STATO, 32)
+            with self.subTest(esiti=esiti):
+                self.assertEqual(ritorno, 2)
+                self.assertEqual(stato[5], write_status)
+                self.assertEqual(stato[3], load_status)
+                self.assertEqual(set(b.settori), copie)
+            if copie:
+                freddo = self.banco("fix")
+                freddo.settori = dict(b.settori)
+                with self.subTest(esiti=esiti, fase="riavvio freddo"):
+                    self.assertEqual(self.carica(freddo)[3], 2)
+
+    def test_SG_SV01_la_copia_parziale_piu_recente_vince_sulla_A_stantia(self):
+        """A può restare valida ma vecchia quando fallisce e la sola B riceve
+        le nuove opzioni. Il cold loader deve scegliere il saveno 10 di B, non
+        fermarsi al primo record valido A con saveno 9."""
+        b = self.banco("fix")
+        vecchio = chunk_bytes(plus=0, selvatici=0, npc=1)
+        b.settori = {
+            SET_A: settore_valido(vecchio, saveno=9),
+            SET_B: settore_valido(vecchio, saveno=9),
+        }
+        self.assertEqual(self.carica(b)[0], 0)
+        stato = bytearray(b.leggi(STATO, 32))
+        stato[0] = 1
+        stato[1] = 1
+        b.carica(STATO, stato)
+        b.scrittura_esiti = [0, 1]
+        self.assertEqual(b.chiama(b.simboli["sgp_gancio_salva"], (0x12345678,))[0], 2)
+        self.assertEqual(struct.unpack_from("<I", b.settori[SET_A], 20)[0], 9)
+        self.assertEqual(struct.unpack_from("<I", b.settori[SET_B], 20)[0], 10)
+        freddo = self.banco("fix")
+        freddo.settori = dict(b.settori)
+        letto = self.carica(freddo)
+        self.assertEqual((letto[3], letto[0], letto[1]), (2, 1, 1))
+
+    def test_SG_SV01_selezione_generazione_controlli_e_wrap(self):
+        """Il confronto fra le due copie deve essere stabile: vince il saveno
+        più recente, a parità resta A, e il wrap u32 non rende 0 più vecchio di
+        0xffffffff. Una copia corrotta non può oscurarne una valida."""
+        casi = (
+            ('A recente', 10, 9, 0),
+            ('B recente', 9, 10, 1),
+            ('pari: A stabile', 10, 10, 0),
+            ('wrap: B zero dopo A max', 0xFFFFFFFF, 0, 1),
+        )
+        for nome, saveno_a, saveno_b, plus in casi:
+            b = self.banco('fix')
+            b.settori = {
+                SET_A: settore_valido(chunk_bytes(plus=0), saveno=saveno_a),
+                SET_B: settore_valido(chunk_bytes(plus=1), saveno=saveno_b),
+            }
+            with self.subTest(caso=nome):
+                letto = self.carica(b)
+                self.assertEqual((letto[3], letto[0]), (2, plus))
+
+        b = self.banco('fix')
+        b.settori = {
+            SET_A: settore_valido(chunk_bytes(plus=1), saveno=14),
+            SET_B: bytes(32),
+        }
+        letto = self.carica(b)
+        self.assertEqual((letto[3], letto[0]), (2, 1))
+
     def test_chunk_rifiutato_non_si_riscrive(self):
         p = chunk_bytes(anim=2)
         for q in BLOB:
@@ -531,7 +637,7 @@ class QSalva(unittest.TestCase):
             self.assertEqual(b.settori, {}, "%s: scritto con lo stato non inizializzato" % q)
 
     def test_esito_non_2_non_scrive(self):
-        for q in BLOB:
+        for q in (*BLOB, "fix"):
             b = self.banco(q)
             self.carica(b)
             b.orig_save_ret = 1
@@ -539,7 +645,7 @@ class QSalva(unittest.TestCase):
             self.assertEqual(b.settori, {})
 
     def test_valore_di_ritorno_dei_due_ganci_intatto(self):
-        for q in BLOB:
+        for q in (*BLOB, "fix"):
             b = self.banco(q)
             for v in (0, 1, 2, 3, 0xFFFFFFFF):
                 b.orig_load_ret = v

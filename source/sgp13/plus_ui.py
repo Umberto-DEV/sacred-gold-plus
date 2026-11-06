@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import struct
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 
 import ndspy.narc
 import ndspy.rom
@@ -42,13 +43,13 @@ def module(path, name):
 def compile_native(work_dir):
     out = Path(work_dir)
     out.mkdir(parents=True, exist_ok=True)
-    env = {**os.environ, 'SGP_UI_SORGENTI': str(FEATURE)}
+    env = {**compiler_environment(), 'SGP_UI_SORGENTI': str(FEATURE)}
     subprocess.run([os.sys.executable, str(ROOT / 'features/options/tools/compila.py'),
-                    '--uscita', str(out)], env=env, capture_output=True, check=True)
+                    '--uscita', str(out), '--cc', compiler_path()], env=env, capture_output=True, check=True)
     manifest = json.loads((out / 'manifesto.json').read_text())
     code = (out / 'ui_blob.bin').read_bytes()
     obj = out / 'context.o'
-    subprocess.run(['clang', '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
+    run_compiler([ '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
                     '-ffreestanding', '-fno-builtin', '-fno-stack-protector', '-fno-jump-tables',
                     '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra',
                     '-Werror', '-c', str(FEATURE / 'context.c'), '-o', str(obj)],
@@ -64,7 +65,7 @@ def compile_navigation(work_dir, controller_symbols):
     out = Path(work_dir)
     out.mkdir(parents=True, exist_ok=True)
     obj = out / 'navigation.o'
-    subprocess.run(['clang', '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
+    run_compiler([ '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
                     '-ffreestanding', '-fno-builtin', '-fno-stack-protector', '-fno-jump-tables',
                     '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra',
                     '-Werror', '-DSGP_UI_STATO_ADDR=0x023D9F60u',
@@ -86,7 +87,7 @@ EXT_BASE, EXT_SIZE, EXT_TEXT, EXT_TEXT_SIZE = 0x023CB800, 8192, 0x023CD800, 4096
 def compile_extended(work_dir):
     out = Path(work_dir); out.mkdir(parents=True, exist_ok=True)
     obj = out / 'extended.o'
-    subprocess.run(['clang', '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
+    run_compiler([ '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
                     '-ffreestanding', '-fno-builtin', '-fno-stack-protector', '-fno-jump-tables',
                     '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra',
                     '-Werror', '-DSGP_UI_STATO_ADDR=0x023D9F60u',

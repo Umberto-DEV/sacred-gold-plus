@@ -80,7 +80,8 @@ def applica(rom,build_dir,manifest_path=None):
     # The greedy stream is the ORIGINAL size and passes the in-place decoder.
     encoded=blz_comprimi(edited)
     esigi(len(encoded)==len(raw),'CAPACITA: greedy Bag overlay must retain exact original size')
-    esigi(blz_decomprimi(encoded)==edited,'CAPACITA: Bag overlay in-place decompression failed')
+    esigi(blz_decomprimi(encoded, len(edited))==edited,
+          'CAPACITA: Bag overlay in-place decompression failed')
     fat=container.voce_fat(info['file_id']);after=bytearray(interim)
     after[fat['inizio']:fat['fine']]=encoded
     after=bytes(after)

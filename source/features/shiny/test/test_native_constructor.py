@@ -7,6 +7,7 @@ from pathlib import Path
 import importlib.util,json,os,struct,sys,tempfile,unittest
 ROOT=Path(__file__).resolve().parents[3];sys.path.insert(0,str(ROOT))
 from sgp13 import shiny,shiny_core
+from sgp12.blz import ndspy_load_overlays_sicuri
 spec=importlib.util.spec_from_file_location('shiny_constructor_bench',ROOT/'features/training-native/test/native_bench.py')
 bm=importlib.util.module_from_spec(spec);spec.loader.exec_module(bm)
 from unicorn.arm_const import *
@@ -146,7 +147,7 @@ class NativeConstructorTests(unittest.TestCase):
             for species,ability in ((25,0),(25,28),(25,56),(201,0)):
                 with self.subTest(language=language,species=species,ability=ability):
                     b=ConstructorBench(ROM_DIR/f'candidate-{language}.nds',self.temp.name,self.blob,self.symbols,self.core,self.cs)
-                    overlay=b.rom.loadArm9Overlays()[2];b.mu.mem_write(overlay.ramAddress,bytes(overlay.data));b.actual_producer=True
+                    overlay=ndspy_load_overlays_sicuri(b.rom)[2];b.mu.mem_write(overlay.ramAddress,bytes(overlay.data));b.actual_producer=True
                     b.call(0x0206DE38,bm.MON,25,35,32,1,0x12345678,1,b.ot)
                     lead=bm.MON+0x400;b.mu.mem_write(lead,bytes(b.mu.mem_read(bm.MON,236)))
                     b.mu.mem_write(b.gen+13,bytes([0,ability]));b.mu.mem_write(b.gen+17,bytes([1,1,1,1,1]))
@@ -170,7 +171,7 @@ class NativeConstructorTests(unittest.TestCase):
                 for dtcm_gen in (False,True):
                     with self.subTest(language=language,method=method,dtcm_gen=dtcm_gen):
                         b=RegularDTCMBench(ROM_DIR/f'candidate-{language}.nds',self.temp.name,self.blob,self.symbols,self.core,self.cs)
-                        ov=b.rom.loadArm9Overlays()[2];b.mu.mem_write(ov.ramAddress,bytes(ov.data));b.actual_producer=True
+                        ov=ndspy_load_overlays_sicuri(b.rom)[2];b.mu.mem_write(ov.ramAddress,bytes(ov.data));b.actual_producer=True
                         b.call(0x0206DE38,bm.MON,25,35,32,1,0x12345678,1,b.ot)
                         lead=bm.MON+0x400;b.mu.mem_write(lead,bytes(b.mu.mem_read(bm.MON,236)))
                         gen=0x027E3F60 if dtcm_gen else b.gen

@@ -3,6 +3,7 @@
 only to build synthetic banks (cipher round-trip already tested there); no ROM
 or charmap.txt is opened. No narrative game text is used, only single letters."""
 import sys
+import struct
 import unittest
 from pathlib import Path
 
@@ -23,6 +24,14 @@ class ReadBankRawTest(unittest.TestCase):
         raw = bank.save()
         decoded = ht.read_bank_raw(raw)
         self.assertEqual(decoded, messages)
+
+    def test_overlapping_extents_are_rejected(self):
+        raw = bytearray(22)
+        struct.pack_into('<HH', raw, 0, 2, 0)
+        struct.pack_into('<II', raw, 4, 20, 1)
+        struct.pack_into('<II', raw, 12, 20, 1)
+        with self.assertRaisesRegex(ValueError, 'overlap'):
+            ht.read_bank_raw(bytes(raw))
 
 
 class RenderTest(unittest.TestCase):

@@ -31,8 +31,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import stat
 import sys
 import time
+import unicodedata
+import uuid
 from pathlib import Path
 
 from . import manutenzione, versione
@@ -41,24 +45,194 @@ from .blocchi import (riserva, camera, plus_chunk, testi, npc, anim, opzioni, wi
                       titolo, guida, caramelle, borsa, anim2, borsa_lotta, squadra_lotta, capacita_borsa)
 
 BUILD_DEFAULT = Path(__file__).resolve().parent / "build"
+BLOCK_NAMES = ("riserva", "camera", "plus_chunk", "testi", "npc", "anim",
+               "opzioni", "wifi", "titolo", "credito", "guida", "caramelle",
+               "borsa", "anim2", "borsa_lotta", "squadra_lotta",
+               "capacita_borsa", "manutenzione", "versione")
 
 
-def costruisci(base: bytes, lingua: str, build_dir: Path, log_dir: Path | None = None) -> tuple[bytes, dict]:
+def _open_directory(path, *, create, require_private):
+    original = Path(path).absolute()
+    if original.is_symlink():
+        raise Rifiuto('directory di output symlink')
+    # macOS espone /tmp e /var come alias di sistema. Si normalizza una volta,
+    # poi l'attraversamento effettivo resta descriptor-bound e no-follow.
+    absolute = original.resolve(strict=False)
+    parts = absolute.parts
+    fd = os.open(parts[0], os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        for part in parts[1:]:
+            flags = os.O_RDONLY | os.O_DIRECTORY | getattr(os, 'O_NOFOLLOW', 0)
+            try:
+                child = os.open(part, flags, dir_fd=fd)
+            except FileNotFoundError:
+                if not create:
+                    raise
+                os.mkdir(part, 0o700, dir_fd=fd)
+                child = os.open(part, flags, dir_fd=fd)
+                os.fchmod(child, 0o700)
+            os.close(fd)
+            fd = child
+        info = os.fstat(fd)
+        if (not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid()
+                or (require_private and info.st_mode & 0o077)):
+            raise Rifiuto('directory di output non privata o non posseduta')
+        return fd
+    except Exception:
+        os.close(fd)
+        raise
+
+
+def _lstat_at(fd, name):
+    try:
+        return os.stat(name, dir_fd=fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return None
+
+
+class _PrivateDirectory:
+    def __init__(self, path, *, require_private=False):
+        original = Path(path).absolute()
+        self.fd = _open_directory(original, create=True, require_private=require_private)
+        self.path = original.resolve(strict=False)
+
+    @property
+    def identity(self):
+        info = os.fstat(self.fd)
+        return info.st_dev, info.st_ino
+
+    @staticmethod
+    def normalized_name(name):
+        return unicodedata.normalize('NFD', name).casefold()
+
+    def require_absent(self, name):
+        if not name or '/' in name or name in ('.', '..'):
+            raise Rifiuto('nome output non portabile')
+        if _lstat_at(self.fd, name) is not None:
+            raise Rifiuto('output gia presente: ' + str(self.path / name))
+
+    def publish(self, name, data):
+        self.require_absent(name)
+        temporary = '.' + name + '.' + uuid.uuid4().hex
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, 'O_NOFOLLOW', 0)
+        fd = os.open(temporary, flags, 0o600, dir_fd=self.fd)
+        linked = False
+        temporary_info = None
+        try:
+            os.fchmod(fd, 0o600)
+            view = memoryview(data)
+            while view:
+                written = os.write(fd, view)
+                if written <= 0:
+                    raise OSError('scrittura output incompleta')
+                view = view[written:]
+            os.fsync(fd)
+            temporary_info = os.fstat(fd)
+            if (not stat.S_ISREG(temporary_info.st_mode)
+                    or temporary_info.st_uid != os.getuid()
+                    or temporary_info.st_nlink != 1
+                    or temporary_info.st_mode & 0o077):
+                raise Rifiuto('temporaneo output con identita o permessi inattesi')
+        except Exception:
+            try:
+                os.unlink(temporary, dir_fd=self.fd)
+            except FileNotFoundError:
+                pass
+            os.fsync(self.fd)
+            raise
+        finally:
+            os.close(fd)
+        try:
+            try:
+                os.link(temporary, name, src_dir_fd=self.fd, dst_dir_fd=self.fd,
+                        follow_symlinks=False)
+            except FileExistsError as exc:
+                raise Rifiuto('output apparso durante la pubblicazione: '
+                              + str(self.path / name)) from exc
+            linked = True
+            info = os.stat(name, dir_fd=self.fd, follow_symlinks=False)
+            if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                    or info.st_nlink != 2 or info.st_mode & 0o077
+                    or (info.st_dev, info.st_ino) !=
+                       (temporary_info.st_dev, temporary_info.st_ino)):
+                raise Rifiuto('output pubblicato con identita o permessi inattesi')
+        finally:
+            try:
+                os.unlink(temporary, dir_fd=self.fd)
+            except FileNotFoundError:
+                pass
+            if linked:
+                final = _lstat_at(self.fd, name)
+                valid = (final is not None and stat.S_ISREG(final.st_mode)
+                         and final.st_uid == os.getuid() and final.st_nlink == 1
+                         and not final.st_mode & 0o077
+                         and (final.st_dev, final.st_ino) ==
+                             (temporary_info.st_dev, temporary_info.st_ino))
+                if not valid:
+                    if (final is not None and (final.st_dev, final.st_ino) ==
+                            (temporary_info.st_dev, temporary_info.st_ino)):
+                        os.unlink(name, dir_fd=self.fd)
+                    raise Rifiuto('output finale con identita o permessi inattesi')
+            os.fsync(self.fd)
+
+    def close(self):
+        if self.fd is not None:
+            os.close(self.fd)
+            self.fd = None
+
+
+class _PrivateTarget:
+    def __init__(self, path):
+        path = Path(path).absolute()
+        if path.name in ('', '.', '..'):
+            raise Rifiuto('percorso output non valido')
+        self.directory = _PrivateDirectory(path.parent)
+        self.name = path.name
+        try:
+            self.directory.require_absent(self.name)
+        except Exception:
+            self.directory.close()
+            raise
+
+    @property
+    def key(self):
+        return self.directory.identity, self.directory.normalized_name(self.name)
+
+    def publish(self, data):
+        self.directory.publish(self.name, data)
+
+    def close(self):
+        self.directory.close()
+
+
+def costruisci(base: bytes, lingua: str, build_dir: Path,
+               log_dir: Path | _PrivateDirectory | None = None) -> tuple[bytes, dict]:
+    if log_dir is not None and not isinstance(log_dir, _PrivateDirectory):
+        owned = _PrivateDirectory(log_dir, require_private=True)
+        try:
+            return costruisci(base, lingua, build_dir, owned)
+        finally:
+            owned.close()
     build_dir = Path(build_dir)
     manifest = build_dir / "riserva" / "MAPPA-RISERVA-ARM9.json"
     passi = []
+    log_sink = log_dir
+    if log_sink:
+        for index, name in enumerate(BLOCK_NAMES, 1):
+            log_sink.require_absent("%02d-%s.json" % (index, name))
+            log_sink.require_absent("%02d-%s.nds" % (index, name))
 
     def registra(nome, t0, out, extra=None):
         passi.append({"blocco": nome, "secondi": round(time.time() - t0, 2),
                       "sha256": sha(out), "bytes": len(out), **(extra or {})})
-        if log_dir:
-            Path(log_dir).mkdir(parents=True, exist_ok=True)
-            (Path(log_dir) / ("%02d-%s.json" % (len(passi), nome))).write_text(
-                json.dumps(passi[-1], indent=2, ensure_ascii=False) + "\n")
+        if log_sink:
+            log_sink.publish(
+                "%02d-%s.json" % (len(passi), nome),
+                (json.dumps(passi[-1], indent=2, ensure_ascii=False) + "\n").encode())
             # ROM intermedia: serve a `verifica.py` per i rilettori pensati
             # per un confronto PASSO-PASSO (base immediatamente precedente),
             # non contro la ROM finale con tutti i blocchi applicati.
-            (Path(log_dir) / ("%02d-%s.nds" % (len(passi), nome))).write_bytes(out)
+            log_sink.publish("%02d-%s.nds" % (len(passi), nome), out)
 
     rom = base
     t0 = time.time()
@@ -166,33 +340,54 @@ def main(argv=None):
     ap.add_argument("--json", default=None)
     a = ap.parse_args(argv)
 
-    # Stadio 0: da `--base` alla base 1.1. La lingua esce da qui — dallo sha256
-    # della ROM, non piu' dal NOME del file, che chiunque puo' scrivere storto.
+    resources = []
     try:
+        output_target = _PrivateTarget(a.uscita)
+        resources.append(output_target)
+        report_target = _PrivateTarget(a.json) if a.json else None
+        if report_target:
+            resources.append(report_target)
+        log_sink = (_PrivateDirectory(a.log_dir, require_private=True)
+                    if a.log_dir else None)
+        if log_sink:
+            resources.append(log_sink)
+
+        keys = [output_target.key]
+        if report_target:
+            keys.append(report_target.key)
+        if log_sink:
+            for index, name in enumerate(BLOCK_NAMES, 1):
+                for suffix in ('json', 'nds'):
+                    filename = "%02d-%s.%s" % (index, name, suffix)
+                    log_sink.require_absent(filename)
+                    keys.append((log_sink.identity, log_sink.normalized_name(filename)))
+        if len(keys) != len(set(keys)):
+            raise Rifiuto('collisione fra output, report e log intermedi')
+
+        # Stadio 0 parte solo dopo il preflight di tutti i target. I descriptor
+        # delle directory restano aperti fino alla pubblicazione finale.
         base, stadio0 = prepara_base(Path(a.base), a.lingua, a.delta)
+        lingua = stadio0["lingua"]
+        if stadio0.get("avviso"):
+            print(stadio0["avviso"], file=sys.stderr)
+        else:
+            print("STADIO 0: %s -> %s (delta %s, %.2f s)"
+                  % (stadio0["base_originale"]["nome"], stadio0["base_1_1"]["nome"],
+                     stadio0["delta"]["nome"], stadio0["secondi"]), file=sys.stderr)
+
+        rom, rapporto = costruisci(base, lingua, Path(a.build), log_sink)
+        rapporto = {"stadio0": stadio0, **rapporto}
+        testo = json.dumps(rapporto, indent=2, ensure_ascii=False) + "\n"
+        output_target.publish(rom)
+        if report_target:
+            report_target.publish(testo.encode())
     except Rifiuto as e:
         print("RIFIUTO: %s" % e, file=sys.stderr)
         return 2
-    lingua = stadio0["lingua"]
-    if stadio0.get("avviso"):
-        print(stadio0["avviso"], file=sys.stderr)
-    else:
-        print("STADIO 0: %s -> %s (delta %s, %.2f s)"
-              % (stadio0["base_originale"]["nome"], stadio0["base_1_1"]["nome"],
-                 stadio0["delta"]["nome"], stadio0["secondi"]), file=sys.stderr)
+    finally:
+        for resource in reversed(resources):
+            resource.close()
 
-    try:
-        rom, rapporto = costruisci(base, lingua, Path(a.build), Path(a.log_dir) if a.log_dir else None)
-    except Rifiuto as e:
-        print("RIFIUTO: %s" % e, file=sys.stderr)
-        return 2
-
-    rapporto = {"stadio0": stadio0, **rapporto}
-    Path(a.uscita).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.uscita).write_bytes(rom)
-    testo = json.dumps(rapporto, indent=2, ensure_ascii=False) + "\n"
-    if a.json:
-        Path(a.json).write_text(testo)
     print(testo)
     print("COSTRUITA %s  sha256 %s" % (a.uscita, rapporto["uscita_sha256"]))
     return 0

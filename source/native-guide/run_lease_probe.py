@@ -18,6 +18,7 @@ def current_build(path, rom):
     """Reject stale source/object/ROM combinations before running any gameplay."""
     from thumb_object import load_text
     from ndspy.rom import NintendoDSRom
+    from sgp12.blz import ndspy_load_arm9_sicuro
     meta=json.loads(path.read_text())
     require(meta['kind']=='private-native-guide-lease-gate-not-guide-ui','Wrong lease build kind')
     for name,expected in meta['source_sha256'].items():
@@ -30,7 +31,7 @@ def current_build(path, rom):
     import hashlib
     require(hashlib.sha256(payload).hexdigest()==meta['payload_sha256'],'Stale compiled payload')
     require(symbols==meta['symbols'],'Compiled symbols differ')
-    itcm=NintendoDSRom(rom.read_bytes()).loadArm9().sections[1]
+    itcm=ndspy_load_arm9_sicuro(NintendoDSRom(rom.read_bytes())).sections[1]
     offset=meta['memory']['code_start']-itcm.ramAddress
     require(itcm.data[offset:offset+len(payload)]==payload,'ROM does not contain compiled payload')
     require(itcm.data[0x1f00:0x2000]==bytes(256),'Markers not zero-initialized by autoload')

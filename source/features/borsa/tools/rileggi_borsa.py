@@ -79,7 +79,7 @@ sys.path.insert(0, str(QUI))
 # porta nessuna conoscenza della ROM ne' di questo lavoro, e il coordinatore
 # chiede espressamente quella di `sgp12.rom`: e' l'unica cosa che questo file
 # prende dalla famiglia dell'applicatore.
-from sgp12.rom import posizioni_diverse  # noqa: E402
+from sgp12.rom import posizioni_diverse, valida_layout_arm9  # noqa: E402
 import scr_disasm as SD  # noqa: E402
 
 BUILD_DEFAULT = REPO / "source" / "sgp12" / "build" / "borsa"
@@ -153,16 +153,9 @@ class Vista:
         self.dati = dati
         self.o9 = struct.unpack_from("<I", dati, 0x20)[0]
         self.r9 = struct.unpack_from("<I", dati, 0x28)[0]
-        t0, t1, d0 = struct.unpack_from("<3I", dati, self.o9 + 0xBA0)
-        self.pezzi = [(self.r9, self.o9, d0 - self.r9)]
-        q = self.o9 + (t0 - self.r9)
-        fine = self.o9 + (t1 - self.r9)
-        o = self.o9 + (d0 - self.r9)
-        while q < fine:
-            ram, n, _bss = struct.unpack_from("<3I", dati, q)
-            self.pezzi.append((ram, o, n))
-            o += n
-            q += 12
+        n9 = struct.unpack_from('<I', dati, 0x2C)[0]
+        _t0, _t1, _d0, _sections, self.pezzi = valida_layout_arm9(
+            dati, self.o9, self.r9, n9)
 
     def posto(self, ram, n=1):
         for base, o, dim in self.pezzi:

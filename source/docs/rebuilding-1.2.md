@@ -53,8 +53,10 @@ cd source && ../.venv/bin/python3 -m sgp12.scarica_base --destinazione "$SGP_ROM
 
 `scarica_base` is the only command in this repository that opens a network connection, and
 nothing calls it for you. It reads the release's `SHA256SUMS`, refuses to go on if it disagrees
-with the tracked pin `source/sgp12/base11.json`, downloads each patch, and deletes anything whose
-SHA-256 does not match instead of leaving it behind. Downloading the two files by hand from the
+with the tracked pin `source/sgp12/base11.json`, requires an owner-controlled destination that is
+not group/world-writable, downloads each patch to an exclusive no-follow temporary file and
+atomically publishes only matching bytes. The checksum body is capped at 64 KiB, each patch at
+its exact pinned size and the combined operation at 30 minutes. A rejected download is removed. Downloading the two files by hand from the
 release page works just as well; so does `--delta <path>` for a copy kept elsewhere.
 
 What stage 0 checks, before any block runs:

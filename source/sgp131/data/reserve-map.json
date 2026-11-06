@@ -1,0 +1,815 @@
+{
+  "schema": 1,
+  "version": "sgp131-resident-12",
+  "status": "reserved",
+  "installation_authorized": false,
+  "base": 37519360,
+  "end": 37617664,
+  "arena": [
+    {
+      "address": 34417584,
+      "value": 37519360
+    },
+    {
+      "address": 34417756,
+      "value": 36105280
+    },
+    {
+      "address": 34417764,
+      "value": 37617664
+    }
+  ],
+  "references": [
+    {
+      "path": "docs/arm9-reserve-map-1.3.json",
+      "sha256": "169453d2e24262c072e075a5a836343eba68cf95f392b848319517278265ea13"
+    },
+    {
+      "path": "docs/arm9-reserve-map.json",
+      "sha256": "49e15c1a2e430f7eba63ef8f603b2fdec6ecee0261aa55e359f9661ae8654408"
+    }
+  ],
+  "roots": [
+    {
+      "name": "shiny.guard.lower",
+      "start": 37519360,
+      "bytes": 16,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "shiny.header",
+      "start": 37519376,
+      "bytes": 240,
+      "owner": "sgp13.space",
+      "kind": "metadata"
+    },
+    {
+      "name": "shiny.core",
+      "start": 37519616,
+      "bytes": 4096,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.native",
+      "start": 37523712,
+      "bytes": 8192,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.api-config",
+      "start": 37531904,
+      "bytes": 256,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.state",
+      "start": 37532160,
+      "bytes": 1536,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.extended",
+      "start": 37533696,
+      "bytes": 8192,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.shiny-text",
+      "start": 37541888,
+      "bytes": 4096,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.shiny-state",
+      "start": 37545984,
+      "bytes": 256,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.search",
+      "start": 37546240,
+      "bytes": 4096,
+      "owner": "sgp13.shiny",
+      "kind": "reserved"
+    },
+    {
+      "name": "event-flags.runtime",
+      "start": 37550336,
+      "bytes": 1536,
+      "owner": "sgp13.event_flags",
+      "kind": "reserved"
+    },
+    {
+      "name": "shiny.guard.upper",
+      "start": 37551872,
+      "bytes": 256,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "guard.lower",
+      "start": 37552128,
+      "bytes": 16,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "development.header",
+      "start": 37552144,
+      "bytes": 240,
+      "owner": "sgp13.space",
+      "kind": "metadata"
+    },
+    {
+      "name": "training.code",
+      "start": 37552384,
+      "bytes": 12032,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "training.state",
+      "start": 37564416,
+      "bytes": 4096,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "field-guide.code",
+      "start": 37568512,
+      "bytes": 8192,
+      "owner": "sgp13.guide",
+      "kind": "reserved"
+    },
+    {
+      "name": "trainer-strategy.code",
+      "start": 37576704,
+      "bytes": 2048,
+      "owner": "sgp13.teams",
+      "kind": "reserved"
+    },
+    {
+      "name": "training.extension",
+      "start": 37578752,
+      "bytes": 3328,
+      "owner": "sgp13.training",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.navigation",
+      "start": 37582080,
+      "bytes": 512,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "plus-ui.context",
+      "start": 37582592,
+      "bytes": 1024,
+      "owner": "sgp13.plus_ui",
+      "kind": "reserved"
+    },
+    {
+      "name": "field-guide.config-state",
+      "start": 37583616,
+      "bytes": 1024,
+      "owner": "sgp13.guide",
+      "kind": "reserved"
+    },
+    {
+      "name": "guard.upper",
+      "start": 37584640,
+      "bytes": 256,
+      "owner": "sgp13.space",
+      "kind": "guard"
+    },
+    {
+      "name": "legacy.1.2",
+      "start": 37584896,
+      "bytes": 32768,
+      "owner": "inherited-1.2",
+      "kind": "retained"
+    }
+  ],
+  "legacy_owners": [
+    {
+      "name": "canarino.basso",
+      "start": 37584896,
+      "bytes": 32,
+      "owner": "SGP-1.2-RISERVA-01"
+    },
+    {
+      "name": "intestazione",
+      "start": 37584928,
+      "bytes": 32,
+      "owner": "SGP-1.2-RISERVA-01"
+    },
+    {
+      "name": "sgp.cascata",
+      "start": 37584960,
+      "bytes": 64,
+      "owner": "source/features/manutenzione"
+    },
+    {
+      "name": "padding.allineamento.d1",
+      "start": 37585024,
+      "bytes": 128,
+      "owner": "(nessuno)"
+    },
+    {
+      "name": "sgp.plus",
+      "start": 37585152,
+      "bytes": 2048,
+      "owner": "SGP-1.2-PLUS-01 (prenotato) / SGP-1.2-PLUS-02 (blob PLUS) / SGP-1.2-PLUS-03 (blob salvataggio + gancio ov002 in luogo) / SGP-1.2-QUALITA-NATIVO-01 (v-finale, applicata in luogo 12/09/2026)"
+    },
+    {
+      "name": "camera.eccezioni.1.2",
+      "start": 37587472,
+      "bytes": 136,
+      "owner": "SGP-1.2-CAMERA-01"
+    },
+    {
+      "name": "canarino.camera",
+      "start": 37587608,
+      "bytes": 16,
+      "owner": "SGP-1.2-CAMERA-01"
+    },
+    {
+      "name": "sgp.gb_sounds_evolution",
+      "start": 37587624,
+      "bytes": 32,
+      "owner": "Sacred Gold Plus 1.3.1 — GB evolution audio reload"
+    },
+    {
+      "name": "sgp.pokegear_autocull",
+      "start": 37587656,
+      "bytes": 36,
+      "owner": "Sacred Gold Plus 1.3.1 — Pokégear signed marker culling"
+    },
+    {
+      "name": "sgp.waterfall_facing",
+      "start": 37587692,
+      "bytes": 20,
+      "owner": "Sacred Gold Plus 1.3.1 — Waterfall descent facing"
+    },
+    {
+      "name": "sgp.salvataggio",
+      "start": 37588736,
+      "bytes": 256,
+      "owner": "SGP-1.2-PLUS-03"
+    },
+    {
+      "name": "sgp.opzioni",
+      "start": 37588992,
+      "bytes": 4096,
+      "owner": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (v4, A1 della revisione R2, 13/09/2026)"
+    },
+    {
+      "name": "sgp.wifi",
+      "start": 37593088,
+      "bytes": 2048,
+      "owner": "SGP-1.2-WIFI-01 (prenotato) / SGP-1.2-WIFI-02 (preparazione + 02b sincronizzazione col chunk) / SGP-1.2-WIFI-03 (applicazione in luogo, 12/09/2026) / SGP-1.2-WIFI-05 (fallback al primo slot configurato, riapplicazione in luogo, 12/09/2026) / SGP-1.2-QUALITA-NATIVO-01 (v-finale wifi_slot4 corretto, B5/B6/B8, applicata in luogo 12/09/2026)"
+    },
+    {
+      "name": "sgp.opzioni.testi",
+      "start": 37595136,
+      "bytes": 1024,
+      "owner": "SGP-1.2-OPZIONI-03 (v2) / SGP-1.2-OPZIONI-04 (preparazione) / SGP-1.2-OPZIONI-05 (applicazione in luogo, 12/09/2026) / SGP-1.2-RIFINITURA-01 (v3, applicata in luogo 12/09/2026) / 1.2.1 (13/09/2026: la schermata al Continua dice \u00abSacred Gold Plus 1.2.1\u00bb) / 1.2.2 (19/09/2026: la schermata al Continua dice \u00abSacred Gold Plus 1.2.2\u00bb) / 1.2.3 (20/09/2026: la schermata al Continua dice \u00abSacred Gold Plus 1.2.3\u00bb)"
+    },
+    {
+      "name": "sgp.caramelle",
+      "start": 37596160,
+      "bytes": 256,
+      "owner": "SGP-1.2-CARAMELLE-01 (integrato nella 1.2.1, 13/09/2026)"
+    },
+    {
+      "name": "sgp.borsa",
+      "start": 37596416,
+      "bytes": 2048,
+      "owner": "Sacred Gold Plus 1.2.1 \u2014 doni con borsa al tetto"
+    },
+    {
+      "name": "sgp.anim2",
+      "start": 37598464,
+      "bytes": 2048,
+      "owner": "Sacred Gold Plus 1.2.1 \u2014 moto continuo v5 (v5d, accento di posa B, 18/09/2026)"
+    },
+    {
+      "name": "sgp.borsa_lotta",
+      "start": 37600512,
+      "bytes": 256,
+      "owner": "Sacred Gold Plus \u2014 cache Borsa in battaglia"
+    },
+    {
+      "name": "sgp.squadra_lotta",
+      "start": 37600768,
+      "bytes": 256,
+      "owner": "Sacred Gold Plus \u2014 cache mosse Squadra in battaglia"
+    },
+    {
+      "name": "sgp.soul_dew",
+      "start": 37612288,
+      "bytes": 32,
+      "owner": "Sacred Gold Plus 1.3.1 — Soul Dew custom-rule mask"
+    },
+    {
+      "name": "sgp.wonder_card",
+      "start": 37612320,
+      "bytes": 32,
+      "owner": "Sacred Gold Plus 1.3.1 — Wonder Card decoration guard"
+    },
+    {
+      "name": "canarino",
+      "start": 37612352,
+      "bytes": 32,
+      "owner": "integrazione-1.1"
+    },
+    {
+      "name": "padding",
+      "start": 37612384,
+      "bytes": 12,
+      "owner": "integrazione-1.1"
+    },
+    {
+      "name": "camera.eccezioni.dismessa",
+      "start": 37612396,
+      "bytes": 32,
+      "owner": "SGP-1.1-CAMTOGGLE-01"
+    },
+    {
+      "name": "camera.codice",
+      "start": 37612428,
+      "bytes": 84,
+      "owner": "SGP-1.1-CAMTOGGLE-01"
+    },
+    {
+      "name": "repellente.corpo",
+      "start": 37612512,
+      "bytes": 160,
+      "owner": "SGP-1.1-REPEL-FIX-01"
+    },
+    {
+      "name": "borsa.text",
+      "start": 37612672,
+      "bytes": 4420,
+      "owner": "AGISCE-01"
+    },
+    {
+      "name": "borsa.bss",
+      "start": 37617092,
+      "bytes": 548,
+      "owner": "AGISCE-01"
+    },
+    {
+      "name": "buco",
+      "start": 37617640,
+      "bytes": 20,
+      "owner": "(nessuno)"
+    },
+    {
+      "name": "camera.stato",
+      "start": 37617660,
+      "bytes": 4,
+      "owner": "SGP-1.1-CAMTOGGLE-01"
+    },
+    {
+      "name": "sgp.npc",
+      "start": 37587200,
+      "bytes": 256,
+      "owner": "SGP-1.2-PRESTAZIONI-NPC-02 (preparazione) / SGP-1.2-PRESTAZIONI-NPC-03 (applicazione in luogo) / SGP-1.2-QUALITA-NATIVO-01 (v-finale, applicata in luogo 12/09/2026) / 1.2.1 (M2 della revisione R2, 13/09/2026)"
+    },
+    {
+      "name": "canarino.npc",
+      "start": 37587456,
+      "bytes": 16,
+      "owner": "SGP-1.2-PRESTAZIONI-NPC-02"
+    },
+    {
+      "name": "sgp.anim",
+      "start": 37587712,
+      "bytes": 1024,
+      "owner": "SGP-1.2-ANIM-B-02 (preparazione fase 2b) / SGP-1.2-ANIM-B-03 (applicazione in luogo) / SGP-1.2-RIFINITURA-01 (v3, taratura tavola, applicata in luogo 12/09/2026) / SGP-1.2-ANIM-SOLIDO-01 (v4, secondo gancio ov012 0x02262032, applicata in luogo il 13/09/2026 da SGP-1.2-INTEGRAZIONE-FINALE-02)"
+    },
+    {
+      "name": "sgp.capacita_borsa",
+      "start": 37601024,
+      "bytes": 11264,
+      "owner": "source/features/capacita-borsa"
+    }
+  ],
+  "subdivisions": [
+    {
+      "parent": "shiny.api-config",
+      "parts": [
+        {
+          "name": "shiny.abi2.retained",
+          "start": 37531904,
+          "bytes": 152,
+          "kind": "retained"
+        },
+        {
+          "name": "shiny.abi2.gap",
+          "start": 37532056,
+          "bytes": 8,
+          "kind": "gap"
+        },
+        {
+          "name": "settings.descriptor",
+          "start": 37532064,
+          "bytes": 80,
+          "kind": "payload"
+        },
+        {
+          "name": "settings.generation",
+          "start": 37532144,
+          "bytes": 16,
+          "kind": "payload"
+        }
+      ]
+    },
+    {
+      "parent": "training.extension",
+      "parts": [
+        {
+          "name": "training.ui",
+          "start": 37578752,
+          "bytes": 1536,
+          "kind": "payload"
+        },
+        {
+          "name": "training.ui.guard",
+          "start": 37580288,
+          "bytes": 16,
+          "kind": "guard"
+        },
+        {
+          "name": "physical.code",
+          "start": 37580304,
+          "bytes": 1024,
+          "kind": "payload"
+        },
+        {
+          "name": "physical.slot",
+          "start": 37581328,
+          "bytes": 48,
+          "kind": "payload"
+        },
+        {
+          "name": "narrative.spawn_table",
+          "start": 37581376,
+          "bytes": 540,
+          "kind": "payload"
+        },
+        {
+          "name": "successor.guard",
+          "start": 37581916,
+          "bytes": 16,
+          "kind": "guard"
+        },
+        {
+          "name": "fairy-ai.code",
+          "start": 37581932,
+          "bytes": 148,
+          "kind": "payload"
+        }
+      ]
+    },
+    {
+      "parent": "plus-ui.extended",
+      "parts": [
+        {
+          "name": "ui.bridge.code",
+          "start": 37533696,
+          "bytes": 8192,
+          "kind": "payload"
+        }
+      ],
+      "requires": [
+        "cold-composed-native-and-installed-incoming-edges-verified",
+        "old-options-init-main-exit-and-image-retired",
+        "old-extended-controller-object-retired",
+        "old-extended-open-and-computed-plus-e0-frame-routes-retired",
+        "old-navigation-dispatch-entry-paths-excluded",
+        "options-template-resident-callbacks-and-id-none",
+        "old54-fallback-forbidden",
+        "legacy-continue-newgame-shiny-navigation-context-preserved"
+      ]
+    },
+    {
+      "parent": "plus-ui.shiny-text",
+      "parts": [
+        {
+          "name": "ui.bridge.tail",
+          "start": 37541888,
+          "bytes": 4080,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.bridge.guard",
+          "start": 37545968,
+          "bytes": 16,
+          "kind": "guard"
+        }
+      ],
+      "requires": [
+        "cold-composed-native-and-installed-incoming-edges-verified",
+        "old-options-init-main-exit-and-image-retired",
+        "old-extended-controller-object-retired",
+        "old-extended-open-and-computed-plus-e0-frame-routes-retired",
+        "old-navigation-dispatch-entry-paths-excluded",
+        "options-template-resident-callbacks-and-id-none",
+        "old54-fallback-forbidden",
+        "legacy-continue-newgame-shiny-navigation-context-preserved"
+      ]
+    },
+    {
+      "parent": "field-guide.code",
+      "parts": [
+        {
+          "name": "fieldbook.code",
+          "start": 37568512,
+          "bytes": 3072,
+          "kind": "payload"
+        },
+        {
+          "name": "fieldbook.guard",
+          "start": 37571584,
+          "bytes": 16,
+          "kind": "guard"
+        },
+        {
+          "name": "summary-controls.runtime",
+          "start": 37571600,
+          "bytes": 512,
+          "kind": "payload"
+        },
+        {
+          "name": "portable-box.runtime",
+          "start": 37572112,
+          "bytes": 3024,
+          "kind": "payload"
+        },
+        {
+          "name": "c8.module-stubs",
+          "start": 37575136,
+          "bytes": 192,
+          "kind": "payload"
+        },
+        {
+          "name": "modern-accuracy.code",
+          "start": 37575328,
+          "bytes": 32,
+          "kind": "payload"
+        },
+        {
+          "name": "field-guide.code.preserved",
+          "start": 37575360,
+          "bytes": 1344,
+          "kind": "preserved"
+        }
+      ],
+      "requires": [
+        "cold-composed-native-and-installed-incoming-edges-verified",
+        "old-guide-init-main-exit-and-font-callbacks-retired",
+        "old-guide-res-references-retired",
+        "old-fieldbook-hooks-retargeted",
+        "guide-template-resident-callbacks-and-id-none"
+      ]
+    },
+    {
+      "parent": "field-guide.config-state",
+      "parts": [
+        {
+          "name": "guide.metadata.retained",
+          "start": 37583616,
+          "bytes": 16,
+          "kind": "retained"
+        },
+        {
+          "name": "guide.template",
+          "start": 37583632,
+          "bytes": 16,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.bootstrap",
+          "start": 37583648,
+          "bytes": 40,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.control",
+          "start": 37583688,
+          "bytes": 16,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.bootstrap.guard",
+          "start": 37583704,
+          "bytes": 8,
+          "kind": "guard"
+        },
+        {
+          "name": "ui.module.seed",
+          "start": 37583712,
+          "bytes": 96,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.resource.seed",
+          "start": 37583808,
+          "bytes": 64,
+          "kind": "payload"
+        },
+        {
+          "name": "ui.guide.seed",
+          "start": 37583872,
+          "bytes": 64,
+          "kind": "payload"
+        },
+        {
+          "name": "guide.labels.retained",
+          "start": 37583936,
+          "bytes": 448,
+          "kind": "retained"
+        },
+        {
+          "name": "guide.field-state.retained",
+          "start": 37584384,
+          "bytes": 240,
+          "kind": "retained"
+        },
+        {
+          "name": "guide.canary.retained",
+          "start": 37584624,
+          "bytes": 16,
+          "kind": "retained"
+        }
+      ],
+      "requires": [
+        "cold-composed-native-and-installed-incoming-edges-verified",
+        "old-guide-init-main-exit-and-font-callbacks-retired",
+        "old-guide-res-references-retired",
+        "old-fieldbook-hooks-retargeted",
+        "guide-template-resident-callbacks-and-id-none"
+      ]
+    }
+  ],
+  "guards": [
+    {
+      "start": 37519360,
+      "bytes": 16,
+      "sha256": {
+        "EN": "6b99c8b860e28e67530367b5c6ea7c77b40b6065715bc60e8231f796068dd9aa",
+        "IT": "6b99c8b860e28e67530367b5c6ea7c77b40b6065715bc60e8231f796068dd9aa"
+      }
+    },
+    {
+      "start": 37551872,
+      "bytes": 256,
+      "sha256": {
+        "EN": "b918639bd7d639b60736985cbafde776b38c67051601463170481ac8c0a9395f",
+        "IT": "b918639bd7d639b60736985cbafde776b38c67051601463170481ac8c0a9395f"
+      }
+    },
+    {
+      "start": 37552128,
+      "bytes": 16,
+      "sha256": {
+        "EN": "46bebd8bc2218078b8b974ff27d54b269d90c19724bf06e4938819b2c797216b",
+        "IT": "46bebd8bc2218078b8b974ff27d54b269d90c19724bf06e4938819b2c797216b"
+      }
+    },
+    {
+      "start": 37584640,
+      "bytes": 256,
+      "sha256": {
+        "EN": "b2ba970e57d29786bdba553b5b0c580cd1a62b28933a8ef107651a417f152e20",
+        "IT": "b2ba970e57d29786bdba553b5b0c580cd1a62b28933a8ef107651a417f152e20"
+      }
+    },
+    {
+      "start": 37531904,
+      "bytes": 152,
+      "sha256": {
+        "EN": "780e65a9395887aa714d3e9b6c077e48d181a883b54a0e85e0bdcdbee34d93b0",
+        "IT": "d86ea46d3b4e6ad5a41efc4c7c0be9ed50dcd83f8ac1021ad3300f7d997f8e8b"
+      }
+    },
+    {
+      "start": 37532056,
+      "bytes": 8,
+      "sha256": {
+        "EN": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "IT": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+      }
+    },
+    {
+      "start": 37578752,
+      "bytes": 3328,
+      "sha256": {
+        "EN": "6bb4877dfebc6d4f819999f0f8b65d06aa540746bc63b7c1261282636efcaa15",
+        "IT": "6bb4877dfebc6d4f819999f0f8b65d06aa540746bc63b7c1261282636efcaa15"
+      }
+    },
+    {
+      "start": 37568512,
+      "bytes": 8192,
+      "sha256": {
+        "EN": "2f19c042588a613ab26cca40609909a4b7620d3b9fdfed412599dcad5813556e",
+        "IT": "2f19c042588a613ab26cca40609909a4b7620d3b9fdfed412599dcad5813556e"
+      }
+    },
+    {
+      "start": 37541888,
+      "bytes": 4096,
+      "sha256": {
+        "EN": "e8f36e1fd6e3696b254ac5a3ac7e1ddbb72ab979d421553195fcd59cfa37db2f",
+        "IT": "34b710bcef0d7180edf49418dcfe41377db582972233a100bfc690da68e185c0"
+      }
+    },
+    {
+      "start": 37583616,
+      "bytes": 1024,
+      "sha256": {
+        "EN": "0070c04e3891ec839f19c1ea90eae4239b1da2a19618eb2f6116d2dae8183e69",
+        "IT": "377f565a3621edf35e1abe797f6b3e156a1bcadc0af49448f79159219e4d129c"
+      }
+    },
+    {
+      "start": 37533696,
+      "bytes": 8192,
+      "sha256": {
+        "EN": "9370fae4e10445966d444fa62b26668445f740db11ac0347b50788cc845ce141",
+        "IT": "9370fae4e10445966d444fa62b26668445f740db11ac0347b50788cc845ce141"
+      }
+    }
+  ],
+  "native": {
+    "overlay_count": 129,
+    "file_count": 513,
+    "static_initialized_end": 34674784,
+    "static_bss_end": 35543296,
+    "autoloads": [
+      {
+        "start": 33521664,
+        "bytes": 8192,
+        "bss": 0
+      },
+      {
+        "start": 41811968,
+        "bytes": 96,
+        "bss": 32
+      },
+      {
+        "start": 37519360,
+        "bytes": 98304,
+        "bss": 0
+      }
+    ]
+  },
+  "dynamic54": {
+    "id": 54,
+    "file_id": 54,
+    "base": 35543296,
+    "provisional_decoded_limit": 65536,
+    "bss": 0,
+    "cache_alignment": 32,
+    "address_reserved": false
+  },
+  "limits": [
+    "Ownership metadata only; no payload installation, heap measurement or Android evidence.",
+    "Parent subdivisions replace ownership conditionally; never concurrent extra capacity.",
+    "B5 conditional UI reservations describe missing proofs; allocation is refused until a separately reviewed final installer verifies actual cold-composed native and installed incoming edges, templates, old54 replacement and retirement guards.",
+    "No old Plus/navigation/context/legacy/Continue/NewGame/Shiny owner or save-byte retirement and no ArenaHi change, except conditional replacement of the complete old extended controller and XTEXT objects after the same complete Options retirement proof.",
+    "Old Options Init/Main/Exit and image, old extended controller, old navigation dispatch entry paths and computed +0xE0 frame route must all retire or be excluded together; pointer scans or self-reported flags cannot establish this. Old54 fallback is forbidden with reuse.",
+    "One contiguous authored Bridge image at 0x023CB800 has capacity 12272: ui.bridge.code 8192 plus ui.bridge.tail 4080, ending at 0x023CE7F0 with a separate 16-byte guard through 0x023CE800. The image is relocated once at its base; the donor boundary does not change its addresses. No XSTATE, old navigation controller or guard bytes are payload.",
+    "Old Guide scene/font/RES callbacks and previous Fieldbook hooks must retire before Guide code/config reuse. Fieldbook relocates to 0x023D4000 with conditional capacity 3072 and a 16-byte guard at 0x023D4C00. Preserve template address 0x023D7B10, labels at 0x023D7C40 and field-state offsets at 0x023D7E00.",
+    "The retired 5104-byte old Guide code suffix at 0x023D4C10 is conditionally partitioned into summary-controls.runtime 512 bytes, portable-box.runtime 3024 bytes, c8.module-stubs 192 bytes, modern-accuracy.code 32 bytes and a preserved 1344-byte remainder. Complete composed UI retirement and exact incoming-edge proofs remain mandatory before installation. Preserved bytes, retained labels/state/canary and guard bytes are not payload or scratch.",
+    "The exact ui.bootstrap slot at 0x023D7B20 is 40 bytes and matches optional UI_PERSISTENT_RESIDENT_TOKEN_ADDRESS; it grants no storage activation, clearing or reset.",
+    "Bridge/Context designs and private 8714-byte compile probes are not accepted complete implementation, installed or allocated payloads. Final code fit, seed identities, runtime retirement, HOLD/native-return and save compatibility remain unverified.",
+    "Dynamic54 remains provisional and requires final blob/overlap/lifecycle proof.",
+    "Training UI code headroom176B and physical code headroom120B remain owned by their code slots, never shared scratch. The former 148-byte zero remainder at 0x023D746C is assigned exactly to fairy-ai.code; it is not Training headroom and remains unusable without a reserve.allocate grant and confined producer/readback.",
+    "The Fieldbook allocation remains 3072 bytes plus its 16-byte guard inside the unchanged, preimage-guarded 8192-byte old Guide parent. Suffix reservations do not expand the parent, change save layouts or grant installation authority; final payload fit, composed retirement, lifecycle and save-compatibility verification remain required."
+  ],
+  "conditional_images": [
+    {
+      "name": "ui.bridge",
+      "start": 37533696,
+      "bytes": 12272,
+      "parts": [
+        "ui.bridge.code",
+        "ui.bridge.tail"
+      ],
+      "guard": "ui.bridge.guard"
+    }
+  ]
+}

@@ -6,6 +6,31 @@ Format reference: pret/pokeheartgold tools/msgenc, revision
 """
 import struct
 
+MAX_MESSAGES = 4096
+
+
+def _allocations(raw, count, key):
+    if count > MAX_MESSAGES:
+        raise ValueError('Message count exceeds bank limit')
+    table_end = 4 + count * 8
+    if table_end > len(raw):
+        raise ValueError('Truncated allocation table')
+    result = []
+    for index in range(count):
+        table_key = (765 * (index + 1) * key) & 0xFFFF
+        table_key |= table_key << 16
+        offset, length = struct.unpack_from('<II', raw, 4 + index * 8)
+        offset ^= table_key
+        length ^= table_key
+        end = offset + length * 2
+        if not length or offset < table_end or end > len(raw):
+            raise ValueError(f'Message {index} exceeds bank bounds')
+        result.append((offset, end, length))
+    ordered = sorted((offset, end, index) for index, (offset, end, _) in enumerate(result))
+    if any(current[0] < previous[1] for previous, current in zip(ordered, ordered[1:])):
+        raise ValueError('Message extents overlap')
+    return result
+
 
 def _words(value):
     result = list(value)
@@ -110,17 +135,9 @@ class Bank:
         if len(raw) < 4:
             raise ValueError('Truncated bank header')
         count, self.key = struct.unpack_from('<HH', raw)
-        if 4 + count * 8 > len(raw):
-            raise ValueError('Truncated allocation table')
+        allocations = _allocations(raw, count, self.key)
         self.words = []
-        for index in range(count):
-            key = (765 * (index + 1) * self.key) & 0xFFFF
-            key |= key << 16
-            offset, length = struct.unpack_from('<II', raw, 4 + index * 8)
-            offset ^= key
-            length ^= key
-            if offset < 4 + count * 8 or offset + length * 2 > len(raw):
-                raise ValueError(f'Message {index} exceeds bank bounds')
+        for index, (offset, _end, length) in enumerate(allocations):
             encrypted = struct.unpack_from(f'<{length}H', raw, offset)
             seed = ((index + 1) * 596947) & 0xFFFF
             words = []
@@ -137,7 +154,7 @@ class Bank:
         obj = cls.__new__(cls)
         obj.key = key
         obj.words = [_words(m) for m in messages]
-        if len(obj.words) > 0xFFFF:
+        if len(obj.words) > MAX_MESSAGES:
             raise ValueError('Too many messages')
         obj._original = None
         obj._initial = None
@@ -150,6 +167,8 @@ class Bank:
         if self._original is not None and self.words == self._initial:
             return self._original
         messages = [_words(m) for m in self.words]
+        if len(messages) > MAX_MESSAGES:
+            raise ValueError('Too many messages')
         header = bytearray(struct.pack('<HH', len(messages), self.key))
         payload = bytearray()
         offset = 4 + 8 * len(messages)

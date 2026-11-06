@@ -22,6 +22,8 @@ import time
 
 QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, QUI)
+sys.path.insert(0, os.path.dirname(QUI))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 from banco import Campo, RspSicuro as Rsp, RspError, attendi_overworld, leggibile  # noqa: E402
 
 
@@ -39,12 +41,14 @@ def main():
                     help="secondi di campionamento delle coordinate dopo l'overworld")
     a = ap.parse_args()
 
-    os.makedirs(a.out, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
     cmd = [a.hg, "--rom", a.rom, "--sram", a.sram, "--out", a.out,
            "--gdb-port", str(a.porta), "--script", a.script]
     t0 = time.time()
-    proc = subprocess.Popen(cmd, stdout=open(os.path.join(a.out, "hg-stdout.log"), "w"),
-                            stderr=open(os.path.join(a.out, "hg-stderr.log"), "w"))
+    stdout = outputs.open_new("hg-stdout.log")
+    stderr = outputs.open_new("hg-stderr.log")
+    proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
+    stdout.close(); stderr.close(); outputs.close()
     esito = {"comando": cmd, "mappa_attesa": a.mappa}
     try:
         g = Rsp(port=a.porta)
@@ -84,8 +88,7 @@ def main():
         proc.kill()
         esito["rc"] = "ucciso dopo 300 s"
     esito["secondi"] = round(time.time() - t0, 2)
-    with open(a.json, "w") as f:
-        json.dump(esito, f, indent=2, ensure_ascii=False)
+    write_json_new(a.json, esito)
     print(json.dumps({k: v for k, v in esito.items() if k != "posizioni_campionate"},
                      indent=2, ensure_ascii=False))
     return 0 if esito.get("O1_1") and esito.get("O1_2") else 1

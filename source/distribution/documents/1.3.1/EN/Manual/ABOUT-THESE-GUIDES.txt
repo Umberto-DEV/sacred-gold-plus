@@ -1,0 +1,3 @@
+Start with How-to-install-1.3.1-EN.pdf in the main folder. Whats-New-1.3.1-EN.pdf in the same folder introduces the current game features.
+
+The five original Sacred Gold / Storm Silver PDFs and trainer reference here are preserved byte for byte with their original credits. They remain in English and may describe differences from Plus. Game Guide.txt is a historical gameplay reference. Old installation and feature-overview PDFs are omitted from this package so they cannot be mistaken for current instructions. Cheats are optional.

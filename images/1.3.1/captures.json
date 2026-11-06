@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "date": "2026-11-06",
+  "scope": "Fresh presentation captures from exact battle-freeze successor builds; not gameplay or device acceptance",
+  "images": [
+    {
+      "file": "title-EN.png",
+      "sha256": "58ad535583f2127465e202a2085cee2a337ffc0766a858d2bb8a92456c8981c1",
+      "candidate_sha256": "50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665",
+      "language": "EN",
+      "source_frame": 1982,
+      "crop": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "party-EN.png",
+      "sha256": "e04499941e09cf14a7b2baafe44a0bd2ae4dccf6fb99936c1a33458256dbd851",
+      "candidate_sha256": "50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665",
+      "language": "EN",
+      "source_frame": 3430,
+      "crop": [
+        0,
+        192,
+        256,
+        384
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "pc-EN.png",
+      "sha256": "277ed6b865ad2fd18d36158f7ee2ad0d0e8d9718ddf6a5829658ff543b369956",
+      "candidate_sha256": "50ba570f97655cecc7b11bed06eb7f683283b191c1c21f02e49ad55f90fc7665",
+      "language": "EN",
+      "source_frame": 4332,
+      "crop": [
+        0,
+        192,
+        256,
+        384
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "title-IT.png",
+      "sha256": "58ad535583f2127465e202a2085cee2a337ffc0766a858d2bb8a92456c8981c1",
+      "candidate_sha256": "c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb",
+      "language": "IT",
+      "source_frame": 1982,
+      "crop": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "party-IT.png",
+      "sha256": "27c331804aae8400c69ed733ba8202e242b74d4293a3e9586a9fee21fd23d54c",
+      "candidate_sha256": "c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb",
+      "language": "IT",
+      "source_frame": 3430,
+      "crop": [
+        0,
+        192,
+        256,
+        384
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    },
+    {
+      "file": "pc-IT.png",
+      "sha256": "3a0460d832988e53e35c48e0aafe9a13b1e08035246412de2df8d1f6f6f9986b",
+      "candidate_sha256": "c63cf9e993cbee9c38949baf9444dda3e365bddb15840aaa08905d9b02afbedb",
+      "language": "IT",
+      "source_frame": 4332,
+      "crop": [
+        0,
+        192,
+        256,
+        384
+      ],
+      "scale": 4,
+      "method": "Actual local melonDS frame; integer nearest-neighbor crop; no ROM or save redistribution"
+    }
+  ]
+}

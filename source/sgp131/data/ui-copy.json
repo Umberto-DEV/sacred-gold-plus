@@ -1,0 +1,1735 @@
+{
+  "schema": 1,
+  "entries": [
+    {
+      "id": 1,
+      "name": "TITLE",
+      "role": "title",
+      "text": {
+        "EN": "Sacred Gold Plus",
+        "IT": "Sacred Gold Plus"
+      }
+    },
+    {
+      "id": 2,
+      "name": "VERSION",
+      "role": "version",
+      "text": {
+        "EN": "V1.3.1",
+        "IT": "V1.3.1"
+      }
+    },
+    {
+      "id": 3,
+      "name": "SECTION_GAME",
+      "role": "section",
+      "text": {
+        "EN": "GAME",
+        "IT": "GIOCO"
+      }
+    },
+    {
+      "id": 4,
+      "name": "SECTION_PLUS",
+      "role": "section",
+      "text": {
+        "EN": "PLUS",
+        "IT": "PLUS"
+      }
+    },
+    {
+      "id": 5,
+      "name": "SECTION_SHINY",
+      "role": "section",
+      "text": {
+        "EN": "SHINY",
+        "IT": "CROMATICI"
+      }
+    },
+    {
+      "id": 6,
+      "name": "ROW_TEXT",
+      "role": "label",
+      "text": {
+        "EN": "Text",
+        "IT": "Testo"
+      }
+    },
+    {
+      "id": 7,
+      "name": "ROW_SCENE",
+      "role": "label",
+      "text": {
+        "EN": "Battle effects",
+        "IT": "Effetti lotta"
+      }
+    },
+    {
+      "id": 8,
+      "name": "ROW_STYLE",
+      "role": "label",
+      "text": {
+        "EN": "Battle style",
+        "IT": "Stile lotta"
+      }
+    },
+    {
+      "id": 9,
+      "name": "ROW_AUDIO",
+      "role": "label",
+      "text": {
+        "EN": "Sound",
+        "IT": "Audio"
+      }
+    },
+    {
+      "id": 10,
+      "name": "ROW_BUTTON",
+      "role": "label",
+      "text": {
+        "EN": "Buttons",
+        "IT": "Comandi"
+      }
+    },
+    {
+      "id": 11,
+      "name": "ROW_FRAME",
+      "role": "label",
+      "text": {
+        "EN": "Frame",
+        "IT": "Cornice"
+      }
+    },
+    {
+      "id": 12,
+      "name": "ROW_DIFFICULTY",
+      "role": "label",
+      "text": {
+        "EN": "Difficulty",
+        "IT": "Difficoltà"
+      }
+    },
+    {
+      "id": 13,
+      "name": "ROW_WILD",
+      "role": "label",
+      "text": {
+        "EN": "Wild levels",
+        "IT": "Livelli selvatici"
+      }
+    },
+    {
+      "id": 14,
+      "name": "ROW_ANIMATION",
+      "role": "label",
+      "text": {
+        "EN": "Animated Pokémon",
+        "IT": "Pokémon animati"
+      }
+    },
+    {
+      "id": 15,
+      "name": "ROW_NPC",
+      "role": "label",
+      "text": {
+        "EN": "Characters",
+        "IT": "Personaggi"
+      }
+    },
+    {
+      "id": 16,
+      "name": "ROW_WIFI",
+      "role": "label",
+      "text": {
+        "EN": "Online server",
+        "IT": "Server online"
+      }
+    },
+    {
+      "id": 17,
+      "name": "ROW_MODE",
+      "role": "label",
+      "text": {
+        "EN": "Shiny mode",
+        "IT": "Cromatici"
+      }
+    },
+    {
+      "id": 18,
+      "name": "ROW_TARGET",
+      "role": "label",
+      "text": {
+        "EN": "Target",
+        "IT": "Bersaglio"
+      }
+    },
+    {
+      "id": 19,
+      "name": "ROW_SEARCH",
+      "role": "label",
+      "text": {
+        "EN": "Pro search",
+        "IT": "Ricerca Pro"
+      }
+    },
+    {
+      "id": 20,
+      "name": "VALUE_SLOW",
+      "role": "value",
+      "text": {
+        "EN": "Slow",
+        "IT": "Lento"
+      }
+    },
+    {
+      "id": 21,
+      "name": "VALUE_MID",
+      "role": "value",
+      "text": {
+        "EN": "Mid",
+        "IT": "Medio"
+      }
+    },
+    {
+      "id": 22,
+      "name": "VALUE_FAST",
+      "role": "value",
+      "text": {
+        "EN": "Fast",
+        "IT": "Veloce"
+      }
+    },
+    {
+      "id": 23,
+      "name": "VALUE_ON",
+      "role": "value",
+      "text": {
+        "EN": "On",
+        "IT": "Sì"
+      }
+    },
+    {
+      "id": 24,
+      "name": "VALUE_OFF",
+      "role": "value",
+      "text": {
+        "EN": "Off",
+        "IT": "No"
+      }
+    },
+    {
+      "id": 25,
+      "name": "VALUE_SHIFT",
+      "role": "value",
+      "text": {
+        "EN": "Shift",
+        "IT": "Cambio"
+      }
+    },
+    {
+      "id": 26,
+      "name": "VALUE_SET",
+      "role": "value",
+      "text": {
+        "EN": "Set",
+        "IT": "Fisso"
+      }
+    },
+    {
+      "id": 27,
+      "name": "VALUE_STEREO",
+      "role": "value",
+      "text": {
+        "EN": "Stereo",
+        "IT": "Stereo"
+      }
+    },
+    {
+      "id": 28,
+      "name": "VALUE_MONO",
+      "role": "value",
+      "text": {
+        "EN": "Mono",
+        "IT": "Mono"
+      }
+    },
+    {
+      "id": 29,
+      "name": "VALUE_NORMAL",
+      "role": "value",
+      "text": {
+        "EN": "Normal",
+        "IT": "Normale"
+      }
+    },
+    {
+      "id": 30,
+      "name": "VALUE_BUTTON_NORMAL",
+      "role": "value",
+      "text": {
+        "EN": "Normal",
+        "IT": "Normali"
+      }
+    },
+    {
+      "id": 31,
+      "name": "VALUE_L_EQUALS_A",
+      "role": "value",
+      "text": {
+        "EN": "L=A",
+        "IT": "L=A"
+      }
+    },
+    {
+      "id": 32,
+      "name": "VALUE_PLUS",
+      "role": "value",
+      "text": {
+        "EN": "Plus",
+        "IT": "Plus"
+      }
+    },
+    {
+      "id": 33,
+      "name": "VALUE_WILD_NORMAL",
+      "role": "value",
+      "text": {
+        "EN": "Normal",
+        "IT": "Normali"
+      }
+    },
+    {
+      "id": 34,
+      "name": "VALUE_SMOOTH",
+      "role": "value",
+      "text": {
+        "EN": "Smooth",
+        "IT": "Fluidi"
+      }
+    },
+    {
+      "id": 35,
+      "name": "VALUE_ORIGINAL",
+      "role": "value",
+      "text": {
+        "EN": "Original",
+        "IT": "Originale"
+      }
+    },
+    {
+      "id": 36,
+      "name": "VALUE_CONN2",
+      "role": "value",
+      "text": {
+        "EN": "Conn. 2",
+        "IT": "Conn. 2"
+      }
+    },
+    {
+      "id": 37,
+      "name": "VALUE_CONN3",
+      "role": "value",
+      "text": {
+        "EN": "Conn. 3",
+        "IT": "Conn. 3"
+      }
+    },
+    {
+      "id": 38,
+      "name": "VALUE_CLASSIC",
+      "role": "value",
+      "text": {
+        "EN": "Classic",
+        "IT": "Classic"
+      }
+    },
+    {
+      "id": 39,
+      "name": "VALUE_PRO",
+      "role": "value",
+      "text": {
+        "EN": "Pro",
+        "IT": "Pro"
+      }
+    },
+    {
+      "id": 40,
+      "name": "VALUE_NONE",
+      "role": "value",
+      "text": {
+        "EN": "None",
+        "IT": "Nessuno"
+      }
+    },
+    {
+      "id": 41,
+      "name": "VALUE_OPEN",
+      "role": "value",
+      "text": {
+        "EN": "Open",
+        "IT": "Apri"
+      }
+    },
+    {
+      "id": 42,
+      "name": "FRAME_01",
+      "role": "value",
+      "text": {
+        "EN": "1",
+        "IT": "1"
+      }
+    },
+    {
+      "id": 43,
+      "name": "FRAME_02",
+      "role": "value",
+      "text": {
+        "EN": "2",
+        "IT": "2"
+      }
+    },
+    {
+      "id": 44,
+      "name": "FRAME_03",
+      "role": "value",
+      "text": {
+        "EN": "3",
+        "IT": "3"
+      }
+    },
+    {
+      "id": 45,
+      "name": "FRAME_04",
+      "role": "value",
+      "text": {
+        "EN": "4",
+        "IT": "4"
+      }
+    },
+    {
+      "id": 46,
+      "name": "FRAME_05",
+      "role": "value",
+      "text": {
+        "EN": "5",
+        "IT": "5"
+      }
+    },
+    {
+      "id": 47,
+      "name": "FRAME_06",
+      "role": "value",
+      "text": {
+        "EN": "6",
+        "IT": "6"
+      }
+    },
+    {
+      "id": 48,
+      "name": "FRAME_07",
+      "role": "value",
+      "text": {
+        "EN": "7",
+        "IT": "7"
+      }
+    },
+    {
+      "id": 49,
+      "name": "FRAME_08",
+      "role": "value",
+      "text": {
+        "EN": "8",
+        "IT": "8"
+      }
+    },
+    {
+      "id": 50,
+      "name": "FRAME_09",
+      "role": "value",
+      "text": {
+        "EN": "9",
+        "IT": "9"
+      }
+    },
+    {
+      "id": 51,
+      "name": "FRAME_10",
+      "role": "value",
+      "text": {
+        "EN": "10",
+        "IT": "10"
+      }
+    },
+    {
+      "id": 52,
+      "name": "FRAME_11",
+      "role": "value",
+      "text": {
+        "EN": "11",
+        "IT": "11"
+      }
+    },
+    {
+      "id": 53,
+      "name": "FRAME_12",
+      "role": "value",
+      "text": {
+        "EN": "12",
+        "IT": "12"
+      }
+    },
+    {
+      "id": 54,
+      "name": "FRAME_13",
+      "role": "value",
+      "text": {
+        "EN": "13",
+        "IT": "13"
+      }
+    },
+    {
+      "id": 55,
+      "name": "FRAME_14",
+      "role": "value",
+      "text": {
+        "EN": "14",
+        "IT": "14"
+      }
+    },
+    {
+      "id": 56,
+      "name": "FRAME_15",
+      "role": "value",
+      "text": {
+        "EN": "15",
+        "IT": "15"
+      }
+    },
+    {
+      "id": 57,
+      "name": "FRAME_16",
+      "role": "value",
+      "text": {
+        "EN": "16",
+        "IT": "16"
+      }
+    },
+    {
+      "id": 58,
+      "name": "FRAME_17",
+      "role": "value",
+      "text": {
+        "EN": "17",
+        "IT": "17"
+      }
+    },
+    {
+      "id": 59,
+      "name": "FRAME_18",
+      "role": "value",
+      "text": {
+        "EN": "18",
+        "IT": "18"
+      }
+    },
+    {
+      "id": 60,
+      "name": "FRAME_19",
+      "role": "value",
+      "text": {
+        "EN": "19",
+        "IT": "19"
+      }
+    },
+    {
+      "id": 61,
+      "name": "FRAME_20",
+      "role": "value",
+      "text": {
+        "EN": "20",
+        "IT": "20"
+      }
+    },
+    {
+      "id": 62,
+      "name": "METHOD_LAND",
+      "role": "value",
+      "text": {
+        "EN": "Grass / cave",
+        "IT": "Erba / grotta"
+      }
+    },
+    {
+      "id": 63,
+      "name": "METHOD_SURF",
+      "role": "value",
+      "text": {
+        "EN": "Surf",
+        "IT": "Surf"
+      }
+    },
+    {
+      "id": 64,
+      "name": "METHOD_OLD_ROD",
+      "role": "value",
+      "text": {
+        "EN": "Old Rod",
+        "IT": "Amo Vecchio"
+      }
+    },
+    {
+      "id": 65,
+      "name": "METHOD_GOOD_ROD",
+      "role": "value",
+      "text": {
+        "EN": "Good Rod",
+        "IT": "Amo Buono"
+      }
+    },
+    {
+      "id": 66,
+      "name": "METHOD_SUPER_ROD",
+      "role": "value",
+      "text": {
+        "EN": "Super Rod",
+        "IT": "Super Amo"
+      }
+    },
+    {
+      "id": 67,
+      "name": "ACTION_APPLY",
+      "role": "action",
+      "text": {
+        "EN": "Apply",
+        "IT": "Applica"
+      }
+    },
+    {
+      "id": 68,
+      "name": "ACTION_DISCARD",
+      "role": "action",
+      "text": {
+        "EN": "Discard",
+        "IT": "Scarta"
+      }
+    },
+    {
+      "id": 69,
+      "name": "ACTION_CONTINUE",
+      "role": "action",
+      "text": {
+        "EN": "Continue editing",
+        "IT": "Continua a modificare"
+      }
+    },
+    {
+      "id": 70,
+      "name": "ACTION_CANCEL",
+      "role": "action",
+      "text": {
+        "EN": "Cancel",
+        "IT": "Annulla"
+      }
+    },
+    {
+      "id": 71,
+      "name": "ACTION_PREPARE",
+      "role": "action",
+      "text": {
+        "EN": "Prepare search",
+        "IT": "Prepara ricerca"
+      }
+    },
+    {
+      "id": 72,
+      "name": "HEADING_TARGET",
+      "role": "heading",
+      "text": {
+        "EN": "Choose target",
+        "IT": "Scegli bersaglio"
+      }
+    },
+    {
+      "id": 73,
+      "name": "HEADING_METHOD",
+      "role": "heading",
+      "text": {
+        "EN": "Choose method",
+        "IT": "Scegli metodo"
+      }
+    },
+    {
+      "id": 74,
+      "name": "HEADING_VALUE",
+      "role": "heading",
+      "text": {
+        "EN": "Choose value",
+        "IT": "Scegli valore"
+      }
+    },
+    {
+      "id": 75,
+      "name": "HEADING_EXIT",
+      "role": "heading",
+      "text": {
+        "EN": "Leave settings?",
+        "IT": "Uscire dalle impostazioni?"
+      }
+    },
+    {
+      "id": 76,
+      "name": "HEADING_APPLY",
+      "role": "heading",
+      "text": {
+        "EN": "Apply changes?",
+        "IT": "Applicare le modifiche?"
+      }
+    },
+    {
+      "id": 77,
+      "name": "HEADING_ERROR",
+      "role": "heading",
+      "text": {
+        "EN": "Changes not applied",
+        "IT": "Modifiche non applicate"
+      }
+    },
+    {
+      "id": 78,
+      "name": "HEADING_INFO",
+      "role": "heading",
+      "text": {
+        "EN": "Info",
+        "IT": "Info"
+      }
+    },
+    {
+      "id": 79,
+      "name": "HEADING_SEARCH",
+      "role": "heading",
+      "text": {
+        "EN": "Pro search",
+        "IT": "Ricerca Pro"
+      }
+    },
+    {
+      "id": 80,
+      "name": "CONTEXT_ROOT",
+      "role": "context",
+      "text": {
+        "EN": "D-pad: row/value  L/R: section",
+        "IT": "Croce: voce/valore  L/R: sezione"
+      }
+    },
+    {
+      "id": 81,
+      "name": "FOOTER_ROOT",
+      "role": "footer",
+      "text": {
+        "EN": "A Choose  B Back  X Apply  Y Info",
+        "IT": "A Scegli  B Esci  X Applica  Y Info"
+      }
+    },
+    {
+      "id": 82,
+      "name": "FOOTER_SELECTOR",
+      "role": "footer",
+      "text": {
+        "EN": "Up/Down Move  A Choose  B Cancel",
+        "IT": "Su/Giù Muovi  A Scegli  B Annulla"
+      }
+    },
+    {
+      "id": 83,
+      "name": "FOOTER_INFO",
+      "role": "footer",
+      "text": {
+        "EN": "B Back",
+        "IT": "B Indietro"
+      }
+    },
+    {
+      "id": 84,
+      "name": "FOOTER_SEARCH",
+      "role": "footer",
+      "text": {
+        "EN": "A Choose  B Back  Y Info",
+        "IT": "A Scegli  B Indietro  Y Info"
+      }
+    },
+    {
+      "id": 85,
+      "name": "FOOTER_CONFIRM",
+      "role": "footer",
+      "text": {
+        "EN": "Up/Down Choose  A Confirm  B Back",
+        "IT": "Su/Giù Scegli  A Conferma  B Indietro"
+      }
+    },
+    {
+      "id": 86,
+      "name": "FOOTER_ERROR",
+      "role": "footer",
+      "text": {
+        "EN": "B Back",
+        "IT": "B Indietro"
+      }
+    },
+    {
+      "id": 87,
+      "name": "STATUS_POKEMON",
+      "role": "status",
+      "text": {
+        "EN": "Pokémon",
+        "IT": "Pokémon"
+      }
+    },
+    {
+      "id": 88,
+      "name": "STATUS_METHOD",
+      "role": "status",
+      "text": {
+        "EN": "Method",
+        "IT": "Metodo"
+      }
+    },
+    {
+      "id": 89,
+      "name": "STATUS_READ_ONLY",
+      "role": "status",
+      "text": {
+        "EN": "Read only",
+        "IT": "Sola lettura"
+      }
+    },
+    {
+      "id": 90,
+      "name": "STATUS_SUCCESSES",
+      "role": "status",
+      "text": {
+        "EN": "Successes",
+        "IT": "Successi"
+      }
+    },
+    {
+      "id": 91,
+      "name": "STATUS_ODDS",
+      "role": "status",
+      "text": {
+        "EN": "Target odds",
+        "IT": "Probabilità bersaglio"
+      }
+    },
+    {
+      "id": 92,
+      "name": "STATUS_STEPS",
+      "role": "status",
+      "text": {
+        "EN": "Steps",
+        "IT": "Passi"
+      }
+    },
+    {
+      "id": 93,
+      "name": "SEARCH_PENDING",
+      "role": "body",
+      "text": {
+        "EN": "Pending: Apply, then exit to search.",
+        "IT": "Da applicare: Applica, poi esci per cercare."
+      }
+    },
+    {
+      "id": 94,
+      "name": "EXIT_PROMPT",
+      "role": "body",
+      "text": {
+        "EN": "Apply or discard your changes? Continue editing keeps them pending.",
+        "IT": "Applicare o scartare le modifiche? Continua a modificare le lascia in attesa."
+      }
+    },
+    {
+      "id": 95,
+      "name": "APPLY_PROMPT",
+      "role": "body",
+      "text": {
+        "EN": "Apply the listed changes and exit?",
+        "IT": "Applicare le modifiche elencate e uscire?"
+      }
+    },
+    {
+      "id": 96,
+      "name": "APPLY_SEARCH",
+      "role": "body",
+      "text": {
+        "EN": "Prepared search included. The encounter follows after exit, when the field is free.",
+        "IT": "Ricerca preparata inclusa. L’incontro segue dopo l’uscita, quando il campo è libero."
+      }
+    },
+    {
+      "id": 97,
+      "name": "NO_CHANGES",
+      "role": "body",
+      "text": {
+        "EN": "No changes to apply.",
+        "IT": "Nessuna modifica da applicare."
+      }
+    },
+    {
+      "id": 98,
+      "name": "ERROR_OWNER",
+      "role": "body",
+      "text": {
+        "EN": "No changes applied. B returns to editing. Exit without applying and reopen settings to retry.",
+        "IT": "Nessuna modifica applicata. B torna alle modifiche. Esci senza applicare e riapri le impostazioni."
+      }
+    },
+    {
+      "id": 99,
+      "name": "NOTICE_UNAVAILABLE",
+      "role": "context",
+      "text": {
+        "EN": "Setting unavailable",
+        "IT": "Opzione non disponibile"
+      }
+    },
+    {
+      "id": 100,
+      "name": "NOTICE_EMPTY",
+      "role": "context",
+      "text": {
+        "EN": "No seen local species",
+        "IT": "Nessuna specie locale vista"
+      }
+    },
+    {
+      "id": 101,
+      "name": "NOTICE_METHOD",
+      "role": "context",
+      "text": {
+        "EN": "No method in this area",
+        "IT": "Nessun metodo in questa zona"
+      }
+    },
+    {
+      "id": 102,
+      "name": "NOTICE_NO_TARGET",
+      "role": "context",
+      "text": {
+        "EN": "Choose a local target",
+        "IT": "Scegli un bersaglio locale"
+      }
+    },
+    {
+      "id": 103,
+      "name": "NOTICE_PRO",
+      "role": "context",
+      "text": {
+        "EN": "Search needs Pro mode",
+        "IT": "La ricerca richiede Pro"
+      }
+    },
+    {
+      "id": 104,
+      "name": "NOTICE_CHARGE",
+      "role": "context",
+      "text": {
+        "EN": "Search needs 40 steps",
+        "IT": "Servono 40 passi"
+      }
+    },
+    {
+      "id": 105,
+      "name": "NOTICE_STALE",
+      "role": "body",
+      "text": {
+        "EN": "The area or settings changed. Exit without applying and reopen settings.",
+        "IT": "La zona o le impostazioni sono cambiate. Esci senza applicare e riapri le impostazioni."
+      }
+    },
+    {
+      "id": 106,
+      "name": "NOTICE_BUSY",
+      "role": "body",
+      "text": {
+        "EN": "Not ready to apply. B returns to editing; try again.",
+        "IT": "Non è possibile applicare ora. B torna alle modifiche; riprova."
+      }
+    },
+    {
+      "id": 107,
+      "name": "NOTICE_FAILED",
+      "role": "body",
+      "text": {
+        "EN": "Search could not be prepared. No changes applied. B returns to editing.",
+        "IT": "Ricerca non preparata. Nessuna modifica applicata. B torna alle modifiche."
+      }
+    },
+    {
+      "id": 108,
+      "name": "INFO_TEXT",
+      "role": "preview_info",
+      "text": {
+        "EN": "Choose how quickly dialogue appears. The preview shows the pending speed.",
+        "IT": "Scegli la velocità dei dialoghi. L’anteprima mostra la scelta in attesa."
+      }
+    },
+    {
+      "id": 109,
+      "name": "INFO_SCENE",
+      "role": "info",
+      "text": {
+        "EN": "Show or skip battle move effects.",
+        "IT": "Mostra o salta gli effetti delle mosse in lotta."
+      }
+    },
+    {
+      "id": 110,
+      "name": "INFO_STYLE",
+      "role": "info",
+      "text": {
+        "EN": "Shift offers a switch after defeating a trainer’s Pokémon. Set keeps your Pokémon in battle.",
+        "IT": "Cambio propone di cambiare Pokémon dopo aver sconfitto quello di un Allenatore. Fisso lo mantiene in campo."
+      }
+    },
+    {
+      "id": 111,
+      "name": "INFO_AUDIO",
+      "role": "info",
+      "text": {
+        "EN": "Choose stereo or mono sound. You can hear the pending choice; cancelling restores the previous sound.",
+        "IT": "Scegli audio stereo o mono. Puoi ascoltare la scelta in attesa; annullando torna l’audio precedente."
+      }
+    },
+    {
+      "id": 112,
+      "name": "INFO_BUTTON",
+      "role": "info",
+      "text": {
+        "EN": "Normal controls or L as A. In these settings L/R still change section; physical A chooses.",
+        "IT": "Comandi normali o L come A. Qui L/R cambiano sezione; A fisico sceglie."
+      }
+    },
+    {
+      "id": 113,
+      "name": "INFO_FRAME",
+      "role": "preview_info",
+      "text": {
+        "EN": "Choose one of 20 dialogue frames. The preview shows the pending frame.",
+        "IT": "Scegli fra 20 cornici dei dialoghi. L’anteprima mostra la scelta in attesa."
+      }
+    },
+    {
+      "id": 114,
+      "name": "INFO_DIFFICULTY",
+      "role": "info",
+      "text": {
+        "EN": "Normal or Plus trainer levels and teams.",
+        "IT": "Livelli e squadre degli Allenatori normali o Plus."
+      }
+    },
+    {
+      "id": 115,
+      "name": "INFO_WILD",
+      "role": "info",
+      "text": {
+        "EN": "Normal or increased wild Pokémon levels.",
+        "IT": "Livelli selvatici normali o aumentati."
+      }
+    },
+    {
+      "id": 116,
+      "name": "INFO_ANIMATION",
+      "role": "info",
+      "text": {
+        "EN": "Turn continuous Pokémon movement in battle on or off.",
+        "IT": "Attiva o disattiva il movimento continuo dei Pokémon in lotta."
+      }
+    },
+    {
+      "id": 117,
+      "name": "INFO_NPC",
+      "role": "info",
+      "text": {
+        "EN": "Normal or smoother character appearances on the field.",
+        "IT": "Personaggi sulla mappa: apparizioni normali o più fluide."
+      }
+    },
+    {
+      "id": 118,
+      "name": "INFO_WIFI",
+      "role": "info",
+      "text": {
+        "EN": "Use the original online connection or saved Conn. 2/3.",
+        "IT": "Usa la connessione online originale o Conn. 2/3 salvate."
+      }
+    },
+    {
+      "id": 119,
+      "name": "INFO_MODE",
+      "role": "info",
+      "text": {
+        "EN": "Classic: 1/512 for new eligible Pokémon. Pro: target odds improve at 10/20/40 successes. No tier guarantees a shiny.",
+        "IT": "Classic: 1/512 per nuovi Pokémon ammessi. Pro: probabilità del bersaglio migliori a 10/20/40 successi. Nessun traguardo garantisce cromatici."
+      }
+    },
+    {
+      "id": 120,
+      "name": "INFO_TARGET",
+      "role": "info",
+      "text": {
+        "EN": "Choose a seen local species. Apply a new mode or target to reset successes and charge. Classic keeps your target.",
+        "IT": "Scegli una specie locale già vista. Applicare un nuovo modo o bersaglio azzera successi e carica. Classic conserva il bersaglio."
+      }
+    },
+    {
+      "id": 121,
+      "name": "INFO_SEARCH",
+      "role": "info",
+      "text": {
+        "EN": "Pro needs a valid target and 40 steps. Prepare search keeps changes pending. Apply, then exit to search. Changing mode, target or method cancels preparation.",
+        "IT": "Pro richiede un bersaglio valido e 40 passi. Prepara ricerca resta in attesa. Applica, poi esci per cercare. Cambiare modo, bersaglio o metodo annulla la preparazione."
+      }
+    },
+    {
+      "id": 122,
+      "name": "INFO_SUCCESSES",
+      "role": "info",
+      "text": {
+        "EN": "Catch or defeat the target: +1 success, up to 40. Fleeing or another species resets successes. This is read only.",
+        "IT": "Cattura o sconfiggi il bersaglio: +1, fino a 40. Fuga o altra specie azzera i successi. Stato di sola lettura."
+      }
+    },
+    {
+      "id": 123,
+      "name": "INFO_ODDS",
+      "role": "info",
+      "text": {
+        "EN": "Odds are for the next eligible target Pokémon. Pro tiers: 1/4096, then 1/2048, 1/1024 and 1/512. This is read only.",
+        "IT": "Prossimo bersaglio ammesso: 1/4096, poi 1/2048, 1/1024 e 1/512 ai traguardi Pro. Stato di sola lettura."
+      }
+    },
+    {
+      "id": 124,
+      "name": "INFO_STEPS",
+      "role": "info",
+      "text": {
+        "EN": "Walk 40 steps to charge a search. A pending new mode or target has no charge until applied. This is read only.",
+        "IT": "Cammina 40 passi per la ricerca. Nuovo modo o bersaglio in attesa: carica zero prima di Applica. Stato di sola lettura."
+      }
+    },
+    {
+      "id": 125,
+      "name": "PREVIEW_TEXT",
+      "role": "body",
+      "text": {
+        "EN": "This is the dialogue speed preview.",
+        "IT": "Questa è l’anteprima della velocità dei dialoghi."
+      }
+    },
+    {
+      "id": 126,
+      "name": "GUIDE_CATEGORIES",
+      "role": "footer",
+      "text": {
+        "EN": "A Open  B Close  Touch: choose",
+        "IT": "A Apri  B Chiudi  Touch: scegli"
+      }
+    },
+    {
+      "id": 127,
+      "name": "GUIDE_LIST",
+      "role": "footer",
+      "text": {
+        "EN": "A Open  B Back  L/R: jump",
+        "IT": "A Apri  B Indietro  L/R: salta"
+      }
+    },
+    {
+      "id": 128,
+      "name": "GUIDE_PAGE",
+      "role": "footer",
+      "text": {
+        "EN": "Left/Right Page  A Link  B Back",
+        "IT": "Sin./Des. Pagina  A Rimando  B Indietro"
+      }
+    },
+    {
+      "id": 129,
+      "name": "GUIDE_POSITION",
+      "role": "label",
+      "text": {
+        "EN": "Page",
+        "IT": "Pagina"
+      }
+    },
+    {
+      "id": 130,
+      "name": "FORMAT_POOL",
+      "role": "pool",
+      "text": {
+        "EN": "0123456789/:% Steps PageABXY",
+        "IT": "0123456789/:% Passi PaginaABXY"
+      }
+    },
+    {
+      "id": 131,
+      "name": "VALUE_PENDING",
+      "role": "value",
+      "text": {
+        "EN": "Pending",
+        "IT": "Da applicare"
+      }
+    },
+    {
+      "id": 132,
+      "name": "VALUE_UNAVAILABLE",
+      "role": "value",
+      "text": {
+        "EN": "Unavailable",
+        "IT": "Non disponibile"
+      }
+    },
+    {
+      "id": 133,
+      "name": "CONTEXT_SEARCH",
+      "role": "context",
+      "text": {
+        "EN": "D-pad: row/method",
+        "IT": "Croce: voce/metodo"
+      }
+    },
+    {
+      "id": 134,
+      "name": "GUIDE_TITLE",
+      "role": "label",
+      "text": {
+        "EN": "GUIDE",
+        "IT": "GUIDA"
+      }
+    },
+    {
+      "id": 135,
+      "name": "GUIDE_OPEN",
+      "role": "label",
+      "text": {
+        "EN": "Open",
+        "IT": "Apri"
+      }
+    },
+    {
+      "id": 136,
+      "name": "GUIDE_BACK",
+      "role": "label",
+      "text": {
+        "EN": "Back",
+        "IT": "Indietro"
+      }
+    },
+    {
+      "id": 137,
+      "name": "GUIDE_UP",
+      "role": "label",
+      "text": {
+        "EN": "UP",
+        "IT": "SU"
+      }
+    },
+    {
+      "id": 138,
+      "name": "GUIDE_DOWN",
+      "role": "label",
+      "text": {
+        "EN": "DOWN",
+        "IT": "GIÙ"
+      }
+    },
+    {
+      "id": 139,
+      "name": "GUIDE_PREVIOUS",
+      "role": "label",
+      "text": {
+        "EN": "Previous",
+        "IT": "Prec."
+      }
+    },
+    {
+      "id": 140,
+      "name": "GUIDE_NEXT",
+      "role": "label",
+      "text": {
+        "EN": "Next",
+        "IT": "Succ."
+      }
+    },
+    {
+      "id": 141,
+      "name": "GUIDE_LINK",
+      "role": "label",
+      "text": {
+        "EN": "Link",
+        "IT": "Vedi"
+      }
+    },
+    {
+      "id": 142,
+      "name": "GUIDE_CLOSE",
+      "role": "label",
+      "text": {
+        "EN": "Close",
+        "IT": "Esci"
+      }
+    },
+    {
+      "id": 143,
+      "name": "GUIDE_SELECT",
+      "role": "label",
+      "text": {
+        "EN": "Select",
+        "IT": "Scelta"
+      }
+    },
+    {
+      "id": 144,
+      "name": "GUIDE_PAGING",
+      "role": "label",
+      "text": {
+        "EN": "Page",
+        "IT": "Pagina"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "row": 0,
+      "label": "ROW_TEXT",
+      "info": "INFO_TEXT",
+      "values": [
+        "VALUE_SLOW",
+        "VALUE_MID",
+        "VALUE_FAST"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 1,
+      "label": "ROW_SCENE",
+      "info": "INFO_SCENE",
+      "values": [
+        "VALUE_ON",
+        "VALUE_OFF"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 2,
+      "label": "ROW_STYLE",
+      "info": "INFO_STYLE",
+      "values": [
+        "VALUE_SHIFT",
+        "VALUE_SET"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 3,
+      "label": "ROW_AUDIO",
+      "info": "INFO_AUDIO",
+      "values": [
+        "VALUE_STEREO",
+        "VALUE_MONO"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 4,
+      "label": "ROW_BUTTON",
+      "info": "INFO_BUTTON",
+      "values": [
+        "VALUE_BUTTON_NORMAL",
+        "VALUE_L_EQUALS_A"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 5,
+      "label": "ROW_FRAME",
+      "info": "INFO_FRAME",
+      "values": [
+        "FRAME_01",
+        "FRAME_02",
+        "FRAME_03",
+        "FRAME_04",
+        "FRAME_05",
+        "FRAME_06",
+        "FRAME_07",
+        "FRAME_08",
+        "FRAME_09",
+        "FRAME_10",
+        "FRAME_11",
+        "FRAME_12",
+        "FRAME_13",
+        "FRAME_14",
+        "FRAME_15",
+        "FRAME_16",
+        "FRAME_17",
+        "FRAME_18",
+        "FRAME_19",
+        "FRAME_20"
+      ],
+      "presentation": "selector"
+    },
+    {
+      "row": 6,
+      "label": "ROW_DIFFICULTY",
+      "info": "INFO_DIFFICULTY",
+      "values": [
+        "VALUE_NORMAL",
+        "VALUE_PLUS"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 7,
+      "label": "ROW_WILD",
+      "info": "INFO_WILD",
+      "values": [
+        "VALUE_WILD_NORMAL",
+        "VALUE_PLUS"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 8,
+      "label": "ROW_ANIMATION",
+      "info": "INFO_ANIMATION",
+      "values": [
+        "VALUE_OFF",
+        "VALUE_ON"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 9,
+      "label": "ROW_NPC",
+      "info": "INFO_NPC",
+      "values": [
+        "VALUE_BUTTON_NORMAL",
+        "VALUE_SMOOTH"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 10,
+      "label": "ROW_WIFI",
+      "info": "INFO_WIFI",
+      "values": [
+        "VALUE_ORIGINAL",
+        "VALUE_CONN2",
+        "VALUE_CONN3"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 11,
+      "label": "ROW_MODE",
+      "info": "INFO_MODE",
+      "values": [
+        "VALUE_CLASSIC",
+        "VALUE_PRO"
+      ],
+      "presentation": "auto"
+    },
+    {
+      "row": 12,
+      "label": "ROW_TARGET",
+      "info": "INFO_TARGET",
+      "values": [
+        "VALUE_NONE"
+      ],
+      "presentation": "species"
+    },
+    {
+      "row": 13,
+      "label": "ROW_SEARCH",
+      "info": "INFO_SEARCH",
+      "values": [
+        "VALUE_OPEN"
+      ],
+      "presentation": "action"
+    }
+  ],
+  "methods": [
+    "METHOD_LAND",
+    "METHOD_SURF",
+    "METHOD_OLD_ROD",
+    "METHOD_GOOD_ROD",
+    "METHOD_SUPER_ROD"
+  ],
+  "status": [
+    "STATUS_SUCCESSES",
+    "STATUS_ODDS",
+    "STATUS_STEPS"
+  ],
+  "footer_runs": {
+    "FOOTER_ROOT": {
+      "EN": [
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Choose"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Back"
+        },
+        {
+          "key": "X",
+          "text": "X"
+        },
+        {
+          "key": "",
+          "text": "Apply"
+        },
+        {
+          "key": "Y",
+          "text": "Y"
+        },
+        {
+          "key": "",
+          "text": "Info"
+        }
+      ],
+      "IT": [
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Scegli"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Esci"
+        },
+        {
+          "key": "X",
+          "text": "X"
+        },
+        {
+          "key": "",
+          "text": "Applica"
+        },
+        {
+          "key": "Y",
+          "text": "Y"
+        },
+        {
+          "key": "",
+          "text": "Info"
+        }
+      ]
+    },
+    "FOOTER_SELECTOR": {
+      "EN": [
+        {
+          "key": "",
+          "text": "Up/Down Move"
+        },
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Choose"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Cancel"
+        }
+      ],
+      "IT": [
+        {
+          "key": "",
+          "text": "Su/Giù Muovi"
+        },
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Scegli"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Annulla"
+        }
+      ]
+    },
+    "FOOTER_INFO": {
+      "EN": [
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Back"
+        }
+      ],
+      "IT": [
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Indietro"
+        }
+      ]
+    },
+    "FOOTER_SEARCH": {
+      "EN": [
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Choose"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Back"
+        },
+        {
+          "key": "Y",
+          "text": "Y"
+        },
+        {
+          "key": "",
+          "text": "Info"
+        }
+      ],
+      "IT": [
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Scegli"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Indietro"
+        },
+        {
+          "key": "Y",
+          "text": "Y"
+        },
+        {
+          "key": "",
+          "text": "Info"
+        }
+      ]
+    },
+    "FOOTER_CONFIRM": {
+      "EN": [
+        {
+          "key": "",
+          "text": "Up/Down Choose"
+        },
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Confirm"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Back"
+        }
+      ],
+      "IT": [
+        {
+          "key": "",
+          "text": "Su/Giù Scegli"
+        },
+        {
+          "key": "A",
+          "text": "A"
+        },
+        {
+          "key": "",
+          "text": "Conferma"
+        },
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Indietro"
+        }
+      ]
+    },
+    "FOOTER_ERROR": {
+      "EN": [
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Back"
+        }
+      ],
+      "IT": [
+        {
+          "key": "B",
+          "text": "B"
+        },
+        {
+          "key": "",
+          "text": "Indietro"
+        }
+      ]
+    }
+  }
+}

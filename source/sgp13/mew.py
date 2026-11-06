@@ -5,6 +5,8 @@ import importlib.util
 from pathlib import Path
 import struct
 
+from . import admission
+
 ROOT = Path(__file__).resolve().parents[1]
 MEMBER = 115
 SITES = (191, 260, 325)
@@ -29,12 +31,10 @@ def decoder():
 
 def load_commands(path):
     path = Path(path)
-    if not path.is_file():
-        raise FileNotFoundError('the pinned reference tools/py_scripts/scrcmd.json is required')
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    if digest != METADATA_SHA256:
-        raise ValueError('Mew script metadata SHA-256 does not match the pinned reference')
-    return decoder().Comandi(path), digest
+    data, digest = admission.read_bounded(
+        path, admission.MAX_SCRCMD_BYTES, 'Mew script metadata',
+        expected_sha256=METADATA_SHA256)
+    return decoder().Comandi(data), digest
 
 
 def _decode(raw, commands):

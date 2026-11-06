@@ -1,0 +1,17 @@
+CHEATS AND BUILT-IN TOOLS - 1.3.1 PREPARATION
+
+This package includes no Action Replay catalogue. Earlier Plus catalogues have
+not been validated against this exact 1.3.1 candidate; changing the version or
+filename does not establish compatibility. No legacy code has been relabelled.
+
+IV consultants, EV training, the Shiny page and portable storage are game
+features. They do not require an emulator cheat or plug-in. Use the
+current-feature PDF in the main folder for their controls. The installed
+summary-control component remains inactive and is not a player feature.
+
+If a candidate-specific catalogue is prepared later, it needs its own identity
+and effect checks. The maintainer's Italian device update preserved the existing
+cheat activation state, but that does not validate the catalogue's effects or
+the English target. Keep an untouched backup of your normal save. An old
+catalogue or old savestate is not part of this package's file-reconstruction
+verification.

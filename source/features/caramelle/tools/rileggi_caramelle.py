@@ -35,6 +35,8 @@ import json
 import struct
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from sgp12.rom import valida_layout_arm9
 
 import capstone
 
@@ -107,17 +109,8 @@ class VistaArm9:
         # +0x28 indirizzo RAM, +0x2C dimensione.
         self.o9 = struct.unpack_from("<I", self.dati, 0x20)[0]
         self.r9, self.n9 = struct.unpack_from("<II", self.dati, 0x28)
-        p = self.o9 + 0xBA0
-        t0, t1, d0 = struct.unpack_from("<3I", self.dati, p)
-        self.pezzi = [(self.r9, self.o9, d0 - self.r9)]
-        q = self.o9 + (t0 - self.r9)
-        fine = self.o9 + (t1 - self.r9)
-        o = self.o9 + (d0 - self.r9)
-        while q < fine:
-            ram, n, _bss = struct.unpack_from("<3I", self.dati, q)
-            self.pezzi.append((ram, o, n))
-            o += n
-            q += 12
+        _t0, _t1, _d0, _sections, self.pezzi = valida_layout_arm9(
+            self.dati, self.o9, self.r9, self.n9)
 
     def posto(self, ram, n=1):
         for base, o, dim in self.pezzi:

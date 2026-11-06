@@ -1,0 +1,153 @@
+{
+ "schema": 1,
+ "description": "Exact-target facts for the rematch wrapper (V4 balance493 EN/IT, identical bytes in both languages). Everything here was read back from the ARM9 images; runtime context is the one exception and is marked UNPROVEN.",
+ "languages": [
+  "EN",
+  "IT"
+ ],
+ "seam": {
+  "address": "0x0207363A",
+  "old_bytes": "fff7d5ff",
+  "old_target": "0x020735E8",
+  "resume": "0x0207363E",
+  "note": "BL to TrainerData_ReadTrPoke: after the archive member is loaded into the transient buffer and before the first species/override is interpreted (type-3 loop starts at 0x02073694)"
+ },
+ "loader": {
+  "address": "0x020735E8",
+  "bytes": 28,
+  "sha256": "41ad2d1b6c9e7ffb8ef5077db2a6163886507b42f1bc039cdf3444a01696f5e2",
+  "tail_target": "0x02007508",
+  "narc_id": 56,
+  "note": "thunk: r0=trainer id, r1=buffer; tail-calls the archive reader with (buffer, 0x38, trainer id)"
+ },
+ "constructor": {
+  "start": "0x02073604",
+  "end": "0x02073A98",
+  "bytes": 1172,
+  "sha256": "0e58b8aae7ba33081541d4f50f748c7ea1fffe9c084eee23d95af0e9f648f38b",
+  "level_hook_sites": [
+   "0x2073718",
+   "0x2073802",
+   "0x207390c",
+   "0x2073a0c"
+  ],
+  "level_hook_target": "0x23d6228"
+ },
+ "host_frame": {
+  "note": "offsets from the host SP at the seam (after the host prologue, before any wrapper push)",
+  "party_index": "0x10",
+  "seed_backup": "0x68",
+  "buffer_pointer": "0x74"
+ },
+ "registers_at_seam": {
+  "r0": "trainer id",
+  "r1": "buffer",
+  "r4": "BattleSetup",
+  "r6": "mon workspace",
+  "r7": "party index * 4",
+  "r5": "not initialised"
+ },
+ "battle_setup": {
+  "battle_type": "+0x00 u32",
+  "trainer_ids": "+0x18 u32[4]",
+  "trainer_data": "+0x28, stride 52",
+  "trainer_format": "trainer_data +0",
+  "trainer_count": "trainer_data +3"
+ },
+ "plus_byte": {
+  "address": "0x023D8700",
+  "evidence": "read as ldrb [0x023D8700] by the Plus level function at 0x023D8134 (literal at 0x023D818C); contract active_plus"
+ },
+ "gate": {
+  "trainers": [
+   712,
+   713
+  ],
+  "type_count": "0x0306",
+  "type_count_layout": "(trainer format << 8) | member count",
+  "plus": 1,
+  "context": {
+   "battle_types": [
+    1,
+    2049
+   ],
+   "enemy_indexes": [
+    1
+   ],
+   "active_default": 0,
+   "note": "The two values are the battleType built by SetupAndStartTrainerBattle for the phone entry (a4 = 0) and for the inherited Dojo sequence (a4 = 1); both measured by executing the real V4 function. Any other value, including every extra bit, stays native. The value actually seen at runtime is the Android capture's job (context proof); enemy party index 1 is a reference-source value.",
+   "families": {
+    "phone": {
+     "battle_type": 1,
+     "script": "a/0/1/2 member 832, TrainerBattle at 0x41F (713) and 0x4D9 (712), a4 = 0"
+    },
+    "dojo-sequence": {
+     "battle_type": 2049,
+     "script": "a/0/1/2 member 832, inherited sequence TrainerBattle at 0x706 (712) and 0x738 (713), a4 = 1"
+    }
+   }
+  }
+ },
+ "limits": {
+  "code_bytes_max": 2560,
+  "config_bytes_max": 768,
+  "stack_alignment": 8
+ },
+ "seed_policy": "selector reads the host's saved pre-construction seed [sp+0x68]; no RNG call, no write; the constructor restores it at 0x02073A8E",
+ "tm_table": {
+  "address": "0x021000CC",
+  "count": 100,
+  "sha256": "1b2243d64d44d6db20da98374001468d8b316d89394a5642531827549cd3d645",
+  "note": "u16 move ids TM01..TM92, HM01..HM08 (pret item.c sTMHMMoves order); used only to prove legality of authored sets"
+ },
+ "setup": {
+  "address": "0x02051370",
+  "bytes": 184,
+  "sha256": "8531c3080d22630ead809cf7cf91306357b72c823818977f0ff373e0bf4e549f",
+  "note": "SetupAndStartTrainerBattle (whole function with its literal pool). Single trainer: battleType = 1 (BATTLE_TYPE_TRAINER) | 0x800 (BATTLE_TYPE_11) when the stack argument a4 is non-zero (movs r4,#1; cmp a4,#0; lsls r0,r4,#0xb; orrs r4,r0 at 0x020513A2..0x020513AA). Doubles 0x3, tag 0x13 and multi 0x4B are other values. Executed on the real bytes by the tests."
+ },
+ "overlay": {
+  "note": "The module is loaded on demand: overlay 126 is a placeholder of the V4 (a 20-byte compressed file never loaded by the game). The installer rewrites its y9 row (window, size, uncompressed) and appends the module image as its file; a resident stub in c8.module-stubs loads it with HandleLoadOverlay, calls it and unloads it in the same call.",
+  "id": 126,
+  "file_id": 126,
+  "window": "0x0226B000",
+  "window_limit": "0x0226EC40",
+  "allowed_conflicts": [
+   12
+  ],
+  "conflicts_note": "CanOverlayBeLoaded refuses a window that touches a registered overlay; from 0x0226A920 up the window overlaps only overlay 12 (the battle), where HandleLoadOverlay returns 0 and the stub runs the native reader.",
+  "placeholder_row": [
+   126,
+   36047904,
+   32,
+   0,
+   36047904,
+   36047908,
+   126,
+   16777236
+  ],
+  "placeholder_row_sha256": "8c39c1cf07837680519acb18ee0464e927313d3b67f8e72c5765bd2288751c9e",
+  "placeholder_file_bytes": 20,
+  "placeholder_file_sha256": "07d1d94d7d3269a1155925f01090a020e40387e8e8998fc3b4a1a3c633ca4d46",
+  "loader": {
+   "HandleLoadOverlay": {
+    "address": "0x02006FF8",
+    "bytes": 300,
+    "sha256": "f8174519d87706cd3543750dae5eef8f261cb4a1412487d8f7e1ea1d53f375e3"
+   },
+   "UnloadOverlayByID": {
+    "address": "0x02006F7C",
+    "bytes": 48,
+    "sha256": "732fd6f0e59ea14ff089579479e617eea83b7b56871db66f9043a4b4604272de"
+   }
+  },
+  "flags_uncompressed": 0
+ },
+ "stub": {
+  "slot": "c8.module-stubs",
+  "max_bytes": 64,
+  "stack_bytes": 16,
+  "native_reader": "0x020735E9",
+  "note": "push {r0,r1,r4,lr}: the module is entered with the host's r0/r1 and an extra 16-byte frame, which the hook adds to its host-SP offset."
+ }
+}

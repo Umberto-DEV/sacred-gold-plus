@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import struct
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,7 +40,7 @@ def compile_native(directory):
     flags = ['--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
              '-ffreestanding', '-fno-builtin', '-fno-stack-protector', '-fno-jump-tables',
              '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra', '-Werror']
-    subprocess.run(['clang', *flags, '-c', str(ROOT / 'features/save-ui/runtime.c'),
+    run_compiler([ *flags, '-c', str(ROOT / 'features/save-ui/runtime.c'),
                     '-o', str(obj)], check=True, capture_output=True)
     loader = module(ROOT / 'features/options/tools/carica_text.py', 'save_ui_loader')
     blob, symbols = loader.load_text(obj.read_bytes(), BASE, ENTRIES)
@@ -140,7 +141,7 @@ def apply(data, language, charmap_path):
     compressed = blz_comprimi_ottimo(after)
     if isinstance(compressed, tuple):
         compressed = compressed[0]
-    if len(compressed) > 2048 or blz_decomprimi(compressed) != after:
+    if len(compressed) > 2048 or blz_decomprimi(compressed, len(after)) != after:
         raise ValueError('save UI in-place BLZ bound/roundtrip')
     result = bytearray(data)
     result[start:start + len(compressed)] = compressed
@@ -179,7 +180,8 @@ def readback(before, after, language, charmap_path):
     _slot(before, old_rec)
     if sha(bytes(old_image)) != OVERLAY_SHA:
         raise ValueError('save UI readback original overlay preimage')
-    image = ndspy.codeCompression.decompress(updated.files[30])
+    from sgp12.blz import ndspy_decomprimi_sicuro
+    image = ndspy_decomprimi_sicuro(updated.files[30])
     if bytes(native_image) != image:
         raise ValueError('save UI readback independent BLZ decoder mismatch')
     with tempfile.TemporaryDirectory(prefix='sgp-save-ui-readback-') as temp:

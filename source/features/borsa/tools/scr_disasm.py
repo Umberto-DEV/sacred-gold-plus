@@ -133,8 +133,11 @@ BANCO_COMUNI = 3           # _std_misc        2000  -> scr_seq_0003, msg 040
 class Comandi:
     """La tabella dei comandi del pret."""
 
-    def __init__(self, percorso_json: Path):
-        dati = json.loads(Path(percorso_json).read_text(encoding="utf-8"))
+    def __init__(self, percorso_json):
+        if isinstance(percorso_json, bytes):
+            dati = json.loads(percorso_json.decode("utf-8"))
+        else:
+            dati = json.loads(Path(percorso_json).read_text(encoding="utf-8"))
         self.raw = dati["commands"]
         if len(self.raw) != 853:
             raise ValueError(

@@ -50,7 +50,8 @@ def probe(rom,fixture,observer,out,kind,baseline):
     runner=sha(Path(__file__));helper=sha(HERE/'run_summary_guide.py');abi=sha(HERE/'save-observer-abi.json')
     # Validate exact additional read-only observer ABI against this ROM.
     from ndspy.rom import NintendoDSRom
-    arm=NintendoDSRom(rom.read_bytes()).loadArm9().sections[0].data
+    from sgp12.blz import ndspy_load_arm9_sicuro
+    arm=ndspy_load_arm9_sicuro(NintendoDSRom(rom.read_bytes())).sections[0].data
     for item in json.loads((HERE/'save-observer-abi.json').read_text())['ranges']:
         off=item['address']-0x02000000
         require(hashlib.sha256(arm[off:off+item['bytes']]).hexdigest()==item['sha256'],'SAVE ABI changed')

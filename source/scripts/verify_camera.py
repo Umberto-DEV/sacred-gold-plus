@@ -7,6 +7,7 @@ import struct
 from pathlib import Path
 
 from ndspy.rom import NintendoDSRom
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 TABLE = 0xF6BE0
 COUNT = 540
@@ -21,7 +22,7 @@ def verify(original, reference, candidate, wait_fix=False):
     assert hashlib.sha256(reference).hexdigest() == USA_SHA256, "Wrong USA reference"
     assert len(candidate) == len(original), "File size changed"
     r0, ru, rc = (NintendoDSRom(b) for b in (original, reference, candidate))
-    a0, au, ac = (r.loadArm9().sections[0].data for r in (r0, ru, rc))
+    a0, au, ac = (ndspy_load_arm9_sicuro(r).sections[0].data for r in (r0, ru, rc))
     assert len(a0) == len(au) == len(ac) == 1120352
     arm9_offset = struct.unpack_from("<I", original, 0x20)[0]
     assert original[arm9_offset:arm9_offset + len(a0)] == a0

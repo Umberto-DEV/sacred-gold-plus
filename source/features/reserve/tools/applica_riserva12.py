@@ -23,12 +23,15 @@ RIFIUTA (uscita 2) invece di produrre un secondo abbassamento.
 import argparse
 import hashlib
 import json
+import os
 import struct
 import sys
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
 REPO = TOOLS.parents[3]
+sys.path.insert(0, str(REPO / "source"))
+from sgp12.blz import ndspy_load_arm9_sicuro
 # Richiede l'interprete python3 (vedi source/requirements.txt) (ndspy 4.2.0),
 # NON il python3 di sistema: e' li' che ndspy e' installato.
 
@@ -100,7 +103,7 @@ def applica(p_in, p_out, etichetta, manifest_path):
 
     sorgente = Path(p_in).read_bytes()
     parsed = ndspy.rom.NintendoDSRom(sorgente)
-    main = parsed.loadArm9()
+    main = ndspy_load_arm9_sicuro(parsed)
 
     r = {"strumento": "SGP-1.2-RISERVA-01/tools/applica_riserva12.py", "rom": etichetta,
          "ingresso": str(p_in), "ingresso_sha256": sha(sorgente), "ingresso_bytes": len(sorgente),

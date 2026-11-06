@@ -17,7 +17,10 @@ import sys
 import time
 from collections import Counter
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+QUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, QUI)
+sys.path.insert(0, os.path.dirname(QUI))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 from rsp import Rsp, RspError  # noqa: E402
 
 VBLANK = 0x021D1138
@@ -42,7 +45,7 @@ def main():
     args = ap.parse_args()
 
     wp = int(args.wp, 0)
-    os.makedirs(args.out, exist_ok=True)
+    outputs = PrivateDirectory(args.out)
     cmd = [args.hg, "--rom", args.rom, "--out", args.out, "--gdb-port", str(args.porta)]
     for opt, val in (("--script", args.script), ("--sram", args.sram), ("--load", args.load)):
         if val:
@@ -50,10 +53,11 @@ def main():
     if args.frames:
         cmd += ["--frames", str(args.frames)]
 
-    log = open(os.path.join(args.out, "hg-stdout.log"), "w")
-    err = open(os.path.join(args.out, "hg-stderr.log"), "w")
+    log = outputs.open_new("hg-stdout.log")
+    err = outputs.open_new("hg-stderr.log")
     t0 = time.time()
     proc = subprocess.Popen(cmd, stdout=log, stderr=err)
+    log.close(); err.close(); outputs.close()
 
     fermate = []
     pc_scrittori = Counter()
@@ -94,8 +98,7 @@ def main():
         "prime_fermate": fermate,
         "fine_sessione": fine,
     }
-    with open(args.json, "w") as f:
-        json.dump(esito, f, indent=2)
+    write_json_new(args.json, esito)
     print(json.dumps(esito, indent=2)[:3000])
     return 0
 

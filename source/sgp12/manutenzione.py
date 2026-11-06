@@ -14,7 +14,7 @@ from pathlib import Path
 import struct
 
 from .blz import blz_comprimi_ottimo, blz_decomprimi
-from .rom import Rifiuto, esigi, sha, sha_file
+from .rom import Rifiuto, esigi, sha, sha_file, valida_layout_arm9
 
 SOURCE = Path(__file__).resolve().parents[1]
 BUILD = Path(__file__).resolve().parent / 'build/manutenzione'
@@ -98,13 +98,9 @@ def carica_build(build):
 def offset_arm9(header, arm9, ram, n):
     """Segue le sezioni autoload senza leggere la ROM intera."""
     off, _, base, _ = struct.unpack_from('<4I', header, 0x20)
-    tab0, tab1, dati0 = struct.unpack_from('<3I', arm9, 0xBA0)
-    sezioni = [(base, off, dati0-base)]
-    cursor = off + dati0-base
-    for p in range(tab0-base, tab1-base, 12):
-        dest, size, _ = struct.unpack_from('<3I', arm9, p)
-        sezioni.append((dest, cursor, size))
-        cursor += size
+    _t0, _t1, _d0, _rows, relative = valida_layout_arm9(
+        arm9, 0, base, len(arm9))
+    sezioni = [(dest, off + position, size) for dest, position, size in relative]
     for dest, posizione, size in sezioni:
         if dest <= ram and ram+n <= dest+size:
             return posizione+ram-dest
@@ -153,7 +149,7 @@ def prepara_stream(f, impronta, dimensione, build=BUILD):
         packed = leggi(f, start, end-start)
         old = decompress(packed)
         esigi(len(old) == e[2] and sha(old) == expected_sha, f'ov{oid}: impronta inattesa')
-        esigi(blz_decomprimi(packed) == old, f'ov{oid}: decoder discordi')
+        esigi(blz_decomprimi(packed, len(old)) == old, f'ov{oid}: decoder discordi')
         new = bytearray(old)
         allowed = set()
         for sito, native, symbol in ganci[oid]:

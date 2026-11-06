@@ -87,7 +87,7 @@ typedef struct SgpStato {
     u8  cap;          /* +0x02 */
     u8  load_status;  /* +0x03 SGP_LOAD_* */
     u8  guard;        /* +0x04 SGP_GUARD */
-    u8  pad0;         /* +0x05 */
+    u8  write_status; /* +0x05 SGP_WRITE_*: esito dell'ultimo tentativo Plus */
     u16 pad1;         /* +0x06 */
     u32 hits_trainer; /* +0x08 diagnostica */
     u32 hits_wild;    /* +0x0C diagnostica */
@@ -107,6 +107,15 @@ typedef struct SgpStato {
 #define SGP_LOAD_ABSENT 1u   /* salvataggio 1.1: comportamento 1.1 */
 #define SGP_LOAD_VALID  2u
 #define SGP_LOAD_REJECT 3u   /* presente ma invalido: non si riscrive mai */
+
+/* Esito diagnostico dell'ultimo tentativo di scrittura del solo chunk Plus.
+ * Non sostituisce l'esito del salvataggio vanilla: l'app touch lo scarta e
+ * mostrerebbe comunque «salvato». Una copia riuscita basta al recupero a
+ * freddo, ma segnaliamo la ridondanza degradata separatamente. */
+#define SGP_WRITE_NONE    0u
+#define SGP_WRITE_OK      1u
+#define SGP_WRITE_PARTIAL 2u
+#define SGP_WRITE_FAILED  3u
 
 /* --- come si legge un'opzione, per TUTTI i consumatori --------------------
  * D1 normalizza la copia in RAM a ogni avvio (`sgp_chunk_leggi`): chunk

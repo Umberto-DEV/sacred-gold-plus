@@ -22,6 +22,8 @@ import time
 from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(QUI.parent))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 
 
 def main():
@@ -42,16 +44,15 @@ def main():
     a = ap.parse_args()
 
     mappe = [int(x) for x in a.mappe.split(",")]
-    out = Path(a.out)
-    out.mkdir(parents=True, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
+    out = outputs.path
     lavori = []
     porta = a.porta0
     for m in mappe:
         for r in range(1, a.ripetizioni + 1):
-            d = out / f"{a.etichetta}-{m}-{r}"
-            d.mkdir(parents=True, exist_ok=True)
+            d = outputs.ensure_dir(f"{a.etichetta}-{m}-{r}")
             sav = out / f"sav-{a.etichetta}-{m}-{r}.sav"
-            shutil.copyfile(a.sram, sav)
+            outputs.write_new(sav.name, Path(a.sram).read_bytes())
             js = d / "warp.json"
             cmd = [sys.executable, str(QUI / "warp.py"), "--hg", a.hg, "--rom", a.rom,
                    "--sram", str(sav), "--out", str(d), "--script", a.script,
@@ -102,7 +103,8 @@ def main():
            "ripetizioni": a.ripetizioni, "assestate": ok, "totale": len(esiti),
            "coerenza_coordinate": coerenza, "secondi": round(time.time() - t0, 2),
            "corse": esiti}
-    Path(a.json).write_text(json.dumps(ris, indent=2, ensure_ascii=False))
+    outputs.close()
+    write_json_new(a.json, ris)
     print(f"\nASSESTATE {ok}/{len(esiti)} in {ris['secondi']}s")
     return 0 if ok == len(esiti) else 1
 

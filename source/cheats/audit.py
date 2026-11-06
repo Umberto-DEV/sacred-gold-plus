@@ -8,12 +8,14 @@ import collections
 import re
 import struct
 import ndspy.rom
+from sgp12.blz import ndspy_load_arm9_sicuro, ndspy_load_overlays_sicuri
 
 def rom_sections(path):
     r = ndspy.rom.NintendoDSRom.fromFile(path)
-    main = r.loadArm9()
+    main = ndspy_load_arm9_sicuro(r)
     sections = [('ARM9:' + str(i), s.ramAddress, bytes(s.data)) for i, s in enumerate(main.sections)]
-    sections.extend(('overlay:' + str(i), s.ramAddress, bytes(s.data)) for i, s in r.loadArm9Overlays().items())
+    sections.extend(('overlay:' + str(i), s.ramAddress, bytes(s.data))
+                    for i, s in ndspy_load_overlays_sicuri(r).items())
     return sections
 
 

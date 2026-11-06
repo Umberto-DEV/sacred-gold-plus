@@ -17,6 +17,7 @@ GdbStub.cpp, non supposti):
 
 GPL-3.0-or-later, come il resto del kit del banco.
 """
+import ipaddress
 import socket
 import time
 
@@ -28,6 +29,8 @@ class RspError(RuntimeError):
 
 
 class Rsp:
+    MAX_BUFFER = 1024 * 1024
+    MAX_PACKET = 512 * 1024
     def __init__(self, host="127.0.0.1", port=3333, timeout=30.0, retries=400,
                  tentativi_handshake=5):
         """Il banco apre il socket nel costruttore di NDS ma accetta solo al primo confine
@@ -55,6 +58,10 @@ class Rsp:
         for _ in range(retries):
             try:
                 self.s = socket.create_connection((host, port), timeout=1.0)
+                peer = self.s.getpeername()[0]
+                if not ipaddress.ip_address(peer).is_loopback:
+                    self.s.close()
+                    raise RspError(f"peer RSP non loopback rifiutato: {peer}")
                 break
             except OSError as e:                      # il banco non ha ancora fatto bind
                 last = e
@@ -87,9 +94,14 @@ class Rsp:
 
     # --- livello di trasporto -------------------------------------------------
     def _recv(self, n=4096):
+        n = min(n, self.MAX_BUFFER - len(self.buf) + 1)
+        if n <= 0:
+            raise RspError("buffer RSP oltre 1 MiB")
         d = self.s.recv(n)
         if not d:
             raise RspError("connessione chiusa dal banco")
+        if len(self.buf) + len(d) > self.MAX_BUFFER:
+            raise RspError("buffer RSP oltre 1 MiB")
         self.buf += d
 
     def _expect_ack(self):
@@ -127,6 +139,8 @@ class Rsp:
     def send(self, cmd: str):
         self._tr(">", cmd)
         d = cmd.encode()
+        if len(d) > self.MAX_PACKET:
+            raise RspError("comando RSP oltre 512 KiB")
         self.s.sendall(b"$" + d + b"#" + f"{self._cksum(d):02x}".encode())
 
     def read_packet(self) -> str:
@@ -135,9 +149,14 @@ class Rsp:
             i = self.buf.find(b"$")
             if i >= 0:
                 j = self.buf.find(b"#", i)
+                if j >= 0 and j - i - 1 > self.MAX_PACKET:
+                    raise RspError("pacchetto RSP oltre 512 KiB")
                 if j >= 0 and len(self.buf) >= j + 3:
                     body = self.buf[i + 1:j]
-                    got = int(self.buf[j + 1:j + 3], 16)
+                    try:
+                        got = int(self.buf[j + 1:j + 3], 16)
+                    except ValueError as exc:
+                        raise RspError("checksum RSP non esadecimale") from exc
                     self.buf = self.buf[j + 3:]
                     if got != self._cksum(body):
                         self.s.sendall(b"-")

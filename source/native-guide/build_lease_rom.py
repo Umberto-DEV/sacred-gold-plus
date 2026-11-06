@@ -16,6 +16,7 @@ from rom_container import append_files
 from native_image import require, replace_arm9
 from thumb_object import load_text
 from ndspy.rom import NintendoDSRom
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 # Build outputs never land inside this checkout: game files and build
 # products stay in a private folder of your own.
@@ -67,12 +68,12 @@ def build(source,charmap,out):
     require(not out.resolve().is_relative_to(_CHECKOUT),'Private output must be outside this repository')
     lang,expected_r5=BASES[source_sha]
     original=NintendoDSRom(source_bytes)
-    abi(original.loadArm9().sections[0].data)
+    abi(ndspy_load_arm9_sicuro(original).sections[0].data)
     # Original builder and loader are imported byte-identically, never relaxed.
     r5=build_r5(source,charmap,out/'r5')
     require(r5['rom_sha256']==expected_r5,'Fresh r5 reconstruction hash differs')
     r5_bytes=(out/'r5'/r5['rom_file']).read_bytes()
-    main=NintendoDSRom(r5_bytes).loadArm9()
+    main=ndspy_load_arm9_sicuro(NintendoDSRom(r5_bytes))
     before=[bytes(s.data) for s in main.sections]
     obj=out/'lease.o'
     command=['clang','--target=armv5te-none-eabi','-mcpu=arm946e-s','-mthumb','-Oz',
@@ -88,7 +89,7 @@ def build(source,charmap,out):
     arm9=main.save(compress=True)
     result=replace_arm9(source_bytes,arm9)
     result,_=append_files(result,{'a/0/2/7':NintendoDSRom(r5_bytes).getFileByName('a/0/2/7')},reuse_existing=True)
-    check=NintendoDSRom(result);actual=check.loadArm9()
+    check=NintendoDSRom(result);actual=ndspy_load_arm9_sicuro(check)
     # ndspy.save rewrites only the autoload table addresses and compressed end.
     require(main.codeSettingsOffs==0xba0,'Unexpected code settings location')
     expected_static=bytearray(main.sections[0].data)

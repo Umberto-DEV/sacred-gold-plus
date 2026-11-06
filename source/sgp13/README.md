@@ -3,10 +3,12 @@
 This package builds a private successor from an exact EN or IT **1.2.5** image.
 The published `sgp12` builder and release files remain unchanged. This is a
 development build, not a published release; runtime acceptance is separate from
-successful compilation. The current candidate displays **V1.3** on the title
-and Plus settings; the DS library banner reads **Pokémon Sacred Gold Plus** and
-retains the original icon and palette. See the [current candidate and physical
-device report](../docs/device-1.3-validation.md).
+successful compilation. This guide describes the **V1.3** base and its physical
+device evidence. The later private **V1.3.1** candidate, its bug fixes and
+sampled save checks are identified in the
+[current validation report](../docs/ui-1.3.1-validation.md). The DS library
+banner reads **Pokémon Sacred Gold Plus** and retains the original icon and
+palette.
 
 ## Build
 
@@ -95,8 +97,7 @@ reported failure and choose a new report path rather than replacing the ROM.
   change and its limits. Normal difficulty retains the original parties.
 - Ariados learns Poison Fang at 23, Chimecho Psybeam at 22 and Kricketune Bug Bite
   at 14 in both difficulties. Existing moves remain available; the patch does
-  not edit owned Pokémon. The [gameplay plan](../docs/gameplay-balance-1.3-plan.md)
-  records the earlier measurements and selected shiny profiles. Il
+  not edit owned Pokémon. Il
   [censimento finale](../docs/shiny-species-1.3.md) contiene 493 decisioni:
   67 specie interessate, 50 con statistiche cambiate, 51 record personal,
   29 learnset con 32 aggiunte livello/mossa e due nuovi secondi slot abilità.
@@ -164,8 +165,7 @@ and native-commit case; without them that case skips. These controlled I/O
 tests do not replace emulator SAVE/cold-restart or physical-storage tests.
 
 The guide facts and research boundaries are recorded in
-[guide-content-sources.md](data/guide-content-sources.md). The implementation
-checklist is [expansion-1.3-plan.md](../docs/expansion-1.3-plan.md), and the exact
+[guide-content-sources.md](data/guide-content-sources.md). The exact
 initial candidate hashes, test counts and raw-save coverage are in
 [validation-1.3-dev.md](../docs/validation-1.3-dev.md). La
 [verifica funzionale Android del 29 ottobre](../docs/android-1.3-dev-validation.md)
@@ -186,10 +186,12 @@ new candidate only after validation, then remove superseded generated copies.
 Use one canonical location for each retained build, and keep reports and scripts
 instead of copies of entire build trees. Preserve original inputs, saves and
 unique regression fixtures. Check peak disk requirements before starting large
-builds or captures and leave at least 10 GiB free, as required by `AGENTS.md`.
+builds or captures and leave at least 10 GiB free.
 
-The [native event-flag correction](../features/event-flags/README.md) reserves
-variables `415E..416F` for the full `3F00..3FFF` bank and preserves Pal Pad bytes.
+The [native event-state correction](../features/event-flags/README.md) reserves
+variables `415E..416F` for the full `3F00..3FFF` bank and, in HF02, 24 unused
+bitmap bits for the finite Chatot-aliased story-gate family. It preserves Pal
+Pad and Chatot bytes, save-array sizes and event IDs.
 It composes with Training/Bag Continue, refuses foreign reservation ownership,
 and leaves save layouts and existing event IDs stable. La verifica Android EN/IT
 di prima relocation e cattura finale Mew conserva l’intera Rubrica Amici; il

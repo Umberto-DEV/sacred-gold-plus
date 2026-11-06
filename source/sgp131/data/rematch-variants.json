@@ -1,0 +1,1429 @@
+{
+ "schema": 1,
+ "scope": "Plus only (active_plus == 1); ordinary single trainer battles; trainer IDs 712 and 713; Normal untouched",
+ "selector": "variant = (seed ^ (seed >> 16) ^ trainer_id) & 1; 0 selects A, 1 selects B; seed is the pre-construction overworld LCRNG seed, never advanced",
+ "type_count": 774,
+ "party_bytes": 108,
+ "compartments": {},
+ "preimages": {
+  "a/0/5/5": "4de9e541894f6573c5b52e338de911a71fcf82c206ebf041bccb81e817c13299",
+  "a/0/5/6": "2cef901a8a5be153c62a40de47792776265bc91a90d6c52e565b1303d1865586",
+  "a/0/0/2": "91cd5b2bbd5d161f66aeec5b1b2122ee18946557fea1415c3ed433755960e3db",
+  "a/0/3/3": "811667c3f47eeb9d2c247010b97eed2942544b13230001e8600fefd4deadd27f",
+  "a/2/2/9": "dae7d12bc41dc176ac30700e53dd03ea42da4a20d61745d8b02b80ab2e62a3a2"
+ },
+ "item_archive": {
+  "path": "a/0/1/7",
+  "members": 516,
+  "item_max": 515
+ },
+ "trainers": [
+  {
+   "trainer_id": 712,
+   "name": {
+    "en": "Falkner",
+    "it": "Valerio"
+   },
+   "type": 3,
+   "count": 6,
+   "bytes": 108,
+   "header_sha256": "a048eb322331885cd1517a33530c8af4b36f403ac13ee56c15bed215f4aadc74",
+   "header_hex": "0342000617001700170000000700000000000000",
+   "party_sha256": "d1b78c8405656abb3a402da16f5f3404dfda73aecc85b9f9004f601cbbbd1451",
+   "baseline": [
+    {
+     "slot": 0,
+     "difficulty": 255,
+     "override": 0,
+     "level": 68,
+     "species": 22,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      355,
+      65,
+      366,
+      224
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 1,
+     "difficulty": 255,
+     "override": 0,
+     "level": 64,
+     "species": 279,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      255,
+      403,
+      366,
+      56
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 2,
+     "difficulty": 255,
+     "override": 0,
+     "level": 68,
+     "species": 277,
+     "form": 0,
+     "item": 273,
+     "moves": [
+      283,
+      332,
+      97,
+      403
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 3,
+     "difficulty": 255,
+     "override": 0,
+     "level": 66,
+     "species": 164,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      375,
+      355,
+      138,
+      417
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 4,
+     "difficulty": 255,
+     "override": 0,
+     "level": 70,
+     "species": 398,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      370,
+      97,
+      413,
+      38
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 5,
+     "difficulty": 255,
+     "override": 0,
+     "level": 72,
+     "species": 18,
+     "form": 0,
+     "item": 158,
+     "moves": [
+      366,
+      119,
+      403,
+      413
+     ],
+     "capsule": 11
+    }
+   ],
+   "ace": {
+    "slot": 5,
+    "species": 18,
+    "level": 72
+   },
+   "variants": {
+    "A": {
+     "parent": "baseline",
+     "sha256": "58a22dfee67bcddd54be6fea55cea860191104bb0d3c43486a42bdae45bbb249",
+     "changes": [
+      {
+       "slot": 1,
+       "moves": {
+        "before": [
+         255,
+         403,
+         366,
+         56
+        ],
+        "after": [
+         58,
+         403,
+         366,
+         56
+        ]
+       },
+       "why": "Ice Beam replaces Spit Up, which this set cannot stockpile for (TM13)"
+      },
+      {
+       "slot": 2,
+       "moves": {
+        "before": [
+         283,
+         332,
+         97,
+         403
+        ],
+        "after": [
+         283,
+         332,
+         97,
+         263
+        ]
+       },
+       "why": "Facade replaces the special Air Slash: the retained Flame Orb now powers a physical attack"
+      },
+      {
+       "slot": 3,
+       "moves": {
+        "before": [
+         375,
+         355,
+         138,
+         417
+        ],
+        "after": [
+         94,
+         355,
+         403,
+         417
+        ]
+       },
+       "why": "Psychic and Air Slash give the retained Nasty Plot two reliable special attacks"
+      },
+      {
+       "slot": 5,
+       "moves": {
+        "before": [
+         366,
+         119,
+         403,
+         413
+        ],
+        "after": [
+         366,
+         355,
+         403,
+         413
+        ]
+       },
+       "why": "Roost replaces Mirror Move, which copies nothing against a lone foe"
+      }
+     ]
+    },
+    "B": {
+     "parent": "A",
+     "sha256": "791b5c35431c9e16d565cf2702f4a20042e33b144f02b008768cb833ea25e1ae",
+     "changes": [
+      {
+       "slot": 0,
+       "species": {
+        "before": 22,
+        "after": 169
+       },
+       "moves": {
+        "before": [
+         355,
+         65,
+         366,
+         224
+        ],
+        "after": [
+         355,
+         413,
+         369,
+         440
+        ]
+       },
+       "why": "Crobat swaps Fearow: Roost, Brave Bird, U-turn and Cross Poison give a pivoting Poison/Flying lead"
+      },
+      {
+       "slot": 4,
+       "moves": {
+        "before": [
+         370,
+         97,
+         413,
+         38
+        ],
+        "after": [
+         370,
+         369,
+         413,
+         38
+        ]
+       },
+       "why": "U-turn replaces Agility: faster pivoting instead of a second speed boost"
+      }
+     ]
+    }
+   },
+   "legality": [
+    {
+     "variant": "A",
+     "slot": 1,
+     "species": 279,
+     "move": 58,
+     "level": 64,
+     "sources": [
+      "TM13"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 2,
+     "species": 277,
+     "move": 263,
+     "level": 68,
+     "sources": [
+      "TM42"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 3,
+     "species": 164,
+     "move": 94,
+     "level": 66,
+     "sources": [
+      "TM29"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 3,
+     "species": 164,
+     "move": 403,
+     "level": 66,
+     "sources": [
+      "lvl32"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 5,
+     "species": 18,
+     "move": 355,
+     "level": 72,
+     "sources": [
+      "lvl44",
+      "TM51"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 0,
+     "species": 169,
+     "move": 355,
+     "level": 68,
+     "sources": [
+      "TM51"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 0,
+     "species": 169,
+     "move": 413,
+     "level": 68,
+     "sources": [
+      "lvl63"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 0,
+     "species": 169,
+     "move": 369,
+     "level": 68,
+     "sources": [
+      "TM89"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 0,
+     "species": 169,
+     "move": 440,
+     "level": 68,
+     "sources": [
+      "lvl1"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 4,
+     "species": 398,
+     "move": 369,
+     "level": 70,
+     "sources": [
+      "TM89"
+     ]
+    }
+   ]
+  },
+  {
+   "trainer_id": 713,
+   "name": {
+    "en": "Bugsy",
+    "it": "Raffaello"
+   },
+   "type": 3,
+   "count": 6,
+   "bytes": 108,
+   "header_sha256": "35ea7d484b0688ff6857e786ee665a28ca836bf482f9dfc1fc436bb4dec6b734",
+   "header_hex": "0343000617001700170000000700000000000000",
+   "party_sha256": "1f9b028eeafcd7ae5d1bb6a30838a0449a54d2df990b8d4c2a5aba4961ae4a95",
+   "baseline": [
+    {
+     "slot": 0,
+     "difficulty": 255,
+     "override": 32,
+     "level": 70,
+     "species": 469,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      103,
+      369,
+      403,
+      405
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 1,
+     "difficulty": 255,
+     "override": 0,
+     "level": 72,
+     "species": 212,
+     "form": 0,
+     "item": 158,
+     "moves": [
+      442,
+      14,
+      364,
+      400
+     ],
+     "capsule": 12
+    },
+    {
+     "slot": 2,
+     "difficulty": 255,
+     "override": 0,
+     "level": 68,
+     "species": 214,
+     "form": 0,
+     "item": 285,
+     "moves": [
+      179,
+      364,
+      224,
+      32
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 3,
+     "difficulty": 255,
+     "override": 0,
+     "level": 70,
+     "species": 284,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      403,
+      18,
+      405,
+      56
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 4,
+     "difficulty": 255,
+     "override": 0,
+     "level": 68,
+     "species": 416,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      92,
+      455,
+      194,
+      403
+     ],
+     "capsule": 0
+    },
+    {
+     "slot": 5,
+     "difficulty": 255,
+     "override": 0,
+     "level": 69,
+     "species": 127,
+     "form": 0,
+     "item": 0,
+     "moves": [
+      12,
+      276,
+      224,
+      370
+     ],
+     "capsule": 0
+    }
+   ],
+   "ace": {
+    "slot": 1,
+    "species": 212,
+    "level": 72
+   },
+   "variants": {
+    "A": {
+     "parent": "baseline",
+     "sha256": "416f5ae66ed602374335ec5666d2fda61261bb0e5530fa2011891c7b1f5db502",
+     "changes": [
+      {
+       "slot": 0,
+       "moves": {
+        "before": [
+         103,
+         369,
+         403,
+         405
+        ],
+        "after": [
+         182,
+         369,
+         403,
+         405
+        ]
+       },
+       "why": "Protect replaces Screech on the U-turn lead"
+      },
+      {
+       "slot": 1,
+       "moves": {
+        "before": [
+         442,
+         14,
+         364,
+         400
+        ],
+        "after": [
+         442,
+         14,
+         450,
+         400
+        ]
+       },
+       "why": "Bug Bite replaces Feint; Scizor stays slot 1 as the ace"
+      },
+      {
+       "slot": 2,
+       "item": {
+        "before": 285,
+        "after": 0
+       },
+       "moves": {
+        "before": [
+         179,
+         364,
+         224,
+         32
+        ],
+        "after": [
+         179,
+         157,
+         224,
+         370
+        ]
+       },
+       "why": "Rock Slide and Close Combat replace Feint and Horn Drill; no Damp Rock"
+      },
+      {
+       "slot": 4,
+       "moves": {
+        "before": [
+         92,
+         455,
+         194,
+         403
+        ],
+        "after": [
+         92,
+         455,
+         456,
+         403
+        ]
+       },
+       "why": "Heal Order replaces Destiny Bond"
+      },
+      {
+       "slot": 5,
+       "moves": {
+        "before": [
+         12,
+         276,
+         224,
+         370
+        ],
+        "after": [
+         404,
+         276,
+         224,
+         370
+        ]
+       },
+       "why": "X-Scissor replaces Guillotine"
+      }
+     ]
+    },
+    "B": {
+     "parent": "A",
+     "sha256": "9140f0dec5672a16f20ddebe8a05246bf59451b969ea8eef4bd1286e04e59d56",
+     "changes": [
+      {
+       "slot": 0,
+       "moves": {
+        "before": [
+         182,
+         369,
+         403,
+         405
+        ],
+        "after": [
+         94,
+         369,
+         403,
+         405
+        ]
+       },
+       "why": "Psychic replaces Protect for coverage"
+      },
+      {
+       "slot": 3,
+       "species": {
+        "before": 284,
+        "after": 205
+       },
+       "moves": {
+        "before": [
+         403,
+         18,
+         405,
+         56
+        ],
+        "after": [
+         191,
+         229,
+         360,
+         89
+        ]
+       },
+       "why": "Forretress swaps Masquerain: Spikes, Rapid Spin, Gyro Ball and Earthquake (Bug/Steel hazard slot)"
+      }
+     ]
+    }
+   },
+   "legality": [
+    {
+     "variant": "A",
+     "slot": 0,
+     "species": 469,
+     "move": 182,
+     "level": 70,
+     "sources": [
+      "TM17"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 1,
+     "species": 212,
+     "move": 450,
+     "level": 72,
+     "sources": [
+      "lvl33"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 2,
+     "species": 214,
+     "move": 157,
+     "level": 68,
+     "sources": [
+      "TM80"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 2,
+     "species": 214,
+     "move": 370,
+     "level": 68,
+     "sources": [
+      "lvl37"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 4,
+     "species": 416,
+     "move": 456,
+     "level": 68,
+     "sources": [
+      "lvl27"
+     ]
+    },
+    {
+     "variant": "A",
+     "slot": 5,
+     "species": 127,
+     "move": 404,
+     "level": 69,
+     "sources": [
+      "lvl30",
+      "TM81"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 0,
+     "species": 469,
+     "move": 94,
+     "level": 70,
+     "sources": [
+      "TM29"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 3,
+     "species": 205,
+     "move": 191,
+     "level": 70,
+     "sources": [
+      "lvl28"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 3,
+     "species": 205,
+     "move": 229,
+     "level": 70,
+     "sources": [
+      "lvl17"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 3,
+     "species": 205,
+     "move": 360,
+     "level": 70,
+     "sources": [
+      "lvl50",
+      "TM74"
+     ]
+    },
+    {
+     "variant": "B",
+     "slot": 3,
+     "species": 205,
+     "move": 89,
+     "level": 70,
+     "sources": [
+      "TM26"
+     ]
+    }
+   ]
+  }
+ ],
+ "moves": {
+  "12": {
+   "effect": 38,
+   "category": 0,
+   "power": 1,
+   "type": 0,
+   "accuracy": 30,
+   "pp": 5,
+   "sha256": "47b1f6a5a65000d0a426e7b6c23edc10a57f969b84cac36e8886b9c4e95163dc",
+   "en": "Guillotine",
+   "it": "Ghigliottina"
+  },
+  "14": {
+   "effect": 50,
+   "category": 2,
+   "power": 0,
+   "type": 0,
+   "accuracy": 0,
+   "pp": 30,
+   "sha256": "0e3a49ef2a67e55186196259a359d07c809044e785cb93144a2138b264353d2e",
+   "en": "Swords Dance",
+   "it": "Danzaspada"
+  },
+  "18": {
+   "effect": 28,
+   "category": 2,
+   "power": 0,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "fda13d791dbac1fc15da9f11d3d4b73a021c180d13a54d3f24577262d54bdab6",
+   "en": "Whirlwind",
+   "it": "Turbine"
+  },
+  "32": {
+   "effect": 38,
+   "category": 0,
+   "power": 1,
+   "type": 0,
+   "accuracy": 30,
+   "pp": 5,
+   "sha256": "47b1f6a5a65000d0a426e7b6c23edc10a57f969b84cac36e8886b9c4e95163dc",
+   "en": "Horn Drill",
+   "it": "Perforcorno"
+  },
+  "38": {
+   "effect": 198,
+   "category": 0,
+   "power": 120,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "5c04ed0075ce15336235e95e1f943e55d59a84516d8bb90825c56da4a7c1562a",
+   "en": "Double-Edge",
+   "it": "Sdoppiatore"
+  },
+  "56": {
+   "effect": 0,
+   "category": 1,
+   "power": 120,
+   "type": 11,
+   "accuracy": 80,
+   "pp": 5,
+   "sha256": "2aa074630ff822b1dbec55fb0dd78745862e1df93574b7928af7bd8222d28be8",
+   "en": "Hydro Pump",
+   "it": "Idropompa"
+  },
+  "58": {
+   "effect": 5,
+   "category": 1,
+   "power": 95,
+   "type": 15,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "e2dba7d2b1f203dfa717a96fd559a40ce2395b5d7b4ffe9e8da39ab425a9269c",
+   "en": "Ice Beam",
+   "it": "Geloraggio"
+  },
+  "65": {
+   "effect": 0,
+   "category": 0,
+   "power": 80,
+   "type": 2,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "bc9c47792f174f75ab641795bbef991902595b736675fe528d957999cfc75b21",
+   "en": "Drill Peck",
+   "it": "Perforbecco"
+  },
+  "89": {
+   "effect": 147,
+   "category": 0,
+   "power": 100,
+   "type": 4,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "421476e0cfd9af56650f89342f34c3abd8322bebc5b34c9425ce10bb9b7bceb6",
+   "en": "Earthquake",
+   "it": "Terremoto"
+  },
+  "92": {
+   "effect": 33,
+   "category": 2,
+   "power": 0,
+   "type": 3,
+   "accuracy": 90,
+   "pp": 10,
+   "sha256": "66b9786423b49a5fe9a6426a09d6c06e15b45070006ad51fe469b6d49f3c409f",
+   "en": "Toxic",
+   "it": "Tossina"
+  },
+  "94": {
+   "effect": 72,
+   "category": 1,
+   "power": 90,
+   "type": 14,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "f783a4e3f917a000cb0cf9f4d51bd994acdc86fa4c498e31e60c2c577a3dc888",
+   "en": "Psychic",
+   "it": "Psichico"
+  },
+  "97": {
+   "effect": 52,
+   "category": 2,
+   "power": 0,
+   "type": 14,
+   "accuracy": 0,
+   "pp": 30,
+   "sha256": "c2eb49c39d0051a885f19f7da78a39a16097ec50fa63efb19ec93d8df1d1f91c",
+   "en": "Agility",
+   "it": "Agilità"
+  },
+  "103": {
+   "effect": 59,
+   "category": 2,
+   "power": 0,
+   "type": 0,
+   "accuracy": 85,
+   "pp": 40,
+   "sha256": "e52fb5776eec826144f3d8f0cd636011b63b6bfb6a6238654cd21cd17eff08fa",
+   "en": "Screech",
+   "it": "Stridio"
+  },
+  "119": {
+   "effect": 9,
+   "category": 2,
+   "power": 0,
+   "type": 2,
+   "accuracy": 0,
+   "pp": 20,
+   "sha256": "ec781033b50a698e940415267cfdd43b765098c0741a731de390cc0f0204a0d7",
+   "en": "Mirror Move",
+   "it": "Speculmossa"
+  },
+  "138": {
+   "effect": 8,
+   "category": 1,
+   "power": 100,
+   "type": 14,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "506cc1b6faafcada644566497e902fba5b7d205c48076384e57c5ab4a20a66ee",
+   "en": "Dream Eater",
+   "it": "Mangiasogni"
+  },
+  "157": {
+   "effect": 31,
+   "category": 0,
+   "power": 75,
+   "type": 5,
+   "accuracy": 90,
+   "pp": 10,
+   "sha256": "0f0c27e2dccf93e3c0a8fb413e2e4c0641e8b7f71c5d5a2ead0bd831dd90c2de",
+   "en": "Rock Slide",
+   "it": "Frana"
+  },
+  "179": {
+   "effect": 99,
+   "category": 0,
+   "power": 1,
+   "type": 1,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "672ce49a1a4fa8f0f57b2dbe3d7ea3e38118e156584263aadf51c8865456d74b",
+   "en": "Reversal",
+   "it": "Contropiede"
+  },
+  "182": {
+   "effect": 111,
+   "category": 2,
+   "power": 0,
+   "type": 0,
+   "accuracy": 0,
+   "pp": 10,
+   "sha256": "b047b92c0e8f7862b0dff63843c953100e7aa1478e2f92015c82aea5f173ddd5",
+   "en": "Protect",
+   "it": "Protezione"
+  },
+  "191": {
+   "effect": 112,
+   "category": 2,
+   "power": 0,
+   "type": 4,
+   "accuracy": 0,
+   "pp": 20,
+   "sha256": "9f1b507446c59f3c0c4ea5cf1d41659533ef361b6a36420b488db5c0c3899654",
+   "en": "Spikes",
+   "it": "Punte"
+  },
+  "194": {
+   "effect": 98,
+   "category": 2,
+   "power": 0,
+   "type": 7,
+   "accuracy": 0,
+   "pp": 5,
+   "sha256": "e4eebf8fd9606984058c435e9c0c1724c9eeea83171e1c5c5edf8379a5a8c5f3",
+   "en": "Destiny Bond",
+   "it": "Destinobbl."
+  },
+  "224": {
+   "effect": 0,
+   "category": 0,
+   "power": 120,
+   "type": 6,
+   "accuracy": 85,
+   "pp": 10,
+   "sha256": "b5225922aeba2ccaf11f60eacbd022d9eea84e9bd8e4a1af77636429f4e017f3",
+   "en": "Megahorn",
+   "it": "Megacorno"
+  },
+  "229": {
+   "effect": 129,
+   "category": 0,
+   "power": 20,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 40,
+   "sha256": "057c286ac83b56a52017208fb14ffaa0ae89a1801acb72bbe7aa516dfb90cc37",
+   "en": "Rapid Spin",
+   "it": "Rapigiro"
+  },
+  "255": {
+   "effect": 161,
+   "category": 1,
+   "power": 1,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "e890922a4ddbf6fb48a5a2516568bfdf5c5de0a3aaecee7881dc3edba986032f",
+   "en": "Spit Up",
+   "it": "Sfoghenergia"
+  },
+  "263": {
+   "effect": 169,
+   "category": 0,
+   "power": 70,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "765a4e4be94be6ced6fcd386c80421f5b814960150e09b585f85d30f2566b8d7",
+   "en": "Facade",
+   "it": "Facciata"
+  },
+  "276": {
+   "effect": 182,
+   "category": 0,
+   "power": 120,
+   "type": 1,
+   "accuracy": 100,
+   "pp": 5,
+   "sha256": "ed9055b23c586ae9e77ba2c6a928aba87232932bb612955b67ade5030d96371d",
+   "en": "Superpower",
+   "it": "Troppoforte"
+  },
+  "283": {
+   "effect": 189,
+   "category": 0,
+   "power": 1,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 5,
+   "sha256": "8e604ee8639a36257b8875dd664ae2931c86853e0aec6c50a38d3e4255c5cac9",
+   "en": "Endeavor",
+   "it": "Rimonta"
+  },
+  "332": {
+   "effect": 17,
+   "category": 0,
+   "power": 60,
+   "type": 2,
+   "accuracy": 0,
+   "pp": 20,
+   "sha256": "a187cd75ff27bec01fc6d8d8eaa26a1c528d4197c3d960886947f9db3a0b0eb2",
+   "en": "Aerial Ace",
+   "it": "Aeroassalto"
+  },
+  "355": {
+   "effect": 214,
+   "category": 2,
+   "power": 0,
+   "type": 2,
+   "accuracy": 0,
+   "pp": 10,
+   "sha256": "b7bc4cceca512a055b0a1bcb74dd0c121a08c4a357fcba07a345698b103b6105",
+   "en": "Roost",
+   "it": "Trespolo"
+  },
+  "360": {
+   "effect": 219,
+   "category": 0,
+   "power": 1,
+   "type": 8,
+   "accuracy": 100,
+   "pp": 5,
+   "sha256": "3dac60d98af45beedbfbcc2aadbfccdf463d3ff6dbcc6688f1a115485ce0a564",
+   "en": "Gyro Ball",
+   "it": "Vortexpalla"
+  },
+  "364": {
+   "effect": 223,
+   "category": 0,
+   "power": 30,
+   "type": 0,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "71f24e5add8b6abacbe8a9f486b567aa9f036ab071e325e2dc8b80141b653c61",
+   "en": "Feint",
+   "it": "Fintoattacco"
+  },
+  "366": {
+   "effect": 225,
+   "category": 2,
+   "power": 0,
+   "type": 2,
+   "accuracy": 0,
+   "pp": 30,
+   "sha256": "10fd1309aab9330c6c9ec32f99eaa5b8d095ed9cc1620c7b37d2ab822939cec7",
+   "en": "Tailwind",
+   "it": "Ventoincoda"
+  },
+  "369": {
+   "effect": 228,
+   "category": 0,
+   "power": 70,
+   "type": 6,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "7b1c0c00f499fecd0ce5ade2a65456001a3d92b895629d59c05dc3e25dcf79de",
+   "en": "U-turn",
+   "it": "Retromarcia"
+  },
+  "370": {
+   "effect": 229,
+   "category": 0,
+   "power": 120,
+   "type": 1,
+   "accuracy": 100,
+   "pp": 5,
+   "sha256": "c3ed6ea78c7370fb5507be921e5ecd02d8cc083a22313f2b4572f6d7463b19ad",
+   "en": "Close Combat",
+   "it": "Zuffa"
+  },
+  "375": {
+   "effect": 234,
+   "category": 2,
+   "power": 0,
+   "type": 14,
+   "accuracy": 90,
+   "pp": 10,
+   "sha256": "f3b5d81391d5ec3ad0d14c63a2f73cb4b5044f5e7d477a778f1dcc6d9812a171",
+   "en": "Psycho Shift",
+   "it": "Psicotrasfer"
+  },
+  "400": {
+   "effect": 43,
+   "category": 0,
+   "power": 70,
+   "type": 17,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "5f861411dfed2cff7f8ac24153b0cfe2c4a22b61bff38c0b5bf1576a41c08fc1",
+   "en": "Night Slash",
+   "it": "Nottesferza"
+  },
+  "403": {
+   "effect": 31,
+   "category": 1,
+   "power": 75,
+   "type": 2,
+   "accuracy": 95,
+   "pp": 20,
+   "sha256": "fdb205785bac5dc657faf2134410a44e00a82216fad307cda4308006c8f6ffea",
+   "en": "Air Slash",
+   "it": "Eterelama"
+  },
+  "404": {
+   "effect": 0,
+   "category": 0,
+   "power": 80,
+   "type": 6,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "9875d594f85c855c76ce5d260591e73658ece974cdd75b186321f7d70a2a759d",
+   "en": "X-Scissor",
+   "it": "Forbice X"
+  },
+  "405": {
+   "effect": 72,
+   "category": 1,
+   "power": 90,
+   "type": 6,
+   "accuracy": 100,
+   "pp": 10,
+   "sha256": "d2a71e78294ce9921f97edcebe85db139f3e1343a45836cade53554c9a69fd82",
+   "en": "Bug Buzz",
+   "it": "Ronzio"
+  },
+  "413": {
+   "effect": 198,
+   "category": 0,
+   "power": 120,
+   "type": 2,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "d1415a4a43c890eeb3ea0f82e8cd6fea12b04965be1e19ecc41cd7b550a0349f",
+   "en": "Brave Bird",
+   "it": "Baldeali"
+  },
+  "417": {
+   "effect": 53,
+   "category": 2,
+   "power": 0,
+   "type": 17,
+   "accuracy": 0,
+   "pp": 20,
+   "sha256": "1a5260f86484184bc18a029e00646d672db5586a43f042997b9f9fecddf55fe5",
+   "en": "Nasty Plot",
+   "it": "Congiura"
+  },
+  "440": {
+   "effect": 209,
+   "category": 0,
+   "power": 70,
+   "type": 3,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "b39dc64c312f7b27fc9446b8c6ad2c1e3d18c05da1fa89368910538455d54e6f",
+   "en": "Cross Poison",
+   "it": "Velenocroce"
+  },
+  "442": {
+   "effect": 31,
+   "category": 0,
+   "power": 80,
+   "type": 8,
+   "accuracy": 100,
+   "pp": 15,
+   "sha256": "2ff1843b9e442d8b778030a807915994b9f211e3a576422ac509d0badc0d02a3",
+   "en": "Iron Head",
+   "it": "Metaltestata"
+  },
+  "450": {
+   "effect": 224,
+   "category": 0,
+   "power": 60,
+   "type": 6,
+   "accuracy": 100,
+   "pp": 20,
+   "sha256": "32bcc1e955595a7909791b4484917c6b197f69cba974f93f1275bbf89fe3b9b9",
+   "en": "Bug Bite",
+   "it": "Coleomorso"
+  },
+  "455": {
+   "effect": 206,
+   "category": 2,
+   "power": 0,
+   "type": 6,
+   "accuracy": 0,
+   "pp": 10,
+   "sha256": "2745d84cbe6f6ef2de3c7af9c2710d357ffe86e456ed118e8ca990b173618163",
+   "en": "Defend Order",
+   "it": "Comandoscudo"
+  },
+  "456": {
+   "effect": 32,
+   "category": 2,
+   "power": 0,
+   "type": 6,
+   "accuracy": 0,
+   "pp": 10,
+   "sha256": "8674c0790cfa63907a92d1940ae5835030dccb130a3ca42c0a4639d09ec8ac66",
+   "en": "Heal Order",
+   "it": "Comandocura"
+  }
+ },
+ "species": {
+  "18": {
+   "types": [
+    0,
+    2
+   ],
+   "abilities": [
+    51,
+    77
+   ],
+   "en": "Pidgeot",
+   "it": "PIDGEOT"
+  },
+  "22": {
+   "types": [
+    0,
+    2
+   ],
+   "abilities": [
+    51,
+    97
+   ],
+   "en": "Fearow",
+   "it": "FEAROW"
+  },
+  "127": {
+   "types": [
+    6,
+    6
+   ],
+   "abilities": [
+    52,
+    104
+   ],
+   "en": "Pinsir",
+   "it": "PINSIR"
+  },
+  "164": {
+   "types": [
+    0,
+    2
+   ],
+   "abilities": [
+    15,
+    110
+   ],
+   "en": "Noctowl",
+   "it": "NOCTOWL"
+  },
+  "169": {
+   "types": [
+    3,
+    2
+   ],
+   "abilities": [
+    39,
+    107
+   ],
+   "en": "Crobat",
+   "it": "CROBAT"
+  },
+  "205": {
+   "types": [
+    6,
+    8
+   ],
+   "abilities": [
+    5,
+    0
+   ],
+   "en": "Forretress",
+   "it": "FORRETRESS"
+  },
+  "212": {
+   "types": [
+    6,
+    8
+   ],
+   "abilities": [
+    68,
+    101
+   ],
+   "en": "Scizor",
+   "it": "SCIZOR"
+  },
+  "214": {
+   "types": [
+    6,
+    1
+   ],
+   "abilities": [
+    68,
+    62
+   ],
+   "en": "Heracross",
+   "it": "HERACROSS"
+  },
+  "277": {
+   "types": [
+    0,
+    2
+   ],
+   "abilities": [
+    62,
+    113
+   ],
+   "en": "Swellow",
+   "it": "SWELLOW"
+  },
+  "279": {
+   "types": [
+    11,
+    2
+   ],
+   "abilities": [
+    51,
+    44
+   ],
+   "en": "Pelipper",
+   "it": "PELIPPER"
+  },
+  "284": {
+   "types": [
+    6,
+    11
+   ],
+   "abilities": [
+    26,
+    26
+   ],
+   "en": "Masquerain",
+   "it": "MASQUERAIN"
+  },
+  "398": {
+   "types": [
+    0,
+    2
+   ],
+   "abilities": [
+    22,
+    120
+   ],
+   "en": "Staraptor",
+   "it": "STARAPTOR"
+  },
+  "416": {
+   "types": [
+    6,
+    2
+   ],
+   "abilities": [
+    46,
+    0
+   ],
+   "en": "Vespiquen",
+   "it": "VESPIQUEN"
+  },
+  "469": {
+   "types": [
+    6,
+    2
+   ],
+   "abilities": [
+    3,
+    110
+   ],
+   "en": "Yanmega",
+   "it": "YANMEGA"
+  }
+ },
+ "items": {
+  "158": {
+   "sha256": "5d2e2745c1ec42c9fda6fc6019b6c99adaf14e6af313a147b19088355ba90eb9",
+   "en": "Sitrus Berry",
+   "it": "Baccacedro"
+  },
+  "273": {
+   "sha256": "4c70073e327930447fd4cb8826802a22510ed19608d9178dda1c74f37cdec5ed",
+   "en": "Flame Orb",
+   "it": "Fiammosfera"
+  },
+  "285": {
+   "sha256": "1ca177a8786b9562ef1a1db9c3384e1de3785be77e077f6326faf435649a45d9",
+   "en": "Damp Rock",
+   "it": "Rocciaumida"
+  }
+ }
+}

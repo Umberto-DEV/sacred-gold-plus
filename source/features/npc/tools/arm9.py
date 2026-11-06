@@ -9,7 +9,10 @@ e mappa ogni indirizzo RAM sull'offset nel FILE .nds.
 Nessun byte di ROM viene mai stampato da questo modulo: e' una libreria.
 """
 import struct
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from sgp12.rom import valida_layout_arm9
 
 
 class Arm9:
@@ -19,21 +22,8 @@ class Arm9:
         self.off9 = struct.unpack_from('<I', self.raw, 0x20)[0]
         self.ram9 = struct.unpack_from('<I', self.raw, 0x28)[0]
         self.siz9 = struct.unpack_from('<I', self.raw, 0x2C)[0]
-        # parametri di modulo: 9 parole a 0xBA0 dentro l'ARM9 statico
-        f = struct.unpack_from('<9I', self.raw, self.off9 + 0xBA0)
-        self.tab0, self.tab1, self.dati0 = f[0], f[1], f[2]
-        self.sezioni = []
-        p = self.off9 + (self.tab0 - self.ram9)
-        fine = self.off9 + (self.tab1 - self.ram9)
-        while p < fine:
-            self.sezioni.append(struct.unpack_from('<3I', self.raw, p))  # ram, size, bss
-            p += 12
-        # segmenti (ram, offset_file, bytes)
-        self.segmenti = [(self.ram9, self.off9, self.dati0 - self.ram9)]
-        off = self.off9 + (self.dati0 - self.ram9)
-        for ram, size, _bss in self.sezioni:
-            self.segmenti.append((ram, off, size))
-            off += size
+        (self.tab0, self.tab1, self.dati0, self.sezioni,
+         self.segmenti) = valida_layout_arm9(self.raw, self.off9, self.ram9, self.siz9)
 
     # --- traduzione indirizzi -------------------------------------------------
     def off(self, ram, n=1):

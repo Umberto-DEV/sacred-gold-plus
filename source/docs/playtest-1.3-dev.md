@@ -8,8 +8,7 @@ tappa precedente restano quelli documentati sotto.
 The later [v8 interface integration](ui-1.3-dev-validation.md) records the UI
 follow-up and its final candidate; the v5 evidence below remains unchanged.
 
-This is the follow-up to the [initial validation](validation-1.3-dev.md), carried
-out under the [playtest plan](playtest-1.3-dev-plan.md). The resulting private
+This is the follow-up to the [initial validation](validation-1.3-dev.md). The resulting private
 candidate is **v5**, still displayed as **1.3 DEV**. No release was published and
 no published ZIP, tag or 1.2.5 input was changed. Work remains on `main`.
 

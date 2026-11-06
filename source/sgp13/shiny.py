@@ -2,6 +2,7 @@
 from pathlib import Path
 import importlib.util
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 ROOT=Path(__file__).resolve().parents[1]
 BASES={'native':0x023C9100,'search':0x023CE900}
 LIMITS={'native':8192,'search':4096}
@@ -9,7 +10,7 @@ def compile_native(directory,part='native'):
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
     obj=directory/('shiny-'+part+'.o')
     flags=['--target=armv5te-none-eabi','-mcpu=arm946e-s','-mthumb','-Oz','-std=c11','-ffreestanding','-fno-builtin','-fno-stack-protector','-fno-jump-tables','-fno-unwind-tables','-fno-asynchronous-unwind-tables','-Wall','-Wextra','-Werror']
-    subprocess.run(['clang',*flags,'-c',str(ROOT/'features/shiny'/f'{part}.c'),'-o',str(obj)],check=True,capture_output=True)
+    run_compiler([*flags,'-c',str(ROOT/'features/shiny'/f'{part}.c'),'-o',str(obj)],check=True,capture_output=True)
     spec=importlib.util.spec_from_file_location('shiny_loader',ROOT/'features/options/tools/carica_text.py')
     loader=importlib.util.module_from_spec(spec);spec.loader.exec_module(loader)
     blob,symbols=loader.load_text(obj.read_bytes(),BASES[part])
@@ -110,7 +111,8 @@ def install(data,language,training_symbols,legacy_ui_symbols,work_dir):
             offset=address-record['ram'];image[offset:offset+len(payload)]=payload
         compressed=blz_comprimi_ottimo(bytes(image))
         if isinstance(compressed,tuple):compressed=compressed[0]
-        if len(compressed)>len(image)+16 or len(compressed)>0xFFFFFF or blz_decomprimi(compressed)!=bytes(image):
+        if (len(compressed)>len(image)+16 or len(compressed)>0xFFFFFF
+                or blz_decomprimi(compressed, len(image))!=bytes(image)):
             raise ValueError('shiny overlay compressed size/roundtrip')
         result=bytearray(append_file(result,record['file_id'],compressed))
         struct.pack_into('<I',result,record['offset_voce']+28,(record['parola_comp']&0xFF000000)|len(compressed))
@@ -148,7 +150,8 @@ def readback(before,after,language,training_symbols,legacy_ui_symbols,work_dir):
             if record[k]!=updated[k]:raise ValueError('shiny overlay load identity '+kind)
         start,end=struct.unpack_from('<II',after,fat+record['file_id']*8)
         if start<len(before) or start%512 or not start<end<=len(after):raise ValueError('shiny overlay append bounds')
-        if ndspy.codeCompression.decompress(after[start:end])!=bytes(image):raise ValueError('shiny independent overlay decode')
+        from sgp12.blz import ndspy_decomprimi_sicuro
+        if ndspy_decomprimi_sicuro(after[start:end], len(image))!=bytes(image):raise ValueError('shiny independent overlay decode')
         if updated['parola_comp']&0xFFFFFF!=end-start:raise ValueError('shiny compressed metadata')
         for address,name in HOOKS[kind].items():
             offset=address-record['ram']

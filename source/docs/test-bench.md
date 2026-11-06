@@ -33,7 +33,12 @@ change guest registers, memory or cycle accounting.
 
 The required core is official melonDS commit
 `906e9ebb27da8c6a715cd7abab4abfe8a8d29427`. Use a separate checkout: `patch_core.py` verifies
-that exact commit before touching anything and is idempotent on an already-instrumented tree.
+the complete build-consumed filesystem tree against the pinned Git objects before touching
+anything and is idempotent only on the exact two-file observation patch. It rejects other
+modified, untracked and ignored entries, shared hardlinks and unexpected types/modes without
+trusting index flags, status output or replacement refs. CMake repeats that verifier immediately
+before `add_subdirectory` evaluates the core and whenever the `core` target is built. Index-only
+staged content is outside this assertion because CMake never consumes it.
 
 Requirements: Git, Python 3.9 or newer, CMake, Ninja and a C++17 compiler. No Qt, no SDL, no
 proprietary BIOS. The build has been exercised on macOS ARM64 with AppleClang; Linux has not
@@ -51,9 +56,21 @@ cmake -S . -B work/build -G Ninja \
 cmake --build work/build --target hg_runtime --parallel 8
 ```
 
-`MELONDS_SOURCE` accepts any pinned checkout. Set `CMAKE_MAKE_PROGRAM` if Ninja is not on
+`MELONDS_SOURCE` accepts an exact pinned checkout. Set `CMAKE_MAKE_PROGRAM` if Ninja is not on
 `PATH`. Choose an empty output directory when rerunning; the build writes everything under
-`work/`.
+`work/`, outside the checkout. The configure/build rechecks close pre-existing dirty-input
+bypasses; a concurrent same-account writer after the last check remains outside this cooperative
+local-tool boundary.
+
+The 1.3.1 successor workbench uses the same cooperative boundary. Its root,
+lock, transactions, journal, consumer leases and long-lived private scratch
+anchor are bound to recorded inodes. During UI composition it changes cwd with
+`fchdir` to the already pinned scratch descriptor, so compiler and verifier
+relative paths remain on that inode even if its directory entry is renamed;
+cleanup is descriptor-relative. A concurrent process under the same account
+can still force a refusal or make the next session reject the changed anchor.
+It is not an authorized concurrent writer and no availability guarantee is
+claimed against it.
 
 There is also an optional ROM-free instruction probe (`hg_wait_loop_test`, off by default in a
 standalone build) that runs individual ARM words through the core's own interpreter tables. It
@@ -119,15 +136,16 @@ Everything lands in `--out`:
 
 | file | content |
 |---|---|
-| `frames.csv` | one row per guest frame: frame number, `arm9_pc`/`arm7_pc` end-of-frame samples, the game's vblank counter, observation counters, and any address the script asked to watch |
+| `frames.csv` | one row per guest frame: frame number, `RunFrame`-only host nanoseconds, IPKE scene identity, `arm9_pc`/`arm7_pc` end-of-frame samples, the game's vblank counter, observation counters, and any address the script asked to watch |
 | `commands.log` | the commands actually executed, in order, with their frame |
 | `stdout.log` | everything the harness printed, including the answers to `read` and `status` |
-| `session.txt` | the run's configuration: core, settings, ROM path, script, frame budget |
+| `session.txt` | the run's configuration: core, settings, ROM path, RTC, timing/scene observer and initial trace state; later trace changes are frame-stamped in `commands.log` |
 | `latest.ppm` plus the captures the script named | frame captures |
 
-Two cautions that have already cost time here: `arm9_pc` is an end-of-frame *sample*, not a
-visit count; and harness counters accumulate across state restores, so a run that reloads a
-state cannot be compared to one that does not.
+Three cautions that have already cost time here: `arm9_pc` is an end-of-frame *sample*, not a
+visit count; `host_runframe_ns` excludes CSV and audio work and is not display FPS; and harness
+counters accumulate across state restores, so a run that reloads a state cannot be compared to
+one that does not.
 
 ---
 

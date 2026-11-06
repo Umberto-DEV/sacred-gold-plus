@@ -78,12 +78,12 @@ class VersionTitleTests(unittest.TestCase):
     def test_whole_image_preserves_save_code_header_canary_and_every_other_byte(self):
         # Synthetic NDS layout with one autoload section containing our own text.
         header = bytearray(0x400)
-        arm = bytearray(0xc10 + 1024)
+        arm = bytearray(0xc10 + 1024 + 12)
         struct.pack_into('<4I', header, 0x20, 0x400, 0x02000000, 0x02000000, len(arm))
-        struct.pack_into('<3I', arm, 0xba0, 0x02000c00, 0x02000c0c, 0x02000c10)
-        struct.pack_into('<3I', arm, 0xc00, 0x023da800, 1024, 0)
+        struct.pack_into('<3I', arm, 0xba0, 0x02001010, 0x0200101c, 0x02000c10)
+        struct.pack_into('<3I', arm, 0x1010, 0x023da800, 1024, 0)
         arm[0xc10:0xc10+1008] = bank('EN')
-        arm[-16:] = b'untouched-canary'
+        arm[0x1000:0x1010] = b'untouched-canary'
         from ndspy import fnt, narc
         from .test_titolo_versione import fixture
         gfx, tilemap = fixture()

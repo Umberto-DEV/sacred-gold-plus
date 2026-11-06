@@ -36,12 +36,19 @@ IC_INVAL = 0x020D28D0
 
 
 def crc16_ccitt(data):
-    """MATH_CalcCRC16CCITT della NitroSDK: tabella riflessa, seme 0xFFFF."""
+    """GF_CalcCRC16/MATH CRC-CCITT used by HGSS, seed ``0xFFFF``.
+
+    The exact ARM kernel at ``0x020E38E0`` shifts the accumulator left, indexes
+    its table with ``byte ^ (crc >> 8)`` and therefore implements the normal
+    ``0x1021`` form.  The previous reflected ``0x8408`` stub was the cartridge
+    header CRC, not this save routine; it made synthetic records disagree with
+    raw saves produced by the game.
+    """
     crc = 0xFFFF
     for byte in data:
-        crc ^= byte
+        crc ^= byte << 8
         for _ in range(8):
-            crc = (crc >> 1) ^ 0x8408 if crc & 1 else crc >> 1
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF if crc & 0x8000 else (crc << 1) & 0xFFFF
     return crc & 0xFFFF
 
 
@@ -55,6 +62,7 @@ class Banco:
         self.settori = {}          # offset -> 32 byte
         self.lettura_ok = True
         self.scrittura_ok = True
+        self.scrittura_esiti = [] # esiti WriteBackup per chiamata: 1 riuscita, 0 fallita
         self.chiamate = []         # traccia degli stub chiamati
         self.orig_load_ret = 0
         self.orig_save_ret = 2
@@ -84,9 +92,14 @@ class Banco:
                 uc.mem_write(r1, self.settori.get(r0, b"\xFF" * r2)[:r2])
             uc.reg_write(UC_ARM_REG_R0, 0 if self.lettura_ok else 1)
         elif a == WRITE_BACKUP:
-            if self.scrittura_ok:
+            riuscita = (self.scrittura_esiti.pop(0) if self.scrittura_esiti
+                        else int(self.scrittura_ok))
+            if riuscita:
                 self.settori[r0] = bytes(uc.mem_read(r1, r2))
-            uc.reg_write(UC_ARM_REG_R0, 0 if self.scrittura_ok else 1)
+            # NitroSDK WriteBackup: 1 = riuscita, 0 = fallita. Il vecchio banco
+            # restituiva il contrario; il blob ignorava il valore e quindi i
+            # test verdi non potevano osservare la perdita silenziosa.
+            uc.reg_write(UC_ARM_REG_R0, riuscita)
         elif a == ORIG_LOAD:
             uc.reg_write(UC_ARM_REG_R0, self.orig_load_ret)
         else:

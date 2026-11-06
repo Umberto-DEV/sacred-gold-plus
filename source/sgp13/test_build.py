@@ -44,7 +44,10 @@ class WorkspaceCleanupTests(unittest.TestCase):
             sentinel = work / 'older-evidence.txt'
             sentinel.write_text('keep')
             output = root / 'result.nds'
-            with patch('sgp13.space.identify', return_value='EN'), \
+            with patch('sgp13.admission.read_contract',
+                       return_value=(base.read_bytes(), 'EN', 'a' * 64)), \
+                 patch('sgp13.admission.read_bounded',
+                       return_value=(charmap.read_bytes(), 'b' * 64)), \
                  patch('sgp13.mew.load_commands', return_value=({}, 'unused')), \
                  patch('sgp13.space.expand_rom', return_value=b'expanded stage'), \
                  patch('sgp13.training.install', side_effect=ValueError('installer failed')):

@@ -1,0 +1,540 @@
+{
+ "en_it_identical": true,
+ "hash": "sha256",
+ "languages": {
+  "EN": {
+   "natives": {
+    "AddTextPrinterParameterized": {
+     "address": 33685672,
+     "prefix_bytes": 8,
+     "prefix_hex": "00b587b000920190"
+    },
+    "FieldSystem_CreateTask": {
+     "address": 33883376,
+     "prefix_bytes": 6,
+     "prefix_hex": "70b5051c2869"
+    },
+    "FieldSystem_LaunchApplication": {
+     "address": 33808308,
+     "prefix_bytes": 8,
+     "prefix_hex": "70b5051c28680c1c"
+    },
+    "FieldSystem_LoadFieldOverlay": {
+     "address": 33883584,
+     "prefix_bytes": 4,
+     "prefix_hex": "004b1847"
+    },
+    "Heap_Alloc": {
+     "address": 33663628,
+     "prefix_bytes": 8,
+     "prefix_hex": "38b5051c0d480024"
+    },
+    "Heap_Free": {
+     "address": 33663756,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b5061c301f0068"
+    },
+    "PCBox_LaunchApp": {
+     "address": 33810536,
+     "prefix_bytes": 16,
+     "prefix_hex": "014b0a1c01491847b5df030214a40f02"
+    },
+    "PartyMenu_CreateArgs": {
+     "address": 33809660,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b50d1c4421161c"
+    },
+    "PartyMenu_LaunchApp_Unk1": {
+     "address": 33809744,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b5051c171c0022"
+    },
+    "PartyMenu_PrintMessageOnWindow32": {
+     "address": 34069188,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b50c1c81218900"
+    },
+    "PartyMenu_PrintMessageOnWindowEx": {
+     "address": 34069092,
+     "prefix_bytes": 8,
+     "prefix_hex": "78b583b0051c0c1c"
+    },
+    "PartyMenu_Subtask_MainNormal": {
+     "address": 34050824,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01f054fd"
+    },
+    "Party_GetCount": {
+     "address": 34031168,
+     "prefix_bytes": 4,
+     "prefix_hex": "40687047"
+    },
+    "PlaySE": {
+     "address": 33579084,
+     "prefix_bytes": 8,
+     "prefix_hex": "18b581b0041cfff7"
+    },
+    "PlayerAvatar_GetState": {
+     "address": 33933056,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01d1c8f7"
+    },
+    "Save_VarsFlags_CheckHaveFollower": {
+     "address": 33973828,
+     "prefix_bytes": 8,
+     "prefix_hex": "014b02491847c046"
+    },
+    "Save_VarsFlags_Get": {
+     "address": 33883088,
+     "prefix_bytes": 6,
+     "prefix_hex": "014b04211847"
+    },
+    "ScheduleWindowCopyToVram": {
+     "address": 33674696,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01d107f0"
+    },
+    "TaskManager_GetEnvironment": {
+     "address": 33883728,
+     "prefix_bytes": 4,
+     "prefix_hex": "c0687047"
+    },
+    "TaskManager_GetFieldSystem": {
+     "address": 33883724,
+     "prefix_bytes": 4,
+     "prefix_hex": "80697047"
+    },
+    "Task_StartMenu_HandleReturn_Pokemon": {
+     "address": 33802908,
+     "prefix_bytes": 12,
+     "prefix_hex": "f0b583b0071c13f0d3fd051c"
+    },
+    "sub_02093070": {
+     "address": 34156656,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041ce0689bf7"
+    }
+   },
+   "spans": {
+    "callback_entry12": {
+     "address": 33802908,
+     "bytes": 12,
+     "hex": "f0b583b0071c13f0d3fd051c",
+     "sha256": "162d5b3ad82b579fd4525f340feecaef8e54d889284f86575149b951c719f2be"
+    },
+    "callback_function": {
+     "address": 33802908,
+     "bytes": 1136,
+     "hex": null,
+     "sha256": "1f4f4d1e3f7a10559a4869684729905dc3e8d46b7f3c62f4efd90e66acb65ce3"
+    },
+    "callback_literal": {
+     "address": 33802904,
+     "bytes": 4,
+     "hex": "9dca0302",
+     "sha256": "44da168f7d40b434da817ca553db80444e6c401584a8d45f19db40aa6106111f"
+    },
+    "launch_bl": {
+     "address": 33809778,
+     "bytes": 4,
+     "hex": "fff71ffd",
+     "sha256": "7317dd20eeb8d4bb02a1e2845eb4fa54be558026127e66129b370728cc71c2e4"
+    },
+    "launch_function": {
+     "address": 33809744,
+     "bytes": 48,
+     "hex": null,
+     "sha256": "cb6f08c08475fb4b8e2ce634dba78ab1749d0be298d703b33eb91384a1e14e56"
+    },
+    "mainnormal_head": {
+     "address": 34050824,
+     "bytes": 16,
+     "hex": "10b5041c01f054fd042850d800187844",
+     "sha256": "e7a27a03182c0a37b0b6fff31b07ff78091ce74918eb26a490ebab6050a3a948"
+    },
+    "party_args_literal": {
+     "address": 34051004,
+     "bytes": 4,
+     "hex": "54060000",
+     "sha256": "304ee8e84a2e62d3c8a5a8d9f8b3a9295ba69441a4573aacba9842e634beb4ba"
+    },
+    "party_index_literal": {
+     "address": 34050584,
+     "bytes": 4,
+     "hex": "650c0000",
+     "sha256": "f2b756e8ac292e97168b2ac2e291bc7142627f66fe7acd78dcc1bd29dd411058"
+    },
+    "party_template": {
+     "address": 34608540,
+     "bytes": 16,
+     "hex": "318e070235900702e1950702ffffffff",
+     "sha256": "6f152b7a27101c37c37b9a47de969d2a3e2ebdf1ce730fec6a9c4dd0ee88ac44"
+    },
+    "pc_launcher": {
+     "address": 33810536,
+     "bytes": 16,
+     "hex": "014b0a1c01491847b5df030214a40f02",
+     "sha256": "8232c4e898ed350f02db91dc59cce96414c7aabd424f601a4ae4340e2ff4cb19"
+    },
+    "pc_script_callback": {
+     "address": 33827232,
+     "bytes": 52,
+     "hex": null,
+     "sha256": "cc3059bb925e038360984da041a485762d2e660eb087a9f8403eabd1d35c5795"
+    },
+    "pc_script_handler": {
+     "address": 33828612,
+     "bytes": 84,
+     "hex": null,
+     "sha256": "1db72ad9970c1972c2834066b131c14aabdd8f8138fe3bbd71a31c8bd6439b51"
+    },
+    "pc_template": {
+     "address": 34579476,
+     "bytes": 16,
+     "hex": "01591e026d591e0289591e020e000000",
+     "sha256": "1111f1e409620889edfd43fd1f4753b44398cf87f1a6a54141bf1bad8b266959"
+    },
+    "print32_bl": {
+     "address": 34069202,
+     "bytes": 4,
+     "hex": "fff7c7ff",
+     "sha256": "b4daddf98a443ed60a6808ad9a71bfc6cd412bee48afa93ac959fca6e6fa0b65"
+    },
+    "print32_function": {
+     "address": 34069188,
+     "bytes": 20,
+     "hex": null,
+     "sha256": "932c22c3de990276d69119b92c1ea6b26fec8a9a0e7702dbc15450966a4c92fa"
+    },
+    "print_ex_head": {
+     "address": 34069092,
+     "bytes": 16,
+     "hex": "78b583b0051c0c1c161c012b05d1201c",
+     "sha256": "937b589947a46cde946e4b5550c370ac366955b44dd00f2fe370970d1e366636"
+    },
+    "start_menu_init_flags": {
+     "address": 33799238,
+     "bytes": 8,
+     "hex": "d321890060502de0",
+     "sha256": "c9f11a8f03067bcfd93b28b97bfeaf149b8330d3320ff9d05bb363b83500880b"
+    },
+    "state1_bl": {
+     "address": 34050204,
+     "bytes": 4,
+     "hex": "00f034f9",
+     "sha256": "16a73ca0ea82b5eff69a66099424e70edac82d5b3d94bc4141911d51beb4866b"
+    },
+    "task_start_menu_pokemon": {
+     "address": 33802856,
+     "bytes": 52,
+     "hex": null,
+     "sha256": "15d72b1262b35273c7b8e2b7f115e20a67a844dc2d9dbece227717455147e698"
+    },
+    "viewer_key_literal": {
+     "address": 33523704,
+     "bytes": 4,
+     "hex": "48111d02",
+     "sha256": "31291e09767b96d1f31d32e4632bd9e04be3a5472269a6ccb951017a7e9e106d"
+    }
+   }
+  },
+  "IT": {
+   "natives": {
+    "AddTextPrinterParameterized": {
+     "address": 33685672,
+     "prefix_bytes": 8,
+     "prefix_hex": "00b587b000920190"
+    },
+    "FieldSystem_CreateTask": {
+     "address": 33883376,
+     "prefix_bytes": 6,
+     "prefix_hex": "70b5051c2869"
+    },
+    "FieldSystem_LaunchApplication": {
+     "address": 33808308,
+     "prefix_bytes": 8,
+     "prefix_hex": "70b5051c28680c1c"
+    },
+    "FieldSystem_LoadFieldOverlay": {
+     "address": 33883584,
+     "prefix_bytes": 4,
+     "prefix_hex": "004b1847"
+    },
+    "Heap_Alloc": {
+     "address": 33663628,
+     "prefix_bytes": 8,
+     "prefix_hex": "38b5051c0d480024"
+    },
+    "Heap_Free": {
+     "address": 33663756,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b5061c301f0068"
+    },
+    "PCBox_LaunchApp": {
+     "address": 33810536,
+     "prefix_bytes": 16,
+     "prefix_hex": "014b0a1c01491847b5df030214a40f02"
+    },
+    "PartyMenu_CreateArgs": {
+     "address": 33809660,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b50d1c4421161c"
+    },
+    "PartyMenu_LaunchApp_Unk1": {
+     "address": 33809744,
+     "prefix_bytes": 8,
+     "prefix_hex": "f8b5051c171c0022"
+    },
+    "PartyMenu_PrintMessageOnWindow32": {
+     "address": 34069188,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b50c1c81218900"
+    },
+    "PartyMenu_PrintMessageOnWindowEx": {
+     "address": 34069092,
+     "prefix_bytes": 8,
+     "prefix_hex": "78b583b0051c0c1c"
+    },
+    "PartyMenu_Subtask_MainNormal": {
+     "address": 34050824,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01f054fd"
+    },
+    "Party_GetCount": {
+     "address": 34031168,
+     "prefix_bytes": 4,
+     "prefix_hex": "40687047"
+    },
+    "PlaySE": {
+     "address": 33579084,
+     "prefix_bytes": 8,
+     "prefix_hex": "18b581b0041cfff7"
+    },
+    "PlayerAvatar_GetState": {
+     "address": 33933056,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01d1c8f7"
+    },
+    "Save_VarsFlags_CheckHaveFollower": {
+     "address": 33973828,
+     "prefix_bytes": 8,
+     "prefix_hex": "014b02491847c046"
+    },
+    "Save_VarsFlags_Get": {
+     "address": 33883088,
+     "prefix_bytes": 6,
+     "prefix_hex": "014b04211847"
+    },
+    "ScheduleWindowCopyToVram": {
+     "address": 33674696,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041c01d107f0"
+    },
+    "TaskManager_GetEnvironment": {
+     "address": 33883728,
+     "prefix_bytes": 4,
+     "prefix_hex": "c0687047"
+    },
+    "TaskManager_GetFieldSystem": {
+     "address": 33883724,
+     "prefix_bytes": 4,
+     "prefix_hex": "80697047"
+    },
+    "Task_StartMenu_HandleReturn_Pokemon": {
+     "address": 33802908,
+     "prefix_bytes": 12,
+     "prefix_hex": "f0b583b0071c13f0d3fd051c"
+    },
+    "sub_02093070": {
+     "address": 34156656,
+     "prefix_bytes": 8,
+     "prefix_hex": "10b5041ce0689bf7"
+    }
+   },
+   "spans": {
+    "callback_entry12": {
+     "address": 33802908,
+     "bytes": 12,
+     "hex": "f0b583b0071c13f0d3fd051c",
+     "sha256": "162d5b3ad82b579fd4525f340feecaef8e54d889284f86575149b951c719f2be"
+    },
+    "callback_function": {
+     "address": 33802908,
+     "bytes": 1136,
+     "hex": null,
+     "sha256": "1f4f4d1e3f7a10559a4869684729905dc3e8d46b7f3c62f4efd90e66acb65ce3"
+    },
+    "callback_literal": {
+     "address": 33802904,
+     "bytes": 4,
+     "hex": "9dca0302",
+     "sha256": "44da168f7d40b434da817ca553db80444e6c401584a8d45f19db40aa6106111f"
+    },
+    "launch_bl": {
+     "address": 33809778,
+     "bytes": 4,
+     "hex": "fff71ffd",
+     "sha256": "7317dd20eeb8d4bb02a1e2845eb4fa54be558026127e66129b370728cc71c2e4"
+    },
+    "launch_function": {
+     "address": 33809744,
+     "bytes": 48,
+     "hex": null,
+     "sha256": "cb6f08c08475fb4b8e2ce634dba78ab1749d0be298d703b33eb91384a1e14e56"
+    },
+    "mainnormal_head": {
+     "address": 34050824,
+     "bytes": 16,
+     "hex": "10b5041c01f054fd042850d800187844",
+     "sha256": "e7a27a03182c0a37b0b6fff31b07ff78091ce74918eb26a490ebab6050a3a948"
+    },
+    "party_args_literal": {
+     "address": 34051004,
+     "bytes": 4,
+     "hex": "54060000",
+     "sha256": "304ee8e84a2e62d3c8a5a8d9f8b3a9295ba69441a4573aacba9842e634beb4ba"
+    },
+    "party_index_literal": {
+     "address": 34050584,
+     "bytes": 4,
+     "hex": "650c0000",
+     "sha256": "f2b756e8ac292e97168b2ac2e291bc7142627f66fe7acd78dcc1bd29dd411058"
+    },
+    "party_template": {
+     "address": 34608540,
+     "bytes": 16,
+     "hex": "318e070235900702e1950702ffffffff",
+     "sha256": "6f152b7a27101c37c37b9a47de969d2a3e2ebdf1ce730fec6a9c4dd0ee88ac44"
+    },
+    "pc_launcher": {
+     "address": 33810536,
+     "bytes": 16,
+     "hex": "014b0a1c01491847b5df030214a40f02",
+     "sha256": "8232c4e898ed350f02db91dc59cce96414c7aabd424f601a4ae4340e2ff4cb19"
+    },
+    "pc_script_callback": {
+     "address": 33827232,
+     "bytes": 52,
+     "hex": null,
+     "sha256": "cc3059bb925e038360984da041a485762d2e660eb087a9f8403eabd1d35c5795"
+    },
+    "pc_script_handler": {
+     "address": 33828612,
+     "bytes": 84,
+     "hex": null,
+     "sha256": "1db72ad9970c1972c2834066b131c14aabdd8f8138fe3bbd71a31c8bd6439b51"
+    },
+    "pc_template": {
+     "address": 34579476,
+     "bytes": 16,
+     "hex": "01591e026d591e0289591e020e000000",
+     "sha256": "1111f1e409620889edfd43fd1f4753b44398cf87f1a6a54141bf1bad8b266959"
+    },
+    "print32_bl": {
+     "address": 34069202,
+     "bytes": 4,
+     "hex": "fff7c7ff",
+     "sha256": "b4daddf98a443ed60a6808ad9a71bfc6cd412bee48afa93ac959fca6e6fa0b65"
+    },
+    "print32_function": {
+     "address": 34069188,
+     "bytes": 20,
+     "hex": null,
+     "sha256": "932c22c3de990276d69119b92c1ea6b26fec8a9a0e7702dbc15450966a4c92fa"
+    },
+    "print_ex_head": {
+     "address": 34069092,
+     "bytes": 16,
+     "hex": "78b583b0051c0c1c161c012b05d1201c",
+     "sha256": "937b589947a46cde946e4b5550c370ac366955b44dd00f2fe370970d1e366636"
+    },
+    "start_menu_init_flags": {
+     "address": 33799238,
+     "bytes": 8,
+     "hex": "d321890060502de0",
+     "sha256": "c9f11a8f03067bcfd93b28b97bfeaf149b8330d3320ff9d05bb363b83500880b"
+    },
+    "state1_bl": {
+     "address": 34050204,
+     "bytes": 4,
+     "hex": "00f034f9",
+     "sha256": "16a73ca0ea82b5eff69a66099424e70edac82d5b3d94bc4141911d51beb4866b"
+    },
+    "task_start_menu_pokemon": {
+     "address": 33802856,
+     "bytes": 52,
+     "hex": null,
+     "sha256": "15d72b1262b35273c7b8e2b7f115e20a67a844dc2d9dbece227717455147e698"
+    },
+    "viewer_key_literal": {
+     "address": 33523704,
+     "bytes": 4,
+     "hex": "48111d02",
+     "sha256": "31291e09767b96d1f31d32e4632bd9e04be3a5472269a6ccb951017a7e9e106d"
+    }
+   }
+  }
+ },
+ "literals": {
+  "0x01FF87F8": 35459400,
+  "0x0203CA98": 33802909,
+  "0x0203E57C": 34608540,
+  "0x02079218": 3173,
+  "0x020793BC": 1620
+ },
+ "offsets": {
+  "FieldSystem.frontierFsys": 160,
+  "FieldSystem.linkBattleRuleset": 164,
+  "FieldSystem.mapLoadType": 112,
+  "FieldSystem.menuInputState": 268,
+  "FieldSystem.playerAvatar": 64,
+  "FieldSystem.saveData": 12,
+  "FieldSystem.taskman": 16,
+  "PCBoxArgs.size": 12,
+  "PartyMenu.args": 1620,
+  "PartyMenu.buttonAnim.active": 3228,
+  "PartyMenu.partyMonIndex": 3173,
+  "PartyMenu.windows32": 516,
+  "PartyMenuArgs.context": 36,
+  "PartyMenuArgs.fieldMoveCheckData": 24,
+  "PartyMenuArgs.fieldSystem": 28,
+  "PartyMenuArgs.menuInputStatePtr": 32,
+  "PartyMenuArgs.party": 0,
+  "PartyMenuArgs.partySlot": 38,
+  "PartyMenuArgs.selectedAction": 39,
+  "PartyMenuArgs.size": 68,
+  "PlayerAvatar.state": 24,
+  "StartMenu.exitTaskEnvironment": 896,
+  "StartMenu.exitTaskFunc": 852,
+  "StartMenu.fieldMoveCheckData": 880,
+  "StartMenu.inhibitIconFlags": 844,
+  "StartMenu.state_u16": 38,
+  "StartMenu.unk_350": 848,
+  "TaskManager.environment": 12,
+  "TaskManager.fieldSystem": 24,
+  "gSystem.heldKeysRaw": 56,
+  "gSystem.newAndRepeatedKeysRaw": 64,
+  "gSystem.newKeys": 72,
+  "gSystem.newKeysRaw": 60,
+  "gSystem.touchHeld": 102,
+  "gSystem.touchNew": 100,
+  "gSystem.touchX": 96,
+  "gSystem.touchY": 98
+ },
+ "overlay14": {
+  "address": 35543296,
+  "head16_hex": "38b50122051c03200921120435f600f8",
+  "sha256": "d515fb04f06371d854ae5ecaed717ceb8338afde422f497bb3dc8590cc81ead5",
+  "size": 80512
+ },
+ "ram": {
+  "gSystem": 35459340,
+  "touchX_literal_users": "ARM9 words equal 0x021D116C present"
+ },
+ "schema": 1,
+ "source": "candidate-v4 EN/IT ARM9, identical at every pinned address",
+ "v4_inputs": {
+  "EN": "179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90",
+  "IT": "2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156"
+ }
+}

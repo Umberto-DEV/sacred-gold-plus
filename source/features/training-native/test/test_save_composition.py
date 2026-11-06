@@ -19,10 +19,14 @@ from unicorn.arm_const import UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2
 SOURCE = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(SOURCE))
 from sgp13.training import BASE, compile_native, entry_hook
+from sgp131 import bag_foreign
 from native_bench import ARGS, Bench, SAVE, STOP
 
 BAG_ADDRESSES = (0x30000, 0x30200, 0x70000, 0x70200)
 STATE = 0x023D3000
+BAG_STATE = 0x023DD700
+BAG_RUNTIME = BAG_STATE + 0x14
+BAG_WRITE_STATUS = BAG_STATE + 0x12C4
 
 
 def bag_compiler():
@@ -85,7 +89,9 @@ class SaveComposition(unittest.TestCase):
         cls.temp = tempfile.TemporaryDirectory(prefix='sgp-save-composition-')
         cls.addClassCleanup(cls.temp.cleanup)
         directory = Path(cls.temp.name)
-        cls.training_blob, cls.training_symbols = compile_native(directory / 'training')
+        _, cls.training_symbols = compile_native(directory / 'training-symbols')
+        cls.training_blob, _ = bag_foreign.compile_successor(
+            directory / 'training-successor')
         compiler = bag_compiler()
         manifest = compiler.compila(directory / 'bag')
         cls.bag_blob = (directory / 'bag/blob.bin').read_bytes()
@@ -132,6 +138,177 @@ class SaveComposition(unittest.TestCase):
                     self.assertTrue(all(a in BAG_ADDRESSES and len(data) == 452
                                         for a, data in b.writes))
                     self.assertEqual(b.flash[address:address + 8], b'FOREIGN!')
+
+    def test_foreign_inactive_bag_with_live_extra_slot_blocks_native_commit(self):
+        """SG-BAG-FOREIGN: refusing unknown bytes must also preserve live extras.
+
+        The Bag writer runs before the native writer.  Its refusal is therefore
+        still early enough for the shared coordinator to return the existing
+        recoverable save failure instead of advancing generation/bank.
+        """
+        for active_bank, destination in ((0, 0x70000), (1, 0x30000)):
+            with self.subTest(active_bank=active_bank):
+                b = self.bench()
+                b.mu.mem_write(SAVE + 0x2330A, struct.pack('<H', active_bank))
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                b.mu.mem_write(BAG_RUNTIME + 251 * 4,
+                               struct.pack('<HH', 252, 3))
+                foreign = b'FOREIGN!' + b'\x11' * 444
+                b.flash[destination:destination + 452] = foreign
+                before_flash = bytes(b.flash)
+                before_save = bytes(b.mu.mem_read(SAVE, 0x23400))
+                self.assertEqual(b.save(), 3)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+                self.assertEqual(b.native_saves, 0)
+                self.assertEqual(bytes(b.flash), before_flash)
+                self.assertEqual(bytes(b.mu.mem_read(SAVE, 0x23400)), before_save)
+                self.assertEqual(
+                    bytes(b.mu.mem_read(BAG_RUNTIME + 251 * 4, 4)),
+                    struct.pack('<HH', 252, 3),
+                )
+
+    def test_live_extra_io_failures_block_native_commit_without_training(self):
+        """An unpersisted live extra cell must stop the native bank advance.
+
+        CAP_W_FALLITA and CAP_W_NO_FLASH mean that no usable extension copy was
+        established in the destination bank.  The lossless-save guard applies
+        even when an older save has no active Training record.
+        """
+        live_extra = struct.pack('<HH', 252, 3)
+        training_addresses = (0x31000, 0x31200, 0x71000, 0x71200)
+        for mode, expected_status, expected_writes in (
+                ('write-failure', 3, 2),
+                ('read-failure', 4, 0)):
+            with self.subTest(mode=mode):
+                b = self.bench()
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                b.mu.mem_write(BAG_RUNTIME + 251 * 4, live_extra)
+                self.assertEqual(b.u32(STATE + 8), 0)
+                self.assertTrue(all(b.flash[address:address + 256] == b'\xff' * 256
+                                    for address in training_addresses))
+                before = bytes(b.flash)
+                if mode == 'write-failure':
+                    b.cut = 0
+                else:
+                    b.fail_address = 0x70000
+
+                self.assertEqual(b.save(), 3)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), expected_status)
+                self.assertEqual(b.native_saves, 0)
+                self.assertEqual(len(b.writes), expected_writes)
+                self.assertEqual(bytes(b.flash), before)
+                self.assertEqual(
+                    bytes(b.mu.mem_read(BAG_RUNTIME + 251 * 4, 4)), live_extra)
+                self.assertTrue(all(b.flash[address:address + 256] == b'\xff' * 256
+                                    for address in training_addresses))
+
+        # Negative control: the already-fixed foreign status takes the same
+        # live-extra input but stops before the native writer.
+        b = self.bench()
+        b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+        b.mu.mem_write(BAG_RUNTIME + 251 * 4, live_extra)
+        foreign = b'FOREIGN!' + b'\x11' * 444
+        b.flash[0x70000:0x70000 + 452] = foreign
+        before = bytes(b.flash)
+        self.assertEqual(b.save(), 3)
+        self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+        self.assertEqual(b.native_saves, 0)
+        self.assertEqual(bytes(b.flash), before)
+        self.assertEqual(
+            bytes(b.mu.mem_read(BAG_RUNTIME + 251 * 4, 4)), live_extra)
+
+    def test_empty_extra_io_failures_do_not_block_native_commit(self):
+        """Negative control: I/O trouble cannot brick a native-only save."""
+        for mode, expected_status, expected_writes in (
+                ('write-failure', 3, 2),
+                ('read-failure', 4, 0)):
+            with self.subTest(mode=mode):
+                b = self.bench()
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                if mode == 'write-failure':
+                    b.cut = 0
+                else:
+                    b.fail_address = 0x70000
+                before = bytes(b.flash)
+
+                self.assertEqual(b.save(), 2)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), expected_status)
+                self.assertEqual(b.native_saves, 1)
+                self.assertEqual(len(b.writes), expected_writes)
+                self.assertEqual(bytes(b.flash), before)
+
+    def test_live_extra_partial_status_keeps_verified_copy_committable(self):
+        """CAP_W_PARZIALE has one durable copy and must not be overblocked."""
+        b = self.bench()
+        b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+        b.mu.mem_write(BAG_RUNTIME + 251 * 4, struct.pack('<HH', 252, 3))
+        b.put(BAG_WRITE_STATUS, 5)
+
+        self.assertEqual(b.call(b.symbols['training_save'], SAVE, ARGS), 2)
+        self.assertEqual(b.native_saves, 1)
+
+    def test_foreign_inactive_bag_without_extra_data_can_commit_without_overwrite(self):
+        """Negative control: do not make an empty extension brick normal SAVE."""
+        for active_bank, destination in ((0, 0x70000), (1, 0x30000)):
+            with self.subTest(active_bank=active_bank):
+                b = self.bench()
+                b.mu.mem_write(SAVE + 0x2330A, struct.pack('<H', active_bank))
+                foreign = b'FOREIGN!' + b'\x11' * 444
+                b.flash[destination:destination + 452] = foreign
+                before = bytes(b.flash)
+                self.assertEqual(b.save(), 2)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+                self.assertEqual(b.native_saves, 1)
+                self.assertEqual(bytes(b.flash), before)
+
+    def test_foreign_bag_native_cells_do_not_trigger_extra_inventory_veto(self):
+        """Only the 108 expanded cells participate in the lossless-save gate."""
+        for active_bank, destination in ((0, 0x70000), (1, 0x30000)):
+            with self.subTest(active_bank=active_bank):
+                b = self.bench()
+                b.mu.mem_write(SAVE + 0x2330A, struct.pack('<H', active_bank))
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                # Last native cell in each flattened pocket.  These values are
+                # already represented by the native 486-slot save structure.
+                for slot in (164, 291, 317, 424, 489, 503, 533, 583):
+                    b.mu.mem_write(BAG_RUNTIME + slot * 4,
+                                   struct.pack('<HH', 1, 1))
+                foreign = b'FOREIGN!' + b'\x11' * 444
+                b.flash[destination:destination + 452] = foreign
+                before = bytes(b.flash)
+                self.assertEqual(b.save(), 2)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+                self.assertEqual(b.native_saves, 1)
+                self.assertEqual(bytes(b.flash), before)
+
+    def test_foreign_bag_quantity_only_extra_cell_is_preserved(self):
+        """A malformed-but-live extra cell must not be silently orphaned."""
+        b = self.bench()
+        b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+        b.mu.mem_write(BAG_RUNTIME + 425 * 4, struct.pack('<HH', 0, 1))
+        b.flash[0x70000:0x70000 + 452] = b'FOREIGN!' + b'\x11' * 444
+        before = bytes(b.flash)
+        self.assertEqual(b.save(), 3)
+        self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+        self.assertEqual(b.native_saves, 0)
+        self.assertEqual(bytes(b.flash), before)
+
+    def test_each_expanded_pocket_range_boundary_vetoes_lossy_commit(self):
+        """All six disjoint expanded ranges, at both edges, are protected."""
+        for slot in (165, 251, 292, 293, 318, 323,
+                     425, 490, 491, 584, 593):
+            with self.subTest(slot=slot):
+                b = self.bench()
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                b.mu.mem_write(BAG_RUNTIME + slot * 4,
+                               struct.pack('<HH', 1, 1))
+                b.flash[0x70000:0x70000 + 452] = (
+                    b'FOREIGN!' + b'\x11' * 444)
+                before = bytes(b.flash)
+                self.assertEqual(b.save(), 3)
+                self.assertEqual(b.u32(BAG_WRITE_STATUS), 2)
+                self.assertEqual(b.native_saves, 0)
+                self.assertEqual(bytes(b.flash), before)
 
     def test_claimable_predicate_matches_real_bag_writer(self):
         # Any narrowed uniform-pattern rule or broadened interrupted-magic
@@ -219,6 +396,9 @@ class SaveComposition(unittest.TestCase):
                 self.assertEqual(bytes(b.mu.mem_read(STATE, 0x1000)), before)
                 self.assertEqual(b.u32(STATE + 8), 1)
                 self.assertEqual(b.writes, [])
+                b.call(b.bag_symbols['sgp_cap_get'], SAVE)
+                b.mu.mem_write(BAG_RUNTIME + 251 * 4,
+                               struct.pack('<HH', 252, 3))
                 self.assertEqual(b.save(), 3)
                 self.assertEqual(b.native_saves, 0)
                 self.assertEqual(b.writes, [])

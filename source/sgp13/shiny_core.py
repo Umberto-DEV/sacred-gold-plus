@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 0x023C8100
@@ -19,7 +20,7 @@ def compile_native(directory):
              '-Oz', '-std=c99', '-ffreestanding', '-fno-builtin',
              '-fno-stack-protector', '-fno-jump-tables', '-fno-unwind-tables',
              '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra', '-Werror']
-    subprocess.run(['clang', *flags, '-c', str(ROOT / 'features/shiny/core.c'),
+    run_compiler([ *flags, '-c', str(ROOT / 'features/shiny/core.c'),
                     '-o', str(obj)], check=True, capture_output=True)
     spec = importlib.util.spec_from_file_location(
         'shiny_core_object_loader', ROOT / 'features/options/tools/carica_text.py')

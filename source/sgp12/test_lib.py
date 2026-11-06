@@ -14,6 +14,7 @@ Uso (da dentro `source/`):
 import os
 import hashlib
 import random
+import runpy
 import struct
 import subprocess
 import tempfile
@@ -94,6 +95,159 @@ class TestBLZ(unittest.TestCase):
     def test_trailer_rifiuta_flusso_troppo_corto(self):
         with self.assertRaises(romlib.Rifiuto):
             blz.blz_decomprimi(b"1234567")
+
+    def test_dimensione_manomessa_e_rifiutata_prima_dell_allocazione(self):
+        payloads = (bytes.fromhex("08000008ffffffff"),
+                    bytes.fromhex("08000008f9ff3f00"))
+        for payload in payloads:
+            with self.subTest(payload=payload.hex()):
+                allocator = mock.Mock(side_effect=AssertionError("allocation attempted"))
+                with mock.patch.object(blz, "bytearray", allocator, create=True):
+                    with self.assertRaises(romlib.Rifiuto):
+                        blz.blz_decomprimi(payload)
+                allocator.assert_not_called()
+
+    def test_dimensione_attesa_e_verificata_prima_dell_allocazione(self):
+        dati = _dati_casuali(3, 300)
+        compresso = blz.blz_comprimi_ottimo(dati)
+        allocator = mock.Mock(side_effect=AssertionError("allocation attempted"))
+        with mock.patch.object(blz, "bytearray", allocator, create=True):
+            with self.assertRaises(romlib.Rifiuto):
+                blz.blz_decomprimi(compresso, len(dati) + 1)
+        allocator.assert_not_called()
+        self.assertEqual(blz.blz_decomprimi(compresso, len(dati)), dati)
+
+    def test_rom_passa_la_dimensione_y9_al_decodificatore(self):
+        candidate = romlib.Rom.__new__(romlib.Rom)
+        candidate.voce_overlay = lambda _oid: {
+            "file_id": 4, "compresso": True, "dim_compressa": 8,
+            "ram_size": 0x1234,
+        }
+        candidate.file_bytes = lambda _fid: b"12345678"
+        with mock.patch.object(blz, "blz_decomprimi", return_value=b"image") as decoder:
+            self.assertEqual(candidate.immagine_overlay(7)[2], b"image")
+        decoder.assert_called_once_with(b"12345678", 0x1234)
+
+    def test_decoder_indipendenti_rifiutano_dimensioni_oltre_ram_prima_del_buffer(self):
+        source = Path(__file__).resolve().parents[1]
+        copies = [
+            (source / "features/overlay/tools/overlay_rileggi.py", "srotola_blz"),
+            (source / "features/npc/tools/rileggi_npc.py", "blz_forward"),
+            (source / "features/anim/tools/rileggi_anim4.py", "blz_forward"),
+            (source / "features/options/tools/rileggi_opzioni_v3.py", "blz_forward"),
+        ]
+        payload = bytes.fromhex("08000008ffffffff")
+        for path, function in copies:
+            with self.subTest(path=str(path.relative_to(source))):
+                namespace = runpy.run_path(str(path), run_name="blz_boundary_test")
+                allocator = mock.Mock(return_value=bytearray())
+                with mock.patch.dict(namespace[function].__globals__, {"bytearray": allocator}):
+                    with self.assertRaises(Exception):
+                        namespace[function](payload)
+                allocator.assert_not_called()
+        allocator = mock.Mock(return_value=bytearray())
+        with self.subTest(path="sgp12/blocchi/npc.py"):
+            with mock.patch.dict(bloc_npc._blz_forward.__globals__, {"bytearray": allocator}):
+                with self.assertRaises(Exception):
+                    bloc_npc._blz_forward(payload)
+            allocator.assert_not_called()
+
+
+class TestArm9Layout(unittest.TestCase):
+    @staticmethod
+    def fixture(rows, *, size=None, table_span=None, data_before_table=True):
+        off, ram = 0x200, 0x02000000
+        data0 = ram + 0xBC4
+        payload_size = sum(row[1] for row in rows)
+        table0 = data0 + payload_size if data_before_table else data0 - 12
+        table1 = table0 + (len(rows) * 12 if table_span is None else table_span)
+        declared = size if size is not None else table1 - ram
+        raw = bytearray(max(off + declared, off + (table1 - ram), 0x200))
+        struct.pack_into('<I', raw, 0x20, off)
+        struct.pack_into('<I', raw, 0x28, ram)
+        struct.pack_into('<I', raw, 0x2C, declared)
+        struct.pack_into('<3I', raw, off + 0xBA0, table0, table1, data0)
+        for index, row in enumerate(rows):
+            struct.pack_into('<3I', raw, off + table0 - ram + index * 12, *row)
+        return bytes(raw)
+
+    def load(self, raw):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / 'synthetic.nds'
+            path.write_bytes(raw)
+            return romlib.Arm9(path)
+
+    def test_valid_single_autoload_mapping_is_preserved(self):
+        row = (0x023D8000, 16, 0)
+        image = self.load(self.fixture([row]))
+        self.assertEqual(image.sezioni, [row])
+        self.assertEqual(image.segmenti[-1], (row[0], 0x200 + 0xBC4, 16))
+
+    def test_table_outside_declared_arm9_is_rejected(self):
+        raw = self.fixture([(0x023D8000, 16, 0)], size=0xBC4)
+        with self.assertRaises(romlib.Rifiuto):
+            self.load(raw)
+
+    def test_section_budget_and_table_shape_are_checked_before_walk(self):
+        rows = [(0x02300000 + index * 4, 1, 0) for index in range(257)]
+        with self.assertRaises(romlib.Rifiuto):
+            self.load(self.fixture(rows))
+        with self.assertRaises(romlib.Rifiuto):
+            self.load(self.fixture([], table_span=13))
+        with self.assertRaises(romlib.Rifiuto):
+            self.load(self.fixture([(0x023D8000, 16, 0)], data_before_table=False))
+
+    def test_retained_arm9_readers_share_the_pre_walk_validator(self):
+        source = Path(__file__).resolve().parents[1]
+        rows = [(0x02300000 + index * 4, 1, 0) for index in range(257)]
+        raw = self.fixture(rows)
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / 'oversized.nds'
+            path.write_bytes(raw)
+            for feature in ('npc', 'anim', 'camera', 'options', 'plus-chunk', 'guide'):
+                module_path = source / 'features' / feature / 'tools' / 'arm9.py'
+                with self.subTest(feature=feature):
+                    namespace = runpy.run_path(str(module_path), run_name='autoload_boundary_test')
+                    with self.assertRaises(romlib.Rifiuto):
+                        namespace['Arm9'](path)
+
+    def test_ndspy_maincodefile_rejects_oversized_autoload_table(self):
+        rows = [(0x02300000 + index * 4, 1, 0) for index in range(257)]
+        raw = self.fixture(rows)
+        off, _entry, ram, size = struct.unpack_from('<4I', raw, 0x20)
+        with self.assertRaises(romlib.Rifiuto):
+            blz.ndspy_maincodefile_sicuro(raw[off:off + size], ram)
+
+    def test_no_retained_autoload_walker_bypasses_the_validator(self):
+        source = Path(__file__).resolve().parents[1]
+        paths = (
+            'features/npc/tools/rileggi_npc.py',
+            'features/anim/tools/rileggi_anim4.py',
+            'features/options/tools/rileggi_opzioni_v3.py',
+            'features/camera/tools/rileggi_camera.py',
+            'features/guide/tools/rileggi_guida.py',
+            'features/borsa/tools/rileggi_borsa.py',
+            'features/caramelle/tools/rileggi_caramelle.py',
+            'sgp12/blocchi/camera.py', 'sgp12/blocchi/guida.py',
+            'sgp12/blocchi/npc.py', 'sgp12/blocchi/caramelle.py',
+            'sgp12/manutenzione.py', 'sgp131/gifts_audit.py',
+            'sgp131/rematches.py', 'sgp131/modern_abilities.py',
+            'sgp131/controls.py', 'sgp131/ui.py', 'sgp131/ui_verify.py',
+            'sgp131/reserve.py', 'sgp131/portable.py',
+            'features/borsa/test/banco.py', 'features/caramelle/test/banco.py',
+            'sgp131/test_reserve_rom.py',
+            'sgp12/riserva.py', 'sgp12/blocchi/riserva.py',
+            'features/reserve/tools/rileggi_riserva12.py',
+            'verifiche/riserva_arm9.py', 'verifiche/test_riserva.py',
+            'sgp13/space.py',
+        )
+        for relative in paths:
+            with self.subTest(path=relative):
+                text = (source / relative).read_text()
+                self.assertTrue(
+                    'valida_layout_arm9' in text or 'ndspy_maincodefile_sicuro' in text,
+                    '%s bypassa il validatore autoload' % relative,
+                )
 
 
 class TestOverlayFlag(unittest.TestCase):
@@ -323,12 +477,24 @@ class TestRegistroCamera(unittest.TestCase):
         self.assertEqual(int(ancore["0x023DEBD8"]["vale"], 16), bloc_camera.CAN_ECC12)
         self.assertEqual(ancore["0x023DEBD8"].get("punta_a_blocco"), "canarino.camera")
 
-    def test_il_serbatoio_camera_e_riusato_da_cascata_124(self):
+    def test_il_serbatoio_camera_registra_owner_successivi_cascata_e_waterfall(self):
         b = self._blocchi()
-        libero = b["libero.1.2"]
-        self.assertEqual(int(libero["base"], 16), bloc_camera.LIBERO12_DOPO)
-        self.assertEqual(int(libero["base"], 16) + libero["bytes"], 0x023D8B00)
-        self.assertTrue(libero.get("assegnabile"))
+        gb = b["sgp.gb_sounds_evolution"]
+        self.assertEqual(int(gb["base"], 16), bloc_camera.LIBERO12_DOPO)
+        pokegear = b["sgp.pokegear_autocull"]
+        self.assertEqual(int(gb["base"], 16) + gb["bytes"],
+                         int(pokegear["base"], 16))
+        waterfall = b["sgp.waterfall_facing"]
+        self.assertEqual(int(pokegear["base"], 16) + pokegear["bytes"],
+                         int(waterfall["base"], 16))
+        self.assertEqual(int(waterfall["base"], 16) + waterfall["bytes"],
+                         0x023D8B00)
+        self.assertEqual(waterfall["sha256"],
+                         "9f5db195a0490f28e83ae2dc20c6c503007c541fa06116fc127a686a402f6417")
+        self.assertFalse(waterfall.get("assegnabile", False))
+        self.assertFalse(any(block.get("tipo") == "libero"
+                             and block.get("assegnabile")
+                             for block in b.values()))
         basso = b["sgp.cascata"]
         self.assertEqual(int(basso["base"], 16), bloc_camera.LIBERO12_BASSO)
         self.assertEqual(basso["bytes"], bloc_camera.LIBERO12_BASSO_N)
@@ -632,9 +798,16 @@ class TestBuildCaramelle(unittest.TestCase):
     def test_un_registro_che_non_ha_scalato_il_libero_e_rifiutato(self):
         import json as _j
         mappa = _j.loads(MANIFEST.read_text())
-        for b in mappa["blocchi"]:
-            if b["nome"] == "libero.1.2.finale":
-                b["base"], b["bytes"] = "0x023DAC00", 16192      # com'era prima
+        # Il serbatoio finale non esiste piu: gli ultimi 64 B sono ora
+        # assegnati a Soul Dew e Wonder Card. Ricrea esplicitamente la voce
+        # storica difettosa per continuare a provare il cancello A4.
+        mappa["blocchi"].append({
+            "nome": "libero.1.2.finale",
+            "base": "0x023DAC00",
+            "bytes": 16192,                         # com'era prima
+            "tipo": "libero",
+            "assegnabile": True,
+        })
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf:
             tf.write(_j.dumps(mappa))
             nome = tf.name

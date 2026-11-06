@@ -1,13 +1,28 @@
 """Synthetic format regressions; contains no extracted game strings."""
 import struct
+import sys
 import unittest
+from unittest import mock
+from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import audit_localization
+import message_codec
 from message_codec import Bank, encode_text, pack_name, unpack_name
 
 
 CHARS = {ord(c): c for c in 'Ciao èàéìòù!12, '}
 CHARS.update({0xE000: r'\n', 0x25BC: r'\r', 0x25BD: r'\f'})
 COMMANDS = {0x0100: 'STRVAR_1', 0x0205: 'ALN_CENTER', 0xFF00: 'COLOR'}
+
+
+def overlapping_bank():
+    raw = bytearray(22)
+    struct.pack_into('<HH', raw, 0, 2, 0)
+    struct.pack_into('<II', raw, 4, 20, 1)
+    struct.pack_into('<II', raw, 12, 20, 1)
+    struct.pack_into('<H', raw, 20, 0)
+    return bytes(raw)
 
 
 class CodecTests(unittest.TestCase):
@@ -56,6 +71,23 @@ class CodecTests(unittest.TestCase):
         raw = Bank.from_words(words, 42).save()
         self.assertEqual(Bank(raw).words, words)
         self.assertEqual(Bank(raw).save(), raw)
+
+    def test_overlapping_extents_are_rejected_before_message_decode(self):
+        decoder = mock.Mock(return_value=[0xFFFF])
+        with mock.patch.object(message_codec, '_words', decoder):
+            with self.assertRaisesRegex(ValueError, 'overlap'):
+                Bank(overlapping_bank())
+        decoder.assert_not_called()
+
+    def test_localization_audit_rejects_overlapping_extents(self):
+        with mock.patch.object(audit_localization, 'render', return_value={}):
+            with self.assertRaisesRegex(ValueError, 'overlap'):
+                audit_localization.read_bank(overlapping_bank())
+
+    def test_message_count_budget_precedes_allocation_table_walk(self):
+        raw = struct.pack('<HH', message_codec.MAX_MESSAGES + 1, 0)
+        with self.assertRaisesRegex(ValueError, 'count'):
+            Bank(raw)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,4 @@
 *.pdf binary
 *.nds binary
 
-# Assistant instructions belong to the checkout, not downloadable source archives.
-AGENTS.md export-ignore
-CLAUDE.md export-ignore
 *.jpg -text

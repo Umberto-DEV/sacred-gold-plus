@@ -35,6 +35,8 @@ from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
 REPO = TOOLS.parents[3]
+sys.path.insert(0, str(REPO / "source"))
+from sgp12.blz import ndspy_load_arm9_sicuro
 RILEGGI = TOOLS / "rileggi_riserva12.py"
 PY = Path(sys.executable)
 
@@ -71,7 +73,7 @@ def ricostruisci(sorgente_path, main, dst):
 
 def carica(percorso):
     parsed = ndspy.rom.NintendoDSRom(Path(percorso).read_bytes())
-    return parsed, parsed.loadArm9()
+    return parsed, ndspy_load_arm9_sicuro(parsed)
 
 
 def scrivi_parola(main, addr, val):

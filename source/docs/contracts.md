@@ -50,6 +50,13 @@ every save.
 Every switch is a whole byte, not a bit. Two features writing two different fields therefore
 cannot corrupt each other through a non-atomic read-modify-write.
 
+The ROM still ignores `over100` and keeps the cap at 100. The separate
+[`extended-levels`](../features/extended-levels/README.md) directory is only a
+ROM-free policy and growth-table contract: it does not observe Party/Box/Day
+Care, write this chunk, or install any gameplay hook. Its current rule replaces
+the historical New Game/level-101 proposal with a permanent latch when a
+persisted, non-egg owned Pokémon is observed at level 100 or above.
+
 The first bytes of the surrounding state are the operational copies the hot hooks read:
 `+0x00` active trainer flag, `+0x01` active wild flag, `+0x02` level cap, `+0x03` load status,
 `+0x04` initialisation guard (`0x5A` once the boot-time read has completed), then two u32
@@ -118,6 +125,18 @@ of its own — from the options page, or on a new game — and from then on the 
 
 **Implemented by** `source/features/native-core/sorgenti-v-finale/salva_blob.c` (the two `strb`
 that write `peak` and `npc` when the chunk is absent).
+
+For the 1.3.1 successor, `SgpStato + 0x05` is no longer anonymous padding: it
+records the last Plus-chunk write as 0 not attempted, 1 both mirrors written,
+2 one mirror written, or 3 neither mirror written. A partial write is readable
+at the next cold load because both mirrors are inspected and the newest valid
+`saveno` wins; equal generations retain the primary copy and the comparison is
+safe across the 32-bit wrap. A complete failure never promotes an absent record
+to `SGP_LOAD_VALID`. This is diagnostic only and does not replace the vanilla
+save result: the touch-save caller discards an extension-only failure. The
+on-disk chunk, sectors, call-site address and save layout are unchanged. The
+existing save call is retargeted from the historical entry to the larger
+successor entry inside the same reserved compartment.
 
 ### One accessor, no caching
 
@@ -410,6 +429,16 @@ registered items and legacy cheat addresses remain fixed. Runtime Bag objects
 use 2380 bytes and every pocket getter, slot enumerator, view, copy, registered
 item operation and reorder operation routes to that representation. Native
 Add/Take/Has/Quantity functions retain their original implementation.
+
+In the 1.3.1 successor, the private-copy constructor also preserves the native
+allocation contract: a failed 2380-byte allocation returns `NULL` without
+calling the clearing loop; a successful allocation is still cleared in full.
+The replacement occupies the same 28-byte `sgp_cap_new` body and keeps every
+following entry address unchanged. The post-UI composer may write it only
+through the pre-existing `sgp.capacita_borsa` owner recorded in
+`sgp131/data/reserve-map.json`; this is not a new free-space allocation. The
+same rule confines the Plus-save successor to the historical `sgp.plus` owner.
+All other reserve bytes remain protected.
 
 The 108 extra slots use two 452-byte records per save bank, in reserved flash
 sectors **48 and 112**, at offsets 0 and 0x200. These do not overlap the native

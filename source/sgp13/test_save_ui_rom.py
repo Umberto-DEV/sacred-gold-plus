@@ -14,6 +14,7 @@ import unittest
 import zlib
 
 from sgp12.rom import Arm9, Rom
+from sgp12.blz import ndspy_decomprimi_sicuro
 
 CANDIDATES = os.environ.get('SGP_SAVE_UI_CANDIDATES')
 PRET = os.environ.get('SGP_PRET_SOURCE')
@@ -69,6 +70,11 @@ class NativeTouchSave:
         self.put(BAG, 0x43415042)
         self.put(BAG + 4, SAVE)
         self.put(BAG + 8, SAVE + 0x1000)
+        # The foreign-refusal scene is meaningful only when advancing the
+        # native bank would orphan a live expanded-Bag cell.  Empty extension
+        # data is a separate safe-to-commit negative control.
+        self.mu.mem_write(BAG + 0x14 + 251 * 4,
+                          struct.pack('<HH', 252, 3))
         self.put(TRAIN, 0x31544E52)
         self.put(TRAIN + 4, SAVE)
         self.put(TRAIN + 8, 1)
@@ -476,8 +482,8 @@ class SaveUiRom(unittest.TestCase):
                 after, receipt = save_ui.apply(before, language, charmap)
                 original = ndspy.rom.NintendoDSRom(before)
                 changed = ndspy.rom.NintendoDSRom(after)
-                raw = ndspy.codeCompression.decompress(changed.files[30])
-                old = ndspy.codeCompression.decompress(original.files[30])
+                raw = ndspy_decomprimi_sicuro(changed.files[30])
+                old = ndspy_decomprimi_sicuro(original.files[30])
                 self.assertLessEqual(len(raw) - len(old), 512)
                 self.assertLessEqual(len(changed.files[30]), 2048)
                 self.assertEqual(len(raw) % 32, 0)

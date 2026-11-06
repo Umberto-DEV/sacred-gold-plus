@@ -53,8 +53,8 @@ def sezioni(percorso):
         rom_off, _entry, ram, size = struct.unpack_from("<IIII", testa, 0x20)
         fh.seek(rom_off)
         blob = fh.read(size)
-    import ndspy.code
-    return ndspy.code.MainCodeFile(blob, ram).sections, rom_off, ram, size
+    from sgp12.blz import ndspy_maincodefile_sicuro
+    return ndspy_maincodefile_sicuro(blob, ram).sections, rom_off, ram, size
 
 
 def libero_da_manifest(b, base_sezione, manifest_path):

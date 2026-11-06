@@ -360,6 +360,42 @@ class _Silenzioso(http.server.SimpleHTTPRequestHandler):
         pass
 
 
+class _RispostaContata:
+    """Risposta sintetica: nessun socket, con byte e richieste osservabili."""
+
+    def __init__(self, dati, content_length=None):
+        self.dati = dati
+        self.pos = 0
+        self.letti = 0
+        self.richieste = []
+        self.headers = {}
+        if content_length is not None:
+            self.headers["Content-Length"] = str(content_length)
+
+    def read(self, n=-1):
+        self.richieste.append(n)
+        if n is None or n < 0:
+            n = len(self.dati) - self.pos
+        pezzo = self.dati[self.pos:self.pos + n]
+        self.pos += len(pezzo)
+        self.letti += len(pezzo)
+        return pezzo
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+class _RispostaSoloRead1(_RispostaContata):
+    def read(self, n=-1):
+        raise AssertionError("read() puo' restare bloccata mentre il server invia a gocce")
+
+    def read1(self, n=-1):
+        return super().read(n)
+
+
 class TestScaricaBase(BancoStadio0):
 
     def setUp(self):
@@ -389,6 +425,75 @@ class TestScaricaBase(BancoStadio0):
             p = self.dest / self.pin["basi"][lingua]["delta"]["nome"]
             self.assertEqual(p.read_bytes(), DELTA[lingua])
         self.assertTrue((self.dest / scarica_mod.SHA256SUMS_DEPOSITO).is_file())
+
+    def test_parziale_dangling_non_scrive_fuori_dalla_destinazione(self):
+        """Un nome ``.parziale`` ostile non deve diventare un'uscita indiretta."""
+        lingua = "EN"
+        nome = self.pin["basi"][lingua]["delta"]["nome"]
+        esterno = self.d / "fuori-dalla-destinazione.bin"
+        (self.dest / (nome + ".parziale")).symlink_to(esterno)
+
+        scarica_mod.scarica(self.dest, [lingua], pin=self.pin, url_base=self.server.url)
+
+        self.assertFalse(esterno.exists(), "il download ha seguito il symlink dangling")
+        bersaglio = self.dest / nome
+        self.assertTrue(bersaglio.is_file())
+        self.assertFalse(bersaglio.is_symlink())
+        self.assertEqual(bersaglio.read_bytes(), DELTA[lingua])
+
+    def test_manifesto_non_tronca_il_bersaglio_di_un_symlink(self):
+        """La ricevuta puo' sostituire l'entry ostile, mai seguirla."""
+        esterno = self.d / "documento-estraneo.txt"
+        esterno.write_text("NON TOCCARE\n")
+        ricevuta = self.dest / scarica_mod.SHA256SUMS_DEPOSITO
+        ricevuta.symlink_to(esterno)
+
+        scarica_mod.scarica(self.dest, ["EN"], pin=self.pin, url_base=self.server.url)
+
+        self.assertEqual(esterno.read_text(), "NON TOCCARE\n")
+        self.assertTrue(ricevuta.is_file())
+        self.assertFalse(ricevuta.is_symlink())
+        self.assertIn("base-1.1-EN.xdelta", ricevuta.read_text())
+
+    def test_delta_finale_non_tronca_il_bersaglio_di_un_symlink(self):
+        lingua = "EN"
+        nome = self.pin["basi"][lingua]["delta"]["nome"]
+        esterno = self.d / "delta-estraneo.bin"
+        esterno.write_bytes(b"NON TOCCARE")
+        bersaglio = self.dest / nome
+        bersaglio.symlink_to(esterno)
+
+        scarica_mod.scarica(self.dest, [lingua], pin=self.pin, url_base=self.server.url)
+
+        self.assertEqual(esterno.read_bytes(), b"NON TOCCARE")
+        self.assertTrue(bersaglio.is_file())
+        self.assertFalse(bersaglio.is_symlink())
+        self.assertEqual(bersaglio.read_bytes(), DELTA[lingua])
+
+    def test_race_unlink_open_non_puo_iniettare_un_symlink_parziale(self):
+        """Il seam di rete rende deterministica la vecchia finestra unlink/open."""
+        lingua = "EN"
+        nome = self.pin["basi"][lingua]["delta"]["nome"]
+        parziale = self.dest / (nome + ".parziale")
+        parziale.write_bytes(b"vecchio parziale")
+        esterno = self.d / "sentinella-race.bin"
+        esterno.write_bytes(b"SENTINELLA")
+        vero = scarica_mod._apri
+
+        def apri(url):
+            if url.endswith(nome):
+                try:
+                    parziale.symlink_to(esterno)
+                except FileExistsError:
+                    # Il fix non riusa ne' rimuove piu' il nome prevedibile.
+                    pass
+            return vero(url)
+
+        scarica_mod.scarica(self.dest, [lingua], pin=self.pin,
+                            url_base=self.server.url, apri=apri)
+
+        self.assertEqual(esterno.read_bytes(), b"SENTINELLA")
+        self.assertFalse((self.dest / nome).is_symlink())
 
     def test_non_scrive_sopra_il_sha256sums_delle_rom(self):
         """`$SGP_ROM_DIR/SHA256SUMS` e' gia' l'elenco delle ROM che
@@ -436,6 +541,15 @@ class TestScaricaBase(BancoStadio0):
         with self.assertRaises(Rifiuto):
             scarica_mod.scarica(self.d / "non-esiste", pin=self.pin, url_base=self.server.url)
 
+    def test_destinazione_scrivibile_da_altri_e_rifiutata(self):
+        modo = stat.S_IMODE(self.dest.stat().st_mode)
+        self.addCleanup(self.dest.chmod, modo)
+        self.dest.chmod(0o777)
+        with self.assertRaises(Rifiuto) as c:
+            scarica_mod.scarica(self.dest, ["EN"], pin=self.pin, url_base=self.server.url)
+        self.assertIn("cartella privata", str(c.exception))
+        self.assertEqual(list(self.dest.iterdir()), [])
+
     def test_errore_di_rete_non_lascia_un_parziale(self):
         """`apri` sostituito: la connessione salta a meta' del corpo."""
         vero = scarica_mod._apri
@@ -477,6 +591,80 @@ class TestScaricaBase(BancoStadio0):
         self.assertEqual(fuori, BASE11["EN"])
         self.assertEqual(rap["delta"]["percorso"],
                          str(self.dest / "base-1.1-EN.xdelta"))
+
+
+class TestScaricaBaseBudget(BancoStadio0):
+
+    def test_le_risposte_http_preferiscono_read1(self):
+        risposta = _RispostaSoloRead1(b"manifesto breve")
+        testo = scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                    lambda _url: risposta)
+        self.assertEqual(testo, "manifesto breve")
+        self.assertGreaterEqual(len(risposta.richieste), 1)
+
+    def test_manifesto_al_limite_e_ammesso(self):
+        limite = 64 << 10
+        risposta = _RispostaContata(b"a" * limite)
+        testo = scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                    lambda _url: risposta)
+        self.assertEqual(len(testo), limite)
+        self.assertEqual(risposta.letti, limite)
+
+    def test_manifesto_un_byte_oltre_il_limite_e_rifiutato(self):
+        limite = 64 << 10
+        risposta = _RispostaContata(b"a" * (limite + 1))
+        with self.assertRaises(Rifiuto):
+            scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                lambda _url: risposta)
+        self.assertLessEqual(risposta.letti, limite + 1)
+
+    def test_content_length_eccessivo_e_rifiutato_prima_del_body(self):
+        limite = 64 << 10
+        risposta = _RispostaContata(b"non deve essere letto", content_length=limite + 1)
+        with self.assertRaises(Rifiuto):
+            scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                lambda _url: risposta)
+        self.assertEqual(risposta.letti, 0)
+
+    def test_delta_si_ferma_al_primo_byte_oltre_il_pin(self):
+        corpo = b"X" * (128 << 10)
+        risposta = _RispostaContata(corpo)
+        cartella, dir_fd = scarica_mod._apri_cartella_privata(self.roms)
+        self.addCleanup(os.close, dir_fd)
+        with self.assertRaises(Rifiuto):
+            scarica_mod._scarica_file(
+                "https://esempio.invalid/troppo.xdelta", cartella / "troppo.xdelta",
+                _sha(b"GOOD"), 4, lambda _url: risposta, dir_fd)
+        self.assertLessEqual(risposta.letti, 5)
+        self.assertFalse((cartella / "troppo.xdelta").exists())
+        self.assertEqual(list(cartella.glob(".troppo.xdelta.parziale-*")), [])
+
+    def test_delta_esatto_resta_ammesso(self):
+        corpo = b"GOOD"
+        risposta = _RispostaContata(corpo, content_length=len(corpo))
+        cartella, dir_fd = scarica_mod._apri_cartella_privata(self.roms)
+        self.addCleanup(os.close, dir_fd)
+        rapporto = scarica_mod._scarica_file(
+            "https://esempio.invalid/esatto.xdelta", cartella / "esatto.xdelta",
+            _sha(corpo), len(corpo), lambda _url: risposta, dir_fd)
+        self.assertEqual(rapporto["byte"], len(corpo))
+        self.assertEqual((cartella / "esatto.xdelta").read_bytes(), corpo)
+
+    def test_deadline_complessiva_interrompe_una_risposta_progressiva(self):
+        risposta = _RispostaContata(b"a" * 32)
+        tempi = iter((0.0, 1801.0))
+        with self.assertRaises(Rifiuto):
+            scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                lambda _url: risposta,
+                                orologio=lambda: next(tempi), inizio=0.0)
+
+    def test_deadline_scaduta_durante_la_lettura_eof_e_rifiutata(self):
+        risposta = _RispostaContata(b"")
+        tempi = iter((0.0, 1801.0))
+        with self.assertRaises(Rifiuto):
+            scarica_mod._testo("https://esempio.invalid/SHA256SUMS",
+                                lambda _url: risposta,
+                                orologio=lambda: next(tempi), inizio=0.0)
 
 
 class TestVerificaSenzaBase(unittest.TestCase):

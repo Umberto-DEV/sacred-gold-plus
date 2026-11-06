@@ -1,0 +1,178 @@
+{
+ "schema": 2,
+ "purpose": "Pinned recipes for the two gift-script fixes of the V4 script archive a/0/1/2: the six inherited ribbon tails and the party-full guard of the Eevee gift in member 227. Hashes and numbers only; no game bytes. The gift-delivery-to-boxes feature was abandoned: nothing here moves a Pokemon to a box.",
+ "pret_commit": "0985e8718df4f25e64d6507d89c0c97c0d288981",
+ "metadata_sha256": "fbfbf438104cfc3735c3144730ed711bb882fca370a8de680db5c1d39ffaca5a",
+ "archive": "a/0/1/2",
+ "stage": "V4 (balance493 candidate-v4); scripts are identical in EN and IT",
+ "ribbon_tails": {
+  "reference": {
+   "pret_commit": "0985e8718df4f25e64d6507d89c0c97c0d288981",
+   "sound": 1185,
+   "daily_flag": 2748,
+   "sound_constant": "SEQ_ME_ITEM",
+   "flag_constant": "FLAG_DAILY_GOT_SHOCK_RIBBON",
+   "files": {
+    "225": "scr_seq_0225_R29.s",
+    "232": "scr_seq_0232_R32.s",
+    "243": "scr_seq_0243_R36.s",
+    "246": "scr_seq_0246_R37.s",
+    "938": "scr_seq_0938_T29.s",
+    "962": "scr_seq_0962_W40.s"
+   }
+  },
+  "inherited_tail_hex": "4e001400d907",
+  "inherited_sound": 20,
+  "kept_continuation_hex": "350061000200",
+  "members": {
+   "225": {
+    "preimage_sha256": {
+     "EN": "48bac4282a54e16ed4f9f2e07bfc85d413fc0975bafbe06cf8a22da437d96f40",
+     "IT": "48bac4282a54e16ed4f9f2e07bfc85d413fc0975bafbe06cf8a22da437d96f40"
+    },
+    "illegal_offset": 886,
+    "tail_site": 882,
+    "ribbon_site": 876,
+    "ribbon": 60,
+    "messages": [
+     32,
+     34
+    ]
+   },
+   "232": {
+    "preimage_sha256": {
+     "EN": "3806f5a92e6a97f29bc6d32a7f4f19dd24931897963e6436775d55481d4d6069",
+     "IT": "3806f5a92e6a97f29bc6d32a7f4f19dd24931897963e6436775d55481d4d6069"
+    },
+    "illegal_offset": 1445,
+    "tail_site": 1441,
+    "ribbon_site": 1435,
+    "ribbon": 63,
+    "messages": [
+     44,
+     46
+    ]
+   },
+   "243": {
+    "preimage_sha256": {
+     "EN": "7e32a74247f3906ed33e7a7c37642bc3c9b5e2527315fa744aed14c49e2f7f70",
+     "IT": "7e32a74247f3906ed33e7a7c37642bc3c9b5e2527315fa744aed14c49e2f7f70"
+    },
+    "illegal_offset": 1075,
+    "tail_site": 1071,
+    "ribbon_site": 1065,
+    "ribbon": 62,
+    "messages": [
+     40,
+     42
+    ]
+   },
+   "246": {
+    "preimage_sha256": {
+     "EN": "3f129381960e6a4e427bc96efc3d4361db0f68012765f170dffca5c679adf651",
+     "IT": "3f129381960e6a4e427bc96efc3d4361db0f68012765f170dffca5c679adf651"
+    },
+    "illegal_offset": 501,
+    "tail_site": 497,
+    "ribbon_site": 491,
+    "ribbon": 65,
+    "messages": [
+     52,
+     54
+    ]
+   },
+   "938": {
+    "preimage_sha256": {
+     "EN": "ce0704e5edeccb895c8214b91d0317e0ea35b81cd9899828a7f7c62a02ab0c80",
+     "IT": "ce0704e5edeccb895c8214b91d0317e0ea35b81cd9899828a7f7c62a02ab0c80"
+    },
+    "illegal_offset": 1574,
+    "tail_site": 1570,
+    "ribbon_site": 1564,
+    "ribbon": 61,
+    "messages": [
+     36,
+     38
+    ]
+   },
+   "962": {
+    "preimage_sha256": {
+     "EN": "ca2ffec7e6f5ae5de7fb524bba4883e3557473cc320c2209b466606a7a020f5f",
+     "IT": "ca2ffec7e6f5ae5de7fb524bba4883e3557473cc320c2209b466606a7a020f5f"
+    },
+    "illegal_offset": 1069,
+    "tail_site": 1065,
+    "ribbon_site": 1059,
+    "ribbon": 59,
+    "messages": [
+     28,
+     30
+    ]
+   }
+  }
+ },
+ "accepted_overlaps": [
+  {
+   "member": 131,
+   "pairs": [
+    [
+     4827,
+     4831
+    ],
+    [
+     4831,
+     4833
+    ],
+    [
+     4831,
+     4837
+    ]
+   ],
+   "preimage_sha256": {
+    "EN": "99a3498483e0245cdd52e5e375e07ef336b083577579599419e073377b8965d6",
+    "IT": "99a3498483e0245cdd52e5e375e07ef336b083577579599419e073377b8965d6"
+   },
+   "reason": "inherited Sacred Gold trick: GoToIf at 0x122b targets 0x12df, the opcode bytes 5E 00 that are also the last operand of Wait 2,94 at 0x12db. The member holds no gift command, is not touched by any repair, and the overlap is accepted only for this exact whole-member hash."
+  }
+ ],
+ "party_guard": {
+  "purpose": "The Eevee of script member 227 is lost when the party is full: no capacity guard runs, the give fails silently and SetFlag 16220 / HidePerson 15 still run. The retail Bill Eevee script (pret scr_seq_0892_T25R0401.s, entry 0) tests GetPartyCount == 6 and ends with the party-full message, without give, flag or hide.",
+  "reference": {
+   "file": "scr_seq_0892_T25R0401.s",
+   "compare": "GetPartyCount VAR_SPECIAL_x8005; Compare VAR_SPECIAL_x8005, 6; GoToIfEq <full>; <full>: NPCMsg; WaitButton; CloseMsg; ReleaseAll; End"
+  },
+  "member": 227,
+  "preimage_sha256": {
+   "EN": "3b79d7c85c8a2ab54a7625dcdcca621d1e9d0afe784941417a37ed06abb9fede",
+   "IT": "3b79d7c85c8a2ab54a7625dcdcca621d1e9d0afe784941417a37ed06abb9fede"
+  },
+  "entry": 11,
+  "entry_offset": 442,
+  "insert_at": 450,
+  "lead_in": [
+   "PlaySE",
+   "LockAll",
+   "FacePlayer"
+  ],
+  "party_count_site": 471,
+  "give_site": 475,
+  "party_var": 32773,
+  "species": 133,
+  "level": 5,
+  "limit": 6,
+  "result_var": 32780,
+  "effects": {
+   "flag": 16220,
+   "hide_person": 15
+  },
+  "message": {
+   "bank": 25,
+   "index": 39,
+   "bank_sha256": {
+    "EN": "2b5fb7eb8bc8dfc83c0aca47de1a2a7d0c59e0aacd981984afadd0487d47cf64",
+    "IT": "17e32fc080d78c9434f77a55b212323ded4a270b6c3a1e94f9dbbd01ec97049d"
+   },
+   "source": "native retail string (pret msg_0025_00039, Pokemon Storage System bank); read through MsgBoxExtern, so no message bank is edited"
+  }
+ }
+}

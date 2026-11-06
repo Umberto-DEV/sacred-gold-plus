@@ -24,6 +24,8 @@ import zlib
 from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(QUI.parent))
+from secure_output import PrivateDirectory, write_json_new, write_new  # noqa: E402
 
 # (mappa, warpId, atteso, perche') — identici a SGP-1.2-RUNTIME-02/tools/campagna_mappe.py
 BERSAGLI = [
@@ -50,7 +52,7 @@ def ppm_png(src, dst):
     def chunk(t, data):
         c = t + data
         return struct.pack(">I", len(data)) + c + struct.pack(">I", zlib.crc32(c))
-    Path(dst).write_bytes(b"\x89PNG\r\n\x1a\n"
+    write_new(dst, b"\x89PNG\r\n\x1a\n"
                           + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
                           + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
 
@@ -96,8 +98,8 @@ def main():
     a = ap.parse_args()
 
     solo = {int(x) for x in a.solo.split(",")} if a.solo else None
-    out = Path(a.out)
-    out.mkdir(parents=True, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
+    out = outputs.path
     esito = {"base": Path(a.base).name, "candidata": Path(a.cand).name,
              "fotogramma_iniezione": a.fotogramma, "soglia_pixel_percento": SOGLIA_PIXEL * 100,
              "mappe": []}
@@ -108,10 +110,9 @@ def main():
         riga = {"mappa": mappa, "atteso": atteso, "perche": perche}
         proc = []
         for etichetta, rom in (("base", a.base), (a.etichetta_cand, a.cand)):
-            d = out / f"{etichetta}-{mappa}"
-            d.mkdir(parents=True, exist_ok=True)
+            d = outputs.ensure_dir(f"{etichetta}-{mappa}")
             sav = out / f"sav-{etichetta}-{mappa}.sav"
-            shutil.copyfile(a.sram, sav)
+            outputs.write_new(sav.name, Path(a.sram).read_bytes())
             js = d / "warp.json"
             cmd = [sys.executable, str(QUI / "warp.py"), "--hg", a.hg, "--rom", rom,
                    "--sram", str(sav), "--out", str(d), "--script", a.script,
@@ -166,7 +167,8 @@ def main():
         "bersagli_totali": len(bersagli),
         "controlli_verdi": sum(1 for r in controlli if r["verdetto"] == "VERDE"),
         "controlli_totali": len(controlli)}
-    Path(a.json).write_text(json.dumps(esito, indent=2, ensure_ascii=False))
+    outputs.close()
+    write_json_new(a.json, esito)
     print("\nRIASSUNTO", json.dumps(esito["riassunto"]))
     return 0
 

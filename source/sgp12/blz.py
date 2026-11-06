@@ -29,6 +29,7 @@ from .rom import Rifiuto, esigi
 BLZ_N = 0x1002
 BLZ_F = 0x12
 BLZ_SOGLIA = 2
+BLZ_MAX_DECOMPRESSA = 0x400000
 
 
 def blz_leggi_trailer(flusso):
@@ -44,7 +45,105 @@ def blz_leggi_trailer(flusso):
     return hdr_len, enc_len, inc_len, len(flusso) - enc_len, len(flusso) + inc_len
 
 
-def blz_decomprimi(flusso):
+def blz_verifica_dimensione(flusso, atteso=None):
+    """Validate the final DS image size before any decoder may allocate it."""
+    trailer = blz_leggi_trailer(flusso)
+    dim = trailer[4]
+    esigi(dim <= BLZ_MAX_DECOMPRESSA,
+          "BLZ: dimensione decompressa %d oltre la RAM DS" % dim)
+    if atteso is not None:
+        esigi(dim == atteso,
+              "BLZ: dimensione decompressa %d diversa dalla y9 (%d)" % (dim, atteso))
+    return trailer
+
+
+def blz_verifica_ndspy(flusso, atteso=None):
+    """Mirror ndspy's compressed-stream detection, then enforce DS bounds."""
+    appended = None
+    for possible in range(0, 0x20, 4):
+        if len(flusso) < possible + 8:
+            break
+        core = flusso[:-possible] if possible else flusso
+        w0, extra = struct.unpack_from("<II", core, len(core) - 8)
+        header = w0 >> 24
+        compressed = w0 & 0xFFFFFF
+        if (header >= 8 and compressed <= len(core)
+                and all(byte == 0xFF for byte in core[-header:-8])):
+            appended = possible
+            break
+    if appended is None:
+        esigi(len(flusso) <= BLZ_MAX_DECOMPRESSA,
+              "BLZ: flusso non compresso oltre la RAM DS")
+        if atteso is not None:
+            esigi(len(flusso) == atteso,
+                  "BLZ: dimensione non compressa diversa dalla y9")
+        return None
+    core = flusso[:-appended] if appended else flusso
+    if core[-4:] == b"\0\0\0\0":
+        total = len(core) + appended
+    else:
+        trailer = blz_verifica_dimensione(core)
+        total = trailer[4] + appended
+    esigi(total <= BLZ_MAX_DECOMPRESSA,
+          "BLZ: immagine ndspy oltre la RAM DS")
+    if atteso is not None:
+        esigi(total == atteso, "BLZ: immagine ndspy diversa dalla y9")
+    return total
+
+
+def verifica_rom_prima_di_ndspy(rom, *, arm9=False, overlay_ids=None):
+    """Preflight every stream that the following ndspy load will allocate."""
+    if arm9:
+        blz_verifica_ndspy(bytes(rom.arm9))
+    if overlay_ids is not None:
+        selected = None if overlay_ids is True else set(overlay_ids)
+        table = bytes(rom.arm9OverlayTable)
+        esigi(len(table) % 32 == 0, "y9: tabella troncata")
+        for offset in range(0, len(table), 32):
+            row = struct.unpack_from("<8I", table, offset)
+            oid, ram_size, file_id, packed = row[0], row[2], row[6], row[7]
+            if selected is not None and oid not in selected:
+                continue
+            esigi(ram_size <= BLZ_MAX_DECOMPRESSA,
+                  "y9: overlay oltre la RAM DS")
+            esigi(file_id < len(rom.files), "y9: file overlay fuori indice")
+            encoded = bytes(rom.files[file_id])
+            if packed >> 24 & 1:
+                blz_verifica_ndspy(encoded, ram_size)
+            else:
+                esigi(len(encoded) == ram_size,
+                      "y9: overlay non compresso di dimensione inattesa")
+
+
+def ndspy_load_arm9_sicuro(rom):
+    verifica_rom_prima_di_ndspy(rom, arm9=True)
+    from .rom import valida_layout_arm9
+    image = ndspy_decomprimi_sicuro(bytes(rom.arm9))
+    valida_layout_arm9(image, 0, rom.arm9RamAddress, len(image))
+    return rom.loadArm9()
+
+
+def ndspy_maincodefile_sicuro(flusso, ram):
+    """Build ``MainCodeFile`` only after bounded decode and autoload validation."""
+    from .rom import valida_layout_arm9
+    image = ndspy_decomprimi_sicuro(bytes(flusso))
+    valida_layout_arm9(image, 0, ram, len(image))
+    import ndspy.code
+    return ndspy.code.MainCodeFile(image, ram)
+
+
+def ndspy_load_overlays_sicuri(rom, ids=None):
+    verifica_rom_prima_di_ndspy(rom, overlay_ids=True if ids is None else ids)
+    return rom.loadArm9Overlays(ids)
+
+
+def ndspy_decomprimi_sicuro(flusso, atteso=None):
+    blz_verifica_ndspy(flusso, atteso)
+    from ndspy import codeCompression
+    return codeCompression.decompress(flusso)
+
+
+def blz_decomprimi(flusso, atteso=None):
     """DECODIFICATORE A — trascrizione fedele di `MIi_UncompressBackward`.
 
     Lavora IN LUOGO su un buffer lungo quanto l'immagine finale, esattamente
@@ -52,7 +151,7 @@ def blz_decomprimi(flusso):
     sorgente alla destinazione, qui si vedrebbe, perche' si vede nel gioco.
     """
     n = len(flusso)
-    hdr_len, enc_len, inc_len, grezzo, dim = blz_leggi_trailer(flusso)
+    hdr_len, enc_len, inc_len, grezzo, dim = blz_verifica_dimensione(flusso, atteso)
     buf = bytearray(dim)
     buf[:n] = flusso
     src = n - hdr_len
@@ -241,17 +340,24 @@ def blz_comprimi_ottimo(grezzo, bersaglio=None):
         return corpo + (-corpo) % 4 + 8
 
     tutti = [(totale(k), k) for k in range(1, raw_len + 1)]
-    minimo, k_min = min(tutti)
-    k = k_min
-    if bersaglio is not None and bersaglio != minimo:
-        esatti = [kk for (tt, kk) in tutti if tt == bersaglio]
-        if esatti:
-            k = max(esatti)
-    flusso = _confeziona(grezzo, dati, _emetti(dati, scelta, dist_best, k), k)
-    if bersaglio is not None and len(flusso) != bersaglio:
-        k = k_min
+    minimo = min(tutti)[0]
+    lunghezza = bersaglio if bersaglio is not None and any(
+        totale == bersaglio for totale, _ in tutti) else minimo
+    candidati = sorted((k for totale, k in tutti if totale == lunghezza),
+                       reverse=True)
+    # A fixed length can have several raw-prefix cuts.  They decompress to the
+    # same bytes but do not necessarily have the same in-place safety margin.
+    # Preserve the historical max-k choice whenever it is valid; otherwise try
+    # the other equal-length encodings before giving up or changing FAT/y9.
+    for k in candidati:
         flusso = _confeziona(grezzo, dati, _emetti(dati, scelta, dist_best, k), k)
-    return flusso
+        try:
+            if blz_decomprimi(flusso, raw_len) == grezzo:
+                return flusso
+        except Rifiuto:
+            pass
+    raise Rifiuto('BLZ: nessuna codifica di %d byte e decomprimibile in luogo'
+                  % lunghezza)
 
 
 def blz_comprimi(grezzo):

@@ -17,6 +17,8 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from secure_output import write_json_new  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "SGP-1.2-CAMERA-01" / "tools"))
 from arm9 import Arm9                                    # noqa: E402
 from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB, CS_MODE_ARM   # noqa: E402
@@ -79,7 +81,7 @@ def main():
             print("   " + t)
         print()
     if a.json:
-        Path(a.json).write_text(json.dumps(esito, indent=2))
+        write_json_new(a.json, esito)
     return 0
 
 

@@ -143,14 +143,14 @@
   },
   "references": {
     "EN": {
-      "name": "Sacred-Gold-Plus-1.2.3-US.zip",
-      "sha256": "7b96cd37d96048315b7c8db5fb91da7b150826c4da344090e62658749ebfca30",
-      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.3/Sacred-Gold-Plus-1.2.3-US.zip"
+      "name": "SGP-Source-References-EN.zip",
+      "sha256": "dae462265bd0bd6f0cb7e703cd5029fe25e78c35115f6939bf61841c449e9053",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/SGP-Source-References-EN.zip"
     },
     "IT": {
-      "name": "Sacred-Gold-Plus-1.2.3-IT.zip",
-      "sha256": "d9d32be19edf3eb28510f2261e9415ad11db87748c48908f06602033e00a2320",
-      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.3/Sacred-Gold-Plus-1.2.3-IT.zip"
+      "name": "SGP-Source-References-IT.zip",
+      "sha256": "4ef686035cd65b89db79dd8738743f4c4bf305b90d8c267eaffc7f6779f96674",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/SGP-Source-References-IT.zip"
     }
   },
   "original_documents": {

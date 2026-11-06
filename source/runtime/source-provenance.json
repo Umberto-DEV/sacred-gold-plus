@@ -1,14 +1,13 @@
 {
   "source_core_revision": "906e9ebb27da8c6a715cd7abab4abfe8a8d29427",
   "unchanged_runtime_sources": {
-    "main.cpp": "ff94c480fbf56ab60749ff1d2dcf2b409224ecdcae2123d71c5165ec43d34552",
     "platform.cpp": "5f03432ec4641b832369f492fc9be6267a0537bc4753ea68d5bc245b0b874090",
     "hg_trace.h": "3ca2817773026d7110835eaf280d0b0f8aadf29db7031ab8db76582cfe56539f",
     "melonds-observation-hooks.patch": "f99dc0723803ccf93dc777cf3b67a027705c74fb691be8c4fb86d2f1aab24885"
   },
   "portability_changes": {
-    "patch_core.py": "The checkout path is a required --source argument; no personal default remains.",
-    "CMakeLists.txt": "The existing companion target defaults to enabled, with a configurable source path and an explicit standalone-harness option. POSIX thread and dynamic-loader link libraries are explicit."
+    "patch_core.py": "The checkout path is a required --source argument; no personal default remains. The complete pinned tree is compared directly with Git object identities, with replacement refs disabled; only the exact two-file observation patch is admitted.",
+    "CMakeLists.txt": "The existing companion target defaults to enabled, with a configurable source path and an explicit standalone-harness option. POSIX thread and dynamic-loader link libraries are explicit. The exact core-tree verifier runs before add_subdirectory and before every generated melonDS build target."
   },
   "host_scope": "POSIX platform glue; newly built on macOS ARM64. Linux build not exercised, Windows glue not implemented.",
   "companion_test": {
@@ -33,5 +32,52 @@
     "rom_ram_mutation_or_external_state_load": false,
     "newgame_change": "Removed the discarded first 60-frame replay and output-only commands, preserving the subsequent guest input timeline.",
     "save_change": "Split the existing final 300-frame wait into 100+200 to capture the complete Italian saved message without changing total emulated frames."
+  },
+  "runtime_source_updates": {
+    "2026-10-30": {
+      "main.cpp": {
+        "before_sha256": "ff94c480fbf56ab60749ff1d2dcf2b409224ecdcae2123d71c5165ec43d34552",
+        "after_sha256": "451be69fdfc0007d33585858842d5740c064e0f68be9afb1b1c396eff310941b"
+      },
+      "configuration_header": "rtc_config.h",
+      "change": "Optional initial hardware RTC selection; strict calendar validation; the omitted-option clock remains 2026-09-05 12:00:00.",
+      "validation_scope": "ROM-free parser/CLI checks and four reviewed cold boots on one EN prepared diagnostic. The old default, new omitted option and explicit default match for 4388 frames, logs, images and SRAM; 21:00 selects native night. No in-session, weekday, Italian or Android claim.",
+      "historical_reports": "Earlier executable/source identities and their validation limits remain historical; no canonical binary is replaced."
+    },
+    "2026-11-03": {
+      "main.cpp": {
+        "before_sha256": "451be69fdfc0007d33585858842d5740c064e0f68be9afb1b1c396eff310941b",
+        "resource_limits_intermediate_sha256": "15d25e8ae6442b4f0f3c845f5994d2544fa00a1364f9a17670b06d321550cb15",
+        "secure_output_intermediate_sha256": "30ac6a0fa41cfee2553e4b6e1e9f05be2ea02157ffec2558afa35a01d7ddb8c6",
+        "after_sha256": "996e5d4050482781c9a19d14c5cc71351e0a6b86612046ec6366c4a9fe902c85"
+      },
+      "limits_header": "runtime_limits.h",
+      "secure_output_header": "secure_output.h",
+      "csv_output_header": "csv_output.h",
+      "change": "Bounded ROM/SRAM/savestate/script admission, ownership transfer for ROM bytes, cumulative command/frame/read/state/time/output budgets, descriptor-bound private no-replace output publication, and neutralized spreadsheet formula/control syntax in user watch labels.",
+      "validation_scope": "ROM-free C++ boundary tests cover limits, links, permissions, parent swaps and CSV field encoding; a clean rebuild against the pinned melonDS checkout passed. Existing private ROM/save/state behavior was not rerun in this unit.",
+      "historical_reports": "Earlier executable/source identities and gameplay evidence remain historical and are not attributed to this rebuilt frontend."
+    },
+    "2026-11-05": {
+      "main.cpp": {
+        "before_sha256": "996e5d4050482781c9a19d14c5cc71351e0a6b86612046ec6366c4a9fe902c85",
+        "after_sha256": "2309eb6f7e7a1f060be1d9c650fc8998f232746a5861e6ab2463ff61d757e52f"
+      },
+      "buffered_rows_header": {
+        "path": "buffered_rows.h",
+        "sha256": "eb273907c69675859c81f712312243e45055427c282679f907268ee162fec2be"
+      },
+      "frame_timing_header": {
+        "path": "frame_timing.h",
+        "sha256": "b14da39dcf7240c4469645e4b36965392e5f7ec72585dd52a64a45f9b782c87a"
+      },
+      "scene_observer_header": {
+        "path": "scene_observer.h",
+        "sha256": "4714679504dec4c7152dd9cc564fbe0370694496f3bf3a36ac43f40c0b634d29"
+      },
+      "change": "RunFrame-only host timing plus read-only IPKE map, position and active-object fields; session metadata records observer and initial trace state while commands.log records later trace changes; CSV file writes are buffered until each run block ends and formed rows are flushed best-effort before a run failure is rethrown.",
+      "validation_scope": "The current hash has ROM-free C++ timing/scene/buffering tests and a clean rebuild. The sequential tracing-off/on Cianwood pair and final tracing-on replay used the immediately preceding main.cpp hash 33da230285e09d06e46213d52869cb562285757f409226fa193c389d205aff32, before exception-safe diagnostic flushing and the TracePCInitial label; those replays produced byte-identical route RAM dumps, captures and roundtrip saves, but are not attributed to the current hash. The single ordered pair is not a performance conclusion.",
+      "historical_reports": "Earlier CSV schemas, route replays and executable/source identities remain historical and are not silently reinterpreted or attributed to the current executable."
+    }
   }
 }

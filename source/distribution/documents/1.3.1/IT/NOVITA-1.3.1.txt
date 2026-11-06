@@ -1,0 +1,94 @@
+SACRED GOLD PLUS
+Novita della 1.3.1 | Edizione italiana
+
+LA TUA AVVENTURA, CON PIU SCELTE
+Esplora Johto e Kanto in una continuazione indipendente di Sacred Gold di Drayano e Sacred Gold Plus originale. Tipo Folletto, mosse Folletto aggiuntive e camera panoramica esterna provengono dal progetto Plus originale. Questa guida presenta le edizioni italiana e inglese attuali e le aggiunte dalla 1.2.5.
+
+1. IL GIOCO E LE TUE IMPOSTAZIONI
+
+In Opzioni premi SELECT per le impostazioni Plus. Difficolta degli allenatori e livelli dei selvatici si scelgono separatamente; il limite resta 100. Plus controlla anche movimento dei Pokemon in lotta, caricamento dei personaggi e slot Wi-Fi. I servizi di rete dipendono dall'emulatore e dal servizio utilizzato.
+
+La camera classica di HeartGold e integrata in 52 interni e grotte; all'aperto resta quella panoramica Plus. La tasca principale della Borsa offre 252 slot, con capacita aggiuntiva nelle altre tasche. L'uso consecutivo delle Caramelle Rare conserva il menu Squadra e i normali passaggi di evoluzione e apprendimento mosse.
+
+Camera, Borsa, difficolta e movimento erano gia disponibili nella 1.2.5. Se arrivi dalla Plus 1.03 originale, la continuazione aggiunge anche dialoghi e interfacce in italiano, tastiera con accenti, caricamento NPC distribuito, cache dei menu di lotta, scelta dello slot Wi-Fi e oltre 200 correzioni ai testi. I nuovi strumenti descritti sotto si aggiungono a questa base.
+
+2. GUIDA E STRUMENTI QUOTIDIANI
+
+Apri Guida dal menu di campo: 429 voci su evoluzioni, strumenti importanti e MT, eventi speciali e allenamento. Usa i dati attuali del gioco e i nomi nativi di Pokemon e strumenti. Scorri categorie e pagine collegate con i pulsanti; L/R sposta le liste di cinque voci. Il ritorno da un collegamento ripristina pagina e posizione precedenti.
+
+Le nuove Opzioni Plus e la Guida usano finestre in stile nativo, cornici di selezione e aiuti contestuali. Applica conferma le modifiche Plus; annullare conserva le impostazioni precedenti. La pagina Shiny fa parte della stessa gestione delle impostazioni.
+
+Il lettore EV/IV gia presente resta nel riepilogo del Pokemon: L mostra gli EV, R gli IV e SELECT ripristina le statistiche normali. Guida di campo e lettore del riepilogo sono strumenti distinti. Entrambi funzionano senza cheat.
+
+3. ALLENAMENTO, CONSULENTI IV E TAPPI
+
+I consulenti IV nei PokeMart di Violapoli ed Ebanopoli usano Tappi Argento e Oro. Argento porta un IV a 31 o a un valore esatto da 0 a 31; Oro porta tutti e sei a 31. Sono modifiche reali degli IV e possono influire su allevamento e Introforza. Annullamento, valore gia uguale o pagamento rifiutato non consumano un Tappo.
+
+I Tappi Argento costano 10.000 dopo la prima Medaglia; quelli Oro 50.000 dopo la Lega. Ogni Medaglia di Johto assegna due Argento; ogni Medaglia di Kanto tre. Ottava e sedicesima Medaglia danno anche un Oro. La prima vittoria alla Lega assegna quattro Argento e due Oro; le successive quattro Argento e un Oro. La prima vittoria su Rosso assegna tre Oro.
+
+I vecchi save possono ritirare una volta le ricompense storiche ammesse; le precedenti rivincite della Lega non sono pagate retroattivamente. Se la Borsa e piena, i premi restano in attesa.
+
+Alla Pensione del Percorso 34 l'allenamento EV rapido costa 100 per EV aggiunto; riduzioni e azzeramenti sono gratuiti. Classic ammette 252 per statistica e 510 totali. Unlimited ammette 252 in ogni statistica dopo un avviso sul bilanciamento. Una regola piu restrittiva non cancella silenziosamente gli EV precedenti: riduci esplicitamente i valori incompatibili.
+
+I corsi gratuiti per i Pokemon depositati danno un livello ogni due ore e, facoltativamente, 32 EV all'ora verso un obiettivo scelto. Puoi scegliere tempo reale o tempo di gioco attivo. Restano le normali tariffe di ritiro della Pensione. Le uova dipendono dai passi. I risultati conservano le mosse e si applicano al ritiro; il contatto della Pensione sul Pokegear riferisce i progressi previsti.
+
+4. MODALITA SHINY E RICERCA DELLA SPECIE
+
+La seconda pagina Plus offre profili Classic e Pro indipendenti dalla difficolta. Classic usa 1/512 nelle generazioni ammesse. In Pro, il bersaglio scelto passa da 1/4096 a 1/2048, 1/1024 e 1/512 quando la catena completata raggiunge 10, 20 e 40. La nuova soglia vale dall'incontro generato successivamente. Nessuna soglia garantisce uno shiny.
+
+Catturare o mandare KO il bersaglio aumenta la catena. Un'altra specie ordinaria, la fuga, la sconfitta o il pareggio la interrompono; gli incontri esclusi la sospendono. Cambiare modalita o bersaglio azzera catena e carica; annullare conserva entrambe. I Pokemon gia generati non vengono ricalcolati.
+
+Search sceglie una specie vista dal gruppo di incontri nativo dell'area e rispetta canne disponibili, terreno, orario, forme e progressione. Richiede 40 passi validi. Prepara Search nel menu, conferma Applica e torna al campo libero. Una ricerca riuscita consuma la carica. Il SAVE normale conserva modalita, bersaglio, catena e stato casuale; il riavvio completo azzera la carica.
+
+Uova, regali, starter, scambi, Dono Segreto, erranti, Pokemon degli allenatori, Safari, gare, incontri doppi ed eventi forzati mantengono percorsi nativi separati. Gli incontri statici ordinari ammessi usano la probabilita base, senza bonus di catena.
+
+5. BOX PORTATILE
+
+Dalla Squadra ordinaria sul campo premi R per aprire il box Pokemon nativo. Il comando usa l'applicazione PC del gioco e le sue normali operazioni. Alcuni contesti impediscono l'apertura: segui il messaggio nel gioco e usa il salvataggio normale.
+
+L'immagine del box illustra questa interfaccia nativa aperta dalla Squadra. E una cattura reale del gioco 1.3.1; il registro delle immagini nel repository identifica la build originale della cattura.
+
+6. SPECIE, MOSSE E REGOLE DI LOTTA
+
+La revisione delle specie della 1.3 copre tutte le 493 specie e modifica voci selezionate. Sono interessate 67 specie: 50 hanno statistiche cambiate, due un secondo slot abilita aggiunto e 29 learnset ricevono 32 aggiunte livello/mossa. Le categorie si sovrappongono.
+
+Fra gli esempi: statistiche iniziali migliorate per Rattata/Raticate, maggiore resistenza fisica e accesso a Fangobomba per Tentacruel, piu resistenza prima di Trasformazione per Ditto, Tecnico come secondo slot nei nuovi Kricketune e Alternacura come secondo slot nei nuovi Meganium. I Pokemon posseduti conservano identita, IV, EV, mosse e abilita. Le statistiche interessate sono ricalcolate nei normali percorsi di caricamento del gioco; le mosse aggiunte per livello sono disponibili anche dal Ricordamosse.
+
+La difficolta Plus aggiunge nove sostituzioni mirate di mosse in sette allenatori. Normal conserva le squadre originali. Le modifiche generali a specie e learnset valgono in entrambe le modalita. La Ball della specie catturata appare anche nelle lotte contro allenatori quando il Pokedex la registra come catturata.
+
+Fuocofatuo ha precisione 85. Sguardofermo effettivo ignora le variazioni di elusione del bersaglio rispettando la soppressione delle abilita prevista dal gioco. Sono interventi selezionati, non un insieme completo di regole delle generazioni successive. Il repository contiene il confronto completo per specie e allenatori.
+
+7. CONTINUA LA TUA AVVENTURA
+
+Conserva il salvataggio normale corrente, i progressi e le impostazioni. Prima di aggiornare, salva nel gioco, chiudi completamente l'emulatore e individua il salvataggio effettivamente usato. Fai un backup di quel save raw e della ROM installata. Applica una sola patch corrispondente a un file separato e verifica lo SHA-256 completo nella guida di installazione.
+
+Prova il successore con una copia distinta del save: Continua, controlla progressi, Pokemon, Borsa compresi gli slot extra e impostazioni Plus, SAVE nel gioco, chiusura completa, avvio a freddo e di nuovo Continua. Poi sostituisci soltanto la ROM installata, mantenendo lingua, nome, percorso e associazione all'emulatore. Il save personale corrente resta nella sua posizione originale: non sostituirlo con quello di prova.
+
+Non servono nuova partita o reset delle impostazioni. Se manca Continua, fermati e correggi l'associazione del save. Dopo aver cambiato ROM non caricare un vecchio savestate. Conserva il backup se torni a un gioco precedente, che potrebbe non esporre gli slot extra della Borsa o i dati nuovi. Qui non e incluso un catalogo cheat non verificato: leggi Cheats/LEGGIMI-CHEAT.txt.
+
+SOME BUGS FIXED.
+
+Fix retail conservati dalle versioni precedenti: la fascia neutra della Peso Ball 102,4-204,7 kg era gia corretta nella Plus 1.1; Grandine dopo Scendineve era gia corretta nella Plus 1.03. Rapid Ball e Velox Ball seguono regole distinte.
+
+Mosse e Pokemon: correzioni di Rogodenti/Magidifesa, stato Ira/Trasformazione, ricarica delle statistiche trasformate, statistiche/abilita delle forme degli allenatori, statistiche di Giratina dopo il PC e controlli IA per Pellearsa, Elettrorapid, immunita e cambi ammessi.
+
+Campo e premi: fix mirati per salto dell'accompagnatore avvelenato, orientamento di Cascata, sei caselle di erba invisibile sui Percorsi 43/44, guardia della Lega dopo la lista GS Cup e premi di Franz/Alfredo con tasche piene. Altre correzioni riguardano Lettore GB dopo evoluzione e apprendimento mosse, ore di gioco e contatore Pokeathlon.
+
+MORE SOME BUGS FIXED.
+
+Lotta e IA: tipo Folletto e Conversione2, Spettro contro Drago/Buio, Ferropalla/Gravita, punteggi di mosse selezionate e ciclo dei tipi che poteva bloccare il ritorno al menu mosse.
+
+Pokemon ed eventi: parametri evolutivi di Mantyke, Feebas, Burmy e Combee; record di pesca selezionati; movimento di Mew; premio di Steven e selezione delle scene Ho-Oh/Lugia.
+
+Strumenti, save e interfacce: quantita del pickup nel Tunnel di Fiordoropoli, doni con Borsa piena, recupero delle impostazioni Plus, protezione degli slot extra e dei flag che si sovrapponevano ai dati Rubrica/Chatot, navigazione e transizioni Guida/Opzioni. Restano anche i fix precedenti come Cartavetro di Garchomp, Volo di Claydol e Nottesferza di Scizor.
+
+Il registro dettagliato distingue test mirati su codice/dati, scene giocate e segnalazioni ancora aperte. Non dichiara verificati tutti i bug storici o ogni save:
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/BUG-FIXES-1.3.1.md
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/source/docs/known-bugs-hgss.md
+https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md
+
+CREDITI E RIFERIMENTI
+
+Drayano; mikelan / Mikelan98; NefariousnessNo3436; @JD48096761 e i contributori originali. Tipo Folletto, mosse Folletto aggiuntive e camera panoramica esterna provengono dal progetto Plus originale. I cinque PDF originali del gioco e il riferimento allenatori mantengono i crediti degli autori. Sono riferimenti storici di gioco e possono descrivere differenze rispetto alla Plus attuale.
+
+Questa e una continuazione amatoriale indipendente, non un passaggio di consegne ufficiale. Strumenti assistiti dall'IA, incluso Codex, supportano ricerca, implementazione, traduzione, test e documentazione. I diritti di terzi restano ai rispettivi titolari. Le immagini conservano le identita delle catture originali. Emulatore, BIOS, save e ROM non sono inclusi.

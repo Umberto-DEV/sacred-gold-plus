@@ -42,7 +42,9 @@ class ArmTests(unittest.TestCase):
         from banco import SAVE,S_STATO_SCRITTURA
         for offset in (0,0x200):
             with self.subTest(offset=offset):
-                self.setUp();b=self.b;b.bag();manager=0x02234000
+                import struct
+                self.setUp();b=self.b;bag=b.bag();manager=0x02234000
+                b.mu.mem_write(bag+251*4,struct.pack('<HH',252,3))
                 # Establish ownership of some extension; it must not authorize other bytes.
                 self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)
                 b.flash[0x70000+offset:0x70000+offset+452]=b'FOREIGN!'+b'\x11'*444
@@ -316,4 +318,36 @@ class ArmTests(unittest.TestCase):
         self.assertEqual(b.original_saves,1)
         self.assertEqual(b.writes,[])
         self.assertEqual(b.read32(S_STATO_SCRITTURA),4)
+
+    def test_foreign_inactive_destination_native_commit_loses_extra_slots_on_cold_load(self):
+        """Reproducer: native SAVE succeeds while the extension refuses foreign bytes.
+
+        The native commit advances generation/bank after this hook returns.  On
+        the next cold load the active bank therefore has no matching extension,
+        so the 108 extra slots degrade to the 486-slot native inventory.  This
+        test records the current safety trade-off; it does not authorize
+        overwriting the foreign destination.
+        """
+        import struct
+        from banco import SAVE,S,S_STATO_CARICAMENTO,S_STATO_SCRITTURA
+        b=self.b;bag=b.bag();manager=0x02234000
+        b.mu.mem_write(bag+251*4,struct.pack('<HH',252,3))
+        # With active bank 0, the extension prepares inactive bank 1 at 0x70000.
+        foreign=b'FOREIGN!'+b'\x11'*444
+        b.flash[0x70000:0x70000+452]=foreign
+        before=bytes(b.flash);writes=len(b.writes)
+        self.assertEqual(b.call('sgp_cap_save',SAVE,manager),2)  # vanilla success
+        self.assertEqual(b.original_saves,1)
+        self.assertEqual(b.read32(S_STATO_SCRITTURA),2)
+        self.assertEqual(len(b.writes),writes)
+        self.assertEqual(bytes(b.flash),before)                  # foreign bytes preserved
+        # Model the native commit performed after the hook: generation 2 and
+        # bank 1 become authoritative.  No extension record exists for it.
+        b.store(SAVE+0x23010,2)
+        b.mu.mem_write(SAVE+0x2330A,b'\1\0')
+        b.store(S,0)
+        reloaded=b.bag()
+        self.assertEqual(b.read32(S_STATO_CARICAMENTO),6)        # foreign/absent extension
+        self.assertEqual(b.slot(reloaded,0,251),(0,0))           # extra slot is gone
+        self.assertEqual(bytes(b.flash[0x70000:0x70000+452]),foreign)
 if __name__=='__main__':unittest.main()

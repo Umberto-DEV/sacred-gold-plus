@@ -116,17 +116,27 @@ def read_bank_raw(data: bytes):
     cipher as message_codec.Bank; kept independent here so this module has
     no import-time dependency on the translation/ package."""
     count, key = struct.unpack_from('<HH', data)
-    if 4 + 8 * count > len(data):
+    if count > 4096:
+        raise ValueError('Message count exceeds bank limit')
+    table_end = 4 + 8 * count
+    if table_end > len(data):
         raise ValueError('Truncated allocation table')
-    messages = []
+    allocations = []
     for index in range(count):
         table_key = (765 * (index + 1) * key) & 0xFFFF
         table_key |= table_key << 16
         offset, size = struct.unpack_from('<II', data, 4 + 8 * index)
         offset ^= table_key
         size ^= table_key
-        if offset < 4 + 8 * count or offset + size * 2 > len(data):
+        end = offset + size * 2
+        if not size or offset < table_end or end > len(data):
             raise ValueError(f'Message {index} exceeds bank bounds')
+        allocations.append((offset, end, size))
+    ordered = sorted((start, end) for start, end, _ in allocations)
+    if any(current[0] < previous[1] for previous, current in zip(ordered, ordered[1:])):
+        raise ValueError('Message extents overlap')
+    messages = []
+    for index, (offset, _end, size) in enumerate(allocations):
         encrypted = struct.unpack_from(f'<{size}H', data, offset)
         seed = ((index + 1) * 596947) & 0xFFFF
         words = []

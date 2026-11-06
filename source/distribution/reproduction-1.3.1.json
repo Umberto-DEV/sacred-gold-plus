@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "status": "manual-test-only-not-runtime-accepted",
+  "through": "identity",
+  "ui_config": {
+    "schema": 1,
+    "kind": "test-candidate",
+    "scene_work_calls": 4,
+    "scene_glyph_budget": 8,
+    "scene_last_start_line": 240
+  },
+  "languages": {
+    "EN": {
+      "input": {
+        "id": "plus-1.3-en",
+        "label": "Sacred Gold Plus V1.3 EN (device v4)",
+        "sha256": "179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90",
+        "bytes": 147345256
+      },
+      "inert_sha256": "da235d1ec94550358c6a8aaf21360781b8366b2934d949bb42280021f96585db",
+      "target": {
+        "name": "Sacred Gold Plus 1.3.1 EN.nds",
+        "sha256": "90435d3c3a140774fea773ba16039a7eed8aa262bb5b2377217714b6f8d5fc18",
+        "bytes": 152543400
+      },
+      "mechanics_config": {
+        "schema": 1,
+        "language": "EN",
+        "stage_options": {
+          "controls": {
+            "mode": "inert",
+            "geometry": {
+              "bgId": 4,
+              "left": 1,
+              "top": 18,
+              "width": 16,
+              "height": 2,
+              "palette": 13,
+              "baseTile": 955
+            },
+            "variant": "compact"
+          },
+          "portable": {
+            "mode": "inert",
+            "activation": {
+              "bridge": 0,
+              "input": 0,
+              "prompt": 0,
+              "travel_mask": 3
+            }
+          },
+          "rematches": {
+            "mode": "inert"
+          }
+        }
+      },
+      "manual_activation_fields": [
+        {
+          "owner": "controls",
+          "rom_offset": 1197280,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197844,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197848,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197852,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197864,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "rematches",
+          "rom_offset": 152542638,
+          "bytes": 1,
+          "before": 0,
+          "after": 1
+        }
+      ]
+    },
+    "IT": {
+      "input": {
+        "id": "plus-1.3-it",
+        "label": "Sacred Gold Plus V1.3 IT (device v4)",
+        "sha256": "2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156",
+        "bytes": 153228136
+      },
+      "inert_sha256": "73044f5eac0cf03d5f623c4f2a867b25c7f09cb28dc724247abf3a0f757e2f12",
+      "target": {
+        "name": "Sacred Gold Plus 1.3.1 IT.nds",
+        "sha256": "420ec8b8d5dbf30d209849bf18a439046a666a710656e01966a1f217d70f059a",
+        "bytes": 158786412
+      },
+      "mechanics_config": {
+        "schema": 1,
+        "language": "IT",
+        "stage_options": {
+          "controls": {
+            "mode": "inert",
+            "geometry": {
+              "bgId": 4,
+              "left": 1,
+              "top": 18,
+              "width": 16,
+              "height": 2,
+              "palette": 13,
+              "baseTile": 955
+            },
+            "variant": "compact"
+          },
+          "portable": {
+            "mode": "inert",
+            "activation": {
+              "bridge": 0,
+              "input": 0,
+              "prompt": 0,
+              "travel_mask": 3
+            }
+          },
+          "rematches": {
+            "mode": "inert"
+          }
+        }
+      },
+      "manual_activation_fields": [
+        {
+          "owner": "controls",
+          "rom_offset": 1197280,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197844,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197848,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197852,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "portable",
+          "rom_offset": 1197864,
+          "bytes": 4,
+          "before": 0,
+          "after": 1
+        },
+        {
+          "owner": "rematches",
+          "rom_offset": 158785650,
+          "bytes": 1,
+          "before": 0,
+          "after": 1
+        }
+      ]
+    }
+  },
+  "activation_scope": "Exactly six data booleans on the completely pinned inert input; final whole-file hash required; no production acceptance or measured proof is created"
+}

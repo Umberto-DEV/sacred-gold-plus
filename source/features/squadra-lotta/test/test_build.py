@@ -86,14 +86,13 @@ class TestBuild(unittest.TestCase):
             with self.assertRaises(Rifiuto):
                 squadra_lotta._carica_build(folder)
 
-    def test_registro_prenota_blocco_e_scala_libero(self):
+    def test_registro_prenota_blocco_e_rifiuta_sovrapposizione_sintetica(self):
         path = REPO / 'source/docs/arm9-reserve-map.json'
         m = json.loads(path.read_text())
         squadra_lotta._controlla_mappa(m)
         overlap = copy.deepcopy(m)
-        free = next(b for b in overlap['blocchi'] if b['nome'] == 'libero.1.2.finale')
-        free['base'] = '0x023dbe00'
-        free['bytes'] += 256
+        overlap['blocchi'].append({
+            'nome': 'mutante.libero', 'base': '0x023dbe00', 'bytes': 256})
         with self.assertRaises(Rifiuto):
             squadra_lotta._controlla_mappa(overlap)
 

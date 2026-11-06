@@ -104,14 +104,16 @@ Zone 1.2 (`0x023D8000` upward):
 |---|---:|---|---|---|
 | `0x023D8000` | 32 | `canarino.basso` | base canary | no |
 | `0x023D8020` | 32 | `intestazione` | `SGP2` header: magic, schema, base, end, 16 B fingerprint of the register's stable part | no |
-| `0x023D8040` | 64 | `libero.1.2.basso` | free, assignable — the window C1 had carved for the camera table, returned in 1.2.3 | no |
+| `0x023D8040` | 64 | `sgp.cascata` | Waterfall search guard (24 B code, padding and canary) | no |
 | `0x023D8080` | 128 | `padding.allineamento.d1` | alignment padding, not assignable | no |
 | `0x023D8100` | 2 048 | `sgp.plus` | Plus difficulty code and tables, plus the save-chunk code blob; 756 B used | no |
 | `0x023D8900` | 256 | `sgp.npc` | NPC model cap; 160 B used (blob 144 B from 1.2.1, state 16 B) | no |
 | `0x023D8A00` | 16 | `canarino.npc` | canary | no |
 | `0x023D8A10` | 136 | `camera.eccezioni.1.2` | camera exception table (68 u16 LE entries, ascending); moved here in 1.2.3 | no |
 | `0x023D8A98` | 16 | `canarino.camera` | canary | no |
-| `0x023D8AA8` | 88 | `libero.1.2` | gap | no |
+| `0x023D8AA8` | 32 | `sgp.gb_sounds_evolution` | HG-F24 evolution-audio reload wrapper | no |
+| `0x023D8AC8` | 36 | `sgp.pokegear_autocull` | signed X/Y culler thunk for overlay 101 | no |
+| `0x023D8AEC` | 20 | `sgp.waterfall_facing` | HG-F02 South-facing descent wrapper | no |
 | `0x023D8B00` | 1 024 | `sgp.anim` | procedural battle animation (v4); block **full**, 1024/1024 | no |
 | `0x023D8F00` | 256 | `sgp.salvataggio` | save chunk 32 B buffer plus canary (zero in ROM); 48 B used | no |
 | `0x023D9000` | 4 096 | `sgp.opzioni` | Options page and the Continue prompt (v4); 4052 B used | no |
@@ -123,7 +125,8 @@ Zone 1.2 (`0x023D8000` upward):
 | `0x023DBD00` | 256 | `sgp.borsa_lotta` | battle item cache getter | no |
 | `0x023DBE00` | 256 | `sgp.squadra_lotta` | battle move cache getters | no |
 | `0x023DBF00` | 11 264 | `sgp.capacita_borsa` | expanded Bag code and state; state at +0x1800 | yes |
-| `0x023DEB00` | 64 | `libero.1.2.finale` | free | no |
+| `0x023DEB00` | 32 | `sgp.soul_dew` | rule-13 mask for custom Soul Dew clauses; added in 1.3.1 | no |
+| `0x023DEB20` | 32 | `sgp.wonder_card` | tag-6 decoration-domain validator; added in 1.3.1 | no |
 
 Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 
@@ -142,14 +145,14 @@ Zone 1.1, unchanged and frozen (`0x023DEB40` upward):
 The zone 1.1 blocks hold the two public addresses in the project. They never move, and the
 anchors their public consumers use are never touched.
 
-Free space left in zone 1.2, recomputed from the register on 20/09/2026 (sum of the
+Free space left in zone 1.2, recomputed from the register on 05/11/2026 (sum of the
 `docs/arm9-reserve-map.json` blocks typed `libero` with `assegnabile: true` — do not trust a
-cached figure, recompute it): **152 B**, in three blocks — 64 B at `0x023D8040`
-(`libero.1.2.basso`), 88 B at `0x023D8AA8` (`libero.1.2`) and 64 B at `0x023DEB00`
-(`libero.1.2.finale`). It was 304 B until 1.2.3 grew the camera exception table from 24 to
-68 entries: the table no longer fitted in the 64 B window C1 had carved at `0x023D8040`
-(above it sits `padding.allineamento.d1`, explicitly not assignable, and then `sgp.plus`),
-so it moved into `libero.1.2` and gave those 64 B back as `libero.1.2.basso`. The pool that used to sit at
+cached figure, recompute it): **0 B**. The final 20-byte gap at `0x023D8AEC` is now the
+reviewed `sgp.waterfall_facing` owner. The historic
+64-byte window at `0x023D8040` is owned by `sgp.cascata`, not free; the earlier
+table and cached total were stale. The former 88-byte gap lost 32 B to the
+HG-F24 evolution-audio wrapper, 36 B to the Pokégear AutoCull thunk and 20 B to HG-F02; the final block lost 32 B to the confined
+Soul Dew rule-13 fix and the final 32 B to the Wonder Card decoration guard. The pool that used to sit at
 `0x023DAD00` is gone: `sgp.borsa` (2 048 B), `sgp.anim2` (2 048 B), `sgp.borsa_lotta` (256 B),
 `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B) have all been carved out of it
 since 1.2.1 — each in the same logical commit as its register entry, per the reservation
@@ -230,8 +233,8 @@ python3 verifiche/riserva_arm9.py <your rom.nds> --manifest docs/arm9-reserve-ma
 
 The path used to be written `../docs/arm9-reserve-map.json`, which from `source/` is the
 repository root, where there is no `docs/` folder: the command ended in a traceback. Against
-today's register (20/09/2026) the corrected command reports **152 B assignable** — 64 B at
-`0x023D8040`, the 88 B gap at `0x023D8AA8` and the 64 B block at `0x023DEB00` — and exits 0.
+today's register (04/11/2026) the corrected command reports **20 B assignable** at
+`0x023D8AEC` — and exits 0.
 (Earlier revisions of
 this page quoted 16 176 B / 15 936 B, from before `sgp.borsa`, `sgp.anim2`, `sgp.borsa_lotta`,
 `sgp.squadra_lotta` and `sgp.capacita_borsa` consumed the rest of the pool; that figure is

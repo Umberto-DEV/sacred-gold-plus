@@ -117,15 +117,27 @@ def render(words):
 
 def read_bank(data):
     count, key = struct.unpack_from('<HH', data)
-    assert 4 + 8*count <= len(data)
-    messages = []
+    if count > 4096:
+        raise ValueError('Message count exceeds bank limit')
+    table_end = 4 + 8 * count
+    if table_end > len(data):
+        raise ValueError('Truncated allocation table')
+    allocations = []
     for index in range(count):
         table_key = (765*(index+1)*key) & 0xFFFF
         table_key |= table_key << 16
         offset, size = struct.unpack_from('<II',data,4+8*index)
         offset ^= table_key
         size ^= table_key
-        assert offset >= 4 + 8*count and offset+size*2 <= len(data), (index, offset, size, len(data))
+        end = offset + size*2
+        if not size or offset < table_end or end > len(data):
+            raise ValueError('Message %d exceeds bank bounds' % index)
+        allocations.append((offset, end, size))
+    ordered = sorted((start, end) for start, end, _ in allocations)
+    if any(current[0] < previous[1] for previous, current in zip(ordered, ordered[1:])):
+        raise ValueError('Message extents overlap')
+    messages = []
+    for index, (offset, _end, size) in enumerate(allocations):
         encrypted = struct.unpack_from(f'<{size}H',data,offset)
         seed = ((index+1)*596947)&0xFFFF
         words = []

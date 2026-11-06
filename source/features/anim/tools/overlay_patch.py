@@ -84,6 +84,7 @@ def crc16(dati, crc=0xFFFF):
 BLZ_N = 0x1002
 BLZ_F = 0x12
 BLZ_SOGLIA = 2
+BLZ_MAX_DECOMPRESSA = 0x400000
 
 
 def blz_leggi_trailer(flusso):
@@ -99,7 +100,7 @@ def blz_leggi_trailer(flusso):
     return hdr_len, enc_len, inc_len, len(flusso) - enc_len, len(flusso) + inc_len
 
 
-def blz_decomprimi(flusso):
+def blz_decomprimi(flusso, atteso=None):
     """DECODIFICATORE A — trascrizione fedele di `MIi_UncompressBackward`.
 
     Lavora IN LUOGO su un buffer lungo quanto l'immagine finale, esattamente
@@ -108,6 +109,11 @@ def blz_decomprimi(flusso):
     """
     n = len(flusso)
     hdr_len, enc_len, inc_len, grezzo, dim = blz_leggi_trailer(flusso)
+    esigi(dim <= BLZ_MAX_DECOMPRESSA,
+          "BLZ: dimensione decompressa %d oltre la RAM DS" % dim)
+    if atteso is not None:
+        esigi(dim == atteso,
+              "BLZ: dimensione decompressa %d diversa dalla y9 (%d)" % (dim, atteso))
     buf = bytearray(dim)
     buf[:n] = flusso
     src = n - hdr_len
@@ -506,7 +512,7 @@ class Rom:
             esigi(v["dim_compressa"] <= len(crudo),
                   "ov%03d: la tabella dichiara %d B compressi ma il file ne ha %d"
                   % (oid, v["dim_compressa"], len(crudo)))
-            img = blz_decomprimi(crudo[:v["dim_compressa"]])
+            img = blz_decomprimi(crudo[:v["dim_compressa"]], v["ram_size"])
         else:
             img = crudo
         return v, crudo, img
@@ -649,7 +655,7 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
         else:
             corpo = blz_comprimi_ottimo(bytes(nuova), bersaglio=len(crudo))
             # round-trip con il decodificatore A, in luogo come fa il gioco
-            esigi(blz_decomprimi(corpo) == bytes(nuova),
+            esigi(blz_decomprimi(corpo, len(nuova)) == bytes(nuova),
                   "C4: decompresso -> ricompresso -> decompresso NON coincide")
             t = blz_leggi_trailer(corpo)
             r["cancelli"]["C4_roundtrip_blz"] = {

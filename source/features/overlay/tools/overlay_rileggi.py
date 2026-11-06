@@ -63,7 +63,7 @@ def crc16_header(dati):
 
 
 # ------------------------------------------------------- decodificatore «B»
-def srotola_blz(flusso):
+def srotola_blz(flusso, atteso=None):
     """Ritorna (immagine, diagnostica). Solleva Rosso se il flusso e' malformato
     o non decomprimibile in luogo."""
     n = len(flusso)
@@ -77,6 +77,9 @@ def srotola_blz(flusso):
     prefisso = flusso[:n - codificato]
     zona = flusso[n - codificato:n - testa]
     finale = n + aumento
+    pretendi(finale <= 0x400000, "BLZ: immagine oltre la RAM DS")
+    if atteso is not None:
+        pretendi(finale == atteso, "BLZ: dimensione diversa dalla y9")
 
     # rovesciata, `zona` e' una sequenza LZ77 in avanti
     z = bytes(reversed(zona))
@@ -159,7 +162,7 @@ def immagine(dati, e):
     if e["flag"] & 1:
         pretendi(e["dim"] <= len(corpo),
                  "y9 dichiara %d B compressi, la FAT ne da' %d" % (e["dim"], len(corpo)))
-        return srotola_blz(corpo[:e["dim"]])
+        return srotola_blz(corpo[:e["dim"]], e["ram_size"])
     return bytes(corpo), {"compresso": False}
 
 

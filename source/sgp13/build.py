@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 import tempfile
 
-from . import space
+from . import admission, space
 
 
 def source_snapshot():
@@ -25,8 +25,7 @@ def source_snapshot():
     paths.extend(root / name for name in ('quality-audit/hgss_text.py',
                  'quality-audit/misura_larghezza.py', 'translation/message_codec.py',
                  'features/borsa/tools/scr_disasm.py'))
-    return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
-            for p in sorted(paths)}
+    return admission.source_snapshot(root, paths)
 
 
 def write_new(path, data):
@@ -50,18 +49,21 @@ def build(base, output, charmap, work_dir, report_path=None):
     base, output, charmap, work_dir = map(Path, (base, output, charmap, work_dir))
     if output.exists() or (report_path and Path(report_path).exists()):
         raise FileExistsError('choose a new development output/report; existing files are preserved')
-    data = base.read_bytes()
-    language = space.identify(data)
-    if not charmap.is_file():
-        raise FileNotFoundError('the private reference charmap is required')
+    data, language, input_hash = admission.read_contract(
+        base, space.input_contracts(), '1.2.5 ROM')
+    charmap_data, charmap_hash = admission.read_bounded(
+        charmap, admission.MAX_CHARMAP_BYTES, 'reference charmap',
+        expected_sha256=save_ui.CHARMAP_SHA)
     command_path = charmap.parent / 'tools/py_scripts/scrcmd.json'
     commands, command_hash = mew.load_commands(command_path)
     sources = source_snapshot()
-    charmap_hash = hashlib.sha256(charmap.read_bytes()).hexdigest()
     output.parent.mkdir(parents=True, exist_ok=True)
     work_dir.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='sgp13-', dir=work_dir) as scratch_dir:
         scratch = Path(scratch_dir)
+        authenticated_charmap = scratch / 'authenticated-charmap.txt'
+        authenticated_charmap.write_bytes(charmap_data)
+        os.chmod(authenticated_charmap, 0o600)
         stages = []
 
         def record(name, path, details):
@@ -72,7 +74,7 @@ def build(base, output, charmap, work_dir, report_path=None):
         expanded.write_bytes(space.expand_rom(data))
         record('space', expanded, {'arena_base': hex(space.RESERVE_BASE), 'original_file_ids_preserved': True})
         trained = scratch / '02-training.nds'
-        training_report = training.install(expanded, trained, language, charmap, scratch / 'training')
+        training_report = training.install(expanded, trained, language, authenticated_charmap, scratch / 'training')
         record('training', trained, training_report)
         from sgp12.rom import Arm9
         flag_arm = Arm9(trained)
@@ -90,7 +92,7 @@ def build(base, output, charmap, work_dir, report_path=None):
         mew_path = scratch / '02c-mew.nds'
         mew_path.write_bytes(mew_data)
         record('mew', mew_path, mew_report)
-        save_ui_data, save_ui_report = save_ui.apply(mew_data, language, charmap)
+        save_ui_data, save_ui_report = save_ui.apply(mew_data, language, authenticated_charmap)
         save_ui_path = scratch / '02d-save-ui.nds'
         save_ui_path.write_bytes(save_ui_data)
         record('save-ui', save_ui_path, save_ui_report)
@@ -108,17 +110,17 @@ def build(base, output, charmap, work_dir, report_path=None):
         personal.write_bytes(personal_data)
         record('species', personal, species_report)
         styled = scratch / '05-plus-ui.nds'
-        plus_report = plus_ui.install(personal, styled, language, charmap, scratch / 'plus-ui')
+        plus_report = plus_ui.install(personal, styled, language, authenticated_charmap, scratch / 'plus-ui')
         record('plus-ui', styled, plus_report)
         shiny_path = scratch / '05b-shiny.nds'
         shiny_data, shiny_report = shiny.install(styled.read_bytes(), language,
             training_report['symbols'], plus_report['symbols'], scratch / 'shiny')
         shiny_path.write_bytes(shiny_data)
         record('shiny', shiny_path, shiny_report)
-        resource, resource_report = content.build_from_rom(shiny_path, language, charmap)
+        resource, resource_report = content.build_from_rom(shiny_path, language, authenticated_charmap)
         (scratch / 'guide-content.bin').write_bytes(resource)
         guided = scratch / '06-guide.nds'
-        guide_report = guide.install(shiny_path, guided, resource, language, charmap, scratch / 'guide')
+        guide_report = guide.install(shiny_path, guided, resource, language, authenticated_charmap, scratch / 'guide')
         record('guide', guided, {**guide_report, 'source_content': resource_report})
         final = scratch / '07-identity.nds'
         branded, banner_report = title.apply_banner(guided.read_bytes())
@@ -137,12 +139,10 @@ def build(base, output, charmap, work_dir, report_path=None):
             if hashlib.sha256(final_arm.leggi(address, size)).hexdigest() != digest:
                 raise ValueError('Plus extension changed after verified installation')
         composition['plus_extension_preserved_after_later_stages'] = True
-        if (sources != source_snapshot()
-                or charmap_hash != hashlib.sha256(charmap.read_bytes()).hexdigest()
-                or command_hash != hashlib.sha256(command_path.read_bytes()).hexdigest()):
+        if sources != source_snapshot():
             raise ValueError('source changed during build; output was not published')
         result = {'version': plus_ui.VERSION, 'language': language,
-                  'input_sha256': hashlib.sha256(data).hexdigest(),
+                  'input_sha256': input_hash,
                   'output_sha256': stages[-1]['sha256'], 'output_bytes': stages[-1]['bytes'],
                   'stages': stages, 'composition': composition,
                   'source_sha256': sources, 'charmap_sha256': charmap_hash,

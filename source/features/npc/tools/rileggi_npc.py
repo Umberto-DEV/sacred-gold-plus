@@ -31,6 +31,8 @@ import json
 import struct
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from sgp12.rom import valida_layout_arm9
 
 
 class Rosso(Exception):
@@ -70,16 +72,8 @@ class Arm9RO:
         self.off9 = struct.unpack_from("<I", self.raw, 0x20)[0]
         self.ram9 = struct.unpack_from("<I", self.raw, 0x28)[0]
         self.siz9 = struct.unpack_from("<I", self.raw, 0x2C)[0]
-        tab0, tab1, dati0 = struct.unpack_from("<3I", self.raw, self.off9 + 0xBA0)
-        self.segmenti = [(self.ram9, self.off9, dati0 - self.ram9)]
-        p = self.off9 + (tab0 - self.ram9)
-        fine = self.off9 + (tab1 - self.ram9)
-        off = self.off9 + (dati0 - self.ram9)
-        while p < fine:
-            ram, size, _bss = struct.unpack_from("<3I", self.raw, p)
-            self.segmenti.append((ram, off, size))
-            off += size
-            p += 12
+        _t0, _t1, _d0, _sections, self.segmenti = valida_layout_arm9(
+            self.raw, self.off9, self.ram9, self.siz9)
 
     def off(self, ram, n=1):
         for base, o, size in self.segmenti:
@@ -104,7 +98,7 @@ def bl_decode(sito, quattro_byte):
 
 
 # --------------------------------------------------- BLZ, decoder «in avanti»
-def blz_forward(flusso):
+def blz_forward(flusso, atteso=None):
     """Decoder scritto da zero: rovescia la parte codificata e la legge come
     un LZ77 IN AVANTI su un buffer separato (mai in luogo), poi rovescia il
     risultato. Verifica anche l'invariante che il gioco esige (distanza <=
@@ -121,6 +115,9 @@ def blz_forward(flusso):
     prefisso = flusso[:n - enc_len]
     zona = flusso[n - enc_len:n - hdr_len]
     finale = n + inc_len
+    pretendi(finale <= 0x400000, "BLZ: immagine oltre la RAM DS")
+    if atteso is not None:
+        pretendi(finale == atteso, "BLZ: dimensione diversa dalla y9")
 
     z = bytes(reversed(zona))
     attesi = finale - len(prefisso)
@@ -172,7 +169,7 @@ def immagine_overlay(dati, e):
     corpo = dati[e["inizio"]:e["fine"]]
     if e["flag"] & 1:
         pretendi(e["dim"] <= len(corpo), "y9 dichiara %d B compressi, la FAT ne da' %d" % (e["dim"], len(corpo)))
-        return blz_forward(bytes(corpo[:e["dim"]]))
+        return blz_forward(bytes(corpo[:e["dim"]]), e["ram_size"])
     return bytes(corpo)
 
 

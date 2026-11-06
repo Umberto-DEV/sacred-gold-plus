@@ -14,6 +14,7 @@ import sys
 
 import ndspy.narc
 import ndspy.rom
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'translation'))
@@ -54,7 +55,7 @@ def build(source_path, charmap_path, out, baseline_r4=False):
         else:
             chars[code] = value
     nds = ndspy.rom.NintendoDSRom(source)
-    main = nds.loadArm9()
+    main = ndspy_load_arm9_sicuro(nds)
     messages = ndspy.narc.NARC(nds.getFileByName('a/0/2/7'))
     original_messages = list(messages.files)
     bank = Bank(messages.files[302])
@@ -90,7 +91,7 @@ def build(source_path, charmap_path, out, baseline_r4=False):
     messages.files[302] = bank.save()
     result, changes = append_files(result, {'a/0/2/7': messages.save()}, reuse_existing=True)
     check = ndspy.rom.NintendoDSRom(result)
-    actual = check.loadArm9()
+    actual = ndspy_load_arm9_sicuro(check)
     require(actual.sections[1].data == main.sections[1].data, 'ITCM decompression mismatch')
     require(actual.sections[2].data == main.sections[2].data, 'DTCM changed')
     require(check.arm7 == nds.arm7 and check.arm9OverlayTable == nds.arm9OverlayTable

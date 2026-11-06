@@ -15,6 +15,9 @@ from pathlib import Path
 import ndspy.rom
 import ndspy.codeCompression
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+from sgp12.blz import ndspy_decomprimi_sicuro, ndspy_load_overlays_sicuri
+
 
 def sha(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
@@ -31,7 +34,7 @@ def main() -> int:
     arm9 = rom.arm9
     # ndspy espone arm9 gia' scompattato se lo era; proviamo comunque il BLZ.
     try:
-        dec = ndspy.codeCompression.decompress(arm9)
+        dec = ndspy_decomprimi_sicuro(arm9)
         if len(dec) > len(arm9):
             arm9 = dec
             compresso = True
@@ -49,7 +52,7 @@ def main() -> int:
         "sha256": sha(arm9),
     })
 
-    ovs = rom.loadArm9Overlays()
+    ovs = ndspy_load_overlays_sicuri(rom)
     for oid in sorted(ovs):
         ov = ovs[oid]
         data = ov.data

@@ -19,6 +19,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from secure_output import write_json_new  # noqa: E402
 RILEVA = Path(__file__).resolve().parents[3] / "verifiche" / "rileva_crash.py"
 BERSAGLI = [(116, "diversi"), (247, "diversi"), (248, "diversi"), (249, "diversi"),
             (119, "diversi"), (250, "diversi"), (251, "diversi"), (252, "diversi"),
@@ -103,8 +105,7 @@ def main():
               f"P3 {r['base'].get('P3_crash')}/{r[a.etichetta_cand].get('P3_crash')} "
               f"P4 {r['base'].get('P4_colori')}/{r[a.etichetta_cand].get('P4_colori')} "
               f"diff {r.get('percento_diverso', 0.0)}%")
-    Path(a.json).write_text(json.dumps({"verdi": verdi, "totale": len(esito), "mappe": esito},
-                                       indent=2))
+    write_json_new(a.json, {"verdi": verdi, "totale": len(esito), "mappe": esito})
     print(f"\n{verdi}/{len(esito)} verdi")
     return 0 if verdi == len(esito) else 1
 

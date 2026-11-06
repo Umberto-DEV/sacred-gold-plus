@@ -37,14 +37,7 @@ typedef sgp_train_u64 u64;
 #define LEVEL FN(0x0206FD70,u32 (*)(void *))
 #define ATTR FN(0x02077D88,u32 (*)(u16,u32,u32))
 #define MAGIC 0x31544E52u
-/* All persistent state is encoded by journal.c, never by dumping this struct. */
-typedef struct {
- u32 magic; void *save; u32 enabled,writable,record_status,preview_slot,preview_valid;
- sgp_train_journal journal;
- sgp_training_request request;
- u8 primary[256],mirror[256],record[256];
- u32 shiny_admitted;
-} TrainingState;
+#include "state.h"
 #define S ((TrainingState *)0x023D3000u)
 _Static_assert(sizeof(TrainingState)<=0x1000,"training state overflow");
 static void copy_bytes(void *to,const void *from,u32 n){u8 *a=to;const u8 *b=from;while(n--)*a++=*b++;}

@@ -36,7 +36,7 @@ from __future__ import annotations
 
 import struct
 
-from ..rom import Arm9, Rifiuto, esigi, sha
+from ..rom import Arm9, Rifiuto, esigi, sha, valida_layout_arm9
 from ..riserva import canarino
 
 # ---------------------------------------------------------------- tabella
@@ -349,17 +349,10 @@ def rileggi(base: bytes, candidata: bytes, attese: dict | None = None) -> dict:
             off9 = struct.unpack_from("<I", raw, 0x20)[0]
             ram9 = struct.unpack_from("<I", raw, 0x28)[0]
             self.off9, self.ram9 = off9, ram9
-            p = struct.unpack_from("<9I", raw, off9 + 0xBA0)
-            tab0, tab1, dati0 = p[0], p[1], p[2]
-            self.sez, q = [], off9 + tab0 - ram9
-            while q < off9 + tab1 - ram9:
-                self.sez.append(struct.unpack_from("<3I", raw, q))
-                q += 12
-            self.seg, o = [(ram9, off9, dati0 - ram9)], off9 + dati0 - ram9
-            for ram, size, _ in self.sez:
-                self.seg.append((ram, o, size))
-                o += size
-            self.fine_arm9 = o
+            size9 = struct.unpack_from('<I', raw, 0x2C)[0]
+            _t0, _t1, _d0, self.sez, self.seg = valida_layout_arm9(
+                raw, off9, ram9, size9)
+            self.fine_arm9 = self.seg[-1][1] + self.seg[-1][2]
 
         def b(self, ram, n):
             for base_, o, size in self.seg:

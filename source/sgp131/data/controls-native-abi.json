@@ -1,0 +1,243 @@
+{
+ "schema": 1,
+ "note": "Pins of the V4 EN/IT candidates (identical for both languages): hashes of byte intervals (whole native bodies, Summary functions, viewer, tables) and the complete bytes of every instruction the installer rewrites; no ROM code is stored. 'rom' records the images the pins were measured on; the audit does not compare the whole ROM.",
+ "rom": {
+  "EN": "179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90",
+  "IT": "2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156"
+ },
+ "keys": {
+  "raw_new": "0x021D1148",
+  "raw_repeat": "0x021D114C",
+  "processed_new": "0x021D1154",
+  "note": "the installed reader loads raw_new at 0x01FF865E via the literal at 0x01FF87F8; the historical native-eviv C reads processed_new and must not be recompiled"
+ },
+ "spans": {
+  "viewer.payload": {
+   "address": "0x01FF8620",
+   "bytes": 592,
+   "sha256": "306a60613a3d9e8bfb7d10d57e52d692e888e014f8019651d07a0eecf190601e"
+  },
+  "viewer.reset_header": {
+   "address": "0x01FF8620",
+   "bytes": 56,
+   "sha256": "06fea4d878d696886308e6106d80bdf99505b65bf7c088031770f1dbe35fd517"
+  },
+  "viewer.reader": {
+   "address": "0x01FF8658",
+   "bytes": 448,
+   "sha256": "c4d207486d46e1da5ceec1a96226e3fd18d7cae7e0a2357479dc50b30b0e2558"
+  },
+  "viewer.entries": {
+   "address": "0x01FF881C",
+   "bytes": 84,
+   "sha256": "5a8127e899622494afe9d27368203636a5e98f8303deb26c6fbc664f762ae567"
+  },
+  "viewer.label_wrapper": {
+   "address": "0x01FF9348",
+   "bytes": 88,
+   "sha256": "60236b0d3cc2992af394533eb4cd715a23776a943af32cbbeb9965c292d228df"
+  },
+  "summary.init_windows": {
+   "address": "0x0208C3E4",
+   "bytes": 72,
+   "sha256": "1497a413df2860401fd41ead47903e28e5d5a9b7e55f1fe79f4287e648f7fb26"
+  },
+  "summary.alloc_pages": {
+   "address": "0x0208C42C",
+   "bytes": 180,
+   "sha256": "33484164330ae0f392868039f65a479c999e695e46540634156461fcc7dab043"
+  },
+  "summary.teardown": {
+   "address": "0x0208C4E0",
+   "bytes": 128,
+   "sha256": "0d97e08ded88853b9293e8d96e2922786c7fac5082a2c8214aad5d572a6742d5"
+  },
+  "summary.exit": {
+   "address": "0x0208C560",
+   "bytes": 28,
+   "sha256": "d5d2c0819b26d23f9c5ed91c0e796382cec3b2e086cca225a1b04015300ea9f1"
+  },
+  "summary.dispatch": {
+   "address": "0x0208CBD4",
+   "bytes": 180,
+   "sha256": "85612322de9b6e5448b0bb0f748f950edb4d6d25c706fc3bb7decde751fef278"
+  },
+  "summary.stats_draw": {
+   "address": "0x0208D180",
+   "bytes": 756,
+   "sha256": "d1ff91ca86e09bad18ad5677d619df777495d7233d77bb948356fcbec47cc273"
+  },
+  "summary.page_change": {
+   "address": "0x02089D68",
+   "bytes": 172,
+   "sha256": "ba4efdf4d8aa509dcdc7410fe05876f657fb317a7ca5287893e051d26c1b64bd"
+  },
+  "summary.input_main": {
+   "address": "0x02088B48",
+   "bytes": 464,
+   "sha256": "493a88650037b17f85cc1d9959bb982d15043b1b756ddde51f197bd4e3e5be01"
+  },
+  "summary.init": {
+   "address": "0x02088298",
+   "bytes": 396,
+   "sha256": "a14f914e4c8b5214239764f417c51f79c1637cb1538a7c794092ae49698e7e7c"
+  }
+ },
+ "hooks": {
+  "input": {
+   "address": "0x02088B40",
+   "bytes": "004b18473d88ff01",
+   "target": "0x01FF883D"
+  },
+  "redraw": {
+   "address": "0x0208D178",
+   "bytes": "004b18471d88ff01",
+   "target": "0x01FF881D"
+  }
+ },
+ "edges": {
+  "teardown_callers": [
+   "0x02089D78",
+   "0x0208C564"
+  ],
+  "redraw_callers": [
+   "0x0208CC5A"
+  ],
+  "alloc_pages_callers": [
+   "0x02089CFC",
+   "0x02089DA6"
+  ],
+  "dispatch_callers": [
+   "0x02089D02",
+   "0x02089DF0",
+   "0x0208A2AC"
+  ]
+ },
+ "natives": {
+  "add_window": {
+   "address": "0x0201D4F8",
+   "bytes": 40,
+   "sha256": "1ba342353bfa24e5965726823d0b93c762e169353e7c6b4c5aeb7e662061774b"
+  },
+  "fill_window": {
+   "address": "0x0201D978",
+   "bytes": 56,
+   "sha256": "c95519d355064337b6d2db89ef3ad6d72520c422a12b9a41821a3b162f2b4d3d"
+  },
+  "copy_window": {
+   "address": "0x0201D5C8",
+   "bytes": 80,
+   "sha256": "e568867956aa62bdaaa6a26e7c67a968b20fd8fa4fd11213c568cf606a6bade1"
+  },
+  "clear_window": {
+   "address": "0x0201D8C8",
+   "bytes": 28,
+   "sha256": "3a01fd1477c80528d08efea0c3243f21a0b514f9ecf91e41d200521f46088d18"
+  },
+  "delete_windows": {
+   "address": "0x0201D54C",
+   "bytes": 44,
+   "sha256": "71bd16cf36338058db465594f81cd854ee97a7b4648a94dfb5f967875dcdb484"
+  },
+  "print": {
+   "address": "0x020200FC",
+   "bytes": 84,
+   "sha256": "e1bae0687d5aa9ba9cbaf8d68fbec424c9a0d12eae03a439e7ea79a3be8aa775"
+  },
+  "get_mon": {
+   "address": "0x0208A520",
+   "bytes": 68,
+   "sha256": "8593cee31489bcc52bab7dc2089a78356d0b0c6a1607ec94d9c77fb5305bb853"
+  },
+  "get_box_data": {
+   "address": "0x0206E640",
+   "bytes": 96,
+   "sha256": "05257b7170ffc5792c1d1d30e335b4146a7f074a066f8afcb2b9ba474e0dcb18"
+  },
+  "heap_alloc": {
+   "address": "0x0201AA8C",
+   "bytes": 64,
+   "sha256": "877d689f0383086c21041f298566124da63c75a5d9b42770a5328dbee0cee015"
+  },
+  "heap_free": {
+   "address": "0x0201AB0C",
+   "bytes": 116,
+   "sha256": "733072e27d455c37056dd163c7f991821a6ee1ccce3c479dc57556d1ce2759d3"
+  }
+ },
+ "tables": {
+  "page0": {
+   "address": "0x02104CC4",
+   "entries": 8,
+   "sha256": "ebaeacbb8d85d8428a62ff0346ae61e3fa0998939e6f825c656fb83084bbf43b"
+  },
+  "page2": {
+   "address": "0x02104C84",
+   "entries": 8,
+   "sha256": "1a0f0b64d3bb6833fce7acbef2491ec2af0c1b4fe70121c94938cb877141df8f"
+  },
+  "page_skills": {
+   "address": "0x02104D04",
+   "entries": 18,
+   "sha256": "7eeb24da6f2d43fd27b0fb3465ee1dc7be1590cc3606ab4e1ead65274f15219b"
+  },
+  "shared": {
+   "address": "0x02104D94",
+   "entries": 34,
+   "sha256": "41c1c9139aa4f5ecda910521452905946019ad57aee74252814a8ad101d875d5"
+  }
+ },
+ "bg": {
+  "bg1": {
+   "address": "0x021038E8",
+   "sha256": "86cda3d734e14af6bd35021704e8f1e050d6cdf1b2627ff8baa611cc5af6555d",
+   "screen_base": 31,
+   "char_base": 4,
+   "color_mode": 0,
+   "size": 1,
+   "priority": 0
+  },
+  "bg4": {
+   "address": "0x0210393C",
+   "sha256": "86cda3d734e14af6bd35021704e8f1e050d6cdf1b2627ff8baa611cc5af6555d",
+   "screen_base": 31,
+   "char_base": 4,
+   "color_mode": 0,
+   "size": 1,
+   "priority": 0
+  }
+ },
+ "literals": {
+  "summary_object_bytes": {
+   "address": "0x02088414",
+   "value": "0x000007D8"
+  },
+  "page_offset": {
+   "address": "0x0208C55C",
+   "value": "0x000007BC"
+  },
+  "state_offset": {
+   "address": "0x02088CF8",
+   "value": "0x000007BF"
+  },
+  "viewer_keys_raw": {
+   "address": "0x01FF87F8",
+   "value": "0x021D1148"
+  }
+ },
+ "summary": {
+  "object_bytes": "0x000007D8",
+  "heap": 19,
+  "shared_windows_offset": "0x00000004",
+  "shared_windows": 34,
+  "page_windows_pointer_offset": "0x00000224",
+  "page_windows_count_offset": "0x00000228",
+  "args_offset": "0x0000022C",
+  "page_offset": "0x000007BC",
+  "state_offset": "0x000007BF",
+  "args_mode_offset": "0x00000012",
+  "args_move_to_learn_offset": "0x00000018",
+  "page_skills": 1,
+  "evidence": "sub_0208C42C stores AllocWindows result at +0x224 and the count at +0x228; PokemonSummary_Init allocates 0x7D8 on heap 0x13; reader and input hook test +0x7BC and +0x7BF"
+ }
+}

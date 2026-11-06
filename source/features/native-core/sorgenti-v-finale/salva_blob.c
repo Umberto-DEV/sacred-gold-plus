@@ -18,8 +18,9 @@
  * salvataggio, e con quel gancio la tabella non serve (CONTRATTO-CHUNK §7).
  *
  * Due copie, non una: settore 47 e settore 111, la stessa distanza di 64 settori
- * che il gioco usa per i suoi. Alla lettura si prende la prima copia valida; se
- * una scrittura viene interrotta a metà, l'altra regge.
+ * che il gioco usa per i suoi. Il blob storico prende la prima copia valida; il
+ * successore 1.3.1 ispeziona entrambe e prende la generazione valida più recente,
+ * così una scrittura parziale sulla sola B non resta nascosta da una A vecchia.
  */
 #include "sgp_salva.h"
 
@@ -76,7 +77,7 @@ static int sgp_valido(const u8 *b)
 
 /* ------------------------------------------------------------------ lettura */
 
-/* Legge il settore 47 e, se non va, il 111, e lascia `load_status` aggiornato. Lo
+/* Legge i settori 47 e 111 e lascia `load_status` aggiornato. Lo
  * stato torna sempre ai valori 1.1 prima di leggere: chunk mancante o rifiutato
  * ⇒ il gioco si comporta come la 1.1. I due contatori `hits_*` NON si azzerano:
  * servono a distinguere «PLUS spento» da «gancio mai eseguito». */
@@ -88,6 +89,11 @@ static void sgp_chunk_leggi(void)
     u32 *z = (u32 *)s;
     u32 off = SGP_SETTORE_A;
     u32 i;
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+    u32 best_saveno = 0u;
+    u32 have_valid = 0u;
+    u32 have_reject = 0u;
+#endif
 
     z[0] = 0;                              /* active_plus, active_wild, cap, load_status */
     z[1] = 0;                              /* guard, pad. z[2] e z[3] sono gli hits_*: non si toccano */
@@ -112,6 +118,21 @@ static void sgp_chunk_leggi(void)
         f->magic = 0u;
         CHIAMA_RB(off, b, SGP_RECORD);
         if (sgp_valido(b)) {
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+            /* Una scrittura parziale può lasciare A valida ma vecchia e B
+             * valida con le opzioni nuove. Scegli la generazione più recente
+             * con confronto modulare signed, non il primo settore valido. */
+            if (!have_valid || (s32)(f->saveno - best_saveno) > 0) {
+                u32 j;
+                for (j = 0; j < 4u; j++) {
+                    z[4u + j] = ((const u32 *)b)[j];
+                }
+                s->active_plus = b[SGP_C_PLUS];
+                s->active_wild = b[SGP_C_SELVATICI];
+                best_saveno = f->saveno;
+            }
+            have_valid = 1u;
+#else
             u32 j;
             for (j = 0; j < 4u; j++) {
                 z[4u + j] = ((const u32 *)b)[j];
@@ -120,14 +141,29 @@ static void sgp_chunk_leggi(void)
             s->active_wild = b[SGP_C_SELVATICI];
             s->load_status = SGP_LOAD_VALID;
             return;
+#endif
         }
         /* un settore col NOSTRO magic ma non valido non è «assente»: è un chunk
          * rotto, e un chunk rotto non va mai riscritto. */
         if (f->magic == SGP_MAGIC_FOOTER) {
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+            have_reject = 1u;
+#else
             s->load_status = SGP_LOAD_REJECT;
+#endif
         }
         off = SGP_SETTORE_B;
     }
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+    if (have_valid) {
+        /* `sgp_chunk_scrivi` incrementa il footer rimasto nel buffer: riallinea
+         * anche quello alla copia selezionata, non all'ultima copia letta. */
+        f->saveno = best_saveno;
+        s->load_status = SGP_LOAD_VALID;
+    } else if (have_reject) {
+        s->load_status = SGP_LOAD_REJECT;
+    }
+#endif
 }
 
 /* ---------------------------------------------------------------- scrittura */
@@ -145,7 +181,13 @@ static void sgp_chunk_scrivi(void)
     const u32 *src = (const u32 *)&s->chunk;
     u32 off = SGP_SETTORE_A;
     u32 i, cap;
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+    u32 good = 0u;
+#endif
 
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+    s->write_status = SGP_WRITE_NONE;
+#endif
     if (s->guard != SGP_GUARD || s->load_status == SGP_LOAD_REJECT) {
         return;
     }
@@ -187,10 +229,27 @@ static void sgp_chunk_scrivi(void)
     f->crc = CHIAMA_CRC(b, SGP_CRC_LEN);
 
     for (i = 0; i < 2u; i++) {
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+        if (CHIAMA_WB(off, b, SGP_RECORD)) {
+            good++;
+        }
+#else
         CHIAMA_WB(off, b, SGP_RECORD);
+#endif
         off = SGP_SETTORE_B;
     }
+#ifdef SGP_SAVE_WRITE_STATUS_FIX
+    s->write_status = (u8)(good == 2u ? SGP_WRITE_OK :
+                           (good ? SGP_WRITE_PARTIAL : SGP_WRITE_FAILED));
+    /* Non dichiarare in RAM un chunk che non esiste su flash. Con una sola
+     * copia riuscita il prossimo avvio puo' comunque recuperare il payload;
+     * il write_status conserva il fatto che la ridondanza e' degradata. */
+    if (good) {
+        s->load_status = SGP_LOAD_VALID;
+    }
+#else
     s->load_status = SGP_LOAD_VALID;
+#endif
 }
 
 /* -------------------------------------------------------------------- ganci */

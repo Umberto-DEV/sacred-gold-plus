@@ -24,6 +24,7 @@ OBSERVER_SHA = 'f918f1afb00a1aeff3833d655f5ad078dc680e4ba663ee9c1d7a381c4bed2af1
 
 def current_build(rom, observer):
     from ndspy.rom import NintendoDSRom
+    from sgp12.blz import ndspy_load_arm9_sicuro
     from thumb_object import load_text
     meta = json.loads((rom.parent / 'build.json').read_text())
     require(meta['kind'] == 'private-native-combined-guide', 'Wrong composition')
@@ -35,7 +36,7 @@ def current_build(rom, observer):
     code, symbols = load_text((rom.parent / 'guide.o').read_bytes(), meta['memory']['code_start'])
     require(hashlib.sha256(code).hexdigest() == meta['payload_sha256']
             and symbols == meta['symbols'], 'Stale payload')
-    itcm = NintendoDSRom(rom.read_bytes()).loadArm9().sections[1].data
+    itcm = ndspy_load_arm9_sicuro(NintendoDSRom(rom.read_bytes())).sections[1].data
     require(itcm[0x880:0x880+len(code)] == code and itcm[0x1fc0:0x2000] == bytes(64),
             'ROM code/state differs')
     start = meta['memory']['text_start'] - 0x01ff8000

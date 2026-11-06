@@ -6,7 +6,7 @@ This kit contains the headless melonDS harness, observation hooks, input scripts
 
 **Source and build**
 
-The required core is official [melonDS commit 906e9ebb27da8c6a715cd7abab4abfe8a8d29427](https://github.com/melonDS-emu/melonDS/tree/906e9ebb27da8c6a715cd7abab4abfe8a8d29427). Use a separate checkout: the patch adds observations to `src/ARM.cpp` and `src/NDS.cpp`. It neither patches ROM instructions nor changes guest registers, memory or cycle accounting. `patch_core.py` checks this exact commit and is idempotent on the instrumented checkout. `melonds-observation-hooks.patch` is the corresponding reviewable diff.
+The required core is official [melonDS commit 906e9ebb27da8c6a715cd7abab4abfe8a8d29427](https://github.com/melonDS-emu/melonDS/tree/906e9ebb27da8c6a715cd7abab4abfe8a8d29427). Use a separate checkout: the patch adds observations to `src/ARM.cpp` and `src/NDS.cpp`. It neither patches ROM instructions nor changes guest registers, memory or cycle accounting. `patch_core.py` compares the complete build-consumed filesystem tree directly with that commit, rejects extra, missing, modified, untracked or ignored paths, shared hardlinks and unexpected file types/modes, and accepts only the exact derived bytes for those two instrumented files. It does not trust the Git index, status flags or replacement refs. CMake repeats the same verification immediately before evaluating the core and whenever the `core` target is built. Index-only staged content is not attested because the build never consumes it. `melonds-observation-hooks.patch` is the corresponding reviewable diff.
 
 Requirements: Git, Python 3.9 or newer, CMake, Ninja and a C++17 compiler. The platform glue uses POSIX file and dynamic-library APIs. The build was verified on macOS ARM64 with AppleClang 21; Linux was not exercised and Windows platform glue is not implemented. No Qt, SDL or proprietary BIOS is required. The core's vendored dependencies are built from its checkout.
 
@@ -22,7 +22,7 @@ cmake -S . -B work/build -G Ninja \
 cmake --build work/build --target hg_runtime --parallel 8
 ```
 
-`MELONDS_SOURCE` accepts any separate pinned checkout; there is no personal path in the sources. Set `CMAKE_MAKE_PROGRAM` if Ninja is outside `PATH`. The configuration forces the ARM interpreter, software renderer and no Qt/SDL, OpenGL renderer, GDB stub, JIT or release LTO.
+`MELONDS_SOURCE` accepts a separate, exact pinned checkout; there is no personal path in the sources. Keep generated build output outside it. The verifier intentionally rejects every other file or directory, including ignored build residue. Set `CMAKE_MAKE_PROGRAM` if Ninja is outside `PATH`. The configuration forces the ARM interpreter, software renderer and no Qt/SDL, OpenGL renderer, GDB stub, JIT or release LTO. These checks reject a dirty input at configure and at build time; they are not an immutable-filesystem sandbox against a same-account process that changes the tree after the final check.
 
 The optional `hg_wait_loop_test` target depends on `../scripts/wait_loop_test.cpp`, which the surrounding project distributes in `source/scripts/` rather than in this folder. Its SHA-256 is `9305388c1590c42f08f178692b3b047e4a62596e3143c8749a70d6922d64fe99`. The target defaults to enabled, so standalone builds explicitly disable it above. To include it when the companion source is available:
 
@@ -125,14 +125,72 @@ All four tested Dex UI paths passed. English Bulbasaur displayed 2 ft 4 in / 15.
 
 The CLI supports scripted or `--interactive` stdin commands. `run` advances guest frames; `tap` presses/releases keys; `touch` uses bottom-screen coordinates; `release` ends a held touch. `--trace-pc` or `tracepc on` enables actual interpreter visit counters. The supplied scripts contain only key/touch inputs, bounded waits, reads, status and local capture/SRAM exports. They contain no ROM/RAM writes, cheats, freezes, dump commands or savestate loads. The source retains its original debugger commands for separately controlled investigations; loading a state from another ROM can restore old code and invalidate comparisons.
 
-Each run writes local `frames.csv`, `commands.log`, `session.txt` and PPM captures. `session.txt` records the caller's ROM path at runtime, and captures/save files contain game data: those generated artifacts are not part of this public kit. Export commands are confined to `--out`. Choose a fresh output directory because existing files with the same names are overwritten. No background save callback writes an input file; export is explicit.
+The frontend admits at most 512 MiB for a ROM, the cartridge-reported SRAM
+capacity (with a 64 MiB absolute fallback), 32 MiB for a savestate and 1 MiB
+for a script before allocating their bodies. ROM ownership is transferred to
+melonDS instead of making a second complete copy. A session is also limited to
+10,000 commands, 1,000,000 total frames, 4,096 reads per command/65,536 total,
+256 watches, freezes and cheats, 256 MiB of generated files/log rows and 30
+minutes. Command lines are at most 4 KiB and cheat files at most 256 KiB/8,192
+words. These are developer-harness safety limits, not Nintendo DS gameplay or
+save-format changes.
 
-CSV `arm9_pc`/`arm7_pc` are end-of-frame samples, not visit counts. The two instruction counters observe visits, condition execution and R10 changes; `main_loop_jumps` counts branch targets at `0x02000DAC`. The IPKE guest counters at `0x021D1138` and `0x021D113C` can reset and are not universal monotonic frame numbers. Polygon/vertex values are instantaneous core fields sampled after `RunFrame`, so buffer swaps can affect them. Harness counters accumulate across state restores. Printed host throughput is not a device FPS measurement.
+Each run writes local `frames.csv`, `commands.log`, `session.txt` and PPM captures. `session.txt` records the caller's ROM path, the initial instruction-tracing state, and the timing/scene-observer mode; later `tracepc` changes remain frame-stamped in `commands.log`. Captures/save files contain game data: those generated artifacts are not part of this public kit. Export commands are confined to `--out`. The output root and nested directories must be private `0700`; generated files are `0600`. The runtime holds directory descriptors, refuses symlink roots and never replaces an existing regular file, symlink or hardlink. Use a fresh output directory for every run. No background save callback writes an input file; export is explicit.
+
+CSV `host_runframe_ns` times only the call to `NDS::RunFrame`; scene reads, row serialization and audio draining happen after that interval, while file writes are buffered until the current `run` block ends. If a block fails, already formed rows are flushed best-effort before the original error is rethrown. `scene_map`, `scene_x`, `scene_z` and `active_objects` are read-only HeartGold/IPKE observations and are zero for other game codes. `arm9_pc`/`arm7_pc` are end-of-frame samples, not visit counts. User-supplied watch labels are encoded as one field, formula-leading labels are prefixed with an apostrophe and control bytes are rendered as `\\xNN` before spreadsheet import. The two instruction counters observe visits, condition execution and R10 changes; with tracing enabled, `main_loop_jumps` counts branch targets at `0x02000DAC`. The IPKE guest counters at `0x021D1138` and `0x021D113C` can reset and are not universal monotonic frame numbers. Polygon/vertex values are instantaneous core fields sampled after `RunFrame`, so buffer swaps can affect them. Harness counters accumulate across state restores. Neither `host_runframe_ns` nor printed host throughput is a device/display FPS measurement.
 
 The test configuration uses the interpreter, software renderer, FreeBIOS, generated firmware and fixed initial RTC 2026-09-05 12:00:00. Audio is drained but not played; offline networking, peripherals and unused platform callbacks are inert. These tests cover the recorded boot, naming, SAVE/reload and Dex UI paths only. They do not establish full-game compatibility, party/battle behavior, foreign-language Dex cycling, fairy-type entries, multiplayer, audio output, JIT correctness, third-party Android builds or handheld performance.
 
-`source-provenance.json` identifies unchanged runtime sources and the small path/build-configuration adjustments. `SHA256SUMS` covers the distributed files. Source in this kit is provided under GPL-3.0-or-later; the included `LICENSE` contains GPL version 3. melonDS retains its upstream licensing and notices.
+`source-provenance.json` identifies unchanged runtime sources, preserves the
+earlier main.cpp fingerprints, and records the initial-clock, safety and
+observation extensions separately from path/build-configuration adjustments. Historical reports
+retain their original executable identities. `SHA256SUMS` covers the current
+distributed files. Source in this kit is provided under GPL-3.0-or-later; the
+included `LICENSE` contains GPL version 3. melonDS retains its upstream licensing
+and notices.
 
 **Follow-up on 6 September 2026**
 
 `inputs/town-house-roundtrip.script` adds a bounded, cold-boot walking test using the same initial New Bark TEST save. It enters the starting house and returns outside in 3,774 guest frames, with captures at 3,510 and 3,774. It was run through the existing interpreter/software harness on US retail, exact Plus 1.03 and all four Community variants. Both screens were reviewed in every run. It exports SRAM but does not trigger a new game SAVE; it contains no RAM writes, cheat or savestate load. These are transition checks, not battle, campaign, GUI, performance or Android tests. The storage limitation discovered during this follow-up is recorded separately. The historical runtime/build JSON reports above remain unchanged.
+
+**Selecting the initial clock**
+
+`--rtc YYYY-MM-DDTHH:MM:SS` selects the initial DS hardware clock after Reset,
+before SRAM loading and direct boot. Omitting it preserves exactly
+`2026-09-05 12:00:00` and the existing default `session.txt` clock line. An explicit
+selection is recorded there as `RTC=YYYY-MM-DD HH:MM:SS`.
+
+The argument must contain exactly 19 ASCII bytes, with the shown separators.
+Years are limited to the DS RTC range 2000–2099; months, Gregorian calendar days
+(including leap years), hours 0–23 and minutes/seconds 0–59 are validated.
+Duplicate options, missing values, whitespace, signs, timezone suffixes,
+fractional seconds and leap seconds are rejected before output directories are
+created or ROM/SRAM files are read. The clock has no host-timezone conversion.
+The core computes the weekday from these six fields.
+
+For example, append `--rtc 2026-10-30T22:00:00` to a cold-boot command using your
+own ROM and disposable raw save. This sets only the initial hardware RTC; it
+does not change game RAM, write a game time-of-day enum, or add a command for
+changing time during a run. Loading a savestate can restore a different clock,
+so clock comparisons require independent cold boots without `--load`.
+
+ROM-free checks, from the repository root:
+
+```sh
+python3 source/runtime/test/run_rtc_tests.py
+python3 source/runtime/test/test_rtc_cli.py /path/to/built/hg_runtime
+```
+
+The first compiles and exercises the actual C++17 configuration/parser, using
+`CXX` if set (otherwise `c++`). The second checks CLI acceptance/rejection
+without constructing a guest, including rejection before filesystem output.
+These checks do not establish guest RTC behavior or native day/night coverage.
+The public build remains interpreter/software with GDB disabled.
+
+The Class A runner also executes `test_rtc_parser.py`, which compiles and runs
+the same ROM-free C++ checks. Four separately reviewed cold boots on one EN
+diagnostic found the old default, new omitted option and new explicit default
+byte-identical for 4,388 frames, logs, captures and exported SRAM. Selecting
+21:00 changed the game's observed period and attached night material. This is
+limited native evidence: it does not establish in-session clock transitions,
+weekday variants, Italian, Android performance or new in-game SAVE coverage.

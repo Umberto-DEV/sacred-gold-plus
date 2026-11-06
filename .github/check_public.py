@@ -24,7 +24,7 @@ SIZE_EXCEPTIONS = {
 # GitHub release page; our own small payloads live under source/ with an
 # explicit .bin allowance below.
 FORBIDDEN_SUFFIXES = ('.nds', '.sav', '.sav2', '.srm', '.dump', '.dsv', '.bak',
-                      '.state', '.ml0', '.ml1', '.nds.gz')
+                      '.state', '.ml0', '.ml1', '.nds.gz', '.xdelta')
 
 # The only binaries allowed outside the screenshot gallery:
 # blobs we compiled ourselves from the C sources in this repository, each a few
@@ -63,6 +63,7 @@ HIDDEN_DIRS_ALLOWED = {'.github'}
 # Thumb code or a small table; none of these can legitimately start one.
 CONTAINER_MAGICS = (b'NARC', b'BTAF', b'SDAT', b'RGCN', b'RLCN', b'RECN',
                     b'RNAN', b'RCSN', b'BMD0', b'BTX0', b'CRAG')
+VCDIFF_MAGIC = bytes.fromhex('d6c3c400')
 # The Nintendo logo in an NDS header at 0x0C0, and the constant CRC16 of that
 # logo at 0x15C. Either one identifies a cartridge image, header included.
 NDS_LOGO_PREFIX = bytes.fromhex('24FFAE51699AA221')
@@ -87,6 +88,8 @@ def longest_base64_run(text):
 
 def looks_like_game_bytes(data):
     """Is this the beginning of a cartridge image or a game container?"""
+    if data[:4] == VCDIFF_MAGIC:
+        return 'a VCDIFF/xdelta patch header'
     if data[:4] in CONTAINER_MAGICS:
         return 'a game container header (%r)' % data[:4].decode('ascii', 'replace')
     if len(data) >= 0xC8 and data[0xC0:0xC0 + 8] == NDS_LOGO_PREFIX:
@@ -103,13 +106,20 @@ def check(root=ROOT):
         actual = set(subprocess.check_output(['git', '-C', str(root), 'ls-files', '-z']).decode().rstrip('\0').split('\0'))
     else:
         actual = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file() and '__pycache__' not in p.parts}
-        # git archive omits these checkout-only instructions via export-ignore.
-        # In a real Git checkout the complete tracked-file contract above stays
-        # strict; source archives may omit only these two documented files.
-        allowed -= {'AGENTS.md', 'CLAUDE.md'} - actual
     if actual != allowed:
         raise ValueError('Unexpected or missing public files; review the public file list')
     for name in sorted(actual):
+        parts = Path(name).parts
+        if (parts[-1].lower() in {'agents.md', 'claude.md', 'skill.md', 'product.md', 'design.md'}
+                or name.startswith('source/docs/superpowers/')
+                or (name.startswith('source/docs/') and
+                    (parts[-1].startswith('HANDOFF-') or
+                     parts[-1].endswith(('-plan.md', '-proposal.md', '-analysis.md', '-exploration.md'))))
+                or name in {'source/docs/HANDOFF-1.3.md',
+                            'source/docs/bugfix-plan-1.3.1.md',
+                            'source/docs/daybreak-bug-audit-prompt.md',
+                            'source/docs/ui-1.3.1-handoff.md'}):
+            raise ValueError('Assistant-only instruction or plan is tracked: ' + name)
         p = root/name
         if p.is_symlink() or any(x.is_symlink() for x in p.parents if x != root.parent):
             raise ValueError('Symbolic links are not public artifacts')
@@ -123,12 +133,6 @@ def check(root=ROOT):
         data = p.read_bytes()
         if len(data) > SIZE_LIMIT and name not in SIZE_EXCEPTIONS:
             raise ValueError('Tracked file over the size limit; declare it or keep it out: ' + name)
-        if name.endswith('.xdelta'):
-            if len(data) < 5 or data[:4] != bytes([0xD6, 0xC3, 0xC4, 0]):
-                raise ValueError('Patch has an unexpected format')
-            if data[4] & 4:
-                raise ValueError('Patch contains an application header; regenerate with -A')
-            continue
         try:
             text = data.decode('utf-8')
         except UnicodeDecodeError:

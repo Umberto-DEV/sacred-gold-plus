@@ -38,7 +38,10 @@ import subprocess
 import sys
 import time
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+QUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, QUI)
+sys.path.insert(0, os.path.dirname(QUI))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 from rsp import Rsp, RspError  # noqa: E402
 
 FIELDSYS_PTR = 0x0203E304      # letterale: indirizzo di sFieldSysPtr
@@ -128,17 +131,18 @@ def main():
                     help="secondi di emulazione libera prima di cercare l'overworld")
     args = ap.parse_args()
 
-    os.makedirs(args.out, exist_ok=True)
+    outputs = PrivateDirectory(args.out)
     cmd = [args.hg, "--rom", args.rom, "--out", args.out, "--gdb-port", str(args.porta),
            "--script", args.script]
     if args.sram:
         cmd += ["--sram", args.sram]
     if args.load:
         cmd += ["--load", args.load]
-    log = open(os.path.join(args.out, "hg-stdout.log"), "w")
-    err = open(os.path.join(args.out, "hg-stderr.log"), "w")
+    log = outputs.open_new("hg-stdout.log")
+    err = outputs.open_new("hg-stderr.log")
     t0 = time.time()
     proc = subprocess.Popen(cmd, stdout=log, stderr=err)
+    log.close(); err.close(); outputs.close()
 
     esito = {"comando": cmd, "mappa_richiesta": args.mappa, "warp_richiesto": args.warp,
              "passi": []}
@@ -268,8 +272,7 @@ def main():
         rc = "ucciso dopo 300 s"
     esito["rc_hg_runtime"] = rc
     esito["secondi"] = round(time.time() - t0, 2)
-    with open(args.json, "w") as f:
-        json.dump(esito, f, indent=2)
+    write_json_new(args.json, esito)
     print(json.dumps({k: v for k, v in esito.items() if k != "registri_salvati"}, indent=2))
     return 0 if esito.get("mappa_raggiunta") else 1
 

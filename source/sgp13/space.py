@@ -8,10 +8,10 @@ No resource, overlay or save format changes in this stage.
 import hashlib
 import struct
 
-import ndspy.code
 import ndspy.fnt
 import ndspy.rom
 from ndspy import _common
+from sgp12.blz import ndspy_maincodefile_sicuro
 
 
 RAM = 0x02000000
@@ -24,6 +24,15 @@ INPUT_HASHES = {
     'a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e': 'EN',
     'bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4': 'IT',
 }
+INPUT_SIZES = {
+    'a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e': 127104144,
+    'bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4': 131906120,
+}
+
+
+def input_contracts():
+    return {digest: (language, INPUT_SIZES[digest])
+            for digest, language in INPUT_HASHES.items()}
 
 
 def require(condition, message):
@@ -32,7 +41,7 @@ def require(condition, message):
 
 
 def expand_arm9(data):
-    code = ndspy.code.MainCodeFile(bytes(data), RAM)
+    code = ndspy_maincodefile_sicuro(bytes(data), RAM)
     require(code.codeSettingsOffs == 0xBA0, 'unexpected ARM9 module parameters')
     regions = [s for s in code.sections if s.ramAddress == OLD_BASE]
     require(len(regions) == 1 and len(regions[0].data) == END - OLD_BASE

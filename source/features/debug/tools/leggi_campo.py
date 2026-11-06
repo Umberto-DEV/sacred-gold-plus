@@ -13,7 +13,10 @@ import subprocess
 import sys
 import time
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+QUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, QUI)
+sys.path.insert(0, os.path.dirname(QUI))
+from secure_output import PrivateDirectory, write_json_new  # noqa: E402
 from rsp import Rsp, RspError  # noqa: E402
 from warp import Campo, attendi_fermo  # noqa: E402
 
@@ -30,13 +33,15 @@ def main():
     ap.add_argument("--attesa", type=float, default=14.0)
     a = ap.parse_args()
 
-    os.makedirs(a.out, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
     cmd = [a.hg, "--rom", a.rom, "--out", a.out, "--gdb-port", str(a.porta),
            "--script", a.script]
     if a.sram:
         cmd += ["--sram", a.sram]
-    p = subprocess.Popen(cmd, stdout=open(os.path.join(a.out, "hg-stdout.log"), "w"),
-                         stderr=open(os.path.join(a.out, "hg-stderr.log"), "w"))
+    stdout = outputs.open_new("hg-stdout.log")
+    stderr = outputs.open_new("hg-stderr.log")
+    p = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
+    stdout.close(); stderr.close(); outputs.close()
     esito = {"comando": cmd}
     try:
         g = Rsp(port=a.porta)
@@ -57,8 +62,7 @@ def main():
     except subprocess.TimeoutExpired:
         p.kill()
         esito["rc"] = "ucciso"
-    with open(a.json, "w") as f:
-        json.dump(esito, f, indent=2)
+    write_json_new(a.json, esito)
     return 0
 
 

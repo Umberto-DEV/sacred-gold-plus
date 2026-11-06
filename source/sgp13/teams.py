@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import struct
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 
 import ndspy.narc
 import ndspy.rom
@@ -59,7 +60,7 @@ def compile_native(work_dir):
     output = Path(work_dir)
     output.mkdir(parents=True, exist_ok=True)
     obj = output / 'teams.o'
-    subprocess.run(['clang', '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Os',
+    run_compiler([ '--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Os',
                     '-ffreestanding', '-fno-builtin', '-fno-stack-protector', '-fno-jump-tables',
                     '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-Wall', '-Wextra',
                     '-Werror', '-c', str(SOURCE / 'features/trainer-strategy/native.c'),

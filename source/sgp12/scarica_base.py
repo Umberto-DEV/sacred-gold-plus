@@ -26,14 +26,21 @@ Un delta a meta' non resta mai in `$SGP_ROM_DIR` a farsi trovare dallo stadio 0.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
+import secrets
+import stat
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
-from .rom import Rifiuto, carica_pin, esigi, sha_file
+from .rom import Rifiuto, carica_pin, esigi
 
 BLOCCO = 1 << 20
+MAX_SHA256SUMS_BYTE = 64 << 10
+DURATA_MASSIMA_SCARICAMENTO = 30 * 60
 # Il nome sulla release...
 SHA256SUMS = "SHA256SUMS"
 # ...e il nome col quale viene depositato. NON e' lo stesso: `$SGP_ROM_DIR`
@@ -43,6 +50,94 @@ SHA256SUMS = "SHA256SUMS"
 SHA256SUMS_DEPOSITO = "SHA256SUMS-base-1.1"
 
 
+def _apri_cartella_privata(destinazione) -> tuple[Path, int]:
+    """Apre una volta la cartella di lavoro e ne conserva l'identita'."""
+    cartella = Path(destinazione)
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_CLOEXEC", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    try:
+        dir_fd = os.open(cartella, flags)
+    except OSError as e:
+        raise Rifiuto("--destinazione %s non e' una cartella reale accessibile: %s"
+                      % (cartella, e)) from None
+    try:
+        stato = os.fstat(dir_fd)
+        esigi(stat.S_ISDIR(stato.st_mode),
+              "--destinazione %s non e' una cartella" % cartella)
+        esigi(stato.st_uid == os.getuid(),
+              "--destinazione %s non appartiene all'utente corrente" % cartella)
+        esigi(not (stato.st_mode & (stat.S_IWGRP | stat.S_IWOTH)),
+              "--destinazione %s e' scrivibile da gruppo o altri; usa una cartella privata"
+              % cartella)
+    except Exception:
+        os.close(dir_fd)
+        raise
+    return cartella, dir_fd
+
+
+def _crea_temporaneo(dir_fd: int, nome_finale: str) -> tuple[str, int]:
+    """Crea un file 0600 imprevedibile, esclusivo e relativo alla cartella trattenuta."""
+    esigi(Path(nome_finale).name == nome_finale and nome_finale not in ("", ".", ".."),
+          "nome di uscita non sicuro: %r" % nome_finale)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_CLOEXEC", 0)
+    flags |= getattr(os, "O_NOFOLLOW", 0)
+    for _ in range(128):
+        nome = ".%s.parziale-%s" % (nome_finale, secrets.token_hex(12))
+        try:
+            return nome, os.open(nome, flags, 0o600, dir_fd=dir_fd)
+        except FileExistsError:
+            continue
+    raise Rifiuto("impossibile creare un file temporaneo esclusivo per %s" % nome_finale)
+
+
+def _elimina_temporaneo(dir_fd: int, nome: str) -> None:
+    try:
+        os.unlink(nome, dir_fd=dir_fd)
+    except FileNotFoundError:
+        pass
+
+
+def _sha_regolare(dir_fd: int, nome: str) -> tuple[str, int] | None:
+    """Legge una entry regolare senza seguire link; le altre non sono riusate."""
+    try:
+        prima = os.stat(nome, dir_fd=dir_fd, follow_symlinks=False)
+    except FileNotFoundError:
+        return None
+    if not stat.S_ISREG(prima.st_mode):
+        return None
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(nome, flags, dir_fd=dir_fd)
+    except OSError:
+        return None
+    h = hashlib.sha256()
+    totale = 0
+    with os.fdopen(fd, "rb") as f:
+        dopo = os.fstat(f.fileno())
+        if (prima.st_dev, prima.st_ino) != (dopo.st_dev, dopo.st_ino):
+            return None
+        while True:
+            pezzo = f.read(BLOCCO)
+            if not pezzo:
+                break
+            h.update(pezzo)
+            totale += len(pezzo)
+    return h.hexdigest(), totale
+
+
+def _scrivi_atomico(dir_fd: int, nome_finale: str, dati: bytes) -> None:
+    temporaneo, fd = _crea_temporaneo(dir_fd, nome_finale)
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(dati)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporaneo, nome_finale, src_dir_fd=dir_fd, dst_dir_fd=dir_fd)
+    except Exception as e:
+        _elimina_temporaneo(dir_fd, temporaneo)
+        raise Rifiuto("pubblicazione sicura di %s fallita: %s" % (nome_finale, e)) from None
+
+
 def _apri(url):
     """Aperto qui, in una funzione sola, perche' sia l'unico punto di rete e
     perche' i test possano sostituirlo (o puntare `--url-base` a un server
@@ -50,9 +145,57 @@ def _apri(url):
     return urllib.request.urlopen(url, timeout=60)  # noqa: S310 — url dal pin o da --url-base
 
 
-def _testo(url, apri) -> str:
-    with apri(url) as risposta:
-        return risposta.read().decode("utf-8")
+def _esigi_content_length(risposta, massimo: int, url: str) -> None:
+    headers = getattr(risposta, "headers", None)
+    valore = headers.get("Content-Length") if headers is not None else None
+    if valore is None:
+        return
+    try:
+        dichiarato = int(valore)
+    except (TypeError, ValueError):
+        raise Rifiuto("Content-Length non valido da %s: %r" % (url, valore)) from None
+    esigi(0 <= dichiarato <= massimo,
+          "risposta da %s dichiara %d byte, limite %d" % (url, dichiarato, massimo))
+
+
+def _esigi_tempo(orologio, inizio: float, url: str) -> None:
+    esigi(orologio() - inizio <= DURATA_MASSIMA_SCARICAMENTO,
+          "scaricamento da %s oltre il limite complessivo di %d secondi"
+          % (url, DURATA_MASSIMA_SCARICAMENTO))
+
+
+def _leggi_blocco(risposta, massimo: int) -> bytes:
+    """HTTP ``read1`` limita ogni giro a una sola lettura del trasporto."""
+    leggi = getattr(risposta, "read1", None)
+    return (leggi if callable(leggi) else risposta.read)(massimo)
+
+
+def _testo(url, apri, *, orologio=time.monotonic, inizio=None) -> str:
+    inizio = orologio() if inizio is None else inizio
+    dati = bytearray()
+    try:
+        with apri(url) as risposta:
+            _esigi_content_length(risposta, MAX_SHA256SUMS_BYTE, url)
+            while True:
+                _esigi_tempo(orologio, inizio, url)
+                rimanenti = MAX_SHA256SUMS_BYTE - len(dati)
+                pezzo = _leggi_blocco(risposta, min(BLOCCO, rimanenti + 1))
+                _esigi_tempo(orologio, inizio, url)
+                if not pezzo:
+                    break
+                esigi(len(dati) + len(pezzo) <= MAX_SHA256SUMS_BYTE,
+                      "SHA256SUMS da %s supera il limite di %d byte"
+                      % (url, MAX_SHA256SUMS_BYTE))
+                dati.extend(pezzo)
+    except Rifiuto:
+        raise
+    except Exception as e:
+        raise Rifiuto("scaricamento SHA256SUMS fallito (%s): %s: %s"
+                      % (url, type(e).__name__, e)) from None
+    try:
+        return bytes(dati).decode("utf-8")
+    except UnicodeDecodeError as e:
+        raise Rifiuto("SHA256SUMS da %s non e' UTF-8 valido: %s" % (url, e)) from None
 
 
 def analizza_sha256sums(testo: str) -> dict:
@@ -72,34 +215,55 @@ def analizza_sha256sums(testo: str) -> dict:
     return fuori
 
 
-def _scarica_file(url, destinazione: Path, atteso_sha: str, atteso_byte: int, apri) -> dict:
-    parziale = Path(str(destinazione) + ".parziale")
-    if parziale.exists():
-        parziale.unlink()
+def _scarica_file(url, destinazione: Path, atteso_sha: str, atteso_byte: int,
+                  apri, dir_fd: int, *, orologio=time.monotonic, inizio=None) -> dict:
+    temporaneo, fd = _crea_temporaneo(dir_fd, destinazione.name)
+    h = hashlib.sha256()
+    byte = 0
+    inizio = orologio() if inizio is None else inizio
     try:
-        with apri(url) as risposta, open(parziale, "wb") as f:
+        # Il file viene gestito per primo: se l'apertura di rete fallisce, il
+        # descriptor locale viene comunque chiuso dal context manager esterno.
+        with os.fdopen(fd, "wb") as f, apri(url) as risposta:
+            _esigi_content_length(risposta, atteso_byte, url)
             while True:
-                pezzo = risposta.read(BLOCCO)
+                _esigi_tempo(orologio, inizio, url)
+                pezzo = _leggi_blocco(risposta, min(BLOCCO, atteso_byte - byte + 1))
+                _esigi_tempo(orologio, inizio, url)
                 if not pezzo:
                     break
+                esigi(byte + len(pezzo) <= atteso_byte,
+                      "%s da %s supera i %d byte fissati dal pin"
+                      % (destinazione.name, url, atteso_byte))
                 f.write(pezzo)
+                h.update(pezzo)
+                byte += len(pezzo)
+            f.flush()
+            os.fsync(f.fileno())
+    except Rifiuto as e:
+        _elimina_temporaneo(dir_fd, temporaneo)
+        raise Rifiuto("%s. Il file parziale e' stato CANCELLATO." % e) from None
     except Exception as e:
-        if parziale.exists():
-            parziale.unlink()
+        _elimina_temporaneo(dir_fd, temporaneo)
         raise Rifiuto("scaricamento fallito (%s): %s: %s"
                       % (url, type(e).__name__, e)) from None
-    letto, byte = sha_file(parziale), parziale.stat().st_size
+    letto = h.hexdigest()
     if letto != atteso_sha or byte != atteso_byte:
-        parziale.unlink()
+        _elimina_temporaneo(dir_fd, temporaneo)
         raise Rifiuto("%s scaricato da %s non combacia: sha256 %s (%d B), atteso %s (%d B). "
                       "Il file e' stato CANCELLATO."
                       % (destinazione.name, url, letto, byte, atteso_sha, atteso_byte))
-    parziale.replace(destinazione)
+    try:
+        os.replace(temporaneo, destinazione.name,
+                   src_dir_fd=dir_fd, dst_dir_fd=dir_fd)
+    except OSError as e:
+        _elimina_temporaneo(dir_fd, temporaneo)
+        raise Rifiuto("pubblicazione sicura di %s fallita: %s" % (destinazione.name, e)) from None
     return {"nome": destinazione.name, "url": url, "sha256": letto, "byte": byte}
 
 
 def scarica(destinazione, lingue=None, pin: dict | None = None, url_base=None,
-            apri=None, forza: bool = False) -> dict:
+            apri=None, forza: bool = False, *, orologio=time.monotonic) -> dict:
     pin = pin or carica_pin()
     apri = apri or _apri
     radice = (url_base or pin["url_base"])
@@ -109,37 +273,41 @@ def scarica(destinazione, lingue=None, pin: dict | None = None, url_base=None,
     for l in lingue:
         esigi(l in pin["basi"], "lingua %r non nel pin (ci sono: %s)"
               % (l, ", ".join(sorted(pin["basi"]))))
-    cartella = Path(destinazione)
-    esigi(cartella.is_dir(), "--destinazione %s non e' una cartella esistente" % cartella)
+    cartella, dir_fd = _apri_cartella_privata(destinazione)
+    inizio = orologio()
+    try:
+        testo = _testo(radice + SHA256SUMS, apri, orologio=orologio, inizio=inizio)
+        dichiarati = analizza_sha256sums(testo)
+        for l in lingue:
+            d = pin["basi"][l]["delta"]
+            esigi(d["nome"] in dichiarati,
+                  "SHA256SUMS della release non nomina %s: non scarico niente" % d["nome"])
+            esigi(dichiarati[d["nome"]] == d["sha256"],
+                  "SHA256SUMS della release dice %s per %s, il pin tracciato dice %s. "
+                  "Non scarico niente: o la release e' stata rifatta, o il file non e' quello."
+                  % (dichiarati[d["nome"]][:16], d["nome"], d["sha256"][:16]))
 
-    testo = _testo(radice + SHA256SUMS, apri)
-    dichiarati = analizza_sha256sums(testo)
-    for l in lingue:
-        d = pin["basi"][l]["delta"]
-        esigi(d["nome"] in dichiarati,
-              "SHA256SUMS della release non nomina %s: non scarico niente" % d["nome"])
-        esigi(dichiarati[d["nome"]] == d["sha256"],
-              "SHA256SUMS della release dice %s per %s, il pin tracciato dice %s. "
-              "Non scarico niente: o la release e' stata rifatta, o il file non e' quello."
-              % (dichiarati[d["nome"]][:16], d["nome"], d["sha256"][:16]))
-
-    fatti = []
-    for l in lingue:
-        d = pin["basi"][l]["delta"]
-        bersaglio = cartella / d["nome"]
-        if bersaglio.is_file() and not forza and sha_file(bersaglio) == d["sha256"]:
-            fatti.append({"lingua": l, "esito": "gia presente", "nome": d["nome"],
-                          "sha256": d["sha256"], "byte": d["byte"]})
-            continue
-        # Senza `--url-base` vale l'URL scritto nel pin, che e' quello che si
-        # legge in `base11.json`; con `--url-base` (specchio o server di prova)
-        # vale la radice data piu' il nome del pin.
-        url = d["url"] if url_base is None else radice + d["nome"]
-        fatti.append({"lingua": l, "esito": "scaricato",
-                      **_scarica_file(url, bersaglio, d["sha256"], d["byte"], apri)})
-    (cartella / SHA256SUMS_DEPOSITO).write_text(testo)
-    return {"destinazione": str(cartella), "url_base": radice, "file": fatti,
-            "sha256sums": str(cartella / SHA256SUMS_DEPOSITO)}
+        fatti = []
+        for l in lingue:
+            d = pin["basi"][l]["delta"]
+            bersaglio = cartella / d["nome"]
+            presente = _sha_regolare(dir_fd, d["nome"])
+            if (presente == (d["sha256"], d["byte"]) and not forza):
+                fatti.append({"lingua": l, "esito": "gia presente", "nome": d["nome"],
+                              "sha256": d["sha256"], "byte": d["byte"]})
+                continue
+            # Senza `--url-base` vale l'URL scritto nel pin, che e' quello che si
+            # legge in `base11.json`; con `--url-base` (specchio o server di prova)
+            # vale la radice data piu' il nome del pin.
+            url = d["url"] if url_base is None else radice + d["nome"]
+            fatti.append({"lingua": l, "esito": "scaricato",
+                          **_scarica_file(url, bersaglio, d["sha256"], d["byte"],
+                                          apri, dir_fd, orologio=orologio, inizio=inizio)})
+        _scrivi_atomico(dir_fd, SHA256SUMS_DEPOSITO, testo.encode("utf-8"))
+        return {"destinazione": str(cartella), "url_base": radice, "file": fatti,
+                "sha256sums": str(cartella / SHA256SUMS_DEPOSITO)}
+    finally:
+        os.close(dir_fd)
 
 
 def main(argv=None):

@@ -159,7 +159,7 @@ def applica(dati_rom, oid, guardie, patch, strategia="auto", ricevuta=None,
             modo = "a-corpo-originale"
         else:
             corpo = blz_comprimi_ottimo(bytes(nuova), bersaglio=len(crudo))
-            esigi(blz_decomprimi(corpo) == bytes(nuova),
+            esigi(blz_decomprimi(corpo, len(nuova)) == bytes(nuova),
                   "C4: decompresso -> ricompresso -> decompresso NON coincide")
             t = blz_leggi_trailer(corpo)
             r["cancelli"]["C4_roundtrip_blz"] = {

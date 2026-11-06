@@ -39,6 +39,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -50,12 +51,14 @@ ROOT = SOURCE.parent
 # (name, working directory, unittest arguments)
 SUITE = [
     ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
-    ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test_pack.py"]),
+    ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test*.py"]),
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
-    ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione"]),
+    ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione", "sgp12.test_publication"]),
     ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),
     ("ARM9 reserve register",  SOURCE, ["-m", "unittest", "verifiche.test_riserva"]),
     ("runtime crash and freeze gate", SOURCE, ["-m", "unittest", "verifiche.test_runtime_gate"]),
+    ("runtime source, RTC and resource guards", SOURCE / "runtime/test", ["-m", "unittest", "test_patch_core", "test_rtc_parser", "test_runtime_limits", "test_frame_observation"]),
+    ("runtime debug transport/output guards", SOURCE, ["-m", "unittest", "features.debug.test_secure_output", "features.debug.tools.test_rsp"]),
     ("text codec / translation", SOURCE, ["-m", "unittest", "discover", "-s", "translation", "-p", "test_*.py"]),
     ("text width measurement", SOURCE, ["-m", "unittest", "discover", "-s", "quality-audit", "-p", "test_*.py"]),
     ("EV/IV guide (1.1)",      SOURCE, ["-m", "unittest", "discover", "-s", "native-guide", "-p", "test_*.py"]),
@@ -100,6 +103,33 @@ SUITE_CLASSE_B = [
 # its source-only tests belong to the same mandatory project check. Keep tests
 # that require private cartridges out of Class A.
 SUITE += [
+    ("1.3.1 bounded successor workbench", SOURCE, ["-m", "unittest", "sgp131.test_baseline", "sgp131.test_build", "sgp131.test_workbench", "sgp131.test_evidence", "sgp131.test_mechanics_stages", "sgp131.test_battle_animation_facade", "sgp131.test_battle_animation_dynamicpunch", "sgp131.test_battle_animation_helping_hand", "sgp131.test_battle_animation_strength", "sgp131.test_battle_animation_spit_up", "sgp131.test_giratina_pc_form"]),
+    ("1.3.1 resident ownership policy", SOURCE, ["-m", "unittest", "sgp131.test_reserve"]),
+    ("1.3.1 settings model and input", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_state", "test_input"]),
+    ("1.3.1 settings render plan", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_render"]),
+    ("1.3.1 settings pixel painter", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_painter"]),
+    ("1.3.1 Guide controller", SOURCE / "features/guide-ui/test", ["-m", "unittest", "discover", "-p", "test_controller.py"]),
+    ("1.3.1 Guide render plan", SOURCE / "features/guide-ui/test", ["-m", "unittest", "discover", "-p", "test_render.py"]),
+    ("1.3.1 Guide pixel painter", SOURCE / "features/guide-ui/test", ["-m", "unittest", "discover", "-p", "test_painter.py"]),
+    ("1.3.1 read-only training UI owner", SOURCE / "features/training-native/test", ["-m", "unittest", "test_ui_transaction"]),
+    ("1.3.1 checked shiny UI owner", SOURCE / "features/shiny/test", ["-m", "unittest", "test_ui_transaction"]),
+    ("1.3.1 atomic settings owners", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_owners"]),
+    ("1.3.1 shared physical sampler", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_physical"]),
+    ("1.3.1 checked UI heap", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_heap"]),
+    ("1.3.1 persistent UI allocation", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_persistent"]),
+    ("1.3.1 UI resource compiler", SOURCE, ["-m", "unittest", "sgp131.test_ui_resource"]),
+    ("1.3.1 authored UI catalogue", SOURCE, ["-m", "unittest", "sgp131.test_ui_copy"]),
+    ("1.3.1 checked UI resource reader", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_resource"]),
+    ("1.3.1 checked Guide resource reader", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_guide_resource"]),
+    ("1.3.1 checked UI backgrounds", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_bg"]),
+    ("1.3.1 checked UI font", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_font"]),
+    ("1.3.1 persistent UI module lifecycle", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_module"]),
+    ("1.3.1 resident native UI caller", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_bridge"]),
+    ("1.3.1 native field Guide entry", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_fieldbook"]),
+    ("1.3.1 read-only Scene admission", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_scene_admission"]),
+    ("1.3.1 composed UI Scene", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_scene"]),
+    ("1.3.1 successor Guide content", SOURCE, ["-m", "unittest", "sgp131.test_guide_content"]),
+    ("1.3.1 guarded UI compiler contracts", SOURCE, ["-m", "unittest", "sgp131.test_ui"]),
     ("1.3 event flag storage", SOURCE, ["-m", "unittest", "sgp13.test_event_flags"]),
     ("1.3 recoverable save feedback", SOURCE, ["-m", "unittest", "sgp13.test_save_ui"]),
     ("1.3 conditional balance probabilities", SOURCE, ["-m", "unittest", "sgp13.test_balance_math"]),
@@ -107,14 +137,91 @@ SUITE += [
     ("1.3 species balance", SOURCE, ["-m", "unittest", "sgp13.test_species.SpeciesTests", "sgp13.test_species.BalanceAuditTests"]),
     ("1.3 shiny core and adapters", SOURCE / "features/shiny/test", ["-m", "unittest", "test_core", "test_native_owner", "test_native_routes", "test_native_search", "test_native_abort", "test_native_install.InstallTests"]),
     ("1.3 finite PID reference", SOURCE, ["-m", "unittest", "sgp13.test_shiny_pid"]),
-    ("1.3 build and guide facts", SOURCE, ["-m", "unittest", "sgp13.test_space.SpaceTests", "sgp13.test_resources", "sgp13.test_caught", "sgp13.test_content", "sgp13.test_build", "sgp13.test_title", "sgp13.test_consultant", "sgp13.test_mew"]),
+    ("1.3 build, admission and guide facts", SOURCE, ["-m", "unittest", "sgp13.test_admission", "sgp13.test_space.SpaceTests", "sgp13.test_resources", "sgp13.test_caught", "sgp13.test_content", "sgp13.test_build", "sgp13.test_title", "sgp13.test_consultant", "sgp13.test_mew"]),
+    ("extended-level model (not installed)", SOURCE / "features/extended-levels/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("1.3 training rules", SOURCE / "features/training/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("1.3 training adapters", SOURCE / "features/training-native/test", ["-m", "unittest", "test_transaction", "test_transaction_arm", "test_ownership", "test_scripts", "test_save_composition", "test_shiny_owner"]),
     ("1.3 native guide", SOURCE / "features/field-guide/test", ["-m", "unittest", "test_content", "test_native", "test_failures", "test_hooks", "test_font_cache"]),
     ("1.3 trainer strategies", SOURCE / "features/trainer-strategy/test", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("1.3 Plus presentation", SOURCE / "features/plus-ui/test", ["-m", "unittest", "test_context", "test_navigation", "test_extended.ExtendedMenu"]),
 ]
+# Modern mechanics (4a). The accuracy suites import `sgp131`, so they run with SOURCE on PYTHONPATH; the
+# Apple clang 21.0.0 compiler test fails (SGP_CI=1) or skips, never passes silently, on a different compiler.
+SOURCE_ENV = {"PYTHONPATH": str(SOURCE)}
+SUITE += [
+    ("1.3.1 cold UI owner stages", SOURCE, ["-m", "unittest", "sgp131.test_controls_portable_stages", "sgp131.test_identity", "sgp131.test_rematches_stage", "sgp131.test_activation", "sgp131.test_activation_forwarding"], SOURCE_ENV),
+]
 SUITE_CLASSE_B += [
+    ("1.3.1 final title identity ROM", SOURCE, ["-m", "unittest", "sgp131.test_identity_rom"], SOURCE_ENV),
+    ("1.3.1 full rematches chain ROM", SOURCE, ["-m", "unittest", "sgp131.test_rematches_stage_rom"], SOURCE_ENV),
+    ("1.3.1 evidence-bound activation ROM", SOURCE, ["-m", "unittest", "sgp131.test_activation_rom"], SOURCE_ENV),
+    ("1.3.1 controls and portable chain ROM", SOURCE, ["-m", "unittest", "sgp131.test_controls_portable_stages_rom"], SOURCE_ENV),
+]
+SUITE += [
+    ("1.3.1 modern moves", SOURCE, ["-m", "unittest", "sgp131.test_modern_moves"], SOURCE_ENV),
+    ("1.3.1 inherited repair arithmetic and registration", SOURCE, ["-m", "unittest", "sgp131.test_lullaby", "sgp131.test_legacy_stage"], SOURCE_ENV),
+    ("1.3.1 legendary scene-version selector", SOURCE, ["-m", "unittest", "sgp131.test_legendary_scene_version_rom.SelectorUnitTests"], SOURCE_ENV),
+    ("1.3.1 AI scoring", SOURCE, ["-m", "unittest", "sgp131.test_ai_scoring"], SOURCE_ENV),
+    ("1.3.1 Fairy AI helper", SOURCE, ["-m", "unittest", "sgp131.test_fairy_ai"], SOURCE_ENV),
+    ("1.3.1 modern abilities", SOURCE, ["-m", "unittest", "sgp131.test_modern_abilities"], SOURCE_ENV),
+    ("1.3.1 Keen Eye text", SOURCE / "features/modern-accuracy/test", ["-m", "unittest", "test_text"], SOURCE_ENV),
+    ("1.3.1 archive deltas", SOURCE, ["-m", "unittest", "sgp131.test_archives"], SOURCE_ENV),
+    ("1.3.1 Safari lifetime oracle", SOURCE, ["-m", "unittest", "sgp131.test_safari_lifetime.LifetimeOracle", "sgp131.test_safari_lifetime.ArchiveRegistration"], SOURCE_ENV),
+]
+# c8 features (Summary controls, portable box, rematch variants, gift script fixes). Class A: these suites run tests without any
+# game file; their ROM cases skip without the V4 candidates. The *_rom modules are Class B below.
+SUMMARY_CONTROLS_ENV = {"PYTHONPATH": os.pathsep.join([str(SOURCE), str(SOURCE / "features/summary-controls/test")])}
+PORTABLE_BOX_ENV = {"PYTHONPATH": os.pathsep.join([str(SOURCE), str(SOURCE / "features/portable-box/test")])}
+REMATCH_VARIANTS_ENV = {"PYTHONPATH": os.pathsep.join([str(SOURCE), str(SOURCE / "features/rematch-variants/test")])}
+SUITE += [
+    ("1.3.1 Summary controls feature", SOURCE / "features/summary-controls/test", ["-m", "unittest", "discover", "-p", "test_*.py"], SUMMARY_CONTROLS_ENV),
+    ("1.3.1 Summary controls package", SOURCE, ["-m", "unittest", "sgp131.test_controls"], SOURCE_ENV),
+    ("1.3.1 portable box feature", SOURCE / "features/portable-box/test", ["-m", "unittest", "discover", "-p", "test_*.py"], PORTABLE_BOX_ENV),
+    ("1.3.1 portable box package", SOURCE, ["-m", "unittest", "sgp131.test_portable"], SOURCE_ENV),
+    ("1.3.1 rematch variants feature", SOURCE / "features/rematch-variants/test", ["-m", "unittest", "discover", "-p", "test_*.py"], REMATCH_VARIANTS_ENV),
+    ("1.3.1 rematch variants package", SOURCE, ["-m", "unittest", "sgp131.test_rematches"], SOURCE_ENV),
+    ("1.3.1 gift script archives", SOURCE, ["-m", "unittest", "sgp131.test_gifts_archives"], SOURCE_ENV),
+    ("1.3.1 gift script audit", SOURCE, ["-m", "unittest", "sgp131.test_gifts_audit"], SOURCE_ENV),
+    ("1.3.1 gift script fixes", SOURCE, ["-m", "unittest", "sgp131.test_gifts_scripts"], SOURCE_ENV),
+]
+SUITE_CLASSE_B += [
+    ("1.3.1 immutable V4 baseline", SOURCE, ["-m", "unittest", "sgp131.test_baseline_rom"]),
+    ("1.3.1 Azurill gender ROM reproducer", SOURCE, ["-m", "unittest", "sgp131.test_azurill_gender_rom"], SOURCE_ENV),
+    ("1.3.1 GB Sounds evolution component reproducer", SOURCE, ["-m", "unittest", "sgp131.test_gb_sounds_evolution_rom"], SOURCE_ENV),
+    ("1.3.1 Wonder Card seal OOB reproducer and repair", SOURCE, ["-m", "unittest", "sgp131.test_wonder_card_seal_rom", "sgp131.test_wonder_card_fix_rom"], SOURCE_ENV),
+    ("1.3.1 inherited script and native repairs", SOURCE, ["-m", "unittest", "sgp131.test_legacy_scripts", "sgp131.test_legacy_archives", "sgp131.test_gs_cup_guard", "sgp131.test_lullaby_rom"], SOURCE_ENV),
+    ("1.3.1 legendary scene guard", SOURCE, ["-m", "unittest", "sgp131.test_legendary_scenes", "sgp131.test_legendary_scene_rom"], SOURCE_ENV),
+    ("1.3.1 legendary scene-version ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_legendary_scene_version_rom.ExactRomTests"], SOURCE_ENV),
+    ("1.3.1 battle animation ROM repairs", SOURCE, ["-m", "unittest", "sgp131.test_battle_animation_facade_rom", "sgp131.test_battle_animation_dynamicpunch_rom", "sgp131.test_battle_animation_helping_hand_rom", "sgp131.test_battle_animation_strength_rom", "sgp131.test_battle_animation_spit_up_rom"], SOURCE_ENV),
+    ("1.3.1 Giratina PC form ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_giratina_pc_form_rom"], SOURCE_ENV),
+    ("1.3.1 Route 43/44 invisible-grass ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_invisible_grass_rom"], SOURCE_ENV),
+    ("1.3.1 Waterfall descent-facing ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_waterfall_facing_rom"], SOURCE_ENV),
+    ("1.3.1 follower menu-jump ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_follower_menu_jump_rom"], SOURCE_ENV),
+    ("1.3.1 Bag compact-position ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_bag_view_position_rom"], SOURCE_ENV),
+    ("1.3.1 Lottery Number ROM repair", SOURCE, ["-m", "unittest", "sgp131.test_lottery_id_rom"], SOURCE_ENV),
+    ("1.3.1 Safari script ROM repairs", SOURCE, ["-m", "unittest", "sgp131.test_safari_lifetime.CurrentCandidateReproducer", "sgp131.test_safari_defeat_whiteout_rom"], SOURCE_ENV),
+    ("1.3.1 fishing, Fly, Soul Dew, Wonder Card and IGT native repairs", SOURCE, ["-m", "unittest", "sgp131.test_fishing", "sgp131.test_victory_road_fly_rom", "sgp131.test_soul_dew_rom", "sgp131.test_igt", "sgp131.test_legacy_native"], SOURCE_ENV),
+    ("1.3.1 native resident ownership audit", SOURCE, ["-m", "unittest", "sgp131.test_reserve_rom"]),
+    ("1.3.1 native settings owners", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_owners_rom"]),
+    ("1.3.1 canonical settings render plan", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_render_rom"]),
+    ("1.3.1 native settings pixel painter", SOURCE / "features/settings-ui/test", ["-m", "unittest", "test_painter_rom"]),
+    ("1.3.1 native Guide rendering", SOURCE / "features/guide-ui/test", ["-m", "unittest", "test_guide_rom"]),
+    ("1.3.1 native physical sampler", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_physical_rom"], SOURCE_ENV),
+    ("1.3.1 native checked UI heap", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_heap_rom"], SOURCE_ENV),
+    ("1.3.1 native persistent UI allocation", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_persistent_rom"]),
+    ("1.3.1 canonical UI resources", SOURCE, ["-m", "unittest", "sgp131.test_ui_resource_rom"]),
+    ("1.3.1 canonical UI catalogue", SOURCE, ["-m", "unittest", "sgp131.test_ui_copy_rom"]),
+    ("1.3.1 native UI resource reader", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_resource_rom"]),
+    ("1.3.1 native Guide resource reader", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_guide_resource_rom"]),
+    ("1.3.1 native UI backgrounds", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_bg_rom"], SOURCE_ENV),
+    ("1.3.1 native UI font", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_font_rom"]),
+    ("1.3.1 native UI module lifecycle", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_module_rom"]),
+    ("1.3.1 native UI caller lifecycle", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_bridge_rom"]),
+    ("1.3.1 native field Guide lifecycle", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_fieldbook_rom"], SOURCE_ENV),
+    ("1.3.1 native Scene admission", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_scene_admission_rom"]),
+    ("1.3.1 native composed UI Scene", SOURCE / "features/ui-native/test", ["-m", "unittest", "test_scene_rom"]),
+    ("1.3.1 canonical Guide content", SOURCE, ["-m", "unittest", "sgp131.test_guide_content_rom"]),
+    ("1.3.1 canonical UI installation", SOURCE, ["-m", "unittest", "sgp131.test_ui_rom"]),
     ("1.3 native event flags", SOURCE, ["-m", "unittest", "sgp13.test_event_flags_rom"]),
     ("1.3 real species statistics", SOURCE, ["-m", "unittest", "sgp13.test_species.ActualTableTests"]),
     ("1.3 native shiny constructors", SOURCE / "features/shiny/test", ["-m", "unittest", "test_native_constructor", "test_native_options", "test_native_install.CartridgeInstallTests"]),
@@ -123,6 +230,23 @@ SUITE_CLASSE_B += [
     ("1.3 cartridge and hooks", SOURCE, ["-m", "unittest", "sgp13.test_space.RealRomTests", "sgp13.test_caught_arm", "sgp13.test_teams_arm", "sgp13.test_mew_rom"]),
     ("1.3 guide composition", SOURCE / "features/field-guide/test", ["-m", "unittest", "test_install_ranges"]),
     ("1.3 native training", SOURCE / "features/training-native/test", ["-m", "unittest", "test_native"]),
+    ("1.3.1 modern moves ROM", SOURCE, ["-m", "unittest", "sgp131.test_modern_moves_rom"], SOURCE_ENV),
+    ("1.3.1 AI scoring ROM", SOURCE, ["-m", "unittest", "sgp131.test_ai_scoring_rom",
+                                      "sgp131.test_ai_water_spout_rom",
+                                      "sgp131.test_ai_metal_burst_rom",
+                                      "sgp131.test_ai_facade_rom",
+                                      "sgp131.test_ai_thunder_rom"], SOURCE_ENV),
+    ("1.3.1 Fairy AI helper ROM", SOURCE, ["-m", "unittest", "sgp131.test_fairy_ai_rom"], SOURCE_ENV),
+    ("1.3.1 modern abilities ROM", SOURCE, ["-m", "unittest", "sgp131.test_modern_abilities_rom"], SOURCE_ENV),
+    ("1.3.1 Keen Eye native", SOURCE / "features/modern-accuracy/test", ["-m", "unittest", "test_native"], SOURCE_ENV),
+    ("1.3.1 Keen Eye hooks", SOURCE / "features/modern-accuracy/test", ["-m", "unittest", "test_hooks"], SOURCE_ENV),
+    ("1.3.1 Keen Eye text ROM", SOURCE / "features/modern-accuracy/test", ["-m", "unittest", "test_text_rom"], SOURCE_ENV),
+    ("1.3.1 mechanics after UI", SOURCE, ["-m", "unittest", "sgp131.test_mechanics_stages_rom"], SOURCE_ENV),
+    ("1.3.1 archive deltas ROM", SOURCE, ["-m", "unittest", "sgp131.test_archives_rom"], SOURCE_ENV),
+    ("1.3.1 Summary controls ROM", SOURCE, ["-m", "unittest", "sgp131.test_controls_rom"], SOURCE_ENV),
+    ("1.3.1 portable box ROM", SOURCE, ["-m", "unittest", "sgp131.test_portable_rom"], SOURCE_ENV),
+    ("1.3.1 rematch variants ROM", SOURCE, ["-m", "unittest", "sgp131.test_rematches_rom"], SOURCE_ENV),
+    ("1.3.1 gift script audit ROM", SOURCE, ["-m", "unittest", "sgp131.test_gifts_audit_rom"], SOURCE_ENV),
 ]
 
 CONTA = re.compile(r"^Ran (\d+) tests?", re.M)
@@ -143,7 +267,10 @@ def esegui(nome, cwd, argv, env=None, classe_b=False):
     # were collected, not run.
     n = max(n, saltati)
     ok = r.returncode == 0
-    if not classe_b and n == 0:
+    if r.returncode < 0:
+        print("  %-26s   child terminated by %s; test counts unavailable" %
+              (nome, signal.Signals(-r.returncode).name))
+    if not classe_b and n == 0 and r.returncode == 0:
         # `unittest discover` on a folder with no test file exits 0. A suite
         # that collects nothing is not a suite that passes.
         ok = False
@@ -193,6 +320,7 @@ def compila_opzioni(tmp: Path):
 
 
 def main() -> int:
+    sys.stdout.reconfigure(line_buffering=True)
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--json", type=Path, help="write the counts to this file as well")
@@ -213,9 +341,9 @@ def main() -> int:
     # failure. Without a ROM those eight tests are Class B and skip by design.
     ambiente_riserva = {"SGP_RISERVA_COMPLETA": "1"} if os.environ.get("SGP_RISERVA_ROM") else None
 
-    for nome, cwd, argv in SUITE:
+    for nome, cwd, argv, *propri in SUITE:
         ok, n, s = esegui(nome, cwd, argv,
-                          env=ambiente_riserva if nome == "ARM9 reserve register" else None)
+                          env=propri[0] if propri else ambiente_riserva if nome == "ARM9 reserve register" else None)
         classe_a_ok &= ok
         totale += n
         saltati_tot += s
@@ -270,8 +398,8 @@ def main() -> int:
     dettaglio_b = []
     classe_b_ok = True
     totale_b = saltati_b = 0
-    for nome, cwd, argv in SUITE_CLASSE_B:
-        ok, n, s = esegui(nome, cwd, argv, classe_b=True)
+    for nome, cwd, argv, *propri in SUITE_CLASSE_B:
+        ok, n, s = esegui(nome, cwd, argv, env=propri[0] if propri else None, classe_b=True)
         classe_b_ok &= ok
         totale_b += n
         saltati_b += s

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Render four illustrated player PDFs; requires reportlab 4.4.9."""
 import argparse
+import io
 from pathlib import Path
 import re
 from xml.sax.saxutils import escape
@@ -9,10 +10,9 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, PageBreak,
                                Image, KeepTogether, Table, TableStyle)
-from pack import config, install_text, guide_names
+from pack import config, install_text, guide_names, documents_dir, image_file_bytes
 
 HERE = Path(__file__).resolve().parent
-IMAGES = HERE.parents[1] / 'images'
 INK = colors.HexColor('#26343a')
 TEAL = colors.HexColor('#16656b')
 GOLD = colors.HexColor('#bc8d27')
@@ -59,7 +59,9 @@ def paragraph(text, style):
 
 
 def picture(name, width):
-    shot = Image(str(IMAGES / name))
+    stream = io.BytesIO(image_file_bytes(name))
+    shot = Image(stream)
+    shot._sgp_source = stream
     shot.drawHeight *= width / shot.drawWidth
     shot.drawWidth = width
     shot.hAlign = 'CENTER'
@@ -92,7 +94,7 @@ def folder_card(lang, cfg, st):
     return box
 
 
-def render_document(path, story, label, st):
+def render_document(path, story, label, st, version='1.2.5'):
     if path.exists():
         raise FileExistsError(path)
     def frame(canvas, doc):
@@ -101,15 +103,15 @@ def render_document(path, story, label, st):
         canvas.line(44, 39, A4[0]-44, 39)
         canvas.setFillColor(colors.HexColor('#617076'))
         canvas.setFont('Helvetica', 8)
-        canvas.drawString(44, 25, 'SACRED GOLD PLUS 1.2.5  |  ' + label)
+        canvas.drawString(44, 25, 'SACRED GOLD PLUS '+version+'  |  ' + label)
         canvas.drawRightString(A4[0]-44, 25, str(doc.page))
         if doc.page > 1:
             canvas.setFont('Helvetica-Bold', 8)
             canvas.setFillColor(GOLD)
-            canvas.drawString(44, A4[1]-30, 'SACRED GOLD PLUS  /  1.2.5')
+            canvas.drawString(44, A4[1]-30, 'SACRED GOLD PLUS  /  '+version)
     doc = SimpleDocTemplate(str(path), pagesize=A4, rightMargin=44, leftMargin=44,
                             topMargin=49, bottomMargin=53, invariant=1,
-                            title='Sacred Gold Plus 1.2.5 - '+label,
+                            title='Sacred Gold Plus '+version+' - '+label,
                             author='Sacred Gold Plus contributors')
     doc.build(story, onFirstPage=frame, onLaterPages=frame)
 
@@ -117,9 +119,10 @@ def render_document(path, story, label, st):
 def install_guide(output, lang, cfg):
     st = styles()
     name = guide_names(lang, cfg)[0]
-    title = 'How to install 1.2.5' if lang == 'EN' else 'Come installare la 1.2.5'
+    title = ('How to install ' if lang == 'EN' else 'Come installare la ')+cfg['version']
+    title_image = cfg.get('title_images', {}).get(lang, '17-version-title-top.png')
     story = [paragraph('SACRED GOLD PLUS', st['Label']),
-             picture('17-version-title-top.png', 285), Spacer(1, 16),
+             picture(title_image, 285), Spacer(1, 16),
              paragraph(title, st['Title']),
              paragraph('WINDOWS + macOS  /  '+('ENGLISH EDITION' if lang == 'EN' else 'EDIZIONE ITALIANA'), st['Label'])]
     groups = install_text(lang, cfg).strip().split('\n\n')[1:]
@@ -165,19 +168,19 @@ def install_guide(output, lang, cfg):
         if section == '5' and body_count == 1:
             caption = ('The version on the title screen helps you recognise the game. The complete output SHA-256 is the definitive file check.' if lang == 'EN'
                        else 'La versione nel titolo aiuta a riconoscere il gioco. Il controllo definitivo del file è lo SHA-256 completo del risultato.')
-            box = Table([[picture('17-version-title-top.png', 205), paragraph(caption, st['Caption'])]], colWidths=[225, WIDTH-225])
+            box = Table([[picture(title_image, 205), paragraph(caption, st['Caption'])]], colWidths=[225, WIDTH-225])
             box.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE')]))
             story.extend([box, Spacer(1, 14)])
-    render_document(output/name, story, 'INSTALL / '+lang, st)
+    render_document(output/name, story, 'INSTALL / '+lang, st, cfg['version'])
 
 
 def news_guide(output, lang, cfg):
     st = styles()
-    text_name = 'NOVITA-1.2.5.txt' if lang == 'IT' else 'WHATS-NEW-1.2.5.txt'
-    text = (HERE/'documents'/lang/text_name).read_text(encoding='utf-8')
-    title = "What's New in 1.2.5" if lang == 'EN' else 'Novità della 1.2.5'
+    text_name = ('NOVITA-' if lang == 'IT' else 'WHATS-NEW-')+cfg['version']+'.txt'
+    text = (documents_dir(cfg)/lang/text_name).read_text(encoding='utf-8')
+    title = ("What's New in " if lang == 'EN' else 'Novità della ')+cfg['version']
     story = [paragraph('SACRED GOLD PLUS', st['Label']),
-             picture('17-version-title-top.png', 350), Spacer(1, 24),
+             picture(cfg.get('title_images', {}).get(lang, '17-version-title-top.png'), 350), Spacer(1, 24),
              paragraph(title, st['Title']),
              paragraph('THE CURRENT GAME, AT A GLANCE' if lang == 'EN' else 'IL GIOCO ATTUALE, IN BREVE', st['Label'])]
     photographs = {
@@ -187,8 +190,9 @@ def news_guide(output, lang, cfg):
               ('18-goldenrod-city.png', 'Goldenrod City' if lang=='EN' else 'Fiordoropoli')],
         '3': [('13-ev-viewer-top.png', 'L: EV'), ('14-iv-viewer-top.png', 'R: IV')],
     }
+    photographs = cfg.get('feature_images', {}).get(lang, photographs)
     for group in text.strip().split('\n\n')[1:]:
-        main = re.match(r'^([1-4])\. ', group) if '\n' not in group else None
+        main = re.match(r'^([1-9])\. ', group) if '\n' not in group else None
         heading = '\n' not in group and (main or group.isupper())
         if heading:
             if main:
@@ -204,12 +208,12 @@ def news_guide(output, lang, cfg):
                 story.extend([box, Spacer(1, 14)])
         else:
             story.append(paragraph(group, st['Text']))
-    render_document(output/guide_names(lang,cfg)[1], story, 'FEATURES / '+lang, st)
+    render_document(output/guide_names(lang,cfg)[1], story, 'FEATURES / '+lang, st, cfg['version'])
 
 
-def build(output):
+def build(output, contract=None):
     output.mkdir(parents=True, exist_ok=True)
-    cfg = config()
+    cfg = config(contract)
     for lang in ('EN', 'IT'):
         install_guide(output, lang, cfg)
         news_guide(output, lang, cfg)
@@ -218,4 +222,6 @@ def build(output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
-    build(parser.parse_args().output)
+    parser.add_argument('--contract', type=Path)
+    args = parser.parse_args()
+    build(args.output, args.contract)

@@ -6,6 +6,7 @@ import unittest
 
 import ndspy.code
 import ndspy.rom
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 from sgp13 import space
 
@@ -120,8 +121,8 @@ class RealRomTests(unittest.TestCase):
                 self.assertEqual(after.files, before.files)
                 self.assertEqual(after.arm7, before.arm7)
                 self.assertEqual(after.arm9OverlayTable, before.arm9OverlayTable)
-                self.assertEqual(after.loadArm9().sections[-1].data[0x10000:],
-                                 before.loadArm9().sections[-1].data)
+                self.assertEqual(ndspy_load_arm9_sicuro(after).sections[-1].data[0x10000:],
+                                 ndspy_load_arm9_sicuro(before).sections[-1].data)
 
 
 if __name__ == '__main__':

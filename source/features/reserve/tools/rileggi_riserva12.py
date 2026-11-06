@@ -61,8 +61,8 @@ def leggi_arm9(percorso):
 
 
 def sezioni(blob, ram):
-    import ndspy.code
-    return ndspy.code.MainCodeFile(blob, ram).sections
+    from sgp12.blz import ndspy_maincodefile_sicuro
+    return ndspy_maincodefile_sicuro(blob, ram).sections
 
 
 def parola(sezioni_list, addr):

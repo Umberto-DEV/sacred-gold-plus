@@ -10,6 +10,7 @@ import json
 import struct
 from pathlib import Path
 from ndspy.rom import NintendoDSRom
+from sgp12.blz import ndspy_load_arm9_sicuro
 from build_classic_camera import build as classic_camera
 from verify_camera import PLUS_SHA256, USA_SHA256, verify
 
@@ -22,7 +23,7 @@ def correct_waits(plus, reference):
     if hashlib.sha256(reference).hexdigest() != USA_SHA256:
         raise ValueError("HeartGold USA reference checksum does not match")
     arm9_offset = struct.unpack_from("<I", plus, 0x20)[0]
-    ref_code = NintendoDSRom(reference).loadArm9().sections[0].data
+    ref_code = ndspy_load_arm9_sicuro(NintendoDSRom(reference)).sections[0].data
     result = bytearray(plus)
     for site in SITES:
         off = arm9_offset + site - 0x02000000

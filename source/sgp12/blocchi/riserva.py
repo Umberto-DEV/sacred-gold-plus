@@ -20,6 +20,7 @@ import struct
 from pathlib import Path
 
 from ..rom import Rifiuto, esigi, sha
+from ..blz import ndspy_load_arm9_sicuro, ndspy_maincodefile_sicuro
 from ..riserva import canarino
 
 ARENA_HI_LIT = 0x020D2BB0
@@ -72,7 +73,7 @@ def applica(rom: bytes, build, etichetta: str = "") -> tuple[bytes, dict]:
 
     manifest_path = _manifest_path(build)
     parsed = ndspy.rom.NintendoDSRom(bytes(rom))
-    main = parsed.loadArm9()
+    main = ndspy_load_arm9_sicuro(parsed)
 
     r = {"strumento": "sgp12/blocchi/riserva.py:applica", "rom": etichetta,
          "ingresso_sha256": sha(rom), "ingresso_bytes": len(rom), "cancelli": {}}
@@ -164,13 +165,11 @@ def applica(rom: bytes, build, etichetta: str = "") -> tuple[bytes, dict]:
 def rileggi(base: bytes, candidata: bytes, build) -> dict:
     """Rilettore INDIPENDENTE: non chiama `applica()`, rilegge da zero con le
     proprie costanti (stesse di `rileggi_riserva12.py`)."""
-    import ndspy.code
-
     manifest_path = _manifest_path(build)
 
     def sezioni(dati):
         rom_off, _e, ram, size = struct.unpack_from("<IIII", dati, 0x20)
-        return ndspy.code.MainCodeFile(dati[rom_off:rom_off + size], ram).sections
+        return ndspy_maincodefile_sicuro(dati[rom_off:rom_off + size], ram).sections
 
     def parola(sez, addr):
         for s in sez:

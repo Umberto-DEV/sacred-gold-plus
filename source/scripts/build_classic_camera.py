@@ -11,6 +11,7 @@ import struct
 from pathlib import Path
 
 from ndspy.rom import NintendoDSRom
+from sgp12.blz import ndspy_load_arm9_sicuro
 from verify_camera import TABLE, COUNT, STRIDE, MASK, PLUS_SHA256, USA_SHA256, verify
 
 
@@ -19,8 +20,8 @@ def build(plus, reference):
         raise ValueError("La ROM Plus non corrisponde alla versione 1.03 verificata.")
     if hashlib.sha256(reference).hexdigest() != USA_SHA256:
         raise ValueError("Il riferimento deve essere HeartGold USA verificato, non la versione italiana.")
-    vanilla = NintendoDSRom(reference).loadArm9().sections[0].data
-    current = NintendoDSRom(plus).loadArm9().sections[0].data
+    vanilla = ndspy_load_arm9_sicuro(NintendoDSRom(reference)).sections[0].data
+    current = ndspy_load_arm9_sicuro(NintendoDSRom(plus)).sections[0].data
     arm9_offset = struct.unpack_from("<I", plus, 0x20)[0]
     if plus[arm9_offset:arm9_offset + len(current)] != current:
         raise ValueError("Layout ARM9 non supportato: non applicare a un eseguibile compresso.")

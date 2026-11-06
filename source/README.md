@@ -1,37 +1,44 @@
 # Build and contribute
 
-This folder builds **1.2.5**. See the [version fix and save validation](docs/version-1.2.5.md).
+This tree contains the implemented **1.3.1** sources, native payload sources,
+build tools, tests and technical documentation. Start with the
+[1.3.1 composition guide](sgp131/README.md) for the exact inputs, UI configuration,
+owner activation and final output fingerprints. The `sgp12` commands below
+rebuild the **1.2.5** predecessor from your own retail HeartGold.
 
-The **1.3 development** successor has a separate
-[builder and feature guide](sgp13/README.md). It starts from a verified 1.2.5
-copy and does not replace the published release pipeline.
-Per riprendere il lavoro in una nuova sessione, partire dal
-[passaggio di consegne 1.3](docs/HANDOFF-1.3.md): stato Git/CI, prove e documenti da aggiornare.
-Il [registro delle novità 1.2.5 → 1.3.0](docs/novita-1.3.0.md) raccoglie
-il confronto prima/dopo, le specie interessate e le correzioni integrate.
-La [verifica funzionale Android del 29 ottobre 2026](docs/android-1.3-dev-validation.md)
-registra la campagna funzionale precedente, 49 checkpoint accettati, prove native e limiti.
-La [verifica su dispositivo fisico](docs/device-1.3-validation.md) identifica le
-ROM correnti V1.3, il nuovo banner e le prove di conservazione del save.
-Il [playtest sistematico v5](docs/playtest-1.3-dev.md) e la successiva
-[verifica delle interfacce v8](docs/ui-1.3-dev-validation.md) conservano i risultati
-delle tappe precedenti.
-The earlier [focused stability investigation](docs/deep-debug-2026-10-28.md) and its
-[execution plan](docs/deep-debug-2026-10-28-plan.md) separate the reported 1.2.5
-legendary-event freezes from a reproduced 1.3 save-admission defect.
-The [debug and optimization handoff](docs/HANDOFF-debug-optimization.md) defines
-the measurement, research, regression and evidence method for this work and
-for a separate emulator investigation.
+The [1.3 builder guide](sgp13/README.md) describes the earlier feature line.
+The 1.3.1 composer accepts only the two historical V1.3 V4 inputs. The current
+`sgp13.build` uses the newer HF02 implementation. The
+[authenticated V4 bootstrap](distribution/bootstrap_13.py) reconstructs the
+required older HF01 inputs from 208 pinned sources in the already-published
+ancestor, without changing current game code or Git refs. Fresh EN/IT builds
+reproduce both exact V4 hashes. The 1.3.1 guide gives the complete commands;
+HF01 is a build intermediate upgraded to HF02 before player use.
+
+The [change register](docs/novita-1.3.0.md),
+[bug list](../BUG-FIXES-1.3.1.md) and
+[current validation report](docs/ui-1.3.1-validation.md) distinguish source
+repairs, exact ROM identities, played scenarios and open coverage.
+The [1.2.5 report](docs/version-1.2.5.md),
+[Android campaign of 29 October](docs/android-1.3-dev-validation.md),
+[earlier device campaign](docs/device-1.3-validation.md),
+[systematic playtest](docs/playtest-1.3-dev.md) and
+[earlier UI campaign](docs/ui-1.3-dev-validation.md) retain their original
+candidate scope. Their results do not automatically accept the 1.3.1 successor.
+The [stability investigation](docs/deep-debug-2026-10-28.md) and
+[test-bench guide](docs/test-bench.md) document the older defects and runtime method.
 
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
 
-Everything here rebuilds and checks the game from **your own** game file. No game file is distributed, and none is needed to run the tests that CI runs. How changes get in is at the end of this page.
+Game-dependent tools read **your own** game files. No game file is distributed, and none is needed to run the ROM-free tests in CI. Exact historical intermediate hashes and toolchains are required where the composition guide states them. How changes get in is at the end of this page.
 
 ## What is here
 
 | Folder | What it is |
 | --- | --- |
 | `sgp12/` | The library. One command builds 1.2.5 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
+| `sgp13/` | Earlier 1.3 feature builder from exact 1.2.5. Current HF02 sources are distinct from the historical HF01 V4 input required by 1.3.1. |
+| `sgp131/` | Current 1.3.1 composer, independent readbacks, owner activation, workbench and regressions, including the battle type-loop fix. See its [build guide](sgp131/README.md). |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -43,7 +50,11 @@ Everything here rebuilds and checks the game from **your own** game file. No gam
 
 ## Prepare
 
-Python 3.9 or newer. Install the pinned dependencies into an isolated environment:
+The legacy 1.2.5 tools and general tests support Python 3.9 or newer. The
+production 1.3.1 UI compiler additionally authenticates the exact Python
+3.14.7 executable, libraries and Apple clang binary described in the
+[1.3.1 guide](sgp131/README.md). A generic Python environment does not satisfy
+those production pins. Install the dependencies into an isolated environment:
 
 ```sh
 python3 -m venv .venv
@@ -58,13 +69,14 @@ payload's fixed space limit even when they support the ARM target. A usable
 ARM target alone does not establish release reproducibility.
 
 CI runs the Class A suites on the official `xcode-27` macOS runner with
-Xcode 27.0 explicitly selected. It requires Apple clang 21 and retains
+Xcode 27.2 explicitly selected. It requires the exact Apple clang 21
+`clang-2100.4.1.1` binary and retains
 all existing byte-for-byte and payload-size tests; those tests establish
 whether the selected compiler reproduces the shipped artifacts. Public-file
 checks remain on Ubuntu. Runner software is documented by
 [GitHub Actions](https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md).
-The exact local compiler build is newer than that runner selection; a different
-result remains a failing check rather than being accepted or regenerated.
+The workflow checks version and SHA-256 before the suites; a different result
+remains a failing check rather than being accepted or regenerated.
 
 Check that your compiler supports the target with:
 
@@ -92,7 +104,7 @@ Keep it in a private folder and point `SGP_ROM_DIR` at that folder. Never copy a
 cd source && ../.venv/bin/python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"
 ```
 
-That command is the only place in this repository that opens a network connection, and nothing calls it for you. It downloads the patches named in `sgp12/base11.json` from the `base-1.1` release, checks each against the pinned SHA-256, and deletes anything that does not match rather than leaving it in the folder. You can equally download the two files by hand from the release page and drop them in `$SGP_ROM_DIR` under the same names, or pass one with `--delta`.
+That command is the only place in this repository that opens a network connection, and nothing calls it for you. It requires the destination to belong to the current user and not be group/world-writable. It downloads the patches named in `sgp12/base11.json` from the `base-1.1` release, limits the checksum listing to 64 KiB and every patch to its pinned size, and gives the complete transfer a 30-minute deadline. It checks each patch against the pinned SHA-256 and atomically publishes only verified files without following output symlinks. Anything that does not match is deleted rather than left in the folder. You can equally download the two files by hand from the release page and drop them in `$SGP_ROM_DIR` under the same names, or pass one with `--delta`.
 
 If you already have a 1.1 ROM, `--base` still takes it: stage 0 is skipped with a warning. Any other ROM is refused by SHA-256, with the accepted ones listed.
 
@@ -106,24 +118,38 @@ export SGP_PRET_SOURCE=$PWD/../pokeheartgold
 
 These files are not redistributed here: their licensing was not established to our satisfaction, so they remain external inputs. The character mapping encodes text; the command metadata lets the gift tools walk and verify scripts.
 
-## Build and check the game
+## Build and check the 1.2.5 predecessor
 
 `sgp12` is a package inside `source/`, so every command below runs `python -m sgp12....`: it needs `source/` as the working directory, which is one level below where "Prepare" creates `.venv`. Every command in this README that touches `sgp12` is written the same way — `cd source &&`, then the venv interpreter as `../.venv/bin/python3` — so it can be copied and run from the repository root without a separate `cd` step to remember:
 
 ```sh
+SGP_BUILD_OUT="$(mktemp -d "${TMPDIR:-/tmp}/sgp-build.XXXXXX")"
 cd source && ../.venv/bin/python3 -m sgp12.costruisci \
-        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" --uscita /tmp/sgp-1.2.5-EN.nds
-cd source && ../.venv/bin/python3 -m sgp12.verifica /tmp/sgp-1.2.5-EN.nds \
+        --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds" \
+        --uscita "$SGP_BUILD_OUT/sgp-1.2.5-EN.nds"
+cd source && ../.venv/bin/python3 -m sgp12.verifica "$SGP_BUILD_OUT/sgp-1.2.5-EN.nds" \
         --base "$SGP_ROM_DIR/Pokemon - HeartGold Version.nds"
 ```
 
 `--lingua` is no longer needed: the language comes from the ROM's SHA-256, and if you pass `--lingua` it has to agree. Use the Italian HeartGold for the Italian build.
+The builder never replaces an existing ROM, report or intermediate log. It
+publishes new files as private `0600` entries and requires `--log-dir`, when
+used, to be a private `0700` directory.
 
 The build is deterministic: the same ROM gives the same bytes. Stage 0 checks all three fingerprints — your ROM, the patch, and the 1.1 base that comes out of it — before a single block runs, and records them in the build's JSON report under `stadio0`. `verifica` repeats the whole thing, stage 0 included, compares the result with the ROM you give it (`costruzione_identica`), runs every block read-back and then T1–T5. Step-by-step instructions, including what to do when an applier refuses: [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md).
 
 After stage 0 the blocks are applied in this order: reserve, camera, Plus difficulty + save chunk, texts, NPC cap, battle animation, options page, Wi-Fi slot, title, credit, guide label, Rare Candy, capped gifts, continuous battle motion, battle item cache, battle party move cache, expanded Bag capacity, maintenance and the persistent version title — nineteen in all; see `source/sgp12/costruisci.py` or the numbered list in [docs/rebuilding-1.2.md](docs/rebuilding-1.2.md#the-block-order) for what each one does.
 
 ## Run the tests
+
+The 1.3/1.3.1 native stages authenticate the actual Apple CLT compiler before
+executing it, including version queries. The local pin is SHA-256
+`fc5e3cbba6ad54059295cad716aacb05ace8235f5f7a6031f1d8c15d24bd6d66`.
+Compiler and ancestors must be root-owned, not group/world writable and have
+no extended ACL. Compiler children use a restricted environment. The workflow
+now selects Xcode 27.2 and checks this exact version and binary digest; the
+first GitHub run remains the independent compatibility gate. Do not bypass the
+identity guard to obtain a green result.
 
 Class A — no game file, the same set CI runs:
 
@@ -178,6 +204,27 @@ The battle-animation suite (`features/anim/test/`) also needs the overlay module
 
 ## Make a change
 
+The 1.3.1 successor now pins Apple clang 21 `clang-2100.4.1.1` for its
+newly compiled payloads. The legacy Guide still recompiles byte-identically;
+current native/pixel and installer checks are recorded in the
+[UI validation report](docs/ui-1.3.1-validation.md). This does not replace the
+historical 1.2.5 payloads or their reproducibility checks.
+
+The in-progress 1.3.1 UI installer has separate assurance levels. Its ROM-free
+`sgp131.test_ui` suite explicitly uses the observed host toolchain for compiler
+contract tests, retaining source/library, size and symbol checks. Those test
+receipts are labelled nonproduction. Production `sgp131.ui` and `ui_verify`
+retain exact interpreter/compiler and source pins; `sgp131.test_ui_rom` verifies
+the canonical private inputs under those pins. Passing the host contract suite
+does not certify a production ROM or a different toolchain. Current results and
+remaining runtime gates are in [UI validation](docs/ui-1.3.1-validation.md).
+
+The `sgp131.workbench` UI stage requires explicit `--ui-config` and `--charmap`
+inputs. It retains one pending candidate alongside the verified candidate and
+fallback, checks provenance before use, and requires runtime evidence for
+promotion. A successful build is not runtime acceptance. Its first Italian
+pending candidate and focused transaction tests are recorded in that report.
+
 Change one issue at a time. Preserve message controls, argument counts and expected input data. **A preimage mismatch is a reason to stop and investigate, not to remove the check.** For a new translation, start with a small agreed set of screens and test it in context.
 
 If the change needs space in the ARM9 reserve, claim it in [docs/arm9-reserve-reservations.md](docs/arm9-reserve-reservations.md) and add its entry to `source/docs/arm9-reserve-map.json` in the same change; [docs/arm9-reserve-map.md](docs/arm9-reserve-map.md) explains the rules, in particular that anything with a public address anchors to the high end of the reserve. The interfaces between features — the save chunk, patching an overlay in place, the Wi-Fi slot fallback, the guide — are in [docs/contracts.md](docs/contracts.md).
@@ -186,13 +233,17 @@ If the change needs space in the ARM9 reserve, claim it in [docs/arm9-reserve-re
 
 Game files, saves, save states, BIOS, firmware and memory dumps. Game text, game code, extracted tables, archives and graphics. Anything with a personal path or name in it. `.github/check_public.py` refuses a tracked `.nds`, `.sav`, `.bin` dump or `.dump` — the extension anywhere in the name, not only at the end — any tracked file over 2 MB that is not declared, any binary outside the screenshot gallery and our own small compiled blobs, any undeclared hidden folder, a blob that starts with a cartridge or game-container header, a personal path inside a binary, and a long unbroken base64 run inside a text file.
 
-The stage-0 patches are not tracked either, even though `.xdelta` is an allowed extension: they are release assets, downloaded on demand into your private folder. What lives in the tree is `sgp12/base11.json`, which is a few hundred bytes of fingerprints and URLs.
+The stage-0 patches are not tracked either: `.xdelta` is forbidden in the
+public source tree because a format header cannot prove that a delta contains
+no private game bytes. Patches are release assets, downloaded on demand into
+your private folder. What lives in the tree is `sgp12/base11.json`, which is a
+few hundred bytes of fingerprints and URLs.
 
 Where a tool needs game data, it reads it from your file at build time. The text corrections are the clearest case: `sgp12/build/testi/REGOLE.json` records, for each correction, the message it belongs to, the SHA-256 the current text must have and the minimal edits — no sentence of the game. `features/texts/genera_correzioni.py` rebuilds the table the applier consumes from your own ROM, and the builder does it automatically when the table is absent.
 
 ## How changes get in
 
-`main` is the only working branch for the maintainer and their coding assistants, in every current and future chat or session. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. The standing instructions are in [AGENTS.md](../AGENTS.md), also referenced by [CLAUDE.md](../CLAUDE.md). Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
+`main` is the only working branch for the maintainer and their coding assistants. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
 
 CI runs the Class A tests above on every push to any branch and on every pull request, including direct maintainer updates to `main`. A first run from a fork waits for the maintainer's approval. Class B needs your own game file and never runs on GitHub: run it locally and record what you ran and its result in the release validation document (or the pull request's "Class B tests run locally" line for an external contribution). "Not run" is acceptable; a claim that was not checked is not.
 
@@ -212,3 +263,11 @@ ZIP tooling are documented in [distribution/README.md](distribution/README.md)
 (relative to this document's directory, use `source/distribution/README.md`
 from the repository root). The published 1.2.4 release was validated incrementally against
 the 1.2.3 files. The 1.2.5 release has separate [build and runtime validation](docs/version-1.2.5.md); the packaging configuration describes all 21 supported input routes.
+
+For 1.3.1 use the explicit [versioned contract](distribution/release-1.3.1.json)
+and [distribution instructions](distribution/README.md), with 25 direct input
+routes per language. Default `release.json` remains the historical 1.2.5
+contract. Package reconstruction and game/save acceptance are separate;
+[package validation](docs/package-1.3.1-validation.md) retains exact receipts
+and the limitations of each checkpoint. The current ROM fingerprints and
+battle-loop regression are in the [1.3.1 composition guide](sgp131/README.md).

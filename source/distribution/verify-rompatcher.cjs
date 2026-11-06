@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Internal pack.py helper: RPJS_DIR must be its private pinned-commit snapshot.
 // Apply through the unmodified Rom Patcher JS public API, then verify both SHA-256s.
 // Usage: node verify-rompatcher.cjs RPJS_DIR SOURCE PATCH SOURCE_SHA256 TARGET_SHA256 OUTPUT
 const fs = require('node:fs');

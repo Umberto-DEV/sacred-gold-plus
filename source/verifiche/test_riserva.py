@@ -125,7 +125,7 @@ def _rom_da_ambiente():
 
 
 def _leggi_sezioni(rom_path):
-    import ndspy.code
+    from sgp12.blz import ndspy_maincodefile_sicuro
     with open(rom_path, "rb") as fh:
         head = fh.read(0x200)
         off, _e, ram, size = struct.unpack_from("<IIII", head, 0x20)
@@ -134,7 +134,7 @@ def _leggi_sezioni(rom_path):
         y9_off, y9_size = struct.unpack_from("<II", head, 0x50)
         fh.seek(y9_off)
         y9 = fh.read(y9_size)
-    return ndspy.code.MainCodeFile(blob, ram).sections, y9
+    return ndspy_maincodefile_sicuro(blob, ram).sections, y9
 
 
 def _byte_a(sezioni, addr, n):

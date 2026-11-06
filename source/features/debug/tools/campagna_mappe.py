@@ -18,6 +18,8 @@ import zlib
 from pathlib import Path
 
 QUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(QUI.parent))
+from secure_output import PrivateDirectory, write_json_new, write_new  # noqa: E402
 
 # (mappa, warpId, che cosa ci si aspetta dal confronto base/candidata, perche')
 BERSAGLI = [
@@ -45,7 +47,7 @@ def ppm_png(src, dst):
     def chunk(t, data):
         c = t + data
         return struct.pack(">I", len(data)) + c + struct.pack(">I", zlib.crc32(c))
-    Path(dst).write_bytes(b"\x89PNG\r\n\x1a\n"
+    write_new(dst, b"\x89PNG\r\n\x1a\n"
                           + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
                           + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
 
@@ -73,11 +75,10 @@ def confronta(a, b):
             "distanza_media_per_canale": round(dist, 3)}
 
 
-def corsa(args, rom, etichetta, mappa, warp, porta):
-    out = Path(args.out) / f"{etichetta}-{mappa}"
-    out.mkdir(parents=True, exist_ok=True)
+def corsa(args, outputs, rom, etichetta, mappa, warp, porta):
+    out = outputs.ensure_dir(f"{etichetta}-{mappa}")
     sram = Path(args.out) / f"sav-{etichetta}-{mappa}.sav"
-    sram.write_bytes(Path(args.sram).read_bytes())
+    outputs.write_new(sram.name, Path(args.sram).read_bytes())
     js = out / "warp.json"
     cmd = [sys.executable, str(QUI / "warp.py"), "--hg", args.hg, "--rom", rom,
            "--sram", str(sram), "--out", str(out), "--script", args.script,
@@ -112,7 +113,7 @@ def main():
     a = ap.parse_args()
 
     solo = {int(x) for x in a.solo.split(",")} if a.solo else None
-    os.makedirs(a.out, exist_ok=True)
+    outputs = PrivateDirectory(a.out)
     esito = {"base": os.path.basename(a.base), "candidata": os.path.basename(a.cand),
              "fotogramma_iniezione": a.fotogramma, "aggancio": a.aggancio, "mappe": []}
     porta = a.porta0
@@ -121,7 +122,7 @@ def main():
             continue
         riga = {"mappa": mappa, "warpId": warp, "atteso": atteso, "perche": perche}
         for etichetta, rom in (("base", a.base), (a.etichetta_cand, a.cand)):
-            j, out = corsa(a, rom, etichetta, mappa, warp, porta)
+            j, out = corsa(a, outputs, rom, etichetta, mappa, warp, porta)
             porta += 1
             riga[etichetta] = {
                 "mappa_raggiunta": j.get("mappa_raggiunta"),
@@ -148,7 +149,8 @@ def main():
         esito["mappe"].append(riga)
         print(f"mappa {mappa:3d}  atteso={atteso:8s}  verdetto={riga['verdetto']}  "
               f"confronto={riga.get('confronto')}", flush=True)
-    Path(a.json).write_text(json.dumps(esito, indent=2))
+    outputs.close()
+    write_json_new(a.json, esito)
     return 0
 
 

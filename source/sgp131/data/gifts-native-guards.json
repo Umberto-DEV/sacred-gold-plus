@@ -1,0 +1,79 @@
+{
+ "schema": 1,
+ "stage": "V4 (balance493 candidate-v4); EN and IT identical at every address below",
+ "sources": {
+  "EN": "179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90",
+  "IT": "2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156"
+ },
+ "command_table": {
+  "address": "0x020FAD00",
+  "count_address": "0x020FAC90",
+  "count": 853,
+  "init_literal_address": "0x020400E0",
+  "init_literals": [
+   "0x020FAC90",
+   "0x020FAD00"
+  ],
+  "create_script_context": "0x020400AC",
+  "init_script_context": "0x0203FD18"
+ },
+ "dispatcher": {
+  "address": "0x0203FD6C",
+  "bytes": 108,
+  "sha256": "4cf18dd77165a15f3aa43d1a73964760457fd687e373c94010f2db9f5c23cd65",
+  "count_field": "ctx+0x60",
+  "table_field": "ctx+0x5C",
+  "script_pointer_field": "ctx+0x08",
+  "mode_field": "ctx+0x01",
+  "reader": "0x0203FE2C",
+  "assert_routine": "0x0202551C",
+  "behaviour": "an opcode >= count asserts, writes mode 0 (stopped) and returns FALSE; table entry is never invoked"
+ },
+ "script_read_halfword": {
+  "address": "0x0203FE2C",
+  "bytes": 24,
+  "sha256": "c5d49b18f38dbe417a8bbc6ac7e8d6503b0373a83a4524d0ce99aac92852d3fd",
+  "advance": 2
+ },
+ "fanfare": {
+  "opcode": 78,
+  "entry": "0x02049305",
+  "handler": "0x02049304",
+  "bytes": 32,
+  "sha256": "273cab39e80ec3f12f4e887ed22c29679d0eb783ce58046f9888412b67229ca8",
+  "halfword_reads": 1,
+  "callees": [
+   "0x0203FE2C",
+   "0x020403AC",
+   "0x02006B24"
+  ],
+  "operand_bytes": 2
+ },
+ "script_api": {
+  "read_halfword": {
+   "address": "0x0203FE2C",
+   "prologue_sha256": "c0312a7e97584da8f5d93605913e24602ab92aadda765ecf5e066d3b3f4aa7c0"
+  },
+  "var_pointer": {
+   "address": "0x02040374",
+   "prologue_sha256": "a0a3a3fa978afd3a2165d06de43eb88d0fa6f229e98201421d1380108c67d6c1",
+   "meaning": "ScriptGetVarPointer(field_system, var): u16* of a script variable, the routine every command handler calls first"
+  },
+  "context_fields": {
+   "script_pointer": "ctx+0x08",
+   "field_system": "ctx+0x80"
+  }
+ },
+ "rejected_opcode": {
+  "value": 2009,
+  "reason": "command table has 853 entries; 2009 is a CallStd operand (std_bag_is_full), never an opcode"
+ },
+ "handlers": {
+  "137": {
+   "name": "GiveMon",
+   "entry": "0x0204D089",
+   "thumb": true,
+   "prologue_sha256": "8fe0dc3e4fe69b58795328e19a43b8e8faa671695a1b6f718ac834a73d7be065"
+  }
+ }
+}

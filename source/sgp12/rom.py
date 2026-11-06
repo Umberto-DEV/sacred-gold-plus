@@ -344,6 +344,49 @@ def crc16(dati, crc=0xFFFF) -> int:
 
 # ---------------------------------------------------------------------- ARM9
 
+MAX_AUTOLOAD_SECTIONS = 256
+
+
+def valida_layout_arm9(raw, off9, ram9, siz9):
+    """Validate and map the HGSS autoload table before materializing rows."""
+    esigi(0 <= off9 <= len(raw) and 0 <= siz9 <= len(raw) - off9,
+          "ARM9: extent dichiarato fuori dal file")
+    esigi(ram9 + siz9 <= 0x100000000,
+          "ARM9: extent RAM oltre 32 bit")
+    param = off9 + 0xBA0
+    esigi(param + 36 <= off9 + siz9,
+          "ARM9: module parameters fuori dall'extent dichiarato")
+    tab0, tab1, dati0 = struct.unpack_from('<3I', raw, param)
+    fine_ram = ram9 + siz9
+    esigi(ram9 + 0xBC4 <= dati0 <= tab0 <= tab1 <= fine_ram,
+          "ARM9: ordine o bounds della tabella autoload non validi")
+    span = tab1 - tab0
+    esigi(span % 12 == 0, "ARM9: tabella autoload non divisibile per 12")
+    count = span // 12
+    esigi(count <= MAX_AUTOLOAD_SECTIONS,
+          "ARM9: troppe sezioni autoload (%d)" % count)
+    table_file = off9 + tab0 - ram9
+    esigi(table_file + span <= off9 + siz9,
+          "ARM9: tabella autoload fuori dall'extent dichiarato")
+    sezioni = [struct.unpack_from('<3I', raw, table_file + index * 12)
+               for index in range(count)]
+    for index, (ram, size, bss) in enumerate(sezioni):
+        esigi(size > 0, "ARM9: sezione autoload %d vuota" % index)
+        esigi(ram + size + bss <= 0x100000000,
+              "ARM9: sezione autoload %d oltre 32 bit" % index)
+    totale = sum(size for _ram, size, _bss in sezioni)
+    esigi(totale == tab0 - dati0,
+          "ARM9: dati autoload %d diversi dall'extent %d" % (totale, tab0 - dati0))
+    segmenti = [(ram9, off9, dati0 - ram9)]
+    cursor = off9 + dati0 - ram9
+    for ram, size, _bss in sezioni:
+        esigi(cursor + size <= table_file,
+              "ARM9: dati inizializzati oltre la tabella autoload")
+        segmenti.append((ram, cursor, size))
+        cursor += size
+    esigi(cursor == table_file, "ARM9: coda autoload non consumata esattamente")
+    return tab0, tab1, dati0, sezioni, segmenti
+
 class Arm9:
     """Lettore/scrittore dell'ARM9 di una ROM NDS per indirizzo RAM.
 
@@ -358,21 +401,22 @@ class Arm9:
         self.off9 = struct.unpack_from('<I', self.raw, 0x20)[0]
         self.ram9 = struct.unpack_from('<I', self.raw, 0x28)[0]
         self.siz9 = struct.unpack_from('<I', self.raw, 0x2C)[0]
-        # parametri di modulo: 9 parole a 0xBA0 dentro l'ARM9 statico
-        f = struct.unpack_from('<9I', self.raw, self.off9 + 0xBA0)
-        self.tab0, self.tab1, self.dati0 = f[0], f[1], f[2]
-        self.sezioni = []
-        p = self.off9 + (self.tab0 - self.ram9)
-        fine = self.off9 + (self.tab1 - self.ram9)
-        while p < fine:
-            self.sezioni.append(struct.unpack_from('<3I', self.raw, p))  # ram, size, bss
-            p += 12
-        # segmenti (ram, offset_file, bytes)
-        self.segmenti = [(self.ram9, self.off9, self.dati0 - self.ram9)]
-        off = self.off9 + (self.dati0 - self.ram9)
-        for ram, size, _bss in self.sezioni:
-            self.segmenti.append((ram, off, size))
-            off += size
+        (self.tab0, self.tab1, self.dati0, self.sezioni,
+         self.segmenti) = valida_layout_arm9(self.raw, self.off9, self.ram9, self.siz9)
+
+    @classmethod
+    def from_bytes(cls, raw):
+        """Construct a mutable private RAM view without a temporary ROM file."""
+        esigi(type(raw) is bytes, "ARM9: from_bytes richiede bytes immutabili")
+        self = cls.__new__(cls)
+        self.path = None
+        self.raw = bytearray(raw)
+        self.off9 = struct.unpack_from('<I', self.raw, 0x20)[0]
+        self.ram9 = struct.unpack_from('<I', self.raw, 0x28)[0]
+        self.siz9 = struct.unpack_from('<I', self.raw, 0x2C)[0]
+        (self.tab0, self.tab1, self.dati0, self.sezioni,
+         self.segmenti) = valida_layout_arm9(self.raw, self.off9, self.ram9, self.siz9)
+        return self
 
     # --- traduzione indirizzi -------------------------------------------
     def off(self, ram, n=1):
@@ -477,7 +521,7 @@ class Rom:
             esigi(v["dim_compressa"] <= len(crudo),
                   "ov%03d: la tabella dichiara %d B compressi ma il file ne ha %d"
                   % (oid, v["dim_compressa"], len(crudo)))
-            img = blz.blz_decomprimi(crudo[:v["dim_compressa"]])
+            img = blz.blz_decomprimi(crudo[:v["dim_compressa"]], v["ram_size"])
         else:
             img = crudo
         return v, crudo, img

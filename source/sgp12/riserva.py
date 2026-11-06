@@ -32,13 +32,13 @@ def leggi_sezioni_autoload(rom_path):
     campi di header 0x20 (arm9 rom_off/entry/ram/size). Usata da
     `sgp12.blocchi.riserva` e da `verifiche/riserva_arm9.py`/`test_riserva.py`
     (questi ultimi restano non toccati: leggono da soli, di proposito)."""
-    import ndspy.code
+    from .blz import ndspy_maincodefile_sicuro
     with open(rom_path, "rb") as fh:
         testa = fh.read(0x200)
         rom_off, _entry, ram, size = struct.unpack_from("<IIII", testa, 0x20)
         fh.seek(rom_off)
         blob = fh.read(size)
-    return ndspy.code.MainCodeFile(blob, ram).sections
+    return ndspy_maincodefile_sicuro(blob, ram).sections
 
 
 def trova_sezione_riserva(sezioni):

@@ -6,6 +6,7 @@ import json
 import re
 import struct
 import subprocess
+from sgp13.compiler import compiler_path, compiler_environment, run_compiler
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE=0x023D0100
@@ -19,7 +20,7 @@ def compile_native(directory):
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
     obj=directory/'training.o'
     flags=['--target=armv5te-none-eabi','-mcpu=arm946e-s','-mthumb','-Oz','-ffreestanding','-fno-builtin','-fno-stack-protector','-fno-jump-tables','-fno-unwind-tables','-fno-asynchronous-unwind-tables','-Wall','-Wextra','-Werror']
-    subprocess.run(['clang',*flags,'-c',str(ROOT/'features/training-native/runtime.c'),'-o',str(obj)],check=True,capture_output=True)
+    run_compiler([*flags,'-c',str(ROOT/'features/training-native/runtime.c'),'-o',str(obj)],check=True,capture_output=True)
     loader=module(ROOT/'features/options/tools/carica_text.py','training_loader')
     blob,symbols=loader.load_text(obj.read_bytes(),BASE,('training_script','training_save','training_phone'))
     if len(blob)>CONFIG-BASE:raise ValueError(f'training code overflow: {len(blob)} bytes')

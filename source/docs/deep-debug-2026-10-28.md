@@ -9,8 +9,8 @@ Indagine del 28 ottobre 2026. La priorità è distinguere i freeze reali della
 1.2.5 da regressioni nel successore privato 1.3. Il controllo statico ha già
 prodotto un difetto riproducibile nell'ammissione del training 1.3. La successiva
 riproduzione locale identifica il crash di Mew, riconosciuto dall'utente come
-il proprio episodio; Latios resta da riprodurre. Il [piano eseguibile](deep-debug-2026-10-28-plan.md)
-mantiene separati risultati, ipotesi e verifiche ancora necessarie.
+il proprio episodio; Latios resta da riprodurre. Risultati, ipotesi e limiti
+delle verifiche sono distinti nelle sezioni seguenti.
 
 ## Aggiornamento sul caller del salvataggio
 
@@ -630,3 +630,55 @@ lavoro. Il banco nativo Mac resta distinto. Le prove, gli adattamenti e i limiti
 sono registrati nel nuovo pacchetto privato; gli originali acquisiti restano
 separati dalle copie di lavoro. Il caso del renderer è stato comunicato al
 coordinatore Android.
+
+## Follow-up città e latenza, 3 novembre 2026
+
+Il maintainer riferisce una pesantezza residua, oggi meno marcata, in più città
+di Johto e Kanto: Fiordoropoli/Torre Radio, Fiorlisopoli e mare/isole,
+Celestopoli, Azzurropoli, Zafferanopoli e Plumbeopoli. Il sintomo percepito può
+essere cadenza guest, ritardo input→movimento oppure ritardo
+frame-prodotto→display: non vengono fusi sotto l'etichetta generica FPS.
+
+La rilettura delle prove esistenti non mostra una causa unica:
+
+- il caricamento sincrono dei modelli e il residuo del banner area spiegano
+  picchi misurati agli ingressi; il tetto NPC ha ridotto 5→4 frame in alcuni
+  confini, ma non dimostra una camminata continua più fluida;
+- il vecchio controllo Waterfall e callback di campo restano candidati per
+  lavoro CPU ricorrente, ma manca un confronto città prima/dopo che attribuisca
+  loro la percezione;
+- a Fiordoropoli il retail, Plus 1.03 e varianti Community mostrano gli stessi
+  due gap da tre frame nello stesso percorso storico, quindi non è dimostrata
+  una regressione Community;
+- la camera Classica riduce i poligoni di circa 15–16%, ma entrambe le camere
+  restano a 0,5 loop logici per frame nel campione;
+- sul dispositivo Android SurfaceFlinger vicino a 60 Hz e CPU/GPU globali non discriminano lo
+  scatto percepito: la superficie può ripresentare lo stesso frame guest.
+
+Le fonti esterne confermano il fenomeno ma non una regressione Plus. L'issue
+[nds-bootstrap 1610](https://github.com/DS-Homebrew/nds-bootstrap/issues/1610)
+descrive su Sacred Gold pause di 0,5–2 secondi con audio rallentato, più comuni
+dopo Volo, Pokégear, Fune di Fuga e cambio mappa; lo stesso autore le osserva
+anche in HGSS e Bianco/Nero. Un [resoconto HGSS](https://www.reddit.com/r/PokemonHGSS/comments/1k79vaq)
+colloca scatti presso confini di caricamento a Fiordoropoli e Aranciopoli.
+Sono controlli per loader/streaming e frame pacing, non prova che liberare RAM o
+spazio ROM corregga la latenza riferita.
+
+Fiordoropoli esterna è l'unica scena con molte misure; Torre Radio è un interno
+separato. Violapoli, Azalina, Amarantopoli, Mogania e Olivinopoli hanno soltanto
+copertura parziale delle transizioni. Fiorlisopoli, Percorso 41/Isole Vorticose
+e le città Kanto riferite non hanno ancora benchmark like-for-like. Non è quindi
+dimostrato né che la candidata corrente abbia il difetto né che lo abbia
+eliminato.
+
+La prossima misura professionale deve fissare ROM/hash, raw save, percorso,
+coordinate, RTC/meteo, party/follower, camera, audio, core/APK, JIT, renderer,
+scala, layout, alimentazione e temperatura. Per ogni scena occorrono fermo,
+camminata e ingresso freddo/caldo in ordine A/B randomizzato, almeno cinque
+coppie valide, con mappa/sub-tile, input, oggetti, task, script, overlay, cicli
+ARM9/ARM7, intervallo loop, poligoni e hash framebuffer per frame. Riportare
+separatamente input host→tasti guest, guest→movimento, movimento→frame diverso e
+frame→presentazione, con mediana/p95/p99 e frame duplicati. Un miglioramento è
+accettato soltanto sulla metrica bersaglio nello stesso scenario e senza
+regressioni nei controlli. RAM o spazio ROM liberi, da soli, non sono misure di
+latenza o tempo CPU.

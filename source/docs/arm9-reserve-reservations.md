@@ -96,7 +96,9 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | `sgp.plus` (Plus difficulty code and tables, save-chunk blob) | `0x023D8100` | `0x800` | `0x023D8900` | 756/2048 | applied |
 | `sgp.npc` + canary (NPC model cap) | `0x023D8900` | `0x110` | `0x023D8A10` | 176/272 | applied |
 | camera exceptions + canary (1.2.3, 68 entries) | `0x023D8A10` | `0x98` | `0x023D8AA8` | 152/152 | applied — carved out of `libero.1.2` |
-| free (`libero.1.2`) | `0x023D8AA8` | `0x58` | `0x023D8B00` | — | **free** |
+| `sgp.gb_sounds_evolution` (HG-F24 reload wrapper) | `0x023D8AA8` | `0x20` | `0x023D8AC8` | 28 B code/literal + 4 B zero fill | applied in the 1.3.1 source candidate |
+| `sgp.pokegear_autocull` (signed X/Y culler) | `0x023D8AC8` | `0x24` | `0x023D8AEC` | 36 B code/literals | applied in the 1.3.1 source candidate |
+| `sgp.waterfall_facing` (HG-F02 descent wrapper) | `0x023D8AEC` | `0x14` | `0x023D8B00` | 20 B code | applied in the 1.3.1 source candidate |
 | `sgp.anim` (procedural battle animation, v4) | `0x023D8B00` | `0x400` | `0x023D8F00` | 1024/1024 — **full** | applied |
 | `sgp.salvataggio` (save chunk buffer + canary) | `0x023D8F00` | `0x100` | `0x023D9000` | 48/256 | applied |
 | `sgp.opzioni` (Options page + Continue prompt, v4) | `0x023D9000` | `0x1000` | `0x023DA000` | 4052/4096 | applied |
@@ -108,25 +110,31 @@ Zone 1.2, `0x023D8000` upward. All blocks are non-public.
 | `sgp.borsa_lotta` (Bag cache in battle) | `0x023DBD00` | `0x100` | `0x023DBE00` | 162/256 | applied |
 | `sgp.squadra_lotta` (party move cache in battle) | `0x023DBE00` | `0x100` | `0x023DBF00` | 200/256 | applied |
 | `sgp.capacita_borsa` (expanded Bag capacity) | `0x023DBF00` | `0x2C00` | `0x023DEB00` | 3584/11264 (code; the 4808 B of state live at `+0x1800`) | applied |
-| free (`libero.1.2.finale`) | `0x023DEB00` | `0x40` | `0x023DEB40` | — | **free** |
+| `sgp.soul_dew` (custom-rule bit mask) | `0x023DEB00` | `0x20` | `0x023DEB20` | 24 B code + 8 B zero fill | applied in the 1.3.1 source candidate |
+| `sgp.wonder_card` (tag-6 decoration validator) | `0x023DEB20` | `0x20` | `0x023DEB40` | 32/32 | applied in the 1.3.1 source candidate |
 
 Zone 1.1, `0x023DEB40` to `0x023E0000`, is frozen: no block moves, no block changes size,
 and the two public addresses it holds are never touched. It is not open for reservation.
 
 ### Free space
 
-As of 24/10/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
+As of 05/11/2026, recomputed from `docs/arm9-reserve-map.json` (sum of the blocks typed
 `libero` with `assegnabile: true` — the two `.md` pages used to disagree with the register and
 with each other; the register is the source of truth):
 
-- **152 B total**, in two disjoint blocks — nothing here is contiguous with anything else.
-- **64 B** at `0x023DEB00` (`libero.1.2.finale`), up to the zone 1.1 canary at `0x023DEB40`.
+- **0 B total**. The final 20-byte gap is now the reviewed `sgp.waterfall_facing` owner.
+- The final 64 B before the zone 1.1 canary are now reviewed owners:
+  `sgp.soul_dew` at `0x023DEB00` and `sgp.wonder_card` at `0x023DEB20`;
+  payload digests, hooks and the unchanged canary are recorded in the register.
   What used to be free from `0x023DBD00` has since been taken by `sgp.borsa_lotta` (256 B),
   `sgp.squadra_lotta` (256 B) and `sgp.capacita_borsa` (11 264 B), on top of the 256 B for Rare
   Candy, 2048 B for capped gifts and 2048 B for continuous battle motion already taken before
   this page's previous revision.
-- **88 B** at `0x023D8AA8` (`libero.1.2`), between the camera canary and `sgp.anim`. Usable
-  only for something that fits in it whole. It was 240 B at `0x023D8A10` until 1.2.3 moved the
+- `sgp.gb_sounds_evolution` uses 32 B at `0x023D8AA8` for the HG-F24 wrapper.
+- `sgp.pokegear_autocull` uses the following 36 B at `0x023D8AC8` for the signed
+  culler reached through the overlay-101 trampoline.
+- `sgp.waterfall_facing` uses the final 20 B at `0x023D8AEC`, between that thunk and
+  `sgp.anim`, for the HG-F02 South-facing descent wrapper. The parent gap was 240 B at `0x023D8A10` until 1.2.3 moved the
   camera exception table here: at 68 entries (136 B) the table no longer fitted in the 64 B
   window C1 had carved at `0x023D8040`, and that window could not grow — above it sits the
   alignment padding, which is not assignable, and then `sgp.plus`.

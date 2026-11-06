@@ -7,6 +7,7 @@ import struct
 import subprocess
 import build_combined_guide as combined
 from build_lease_rom import BASES, HERE, digest, require, replace_arm9, append_files, NintendoDSRom, load_text
+from sgp12.blz import ndspy_load_arm9_sicuro
 
 # Build outputs never land inside this checkout: game files and build
 # products stay in a private folder of your own.
@@ -75,7 +76,7 @@ def build(source, charmap, out):
     (out/'compile.log').write_text(result.stdout+result.stderr)
     require(result.returncode == 0, 'Pressure compilation failed')
     payload, symbols = load_text(obj.read_bytes(), combined.CODE)
-    main = prior.loadArm9()
+    main = ndspy_load_arm9_sicuro(prior)
     before = [bytes(section.data) for section in main.sections]
     evidence = combined.extend(main, payload, symbols, text)
     # This instrument tests Oak only: preserve original Summary dispatch.
@@ -85,7 +86,7 @@ def build(source, charmap, out):
     image = replace_arm9(base,arm9)
     image,_ = append_files(image,{'a/0/2/7':prior.getFileByName('a/0/2/7')},reuse_existing=True)
     checked = NintendoDSRom(image)
-    actual = checked.loadArm9()
+    actual = ndspy_load_arm9_sicuro(checked)
     expected = bytearray(main.sections[0].data)
     table = 0x02000000 + sum(len(section.data) for section in main.sections)
     struct.pack_into('<II',expected,0xba0,table,table+24)

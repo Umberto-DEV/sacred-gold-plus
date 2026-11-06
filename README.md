@@ -1,144 +1,159 @@
 # Sacred Gold Plus
 
-**A fan-made continuation of Sacred Gold Plus, for the Nintendo DS.**
+**Explore Johto and Kanto with new ways to train, hunt and manage your Pokémon.**
 
-**Version 1.2.5** · **License:** [GPL-3.0-or-later](LICENSE) (this project's own tools; third-party rights below)
+**Version 1.3.1** · **English and Italian** · [GPL-3.0-or-later](LICENSE) for this project's own tools and sources
 
-Sacred Gold Plus adds Fairy typing, new Fairy moves and a wider camera option to Drayano's *Sacred Gold*. This continuation keeps that foundation and adds an Italian translation, a native indoor camera, adjustable difficulty, and a set of quality fixes.
+An independent fan continuation of **Drayano's Sacred Gold** and **NefariousnessNo3436's Sacred Gold Plus** for Nintendo DS. Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Plus project. This continuation adds native game tools, an Italian translation, adjustable settings and targeted repairs.
 
-Original project: [Sacred Gold Plus by NefariousnessNo3436](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) — the author’s announcement, with its documentation and downloads.
-
-This is a **patch**, not a ROM: you apply it to your own legally obtained game file. No game file is distributed here.
-
-## Screenshots
-
-Captured on the local melonDS test bench. Each image shows one DS screen; the bottom screens demonstrate the Plus settings and guide.
-
-| | |
-| --- | --- |
-| ![Ecruteak City](images/01-ecruteak-city.png)<br>Ecruteak City | ![Bellchime Trail](images/03-bellchime-trail.png)<br>Bellchime Trail |
-| ![New Bark Town](images/02-new-bark-town.png)<br>New Bark Town | ![Wild battle](images/10-wild-battle.png)<br>Wild battle |
-| ![Plus options — English (bottom screen)](images/11-plus-options-english-bottom.png)<br>Plus options — English (bottom screen) | ![Plus options — Italian (bottom screen)](images/12-plus-options-italian-bottom.png)<br>Plus options — Italian (bottom screen) |
-| ![EV viewer in the Pokémon summary](images/13-ev-viewer-top.png)<br>EV viewer in the Pokémon summary | ![IV viewer in the Pokémon summary](images/14-iv-viewer-top.png)<br>IV viewer in the Pokémon summary |
-| ![In-game EV/IV guide (bottom screen)](images/15-ev-iv-guide-bottom.png)<br>In-game EV/IV guide (bottom screen) | ![Version 1.2.5 title screen](images/17-version-title-top.png)<br>Version 1.2.5 title screen |
-| ![Goldenrod City — exploring the city.](images/18-goldenrod-city.png)<br>Goldenrod City — exploring the city. | ![Violet City — outside the Poké Mart.](images/19-violet-city.png)<br>Violet City — outside the Poké Mart. |
-| ![Lake of Rage — a rainy day by the water.](images/20-lake-of-rage.png)<br>Lake of Rage — a rainy day by the water. | ![Blackthorn City — the entrance to Dragon's Den.](images/21-blackthorn-city.png)<br>Blackthorn City — the entrance to Dragon's Den. |
-
-<details>
-<summary>More locations, interiors and guide controls</summary>
-
-| | |
-| --- | --- |
-| ![Olivine City](images/04-olivine-city.png)<br>Olivine City | ![Cherrygrove City](images/05-cherrygrove-city.png)<br>Cherrygrove City |
-| ![National Park](images/06-national-park.png)<br>National Park | ![Professor Elm's laboratory](images/07-elms-lab.png)<br>Professor Elm's laboratory |
-| ![Inside a Pokémon Center](images/08-pokemon-center.png)<br>Inside a Pokémon Center | ![Mt. Mortar — native indoor camera](images/09-mt-mortar.png)<br>Mt. Mortar — native indoor camera |
-| ![Guide controls (bottom screen)](images/16-guide-controls-bottom.png)<br>Guide controls (bottom screen) |  |
-| ![Inside the Ecruteak Dance Theater.](images/22-dance-theater.png)<br>Inside the Ecruteak Dance Theater. | ![Inside Sprout Tower.](images/23-sprout-tower.png)<br>Inside Sprout Tower. |
-| ![Inside the Violet City Poké Mart.](images/24-violet-pokemart.png)<br>Inside the Violet City Poké Mart. | ![Inside a house at the Lake of Rage.](images/25-lakeside-house.png)<br>Inside a house at the Lake of Rage. |
-
-</details>
-
-The locations are part of the existing game. All views were captured in 1.2.5 except the wild battle, captured in 1.2.4 with unchanged battle graphics. These are actual game frames, cropped to one screen and enlarged 4× without smoothing. [Capture details and image hashes](images/captures.json).
-
-## Main features
-
-- **English and Italian editions**, with translated dialogue and menus.
-- **Adjustable Plus difficulty:** optional trainer and wild Pokémon level scaling, configured from the Plus options page with SELECT.
-- **Optional Pokémon motion in battle**, switchable in the game settings.
-- **Classic HeartGold camera in 52 interior and cave maps**, with the wider Plus camera outdoors.
-- **Expanded Bag:** 252 slots in the main pocket and consecutive Rare Candy use from the party menu.
-- **Quality-of-life improvements:** an in-game EV/IV guide, Wi-Fi connection slot selection, text corrections and gameplay fixes.
+This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS or emulator is included.
 
 ## Download
 
-Choose the language you want to **play in**. Both packages work on **Windows and macOS**:
+Choose the language you want to **play in**. Both packages can be patched on Windows and macOS.
 
-| Edition | Download 1.2.5 |
+| Edition | Player package |
 | --- | --- |
-| **English** | [**Download English ZIP**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-US.zip) |
-| **Italiano** | [**Scarica ZIP italiano**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-IT.zip) |
+| **English** | [**Download English 1.3.1 ZIP**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/Sacred-Gold-Plus-1.3.1-US.zip) |
+| **Italiano** | [**Scarica ZIP italiano 1.3.1**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/Sacred-Gold-Plus-1.3.1-IT.zip) |
 
-[Release page and all downloads](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.2.5). Use the named player ZIP above. GitHub's automatic **Source code** archives are developer files and are not needed to play.
+[Release page and checksums](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.1). Extract the ZIP and open **How-to-install-1.3.1-EN.pdf** or **Come-installare-1.3.1-IT.pdf**. The matching **Whats-New-1.3.1-EN.pdf** / **Novita-1.3.1-IT.pdf** introduces the current game. Original gameplay references remain in `Manual` with their credits.
 
-## Install for the first time
+Each ZIP includes **25 direct patch routes** from recognized USA/Italian HeartGold and Plus inputs through V1.3. The ZIP chooses the **finished language**; US/IT folders inside `Patch` identify the **starting ROM**. Match its complete SHA-256 in the installation guide and apply **one** patch. You do not need older releases first. GitHub's automatic **Source code** archives are for developers.
 
-1. **Extract the ZIP.** Windows: right-click → **Extract All**. Mac: double-click. Open **Sacred Gold Plus 1.2.5** inside the extracted download.
-2. **Read `How-to-install-1.2.5-EN.pdf`** (English) or **`Come-installare-1.2.5-IT.pdf`** (Italian). This illustrated guide sits directly in the main folder, beside **Whats-New-1.2.5-EN.pdf** / **Novita-1.2.5-IT.pdf**. Follow its numbered steps, screenshots and SHA-256 reference list.
-3. **Identify your own HeartGold `.nds`.** The guide shows how to calculate its SHA-256 in your browser or with built-in Windows/Mac commands, and exactly which expected value to compare. A matching filename is not enough. Use your own cartridge backup; do not download pirated ROMs.
-4. **Choose one patch.** For a matching original USA HeartGold: `Patch/From Clean ROM/US/from-clean-us.xdelta`. For a matching Italian original: `Patch/From Clean ROM/IT/from-clean-it.xdelta`. You do **not** need Sacred Gold or an older Plus version first.
-5. **Apply it with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/).** Select your checked `.nds` under **ROM file**, the matching `.xdelta` under **Patch file**, then **Apply patch**. Leave **Fix ROM checksum** off in Settings. Verify the new file's SHA-256 against the guide's **finished game** value, then open it in your DS emulator.
+## What's new
 
-**The ZIP edition chooses the final language. The US/IT subfolder chooses the language of your starting ROM.** For example, the English ZIP can produce English from either a supported USA or Italian original.
+Since **1.2.5**, the game adds:
 
-**Already playing Plus?** Back up your current ROM and save, then use the `From Plus` folder for your current version and language. All 21 supported paths go directly to 1.2.5; apply only one patch. Older 1.01, 1.02 and 1.03 inputs exist only in English. The guide also distinguishes the 1.04 camera variants and the two 1.2.2 editions by their SHA-256.
+- **A field Guide with 429 entries:** evolutions, items and TMs, special events and training. Browse categories and linked detail pages with the buttons; L/R moves through lists in groups of five.
+- **Reorganized Plus settings:** contextual help and a second page for shiny modes and species search. Trainer difficulty and wild level scaling remain separate choices, capped at level 100.
+- **IV consultants and Caps:** the Violet and Blackthorn PokéMarts offer Silver Caps for one IV and Gold Caps for all six. Choose 31 or an exact single-IV value from 0 to 31. Purchases and milestone rewards also support existing adventures.
+- **EV services and Day Care courses:** quick training, free reductions/resets, Classic limits of 252 per stat and 510 overall, or Unlimited with 252 in all six stats. Route 34 courses provide levels and optional EV training using real time or active playtime; the Day Care phone contact reports progress.
+- **Classic and Pro shiny modes:** Classic uses 1/512 for eligible generation. Pro improves the selected species' odds at chains of 10, 20 and 40, from 1/4096 to 1/512. Species Search charges with 40 valid steps and respects the area's encounter pool, terrain, time and progression.
+- **Selected species and trainer improvements:** 67 species affected, including 50 stat changes and 32 level/move additions across 29 learnsets. Plus difficulty adds nine targeted move substitutions across seven trainers. The caught-species Ball also appears in trainer battles.
+- **Portable Pokémon storage:** press **R** in the ordinary field party menu to open the native PC interface where the game permits it.
+- **Targeted battle updates:** Will-O-Wisp has 85 accuracy; effective Keen Eye ignores the target's evasion changes. These changes retain the game's ability-suppression rules.
 
-**What you need:** your own supported HeartGold or Plus `.nds`, a patcher and a DS emulator/flashcart. ROMs, BIOS and emulators are not included. Cheats are optional. The searchable cheat picker and L+R toggle require [this fork's melonDS Android 2.1.1](https://github.com/Umberto-DEV/melonDS-android/releases/tag/v2.1.1); this is separate from patch installation.
+The species review covers all 493 species and changes selected entries. Existing Pokémon keep their identity, IVs, EVs, moves and abilities; the game recalculates affected stats through its normal loading paths. [Full changes, species and trainer details](source/docs/novita-1.3.0.md).
 
-## Compatibility
+Coming from **the original Plus 1.03**? The continuation also brings English/Italian dialogue and interface work, the classic HeartGold camera in **52 interiors and caves**, an **EV/IV reader in the Pokémon summary** (L for EVs, R for IVs, SELECT to restore stats), adjustable trainer/wild levels, optional Pokémon motion in battle, spread-out NPC loading, battle-menu caches, Wi-Fi slot selection and over 200 text corrections. The expanded Bag offers **252 slots in the main pocket**, and consecutive Rare Candy use keeps the party menu open while preserving normal evolution and move-learning prompts.
 
-Updates preserve existing raw `.sav` files; start the updated ROM and choose **Continue**. Save in-game and close the emulator before changing ROMs. Keep a backup, and use your emulator’s save import or matching ROM/save filenames if the new filename changes. Emulator quick saves/savestates are tied to the old running game and should not be used to resume after an update.
+## Some bugs fixed.
 
-Version **V.1.2.5** appears on the upper title screen and in **Options → SELECT → Plus**. [Fix and save-compatibility validation](source/docs/version-1.2.5.md).
+Repairs inherited from HeartGold/SoulSilver include the following; the version labels distinguish older fixes retained by 1.3.1 from new work.
 
-- **Saves:** existing 1.1/1.2/1.2.1/1.2.2 saves import. Extra Bag slots use a save extension; older ROMs do not expose those items, and saving there prevents automatic recovery of the extra slots. Keep a backup when changing ROM builds and load the normal in-game save.
-- **Cheats:** the game header is unchanged from 1.2, but import the updated catalogue to get the corrected codes. 1.1 catalogues have a different header. Every supplied code starts disabled.
+- **Heavy Ball:** the neutral 102.4–204.7 kg weight band no longer receives the retail penalty. This was already fixed in **Plus 1.1**. Fast Ball and Quick Ball use their separate rules.
+- **Moves:** Fire Fang respects Wonder Guard; leaving Rage preserves Transform and other battle state; transformed stats and moves are handled correctly in the repaired reload paths. The Hail/Snow Warning fix was already present in **Plus 1.03**.
+- **Pokémon and abilities:** repairs cover trainer alternate-form stats/abilities, Giratina's party stats after leaving the PC, and AI handling of Dry Skin, Motor Drive, immunities and legal switches.
+- **Field and rewards:** targeted repairs cover the poisoned follower's interrupted jump, Waterfall facing, six invisible-grass tiles on Routes 43/44, the League guard after viewing GS Cup species, and pending Kurt/Pryce rewards when the relevant Bag pocket is full.
+- **Audio and counters:** targeted fixes address GB Sounds returning from evolution move-learning, the 999-hour playtime boundary and the Pokéathlon species counter.
 
-## Source code and contributing
+[Retail bug catalogue and evidence](source/docs/known-bugs-hgss.md) · [Fixes and their tested scope](BUG-FIXES-1.3.1.md). The catalogue also records unresolved and inapplicable reports; its total is not a count of fixed bugs.
 
-Everything that builds and checks this game is in [`source/`](source/README.md): the library that rebuilds 1.2.5 from an unmodified HeartGold ROM with one command and verifies it with another, one folder per feature with our C sources, tools and tests, and the technical reference in [`source/docs/`](source/docs/). The only game file you need is the retail game you already own — the first build step derives our 1.1 base from it with a published patch of differences, so no intermediate ROM of ours is needed and none is distributed.
+## More some bugs fixed.
 
-- The maintainer and coding assistants work **only on `main`, without creating branches or pull requests**, in every current and future chat or session. See the standing instructions in [AGENTS.md](AGENTS.md). Changes are reviewed and checked before publication; community contributions from other accounts may still use pull requests.
-- Every push and pull request runs the tests that need no game file (`source/run_tests.py`). Building the game needs your own copy of it, so that step happens on your machine, never on GitHub; the pull request template asks what you ran locally.
-- Finished versions are tags (`v1.2.5`) with the player ZIPs attached to the [release](https://github.com/Umberto-DEV/sacred-gold-plus/releases); previews are marked pre-release.
-- Never commit ROMs, saves, BIOS, dumps, game text or extracted game data. The public-file check in CI refuses them.
+Further repairs address Sacred Gold/Plus behaviour and this continuation's own regressions:
 
-## Credits
+- **Battle and AI:** Fairy matchups and Conversion 2, Ghost damage against Dragon/Dark, Iron Ball/Gravity interactions, move scoring and a type-check loop that could freeze battles when returning to the move menu.
+- **Pokémon and progression:** evolution parameters for Mantyke, Feebas, Burmy and Combee; selected fishing records; Mew's event movement; Steven's pending reward and the Ho-Oh/Lugia scene selectors.
+- **Items, saves and interface:** the Goldenrod Underground pickup quantity, full-Bag gift handling, Plus-settings recovery, extra Bag data protection, story flags that overlapped Friend Roster/Chatot data, and Guide/Options navigation and transitions.
 
-Built on **Drayano**'s *Sacred Gold* and Storm Silver; **mikelan / Mikelan98** contributed the Fairy-type implementation; **NefariousnessNo3436** created Sacred Gold Plus and its 1.03 additions, and [allowed reuse with credit](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/). This is an independent continuation, not an official handover. The original PDF guides in the packages remain credited to Drayano and the original contributors; **@JD48096761** compiled the trainer reference. Developed by a fan, with community contributions.
+Earlier fixes such as Garchomp's Rough Skin, Claydol's Fly and Scizor's Night Slash remain included. Specific scenarios have different test coverage; unresolved reports and historical limitations remain in the [bug list](BUG-FIXES-1.3.1.md), [hack research](source/docs/legacy-bugs-1.3.md), [changelog](CHANGELOG.md) and [validation report](source/docs/ui-1.3.1-validation.md).
 
-Third-party material used by the tools, none of it redistributed here: the character mapping from [pret/pokeheartgold](https://github.com/pret/pokeheartgold) (read from your own checkout), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/) and [Capstone](https://www.capstone-engine.org/) as pinned dependencies, and the [melonDS](https://melonds.kuribo64.net/) core (GPL-3.0-or-later) as the base of the headless test bench you build yourself.
+## Screenshots
 
-## License
+Actual game frames. The title and storage images show 1.3.1 interfaces; location captures are from 1.2.5, and the wild battle is from 1.2.4. The galleries record their original build identities: [1.3.1 captures](images/1.3.1/captures.json) · [location captures](images/captures.json).
 
-This project's own tools and sources are licensed under [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights; attribution does not transfer them. No game code, text, graphics, ROM, BIOS or save is distributed here.
+| | |
+| --- | --- |
+| ![English 1.3.1 title](images/1.3.1/title-EN.png)<br>English title | ![Italian 1.3.1 title](images/1.3.1/title-IT.png)<br>Titolo italiano |
+| ![Party menu with R Box shortcut](images/1.3.1/party-EN.png)<br>R: Box from the field party | ![Native Pokémon storage](images/1.3.1/pc-EN.png)<br>Native Pokémon storage |
+| ![Italian party menu](images/1.3.1/party-IT.png)<br>Squadra: R apre il box | ![Italian Pokémon storage](images/1.3.1/pc-IT.png)<br>Box Pokémon nativo |
+| ![Ecruteak City](images/01-ecruteak-city.png)<br>Ecruteak City | ![Goldenrod City](images/18-goldenrod-city.png)<br>Goldenrod City |
+| ![Bellchime Trail](images/03-bellchime-trail.png)<br>Bellchime Trail | ![Lake of Rage](images/20-lake-of-rage.png)<br>Lake of Rage |
+
+<details>
+<summary>More locations and existing game tools</summary>
+
+| | |
+| --- | --- |
+| ![New Bark Town](images/02-new-bark-town.png)<br>New Bark Town | ![Olivine City](images/04-olivine-city.png)<br>Olivine City |
+| ![Cherrygrove City](images/05-cherrygrove-city.png)<br>Cherrygrove City | ![National Park](images/06-national-park.png)<br>National Park |
+| ![Professor Elm's laboratory](images/07-elms-lab.png)<br>Professor Elm's laboratory | ![Pokémon Center](images/08-pokemon-center.png)<br>Pokémon Center |
+| ![Mt. Mortar](images/09-mt-mortar.png)<br>Classic indoor camera | ![Wild battle](images/10-wild-battle.png)<br>Wild battle |
+| ![EV viewer](images/13-ev-viewer-top.png)<br>EV viewer in the summary | ![IV viewer](images/14-iv-viewer-top.png)<br>IV viewer in the summary |
+| ![Violet City](images/19-violet-city.png)<br>Violet City | ![Dragon's Den entrance](images/21-blackthorn-city.png)<br>Blackthorn City |
+| ![Ecruteak Dance Theater](images/22-dance-theater.png)<br>Dance Theater | ![Sprout Tower](images/23-sprout-tower.png)<br>Sprout Tower |
+| ![Violet Poké Mart](images/24-violet-pokemart.png)<br>Violet Poké Mart | ![Lake of Rage house](images/25-lakeside-house.png)<br>A lakeside house |
+
+</details>
+
+## Install or update
+
+1. **Extract your language's ZIP** and read its installation PDF. Use your own supported HeartGold or Plus `.nds` and match its full SHA-256 in **Reference A**.
+2. **Choose one patch** under `Patch/From Clean ROM` or `Patch/From Plus <version>`. The guide distinguishes both 1.04 cameras and both 1.2.2 editions; 1.01–1.03 have verified English inputs only.
+3. Open [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), select the checked `.nds` as **ROM file** and the matching `.xdelta` as **Patch file**. Leave **Fix ROM checksum** off, apply the patch to a new file and verify **Reference B** before installing it.
+
+**Updating an existing adventure:** save in-game, close the emulator completely and find its actual current save folder. Back up both the installed ROM and current raw `.sav`. Keep the same language, ROM filename/path and emulator association. First test the verified successor with a separate copy of your save: **Continue → check progress, Pokémon, Bag and Plus settings → in-game SAVE → close fully → cold start → Continue**. Then replace only the installed ROM; retain your current personal save and its original location. A temporary test save must never replace it.
+
+If Continue is missing, fix the save association before proceeding. A new game or settings reset is not part of updating. Resume from the normal in-game save, not an old emulator savestate. Keep the backup: older ROMs may not expose extra Bag slots, and saving there can prevent automatic recovery of those items.
+
+**Cheats:** no catalogue is included because old codes are not verified against these game bytes. The native game tools work without cheats; read the package's `Cheats` notice. Network services depend on the emulator and service provider.
+
+## Source code and contributions
+
+The complete implemented sources, build tools, tests and technical documentation are under [`source/`](source/README.md), including the [1.3 builder](source/sgp13/README.md) and [1.3.1 composition tools](source/sgp131/). Building requires your own retail game and the documented external inputs. ROMs, saves, BIOS, extracted game data and private working notes are excluded from the source tree.
+
+Contributions to code, translations, artwork, testing and documentation are welcome, together with player ideas and feedback. [Report a bug or propose a change](https://github.com/Umberto-DEV/sacred-gold-plus/issues); include the version, language and steps, without uploading your ROM or save. Maintainer changes are reviewed and validated on `main`; independent contributors may submit pull requests. CI runs the tests that require no game file; game-dependent validation is recorded separately.
+
+## Credits and license
+
+Thanks to **Drayano**, **mikelan / Mikelan98**, **NefariousnessNo3436**, **@JD48096761** and the original contributors. The original Plus author's [announcement and permission](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) remain the reference for the project's foundation. The original gameplay manuals and trainer reference retain their authors' credits. This is an independent fan continuation, not an official handover.
+
+AI-assisted tools, including Codex, support investigation, implementation, translation, testing and documentation. Development uses [pret/pokeheartgold](https://github.com/pret/pokeheartgold), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/), [Capstone](https://www.capstone-engine.org/) and the [melonDS core](https://melonds.kuribo64.net/); dependencies and external inputs are documented in the source guide.
+
+This project's own tools and sources use [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights. No game code, text, graphics, ROM, BIOS or save is distributed in this source tree.
 
 ---
 
 ## In italiano
 
-**Sacred Gold Plus** è una continuazione amatoriale di Sacred Gold Plus per Nintendo DS: tipo Folletto, nuove mosse Folletto e camera panoramica, con in più traduzione italiana, camera originale negli interni, difficoltà regolabile e correzioni.
+**Sacred Gold Plus 1.3.1** continua Sacred Gold di Drayano e Sacred Gold Plus originale, con edizioni italiana e inglese. Tipo Folletto, mosse Folletto e camera panoramica esterna provengono dal progetto Plus originale.
 
-Progetto originale: [Sacred Gold Plus di NefariousnessNo3436](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) — il post dell’autore con documentazione e download.
+**Download:** [**ZIP italiano 1.3.1**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/Sacred-Gold-Plus-1.3.1-IT.zip) · [**English ZIP**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1/Sacred-Gold-Plus-1.3.1-US.zip). Estrai il pacchetto e apri **Come-installare-1.3.1-IT.pdf**, accanto a **Novita-1.3.1-IT.pdf**. Lo ZIP sceglie la lingua finale; US/IT dentro `Patch` identifica la ROM di partenza. Le 25 rotte arrivano direttamente alla 1.3.1 con una sola patch.
 
-Questa è una **patch**, non una ROM: va applicata a una copia posseduta legalmente del gioco. Nessun file di gioco è distribuito qui.
+### Novità dalla 1.2.5
 
-**Funzioni principali:**
+- **Guida di campo:** 429 voci su evoluzioni, strumenti/MT, eventi e allenamento, con categorie, dettagli e collegamenti. Si usa con i pulsanti; L/R scorre le liste di cinque voci.
+- **Opzioni Plus riorganizzate**, aiuti contestuali e seconda pagina Shiny; difficoltà e livelli dei selvatici restano separati, con limite 100.
+- **Consulenti IV e Tappi** nei Market di Violapoli ed Ebanopoli: un IV a 31 o al valore preciso 0–31, oppure tutti e sei a 31. Acquisti e ricompense sono disponibili anche nelle partite esistenti.
+- **Servizi EV e corsi alla Pensione del Percorso 34:** allenamento rapido, riduzioni/reset gratuiti, regole Classic o Unlimited, corsi a tempo reale o giocato e stato consultabile al telefono.
+- **Shiny Classic e Pro:** Classic 1/512 nelle generazioni ammesse; Pro da 1/4096 a 1/512 con catene di 10/20/40. Search richiede 40 passi validi e rispetta incontri, terreno, orario e progressione.
+- **67 specie interessate** da interventi mirati e nove sostituzioni di mosse in sette allenatori Plus. Indicatore della specie catturata anche nelle lotte contro allenatori.
+- **Box portatile:** R dalla Squadra ordinaria sul campo apre il PC nativo nei contesti consentiti.
+- **Fuocofatuo con precisione 85** e Sguardofermo che ignora le variazioni di elusione, rispettando la soppressione delle abilità.
 
-- **Edizioni italiana e inglese**, con dialoghi e menu tradotti.
-- **Difficoltà Plus regolabile:** livelli di allenatori e Pokémon selvatici configurabili dalla pagina Plus, accessibile con SELECT.
-- **Animazioni opzionali dei Pokémon in lotta**, attivabili dalle impostazioni del gioco.
-- **Camera classica di HeartGold in 52 mappe di interni e grotte**, con camera panoramica Plus all’aperto.
-- **Borsa espansa:** 252 slot nella tasca principale e uso consecutivo delle Caramelle Rare dal menu Squadra.
-- **Migliorie pratiche:** guida EV/IV nel gioco, scelta dello slot Wi-Fi, correzioni dei testi e del gioco.
+Rispetto alla **Plus 1.03** trovi anche traduzione italiana, camera classica in 52 interni/grotte, lettore EV/IV nella Summary, livelli allenatori/selvatici configurabili, movimento opzionale dei Pokémon in lotta, caricamento NPC distribuito, cache dei menu di lotta, slot Wi-Fi, Borsa ampliata e Caramelle Rare consecutive. [Registro completo delle novità](source/docs/novita-1.3.0.md).
 
-**Download 1.2.5:** [**Edizione italiana**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-IT.zip) · [**English edition**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.2.5/Sacred-Gold-Plus-1.2.5-US.zip). Entrambi gli ZIP funzionano su Windows e Mac. Scegli la lingua in cui vuoi giocare; gli archivi automatici “Source code” sono per sviluppatori.
+### Some bugs fixed.
 
-**Prima installazione:**
+- **Peso Ball:** corretta già dalla Plus **1.1**, mantiene la fascia neutra 102,4–204,7 kg. Rapid Ball e Velox Ball seguono regole distinte.
+- **Mosse:** Rogodenti/Magidifesa, Ira/Trasformazione e ricarica delle statistiche trasformate; Grandine/Scendineve era già corretta nella **1.03**.
+- **Pokémon e abilità:** forme degli allenatori, statistiche di Giratina dopo il PC e controlli IA di Pellearsa, Elettrorapid, immunità e cambi ammessi.
+- **Campo e premi:** salto dell'accompagnatore avvelenato, orientamento di Cascata, sei caselle sui Percorsi 43/44, guardia GS Cup e premi di Franz/Alfredo con tasche piene. Altri fix mirati riguardano Lettore GB e contatori.
 
-1. Estrai lo ZIP: su Windows clic destro → **Estrai tutto**, su Mac doppio clic. Apri la cartella **Sacred Gold Plus 1.2.5**.
-2. Leggi **`Come-installare-1.2.5-IT.pdf`**: è la guida illustrata da seguire, direttamente nella cartella principale insieme a **Novita-1.2.5-IT.pdf**. Contiene passaggi numerati, schermate e riferimenti SHA-256.
-3. Controlla lo **SHA-256** del tuo HeartGold `.nds`: la guida spiega come calcolarlo e dove trovare il valore atteso. Il nome del file non basta. Usa la copia della tua cartuccia; non scaricare ROM piratate.
-4. Per la ROM originale italiana corrispondente scegli `Patch/From Clean ROM/IT/from-clean-it.xdelta`; per quella USA scegli `Patch/From Clean ROM/US/from-clean-us.xdelta`. Non serve installare prima Sacred Gold o una vecchia Plus.
-5. Su [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/) scegli il `.nds` in **ROM file** e il `.xdelta` in **Patch file**, poi premi **Apply patch**. Lascia **Fix ROM checksum** spento in Settings. Controlla lo SHA del nuovo file usando il valore del **gioco ottenuto** nella guida e aprilo nel tuo emulatore DS.
+### More some bugs fixed.
 
-**La lingua dello ZIP è quella del risultato; US/IT dentro Patch identifica la ROM di partenza.** Lo ZIP italiano produce il gioco italiano anche partendo dall'originale USA supportato.
+- **Lotta/IA:** tipo Folletto e Conversione2, Spettro contro Drago/Buio, Ferropalla/Gravità, punteggi delle mosse e ciclo dei tipi che poteva bloccare il ritorno al menu mosse.
+- **Pokémon/eventi:** parametri evolutivi di Mantyke, Feebas, Burmy e Combee; pesca, movimento di Mew, premio di Steven e selezione delle scene Ho-Oh/Lugia.
+- **Borsa/save/interfacce:** quantità del pickup nel Tunnel di Fiordoropoli, doni con Borsa piena, recupero delle impostazioni Plus, protezione degli slot extra e dei dati Rubrica/Chatot, navigazione e transizioni Guida/Opzioni.
 
-**Aggiornamento:** salva nel gioco, chiudi l'emulatore e copia ROM e salvataggio in un backup. Scegli la cartella `From Plus` della tua versione e lingua attuali. Le 21 patch portano direttamente alla 1.2.5: ne basta una. La guida distingue anche le varianti della camera 1.04 e le due edizioni 1.2.2; 1.01–1.03 hanno solo ingressi inglesi verificati. Cheat, emulatore e BIOS non servono per applicare la patch; per giocare occorre configurare il proprio emulatore o flashcart.
+L'[elenco dei fix](BUG-FIXES-1.3.1.md), il [catalogo retail](source/docs/known-bugs-hgss.md), il [changelog](CHANGELOG.md) e la [validazione](source/docs/ui-1.3.1-validation.md) distinguono prove, limiti e segnalazioni ancora aperte. Non tutte le voci del catalogo sono bug corretti.
 
-**Compatibilità:** i salvataggi esistenti vengono importati. Gli slot aggiuntivi della Borsa usano un’estensione del salvataggio: tornando a una ROM vecchia, gli oggetti negli slot extra non sono disponibili; salvando con quella ROM non si recuperano automaticamente al ritorno. Carica il salvataggio normale del gioco, non un savestate precedente. L’intestazione è invariata dalla 1.2, ma importa il catalogo aggiornato per le correzioni. Tutti i codici sono spenti di default.
+### Aggiornare conservando la partita
 
-**Per chi sviluppa:** i sorgenti, gli strumenti e i test stanno in [`source/`](source/README.md). Il manutentore e gli assistenti lavorano **solo su `main`, senza creare branch o pull request**, anche in tutte le chat future: la regola permanente è in [AGENTS.md](AGENTS.md). Le modifiche si verificano e si pubblicano direttamente lì; la ROM si costruisce sulla propria macchina, con il proprio file di gioco, mai su GitHub. L'unico ingresso è la **HeartGold originale** della propria lingua: il primo stadio della costruzione ne ricava la base 1.1 applicando una patch pubblica di sole differenze, quindi non serve nessuna ROM intermedia e nessuna ROM viene distribuita.
+Salva nel gioco, chiudi completamente l'emulatore e individua la cartella del salvataggio effettivamente usata. Fai un backup fresco di ROM e `.sav` corrente. Applica la patch a un file separato e controlla lo SHA finale; prova Continua, progressi/Pokémon/Borsa/impostazioni, SAVE e riavvio completo su **una copia distinta del save**. Poi sostituisci soltanto la ROM installata, mantenendo lingua, nome/percorso e associazione all'emulatore. Il save personale corrente resta al suo posto: non sostituirlo con quello di prova.
 
-**Crediti:** basato su *Sacred Gold* di **Drayano**, continuazione di **Sacred Gold Plus** con credito alla community originale. Sviluppato da un appassionato, con contributi della community.
+Non servono nuova partita o reset delle impostazioni. Se manca Continua, correggi l'associazione del salvataggio. Non riprendere da un vecchio savestate. Conserva il backup, soprattutto tornando a versioni che non espongono gli slot extra della Borsa. Qui non è incluso un catalogo cheat non verificato.
 
-**Licenza:** strumenti di questo progetto sotto [GPL-3.0-or-later](LICENSE); Pokémon, il gioco originale e i contributi di terzi restano dei rispettivi proprietari — crediti completi in `Come-installare-1.2.5-IT.pdf` nel pacchetto.
+**Community e crediti:** contributi a codice, traduzione, grafica, test e documentazione sono benvenuti. [Segnala un problema](https://github.com/Umberto-DEV/sacred-gold-plus/issues) senza caricare ROM o save. Grazie a Drayano, mikelan/Mikelan98, NefariousnessNo3436, @JD48096761 e ai contributori originali. Manuali e riferimenti conservano i crediti; gli strumenti del progetto sono [GPL-3.0-or-later](LICENSE), gli altri diritti restano dei rispettivi titolari.

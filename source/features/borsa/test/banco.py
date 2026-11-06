@@ -30,6 +30,7 @@ Modellato su `source/features/caramelle/test/banco.py`. GPL-3.0-or-later.
 import json
 import os
 import struct
+import sys
 from pathlib import Path
 
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_PROT_ALL
@@ -42,6 +43,8 @@ PAC = Path(__file__).resolve().parent.parent      # .../source/features/borsa
 # Il blob spedito. `tools/mutanti.py` punta SGP_BORSA_BUILD su una copia mutata:
 # e' l'unica differenza fra la corsa normale e quella dei mutanti.
 REPO = PAC.parents[2]
+sys.path.insert(0, str(REPO / 'source'))
+from sgp12.rom import valida_layout_arm9
 BUILD = Path(os.environ.get(
     "SGP_BORSA_BUILD", REPO / "source" / "sgp12" / "build" / "borsa"))
 
@@ -134,17 +137,9 @@ def segmenti_arm9(path):
     d = Path(path).read_bytes()
     o9 = struct.unpack_from("<I", d, 0x20)[0]
     r9 = struct.unpack_from("<I", d, 0x28)[0]
-    t0, t1, d0 = struct.unpack_from("<3I", d, o9 + 0xBA0)
-    fuori = [(r9, d[o9:o9 + (d0 - r9)])]
-    p = o9 + (t0 - r9)
-    fine = o9 + (t1 - r9)
-    o = o9 + (d0 - r9)
-    while p < fine:
-        ram, n, _bss = struct.unpack_from("<3I", d, p)
-        fuori.append((ram, d[o:o + n]))
-        o += n
-        p += 12
-    return fuori
+    n9 = struct.unpack_from('<I', d, 0x2C)[0]
+    _t0, _t1, _d0, _sections, segments = valida_layout_arm9(d, o9, r9, n9)
+    return [(ram, d[offset:offset + size]) for ram, offset, size in segments]
 
 
 class Membro:
