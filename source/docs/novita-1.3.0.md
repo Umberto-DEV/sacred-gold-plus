@@ -1,3 +1,15 @@
+## Compilatore: errore originale e pulizia processo — 6 novembre 2026
+
+Nel test CI dell'inventario eccessivo, il guard rifiuta correttamente 26 file,
+ma un EPERM nel segnale al gruppo maschera il ValueError e lascia il figlio
+non raccolto. La pulizia ora ignora quell'EPERM solo se poll conferma che il
+figlio è già terminato; altrimenti il fallimento resta esplicito. Rimangono il
+primo tentativo killpg, wait limitato, limiti output e pin del compilatore.
+Il log è coerente con un'uscita concorrente ma non ne prova da solo il timing.
+La modifica riguarda gli strumenti host, senza cambiamenti intenzionali ai byte
+ROM o al formato save. Le nuove ricevute di compilazione e la nuova CI devono
+confermare separatamente l'identità finale; nessun nuovo test di gioco avviato.
+
 ## GUIDA e OPZIONI: ripetizione dei tasti — 6 novembre 2026
 
 Corretto il campionamento condiviso: `System+0x48` contiene le nuove pressioni,

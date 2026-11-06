@@ -2,6 +2,12 @@
 
 ## 1.3.1
 
+Build-tool cleanup now preserves the original compiler guard failure when
+macOS denies a process-group signal after the child has already exited. A live
+child's permission failure still fails; group termination, bounded reaping,
+output limits and production toolchain pins remain enforced. This is a host
+process-cleanup correction, with no intended ROM-byte or save-format change.
+
 Guide and Plus Options now read the native new-press and repeat fields rather
 than treating a held direction as another press on every frame. This restores
 the game's initial hold delay and repeat cadence without changing native timers.

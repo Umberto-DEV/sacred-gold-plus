@@ -266,6 +266,10 @@ def _run(command, directory, allowed, timeout=COMPILER_TIMEOUT):
                 os.killpg(process.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
+            except PermissionError:
+                # macOS may refuse a group signal after the child exits.
+                if process.poll() is None:
+                    raise
             process.wait(timeout=5)
         raise
     finally:
