@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Run the Class A test suites — the ones that need no game file.
 
-These are exactly the suites GitHub Actions runs on every push and pull
-request, so a green run here is a green run there. From the repository root:
+These are the test suites GitHub Actions runs on configured pushes and pull
+requests. Local and hosted toolchains can differ, so compare their per-suite
+results and skips. From the repository root:
 
     python3 -m venv .venv
     .venv/bin/pip install -r source/requirements.txt
@@ -21,13 +22,15 @@ one, a silently skipped suite is 95 tests nobody notices. A compiler that is
 present but cannot BUILD the shipped sources is never a skip: that is a defect,
 and it fails here as it would anywhere else.
 
-A suite that collects no test at all is a FAILURE. `unittest discover` on a
+A Class A suite that collects no test or skips every collected test is a
+FAILURE. `unittest discover` on a
 folder with no test file prints "Ran 0 tests ... OK" and exits 0, so deleting
 three suites used to leave the run green.
 
-Class B tests — the ones that open a real game file — are listed and run apart,
-because they skip wherever Class A runs and must never be counted as Class A
-coverage. They are still part of the ONE final verdict printed at the end: the
+Class B suites — the ones with game-dependent assertions — are listed and run
+apart. On public CI those assertions skip without a ROM; any synthetic checks
+inside those suites can still execute and are not Class A coverage. They are
+still part of the ONE final verdict printed at the end: the
 Class A line used to be the last thing on screen and was printed before the
 Class B suites had even run, so a red Class B suite left the exit code and the
 JSON red while the output ended on the word PASS. See `source/README.md`.
@@ -35,6 +38,8 @@ JSON red while the output ended on the word PASS. See `source/README.md`.
 from __future__ import annotations
 
 import argparse
+import ast
+from collections import Counter
 import json
 import os
 import re
@@ -170,7 +175,53 @@ SUITE += [
     ("1.3.1 Keen Eye text", SOURCE / "features/modern-accuracy/test", ["-m", "unittest", "test_text"], SOURCE_ENV),
     ("1.3.1 archive deltas", SOURCE, ["-m", "unittest", "sgp131.test_archives"], SOURCE_ENV),
     ("1.3.1 Safari lifetime oracle", SOURCE, ["-m", "unittest", "sgp131.test_safari_lifetime.LifetimeOracle", "sgp131.test_safari_lifetime.ArchiveRegistration"], SOURCE_ENV),
+    ("1.3.1 BLZ input boundaries", SOURCE, ["-m", "unittest", "sgp131.test_blz_security"], SOURCE_ENV),
+    ("1.3.1 Pokéathlon counter bounds", SOURCE, ["-m", "unittest", "sgp131.test_pokeathlon"], SOURCE_ENV),
 ]
+# These methods have no ROM, external reference checkout, or production compiler
+# requirement. Their neighboring methods in the same modules have separate
+# private-input or production-toolchain requirements. Keep the selection exact.
+AUDITED_SYNTHETIC_SELECTORS = [
+    "sgp131.test_battle_tower_wrap.BattleTowerWrapTests.test_repair_passes_full_width_rounds_and_preserves_low_rounds",
+    "sgp131.test_dark_cave_rock_rom.DarkCaveRockRomTests.test_overlap_detector_rejects_a_water_coded_rock",
+    "sgp131.test_evolution_fixes.EvolutionDeltas.test_legacy_stage_owns_evolution_archive_once",
+    "sgp131.test_gts_empty_rom.GtsEmptyRomTests.test_clean_empty_response_blocks_select",
+    "sgp131.test_gts_empty_rom.GtsEmptyRomTests.test_populated_valid_record_is_the_healthy_result_control",
+    "sgp131.test_gts_empty_rom.GtsEmptyRomTests.test_communication_error_never_exposes_select",
+    "sgp131.test_gts_empty_rom.GtsEmptyRomTests.test_one_zero_filled_record_reaches_select_without_identity",
+    "sgp131.test_pursuit_script.PursuitScriptDelta.test_field_mask_control_matrix_distinguishes_bug_from_restore",
+    "sgp131.test_pursuit_script.PursuitScriptDelta.test_legacy_stage_owns_the_fix_once",
+    "sgp131.test_rtc_daily_contract_rom.RtcSourceContractTests.test_clock_change_reanchors_without_consuming_daily_flags",
+    "sgp131.test_rtc_daily_contract_rom.RtcSourceContractTests.test_natural_rollover_clears_daily_flags_and_rotates_buena",
+    "sgp131.test_rtc_daily_contract_rom.RtcSourceContractTests.test_bug_contest_weekday_gate_is_not_an_rtc_penalty_gate",
+    "sgp131.test_rtc_daily_contract_rom.RtcSourceContractTests.test_backward_day_reanchors_without_daily_rollover",
+    "sgp131.test_rtc_daily_contract_rom.RtcSourceContractTests.test_same_day_save_is_a_negative_control_for_buena_rotation",
+    "sgp131.test_trainer_fixes.Registration",
+    "sgp131.test_uturn_script.UTurnScriptDelta.test_snapshot_commands_encode_effective_item_and_modifier",
+    "sgp131.test_traded_egg.TradedEggPatchTests.test_four_ot_pid_cases_replace_only_the_palette_classification",
+]
+SUITE.append(("1.3.1 audited synthetic regressions", SOURCE,
+              ["-m", "unittest", *AUDITED_SYNTHETIC_SELECTORS], SOURCE_ENV))
+
+# These modules are intentionally outside the public runner. New test modules
+# must either enter SUITE/SUITE_CLASSE_B or receive a reviewed classification;
+# test_run_tests.py checks this inventory. A local-only entry is not CI coverage.
+LOCAL_ONLY_SGP131_TESTS = {
+    'test_bag_alloc_rom': 'private candidate and native runtime',
+    'test_bag_foreign': 'production compiler and private candidate',
+    'test_bag_foreign_consumer': 'private V4 fixture and production compiler',
+    'test_kate_script_rom': 'private candidate',
+    'test_nosepass_head_smash_rom': 'private candidate',
+    'test_plus_save_rom': 'private candidate and raw save fixtures',
+    'test_pokeathlon_rom': 'private candidate',
+    'test_pokegear_autocull_rom': 'uninstalled design and private candidate',
+    'test_pressure_switch_scripts': 'private V4 and reference inputs',
+    'test_status_icon_script': 'private V4 and reference inputs',
+    'test_traded_egg_rom': 'private candidate and production compiler',
+    'test_transform_reload': 'production compiler identity and native runtime',
+    'test_type_chart': 'private candidate and native runtime',
+    'test_type_consumers': 'production compiler identity and native runtime',
+}
 # c8 features (Summary controls, portable box, rematch variants, gift script fixes). Class A: these suites run tests without any
 # game file; their ROM cases skip without the V4 candidates. The *_rom modules are Class B below.
 SUMMARY_CONTROLS_ENV = {"PYTHONPATH": os.pathsep.join([str(SOURCE), str(SOURCE / "features/summary-controls/test")])}
@@ -285,6 +336,12 @@ with nonproduction_native_compiler_contract(*owners):
 def esegui(nome, cwd, argv, env=None, classe_b=False):
     amb = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     amb.update(env or {})
+    if argv[:3] == ['-m', 'unittest', 'discover']:
+        argv = [*argv[:3], '-v', *argv[3:]]
+    elif argv[:2] == ['-m', 'unittest']:
+        # Verbose output is captured, then only skip reasons are printed on a
+        # successful suite. Default unittest output gives a count but no reason.
+        argv = [*argv[:2], '-v', *argv[2:]]
     if nome in NONPRODUCTION_NATIVE_SUITES:
         if argv[:2] != ['-m', 'unittest']:
             raise ValueError('host native contract requires the unchanged unittest entry point')
@@ -296,12 +353,12 @@ def esegui(nome, cwd, argv, env=None, classe_b=False):
     elapsed_seconds = round(time.perf_counter() - started, 3)
     uscita = r.stdout + r.stderr
     m = CONTA.search(uscita)
-    n = int(m.group(1)) if m else 0
+    unittest_ran = int(m.group(1)) if m else 0
     s = SALTI.search(uscita)
     saltati = int(s.group(1)) if s else 0
     # A module-level skip reports "Ran 0 tests" with skipped=N: those N tests
     # were collected, not run.
-    n = max(n, saltati)
+    n = max(unittest_ran, saltati)
     ok = r.returncode == 0
     if r.returncode < 0:
         print("  %-26s   child terminated by %s; test counts unavailable" %
@@ -311,11 +368,36 @@ def esegui(nome, cwd, argv, env=None, classe_b=False):
         # that collects nothing is not a suite that passes.
         ok = False
         print("  %-26s   no test collected — the suite is empty or was not found" % nome)
-    print("  %-26s %3d run, %2d skipped   %s   %.3fs" %
-          (nome, n - saltati, saltati, "ok" if ok else "FAILED", elapsed_seconds))
+    skipped_methods = len(re.findall(r"^test_.* \.\.\. skipped [\"']", uscita, re.M))
+    if (not classe_b and n > 0 and r.returncode == 0
+            and (unittest_ran == 0 or skipped_methods == unittest_ran)):
+        # Subtest skips are indented and do not count as skipped test methods.
+        # A passing method with one skipped subtest may still show skipped=1.
+        ok = False
+        print("  %-26s   all collected Class A tests skipped" % nome)
+    executed_methods = max(0, unittest_ran - skipped_methods)
+    print("  %-26s %3d methods ran, %2d skip events   %s   %.3fs" %
+          (nome, executed_methods, saltati, "ok" if ok else "FAILED", elapsed_seconds))
+    if saltati:
+        reasons = Counter()
+        for line in uscita.splitlines():
+            _, marker, literal = line.partition(" ... skipped ")
+            if marker:
+                try:
+                    reason = ast.literal_eval(literal)
+                except (SyntaxError, ValueError):
+                    reason = literal
+                if isinstance(reason, str):
+                    reasons[reason] += 1
+        for reason, count in reasons.most_common(8):
+            print("    skip reason (%d): %s" % (count, reason[:240]))
+        if len(reasons) > 8:
+            print("    %d further distinct skip reasons" % (len(reasons) - 8))
+        if not reasons:
+            print("    skip reasons unavailable from this suite's unittest output")
     if not ok:
         print(uscita[-4000:])
-    return ok, n, saltati, elapsed_seconds
+    return ok, n, saltati, elapsed_seconds, executed_methods
 
 
 def compila_opzioni(tmp: Path):
@@ -368,7 +450,7 @@ def main() -> int:
     esigi_compilatore = a.richiedi_compilatore or bool(os.environ.get("SGP_CI"))
 
     print("Class A tests (no game file needed)\n")
-    totale = saltati_tot = 0
+    totale = saltati_tot = metodi_tot = 0
     classe_a_ok = True
     dettaglio = []
 
@@ -378,37 +460,43 @@ def main() -> int:
     ambiente_riserva = {"SGP_RISERVA_COMPLETA": "1"} if os.environ.get("SGP_RISERVA_ROM") else None
 
     for nome, cwd, argv, *propri in SUITE:
-        ok, n, s, elapsed = esegui(nome, cwd, argv,
+        ok, n, s, elapsed, methods = esegui(nome, cwd, argv,
                                    env=propri[0] if propri else ambiente_riserva if nome == "ARM9 reserve register" else None)
         classe_a_ok &= ok
         totale += n
         saltati_tot += s
+        metodi_tot += methods
         dettaglio.append({"suite": nome, "collected": n, "skipped": s,
-                          "ok": ok, "elapsed_seconds": elapsed})
+                          "executed_methods": methods, "ok": ok,
+                          "elapsed_seconds": elapsed})
 
     with tempfile.TemporaryDirectory(prefix="sgp-class-a-") as d:
         tmp = Path(d)
-        ok, n, s, elapsed = esegui("native code (Unicorn)", SOURCE / "features/native-core/test",
+        ok, n, s, elapsed, methods = esegui("native code (Unicorn)", SOURCE / "features/native-core/test",
                                    ["-m", "unittest", "discover", "-p", "test_*.py"])
         classe_a_ok &= ok
         totale += n
         saltati_tot += s
+        metodi_tot += methods
         dettaglio.append({"suite": "native code (Unicorn)", "collected": n,
-                          "skipped": s, "ok": ok, "elapsed_seconds": elapsed})
+                          "skipped": s, "executed_methods": methods,
+                          "ok": ok, "elapsed_seconds": elapsed})
 
         compile_started = time.perf_counter()
         build, motivo, compilatore_assente = compila_opzioni(tmp)
         compile_seconds = round(time.perf_counter() - compile_started, 3)
         print("  options payload compilation: %.3fs" % compile_seconds)
         if build is not None:
-            ok, n, s, elapsed = esegui("options page (Unicorn)", SOURCE / "features/options/test",
+            ok, n, s, elapsed, methods = esegui("options page (Unicorn)", SOURCE / "features/options/test",
                                        ["-m", "unittest", "discover", "-p", "test_*.py"],
                                        env={"SGP_UI_BUILD": str(build)})
             classe_a_ok &= ok
             totale += n
             saltati_tot += s
+            metodi_tot += methods
             dettaglio.append({"suite": "options page (Unicorn)", "collected": n,
-                              "skipped": s, "ok": ok, "elapsed_seconds": elapsed,
+                              "skipped": s, "executed_methods": methods,
+                              "ok": ok, "elapsed_seconds": elapsed,
                               "compile_seconds": compile_seconds})
         else:
             # The suite still has a line, a count and a JSON entry: it used to
@@ -420,7 +508,7 @@ def main() -> int:
             # machine must have one). A build that *fails* is never a skip: the
             # shipped sources not compiling is a defect on any machine.
             ok = compilatore_assente and not esigi_compilatore
-            print("  %-26s %3d run, %2d skipped   %s   0.000s (collection %.3fs)"
+            print("  %-26s %3d methods ran, %2d skip events   %s   0.000s (collection %.3fs)"
                   % ("options page (Unicorn)", 0, n, "skipped" if ok else "FAILED",
                      collection_seconds))
             print("    " + motivo)
@@ -432,29 +520,32 @@ def main() -> int:
             totale += n
             saltati_tot += n
             dettaglio.append({"suite": "options page (Unicorn)", "collected": n,
-                              "skipped": n, "ok": ok, "motivo": motivo,
+                              "skipped": n, "executed_methods": 0,
+                              "ok": ok, "motivo": motivo,
                               "compilatore_assente": compilatore_assente,
                               "elapsed_seconds": 0.0, "compile_seconds": compile_seconds,
                               "collection_seconds": collection_seconds})
 
-    print("\nClass A: %d tests collected, %d ran, %d skipped — %s"
-          % (totale, totale - saltati_tot, saltati_tot,
+    print("\nClass A: %d legacy collected, %d methods executed, %d skip events — %s"
+          % (totale, metodi_tot, saltati_tot,
              "pass" if classe_a_ok else "FAIL"))
 
     print("\nClass B suites (need a game file: they skip here and in CI)\n")
     dettaglio_b = []
     classe_b_ok = True
-    totale_b = saltati_b = 0
+    totale_b = saltati_b = metodi_b = 0
     for nome, cwd, argv, *propri in SUITE_CLASSE_B:
-        ok, n, s, elapsed = esegui(nome, cwd, argv,
+        ok, n, s, elapsed, methods = esegui(nome, cwd, argv,
                                    env=propri[0] if propri else None, classe_b=True)
         classe_b_ok &= ok
         totale_b += n
         saltati_b += s
+        metodi_b += methods
         dettaglio_b.append({"suite": nome, "collected": n, "skipped": s,
-                            "ok": ok, "elapsed_seconds": elapsed})
-    print("  Class B: %d tests collected, %d ran, %d skipped — %s"
-          % (totale_b, totale_b - saltati_b, saltati_b, "pass" if classe_b_ok else "FAIL"))
+                            "executed_methods": methods, "ok": ok,
+                            "elapsed_seconds": elapsed})
+    print("  Class B: %d legacy collected, %d methods executed, %d skip events — %s"
+          % (totale_b, metodi_b, saltati_b, "pass" if classe_b_ok else "FAIL"))
     print("  (not counted as Class A coverage: set SGP_ROM_DIR to run them)")
 
     # ONE verdict, printed after everything, and it counts Class B too. The
@@ -469,9 +560,11 @@ def main() -> int:
     if a.json:
         a.json.write_text(json.dumps({"suites": dettaglio, "classe_b": dettaglio_b,
                                       "collected": totale, "skipped": saltati_tot,
+                                      "executed_methods": metodi_tot,
                                       "classe_a_ok": classe_a_ok,
                                       "collected_classe_b": totale_b,
                                       "skipped_classe_b": saltati_b,
+                                      "executed_methods_classe_b": metodi_b,
                                       "classe_b_ok": classe_b_ok,
                                       "ok": tutto_ok}, indent=2) + "\n")
     return 0 if tutto_ok else 1

@@ -112,7 +112,7 @@ Public technical documentation is maintained in English for the current release;
 The [repository map](source/docs/architecture/README.md) shows where each game
 subsystem, build stage, validation report and distribution tool belongs.
 
-Contributions to code, translations, artwork, testing and documentation are welcome, together with player ideas and feedback. [Report a bug or propose a change](https://github.com/Umberto-DEV/sacred-gold-plus/issues); include the version, language and steps, without uploading your ROM or save. Maintainer changes are reviewed and validated on `main`; independent contributors may submit pull requests. CI runs the tests that require no game file; game-dependent validation is recorded separately.
+Contributions to code, translations, artwork, testing and documentation are welcome, together with player ideas and feedback. [Report a bug or propose a change](https://github.com/Umberto-DEV/sacred-gold-plus/issues); include the version, language and steps, without uploading your ROM or save. Independent contributors can follow the [contribution guide](CONTRIBUTING.md) from fork to pull request; maintainer changes are reviewed and validated directly on `main`. CI checks public files and runs tests that require no game file. A green run does not validate a playable ROM or an existing save.
 
 ## Credits and license
 

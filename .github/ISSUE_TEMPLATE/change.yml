@@ -1,5 +1,5 @@
 name: Propose a source change
-description: For developers: describe a change to the tools, sources or documentation before opening a pull request.
+description: Optional early design discussion for developers; a separate issue is not required for a pull request.
 title: "[Change] "
 labels: [enhancement]
 body:
@@ -28,7 +28,7 @@ body:
     id: checks
     attributes:
       label: How would it be checked?
-      description: Which Class A tests cover it, and which Class B run (with your own game file) would prove it. Say what such a run would not establish.
+      description: Which ROM-free tests would catch a regression, and which private candidate and save-copy checks would verify it in-game? State what remains untested. See CONTRIBUTING.md.
     validations:
       required: true
   - type: checkboxes

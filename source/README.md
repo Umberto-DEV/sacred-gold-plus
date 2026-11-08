@@ -1,6 +1,7 @@
 # Build and contribute
 
-New contributors can use the [repository map](docs/architecture/README.md),
+New contributors can start with the [contribution guide](../CONTRIBUTING.md)
+and [repository map](docs/architecture/README.md),
 [feature ownership index](features/README.md) and
 [documentation index](docs/README.md) to find the relevant source and checks.
 
@@ -55,7 +56,7 @@ Game-dependent tools read **your own** game files. No game file is distributed, 
 | `features/debug/` | Field instrumentation for the headless bench: a minimal GDB RSP client for the melonDS gdbstub, a scriptable warp that makes the game run its own map-change routine, the map and camera campaigns and their independent gate read-back. Development aids only: no block, no test, and they need a `hg_runtime-gdb` you build yourself. |
 | `runtime/` | The headless melonDS harness used for runtime proofs: sources, the core patch script and build instructions. No binary; you build it. See [docs/test-bench.md](docs/test-bench.md). |
 | `scripts/` | The 1.04 variant builders, kept for that older route, plus the ROM-free instruction probe the runtime build compiles. The 1.04 route itself does not run from this repository: `translation/build_release.py` needs release recipes, interface manifests and message banks that are not distributed. |
-| `run_tests.py` | The Class A suites — exactly what CI runs. |
+| `run_tests.py` | The Class A suites and separately reported Class B probes run by CI; game-dependent assertions need private inputs. |
 
 ## Prepare
 
@@ -175,12 +176,17 @@ Class A — no game file, the same set CI runs:
 ```
 
 The runner also probes Class B, reporting missing private inputs as explicit
-skips. Its historical summary counts skip events, including separate skipped
-subtests; the displayed collected/run totals are not a census of distinct test
-methods. Compare suite results and their skip reasons across environments.
+skips. Its historical `collected` number can include separate skipped subtests;
+the new `executed_methods` count distinguishes methods that actually ran from
+skip events. Compare suite results and their skip reasons across environments.
 Each suite prints its elapsed time; `--json /path/to/private/report.json`
 records `elapsed_seconds` per suite and separates Options payload compilation
 time. Use those measurements before changing CI scheduling or reducing a test.
+The runner explicitly registers ROM-free successor regressions and checks that
+new `sgp131/test_*.py` modules are either registered or classified as local-only.
+A local-only classification means CI has **not** executed those tests: they need
+private inputs, the production compiler or another named prerequisite. Class A
+fails if a registered suite collects nothing or skips every collected test.
 All executed assertions must pass; a larger aggregate count does not establish
 broader coverage. Historical validation totals retain their original scope.
 
@@ -282,7 +288,7 @@ Where a tool needs game data, it reads it from your file at build time. The text
 
 `main` is the only working branch for the maintainer and their coding assistants. Make and validate changes directly on `main`; do not create a development branch or pull request for this workflow. Keep history linear and publish only reviewed changes with passing checks. Do not change repository protections without explicit maintainer authorization. Community contributions from other accounts may still use pull requests and follow the existing review requirements.
 
-CI runs the Class A tests above on every push to any branch and on every pull request, including direct maintainer updates to `main`. A first run from a fork waits for the maintainer's approval. Class B needs your own game file and never runs on GitHub: run it locally and record what you ran and its result in the release validation document (or the pull request's "Class B tests run locally" line for an external contribution). "Not run" is acceptable; a claim that was not checked is not.
+The workflow is configured for pushes to branches where Actions is enabled and pull requests to `main`, including direct maintainer updates. A contributor must enable Actions in a new fork before its own push checks run; a fork pull request may await maintainer approval under the repository's GitHub settings. On GitHub the runner probes Class B suites, but their game-dependent assertions skip without private inputs; a few synthetic assertions may still execute. Run the applicable Class B checks locally with your own game file and record the exact result in the release validation document or pull request. "Not run" is acceptable when explained; a claim that was not checked is not. Follow the [contribution guide](../CONTRIBUTING.md) for the exact fork, private-candidate and evidence steps.
 
 Finished versions are tags `vX.Y` with a GitHub release carrying the player ZIPs, built on the maintainer's machine from the verified ROM. Previews are tagged `vX.Y-rcN` and marked pre-release. Released bytes are never overwritten: a correction is a new release. There is no nightly build, because building the game needs a game file.
 

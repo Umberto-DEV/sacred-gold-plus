@@ -23,6 +23,14 @@ library check does not need a separately downloaded interpreter. This removes
 the setup download that failed with HTTP 504 on the source-only CI retry;
 Class A and its native-toolchain requirements are unchanged.
 
+The public [contribution guide](CONTRIBUTING.md), issue forms and PR template
+now give independent contributors a fork-to-review path with exact Class A,
+private build, runtime and raw-save evidence. The runner includes 25 previously
+unregistered ROM-free assertions across the 1.3.1 successor modules, records
+skip reasons in CI output and rejects an entirely skipped Class A suite. A
+module inventory flags new unclassified successor tests. This is source and CI
+coverage, not acceptance of a 1.3.2 player release.
+
 ## 1.3.1 package revision 2
 
 Public documentation is maintained in English, including current per-bug

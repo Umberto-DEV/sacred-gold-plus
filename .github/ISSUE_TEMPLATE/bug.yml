@@ -7,28 +7,35 @@ body:
     id: version
     attributes:
       label: Game version
-      options: ["1.3.1", "1.2.5", "1.2.4", "1.2.3", "1.2.2", "1.2.1", "1.2", "1.04 (historical)", "1.04 Preview 2 (historical)", "1.04 Preview 1 (historical)", "Other (specify in steps)"]
+      options: ["1.3.1 (published)", "1.3.2 source candidate (unreleased)", "1.2.5", "1.2.4", "1.2.3", "1.2.2", "1.2.1", "1.2", "1.04 (historical)", "1.04 Preview 2 (historical)", "1.04 Preview 1 (historical)", "Other or unsure (specify below)"]
     validations:
       required: true
   - type: dropdown
     id: variant
     attributes:
       label: Language
-      options: [Italian (IT), English (EN/US)]
+      options: [Italian (IT), English (EN/US), Unsure]
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps and result
-      description: Where were you? What did you do? What did you expect, and what happened?
+      label: Steps to reproduce
+      description: Where were you? What did you do in order? What did you expect, and what happened instead? For a freeze, say how many attempts reproduced it.
     validations:
       required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and exact build (if known)
+      description: Emulator, platform, version, and game build or SHA-256 if you know it. A version label alone may identify several ROMs. Do not provide the ROM or save.
+    validations:
+      required: false
   - type: textarea
     id: checks
     attributes:
       label: What have you checked?
-      description: Does it happen after starting normally with cheats off? Is it repeatable? You may name the emulator and version; do not include device identifiers or personal logs.
+      description: Did it happen after a cold start with cheats off? On the same save copy, does the previous version behave differently? Say "not tested" for unknown checks; do not include personal logs.
     validations:
       required: true
   - type: checkboxes
@@ -36,5 +43,5 @@ body:
     attributes:
       label: Before submitting
       options:
-        - label: I checked existing issues and removed private information, game files, saves and raw logs.
+        - label: I checked existing issues and removed private information, game files, saves, save states, dumps and raw logs.
           required: true
