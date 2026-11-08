@@ -1,5 +1,22 @@
 # What changed
 
+## 1.3.2 package revision 2
+
+- Reorganized the main player ZIP into five language folders, each with one
+  clearly named current 1.3.2 patch for the supported original ROM of that language.
+  All 150 direct updaters from 30 recognized bases remain in a separate optional
+  download, with localized source-hash and patch-name tables.
+- Moved translated installation and what's-new PDFs directly into each language
+  folder. `Originals` now contains only seven current English gameplay PDFs,
+  including one Game Guide. Removed duplicate/historical guide copies and
+  technical inventories from the main player ZIP.
+- Added consistent localized credits and the complete original English GPLv3
+  text in every language folder. Regenerated English guide notices to match the
+  new layout; gameplay tables and all five accepted ROM targets are unchanged.
+- Added an explicit schema-3 contract and focused layout/admission regressions.
+  Historical contracts and renderers retain their original behavior. This is
+  a package correction, with no new ROM build or save-format migration.
+
 ## 1.3.2
 
 - Added French, Spanish and German alongside English and Italian. Official

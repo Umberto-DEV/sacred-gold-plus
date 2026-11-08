@@ -34,6 +34,13 @@ REQUIRED = ({f'd:news:{i}' for i in range(46)} | {f'd:install:{i}' for i in rang
             {'d:label:' + key for key in LABELS})
 FILENAMES = ('Installation','Whats-New','Special-Events','Pokemon-Changes',
              'Pokemon-Locations','Evolutions','Items-TMs','Trainers','Game-Guide')
+PLAYER_OVERRIDES = tuple(('install:' + str(i)) for i in (1,2,5,10,11,13)) + (
+    'news:31','news:44','label:credits_note','label:originals',
+    'label:language_selector','label:new_languages','label:updater_intro')
+WALK_KEYS = ('apply_intro', 'backup', 'browser', 'browser_h', 'capture', 'choose', 'copy', 'download', 'extract', 'files', 'firstplay', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'hash_warn', 'help', 'mac', 'mac_h', 'offline', 'offline_h', 'ref_a', 'ref_b', 'save_output', 'select', 'settings', 'sha_what', 'sha_where', 'stop', 'trouble', 'update_note', 'verify', 'windows', 'windows_h')
+PLAYER_OVERRIDES += tuple('walk:'+key for key in WALK_KEYS)
+PLAYER_REQUIRED = {'p:r2:' + key for key in PLAYER_OVERRIDES}
+CLEAN_IDS = {'EN':'clean-us','IT':'clean-it','FR':'clean-fr','ES':'clean-es','DE':'clean-de'}
 NAME_BANKS = dict(pokemon=237,item=222,move=750,map=279,ability=720,
                   type=735,trainer=729,**{'class':730},stat=443)
 SELECTORS = dict(land=(0x0224768C,12),surf=(0x02247720,5),fish=(0x02247764,5),
@@ -62,7 +69,24 @@ def validate_documents(values):
 
 
 def load_documents(locale):
-    return validate_documents(load_strings(locale,'documents'))
+    """Return the unchanged historical document copy, excluding r2 overlays."""
+    values=load_strings(locale,'documents')
+    return validate_documents({key:value for key,value in values.items() if key not in PLAYER_REQUIRED})
+
+
+def load_player_documents(locale):
+    """Require all explicitly localized r2 overlays without altering old copy."""
+    values=load_strings(locale,'documents')
+    words=validate_documents({key:value for key,value in values.items() if key not in PLAYER_REQUIRED})
+    overlays={key:value for key,value in values.items() if key in PLAYER_REQUIRED}
+    _need(set(overlays)==PLAYER_REQUIRED and all(value.strip() for value in overlays.values()),
+          'missing/empty player document translations')
+    for key,value in overlays.items():
+        allowed=({'version','language','target_name','target_bytes','target_sha256'}
+                 if key=='p:r2:install:13' else set())
+        _need(set(re.findall(r'\{([^{}]+)\}',value))==allowed,'player document placeholder '+key)
+        words['d:'+key.removeprefix('p:r2:')]=value
+    return words
 
 
 def validate_inputs(locale,candidate,reference,contract):
@@ -83,7 +107,7 @@ def validate_inputs(locale,candidate,reference,contract):
     routes=contract.get('routes_by_target',{}).get(locale,[])
     _need(routes and len(set(routes))==len(routes) and set(routes)<=ids,'target source routes')
     identity=(_sha(reference),len(reference))
-    clean_id={'EN':'clean-us','IT':'clean-it','FR':'clean-fr','ES':'clean-es','DE':'clean-de'}[locale]
+    clean_id=CLEAN_IDS[locale]
     _need(any(r['id']==clean_id and identity==(r['sha256'],r['bytes']) for r in sources),
           'reference must be the matching clean retail baseline')
     _need(re.fullmatch(r'[0-9]+(?:\.[0-9]+){1,3}(?:-[A-Za-z0-9.]+)?',contract.get('version','')),'manual version')
@@ -391,7 +415,7 @@ def pdf_text(text):
     return unicodedata.normalize('NFKC',str(text).replace('₧₦','Pokémon').replace('♀','(F)').replace('♂','(M)'))
 
 
-def render_facts(locale,facts,baseline,contract,output):
+def render_facts(locale,facts,baseline,contract,output,*,_player_package=False,_shared_guides=False):
     """Render already-read facts; render_manuals authenticates cartridge inputs."""
     import reportlab
     from reportlab.lib import colors
@@ -399,9 +423,10 @@ def render_facts(locale,facts,baseline,contract,output):
     from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
     from reportlab.pdfbase import pdfmetrics
     from reportlab.pdfbase.ttfonts import TTFont
-    from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle
+    from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle,PageBreak,Image
+    from io import BytesIO
     _need(reportlab.Version=='4.4.9','ReportLab 4.4.9 required')
-    words=load_documents(locale);label=lambda key:words['d:label:'+key];output=Path(output)
+    words=load_player_documents(locale) if (_player_package or _shared_guides) else load_documents(locale);label=lambda key:words['d:label:'+key];output=Path(output)
     if output.exists() or output.is_symlink():raise FileExistsError(output)
     fontroot=Path(reportlab.__file__).parent/'fonts'
     for name,file in [('SGPDoc','Vera.ttf'),('SGPDocBold','VeraBd.ttf')]:
@@ -436,15 +461,92 @@ def render_facts(locale,facts,baseline,contract,output):
     titles=[label(k) for k in ('installation','news','events','pokemon','locations','evolutions','items','trainers','gameplay')]
     stories=[[p(title,'Title'),p(label('candidate_note'),'MetaDoc')] for title in titles]
     for index in range(14):
-        text=words[f'd:install:{index}'].format(version=version,language=locale,target_sha256=target['sha256'])
+        text=words[f'd:install:{index}'].format(version=version,language=locale,target_sha256=target['sha256'],
+            target_name=target.get('name',''),target_bytes=target['bytes'])
         stories[0].append(p(text,'Heading2' if index in (0,11,12) else 'BodyDoc'))
         if index==11:
-            byid={r['id']:r for r in contract['sources']};routes=[byid[i] for i in contract['routes_by_target'][locale]]
-            stories[0]+=table([label('source'),'SHA-256',label('item')],
-                [(r['label'],r['sha256'],'Patch/'+r['id']+'.xdelta') for r in routes],[2,4,3])
+            byid={r['id']:r for r in contract['sources']}
+            if _player_package:
+                source=byid[CLEAN_IDS[locale]]
+                stories[0]+=table([label('source'),'SHA-256','Patch'],
+                    [(source['label'],source['sha256'],f'Patch/Sacred-Gold-Plus-{version}-{locale}.xdelta')],[2,4,3])
+            else:
+                routes=[byid[i] for i in contract['routes_by_target'][locale]]
+                stories[0]+=table([label('source'),'SHA-256',label('item')],
+                    [(r['label'],r['sha256'],'Patch/'+r['id']+'.xdelta') for r in routes],[2,4,3])
     stories[0].append(p(words['d:install:14']))
     for i in range(46):
         stories[1].append(p(words[f'd:news:{i}'],'Heading2' if i in (0,2,6,11,17,22,25,30,34,38,43) else 'BodyDoc'))
+    def write_stories(stories,start=0):
+        output.parent.mkdir(parents=True,exist_ok=True)
+        paths=[output/(name+'-'+version+'-'+locale+'.pdf') for name in FILENAMES[start:start+len(stories)]]
+        with tempfile.TemporaryDirectory(prefix='.manuals-',dir=output.parent) as temp:
+            temp=Path(temp)
+            for index,path in enumerate(paths):
+                def footer(canvas,doc):
+                    canvas.setStrokeColor(colors.HexColor('#BC8D27'));canvas.line(42,37,A4[0]-42,37)
+                    canvas.setFont('SGPDoc',7);canvas.setFillColor(colors.HexColor('#52646A'))
+                    canvas.drawString(42,24,'SACRED GOLD PLUS '+version+' | '+locale)
+                    canvas.drawRightString(A4[0]-42,24,label('page')+' '+str(doc.page))
+                with (temp/path.name).open('xb') as stream:
+                    document=SimpleDocTemplate(stream,pagesize=A4,leftMargin=42,rightMargin=42,topMargin=44,bottomMargin=50,
+                        invariant=1,title='Sacred Gold Plus '+version+' - '+titles[start+index],author='Sacred Gold Plus contributors')
+                    document.build(stories[index],onFirstPage=footer,onLaterPages=footer)
+            output.mkdir(exist_ok=False)
+            for path in paths:os.link(temp/path.name,path)
+        return paths
+    if _player_package:
+        from distribution.pack import image_file_bytes
+        st.add(ParagraphStyle(name='WalkDoc',parent=st['BodyDoc'],fontSize=10,leading=14,spaceAfter=9))
+        st.add(ParagraphStyle(name='CodeDoc',parent=st['BodyDoc'],fontName='Courier',fontSize=8,leading=12))
+        def w(key,style='WalkDoc'):return p(words['d:walk:'+key],style)
+        def picture(name,picture_width):
+            stream=BytesIO(image_file_bytes(name));shot=Image(stream)
+            shot._sgp_source=stream;shot.drawHeight*=picture_width/shot.drawWidth
+            shot.drawWidth=picture_width;shot.hAlign='CENTER'
+            return shot
+        patch=f'Patch/Sacred-Gold-Plus-{version}-{locale}.xdelta'
+        source=next(row for row in contract['sources'] if row['id']==CLEAN_IDS[locale])
+        folder=contract.get('locales',{}).get(locale,{}).get('folder',locale)
+        walk=[p(titles[0],'Title'),p(words['d:install:0'].format(version=version),'MetaDoc'),
+              w('h1','Heading2'),w('download'),
+              p('https://github.com/Umberto-DEV/sacred-gold-plus/releases'),w('extract')]
+        walk+=table(['',''],[
+            ('DIR',folder+'/'),('PDF',f'Installation-{version}-{locale}.pdf'),
+            ('PDF',f'Whats-New-{version}-{locale}.pdf'),('DIR','Patch/'),
+            ('Patch',patch),('DIR','Cheats/'),('DIR','Credits-and-Licenses/')],[1,8])
+        walk += [w('files'),p(words['d:install:3'],'WalkDoc'),w('backup'),
+                 PageBreak(),w('h2','Heading2'),w('sha_what'),w('sha_where'),
+                 w('browser_h','Heading2'),w('browser'),
+                 p('https://emn178.github.io/online-tools/sha256_checksum.html'),w('mac_h','Heading2'),w('mac'),
+                 p('shasum -a 256 "/path/to/HeartGold.nds"','CodeDoc'),
+                 w('windows_h','Heading2'),w('windows'),
+                 p(r"(Get-FileHash -Algorithm SHA256 -LiteralPath 'C:\Games\HeartGold.nds').Hash",'CodeDoc'),
+                 w('hash_warn'),PageBreak(),w('h3','Heading2'),w('choose'),
+                 w('ref_a','Heading2'),p(source['label'],'WalkDoc'),
+                 p('SHA-256: '+source['sha256'],'CodeDoc'),p(patch,'CodeDoc'),w('stop'),
+                 p(words['d:install:2'],'WalkDoc'),p(words['d:install:10'],'WalkDoc'),
+                 PageBreak(),w('h4','Heading2'),w('apply_intro'),
+                 p('https://www.marcrobledo.com/RomPatcher.js/'),w('select'),
+                 picture('install-rom-patcher.jpg',390),Spacer(1,9),w('settings'),
+                 picture('install-patcher-settings.jpg',220),Spacer(1,7),
+                 w('capture','MetaDoc'),w('save_output'),
+                 PageBreak(),w('h5','Heading2'),w('verify'),w('ref_b','Heading2'),
+                 p(words['d:install:13'].format(version=version,language=locale,
+                     target_sha256=target['sha256'],target_name=target['name'],target_bytes=target['bytes']),'WalkDoc'),
+                 w('firstplay'),PageBreak(),w('h6','Heading2'),w('copy'),
+                 p('SGP-update-test.nds\nSGP-update-test.sav','CodeDoc'),
+                 p(words['d:install:7'],'WalkDoc'),p(words['d:install:8'],'WalkDoc'),
+                 w('update_note'),p(words['d:install:9'],'WalkDoc'),
+                 PageBreak(),w('h7','Heading2'),w('trouble'),w('help'),
+                 p('https://github.com/Umberto-DEV/sacred-gold-plus/issues'),
+                 w('offline_h','Heading2'),w('offline'),p('https://github.com/jmacd/xdelta'),
+                 p(f'xdelta3 -d -D -R -s "source.nds" "{patch}" "patched.nds"','CodeDoc'),
+                 p(f'.\\xdelta3.exe -d -D -R -s "source.nds" "{patch}" "patched.nds"','CodeDoc'),
+                 Spacer(1,12),p(label('credits'),'Heading2'),
+                 p(label('credits_note'),'MetaDoc'),p(words['d:news:45'],'MetaDoc')]
+        stories[0]=walk
+        return write_stories(stories[:2])
     def guide_section(story,cids):
         for category in facts['guide']:
             if category['id'] not in cids:continue
@@ -547,23 +649,7 @@ def render_facts(locale,facts,baseline,contract,output):
     for index,story in enumerate(stories):
         if index==1:continue  # The news source already contains its full credits.
         story += [Spacer(1,18),p(label('credits'),'Heading2'),p(label('credits_note'),'MetaDoc'),p(words['d:news:45'],'MetaDoc')]
-    output.parent.mkdir(parents=True,exist_ok=True)
-    paths=[output/(name+'-'+version+'-'+locale+'.pdf') for name in FILENAMES]
-    with tempfile.TemporaryDirectory(prefix='.manuals-',dir=output.parent) as temp:
-        temp=Path(temp)
-        for index,path in enumerate(paths):
-            def footer(canvas,doc):
-                canvas.setStrokeColor(colors.HexColor('#BC8D27'));canvas.line(42,37,A4[0]-42,37)
-                canvas.setFont('SGPDoc',7);canvas.setFillColor(colors.HexColor('#52646A'))
-                canvas.drawString(42,24,'SACRED GOLD PLUS '+version+' | '+locale)
-                canvas.drawRightString(A4[0]-42,24,label('page')+' '+str(doc.page))
-            with (temp/path.name).open('xb') as stream:
-                document=SimpleDocTemplate(stream,pagesize=A4,leftMargin=42,rightMargin=42,topMargin=44,bottomMargin=50,
-                    invariant=1,title='Sacred Gold Plus '+version+' - '+titles[index],author='Sacred Gold Plus contributors')
-                document.build(stories[index],onFirstPage=footer,onLaterPages=footer)
-        output.mkdir(exist_ok=False)
-        for path in paths:os.link(temp/path.name,path)
-    return paths
+    return write_stories(stories[2:],2) if _shared_guides else write_stories(stories)
 
 
 def render_manuals(locale: str,candidate: bytes,reference: bytes,charmap: Path,
@@ -572,3 +658,31 @@ def render_manuals(locale: str,candidate: bytes,reference: bytes,charmap: Path,
     validate_inputs(locale,candidate,reference,contract);load_documents(locale)
     facts=read_facts(candidate,charmap);baseline=read_facts(reference,charmap,include_guide=False)
     return render_facts(locale,facts,baseline,contract,output)
+
+
+
+def render_player_documents(locale: str,candidate: bytes,reference: bytes,charmap: Path,
+                            contract: dict,output: Path) -> list[Path]:
+    """Authenticate and render only r2 installation/news PDFs with one clean route.
+
+    The signature matches render_manuals for callers. No cartridge tables or
+    Guide prose are needed, so charmap is intentionally not read in this mode.
+    Historical nine-document rendering and its copy remain unchanged.
+    """
+    target=validate_inputs(locale,candidate,reference,contract)
+    name=target.get('name','')
+    _need(isinstance(name,str) and re.fullmatch(r'[^/\\\x00-\x1f]+\.nds',name)
+          and name not in ('.','..') and contract['version'] in name,'player target filename')
+    _need(CLEAN_IDS[locale] in contract['routes_by_target'][locale],'player clean source route')
+    load_player_documents(locale)
+    return render_facts(locale,None,None,contract,output,_player_package=True)
+
+
+
+def render_shared_guides(locale: str,candidate: bytes,reference: bytes,charmap: Path,
+                         contract: dict,output: Path) -> list[Path]:
+    """Create only the seven shared English guides with current r2 notices."""
+    _need(locale=='EN','shared guides must use English')
+    validate_inputs(locale,candidate,reference,contract);load_player_documents(locale)
+    facts=read_facts(candidate,charmap);baseline=read_facts(reference,charmap,include_guide=False)
+    return render_facts(locale,facts,baseline,contract,output,_shared_guides=True)

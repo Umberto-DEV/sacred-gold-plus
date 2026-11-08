@@ -6,6 +6,11 @@ their limits. The [release contract](../../distribution/release-1.3.2.json)
 owns the five target hashes and 150 explicit patch routes. File reconstruction,
 native save acceptance, translated UI checks and publication are separate results.
 
+The [1.3.2 package revision r2 report](package-1.3.2-r2.md) covers the corrected
+download layout, documents and patch reconstruction. Its [schema-3 contract](../../distribution/release-1.3.2-r2.json)
+retains those same game targets while separating five primary clean-ROM patches
+from 150 optional updaters. It does not claim a new game or save test campaign.
+
 Add one report per candidate or investigation. Put the version or subject in
 the filename, and include the exact ROM SHA-256, language, predecessor, save
 copy hash, emulator/core build, input sequence, measured outcome and limits.

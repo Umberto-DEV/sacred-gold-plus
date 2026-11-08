@@ -9,6 +9,9 @@ The 1.3.2 contract defines one latest target for each of EN, IT, FR, ES and DE.
 Every target accepts the same 30 recognized original/historical sources,
 giving **150 direct routes**. Older target versions are not included in the
 current player package. Unknown hashes and missing routes fail admission.
+In package revision r2, the main ZIP contains five same-language clean-ROM
+routes; the optional updater ZIP contains all 150 routes. Both produce the
+unchanged accepted 1.3.2 targets.
 
 | Change or evidence | Read and update |
 | --- | --- |
@@ -17,7 +20,7 @@ current player package. Unknown hashes and missing routes fail admission.
 | Shared core, compiler/input pins and activation | `source/README.md`, `sgp131/README.md`, actual workbench receipts |
 | Save layout, migration and preserved fields | repository save requirements, event-bank/Plus/Bag owner sources, existing raw-save comparisons |
 | Exact candidate acceptance | a new dated/versioned report under `docs/validation/` |
-| Translated manuals | each locale's `documents.json`; `distribution/reference_docs.py` and its clean-retail baseline |
+| Player PDFs and notices | each locale's `documents.json` (`p:r2:*` for current installation/news); `distribution/reference_docs.py`, `player_notices.py` and the clean-retail baseline |
 | Cheat compatibility | each locale's `cheats.json`; `localization/cheats.py`, exact target identity and native preimages |
 | Source routes and package identity | a new `distribution/release-<version>.json`; `distribution/README.md` |
 | Player release page | `distribution/RELEASE-NOTES-TEMPLATE.md`; maintenance notes stay “Some bugs fixed.” |
@@ -55,8 +58,11 @@ current player package. Unknown hashes and missing routes fail admission.
    baseline. Verify numerical parity between languages and inspect representative
    rendered pages. Authenticate every PDF and cheat file by size/hash in the new
    contract. Recheck installation hashes whenever a target changes.
-   The current output is 45 localized PDFs plus each language's revision-bound
-   cheat files. Regenerate target-bound material after a target-hash change.
+   Current package revision r2 outputs ten localized installation/news PDFs and
+   seven shared English gameplay PDFs, plus each language's revision-bound cheat
+   files. The older 45-PDF schema-2 renderer remains reproducible. Regenerate
+   target-bound material after a target-hash change; use `render_player_documents`
+   and `render_shared_guides` for the current layout.
    Admit cheat instructions only after complete target/native preimage checks;
    unresolved runtime pointers stay omitted with localized explanations.
 6. Review the diff; explicitly admit new public files, run `git diff --check`,
@@ -68,6 +74,12 @@ current player package. Unknown hashes and missing routes fail admission.
    independent Rom Patcher JS implementation. Check full target hashes, ZIP
    members, per-language documents, manifests and all checksums. Publish a new
    version/tag/assets; preserve previously published assets and tags.
+   For package-only corrections, pin the existing accepted game targets in a
+   new package-revision contract. Verify both ZIPs: the main download has one
+   patch per language, two visible localized PDFs, three cheat files, consistent
+   notices/licenses, `START-HERE.txt` and exactly seven English PDFs in `Originals`.
+   It has no JSON inventories or `Documents` folders. The separate optional ZIP
+   keeps all 150 updaters, localized readable hash tables and technical manifests.
 
 This release's game acceptance uses bounded host/native-save checks. Physical
 device tests are a separate evidence class, not implied by those results or

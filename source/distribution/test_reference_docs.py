@@ -237,5 +237,89 @@ class ReferenceDocumentTests(unittest.TestCase):
             self.assertEqual(before, {p: p.read_bytes() for p in paths})
 
 
+    def test_player_package_pdfs_show_one_clean_route_and_exact_output_name(self):
+        candidate, clean, old = b'candidate', b'clean', b'old'
+        cfg = dict(version='1.3.2', schema=3,
+                   targets={'EN': dict(name='Sacred Gold Plus 1.3.2 EN.nds',
+                       sha256=hashlib.sha256(candidate).hexdigest(), bytes=len(candidate))},
+                   sources=[dict(id=identity, label=identity,
+                       sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw))
+                       for identity, raw in [('clean-us', clean), ('plus-1.3.1-en', old)]],
+                   routes_by_target={'EN': ['clean-us', 'plus-1.3.1-en']})
+        with tempfile.TemporaryDirectory() as work:
+            output = Path(work) / 'player'
+            paths = docs.render_player_documents('EN', candidate, clean, Path('unused'), cfg, output)
+            self.assertEqual([path.name for path in paths],
+                ['Installation-1.3.2-EN.pdf', 'Whats-New-1.3.2-EN.pdf'])
+            text = pdf_ascii_text(paths[0].read_bytes())
+            self.assertIn(b'Sacred-Gold-Plus-1.3.2-EN.xdelta', text)
+            self.assertIn(b'Sacred Gold Plus 1.3.2 EN.nds', text)
+            self.assertIn(hashlib.sha256(clean).hexdigest().encode(), text)
+            self.assertIn(hashlib.sha256(candidate).hexdigest().encode(), text)
+            self.assertNotIn(hashlib.sha256(old).hexdigest().encode(), text)
+            self.assertNotIn(b'Patch/clean-us.xdelta', text)
+            self.assertIn(b'separate optional updater', text)
+            self.assertIn(b'Fix ROM checksum disabled', text)
+            self.assertGreaterEqual(paths[0].read_bytes().count(b'/Subtype /Image'),2)
+            self.assertGreaterEqual(len(re.findall(rb'/Type /Page\b',paths[0].read_bytes())),6)
+            for url in (b'https://www.marcrobledo.com/RomPatcher.js/',
+                        b'https://emn178.github.io/online-tools/sha256_checksum.html',
+                        b'https://github.com/jmacd/xdelta'):
+                self.assertIn(url,paths[0].read_bytes())
+            self.assertIn(b'Get-FileHash -Algorithm SHA256 -LiteralPath',text)
+            self.assertIn(b'shasum -a 256',text)
+            self.assertIn(b'27 October 2026',text)
+
+            previous = {path: path.read_bytes() for path in paths}
+            with self.assertRaises(FileExistsError):
+                docs.render_player_documents('EN', candidate, clean, Path('unused'), cfg, output)
+            self.assertEqual(previous, {path: path.read_bytes() for path in paths})
+
+    def test_shared_guide_mode_emits_seven_current_english_guides(self):
+        facts = dict(names={'pokemon':['Zero','Sample'],'type':['Type'],'ability':['None'],
+            'stat':['HP','Atk','Def','Spe','SpA','SpD'],'item':['None'],'move':['None'],
+            'map':['Location'],'trainer':['Name'],'class':['Class'],
+            'radio':['Radio','One','Two'],'swarm':['Swarm']},
+            species=[dict(id=1,stats=(1,2,3,4,5,6),types=(0,0),abilities=(0,0),learnset=())],
+            evolutions=[],encounters=[],trainers=[],guide=[dict(id=i,title='Category',
+            entries=[dict(id=100+i,title='Sample',pages=[dict(lines=['Preserved current game data'],
+            reference=0)])]) for i in (1,2,3,4)])
+        cfg=dict(version='1.3.2',targets={'EN':dict(sha256='a'*64,bytes=5)},
+            sources=[dict(id='clean-us',label='Retail',sha256='b'*64,bytes=4)],
+            routes_by_target={'EN':['clean-us']})
+        with tempfile.TemporaryDirectory() as work:
+            paths=docs.render_facts('EN',facts,facts,cfg,Path(work)/'shared',_shared_guides=True)
+            self.assertEqual([path.name for path in paths],[
+                'Special-Events-1.3.2-EN.pdf','Pokemon-Changes-1.3.2-EN.pdf',
+                'Pokemon-Locations-1.3.2-EN.pdf','Evolutions-1.3.2-EN.pdf',
+                'Items-TMs-1.3.2-EN.pdf','Trainers-1.3.2-EN.pdf','Game-Guide-1.3.2-EN.pdf'])
+            text=pdf_ascii_text(paths[-1].read_bytes())
+            self.assertIn(b'Preserved current game data',text)
+            self.assertIn(b'Credits-and-Licenses/ABOUT.txt',text)
+            self.assertNotIn(b'Original licenses and documents are preserved',text)
+
+    def test_player_package_rejects_missing_target_name_before_output(self):
+        cfg = dict(version='1.3.2', targets={'EN': dict(
+                       sha256=hashlib.sha256(b'new').hexdigest(), bytes=3)},
+                   sources=[dict(id='clean-us', label='Retail',
+                       sha256=hashlib.sha256(b'clean').hexdigest(), bytes=5)],
+                   routes_by_target={'EN': ['clean-us']})
+        with tempfile.TemporaryDirectory() as work:
+            output = Path(work) / 'player'
+            with self.assertRaisesRegex(ValueError, 'target filename'):
+                docs.render_player_documents('EN', b'new', b'clean', Path('unused'), cfg, output)
+            self.assertFalse(output.exists())
+
+    def test_player_document_overlays_leave_historical_copy_unchanged(self):
+        historical = docs.load_documents('EN')
+        current = docs.load_player_documents('EN')
+        self.assertEqual(len(historical), 114)
+        self.assertIn('Documents folders', historical['d:install:1'])
+        self.assertIn('one clean-ROM patch', current['d:install:1'])
+        self.assertNotIn('historical gameplay references', current['d:news:44'])
+        self.assertIn('Guide inglesi aggiornate alla 1.3.2',
+                      docs.load_player_documents('IT')['d:install:10'])
+
+
 if __name__ == '__main__':
     unittest.main()

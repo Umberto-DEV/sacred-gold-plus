@@ -1,5 +1,90 @@
 # Reproduce player downloads
 
+## Current 1.3.2 package revision r2
+
+Use **schema 3**, `release-1.3.2-r2.json`. It preserves the five accepted 1.3.2
+target ROMs and the same 30 recognized source identities. The two downloads are:
+
+```text
+Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip
+  Sacred Gold Plus 1.3.2/
+    START-HERE.txt
+    EN-English/                  # also IT-Italiano, FR-Francais, ES-Espanol, DE-Deutsch
+      Installation-1.3.2-EN.pdf
+      Whats-New-1.3.2-EN.pdf
+      Patch/Sacred-Gold-Plus-1.3.2-EN.xdelta
+      Cheats/<three localized files>
+      Credits-and-Licenses/{ABOUT.txt,LICENSE.txt}
+    Originals/<seven current English gameplay PDFs, one Game Guide>
+Sacred-Gold-Plus-1.3.2-r2-Optional-Updaters.zip
+  Sacred Gold Plus 1.3.2 Optional Updaters/
+    README.txt
+    <language folder>/
+      README-Updater.txt          # localized source hashes, sizes and patch names
+      Patch/<30 patches naming target 1.3.2, language and source ID>
+      Credits-and-Licenses/{ABOUT.txt,LICENSE.txt}
+      manifest.json
+    manifest.json
+    CONTENTS.json
+    SHA256SUMS
+```
+
+The main ZIP has exactly five same-language clean-ROM patches and no `Documents`
+folders, JSON inventories or internal checksums. All 150 historical-source
+updaters remain in the optional ZIP. Its readable localized tables make JSON
+parsing unnecessary. Older version labels identify inputs, never old outputs.
+
+Schema 3 retains the source/target/route/decoder identities and cheat pins from
+schema 2, adds `package_revision: "r2"`, two `documents` pins per locale,
+seven EN `shared_documents` pins and a canonical `license` pin. It omits
+`references` and `original_documents`: historical ZIPs are not imported. Every
+language gets the unchanged complete English GPLv3 plus localized explanations.
+
+Use `reference_docs.render_player_documents(...)` for each locale and
+`render_shared_guides(...)` for EN, with the exact candidate, matching clean retail
+baseline and character map. The latter updates the obsolete packaging notice;
+gameplay text and page counts stay unchanged. Current `p:r2:*` authoring keys
+overlay the historical `d:*` catalogue only through these explicit APIs. The
+default renderer and historical contracts retain their behavior. Pin complete
+PDF/cheat hashes and sizes in the new contract. Put two PDFs and `Cheats/` under
+`--guides/<locale>/`, with the seven shared guides beside the two EN PDFs.
+The current installation walkthrough restores the authentic Rom Patcher JS
+screenshots in `images/install-rom-patcher.jpg` and
+`images/install-patcher-settings.jpg`, with their original capture date. It
+explains extraction, file selection, full SHA-256 checks, patcher settings,
+copied-save validation and installation separately for Windows and macOS.
+
+```sh
+PYTHONPATH=source python source/distribution/pack.py \
+  --contract source/distribution/release-1.3.2-r2.json \
+  --inputs /path/to/private-inputs.json --references /path/to/unused-references \
+  --guides /path/to/current-documents --rompatcher /path/to/RomPatcher.js \
+  --output /path/to/new-dist
+```
+
+`--references` remains required by the common CLI but is unused by schema 3.
+The private mapping supplies the same 30 source IDs and five `target-<locale>`
+paths as schema 2. Wrong identities or stale/missing files fail admission.
+Each route is generated once and decoded with xdelta3 and pinned Rom Patcher JS,
+checking the complete target hash; the primary patches reuse five verified
+patches. Both ZIPs are reopened and compared with complete member maps and must
+be below 2 GiB each. External checksums and verification metadata cover both.
+See [package validation](../docs/validation/package-1.3.2-r2.md); existing
+[game acceptance](../docs/validation/localization-1.3.2.md) remains unchanged.
+For the release-page template, use `VERSION=1.3.2`, `PACKAGE_VERSION=1.3.2-r2`
+and `RELEASE_TAG=v1.3.2-r2`; the package revision does not change the game label.
+
+```sh
+cd source/distribution
+PYTHONPATH=.. ../../.venv/bin/python -B -m unittest discover -p 'test*.py'
+```
+
+## Historical contracts
+
+The sections below describe the frozen schema-1/schema-2 layouts, not the
+current r2 player ZIP. The tools keep schema 1 as their backward-compatible
+default; selecting the current contract explicitly is required.
+
 This directory retains the **published 1.3.1** package contract and supports
 an explicit multilingual schema-2 contract for 1.3.2. Reproduce published 1.3.1
 outputs from their published source revision; do not relabel that contract or
@@ -12,7 +97,7 @@ original reference documents and the independent patch decoder. Unverified
 legacy cheat catalogues are omitted. Build the target ROMs with the
 [current source workflow](../README.md).
 
-## Multilingual 1.3.2 contract support
+## Historical multilingual 1.3.2 schema-2 contract
 
 `pack.py` also accepts an explicit **schema 2** contract for the five-language
 1.3.2 successor. The default remains the immutable schema-1 1.3.1 contract.

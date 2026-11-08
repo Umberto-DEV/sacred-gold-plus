@@ -77,10 +77,13 @@ def config(path=None):
     ids = [path_token(row['id']) for row in cfg['sources']]
     if len(ids) != len(set(ids)):
         raise ValueError('Duplicate release source ID')
-    policies = ('inherit-reference', 'omit-unverified', 'verified-localized') if cfg.get('schema') == 2 else ('inherit-reference', 'omit-unverified')
+    policies = ('inherit-reference', 'omit-unverified', 'verified-localized') if cfg.get('schema') in (2, 3) else ('inherit-reference', 'omit-unverified')
     if cfg.get('cheats_policy', 'inherit-reference') not in policies:
         raise ValueError('Unknown cheats policy')
-    if cfg.get('schema', 1) == 2:
+    if cfg.get('schema') == 3:
+        from player_package import validate_contract
+        validate_contract(cfg)
+    elif cfg.get('schema', 1) == 2:
         validate_multilingual_contract(cfg)
     elif cfg.get('schema', 1) != 1:
         raise ValueError('Unknown release contract schema')
@@ -861,6 +864,9 @@ def build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdel
 
 def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3', contract=None):
     cfg = config(contract)
+    if cfg.get('schema') == 3:
+        from player_package import build as build_player_package
+        return build_player_package(cfg, inputs, references, guides, output, rpjs, node, xdelta, contract)
     if cfg.get('schema', 1) == 2:
         return build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdelta, contract)
     if output.exists(): raise FileExistsError('Use a new output directory')
