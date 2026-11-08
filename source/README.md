@@ -1,10 +1,16 @@
 # Build and contribute
 
-This tree contains the implemented **1.3.1** sources, native payload sources,
-build tools, tests and technical documentation. Start with the
-[1.3.1 composition guide](sgp131/README.md) for the exact inputs, UI configuration,
-owner activation and final output fingerprints. The `sgp12` commands below
-rebuild the **1.2.5** predecessor from your own retail HeartGold.
+New contributors can use the [repository map](docs/architecture/README.md),
+[feature ownership index](features/README.md) and
+[documentation index](docs/README.md) to find the relevant source and checks.
+
+This tree contains an **unreleased 1.3.2 source correction**, native payload
+sources, build tools, tests and technical documentation. The published player
+release remains 1.3.1; its exact ROM hashes and package contract are historical
+release identities, not outputs of this development head. Start with the
+[composition guide](sgp131/README.md) for the exact inputs, UI configuration,
+owner activation and output verification. The `sgp12` commands below rebuild
+the **1.2.5** predecessor from your own retail HeartGold.
 
 The [1.3 builder guide](sgp13/README.md) describes the earlier feature line.
 The 1.3.1 composer accepts only the two historical V1.3 V4 inputs. The current
@@ -17,8 +23,11 @@ HF01 is a build intermediate upgraded to HF02 before player use.
 
 The [change register](docs/whats-new-1.3.1.md),
 [bug list](../BUG-FIXES-1.3.1.md) and
-[current validation report](docs/ui-1.3.1-validation.md) distinguish source
+[published validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
+The [1.3.2 source correction](../BUG-FIXES-1.3.2.md) and its
+[measured New Game regression](docs/validation/new-game-reset-1.3.2.md) are a
+separate, unreleased checkpoint.
 The [base-stage evidence](docs/base-stage-validation.md),
 [Android campaign of 29 October](docs/android-validation.md),
 [earlier device campaign](docs/device-validation.md),
@@ -38,7 +47,7 @@ Game-dependent tools read **your own** game files. No game file is distributed, 
 | --- | --- |
 | `sgp12/` | The library. One command builds 1.2.5 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `sgp13/` | Earlier 1.3 feature builder from exact 1.2.5. Current HF02 sources are distinct from the historical HF01 V4 input required by 1.3.1. |
-| `sgp131/` | Current 1.3.1 composer, independent readbacks, owner activation, workbench and regressions, including the battle type-loop fix. See its [build guide](sgp131/README.md). |
+| `sgp131/` | Version-composition code, independent readbacks, owner activation, workbench and regressions, including the battle type-loop fix. Development sources now select V1.3.2 identity. See its [build guide](sgp131/README.md). |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |

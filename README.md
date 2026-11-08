@@ -8,6 +8,10 @@ An independent fan continuation of **Drayano's Sacred Gold** and **Nefariousness
 
 This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS or emulator is included.
 
+**Development status:** the source tree contains an unreleased 1.3.2 correction
+for a New Game reset. The downloads and screenshots below are still the
+published 1.3.1 release. See the [1.3.2 source bug note](BUG-FIXES-1.3.2.md).
+
 ## Download
 
 Choose the language you want to **play in**. Both packages can be patched on Windows and macOS.
@@ -105,12 +109,20 @@ If Continue is missing, fix the save association before proceeding. A new game o
 
 Public technical documentation is maintained in English for the current release; Italian player guides are included in the downloadable Italian package. The complete implemented sources, build tools, tests and technical documentation are under [`source/`](source/README.md), including the [1.3 builder](source/sgp13/README.md) and [1.3.1 composition tools](source/sgp131/). Building requires your own retail game and the documented external inputs. ROMs, saves, BIOS, extracted game data and private working notes are excluded from the source tree.
 
+The [repository map](source/docs/architecture/README.md) shows where each game
+subsystem, build stage, validation report and distribution tool belongs.
+
 Contributions to code, translations, artwork, testing and documentation are welcome, together with player ideas and feedback. [Report a bug or propose a change](https://github.com/Umberto-DEV/sacred-gold-plus/issues); include the version, language and steps, without uploading your ROM or save. Maintainer changes are reviewed and validated on `main`; independent contributors may submit pull requests. CI runs the tests that require no game file; game-dependent validation is recorded separately.
 
 ## Credits and license
 
 Thanks to **Drayano**, **mikelan / Mikelan98**, **NefariousnessNo3436**, **@JD48096761** and the original contributors. The original Plus author's [announcement and permission](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) remain the reference for the project's foundation. The original gameplay manuals and trainer reference retain their authors' credits. This is an independent fan continuation, not an official handover.
 
-AI-assisted tools, including Codex, support investigation, implementation, translation, testing and documentation. Development uses [pret/pokeheartgold](https://github.com/pret/pokeheartgold), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/), [Capstone](https://www.capstone-engine.org/) and the [melonDS core](https://melonds.kuribo64.net/); dependencies and external inputs are documented in the source guide.
+Some patch features, bug diagnosis and security checks were developed with
+AI-assisted tools, including Codex and Claude Code. The maintainer has 2–3 years
+of development experience and uses these tools daily; changes are reviewed
+against the game code and measured with focused tests. This describes the
+actual review process, not a claim of formal penetration-test certification.
+Development uses [pret/pokeheartgold](https://github.com/pret/pokeheartgold), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/), [Capstone](https://www.capstone-engine.org/) and the [melonDS core](https://melonds.kuribo64.net/); dependencies and external inputs are documented in the source guide.
 
 This project's own tools and sources use [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights. No game code, text, graphics, ROM, BIOS or save is distributed in this source tree.

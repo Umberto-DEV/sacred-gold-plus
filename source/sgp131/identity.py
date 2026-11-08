@@ -1,4 +1,4 @@
-"""Final V1.3.1 title in the existing project-owned 48x16 pixel slot.
+"""Final V1.3.2 title in the existing project-owned 48x16 pixel slot.
 
 No archive growth, executable, header, library icon or persistent data changes.
 The previous V1.3 pixels and exact title map are required before replacement.
@@ -7,8 +7,11 @@ import hashlib
 from sgp12 import titolo_versione as container
 from sgp13 import title as previous
 
-LABEL = 'V1.3.1'
-LABEL_SHA256 = '060f3451ec15a1fbccedef6cc5577a1a1f466e337c4b3e94181d3d4d97fed450'
+LABEL = 'V1.3.2'
+LABEL_SHA256 = 'eb340a9c119115296bb308c23c30bd9ff77ffb49877e7d0e83f306d8c0b8ba99'
+GLYPHS = dict(previous.GLYPHS, **{
+    '2': ('11110', '00001', '00001', '11110', '10000', '10000', '11111'),
+})
 
 def _sha(data):
     return hashlib.sha256(data).hexdigest()
@@ -16,7 +19,7 @@ def _sha(data):
 def pixels():
     canvas = [[0] * 48 for _ in range(16)]
     ink = [(i * 6 + x, y) for i, char in enumerate(LABEL)
-           for y, row in enumerate(previous.GLYPHS[char]) for x, value in enumerate(row) if value == '1']
+           for y, row in enumerate(GLYPHS[char]) for x, value in enumerate(row) if value == '1']
     for x, y in ink:
         canvas[y + 6][x + 1] = 4
     for x, y in ink:

@@ -5,7 +5,11 @@ class CatalogueTests(unittest.TestCase):
   obj=json.loads((SOURCE/'sgp131/data/ui-copy.json').read_text())
   self.assertEqual(len(obj['entries']),144)
   self.assertEqual([e['name'] for e in obj['entries'][133:]],['GUIDE_'+s for s in ('TITLE','OPEN','BACK','UP','DOWN','PREVIOUS','NEXT','LINK','CLOSE','SELECT','PAGING')])
-  self.assertEqual(hashlib.sha256(json.dumps(obj['entries'][:133],sort_keys=True,ensure_ascii=False).encode()).hexdigest(),'07c4894f22a2a0082429c185b2dda5704644160ec8717cb0d3d1af02d8d238aa')
+  original=json.loads(json.dumps(obj['entries'][:133]))
+  version=next(e for e in original if e['name']=='VERSION')
+  self.assertEqual(version['text'],{'EN':'V1.3.2','IT':'V1.3.2'})
+  version['text']={'EN':'V1.3.1','IT':'V1.3.1'}
+  self.assertEqual(hashlib.sha256(json.dumps(original,sort_keys=True,ensure_ascii=False).encode()).hexdigest(),'07c4894f22a2a0082429c185b2dda5704644160ec8717cb0d3d1af02d8d238aa')
  def test_exact_context_labels_follow_approved_bilingual_copy(self):
   entries={e['name']:e['text'] for e in json.loads((SOURCE/'sgp131/data/ui-copy.json').read_text())['entries']}
   for key,en,it in (('OPEN','Open','Apri'),('BACK','Back','Indietro'),('PREVIOUS','Previous','Prec.'),('NEXT','Next','Succ.'),('LINK','Link','Vedi'),('CLOSE','Close','Esci'),('SELECT','Select','Scelta'),('PAGING','Page','Pagina')):

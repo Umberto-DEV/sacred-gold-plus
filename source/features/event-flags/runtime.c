@@ -79,20 +79,24 @@ static void migrate(void *state, const void *chatot) {
     *(volatile u32 *)p = TAG2; /* publish only after both imports complete */
 }
 
+/* New Game can read or set a story gate before touching any high event flag.
+ * All three entry points must initialize the same bank on that first access. */
+static void ensure_new_game_bank(void *state) {
+    volatile u8 *p = (volatile u8 *)state + TAIL;
+    unsigned i;
+    if (*(volatile u32 *)p == TAG2) return;
+    if (*(volatile u32 *)p == TAG1 || !sgp_event_flags_valid(state)) refuse();
+    for (i = 0; i < 32; ++i)
+        p[4 + i] = ((const volatile u8 *)state)[LEGACY + i];
+    for (i = 0; i < 24; ++i) set_bit(p + 4, family_bit(i), 0);
+    *(volatile u32 *)p = TAG2;
+}
+
 u8 *sgp_event_flags_get(void *state, u16 id) {
     volatile u8 *p;
-    unsigned i;
     if (id < 0x3F00 || id >= 0x4000) return ORIGINAL_FLAG(state, id);
     p = (volatile u8 *)state + TAIL;
-    if (*(volatile u32 *)p != TAG2) {
-        /* After a successful Continue, HF01 has already been migrated with
-         * Chatot. A zero reservation here is therefore native New Game. */
-        if (*(volatile u32 *)p == TAG1 || !sgp_event_flags_valid(state)) refuse();
-        for (i = 0; i < 32; ++i)
-            p[4 + i] = ((const volatile u8 *)state)[LEGACY + i];
-        for (i = 0; i < 24; ++i) set_bit(p + 4, family_bit(i), 0);
-        *(volatile u32 *)p = TAG2;
-    }
+    ensure_new_game_bank(state);
     return (u8 *)(p + 4 + ((id - 0x3F00) >> 3));
 }
 
@@ -100,7 +104,7 @@ u16 sgp_event_vars_get(void *state, u16 id) {
     int index = family_index(id);
     volatile u8 *p = (volatile u8 *)state + TAIL;
     if (index < 0) return 0xFFFF;
-    if (*(volatile u32 *)p != TAG2) refuse();
+    ensure_new_game_bank(state);
     return get_bit(p + 4, family_bit(index)) ? 2 : 0;
 }
 
@@ -108,7 +112,7 @@ int sgp_event_vars_set(void *state, u16 id, u16 value) {
     int index = family_index(id);
     volatile u8 *p = (volatile u8 *)state + TAIL;
     if (index < 0 || (value != 0 && value != 2)) return 0;
-    if (*(volatile u32 *)p != TAG2) refuse();
+    ensure_new_game_bank(state);
     set_bit(p + 4, family_bit(index), value != 0);
     return 1;
 }

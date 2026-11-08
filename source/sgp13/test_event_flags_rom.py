@@ -260,6 +260,21 @@ class NativeFlags(unittest.TestCase):
             self.assertEqual(m.read(VARS + 0x2BC, 36), b'HF02' + expected_bank(bank, chatot))
             self.assertEqual(m.read(CHATOT, 1004), bytes(chatot))
 
+    def test_real_new_game_setvar_before_high_flag(self):
+        for lang in self.arms:
+            m = self.machine(lang)
+            legacy = bytes((i * 7 + 1) % 256 for i in range(32))
+            m.mu.mem_write(VARS + 0xAC0, legacy)
+            m.put(CTX + 8, SCRIPT)
+            m.put(CTX + 0x80, FS)
+            m.mu.mem_write(SCRIPT, struct.pack('<HH', 0x6130, 2))
+            self.assertEqual(m.call(SET_VAR, CTX), 0)
+            self.assertEqual(m.events, [])
+            self.assertEqual(m.read(CTX + 8, 4), struct.pack('<I', SCRIPT + 4))
+            self.assertEqual(m.read(VARS + 0x2BC, 4), b'HF02')
+            self.assertEqual(m.read(VARS + 0xAC0, 32), legacy)
+            self.assertEqual(m.call(VAR_GET, FS, 0x6130), 2)
+
     def test_real_setvar_and_field_varget_redirect_only_the_finite_family(self):
         def set_script(machine, variable, value):
             machine.put(CTX + 8, SCRIPT)

@@ -134,7 +134,7 @@ SOURCE_PINS = {
     "sgp131/data/guide-subjects.json": "3cdb55ba7fb73071e2ccdac852d5786f063f7287432c927dcde9fe80af6ac91e",
     "sgp131/data/guide.json": "8c59d185bb65cecf87cbdca1d037799b271a9c5c4edf2fecc7b09fa1aef2afc3",
     "sgp131/data/reserve-map.json": "7b201a7ea5abe3b611ac12dd1391496817d134874af87360935c97db8cfa4f6a",
-    "sgp131/data/ui-copy.json": "e2e9ccaa0535d25accddd7878862ef54029569f72782d6f4b547e4c5dfa19336",
+    "sgp131/data/ui-copy.json": "6fe891c7252ffffdfb3fa10f25f25251e961b869b728a86ece33e516c49cad30",
     "sgp131/guide_content.py": "b61119db09bc149081128a24c8e89be8e9e62526c904a7db84542a3fabfe9647",
     "sgp131/reserve.py": "d677827f7dbbfa422a56257860f6bcdad360e01da4b83803af243b74b033fb2a",
     "sgp131/ui_copy.py": "8948dab12e3434c7fa9d51435419657db59df918b056db6826b068f827804c9a",

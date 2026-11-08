@@ -1,9 +1,14 @@
-# Build and verify Sacred Gold Plus 1.3.1
+# Build and verify the 1.3 composition line
+
+**Source status, 8 November 2026:** this directory now contains the unreleased
+V1.3.2 title/Options text and the New Game event-bank correction. The 1.3.1
+output hashes and package contract below describe the published release, not
+an output expected from this development source. No 1.3.2 player package has
+been built or accepted. See the [specific validation](../docs/validation/new-game-reset-1.3.2.md).
 
 The build path is **your retail HeartGold → 1.2.5 → historical V1.3 V4 →
-current 1.3.1**. The legacy V4 step is reconstructed from authenticated,
-already-published sources; the current game sources stay unchanged.
-The 1.3.1 composer installs the UI and mechanical stages, independently reads
+current source composition**. The legacy V4 step is reconstructed from authenticated,
+already-published sources. The composer installs the UI and mechanical stages, independently reads
 them back and records the complete output identity. Compilation and file
 reconstruction are separate from runtime or release acceptance.
 
@@ -18,7 +23,7 @@ EV/IV summary tools are retained from earlier versions.
 | EN | `179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90` | 147345256 |
 | IT | `2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156` | 153228136 |
 
-| Language | Current 1.3.1 player-profile SHA-256 | Bytes |
+| Language | Published 1.3.1 player-profile SHA-256 | Bytes |
 | --- | --- | ---: |
 | EN | `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` | 152786376 |
 | IT | `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` | 159029292 |

@@ -117,6 +117,44 @@ class EventFlags(unittest.TestCase):
         self.assertEqual(m.writes, [])
         self.assertEqual(m.read()[0x2BC:0x2E0], expected[0x2BC:0x2E0])
 
+    def test_new_game_family_access_before_high_flag_initializes_bank(self):
+        for first in ('get', 'set'):
+            with self.subTest(first=first):
+                m = Runtime(self.blob, self.symbols)
+                state = bytearray(0x1000)
+                state[0xAC0:0xAE0] = bytes((i * 7 + 1) % 256 for i in range(32))
+                m.mu.mem_write(STATE, bytes(state))
+                if first == 'get':
+                    self.assertEqual(m.call('sgp_event_vars_get', STATE, 0x6130), 0)
+                else:
+                    self.assertEqual(m.call('sgp_event_vars_set', STATE, 0x6130, 2), 1)
+                self.assertEqual(m.events, [])
+                after = m.read()
+                self.assertEqual(after[0x2BC:0x2C0], b'HF02')
+                expected = bytearray(expected_bank(state[0xAC0:0xAE0], bytes(1004)))
+                if first == 'set':
+                    bit = FAMILY_FLAGS[FAMILY_IDS.index(0x6130)] - 0x3F00
+                    expected[bit // 8] |= 1 << (bit & 7)
+                self.assertEqual(after[0x2C0:0x2E0], expected)
+                self.assertEqual(after[0xAC0:0xAE0], state[0xAC0:0xAE0])
+                self.assertEqual(m.call('sgp_event_vars_get', STATE, 0x6130),
+                                 0 if first == 'get' else 2)
+
+    def test_new_game_family_access_respects_foreign_ownership(self):
+        for tag in (b'HF01', b'HF03', b'FORE'):
+            for first in ('get', 'set'):
+                with self.subTest(tag=tag, first=first):
+                    m = Runtime(self.blob, self.symbols)
+                    m.mu.mem_write(STATE + 0x2BC, tag + bytes(32))
+                    before = m.read()
+                    if first == 'get':
+                        m.call('sgp_event_vars_get', STATE, 0x6130)
+                    else:
+                        m.call('sgp_event_vars_set', STATE, 0x6130, 2)
+                    self.assertEqual(m.events, ['reset'])
+                    self.assertEqual(m.read(), before)
+                    self.assertEqual(m.writes, [])
+
     def test_successful_load_migrates_zero_and_hf01_from_exact_chatot_once(self):
         chatot = bytearray((i * 29 + 7) % 256 for i in range(1004))
         for index, offset in enumerate(CHATOT_OFFSETS):

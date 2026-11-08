@@ -1,6 +1,9 @@
-# Headless runtime for 1.3.1 development
+# Headless runtime for game validation
 
-This harness remains a developer tool for the current **1.3.1** source tree.
+This harness is a developer tool. The source tree now contains an unreleased
+**1.3.2** correction; the older campaigns below retain their original ROM
+identities. The [New Game reset report](../docs/validation/new-game-reset-1.3.2.md)
+records the bounded diagnostic comparison for that correction.
 Build it from the pinned core below; the recorded component campaigns keep
 those original binaries and ROM hashes. For current game acceptance, use the
 [1.3.1 validation report](../docs/ui-1.3.1-validation.md), not the older

@@ -1,5 +1,24 @@
 # What changed
 
+## 1.3.2 source work (unreleased)
+
+New Game could return to the opening screen after Mom's first conversation in
+both languages. A story-gate SetVar ran before the `HF02` event bank existed;
+the 1.3.1 handler requested an SDK reset despite the valid empty New Game
+reservation. High-flag and family-variable access now share one guarded
+initialization path. The save layout and identifiers remain unchanged. Mac
+before/after replay, a native reset breakpoint, a failing-then-passing ARM
+regression and a bounded Latios control are recorded in the
+[1.3.2 validation report](source/docs/validation/new-game-reset-1.3.2.md).
+The Latios freeze remains unisolated. No 1.3.2 package, Android acceptance or
+release-ROM identity is claimed at this source checkpoint.
+
+The source tree now has a contributor-facing [repository map](source/docs/architecture/README.md),
+[feature ownership index](source/features/README.md) and
+[validation index](source/docs/validation/README.md). Version labels in the
+next build sources are V1.3.2; published 1.3.1 download contracts and evidence
+remain versioned as 1.3.1 until a future player release is verified.
+
 ## 1.3.1 package revision 2
 
 Public documentation is maintained in English, including current per-bug

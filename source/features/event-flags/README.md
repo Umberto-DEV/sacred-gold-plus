@@ -32,6 +32,20 @@ Game imports the high bank and initializes the 24 gates open. The exact tag is
 written last. No migration reads through the invalid variable accessor or
 writes, repairs, clears or reconstructs Chatot/Pal Pad bytes.
 
+The 1.3.1 New Game path had an ordering defect: a story script can call
+`SetVar(0x6130, 2)` before any high-bank flag access. The zero reservation is
+valid at that point, but the family SetVar/VarGet handlers required `HF02` and
+requested `OS_ResetSystem(0)`. This caused a real restart after Mom's first
+dialogue in both languages. The 1.3.2 source initializes the zero reservation
+through one shared routine on the first high-flag **or** family-variable access;
+HF01 and foreign nonzero reservations retain their refusal policy. The tag is
+still published last, the legacy high bank is imported once, family gates
+start open, and no save layout or identifier changes. The exact Mac before/after
+reproduction, native breakpoint and Latios control are recorded in the
+[1.3.2 validation report](../../docs/validation/new-game-reset-1.3.2.md). The
+prior 1.3.1 tests did not exercise family-variable access before the first
+high flag.
+
 Foreign nonzero reservations and unknown/future tags are preserved and refused.
 The composed load checks the boot-loaded arrays before Training/Bag load, then
 checks successfully reloaded arrays again. FALSE propagates through the native
@@ -82,7 +96,7 @@ physical flash persistence, rendered error presentation, Android cold Continue,
 or Mew/Sinjoh gameplay; those require the separate candidate acceptance run.
 
 Runtime owns `023CF900..023CFEFF` (the formerly unused shiny spare compartment):
-912 compiled bytes before `023CFE80`, three guarded native trampolines through
+896 compiled bytes in this source checkpoint before `023CFE80`, three guarded native trampolines through
 `023CFECA`, and the delegated loader pointer at `023CFEF0`. No save address moves.
 Native game instructions are copied only from the guarded private input at build
 time and are never shipped as source assets.

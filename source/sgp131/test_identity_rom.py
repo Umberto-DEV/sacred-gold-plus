@@ -20,7 +20,7 @@ class IdentityCartridges(unittest.TestCase):
                 at = container.membri(before)[15][0] + 848
                 self.assertEqual(after[:at], before[:at])
                 self.assertEqual(after[at + 384:], before[at + 384:])
-                self.assertEqual(identity.verify(before, after, receipt)['label'], 'V1.3.1')
+                self.assertEqual(identity.verify(before, after, receipt)['label'], 'V1.3.2')
                 corrupted = bytearray(after)
                 corrupted[at - 1] ^= 1
                 with self.assertRaises(ValueError):

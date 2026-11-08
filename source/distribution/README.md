@@ -1,5 +1,12 @@
 # Reproduce the current 1.3.1 player downloads
 
+This directory documents the **published 1.3.1** package. The development
+source now contains a V1.3.2 game identity, but there is no 1.3.2 package
+contract, player ZIP or release. Reproduce the published 1.3.1 output from its
+published source revision; do not relabel this contract or treat a development
+ROM as the 1.3.1 target. A later player release needs its own versioned
+contract, exact ROM acceptance and fresh documents.
+
 `release-1.3.1.json` is the current default contract for `pack.py` and `guide.py`.
 It authenticates 25 input routes per output language, the two output ROMs,
 original reference documents and the independent patch decoder. Unverified
