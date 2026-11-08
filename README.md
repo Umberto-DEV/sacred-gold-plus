@@ -10,7 +10,7 @@ This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS 
 
 ## Download
 
-[**Download Sacred Gold Plus 1.3.2 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r2/Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip)
+[**Download Sacred Gold Plus 1.3.2 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r3/Sacred-Gold-Plus-1.3.2-r3-Multilingual.zip)
 
 Choose your language folder after extracting the ZIP:
 
@@ -34,7 +34,7 @@ off, and verify the complete source and target SHA-256 from the installation PDF
 There are no `Documents` folders or technical JSON files in this player ZIP.
 
 **Updating an older Plus ROM directly?** Use the separate
-[optional updater download](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r2/Sacred-Gold-Plus-1.3.2-r2-Optional-Updaters.zip).
+[optional updater download](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r3/Sacred-Gold-Plus-1.3.2-r3-Optional-Updaters.zip).
 Its localized `README-Updater.txt` tables identify all 30 recognized sources,
 including original Plus 1.03 and our published predecessors through 1.3.1.
 Choose your current language and **one** patch matching the complete input hash;
@@ -48,11 +48,14 @@ retaining its language, filename/path and emulator association; keep the current
 personal save in its original location. The main clean-ROM patch can also
 reconstruct that same successor without using the older installed ROM as input.
 
-[Release page and checksums](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.2-r2).
-Package revision **r2** reorganizes downloads; the five game ROMs remain byte-identical
+[Release page and checksums](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.2-r3).
+Package revision **r3** reorganizes downloads; the five game ROMs remain byte-identical
 to 1.3.2. If you already have the verified 1.3.2 game, you do not need to patch it
 again. Historical contracts and tags retain their identities. GitHub's automatic
 **Source code** archives are for developers.
+
+An Italian Guide-opening issue is under investigation. This packaging revision
+retains the game targets and does not claim to fix that report.
 
 The new languages combine official retail dialogue, names and graphics with
 separately authored translations of Sacred Gold/Plus changes, menus and guides.

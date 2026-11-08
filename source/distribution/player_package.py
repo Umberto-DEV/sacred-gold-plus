@@ -45,8 +45,8 @@ def _document_pins(rows, names, label):
 def validate_contract(cfg):
     """Require accepted game identities and an explicit selection of player files."""
     locales = set(pack.MULTILINGUAL_LOCALES)
-    if cfg.get('schema') != 3 or cfg.get('version') != '1.3.2' or cfg.get('package_revision') != 'r2':
-        raise ValueError('Schema 3 requires the five-language 1.3.2 package revision r2')
+    if cfg.get('schema') != 3 or cfg.get('version') != '1.3.2' or cfg.get('package_revision') not in ('r2', 'r3'):
+        raise ValueError('Schema 3 requires the five-language 1.3.2 package revision r2 or r3')
     if 'references' in cfg or 'original_documents' in cfg:
         raise ValueError('Schema 3 does not import historical reference documents')
     targets = cfg.get('targets', {})

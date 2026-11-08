@@ -270,6 +270,16 @@ class ReferenceDocumentTests(unittest.TestCase):
             self.assertIn(b'shasum -a 256',text)
             self.assertIn(b'27 October 2026',text)
 
+            cfg['package_revision']='r3'
+            revision3=docs.render_player_documents('EN',candidate,clean,Path('unused'),cfg,Path(work)/'r3')
+            revision3_text=pdf_ascii_text(revision3[0].read_bytes())
+            self.assertIn(b'Sacred-Gold-Plus-1.3.2-r3-Multilingual.zip',revision3_text)
+            self.assertNotIn(b'Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip',revision3_text)
+            cfg['package_revision']='r2'
+            revision2=docs.render_player_documents('EN',candidate,clean,Path('unused'),cfg,Path(work)/'r2')
+            self.assertEqual(paths[0].read_bytes(),revision2[0].read_bytes())
+            self.assertEqual(paths[1].read_bytes(),revision3[1].read_bytes())
+
             previous = {path: path.read_bytes() for path in paths}
             with self.assertRaises(FileExistsError):
                 docs.render_player_documents('EN', candidate, clean, Path('unused'), cfg, output)

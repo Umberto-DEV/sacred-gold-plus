@@ -132,6 +132,9 @@ class PlayerPackageTests(unittest.TestCase):
                         self.assertEqual(row['file'], expected)
                         self.assertIn(expected, readme)
                         self.assertIn(row['source']['sha256'], readme)
+                        self.assertIn(row['source']['id'] + ' | ' + row['source']['sha256']
+                                      + ' | ' + str(row['source']['bytes']) + ' | ' + expected,
+                                      readme.splitlines())
                         self.assertEqual(fixtures.pin(archive.read(folder + expected)),
                                          {key: row[key] for key in ('sha256', 'bytes')})
                 inventory = json.loads(archive.read(updater_prefix + 'CONTENTS.json'))['files']
@@ -147,6 +150,21 @@ class PlayerPackageTests(unittest.TestCase):
             self.assertEqual(receipt['verified_routes'], 150)
             self.assertFalse(list(output.glob('sgp-package-*')))
 
+    def test_r3_selects_new_assets_without_repinning_the_game_or_routes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            cfg, refs, guides, inputs, contract = self.fixtures(root)
+            cfg['package_revision'] = 'r3'
+            contract.write_text(json.dumps(cfg))
+            import player_package
+            with self.decoders(root, cfg):
+                actual = pack.config(contract)
+            self.assertEqual(actual['targets'], cfg['targets'])
+            self.assertEqual(actual['routes_by_target'], cfg['routes_by_target'])
+            self.assertEqual(player_package.asset_names(actual), (
+                'Sacred-Gold-Plus-1.3.2-r3-Multilingual.zip',
+                'Sacred-Gold-Plus-1.3.2-r3-Optional-Updaters.zip'))
+
     def test_rejects_route_gaps_target_repin_wrong_documents_and_unsafe_license(self):
         mutations = (
             lambda cfg: cfg['routes_by_target']['FR'].pop(),
@@ -157,7 +175,7 @@ class PlayerPackageTests(unittest.TestCase):
             lambda cfg: cfg['shared_documents'].pop(),
             lambda cfg: cfg['shared_documents'][0].update(name='Special-Events-1.3.2-FR.pdf'),
             lambda cfg: cfg['license'].update(name='../LICENSE.txt'),
-            lambda cfg: cfg.update(package_revision='r3'),
+            lambda cfg: cfg.update(package_revision='r4'),
             lambda cfg: cfg['sources'][0].update(sha256='0' * 64),
             lambda cfg: cfg['sources'].pop(),
             lambda cfg: cfg['locales']['FR'].update(cheats=[]),

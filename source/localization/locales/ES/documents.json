@@ -136,7 +136,7 @@
     "p:r2:walk:h5": "5. Verificar el resultado y jugar",
     "p:r2:walk:h6": "6. Aventura existente: conservar la partida",
     "p:r2:walk:h7": "7. Problemas y alternativa sin conexión",
-    "p:r2:walk:download": "Abre la página oficial de versiones de abajo. En Assets descarga Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip. Las descargas automáticas Source code son para desarrolladores. Optional-Updaters es un ZIP separado y opcional para ROM antiguas reconocidas. El ZIP principal tiene un parche de ROM original por idioma.",
+    "p:r2:walk:download": "Abre la página oficial de versiones de abajo. En Assets descarga Sacred-Gold-Plus-1.3.2-{package_revision}-Multilingual.zip. Las descargas automáticas Source code son para desarrolladores. Optional-Updaters es un ZIP separado y opcional para ROM antiguas reconocidas. El ZIP principal tiene un parche de ROM original por idioma.",
     "p:r2:walk:extract": "Windows: clic derecho en el ZIP, Extraer todo y Extraer. Mac: doble clic en el ZIP en Finder; si Safari ya lo extrajo, abre esa carpeta. Abre la carpeta extraída, no la vista del ZIP. Elige la carpeta del idioma: sus dos PDF están dentro y el parche en Patch.",
     "p:r2:walk:files": "Los cuatro archivos: .nds = ROM del juego; .xdelta = parche no jugable; .sav = tu progreso; .zip = contenedor comprimido. Si tu ROM está archivada, extrae primero el .nds. No selecciones ZIP, parche o partida como ROM. Usa una copia de tu propio cartucho HeartGold; no se incluye ROM.",
     "p:r2:walk:backup": "Compara SHA-256 de cada copia con su original para verificarla. Anota nombres, rutas activas y asociación de ROM/partida con el emulador. Conserva originales y copias intactos. Los métodos del paso 2 también sirven para estos archivos.",

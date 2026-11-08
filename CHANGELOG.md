@@ -1,5 +1,18 @@
 # What changed
 
+## 1.3.2 package revision 3
+
+- Republished the corrected five-language package under a new release tag after
+  the earlier release pages were removed. The main download keeps the restored
+  seven-page illustrated installation guide in every language; all five game
+  targets and all 150 verified patch bytes are unchanged.
+- Preserved and rehosted the four exact build-input assets needed by the source
+  tools. The downloader now uses the current release; input hashes, sizes and
+  decoder options remain unchanged. Historical contracts retain their identities.
+- Source builds use current release assets and a reachable literal bootstrap
+  commit, allowing old tags to be retired without changing source history. The
+  main/optional download split retains the revision-2 layout.
+
 ## 1.3.2 package revision 2
 
 - Reorganized the main player ZIP into five language folders, each with one

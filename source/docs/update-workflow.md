@@ -9,7 +9,7 @@ The 1.3.2 contract defines one latest target for each of EN, IT, FR, ES and DE.
 Every target accepts the same 30 recognized original/historical sources,
 giving **150 direct routes**. Older target versions are not included in the
 current player package. Unknown hashes and missing routes fail admission.
-In package revision r2, the main ZIP contains five same-language clean-ROM
+In package revision r3, the main ZIP contains five same-language clean-ROM
 routes; the optional updater ZIP contains all 150 routes. Both produce the
 unchanged accepted 1.3.2 targets.
 
@@ -58,7 +58,7 @@ unchanged accepted 1.3.2 targets.
    baseline. Verify numerical parity between languages and inspect representative
    rendered pages. Authenticate every PDF and cheat file by size/hash in the new
    contract. Recheck installation hashes whenever a target changes.
-   Current package revision r2 outputs ten localized installation/news PDFs and
+   Current package revision r3 outputs ten localized installation/news PDFs and
    seven shared English gameplay PDFs, plus each language's revision-bound cheat
    files. The older 45-PDF schema-2 renderer remains reproducible. Regenerate
    target-bound material after a target-hash change; use `render_player_documents`

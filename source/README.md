@@ -48,11 +48,11 @@ and one guarded gameplay core. Per-language sources, the composition command,
 native presentation ownership and input hashes are documented in
 [localization.md](docs/localization.md). The [1.3.2 validation report](docs/validation/localization-1.3.2.md)
 separates bounded game/save acceptance from ROM-free tests. The latest-target
-package revision r2 uses [the schema-3 contract](distribution/release-1.3.2-r2.json):
+package revision r3 uses [the schema-3 contract](distribution/release-1.3.2-r3.json):
 five clean-ROM patches in the main download and all 150 historical-source routes
 in a separate optional download. Localized installation/news PDFs accompany
 seven shared English gameplay guides. The game targets are unchanged; see
-[package validation](docs/validation/package-1.3.2-r2.md) and
+[package validation](docs/validation/package-1.3.2-r3.md) and
 [candidate-derived player PDFs](distribution/reference_docs.py). Follow
 [the repeatable update procedure](docs/update-workflow.md) for future releases.
 

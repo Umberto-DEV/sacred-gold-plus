@@ -21,7 +21,19 @@ The **optional updater ZIP** has all **150 direct routes: 30 recognized starting
 
 Cheats are optional. Each language's `Cheats` folder in the main ZIP contains localized project code files for that exact target, initially disabled, with `README.txt` explaining their static admission checks and runtime coverage. Native features such as the Guide and EV/IV reader need no cheats. Historical third-party cheat catalogues are not carried forward.
 
-Package revision **r2** changes the download layout and document notices; the five game ROMs remain byte-identical to 1.3.2. If you already have the verified 1.3.2 game, you do not need to patch it again. Both downloads retain credits and the complete original English GPLv3 with localized explanations. Use the main player ZIP to play; GitHub's automatic **Source code (zip / tar.gz)** files are for developers. No ROM is included: use your own cartridge backup.
+Package revision **r3** changes the download layout and document notices; the five game ROMs remain byte-identical to 1.3.2. If you already have the verified 1.3.2 game, you do not need to patch it again. Both downloads retain credits and the complete original English GPLv3 with localized explanations. Use the main player ZIP to play; GitHub's automatic **Source code (zip / tar.gz)** files are for developers. No ROM is included: use your own cartridge backup.
+
+<details>
+<summary>Build inputs for developers</summary>
+
+The source tools use these authenticated inputs, preserved with their original hashes:
+[English base delta](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/base-1.1-EN.xdelta),
+[Italian base delta](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/base-1.1-IT.xdelta),
+[English reference documents](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/SGP-Source-References-EN.zip),
+[Italian reference documents](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/SGP-Source-References-IT.zip).
+Use the multilingual player ZIP above to install the current game.
+
+</details>
 
 ## Game features
 

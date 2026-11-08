@@ -83,7 +83,7 @@ def load_player_documents(locale):
           'missing/empty player document translations')
     for key,value in overlays.items():
         allowed=({'version','language','target_name','target_bytes','target_sha256'}
-                 if key=='p:r2:install:13' else set())
+                 if key=='p:r2:install:13' else ({'package_revision'} if key=='p:r2:walk:download' else set()))
         _need(set(re.findall(r'\{([^{}]+)\}',value))==allowed,'player document placeholder '+key)
         words['d:'+key.removeprefix('p:r2:')]=value
     return words
@@ -499,7 +499,8 @@ def render_facts(locale,facts,baseline,contract,output,*,_player_package=False,_
         from distribution.pack import image_file_bytes
         st.add(ParagraphStyle(name='WalkDoc',parent=st['BodyDoc'],fontSize=10,leading=14,spaceAfter=9))
         st.add(ParagraphStyle(name='CodeDoc',parent=st['BodyDoc'],fontName='Courier',fontSize=8,leading=12))
-        def w(key,style='WalkDoc'):return p(words['d:walk:'+key],style)
+        def w(key,style='WalkDoc'):
+            return p(words['d:walk:'+key].format(package_revision=contract.get('package_revision','r2')),style)
         def picture(name,picture_width):
             stream=BytesIO(image_file_bytes(name));shot=Image(stream)
             shot._sgp_source=stream;shot.drawHeight*=picture_width/shot.drawWidth

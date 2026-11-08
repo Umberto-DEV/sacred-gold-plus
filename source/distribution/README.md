@@ -1,12 +1,12 @@
 # Reproduce player downloads
 
-## Current 1.3.2 package revision r2
+## Current 1.3.2 package revision r3
 
-Use **schema 3**, `release-1.3.2-r2.json`. It preserves the five accepted 1.3.2
+Use **schema 3**, `release-1.3.2-r3.json`. It preserves the five accepted 1.3.2
 target ROMs and the same 30 recognized source identities. The two downloads are:
 
 ```text
-Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip
+Sacred-Gold-Plus-1.3.2-r3-Multilingual.zip
   Sacred Gold Plus 1.3.2/
     START-HERE.txt
     EN-English/                  # also IT-Italiano, FR-Francais, ES-Espanol, DE-Deutsch
@@ -16,7 +16,7 @@ Sacred-Gold-Plus-1.3.2-r2-Multilingual.zip
       Cheats/<three localized files>
       Credits-and-Licenses/{ABOUT.txt,LICENSE.txt}
     Originals/<seven current English gameplay PDFs, one Game Guide>
-Sacred-Gold-Plus-1.3.2-r2-Optional-Updaters.zip
+Sacred-Gold-Plus-1.3.2-r3-Optional-Updaters.zip
   Sacred Gold Plus 1.3.2 Optional Updaters/
     README.txt
     <language folder>/
@@ -35,7 +35,7 @@ updaters remain in the optional ZIP. Its readable localized tables make JSON
 parsing unnecessary. Older version labels identify inputs, never old outputs.
 
 Schema 3 retains the source/target/route/decoder identities and cheat pins from
-schema 2, adds `package_revision: "r2"`, two `documents` pins per locale,
+schema 2, adds `package_revision: "r3"`, two `documents` pins per locale,
 seven EN `shared_documents` pins and a canonical `license` pin. It omits
 `references` and `original_documents`: historical ZIPs are not imported. Every
 language gets the unchanged complete English GPLv3 plus localized explanations.
@@ -56,7 +56,7 @@ copied-save validation and installation separately for Windows and macOS.
 
 ```sh
 PYTHONPATH=source python source/distribution/pack.py \
-  --contract source/distribution/release-1.3.2-r2.json \
+  --contract source/distribution/release-1.3.2-r3.json \
   --inputs /path/to/private-inputs.json --references /path/to/unused-references \
   --guides /path/to/current-documents --rompatcher /path/to/RomPatcher.js \
   --output /path/to/new-dist
@@ -69,20 +69,32 @@ Each route is generated once and decoded with xdelta3 and pinned Rom Patcher JS,
 checking the complete target hash; the primary patches reuse five verified
 patches. Both ZIPs are reopened and compared with complete member maps and must
 be below 2 GiB each. External checksums and verification metadata cover both.
-See [package validation](../docs/validation/package-1.3.2-r2.md); existing
+See [package validation](../docs/validation/package-1.3.2-r3.md); existing
 [game acceptance](../docs/validation/localization-1.3.2.md) remains unchanged.
-For the release-page template, use `VERSION=1.3.2`, `PACKAGE_VERSION=1.3.2-r2`
-and `RELEASE_TAG=v1.3.2-r2`; the package revision does not change the game label.
+For the release-page template, use `VERSION=1.3.2`, `PACKAGE_VERSION=1.3.2-r3`
+and `RELEASE_TAG=v1.3.2-r3`; the package revision does not change the game label.
 
 ```sh
 cd source/distribution
 PYTHONPATH=.. ../../.venv/bin/python -B -m unittest discover -p 'test*.py'
 ```
 
+Schema 3 also retains support for the frozen r2 contract. The `p:r2:*` locale
+namespace names the shared layout; the installation asset basename is formatted
+from the selected package revision. Revision r3 preserves all game/patch bytes.
+
+The current release also rehosts four source inputs, byte for byte:
+`base-1.1-EN.xdelta`, `base-1.1-IT.xdelta`,
+`SGP-Source-References-EN.zip` and `SGP-Source-References-IT.zip`.
+The base downloader uses the r3 delivery URLs. Historical contracts keep their
+original provenance URLs; obtain their locally supplied reference ZIPs from the
+current r3 release and compare the unchanged contract hashes. Bootstrap source
+reconstruction uses a literal reachable commit and does not depend on old tags.
+
 ## Historical contracts
 
 The sections below describe the frozen schema-1/schema-2 layouts, not the
-current r2 player ZIP. The tools keep schema 1 as their backward-compatible
+current r3 player ZIP. The tools keep schema 1 as their backward-compatible
 default; selecting the current contract explicitly is required.
 
 This directory retains the **published 1.3.1** package contract and supports
@@ -244,7 +256,7 @@ release manifest.
   matching the complete contract hashes. No ROM or personal save is committed.
 - The frozen `SGP-Source-References-EN.zip` and
   `SGP-Source-References-IT.zip` from the
-  [current release](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.1-r2).
+  [current source-input delivery](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.2-r3).
   They preserve original manuals, licenses and reference bytes, and are not
   player game installations.
 - xdelta3, Node.js and a local
