@@ -56,6 +56,7 @@ ROOT = SOURCE.parent
 
 # (name, working directory, unittest arguments)
 SUITE = [
+    ("retail localization contracts", SOURCE, ["-m", "unittest", "localization.test_localization"]),
     ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test*.py"]),
     ("Class A runner contracts", SOURCE, ["-m", "unittest", "test_run_tests"]),

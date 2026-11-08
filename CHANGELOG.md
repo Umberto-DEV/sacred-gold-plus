@@ -2,6 +2,12 @@
 
 ## 1.3.2 source work (unreleased)
 
+Multilingual build preparation now identifies exact French, Spanish and German
+retail HeartGold donors alongside EN/IT and inventories modified messages and
+resource conflicts. ROM-free checks reject changed input bytes, incompatible
+headers and unsafe donor selection. This checkpoint does not yet certify
+translated game outputs or a multilingual player package.
+
 New Game could return to the opening screen after Mom's first conversation in
 both languages. A story-gate SetVar ran before the `HF02` event bank existed;
 the 1.3.1 handler requested an SDK reset despite the valid empty New Game
