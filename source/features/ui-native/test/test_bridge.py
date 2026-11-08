@@ -6,6 +6,14 @@ from pathlib import Path
 from bridge_bench import *
 
 class BridgeTests(unittest.TestCase):
+    def test_lazy_font_bootstrap_preserves_unused_cache_word(self):
+        for role in (1,2):
+            b=BridgeBench(self.compiled,role)
+            b.put(FONT+16,0x43484152)
+            self.assertEqual(b.call('ui_bridge_settings_init' if role==1 else 'ui_bridge_guide_init'),0)
+            self.assertEqual(b.events,[('allocate',1),('begin',role,1)])
+            self.assertEqual(b.get(FONT+16),0x43484152)
+
     @classmethod
     def setUpClass(cls):
         cls.temp=tempfile.TemporaryDirectory(prefix='bridge-a-');cls.addClassCleanup(cls.temp.cleanup)
@@ -40,12 +48,12 @@ class BridgeTests(unittest.TestCase):
     def test_invalid_native_entry_never_allocates_or_dispatches(self):
         cases=((FIELD+4,1),(FIELD+0x6C,1),(PROCESS,MANAGER),(PROCESS+4,MANAGER+4),
                (MANAGER,0),(MANAGER+12,54),(MANAGER+16,2),(ARGS+4,OPTIONS+4),
-               (ARGS+8,0),(FIELD+0x10C,2),(0x02111944,2),(FONT+16,4))
+               (ARGS+8,0),(FIELD+0x10C,2),(0x02111944,2),(FONT,2),(FONT+4,0x02026069))
         for address,value in cases:
             with self.subTest(address=hex(address)):
                 b=BridgeBench(self.compiled);b.put(address,value)
                 self.assertEqual(b.call('ui_bridge_settings_init'),0)
-                if address not in (0x02111944,FONT+16):self.assertEqual(b.events,[])
+                if address not in (0x02111944,FONT,FONT+4):self.assertEqual(b.events,[])
                 else:self.assertFalse(any(e[0]=='begin' for e in b.events))
     def test_corrupt_bootstrap_and_exhausted_generation_never_allocate(self):
         for offset in range(0,40,4):

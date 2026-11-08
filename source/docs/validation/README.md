@@ -1,6 +1,8 @@
 # Candidate validation
 
-The [current 1.3.2 report](localization-1.3.2.md) owns the five candidate
+The [Guide opening correction](guide-opening-1.3.2.md) records the successor
+identities and separate font, game/save and device checks. The original
+[1.3.2 report](localization-1.3.2.md) owns its five candidate
 identities, bounded New Game/Continue/native SAVE/cold-restart results and
 their limits. The [release contract](../../distribution/release-1.3.2.json)
 owns the five target hashes and 150 explicit patch routes. File reconstruction,

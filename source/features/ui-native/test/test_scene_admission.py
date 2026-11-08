@@ -71,10 +71,18 @@ class AdmissionTests(unittest.TestCase):
         b=self.bench();b.u.reg_write(UC_ARM_REG_CPSR,0xD2)
         self.assertEqual(b.admit(),(REFUSE,0xA5A59696))
         self.assertFalse(any(p==REASON for p,n,*_ in b.writes))
+    def test_lazy_font_unused_cache_word_allows_both_scene_roles(self):
+        for role in (1,2):
+            b=self.bench(role=role)
+            for stale in (0x06060505,0x43484152,b.widths):
+                b.put(b.font+16,stale)
+                self.assertEqual(b.admit(),(READY,NONE))
+                self.assertEqual(b.get(b.font+16),stale)
+
     def test_boot_font_tuple_and_real_heap3_allocation_headers_are_required(self):
         b=self.bench()
         cases=((0x0211188C,0),(0x0211192C,0),(0x02111944,2,1),(b.font,0),
-               (b.font+4,0x02026069),(b.font+16,b.widths),(b.font+12,60),
+               (b.font+4,0x02026069),(b.font,2),(b.font+12,60),
                (b.font+0x54,b.narc+4),(b.font+0x74,b.widths+4),(b.font+0x78,0),
                (b.font-4,11),(b.narc-32,0),(b.widths-28,16),(b.widths,b.get(b.widths)^1))
         for row in cases:

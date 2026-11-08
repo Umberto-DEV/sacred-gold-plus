@@ -88,7 +88,8 @@ static unsigned bfont(UiBridge *b,unsigned capture) {
  if(capture) {
   /* Do not normalize an uninitialized or foreign direct cache. The actual
    * Scene font owner performs complete font metadata/resource admission. */
-  if(r!=1||BW(m)!=1||BW(m+4)!=0x02026111u||BW(m+16))return 0;
+  /* Lazy native managers may retain an unused cache word after allocation. */
+  if(r!=1||BW(m)!=1||BW(m+4)!=0x02026111u)return 0;
   b->fontwork=w;b->fontmanager=m;b->fontref=r;
   b->fontmode=BW(m);b->fontdecoder=BW(m+4);b->fontcache=BW(m+16);return 1;
  }

@@ -168,14 +168,35 @@ def start_here(version: str, package_revision: str, locale_folders: Mapping[str,
     return ('\n'.join(lines) + '\n').encode('utf-8')
 
 
+def start_here_combined(version: str, locale_folders: Mapping[str, str]) -> bytes:
+    """Point players to the optional routes already inside the single download."""
+    # Reuse the historical entry point's strict version/folder validation.
+    start_here(version, 'r4', locale_folders, 'validated.zip')
+    copy = {
+        'EN': 'Open {guide} first. The patch in {folder}/Patch/ requires an unmodified US English HeartGold ROM. For an earlier Plus ROM or another starting language, open Optional-Updaters/{folder}/README-Updater.txt. Keep the current game language, ROM filename/path, raw .sav and Plus settings when updating. Shared English gameplay guides: Originals/.',
+        'IT': 'Apri prima {guide}. La patch in {folder}/Patch/ richiede una ROM italiana di HeartGold non modificata. Per una ROM Plus precedente o una lingua iniziale diversa, apri Optional-Updaters/{folder}/README-Updater.txt. Per aggiornare conserva lingua, nome e percorso della ROM, file .sav originale e impostazioni Plus. Guide di gioco condivise in inglese: Originals/.',
+        'FR': "Ouvrez d’abord {guide}. Le correctif dans {folder}/Patch/ nécessite une ROM française de HeartGold non modifiée. Pour une ancienne ROM Plus ou une autre langue de départ, ouvrez Optional-Updaters/{folder}/README-Updater.txt. Conservez la langue, le nom et l’emplacement de la ROM, le fichier .sav d’origine et les réglages Plus. Guides de jeu partagés en anglais : Originals/.",
+        'ES': 'Abre primero {guide}. El parche en {folder}/Patch/ requiere una ROM española de HeartGold sin modificar. Para una ROM Plus anterior u otro idioma de origen, abre Optional-Updaters/{folder}/README-Updater.txt. Conserva el idioma, el nombre y la ubicación de la ROM, el archivo .sav original y los ajustes Plus. Guías de juego compartidas en inglés: Originals/.',
+        'DE': 'Öffne zuerst {guide}. Der Patch in {folder}/Patch/ benötigt eine unveränderte deutsche HeartGold-ROM. Für eine frühere Plus-ROM oder eine andere Ausgangssprache öffne Optional-Updaters/{folder}/README-Updater.txt. Behalte Sprache, ROM-Dateinamen und Speicherort, ursprüngliche .sav-Datei und Plus-Einstellungen. Gemeinsame englische Spielanleitungen: Originals/.',
+    }
+    lines = ['Sacred Gold Plus ' + version, '', PROJECT_URL, '']
+    for locale in LOCALES:
+        folder = locale_folders[locale]
+        guide = folder + '/Installation-' + version + '-' + locale + '.pdf'
+        lines.extend([_START_TEXT[locale][0] + ' — ' + folder + '/',
+                      copy[locale].format(guide=guide, folder=folder),
+                      folder + '/Credits-and-Licenses/', ''])
+    return ('\n'.join(lines) + '\n').encode('utf-8')
+
+
 def updater_readme(locale: str, version: str, target: Mapping, sources,
-                   patch_names: Mapping[str, str]) -> bytes:
+                   patch_names: Mapping[str, str], *, combined=False) -> bytes:
     """Render authored native instructions and a complete exact-source table."""
     from reference_docs import load_player_documents
 
     localized_notice(locale)  # Reject unsupported locales before loading documents.
     version = _basename(version, 'version')
-    docs = load_player_documents(locale)
+    docs = load_player_documents(locale, combined=combined)
     sha, size = target.get('sha256', ''), target.get('bytes')
     if not re.fullmatch('[0-9a-f]{64}', sha) or not isinstance(size, int) or size <= 0:
         raise ValueError('Invalid updater target identity')

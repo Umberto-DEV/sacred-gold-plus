@@ -120,6 +120,9 @@ class AdmissionRomTests(unittest.TestCase):
                     self.assertEqual(b.getter_calls,[OPTIONS_GET,FADE_GET,BRIGHTNESS_GET])
                     self.assertEqual(b.get(b.font+0x78),self.fixtures[lang][2])
                     self.assertEqual(b.get(b.context+28),0)
+                    b.put(b.font+16,0x43484152)
+                    self.assertEqual(b.admit(),(READY,NONE))
+                    self.assertEqual(b.get(b.font+16),0x43484152)
     def test_native_foreign_context_options_font_and_all_producer_slots(self):
         # EN/IT native queried bodies are independently equal-pinned above;
         # one language covers shared negative paths without a Cartesian rerun.

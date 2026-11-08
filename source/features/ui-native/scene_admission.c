@@ -20,7 +20,8 @@ static unsigned sfont(void) {
  unsigned m=SW(0x0211192Cu);
  if(!fmeta(m)||SB(0x02111944u)!=1)return 0;
  const unsigned *v=(const unsigned *)m;
- return v[0]==1 && v[1]==0x02026111u && !v[4] &&
+ /* Lazy decoding leaves the unused cache word uninitialized. */
+ return v[0]==1 && v[1]==0x02026111u &&
  sallocation(3,m,124) && sallocation(3,v[21],84) &&
  sallocation(3,v[29],509) && fwidths(v[29]);
 }

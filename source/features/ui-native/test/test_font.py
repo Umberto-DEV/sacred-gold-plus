@@ -1,6 +1,34 @@
 import unittest,tempfile
 from font_bench import *
 class FontTests(unittest.TestCase):
+    def test_lazy_fonts_ignore_unused_cache_words_and_restore_the_owned_word(self):
+        # Native lazy initialization sets mode/decoder but leaves cache untouched.
+        # Reused font managers can retain glyph bytes or an old allocation word.
+        for residue in (0x06060505, 0x43484152, FJ, None):
+            with self.subTest(stale=residue):
+                b=FontBench(self.compiled)
+                stale=b.root()+12288 if residue is None else residue
+                for slot in (1,3,4):
+                    other=FM+0x800+slot*0x100
+                    b.u.mem_write(other,bytes(b.u.mem_read(FM,124)))
+                    b.put(other+16,stale);b.put(WORK+0x9c+slot*4,other)
+                b.put(FM+16,stale)
+                self.assertEqual(b.acquire(),F_READY)
+                self.assertEqual(b.begin(),F_ACTIVE)
+                self.assertEqual(b.step(),F_DONE)
+                self.assertEqual(b.release(),F_DONE)
+                self.assertEqual((b.get(FM),b.get(FM+4),b.get(FM+16)),
+                                 (1,0x02026111,stale))
+                self.assertEqual(b.call('ui_res_release',READER),1)
+
+    def test_other_direct_font_cache_still_protects_outputs(self):
+        b=FontBench(self.compiled);other=FM+0x800
+        b.u.mem_write(other,bytes(b.u.mem_read(FM,124)))
+        b.put(other,0);b.put(other+4,0x02026069)
+        b.put(other+16,FJ);b.put(WORK+0xa0,other)
+        self.assertEqual(b.acquire(),F_READY)
+        self.assertEqual(b.begin(),F_REFUSE)
+
     def test_grouped_parts_reject_all_output_aliases_and_recheck_late_topology(self):
         b=FontBench(self.compiled);self.assertEqual(b.acquire(),F_READY)
         self.assertEqual(b.begin(),F_ACTIVE);self.assertEqual(b.cancel(),F_CANCEL)
@@ -190,7 +218,7 @@ class FontTests(unittest.TestCase):
             self.assertEqual(bytes(b.u.mem_read(0x02000000,0x400000)),before)
     def test_native_admission_fields_and_resource_generation_refuse_without_publication(self):
         b=FontBench(self.compiled);baseline=bytes(b.u.mem_read(0x02000000,0x400000))
-        faults=((FM+8,2,4),(FM+12,32,4),(FM+16,EXT,4),(FM+0x54,0,4),(FM+0x58,1,4),
+        faults=((FM,2,4),(FM+4,0x02026069,4),(FM+8,2,4),(FM+12,32,4),(FM+0x54,0,4),(FM+0x58,1,4),
           (FM+0x5c,20,4),(FM+0x60,0,4),(FM+0x64,510,4),(FM+0x68,0,4),(FM+0x6c,1,4),
           (FM+0x70,0x020262c1,4),(FM+0x74,0,4),(FW,17,1),(WORK+0xb4,127,1),
           (WORK+0xb4,0,1),(WORK+0xb4,255,1),(READER+616,7,4),(READER+676,65535,4))
@@ -252,7 +280,10 @@ class FontTests(unittest.TestCase):
     def test_other_native_font_allocation_cannot_host_job(self):
         b=FontBench(self.compiled);self.assertEqual(b.acquire(),F_READY)
         other=FM+0x800;b.u.mem_write(other,bytes(b.u.mem_read(FM,124)))
-        b.put(other+16,0);b.put(other+0x74,FJ);b.put(WORK+0xa0,other)
+        b.put(other,1);b.put(other+4,0x02026111)
+        b.put(other+16,0x43484152);b.put(WORK+0xa0,other)
+        self.assertEqual(b.call('fnative',FM,FJ,152),1)
+        b.put(other+0x74,FJ)
         self.assertEqual(b.begin(),F_REFUSE,'other font widths are protected outputs')
     def test_real_reader_crc_failure_cannot_publish_font_reference(self):
         raw,config=synthetic();bad=bytearray(raw);bad[35380+12300]^=1

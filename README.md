@@ -10,52 +10,47 @@ This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS 
 
 ## Download
 
-[**Download Sacred Gold Plus 1.3.2 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r3/Sacred-Gold-Plus-1.3.2-r3-Multilingual.zip)
+[**Download Sacred Gold Plus 1.3.2 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/1.3.2/Sacred-Gold-Plus-1.3.2.zip)
 
-Choose your language folder after extracting the ZIP:
+Extract the single ZIP and read `START-HERE.txt`. Choose your language folder:
 
 | Language | Folder |
 | --- | --- |
 | English (USA) | `EN-English` |
 | Italiano | `IT-Italiano` |
-| Français — new in 1.3.2 | `FR-Francais` |
-| Español (España) — new in 1.3.2 | `ES-Espanol` |
-| Deutsch — new in 1.3.2 | `DE-Deutsch` |
+| Français | `FR-Francais` |
+| Español (España) | `ES-Espanol` |
+| Deutsch | `DE-Deutsch` |
 
-Read `START-HERE.txt`, then open `Installation-1.3.2-<language>.pdf` directly
-inside your language folder for an illustrated Windows/macOS walkthrough, links
-and file checks. `Whats-New-1.3.2-<language>.pdf` is beside it.
-Each folder contains **one** clearly named `Patch/Sacred-Gold-Plus-1.3.2-<language>.xdelta`,
-for the supported original HeartGold ROM of that same language, localized
-`Cheats` and `Credits-and-Licenses`. Apply the patch to a separate file with
-[Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), leave **Fix ROM checksum**
-off, and verify the complete source and target SHA-256 from the installation PDF.
-`Originals` contains seven current English gameplay guides, including one Game Guide.
-There are no `Documents` folders or technical JSON files in this player ZIP.
+Open `Installation-1.3.2-<language>.pdf` directly inside that folder for the
+illustrated Windows/macOS walkthrough, links and file checks.
+`Whats-New-1.3.2-<language>.pdf` is beside it. Each folder contains one
+`Patch/Sacred-Gold-Plus-1.3.2-<language>.xdelta` for the supported original
+HeartGold ROM of the same language, localized `Cheats` and complete credits/licenses.
+Apply the patch to a separate file with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/),
+leave **Fix ROM checksum** off, and verify the full source/target SHA-256 from
+the installation PDF. `Originals` contains the seven current English gameplay guides.
 
-**Updating an older Plus ROM directly?** Use the separate
-[optional updater download](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.2-r3/Sacred-Gold-Plus-1.3.2-r3-Optional-Updaters.zip).
-Its localized `README-Updater.txt` tables identify all 30 recognized sources,
-including original Plus 1.03 and our published predecessors through 1.3.1.
-Choose your current language and **one** patch matching the complete input hash;
-all 150 routes lead to the same five current 1.3.2 targets. Unknown or altered
-ROMs are not admitted. Older playable targets are not bundled.
+**Updating an existing Plus ROM?** The same ZIP includes `Optional-Updaters`.
+Its localized `README-Updater.txt` tables identify all 35 recognized sources,
+including original Plus 1.03 and the original 1.3.2 builds. Choose your current
+language and one patch matching the complete input hash. All 175 routes produce
+the same five corrected 1.3.2 targets. Unknown or altered ROMs are not admitted.
 
 Before updating, SAVE in-game, close the emulator, locate and back up the actual
 raw `.sav` and installed ROM. Validate the successor on a separate save copy
 through Continue, in-game SAVE and cold restart. Replace only the installed ROM,
-retaining its language, filename/path and emulator association; keep the current
-personal save in its original location. The main clean-ROM patch can also
-reconstruct that same successor without using the older installed ROM as input.
+retaining its language, filename/path and emulator association. Keep the current
+personal save in its original location. The clean-ROM patch also reconstructs
+the same successor without using an older installed ROM as input.
 
-[Release page and checksums](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/v1.3.2-r3).
-Package revision **r3** reorganizes downloads; the five game ROMs remain byte-identical
-to 1.3.2. If you already have the verified 1.3.2 game, you do not need to patch it
-again. Historical contracts and tags retain their identities. GitHub's automatic
-**Source code** archives are for developers.
-
-An Italian Guide-opening issue is under investigation. This packaging revision
-retains the game targets and does not claim to fix that report.
+[Release page](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/1.3.2).
+The game remains version **1.3.2**. This download includes the Guide opening
+correction; use the complete target hashes to distinguish it from the original
+1.3.2 images. [Exact validation and coverage](source/docs/validation/guide-opening-1.3.2.md).
+`Developer-Inputs` preserves the source tools' four authenticated historical
+inputs inside this same ZIP. Project source is on GitHub; its automatic source
+archives are for developers. No ROM, save, BIOS or emulator is included.
 
 The new languages combine official retail dialogue, names and graphics with
 separately authored translations of Sacred Gold/Plus changes, menus and guides.

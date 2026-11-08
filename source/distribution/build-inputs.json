@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "name": "base-1.1-EN.xdelta",
+      "sha256": "0bd20d17c8b18ee0a369d812b01facd83b00b3179d5fdca2ab149274b8248fc0",
+      "bytes": 5747714
+    },
+    {
+      "name": "base-1.1-IT.xdelta",
+      "sha256": "818bba0618da350440c6516a56ddc557c445cdbc79699835361866b3152c2014",
+      "bytes": 16183741
+    },
+    {
+      "name": "SGP-Source-References-EN.zip",
+      "sha256": "dae462265bd0bd6f0cb7e703cd5029fe25e78c35115f6939bf61841c449e9053",
+      "bytes": 2482924
+    },
+    {
+      "name": "SGP-Source-References-IT.zip",
+      "sha256": "4ef686035cd65b89db79dd8738743f4c4bf305b90d8c267eaffc7f6779f96674",
+      "bytes": 2483578
+    }
+  ]
+}

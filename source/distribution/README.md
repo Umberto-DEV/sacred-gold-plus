@@ -1,6 +1,89 @@
 # Reproduce player downloads
 
-## Current 1.3.2 package revision r3
+## Current corrected 1.3.2 package
+
+The current schema-3 contract is `release-1.3.2-r4.json`; its internal revision
+identifies the corrected game targets and leaves the frozen r2/r3 contracts
+unchanged. The public title is **Sacred Gold Plus 1.3.2**, tag **1.3.2**, with
+one attached file: **Sacred-Gold-Plus-1.3.2.zip**. Source is available in GitHub;
+no source archive is attached.
+
+```text
+Sacred-Gold-Plus-1.3.2.zip
+  Sacred Gold Plus 1.3.2/
+    START-HERE.txt
+    <five language folders>/
+      Installation-1.3.2-<locale>.pdf
+      Whats-New-1.3.2-<locale>.pdf
+      Patch/<one matching clean-ROM patch>
+      Cheats/<three localized files>
+      Credits-and-Licenses/{ABOUT.txt,LICENSE.txt}
+    Originals/<seven shared English gameplay PDFs>
+    Optional-Updaters/
+      <five language folders>/
+        README-Updater.txt
+        Patch/<35 exact-source patches>
+        manifest.json
+        Credits-and-Licenses/{ABOUT.txt,LICENSE.txt}
+      README.txt
+      manifest.json
+      CONTENTS.json
+      SHA256SUMS
+    Developer-Inputs/<four immutable historical builder files, README.txt>
+    CONTENTS.json
+    SHA256SUMS
+```
+
+The five primary patches require the matching unmodified retail language. The
+optional folder holds all **175** direct routes from **35** recognized sources
+to the five current targets, including the five original 1.3.2 outputs. These
+are starting identities, not additional installed versions. Every route is
+freshly encoded and decoded with both xdelta3 and pinned Rom Patcher JS, then
+compared with the full target hash. The five primary patches reuse their exact
+verified clean-source routes. Preserve the current language, installed filename
+and path, raw save, progress and Plus settings when updating.
+
+Generate the ten localized installation/news PDFs with
+`render_player_documents`, the seven shared EN PDFs with `render_shared_guides`,
+and all fifteen cheat files with `localization.cheats.generate`, using the exact
+new targets and clean retail baselines. The `p:unified:*` text is selected only
+for the combined package; historical `d:*` and `p:r2:*` copy and renderer bytes
+are preserved. The five installation PDFs retain the real patcher screenshots,
+links, full input/output fingerprints and copied-save update procedure.
+
+The package also preserves two `base-1.1-<locale>.xdelta` files and two
+`SGP-Source-References-<locale>.zip` files byte for byte. `build-inputs.json`
+records their immutable identities. `build-input-delivery.json` independently
+pins the complete final ZIP and exact member paths; it is tracked in source
+and deliberately excluded from the ZIP, avoiding a recursive container hash.
+Only pinned regular members are copied, with bounded transfer, complete ZIP
+hash authentication, per-member size/hash checks and atomic publication.
+Existing different files and links are preserved and refused.
+
+Use a private existing destination and reuse the downloaded ZIP:
+
+```sh
+PYTHONPATH=source python source/distribution/download_inputs.py \
+  --destination /path/to/private-inputs --container /path/to/Sacred-Gold-Plus-1.3.2.zip
+cd source && ../.venv/bin/python -m sgp12.scarica_base \
+  --destinazione "$SGP_ROM_DIR" --container /path/to/Sacred-Gold-Plus-1.3.2.zip
+```
+
+Without `--container`, either downloader obtains the pinned single ZIP on demand
+and removes the temporary container after extraction. Exact files already in
+place are reused without another large transfer. The first command copies all
+four builder inputs; `--file <basename>` selects particular files. The second
+copies only the requested EN/IT stage-zero deltas. The current build still reads
+your own retail ROM; no ROM or save is downloaded.
+
+Rebuild the player ZIP with the common `pack.py` command below, selecting
+`--contract source/distribution/release-1.3.2-r4.json`, a private mapping of all
+35 sources plus five targets, and `--references` pointing to the directory of
+those four builder files. Schema 3 authenticates the documents and builder
+inputs before creating output. Package reconstruction is separate from
+[game and raw-save acceptance](../docs/validation/guide-opening-1.3.2.md).
+
+## Historical 1.3.2 package revision r3
 
 Use **schema 3**, `release-1.3.2-r3.json`. It preserves the five accepted 1.3.2
 target ROMs and the same 30 recognized source identities. The two downloads are:

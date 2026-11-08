@@ -40,6 +40,9 @@ PLAYER_OVERRIDES = tuple(('install:' + str(i)) for i in (1,2,5,10,11,13)) + (
 WALK_KEYS = ('apply_intro', 'backup', 'browser', 'browser_h', 'capture', 'choose', 'copy', 'download', 'extract', 'files', 'firstplay', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'hash_warn', 'help', 'mac', 'mac_h', 'offline', 'offline_h', 'ref_a', 'ref_b', 'save_output', 'select', 'settings', 'sha_what', 'sha_where', 'stop', 'trouble', 'update_note', 'verify', 'windows', 'windows_h')
 PLAYER_OVERRIDES += tuple('walk:'+key for key in WALK_KEYS)
 PLAYER_REQUIRED = {'p:r2:' + key for key in PLAYER_OVERRIDES}
+COMBINED_OVERRIDES = ('install:2', 'install:5', 'news:31', 'label:language_selector',
+                      'label:updater_intro', 'walk:download', 'walk:choose', 'walk:sha_where')
+COMBINED_REQUIRED = {'p:unified:' + key for key in COMBINED_OVERRIDES}
 CLEAN_IDS = {'EN':'clean-us','IT':'clean-it','FR':'clean-fr','ES':'clean-es','DE':'clean-de'}
 NAME_BANKS = dict(pokemon=237,item=222,move=750,map=279,ability=720,
                   type=735,trainer=729,**{'class':730},stat=443)
@@ -71,13 +74,15 @@ def validate_documents(values):
 def load_documents(locale):
     """Return the unchanged historical document copy, excluding r2 overlays."""
     values=load_strings(locale,'documents')
-    return validate_documents({key:value for key,value in values.items() if key not in PLAYER_REQUIRED})
+    return validate_documents({key:value for key,value in values.items()
+                               if key not in PLAYER_REQUIRED | COMBINED_REQUIRED})
 
 
-def load_player_documents(locale):
+def load_player_documents(locale, *, combined=False):
     """Require all explicitly localized r2 overlays without altering old copy."""
     values=load_strings(locale,'documents')
-    words=validate_documents({key:value for key,value in values.items() if key not in PLAYER_REQUIRED})
+    words=validate_documents({key:value for key,value in values.items()
+                              if key not in PLAYER_REQUIRED | COMBINED_REQUIRED})
     overlays={key:value for key,value in values.items() if key in PLAYER_REQUIRED}
     _need(set(overlays)==PLAYER_REQUIRED and all(value.strip() for value in overlays.values()),
           'missing/empty player document translations')
@@ -86,6 +91,13 @@ def load_player_documents(locale):
                  if key=='p:r2:install:13' else ({'package_revision'} if key=='p:r2:walk:download' else set()))
         _need(set(re.findall(r'\{([^{}]+)\}',value))==allowed,'player document placeholder '+key)
         words['d:'+key.removeprefix('p:r2:')]=value
+    if combined:
+        overlays={key:value for key,value in values.items() if key in COMBINED_REQUIRED}
+        _need(set(overlays)==COMBINED_REQUIRED and all(value.strip() for value in overlays.values()),
+              'missing/empty unified player document translations')
+        for key,value in overlays.items():
+            _need(not re.findall(r'\{([^{}]+)\}',value),'unified document placeholder '+key)
+            words['d:'+key.removeprefix('p:unified:')]=value
     return words
 
 
@@ -426,7 +438,8 @@ def render_facts(locale,facts,baseline,contract,output,*,_player_package=False,_
     from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle,PageBreak,Image
     from io import BytesIO
     _need(reportlab.Version=='4.4.9','ReportLab 4.4.9 required')
-    words=load_player_documents(locale) if (_player_package or _shared_guides) else load_documents(locale);label=lambda key:words['d:label:'+key];output=Path(output)
+    words=(load_player_documents(locale,combined=contract.get('package_revision')=='r4')
+           if (_player_package or _shared_guides) else load_documents(locale));label=lambda key:words['d:label:'+key];output=Path(output)
     if output.exists() or output.is_symlink():raise FileExistsError(output)
     fontroot=Path(reportlab.__file__).parent/'fonts'
     for name,file in [('SGPDoc','Vera.ttf'),('SGPDocBold','VeraBd.ttf')]:
@@ -675,7 +688,7 @@ def render_player_documents(locale: str,candidate: bytes,reference: bytes,charma
     _need(isinstance(name,str) and re.fullmatch(r'[^/\\\x00-\x1f]+\.nds',name)
           and name not in ('.','..') and contract['version'] in name,'player target filename')
     _need(CLEAN_IDS[locale] in contract['routes_by_target'][locale],'player clean source route')
-    load_player_documents(locale)
+    load_player_documents(locale,combined=contract.get('package_revision')=='r4')
     return render_facts(locale,None,None,contract,output,_player_package=True)
 
 

@@ -14,6 +14,55 @@ import test_multilingual_pack as fixtures
 
 
 class PlayerPackageTests(unittest.TestCase):
+    def test_r4_corrected_targets_include_all_five_previous_132_updaters(self):
+        import player_package
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);cfg,refs,guides,inputs,contract=self.fixtures(root)
+            paths=json.loads(inputs.read_text());previous={}
+            cfg['package_revision']='r4'
+            for locale in fixtures.LOCALES:
+                source_id='plus-1.3.2-'+locale.lower();raw=('previous '+locale).encode()
+                previous[locale]=fixtures.pin(raw)
+                cfg['sources'].append(dict(id=source_id,label='Previous 1.3.2 '+locale,**previous[locale]))
+                path=root/(source_id+'.input');path.write_bytes(raw);paths[source_id]=str(path)
+                for routes in cfg['routes_by_target'].values():routes.append(source_id)
+            developer = []
+            for name in ('base-1.1-EN.xdelta', 'base-1.1-IT.xdelta',
+                         'SGP-Source-References-EN.zip', 'SGP-Source-References-IT.zip'):
+                raw = ('developer input ' + name).encode()
+                (refs / name).write_bytes(raw)
+                developer.append(dict(name=name, **fixtures.pin(raw)))
+            cfg['developer_inputs'] = developer
+            inputs.write_text(json.dumps(paths));contract.write_text(json.dumps(cfg))
+            with self.decoders(root,cfg),mock.patch.object(
+                    player_package,'previous_game_targets',return_value=previous,create=True), \
+                    mock.patch.object(player_package,'developer_input_pins',return_value=developer,create=True):
+                try:
+                    results=pack.build(inputs,refs,guides,root/'out',root/'unused',contract=contract)
+                except ValueError as exc:
+                    self.fail('Explicit corrected-game revision must build its 175 routes: '+str(exc))
+            self.assertEqual([row['routes'] for row in results],[175])
+            self.assertEqual([row['file'] for row in results],['Sacred-Gold-Plus-1.3.2.zip'])
+            prefix = 'Sacred Gold Plus 1.3.2/'
+            with zipfile.ZipFile(root/'out'/results[0]['file']) as archive:
+                names=archive.namelist()
+                self.assertEqual(sum(name.endswith('.xdelta') and '/Optional-Updaters/' in name for name in names),175)
+                self.assertEqual(sum(name.endswith('.xdelta') and '/Patch/' in name and '/Optional-Updaters/' not in name for name in names),5)
+                self.assertEqual(sum(name.endswith('.pdf') for name in names),17)
+                self.assertEqual(sum('/Cheats/' in name for name in names),10)  # two small fixture files per locale
+                self.assertFalse(any('-r4' in name or '-r3' in name for name in names))
+                start=archive.read(prefix+'START-HERE.txt').decode()
+                self.assertIn('Optional-Updaters/',start)
+                self.assertNotIn('r4',start)
+                self.assertNotIn('separate',start)
+                for row in developer:
+                    self.assertEqual(fixtures.pin(archive.read(prefix+'Developer-Inputs/'+row['name'])),
+                                     {key:row[key] for key in ('sha256','bytes')})
+                inventory=json.loads(archive.read(prefix+'CONTENTS.json'))['files']
+                self.assertEqual(set(inventory),{name[len(prefix):] for name in names}-{'CONTENTS.json','SHA256SUMS'})
+                for name,pin in inventory.items():
+                    self.assertEqual(fixtures.pin(archive.read(prefix+name)),pin)
+
     def fixtures(self, root):
         cfg, refs, guides, inputs, contract = fixtures.MultilingualPackageTests().fixtures(root)
         cfg.update(schema=3, package_revision='r2')

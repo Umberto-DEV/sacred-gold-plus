@@ -280,6 +280,16 @@ class ReferenceDocumentTests(unittest.TestCase):
             self.assertEqual(paths[0].read_bytes(),revision2[0].read_bytes())
             self.assertEqual(paths[1].read_bytes(),revision3[1].read_bytes())
 
+            cfg['package_revision']='r4'
+            unified=docs.render_player_documents('EN',candidate,clean,Path('unused'),cfg,Path(work)/'single')
+            unified_text=pdf_ascii_text(unified[0].read_bytes())
+            self.assertIn(b'Sacred-Gold-Plus-1.3.2.zip',unified_text)
+            self.assertIn(b'Optional-Updaters/',unified_text)
+            self.assertIn(b'175',unified_text)
+            self.assertNotIn(b'-r4',unified_text)
+            self.assertNotIn(b'separate optional updater',unified_text)
+            self.assertGreaterEqual(unified[0].read_bytes().count(b'/Subtype /Image'),2)
+
             previous = {path: path.read_bytes() for path in paths}
             with self.assertRaises(FileExistsError):
                 docs.render_player_documents('EN', candidate, clean, Path('unused'), cfg, output)

@@ -248,6 +248,8 @@ static unsigned rfontclear(const UiResourceReader *r) {
     RWord m=*(volatile RWord *)(w+0x9C);
     if(!m)return 1;
     if(!hram(m,0x14))return 0;
+    /* Lazy decoding does not consume the native manager's cache word. */
+    if(*(volatile RWord *)m==1 && *(volatile RWord *)(m+4)==0x02026111)return 1;
     RWord cached=*(volatile RWord *)(m+0x10);
     return !hext(cached,1,r->root,r->root+r->config.word[7]);
 }

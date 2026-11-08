@@ -78,7 +78,8 @@ class TestPinBase11(unittest.TestCase):
 
     def test_url_dei_delta_sotto_la_release_dichiarata(self):
         for lingua, voce in PIN["basi"].items():
-            self.assertEqual(voce["delta"]["url"], PIN["url_base"] + voce["delta"]["nome"],
+            nome = ('Sacred-Gold-Plus-1.3.2.zip' if PIN.get('container_delivery') else voce['delta']['nome'])
+            self.assertEqual(voce["delta"]["url"], PIN["url_base"] + nome,
                              "%s: l'URL del delta non e' url_base + nome" % lingua)
             self.assertIn("/releases/download/" + PIN["release"] + "/", voce["delta"]["url"])
 
@@ -397,6 +398,68 @@ class _RispostaSoloRead1(_RispostaContata):
 
 
 class TestScaricaBase(BancoStadio0):
+
+    def _current_zip_delivery(self):
+        import zipfile
+        self.pin['container_delivery']='../distribution/build-input-delivery.json'
+        archive=self.sito/'single.zip';files=[]
+        with zipfile.ZipFile(archive,'w') as output:
+            for lingua in ('EN','IT'):
+                delta=self.pin['basi'][lingua]['delta']
+                member='Sacred Gold Plus 1.3.2/Developer-Inputs/'+delta['nome']
+                output.writestr(member,DELTA[lingua])
+                files.append(dict(name=delta['nome'],member=member,bytes=delta['byte'],sha256=delta['sha256']))
+        raw=archive.read_bytes()
+        return archive,dict(schema=1,url='https://example.invalid/single.zip',bytes=len(raw),
+                            sha256=hashlib.sha256(raw).hexdigest(),files=files)
+
+    def test_current_zip_http_mirror_preserves_tracked_https_url(self):
+        from unittest import mock
+        from distribution import download_inputs
+        archive,delivery=self._current_zip_delivery()
+        with mock.patch.object(download_inputs,'load_delivery',return_value=delivery):
+            receipt=scarica_mod.scarica(self.dest,['IT'],pin=self.pin,url_base=self.server.url)
+        self.assertEqual((self.dest/'base-1.1-IT.xdelta').read_bytes(),DELTA['IT'])
+        self.assertEqual(delivery['url'],'https://example.invalid/single.zip')
+        self.assertEqual(receipt['url_base'],self.server.url+'single.zip')
+        self.assertFalse((self.dest/'base-1.1-EN.xdelta').exists())
+
+    def test_current_zip_forwards_overall_clock_and_removes_late_transfer(self):
+        import io
+        from unittest import mock
+        from distribution import download_inputs
+        archive,delivery=self._current_zip_delivery();now=[0]
+        class Slow(io.BytesIO):
+            def read1(self,size):
+                chunk=super().read(size);now[0]=1801;return chunk
+        with mock.patch.object(download_inputs,'load_delivery',return_value=delivery):
+            with self.assertRaisesRegex(romlib.Rifiuto,'time limit'):
+                scarica_mod.scarica(self.dest,['IT'],pin=self.pin,
+                    apri=lambda url:Slow(archive.read_bytes()),orologio=lambda:now[0])
+        self.assertEqual(list(self.dest.iterdir()),[])
+
+    def test_single_zip_delivery_authenticates_then_copies_only_requested_delta(self):
+        import zipfile
+        from unittest import mock
+        from distribution import download_inputs
+        self.pin['container_delivery']='../distribution/build-input-delivery.json'
+        archive=self.d/'single.zip';files=[]
+        with zipfile.ZipFile(archive,'w') as output:
+            for lingua in ('EN','IT'):
+                delta=self.pin['basi'][lingua]['delta']
+                member='Sacred Gold Plus 1.3.2/Developer-Inputs/'+delta['nome']
+                output.writestr(member,DELTA[lingua])
+                files.append(dict(name=delta['nome'],member=member,bytes=delta['byte'],sha256=delta['sha256']))
+        raw=archive.read_bytes()
+        delivery=dict(schema=1,url='https://example.invalid/single.zip',bytes=len(raw),
+                      sha256=hashlib.sha256(raw).hexdigest(),files=files)
+        with mock.patch.object(download_inputs,'load_delivery',return_value=delivery):
+            receipt=scarica_mod.scarica(self.dest,['IT'],pin=self.pin,container=archive)
+        self.assertEqual((self.dest/'base-1.1-IT.xdelta').read_bytes(),DELTA['IT'])
+        self.assertFalse((self.dest/'base-1.1-EN.xdelta').exists())
+        self.assertEqual(receipt['file'][0]['lingua'],'IT')
+        self.assertIn(self.pin['basi']['IT']['delta']['sha256'],
+                      (self.dest/scarica_mod.SHA256SUMS_DEPOSITO).read_text())
 
     def setUp(self):
         super().setUp()

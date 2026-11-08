@@ -1,4 +1,4 @@
-"""Schema-3 packaging for the unchanged accepted five-language 1.3.2 game."""
+"""Schema-3 packaging for explicitly accepted five-language 1.3.2 revisions."""
 import hashlib
 import json
 from pathlib import Path
@@ -10,9 +10,18 @@ PRIMARY_SOURCES = {'EN': 'clean-us', 'IT': 'clean-it', 'FR': 'clean-fr',
                    'ES': 'clean-es', 'DE': 'clean-de'}
 
 
-def published_targets():
-    """Package corrections cannot silently repin an accepted game."""
+def previous_game_targets():
+    """Original 1.3.2 identities remain immutable updater inputs."""
     return json.loads((pack.HERE / 'release-1.3.2.json').read_text())['targets']
+
+
+def published_targets(revision='r3'):
+    """Package revisions select a separately reviewed game identity set."""
+    if revision in ('r2','r3'):
+        return previous_game_targets()
+    if revision=='r4':
+        return json.loads((pack.HERE / 'game-1.3.2-r4.json').read_text())['targets']
+    raise ValueError('Unknown accepted game revision')
 
 
 def primary_patch_name(locale, version='1.3.2'):
@@ -29,8 +38,15 @@ def updater_patch_name(locale, source_id, version='1.3.2'):
 
 
 def asset_names(cfg):
+    if cfg['package_revision'] == 'r4':
+        return ('Sacred-Gold-Plus-' + cfg['version'] + '.zip',)
     stem = 'Sacred-Gold-Plus-' + cfg['version'] + '-' + cfg['package_revision']
     return stem + '-Multilingual.zip', stem + '-Optional-Updaters.zip'
+
+
+def developer_input_pins():
+    """Preserve the four immutable inputs required by source reconstruction."""
+    return json.loads((pack.HERE / 'build-inputs.json').read_text())['files']
 
 
 def _document_pins(rows, names, label):
@@ -45,14 +61,14 @@ def _document_pins(rows, names, label):
 def validate_contract(cfg):
     """Require accepted game identities and an explicit selection of player files."""
     locales = set(pack.MULTILINGUAL_LOCALES)
-    if cfg.get('schema') != 3 or cfg.get('version') != '1.3.2' or cfg.get('package_revision') not in ('r2', 'r3'):
-        raise ValueError('Schema 3 requires the five-language 1.3.2 package revision r2 or r3')
+    if cfg.get('schema') != 3 or cfg.get('version') != '1.3.2' or cfg.get('package_revision') not in ('r2', 'r3', 'r4'):
+        raise ValueError('Schema 3 requires the five-language 1.3.2 package revision r2, r3 or r4')
     if 'references' in cfg or 'original_documents' in cfg:
         raise ValueError('Schema 3 does not import historical reference documents')
     targets = cfg.get('targets', {})
     if not isinstance(targets, dict) or set(targets) != locales:
         raise ValueError('Missing or extra player target locale')
-    accepted = published_targets()
+    accepted = published_targets(cfg['package_revision'])
     for locale, row in targets.items():
         if (not pack._content_pin(row) or set(row) - {'sha256', 'bytes', 'name'}
                 or any(row[key] != accepted[locale][key] for key in ('sha256', 'bytes'))):
@@ -63,6 +79,8 @@ def validate_contract(cfg):
                 raise ValueError('Target name must be a basename')
     _validate_sources(cfg, locales)
     _validate_documents(cfg, locales)
+    if cfg['package_revision'] == 'r4' and cfg.get('developer_inputs') != developer_input_pins():
+        raise ValueError('Developer inputs differ from the preserved build inputs')
     if cfg.get('cheats_policy') not in ('omit-unverified', 'verified-localized'):
         raise ValueError('Schema 3 omits unverified cheat catalogues')
     decoder = json.loads((pack.HERE / 'release-1.3.2.json').read_text())['rompatcher_commit']
@@ -75,6 +93,10 @@ def _validate_sources(cfg, locales):
     if not isinstance(sources, list):
         raise ValueError('Missing recognized player sources')
     registry, ids = pack.multilingual_source_registry(), []
+    if cfg['package_revision']=='r4':
+        registry=dict(registry)
+        for locale,target in previous_game_targets().items():
+            registry['plus-1.3.2-'+locale.lower()]={key:target[key] for key in ('sha256','bytes')}
     for row in sources:
         if (not isinstance(row, dict) or set(row) != {'id', 'label', 'sha256', 'bytes'}
                 or not pack._content_pin(row) or not isinstance(row['label'], str)
@@ -154,7 +176,7 @@ def document_members(guides, cfg):
 
 
 def notice_members(cfg):
-    from player_notices import license_members, start_here
+    from player_notices import license_members, start_here, start_here_combined
     with pack.guide_directory_descriptor(pack.HERE.parents[1]) as directory:
         license_bytes = pack.guide_file_bytes(directory, 'LICENSE')
     pack.verify_bytes(license_bytes, cfg['license'])
@@ -163,8 +185,28 @@ def notice_members(cfg):
     for locale, folder in folders.items():
         for name, raw in license_members(locale, license_bytes).items():
             pack.add_member(members, folder + '/' + name, raw)
-    pack.add_member(members, 'START-HERE.txt',
-                    start_here(cfg['version'], cfg['package_revision'], folders, asset_names(cfg)[1]))
+    entry = (start_here_combined(cfg['version'], folders) if cfg['package_revision'] == 'r4'
+             else start_here(cfg['version'], cfg['package_revision'], folders, asset_names(cfg)[1]))
+    pack.add_member(members, 'START-HERE.txt', entry)
+    return members
+
+
+def developer_members(references, cfg):
+    """Authenticate the original builder files before creating any package output."""
+    members = {}
+    with pack.guide_directory_descriptor(references) as directory:
+        for pin in cfg['developer_inputs']:
+            raw = pack.guide_file_bytes(directory, pin['name'])
+            pack.verify_bytes(raw, pin)
+            pack.add_member(members, 'Developer-Inputs/' + pin['name'], raw)
+    pack.add_member(members, 'Developer-Inputs/README.txt', (
+        'Sacred Gold Plus source reconstruction inputs\n\n'
+        'These four unchanged historical files are for developers rebuilding the game\n'
+        'from their own HeartGold cartridge dump. They are not additional games.\n'
+        'Source and build instructions: https://github.com/Umberto-DEV/sacred-gold-plus\n'
+        'Use source/distribution/download_inputs.py to authenticate this ZIP and copy\n'
+        'only the pinned files. The independently tracked delivery pin authenticates\n'
+        'the complete download; CONTENTS.json records each included file identity.\n').encode())
     return members
 
 
@@ -203,6 +245,9 @@ def build(cfg, inputs, references, guides, output, rpjs, node='node', xdelta='xd
 
     verify_inputs()
     primary = document_members(guides, cfg)
+    if cfg['package_revision'] == 'r4':
+        for name, raw in developer_members(references, cfg).items():
+            pack.add_member(primary, name, raw)
     notices = notice_members(cfg)
     for name, raw in notices.items():
         pack.add_member(primary, name, raw)
@@ -214,7 +259,8 @@ def build(cfg, inputs, references, guides, output, rpjs, node='node', xdelta='xd
         rows = [sources[source_id] for source_id in cfg['routes_by_target'][locale]]
         names = {row['id']: 'Patch/' + updater_patch_name(locale, row['id'], cfg['version']) for row in rows}
         pack.add_member(updaters, folder + '/README-Updater.txt',
-                        updater_readme(locale, cfg['version'], cfg['targets'][locale], rows, names))
+                        updater_readme(locale, cfg['version'], cfg['targets'][locale], rows, names,
+                                       combined=cfg['package_revision']=='r4'))
     with pack.pinned_git_snapshot(rpjs, cfg['rompatcher_commit']) as snapshot:
         output.mkdir(parents=True)
         with tempfile.TemporaryDirectory(prefix='sgp-package-', dir=output) as temporary:
@@ -249,6 +295,8 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
                     primary_sources=PRIMARY_SOURCES, encoder_source_window_bytes=pack.MULTILINGUAL_SOURCE_WINDOW,
                     decoders=['xdelta3', 'RomPatcher.js'], rompatcher_commit=cfg['rompatcher_commit'])
     pack.add_member(updaters, 'manifest.json', _json_bytes(manifest))
+    ending = ('this ZIP. Optional-Updaters/ contains all recognized updater routes.\n'
+              if cfg['package_revision'] == 'r4' else 'the main download: ' + asset_names(cfg)[0] + '\n')
     pack.add_member(updaters, 'README.txt', (
         'Sacred Gold Plus ' + cfg['version'] + ' optional updater patches\n\n'
         'Choose the desired output language, then the patch matching the exact source ROM\n'
@@ -258,15 +306,23 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
         'retain the installed filename/path and save association when updating.\n\n'
         'Read README-Updater.txt in your desired output language folder. Installation\n'
         'and news PDFs, and the shared English gameplay PDFs in Originals/, are in\n'
-        'the main download: ' + asset_names(cfg)[0] + '\n').encode())
+        + ending).encode())
     _inventoried(updaters, cfg)
-    if (len([name for name in primary if name.endswith('.xdelta')]) != 5
-            or any(name.endswith('.json') or '/Documents/' in name for name in primary)):
+    if (len([name for name in primary if '/Patch/' in name and name.endswith('.xdelta')]) != 5
+            or any('/Documents/' in name for name in primary)):
         raise ValueError('Invalid primary player package layout')
+    if cfg['package_revision'] == 'r4':
+        for name, raw in updaters.items():
+            pack.add_member(primary, 'Optional-Updaters/' + name, raw)
+        _inventoried(primary, cfg)
+        layouts = ((asset_names(cfg)[0], 'Sacred Gold Plus ' + cfg['version'] + '/', primary, verified_routes),)
+    else:
+        if any(name.endswith('.json') for name in primary):
+            raise ValueError('Invalid primary player package layout')
+        layouts = ((asset_names(cfg)[0], 'Sacred Gold Plus ' + cfg['version'] + '/', primary, 5),
+                   (asset_names(cfg)[1], 'Sacred Gold Plus ' + cfg['version'] + ' Optional Updaters/', updaters, verified_routes))
     results = []
-    for name, root, members, routes in (
-            (asset_names(cfg)[0], 'Sacred Gold Plus ' + cfg['version'] + '/', primary, 5),
-            (asset_names(cfg)[1], 'Sacred Gold Plus ' + cfg['version'] + ' Optional Updaters/', updaters, verified_routes)):
+    for name, root, members, routes in layouts:
         archive = output / name
         pack.write_zip(archive, {root + member: raw for member, raw in members.items()})
         if archive.stat().st_size >= pack.MAX_RELEASE_ASSET_BYTES:
@@ -279,5 +335,7 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
         status=cfg.get('status', 'file-reconstruction-verified'), open_gates=cfg.get('open_gates', []),
         contract_sha256=pack.digest(contract), verified_routes=verified_routes, primary_routes=5,
         primary_sources=PRIMARY_SOURCES, targets=cfg['targets'],
-        scope='File reconstruction with two decoders; unchanged 1.3.2 targets. No new ROM build, game runtime or save compatibility test.')))
+        scope=('File reconstruction with two decoders; game runtime and save compatibility are separate acceptance evidence.'
+               if cfg['package_revision'] == 'r4' else
+               'File reconstruction with two decoders; unchanged 1.3.2 targets. No new ROM build, game runtime or save compatibility test.'))))
     return results

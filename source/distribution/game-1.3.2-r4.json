@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "version": "1.3.2",
+  "status": "accepted-with-bounded-validation",
+  "targets": {
+    "EN": {
+      "name": "Sacred Gold Plus 1.3.2 EN.nds",
+      "sha256": "2e30d6960bb059615fca7527700d86f8282e82ccbe99bf62e22f027453dc3d3d",
+      "bytes": 152786844
+    },
+    "IT": {
+      "name": "Sacred Gold Plus 1.3.2 IT.nds",
+      "sha256": "13ebac02bdea3036511773587e6603ce6834e25f4b13d1a4662c3e954bfd5d4a",
+      "bytes": 159029760
+    },
+    "FR": {
+      "name": "Sacred Gold Plus 1.3.2 FR.nds",
+      "sha256": "e5e0b9cfe2596aa26e9043160d7b73b95d1346803c32c53411a86670a8709a0a",
+      "bytes": 162560728
+    },
+    "ES": {
+      "name": "Sacred Gold Plus 1.3.2 ES.nds",
+      "sha256": "015f137cff348d5028fdee91b7f640ffd36215ef836fb8dfa9d0b7db6d82b32c",
+      "bytes": 162490072
+    },
+    "DE": {
+      "name": "Sacred Gold Plus 1.3.2 DE.nds",
+      "sha256": "cc64522cf898965a6c677e1dd2e99f876cc9af0f1fd88b7073c8e55259058183",
+      "bytes": 162932492
+    }
+  }
+}

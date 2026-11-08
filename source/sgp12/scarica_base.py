@@ -8,6 +8,14 @@ opt-in: niente lo chiama da solo, ne' `costruisci.py`, ne' `verifica.py`, ne'
 i test. Chi preferisce non usarlo scarica i due file a mano dalla pagina della
 release `base-1.1` e li mette in `$SGP_ROM_DIR` con lo stesso nome.
 
+La consegna corrente usa il singolo Sacred-Gold-Plus-1.3.2.zip: il pin separato
+distribution/build-input-delivery.json autentica l'intero ZIP e ogni membro.
+--container riusa lo ZIP gia' scaricato. I soli delta richiesti sono copiati
+da Developer-Inputs/, mai una ROM; i quattro input storici restano invariati.
+Un file esistente diverso o un link viene preservato e rifiutato: scegliere una
+cartella nuova. --forza riguarda la consegna diretta storica; nello ZIP un file
+gia' autenticato viene riusato. Il downloader non e' chiamato dai builder.
+
 Cosa scarica: il `SHA256SUMS` della release (deposto come `SHA256SUMS-base-1.1`,
 per non scrivere sopra quello delle ROM) e, per ogni lingua chiesta, il delta
 dichiarato nel pin `sgp12/base11.json`. Sono file di DIFFERENZE fra una
@@ -263,8 +271,11 @@ def _scarica_file(url, destinazione: Path, atteso_sha: str, atteso_byte: int,
 
 
 def scarica(destinazione, lingue=None, pin: dict | None = None, url_base=None,
-            apri=None, forza: bool = False, *, orologio=time.monotonic) -> dict:
+            apri=None, forza: bool = False, *, orologio=time.monotonic, container=None) -> dict:
     pin = pin or carica_pin()
+    if pin.get('container_delivery'):
+        return _scarica_contenitore(destinazione, lingue, pin, url_base, apri, container, orologio)
+    esigi(container is None, '--container richiede un pin con consegna ZIP autenticata')
     apri = apri or _apri
     radice = (url_base or pin["url_base"])
     if not radice.endswith("/"):
@@ -310,6 +321,41 @@ def scarica(destinazione, lingue=None, pin: dict | None = None, url_base=None,
         os.close(dir_fd)
 
 
+def _scarica_contenitore(destinazione, lingue, pin, url_base, apri, container, orologio):
+    """The current single ZIP retains both immutable stage-zero deltas."""
+    from distribution.download_inputs import fetch_inputs, load_delivery
+    lingue = tuple(lingue) if lingue else tuple(pin['basi'])
+    esigi(lingue and len(set(lingue)) == len(lingue)
+          and all(l in pin['basi'] for l in lingue), 'lingue ZIP non valide o duplicate')
+    try:
+        delivery = load_delivery(Path(__file__).resolve().parent / pin['container_delivery'])
+        names = []
+        members = {row['name']: row for row in delivery['files']}
+        for lingua in lingue:
+            delta = pin['basi'][lingua]['delta']
+            row = members.get(delta['nome'], {})
+            esigi((row.get('sha256'), row.get('bytes')) == (delta['sha256'], delta['byte']),
+                  'il pin ZIP cambia il delta storico ' + delta['nome'])
+            names.append(delta['nome'])
+        override = (url_base.rstrip('/') + '/' + delivery['url'].rsplit('/', 1)[-1]
+                    if url_base is not None else None)
+        rows = fetch_inputs(destinazione, delivery, names, container=container, opener=apri,
+                            url_override=override, clock=orologio)
+        testo = ''.join(row['sha256'] + '  ' + row['name'] + '\n' for row in rows)
+        cartella, directory = _apri_cartella_privata(destinazione)
+        try:
+            _scrivi_atomico(directory, SHA256SUMS_DEPOSITO, testo.encode())
+        finally:
+            os.close(directory)
+        return dict(destinazione=str(cartella), url_base=override or delivery['url'],
+                    file=[dict(lingua=lingua, nome=row['name'], sha256=row['sha256'], byte=row['bytes'],
+                               esito='gia presente' if row['status']=='present' else 'scaricato')
+                          for lingua, row in zip(lingue, rows)],
+                    sha256sums=str(cartella / SHA256SUMS_DEPOSITO))
+    except (ValueError, OSError) as exc:
+        raise Rifiuto('consegna ZIP autenticata rifiutata: ' + str(exc)) from None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -321,10 +367,12 @@ def main(argv=None):
                     help="sostituisce l'URL del pin (specchio, o un server locale nei test)")
     ap.add_argument("--forza", action="store_true",
                     help="riscarica anche un file gia' presente e gia' corretto")
+    ap.add_argument('--container', type=Path,
+                    help='usa lo ZIP giocatore gia scaricato, verificandone hash e membri')
     ap.add_argument("--json", default=None)
     a = ap.parse_args(argv)
     try:
-        rapporto = scarica(a.destinazione, a.lingua, url_base=a.url_base, forza=a.forza)
+        rapporto = scarica(a.destinazione, a.lingua, url_base=a.url_base, forza=a.forza, container=a.container)
     except Rifiuto as e:
         print("RIFIUTO: %s" % e, file=sys.stderr)
         return 2

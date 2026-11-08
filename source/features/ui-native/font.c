@@ -40,7 +40,11 @@ static unsigned fnative(unsigned m,unsigned p,unsigned n) {
  if(!fmeta(m))return 0;
  const unsigned *v=(const unsigned *)m;
  if(ro(p,n,m-32,156)||ro(p,n,v[21]-32,116)||ro(p,n,v[29]-32,541))return 0;
- if(v[4] && (!fspan(v[4],32576)||ro(p,n,v[4]-32,32608)))return 0;
+ /* Native lazy initialization does not initialize the unused cache word.
+  * Only the direct decoder owns/reads that pointer; preserve lazy residue. */
+ if(v[0]==0) {
+  if(v[1]!=0x02026069||!fspan(v[4],32576)||ro(p,n,v[4]-32,32608))return 0;
+ } else if(v[0]!=1||v[1]!=0x02026111)return 0;
  for(unsigned i=1;i<6;++i) {
   unsigned other=((volatile unsigned *)(FWORK+0x9C))[i];
   if(other) {
@@ -49,7 +53,9 @@ static unsigned fnative(unsigned m,unsigned p,unsigned n) {
    if(!a[25]||a[25]>65535||!a[3]||a[3]>64)return 0;
    if(a[21]&&(!fspan(a[21],84)||ro(p,n,a[21]-32,116)))return 0;
    if(a[29]&&(!fspan(a[29],a[25])||ro(p,n,a[29]-32,a[25]+32)))return 0;
-   if(a[4]&&(!fspan(a[4],a[25]*a[3])||ro(p,n,a[4]-32,a[25]*a[3]+32)))return 0;
+   if(a[0]==0) {
+    if(a[1]!=0x02026069||!fspan(a[4],a[25]*a[3])||ro(p,n,a[4]-32,a[25]*a[3]+32))return 0;
+   } else if(a[0]!=1||a[1]!=0x02026111)return 0;
   }
  }
  return 1;
@@ -96,7 +102,7 @@ UiFontStatus ui_font_acquire(UiFontLease *l,UiResourceReader *r,const UiFontCach
  unsigned root=r->root,bytes=r->config.word[7];
  UiFontCacheOwner owner_snapshot;fzero(&owner_snapshot,sizeof(owner_snapshot));
  if(FREF<1||FREF>126||!fwidths(width))return UI_FONT_REFUSE;
- if(mode==1 && fn==0x02026111 && !cache) {if(o)return UI_FONT_REFUSE;}
+ if(mode==1 && fn==0x02026111) {if(o)return UI_FONT_REFUSE;}
  else if(mode==0 && fn==0x02026069 && cache) {
   if(!o||!fobj((unsigned)o,sizeof(*o))||!rout(r,(unsigned)o,sizeof(*o))||
    !fnative(m,(unsigned)o,sizeof(*o))||ro((unsigned)o,sizeof(*o),(unsigned)l,sizeof(*l))||

@@ -1,5 +1,13 @@
 # 1.3.2 changes and validation
 
+The Guide opening correction handles native lazy fonts whose unused cache word
+contains data from a previous allocation. Confirmation could animate and then
+return without presenting the Guide. The same native state is now accepted by
+Guide/Options admission, font ownership and resource retirement, with active
+direct-cache checks retained. Save formats and settings are unchanged. The
+[correction report](source/docs/validation/guide-opening-1.3.2.md) records its
+separate candidate identities, checks and coverage limits.
+
 The New Game correction initializes an empty event bank before the first
 redirected story-variable access, preventing the reset after Mom's first
 conversation. Save layouts and identifiers remain stable. The
@@ -20,8 +28,9 @@ before emitting resources. Native glyph and width bounds remain enforced.
 Ordinary field dialogue receives context-specific native line/scroll layout;
 this does not claim a generic reflow of every game menu.
 
-The package has five current targets and 150 direct routes from 30 recognized
-original/historical inputs. Byte-reconstruction checks are separate from
+The original package had five targets and 150 direct routes from 30 recognized
+original/historical inputs. The corrected package also recognizes those five
+original 1.3.2 targets as updater inputs. Byte-reconstruction checks are separate from
 representative raw-save Continue/SAVE/cold-restart testing and UI captures.
 The acceptance report owns exact results; host checks do not imply a physical
 device run or a full playthrough.

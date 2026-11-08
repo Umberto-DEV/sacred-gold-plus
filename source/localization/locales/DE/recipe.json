@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "language": "DE",
-  "core_sha256": "65d6d42a59543a499858ce43c5c4652ab5323fe290124daddfaf842ead1034f3",
-  "core_bytes": 152786800,
+  "core_sha256": "2e30d6960bb059615fca7527700d86f8282e82ccbe99bf62e22f027453dc3d3d",
+  "core_bytes": 152786844,
   "graphics": [
     {
       "file": "a/0/0/8",

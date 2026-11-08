@@ -195,6 +195,15 @@ class ResourceTests(unittest.TestCase):
                 self.assertEqual(b.call('ui_res_drop',LEASE),1)
                 self.assertEqual(b.call('ui_res_release',READER),1)
                 self.assertEqual(b.root(),0);self.assertEqual(b.destroy(),1)
+    def test_lazy_font_unused_cache_word_does_not_block_resource_release(self):
+        b=ResourceBench(self.compiled);b.start();self.assertEqual(b.finish(),OK)
+        self.assertEqual(b.call('ui_res_acquire',READER,LEASE,1),1)
+        b.put(0x0211188c,0x02111890);b.put(0x0211192c,0x02361000)
+        b.put(0x02361000,1);b.put(0x02361004,0x02026111)
+        b.put(0x02361010,b.root()+12288)
+        self.assertEqual(b.call('ui_res_drop',LEASE),1)
+        self.assertEqual(b.call('ui_res_release',READER),1)
+
     def test_leases_immutable_bounds_font_cache_barrier_survives_cancel(self):
         b=ResourceBench(self.compiled);b.start();self.assertEqual(b.finish(),OK)
         root=b.root();self.assertEqual(b.call('ui_res_acquire',READER,LEASE,1),1)

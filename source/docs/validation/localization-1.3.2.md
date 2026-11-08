@@ -1,5 +1,9 @@
 # Multilingual 1.3.2 acceptance — 8 November 2026
 
+This report covers the original 1.3.2 candidate set. The later
+[Guide opening correction](guide-opening-1.3.2.md) records five successor
+identities and their separate game/save/device checks.
+
 This report identifies the final five-language candidate set and the bounded
 acceptance requested for this release. Historical diagnostic reports retain
 their original hashes and limitations. Commercial ROMs, raw saves, gameplay

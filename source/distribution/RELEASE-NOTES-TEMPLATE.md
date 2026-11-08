@@ -4,36 +4,41 @@ Available in **English, Italian, French, Spanish and German**.
 
 ## Download
 
-| Editions | Player package |
-| --- | --- |
-| All five languages | [Download the multilingual patch package](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/Sacred-Gold-Plus-{{PACKAGE_VERSION}}-Multilingual.zip) |
-| Direct updates from older Plus ROMs | [Optional updater download](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/Sacred-Gold-Plus-{{PACKAGE_VERSION}}-Optional-Updaters.zip) |
+[**Download Sacred Gold Plus {{VERSION}} — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/Sacred-Gold-Plus-{{VERSION}}.zip)
 
-**Windows and Mac:** download and extract the main ZIP, open **Sacred Gold Plus {{VERSION}}**, then read **START-HERE.txt**. Choose **EN-English**, **IT-Italiano**, **FR-Francais**, **ES-Espanol** or **DE-Deutsch**.
+**Windows and Mac:** extract the single ZIP, open **Sacred Gold Plus {{VERSION}}**
+and read **START-HERE.txt**. Choose **EN-English**, **IT-Italiano**, **FR-Francais**,
+**ES-Espanol** or **DE-Deutsch**. Open the illustrated
+**Installation-{{VERSION}}-<language>.pdf** in that folder; the localized
+**Whats-New** PDF is beside it. Each language keeps one clean-ROM patch,
+localized optional cheats and complete credits/licenses. **Originals** contains
+the seven shared English gameplay guides, including one Game Guide.
 
-Open **Installation-{{VERSION}}-EN.pdf** directly inside the English folder, or the matching `-IT`, `-FR`, `-ES` or `-DE` file in your language folder. **Whats-New-{{VERSION}}-<language>.pdf** is beside it. The illustrated installation guide includes real patcher screenshots, clickable links and Windows/macOS file checks. Each folder contains one current patch in `Patch`, localized `Cheats` and `Credits-and-Licenses`. `Originals` contains seven current English gameplay PDFs: events, Pokémon changes and locations, evolutions, items/TMs, trainers and one Game Guide. There are no `Documents` folders or technical JSON files in the main ZIP.
+**New installation:** use your own supported original HeartGold ROM of the same
+language. Check its complete SHA-256 against the PDF, apply
+**Patch/Sacred-Gold-Plus-{{VERSION}}-<language>.xdelta** to a separate file with
+[Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), leave **Fix ROM checksum**
+off and verify the target SHA-256.
 
-**New to patching?** Start from your own supported original HeartGold `.nds` of the same language. Check its full SHA-256 against the installation PDF, apply **Patch/Sacred-Gold-Plus-{{VERSION}}-<language>.xdelta** to a separate file with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), leave **Fix ROM checksum** off, and verify the complete target SHA-256 before installing it.
+**Updating Plus:** **Optional-Updaters** is inside this same ZIP. Its localized
+**README-Updater.txt** tables cover all **175 direct routes from 35 recognized
+sources**, including original Plus 1.03 and the original 1.3.2 builds. Use one
+patch matching your full source hash and current language. Older games are
+input identities; every route produces a current {{VERSION}} target.
 
-**Updating Plus?** Keep your current language for an ordinary update. SAVE in-game, fully close the emulator, locate its actual raw `.sav`, and back up that save and the installed ROM. Test the verified successor with a separate save copy: **Continue → check progress, Pokémon, Bag and Plus settings → in-game SAVE → close fully → cold start → Continue**. Then replace only the installed ROM, retaining its filename/path and emulator association. Keep your current personal save in its original location.
+SAVE in-game, close the emulator, find the actual raw `.sav`, and back up that
+save and the installed ROM. Validate the successor on a separate save copy with
+**Continue → check progress, Pokémon, Bag and settings → in-game SAVE → close →
+cold start → Continue**. Replace only the installed ROM, keeping its language,
+filename/path and emulator association. Keep your current personal save in place.
 
-The **optional updater ZIP** has all **150 direct routes: 30 recognized starting ROMs for each of five current language targets**. Its localized **README-Updater.txt** tables list the complete source hash, size and exact patch name, plus the current target hash. They cover the supported retail editions and verified historical Plus inputs through 1.3.1, including original Plus 1.03 and separately identified 1.04 and 1.2.2 editions. Apply **one** patch matching your exact input. Older versions are input identities; only the current {{VERSION}} targets are produced. Unknown or modified ROMs are not admitted.
-
-Cheats are optional. Each language's `Cheats` folder in the main ZIP contains localized project code files for that exact target, initially disabled, with `README.txt` explaining their static admission checks and runtime coverage. Native features such as the Guide and EV/IV reader need no cheats. Historical third-party cheat catalogues are not carried forward.
-
-Package revision **r3** changes the download layout and document notices; the five game ROMs remain byte-identical to 1.3.2. If you already have the verified 1.3.2 game, you do not need to patch it again. Both downloads retain credits and the complete original English GPLv3 with localized explanations. Use the main player ZIP to play; GitHub's automatic **Source code (zip / tar.gz)** files are for developers. No ROM is included: use your own cartridge backup.
-
-<details>
-<summary>Build inputs for developers</summary>
-
-The source tools use these authenticated inputs, preserved with their original hashes:
-[English base delta](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/base-1.1-EN.xdelta),
-[Italian base delta](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/base-1.1-IT.xdelta),
-[English reference documents](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/SGP-Source-References-EN.zip),
-[Italian reference documents](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/{{RELEASE_TAG}}/SGP-Source-References-IT.zip).
-Use the multilingual player ZIP above to install the current game.
-
-</details>
+Cheat files are optional, localized and bound to each exact target; read their
+**README.txt** and leave them disabled unless needed. Native features need no
+cheats. The complete original English GPLv3 and localized explanations remain
+included. **Developer-Inputs** preserves the four authenticated historical
+build inputs inside the same download. [Source and build instructions](https://github.com/Umberto-DEV/sacred-gold-plus/tree/{{RELEASE_TAG}}/source)
+are on GitHub; automatic source archives are for developers. No ROM, save, BIOS
+or emulator is included.
 
 ## Game features
 

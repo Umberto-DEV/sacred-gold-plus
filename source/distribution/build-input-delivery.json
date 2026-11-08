@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/1.3.2/Sacred-Gold-Plus-1.3.2.zip",
+  "bytes": 1186672021,
+  "sha256": "037a35d4d48118ef5fbca273de3caf97cfdfff2e58ea4328e0e5ac78095fd78e",
+  "files": [
+    {
+      "name": "base-1.1-EN.xdelta",
+      "sha256": "0bd20d17c8b18ee0a369d812b01facd83b00b3179d5fdca2ab149274b8248fc0",
+      "bytes": 5747714,
+      "member": "Sacred Gold Plus 1.3.2/Developer-Inputs/base-1.1-EN.xdelta"
+    },
+    {
+      "name": "base-1.1-IT.xdelta",
+      "sha256": "818bba0618da350440c6516a56ddc557c445cdbc79699835361866b3152c2014",
+      "bytes": 16183741,
+      "member": "Sacred Gold Plus 1.3.2/Developer-Inputs/base-1.1-IT.xdelta"
+    },
+    {
+      "name": "SGP-Source-References-EN.zip",
+      "sha256": "dae462265bd0bd6f0cb7e703cd5029fe25e78c35115f6939bf61841c449e9053",
+      "bytes": 2482924,
+      "member": "Sacred Gold Plus 1.3.2/Developer-Inputs/SGP-Source-References-EN.zip"
+    },
+    {
+      "name": "SGP-Source-References-IT.zip",
+      "sha256": "4ef686035cd65b89db79dd8738743f4c4bf305b90d8c267eaffc7f6779f96674",
+      "bytes": 2483578,
+      "member": "Sacred Gold Plus 1.3.2/Developer-Inputs/SGP-Source-References-IT.zip"
+    }
+  ]
+}

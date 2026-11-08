@@ -3,7 +3,8 @@
 The shared features below continue in 1.3.2. See the [current change log](../../CHANGELOG.md)
 and [five-language validation](validation/localization-1.3.2.md) for localization
 and the New Game correction. The 1.3.1 hashes below retain their historical scope.
-The current [1.3.2 package revision](validation/package-1.3.2-r3.md) separates the
+The [Guide opening correction](validation/guide-opening-1.3.2.md) has separate
+candidate-bound evidence. The historical [1.3.2 package revision](validation/package-1.3.2-r3.md) separates the
 five clean-ROM patches from optional historical updaters and places translated
 installation/news PDFs beside each language's patch. It changes no game bytes.
 

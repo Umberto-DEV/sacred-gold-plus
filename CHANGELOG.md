@@ -1,5 +1,18 @@
 # What changed
 
+## 1.3.2 — Guide opening correction
+
+- Corrected intermittent Guide refusal after native font managers are reused.
+  Lazy fonts leave their unused direct-cache word uninitialized; the UI now
+  checks cache pointers only for the direct decoder, preserves the native word
+  through temporary ownership and retains active-cache alias protections.
+- Aligned Guide/Options admission and resource retirement with the same native
+  font modes. Added compiled ARM and native regression coverage; see the
+  [candidate-bound correction report](source/docs/validation/guide-opening-1.3.2.md).
+- Retained game version 1.3.2 and stable save layouts/settings. The final player
+  archive combines clean patches, optional recognized-source updaters and the
+  existing illustrated documentation under one download name.
+
 ## 1.3.2 package revision 3
 
 - Republished the corrected five-language package under a new release tag after

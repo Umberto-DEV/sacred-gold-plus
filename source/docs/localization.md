@@ -91,11 +91,15 @@ and limits. Bounded host results do not imply physical-handheld testing.
 All game captures and saves remain private. Technical checks and authored
 translation review do not constitute independent native-speaker certification.
 
-The 1.3.2 package has five language folders, nine translated PDFs and localized
-cheat material per folder. It contains five current targets, with all 30
-recognized original/historical sources supported for each language: 150 explicit
-routes. No older playable target is included. Historical contracts, tags and
-recorded identities retain their original scope.
+The corrected 1.3.2 package keeps five language folders in one ZIP. Each has
+localized installation/news PDFs and cheat material; seven English gameplay
+PDFs are shared once. The archive includes 175 explicit updater routes from 35
+recognized original/historical inputs, including the original five 1.3.2 builds.
+All five corrected language targets have individual native SAVE/cold-restart
+and localized Guide/Options checks in the [correction report](validation/guide-opening-1.3.2.md).
+EN/IT are built by the shared composer; FR/ES/DE presentation is composed and
+independently read back against that exact corrected English core. Historical
+contracts and reports retain their original identities and limitations.
 
 Manuals read names and numerical facts from each exact candidate and matching
 retail baseline. Encounter records keep verified native IDs/weights; unmapped
