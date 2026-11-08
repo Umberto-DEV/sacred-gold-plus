@@ -93,7 +93,12 @@ Sacred Gold Plus 1.3.2/
   Credits-and-Licenses/IT-Italiano/LICENZA.txt
 ```
 
-All 150 routes are encoded and decoded sequentially with xdelta3, independently
+All 150 routes use a bounded 256 MiB xdelta3 source-search window, covering
+every admitted source instead of repeatedly embedding distant unchanged data.
+Secondary compression stays disabled for standard Rom Patcher JS compatibility.
+The finished player ZIP must remain under GitHub's 2 GiB per-asset limit; an
+oversized output is rejected before its verification receipt is produced.
+Routes are decoded sequentially with xdelta3, independently
 decoded with the pinned RomPatcher.js snapshot, and checked against its entire
 exact target hash. Temporary reconstructed ROMs and patches are removed even
 on decoder failure. Every input is rechecked before the ZIP is finalized.

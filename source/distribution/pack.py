@@ -20,6 +20,9 @@ STAMP = (2026, 10, 27, 0, 0, 0)
 MAX_REFERENCE_ZIP_BYTES = 256 * 1024 * 1024
 MAX_REFERENCE_MEMBER_BYTES = 8 * 1024 * 1024
 MAX_REFERENCE_TOTAL_BYTES = 32 * 1024 * 1024
+# Cover all admitted source bytes in the encoder's bounded search window.
+MULTILINGUAL_SOURCE_WINDOW = 256 * 1024 * 1024
+MAX_RELEASE_ASSET_BYTES = 2 * 1024 * 1024 * 1024
 MULTILINGUAL_LOCALES = ('EN', 'IT', 'FR', 'ES', 'DE')
 MULTILINGUAL_PDFS = ('Installation', 'Whats-New', 'Special-Events', 'Pokemon-Changes',
                     'Pokemon-Locations', 'Evolutions', 'Items-TMs', 'Trainers', 'Game-Guide')
@@ -754,7 +757,7 @@ def multilingual_originals(references, cfg):
 def _verified_route(source, target, paths, locale, work, rpjs, node, xdelta):
     patch, decoded = work / 'route.xdelta', work / 'decoded.nds'
     try:
-        run([xdelta, '-e', '-A', '-S', 'none', '-D', '-s', paths[source['id']],
+        run([xdelta, '-e', '-A', '-S', 'none', '-D', '-B', str(MULTILINGUAL_SOURCE_WINDOW), '-s', paths[source['id']],
              paths['target-' + locale], patch])
         raw = patch.read_bytes()
         if raw[:5] != bytes.fromhex('d6c3c40000'):
@@ -828,6 +831,7 @@ def build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdel
         manifest = dict(schema=2, version=cfg['version'], targets=cfg['targets'],
                         locales=cfg['locales'], routes_by_target=cfg['routes_by_target'],
                         routes=sum(len(m['patches']) for m in manifests.values()),
+                        encoder_source_window_bytes=MULTILINGUAL_SOURCE_WINDOW,
                         decoders=['xdelta3', 'RomPatcher.js'], rompatcher_commit=cfg['rompatcher_commit'])
         if 'status' in cfg:
             manifest.update(status=cfg['status'], open_gates=cfg.get('open_gates', []),
@@ -843,6 +847,8 @@ def build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdel
         members = {root + name: content for name, content in members.items()}
         archive = output / ('Sacred-Gold-Plus-' + cfg['version'] + '-Multilingual.zip')
         write_zip(archive, members)
+        if archive.stat().st_size >= MAX_RELEASE_ASSET_BYTES:
+            raise ValueError('Player ZIP must be under the GitHub 2 GiB asset limit')
         results = [dict(file=archive.name, bytes=archive.stat().st_size, sha256=digest(archive),
                         members=len(members), routes=manifest['routes'])]
     (output / 'SHA256SUMS').write_text(results[0]['sha256'] + '  ' + archive.name + '\n')

@@ -121,6 +121,11 @@ versions. Unknown or altered inputs fail SHA-256/size admission. “Universal”
 means this complete authenticated set; a filename/version label is insufficient.
 Every route must reconstruct its chosen target through both xdelta3 and the
 pinned independent Rom Patcher JS decoder, compared by complete output hash.
+The encoder uses a 256 MiB source-search window covering all admitted sources;
+secondary compression remains off. A measured 64 MiB/default-window package
+was oversized and was superseded before publication. The public packager rejects
+a player ZIP at or above GitHub's 2 GiB asset limit. This changes patch encoding,
+not the ROM targets, documents or raw-save evidence.
 This proves reconstruction equivalence across source ROMs, not universal-save
 compatibility. Applying a ROM patch does not modify a raw `.sav`.
 

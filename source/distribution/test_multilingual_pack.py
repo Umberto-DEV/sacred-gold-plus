@@ -122,7 +122,10 @@ class MultilingualPackageTests(unittest.TestCase):
         def external(args):
             a=list(map(str,args))
             if a[0]=='xdelta3':
-                if '-e'in a:Path(a[-1]).write_bytes(bytes.fromhex('d6c3c40000')+Path(a[-2]).read_bytes())
+                if '-e'in a:
+                    self.assertIn('-B',a)
+                    self.assertEqual(a[a.index('-B')+1],'268435456')
+                    Path(a[-1]).write_bytes(bytes.fromhex('d6c3c40000')+Path(a[-2]).read_bytes())
                 else:Path(a[-1]).write_bytes(b'wrong'if corrupt=='xdelta'else Path(a[-2]).read_bytes()[5:])
                 return ''
             if a[0]=='node':
@@ -164,6 +167,18 @@ class MultilingualPackageTests(unittest.TestCase):
                 self.assertEqual(set(inventory),{n[len(prefix):]for n in names}-{'CONTENTS.json','SHA256SUMS'})
                 for name,p in inventory.items():self.assertEqual(pin(z.read(prefix+name)),p)
             self.assertFalse(list(out.glob('sgp-package-*')))
+    def test_github_oversize_asset_is_rejected_before_verification_receipt(self):
+        with tempfile.TemporaryDirectory()as td:
+            root=Path(td);c,refs,guides,inputs,cp=self.fixtures(root);out=root/'out'
+            write=pack.write_zip
+            def oversized(path,members):
+                write(path,members)
+                with path.open('r+b')as handle:handle.truncate(2*1024**3)
+            with self.decoders(root),mock.patch.object(pack,'write_zip',oversized):
+                with self.assertRaisesRegex(ValueError,'2 GiB'):
+                    pack.build(inputs,refs,guides,out,root/'unused',contract=cp)
+            self.assertFalse((out/'verification.json').exists())
+
     def test_changed_or_wrong_locale_pdf_rejected_before_output(self):
         for kind in ('tampered','wrong-locale','stale'):
             with self.subTest(kind=kind),tempfile.TemporaryDirectory()as td:

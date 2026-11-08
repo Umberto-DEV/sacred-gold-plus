@@ -12,7 +12,9 @@
 - Added one five-language package with 150 direct routes from 30 recognized
   original/historical bases, nine translated PDFs per language and six optional
   project cheats admitted against each exact revision. The unverified money
-  pointer and historical third-party cheat database are omitted.
+  pointer and historical third-party cheat database are omitted. A bounded
+  256 MiB encoder search window avoids embedding distant unchanged source data;
+  oversized GitHub release assets are rejected before acceptance.
 - Player references derive names and numerical facts from the final candidates.
   PDF/cheat hashes and sizes are authenticated before packaging. Original author
   references and credits remain shared and unchanged.
