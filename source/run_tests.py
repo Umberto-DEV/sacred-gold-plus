@@ -56,9 +56,9 @@ ROOT = SOURCE.parent
 
 # (name, working directory, unittest arguments)
 SUITE = [
-    ("retail localization contracts", SOURCE, ["-m", "unittest", "localization.test_localization"]),
+    ("multilingual localization contracts", SOURCE, ["-m", "unittest", "discover", "-s", "localization", "-t", ".", "-p", "test*.py"]),
     ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
-    ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test*.py"]),
+    ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test*.py"], {"PYTHONPATH": str(SOURCE)}),
     ("Class A runner contracts", SOURCE, ["-m", "unittest", "test_run_tests"]),
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione", "sgp12.test_publication"]),

@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "language": "FR",
+  "strings": {
+    "s:0": "Ton équipe",
+    "s:1": "Les EV et IV d’un Pokémon se lisent",
+    "s:2": "dans son résumé. Ouvre la page",
+    "s:3": "des stats pour les voir.",
+    "s:4": "Deux types de valeurs",
+    "s:5": "Les IV vont de 0 à 31. Les EV",
+    "s:6": "augmentent avec l’entraînement.",
+    "s:7": "Les deux influencent les stats.",
+    "s:8": "Commandes",
+    "s:9": "L : EV. R : IV. SELECT : stats.",
+    "s:10": "Ces valeurs sont aussi visibles",
+    "s:11": "depuis le PC.",
+    "s:12": "L=A désactive L/R. Dans OPTIONS,",
+    "s:13": "choisis Normal pour voir les EV/IV.",
+    "s:14": "SELECT rétablit les stats.",
+    "s:15": "START Guide",
+    "s:16": "← Retour",
+    "s:17": "A Suite",
+    "s:18": "A Fin",
+    "s:19": "B Fermer",
+    "s:20": "Rouvrir: START",
+    "s:21": "1/3",
+    "s:22": "2/3",
+    "s:23": "3/3"
+  }
+}

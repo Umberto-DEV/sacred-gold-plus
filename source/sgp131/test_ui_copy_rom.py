@@ -74,7 +74,8 @@ class CanonicalCopyTests(unittest.TestCase):
         self.assertEqual(receipt['authored_text_bytes'], geometry['authored_text_bytes'])
         self.assertEqual(receipt['member_bytes'], (60564 + geometry['authored_budget_bytes'] + 3) & ~3)
         self.assertEqual(receipt['widths_crc32'], 0x885AB7FC)
-        self.assertEqual(ui_copy.c_header(catalogue), (SOURCE / 'features/settings-ui/catalog.h').read_text())
+        from localization.catalogue import ui_catalogue
+        self.assertEqual(ui_copy.c_header(ui_catalogue()), (SOURCE / 'features/settings-ui/catalog.h').read_text())
         # Separate directory parser and old species decoder: all493 survive exactly.
         member = bytes(NARC(replacement).files[51])
         count = struct.unpack_from('<I', member, 100)[0]

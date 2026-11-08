@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "language": "ES",
+  "strings": {
+    "p_aiuto_a": "A: Guardar",
+    "p_aiuto_b": "B: Cancelar",
+    "p_bloccato": "Aún no está disponible.",
+    "p_rifiutato": "Datos ilegibles. Modo 1.1.",
+    "p_suggerimento": "SELECT → Plus",
+    "n_fluido": "Fluido",
+    "c_riga1": "No hay ajustes Plus guardados.",
+    "c_riga2": "Elige ahora tus ajustes.",
+    "c_riga1n": "Comienza una nueva aventura.",
+    "c_riga2n": "Elige ahora tus ajustes.",
+    "c_nota": "Se cambian en OPCIONES.",
+    "c_aiuto": "A: Confirmar    B: Luego",
+    "v0_nome": "Dificultad",
+    "v1_nome": "Niveles salvajes",
+    "v2_nome": "Pokémon animados",
+    "v3_nome": "Personajes",
+    "v4_nome": "Servidor en línea",
+    "x_off": "No",
+    "x_on": "Sí",
+    "x_normale": "Normal",
+    "x_plus": "Plus",
+    "n_norm": "Normal",
+    "w_0": "Original",
+    "w_1": "Conex. 2",
+    "w_2": "Conex. 3",
+    "p_titolo": "Sacred Gold Plus V1.3.2",
+    "c_titolo": "Sacred Gold Plus V1.3.2"
+  }
+}

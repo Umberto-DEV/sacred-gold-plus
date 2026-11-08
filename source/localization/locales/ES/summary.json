@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "language": "ES",
+  "strings": {
+    "s:0": "Tu equipo",
+    "s:1": "Los EV e IV se ven en el resumen",
+    "s:2": "del Pokémon. Abre la página de",
+    "s:3": "estadísticas para verlos.",
+    "s:4": "Dos tipos de valores",
+    "s:5": "Los IV van de 0 a 31. Los EV",
+    "s:6": "aumentan al entrenar. Ambos",
+    "s:7": "influyen en las estadísticas.",
+    "s:8": "Controles",
+    "s:9": "L muestra EV. R muestra IV.",
+    "s:10": "SELECT restaura las estadísticas.",
+    "s:11": "También se pueden ver en el PC.",
+    "s:12": "L=A desactiva L/R. En OPCIONES,",
+    "s:13": "elige Normal para ver EV e IV.",
+    "s:14": "SELECT restaura las estadísticas.",
+    "s:15": "START Guía",
+    "s:16": "← Atrás",
+    "s:17": "A Seguir",
+    "s:18": "A Listo",
+    "s:19": "B Cerrar",
+    "s:20": "Abrir: START",
+    "s:21": "1/3",
+    "s:22": "2/3",
+    "s:23": "3/3"
+  }
+}

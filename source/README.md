@@ -5,12 +5,11 @@ and [repository map](docs/architecture/README.md),
 [feature ownership index](features/README.md) and
 [documentation index](docs/README.md) to find the relevant source and checks.
 
-This tree contains an **unreleased 1.3.2 source correction**, native payload
-sources, build tools, tests and technical documentation. The published player
-release remains 1.3.1; its exact ROM hashes and package contract are historical
-release identities, not outputs of this development head. Start with the
-[composition guide](sgp131/README.md) for the exact inputs, UI configuration,
-owner activation and output verification. The `sgp12` commands below rebuild
+This tree contains the five-language **1.3.2** sources, native payloads,
+build tools, tests and technical documentation. Published 1.3.1 identities remain
+historical contracts; reproduce them from their published source revision.
+Start with the [localization guide](docs/localization.md) and
+[shared composition guide](sgp131/README.md). The `sgp12` commands below rebuild
 the **1.2.5** predecessor from your own retail HeartGold.
 
 The [1.3 builder guide](sgp13/README.md) describes the earlier feature line.
@@ -27,8 +26,8 @@ The [change register](docs/whats-new-1.3.1.md),
 [published validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
 The [1.3.2 source correction](../BUG-FIXES-1.3.2.md) and its
-[measured New Game regression](docs/validation/new-game-reset-1.3.2.md) are a
-separate, unreleased checkpoint.
+[measured New Game regression](docs/validation/new-game-reset-1.3.2.md) retain the original diagnosis and probe identities. Current acceptance is in
+[the five-language 1.3.2 report](docs/validation/localization-1.3.2.md).
 The [base-stage evidence](docs/base-stage-validation.md),
 [Android campaign of 29 October](docs/android-validation.md),
 [earlier device campaign](docs/device-validation.md),
@@ -41,6 +40,17 @@ The [stability investigation](docs/stability-investigation-1.3.1.md) and
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
 
 Game-dependent tools read **your own** game files. No game file is distributed, and none is needed to run the ROM-free tests in CI. Exact historical intermediate hashes and toolchains are required where the composition guide states them. How changes get in is at the end of this page.
+
+## Five-language 1.3.2
+
+The current localization layer adds FR/ES/DE to EN/IT using exact retail donors
+and one guarded gameplay core. Per-language sources, the composition command,
+native presentation ownership and input hashes are documented in
+[localization.md](docs/localization.md). The [1.3.2 validation report](docs/validation/localization-1.3.2.md)
+separates bounded game/save acceptance from ROM-free tests. The latest-target
+package uses [the schema-2 contract](distribution/release-1.3.2.json) and
+[candidate-derived player PDFs](distribution/reference_docs.py). Follow
+[the repeatable update procedure](docs/update-workflow.md) for future releases.
 
 ## What is here
 

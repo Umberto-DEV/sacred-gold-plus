@@ -72,7 +72,8 @@ def _expected_text(species, authored):
 
 def _verify_parts(original, replacement, language, assets, species, authored, widths_crc):
     expected, authored_source = _expected_text(species, authored)
-    _require(language in ('EN', 'IT') and len(assets) == 48320, 'expected language/assets')
+    language_ids = {'EN': 0, 'IT': 1, 'FR': 2, 'ES': 3, 'DE': 4}
+    _require(language in language_ids and len(assets) == 48320, 'expected language/assets')
     _require(type(widths_crc) is int and 0 <= widths_crc <= 0xFFFFFFFF, 'expected widths CRC')
     old_spans, old_names, old_image, old_base = _archive(original)
     spans, names, image, base = _archive(replacement)
@@ -88,7 +89,7 @@ def _verify_parts(original, replacement, language, assets, species, authored, wi
     length = len(member)
     _require(128 <= length <= 69632 and length % 4 == 0 and len(replacement) == 35380 + length,
              'complete member cap/alignment')
-    lang = 0 if language == 'EN' else 1
+    lang = language_ids[language]
     fixed = (b'UIR2', 2, 128, length, lang, 48320, 20, 128, 608, 576, 32,
              12288, 32576, 44864, 32, widths_crc, 7)
     _require(struct.unpack_from('<4sHH14I', member) == fixed, 'member fixed header')

@@ -99,7 +99,7 @@ static unsigned sr_footer_match(const SettingsRenderCatalog *c,unsigned id,unsig
  const unsigned char *text=sr_lookup(c,id,&n),*alpha=sr_lookup(c,SGP_UI_FORMAT_POOL,&an);
  if(!text || !alpha || an<19 || sr16(alpha+2*(an-1))!=65535)return 0;
  unsigned space=sr16(alpha+26);
- for(unsigned v=0;v<12;++v) {
+ for(unsigned v=0;v<SGP_UI_FOOTER_LAYOUT_COUNT;++v) {
   unsigned storage[7];sr_footer_descriptor(v,storage);const unsigned char *d=(const unsigned char *)storage;unsigned last=0,units=0,w=0,ok=1;
   if(d[0]!=id || d[1]!=n || !d[2] || d[2]>8)continue;
   for(unsigned j=0;j<d[2];++j) {
@@ -374,7 +374,7 @@ static unsigned sr_plan(const SettingsRenderPlan *p) {
  if(p->magic!=SETTINGS_RENDER_MAGIC || p->count>SETTINGS_RENDER_OPS || p->view>6 || p->frame>20)return 0;
  for(i=0;i<p->count;i++){const SettingsDrawOp *o=&p->ops[i];
   if(!o->w || !o->h || o->x+o->w>240 || o->y+o->h>176 || o->kind<1 || o->kind>SETTINGS_DRAW_FOOTER)return 0;
-  if(o->kind==SETTINGS_DRAW_FOOTER && (o->a>=12 || !o->b || o->b>8 || !o->units || o->units>128 || o->x!=4 || o->y!=156 || o->w!=232 || o->h!=16 || o->flags || o->row!=255))return 0;
+  if(o->kind==SETTINGS_DRAW_FOOTER && (o->a>=SGP_UI_FOOTER_LAYOUT_COUNT || !o->b || o->b>8 || !o->units || o->units>128 || o->x!=4 || o->y!=156 || o->w!=232 || o->h!=16 || o->flags || o->row!=255))return 0;
  }return 1;
 }
 unsigned settings_render_dirty(const SettingsRenderPlan *old,const SettingsRenderPlan *now,unsigned bad,unsigned *full) {

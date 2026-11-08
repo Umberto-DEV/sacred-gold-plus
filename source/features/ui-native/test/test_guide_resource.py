@@ -5,6 +5,16 @@ class GuideResourceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.temp=tempfile.TemporaryDirectory();cls.addClassCleanup(cls.temp.cleanup);cls.compiled=compile_guide(Path(cls.temp.name))
+    def test_supported_locale_ids_load_and_unknown_ids_refuse(self):
+        for locale in range(5):
+            with self.subTest(locale=locale):
+                b=GuideBench(self.compiled);b.put(CFG+8,locale)
+                self.assertEqual(b.start(),MORE)
+                self.assertEqual(b.finish(),READY)
+        for locale in (5,0xffffffff):
+            b=GuideBench(self.compiled);b.put(CFG+8,locale)
+            self.assertEqual(b.start(),0)
+            self.assertEqual(b.fs_calls,[])
     def test_bounded_pump_keeps_reads_and_output_and_does_not_spin_on_wait(self):
         self.assertIn('ui_guide_pump',self.compiled[1])
         results=[]

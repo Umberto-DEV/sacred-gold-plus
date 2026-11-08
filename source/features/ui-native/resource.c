@@ -58,7 +58,7 @@ static RWord rcrc(RWord c,const RByte *p,RWord n) {
     return c;
 }
 static unsigned rconfig(const RWord *c) {
-    return c[0]==0x32435255 && c[1]==2 && c[2]<=1 && c[4]==468 && c[5]==51 && c[6]==35380 &&
+    return c[0]==0x32435255 && c[1]==2 && c[2]<=4 && c[4]==468 && c[5]==51 && c[6]==35380 &&
       c[7]>=53380 && c[7]<=69632 && !(c[7]&3) && c[3]==35380+c[7] && c[8]==48320 &&
       c[11]==0x885AB7FC && c[12]==509 && c[13]==64 && c[14]==7 && !c[15];
 }

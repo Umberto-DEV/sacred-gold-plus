@@ -1,8 +1,12 @@
-# New Game reset: 1.3.2 source validation
+# New Game reset: historical 1.3.2 investigation
 
-**Status:** source correction under development; no 1.3.2 player package or
-release ROM has been accepted or published. The hashes below identify the
-specific predecessors and diagnostic probes, not a production 1.3.2 build.
+**Historical diagnostic record:** this investigation preceded the formal
+five-language 1.3.2 composition. Its source-only status and open release gate
+describe that checkpoint. The hashes below identify specific predecessors and
+diagnostic probes, not current player builds. Current identities and bounded
+acceptance are recorded in the [1.3.2 report](localization-1.3.2.md) and
+[release contract](../../distribution/release-1.3.2.json). The original
+measurements and limitations below are unchanged.
 
 ## Measured cause
 

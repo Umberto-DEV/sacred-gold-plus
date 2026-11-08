@@ -158,6 +158,7 @@ GUIDE_PAGING label
 """.strip().splitlines()
 _LAYOUT = tuple(tuple(line.split()) for line in _ENTRY_LAYOUT)
 LANGUAGES = ('EN', 'IT')
+SUPPORTED_LANGUAGES = ('EN', 'IT', 'FR', 'ES', 'DE')
 WINDOW = (8, 8, 240, 176)
 VIEWPORT_Y = (36, 56, 76, 96, 116, 136)
 # Separate fixed extents; a short neighbour never lends its region to long text.
@@ -192,6 +193,16 @@ def _keys(value, keys):
         raise ValueError('invalid catalogue fields')
 
 
+def _catalogue_languages(catalogue):
+    entry = catalogue['entries'][0]
+    if type(entry) is not dict or type(entry.get('text')) is not dict:
+        raise ValueError('invalid catalogue text')
+    keys = set(entry['text'])
+    if not set(LANGUAGES) <= keys <= set(SUPPORTED_LANGUAGES):
+        raise ValueError('catalogue languages')
+    return tuple(language for language in SUPPORTED_LANGUAGES if language in keys)
+
+
 def _validate(catalogue):
     _keys(catalogue, ('schema', 'entries', 'rows', 'methods', 'status', 'footer_runs'))
     if type(catalogue['schema']) is not int or catalogue['schema'] != 1:
@@ -199,13 +210,14 @@ def _validate(catalogue):
     entries = catalogue['entries']
     if type(entries) is not list or len(entries) != len(_LAYOUT):
         raise ValueError('missing authored copy')
+    languages = _catalogue_languages(catalogue)
     for identity, (entry, (name, role)) in enumerate(zip(entries, _LAYOUT), 1):
         _keys(entry, ('id', 'name', 'role', 'text'))
         if type(entry['id']) is not int or entry['id'] != identity or identity > 0xFFF:
             raise ValueError('unstable/duplicate authored ID')
         if type(entry['name']) is not str or entry['name'] != name or entry['role'] != role:
             raise ValueError('unstable/duplicate name or geometry role')
-        _keys(entry['text'], LANGUAGES)
+        _keys(entry['text'], languages)
         for value in entry['text'].values():
             if type(value) is not str or not value or value != value.strip():
                 raise ValueError('copy must be a nonempty trimmed string')
@@ -214,7 +226,7 @@ def _validate(catalogue):
     footers = {e['name']: e for e in entries if e['name'].startswith('FOOTER_')}
     _keys(catalogue['footer_runs'], footers)
     for name, entry in footers.items():
-        _keys(catalogue['footer_runs'][name], LANGUAGES)
+        _keys(catalogue['footer_runs'][name], languages)
         for language, runs in catalogue['footer_runs'][name].items():
             if type(runs) is not list or not 1 <= len(runs) <= 8:
                 raise ValueError('footer run count')
@@ -321,10 +333,11 @@ def encode_catalogue(catalogue, language, encode, widths):
     Admission uses actual encoded advances, never character-count estimates.
     Scalar alternatives reserve 8px per choice and 3px between choice bands;
     arrows each reserve10px. Long domains use the current value and A selector.
+    Footer runs include the native13px key caps and9px inter-label gaps.
     Native species widths are supplied/verified separately by Class B/the scene.
     """
     _validate(catalogue)
-    if type(language) is not str or language not in LANGUAGES:
+    if type(language) is not str or language not in _catalogue_languages(catalogue):
         raise ValueError('catalogue language')
     if type(widths) not in (bytes, tuple, list) or len(widths) != 509 or any(type(w) is not int or not 0 <= w <= 16 for w in widths):
         raise ValueError('expected 509 native glyph advances')
@@ -339,16 +352,36 @@ def encode_catalogue(catalogue, language, encode, widths):
         limit = 2 if name == 'PREVIEW_TEXT' else 4 if role == 'preview_info' else 7 if role in ('info', 'body') else 1
         if len(line_widths) > limit or max(line_widths) > width:
             raise ValueError('copy exceeds geometry: ' + name)
+        footer_width = None
         if name in catalogue['footer_runs']:
             runs = catalogue['footer_runs'][name][language]
-            for run in runs:
-                if len(_encoded(run['text'], encode)) != len(run['text']) + 1:
+            footer_width = 0
+            for index, run in enumerate(runs):
+                glyphs = _encoded(run['text'], encode)
+                if len(glyphs) != len(run['text']) + 1:
                     raise ValueError('footer boundary needs one native glyph per authored character')
+                if any(not widths[g - 1] for g in glyphs[:-1]):
+                    raise ValueError('footer has a zero-width native glyph: ' + name)
+                footer_width += sum(widths[g - 1] for g in glyphs[:-1])
+                footer_width += 13 if run['key'] else 9 if index + 1 < len(runs) else 0
+            if footer_width > BODY_WIDTH:
+                raise ValueError('footer exceeds rendered geometry: ' + name)
         authored[entry['id']] = words
         measured[name] = dict(role=role, line_widths=line_widths, glyph_units=len(words))
+        if footer_width is not None:
+            measured[name]['footer_rendered_width_px'] = footer_width
         texts[name] = text
     def width(name):
         return measured[name]['line_widths'][0]
+    action_bar_right = {}
+    for name, labels in (('exit', ('ACTION_APPLY', 'ACTION_DISCARD', 'ACTION_CONTINUE')),
+                         ('apply', ('ACTION_APPLY', 'ACTION_CANCEL'))):
+        x = 4
+        for label in labels:
+            if x + width(label) + 8 > 240:
+                raise ValueError('action bar exceeds geometry: ' + name)
+            x += width(label) + 16
+        action_bar_right[name] = x - 8
     if any(max(e['line_widths']) > 200 for e in measured.values() if e['role'] == 'context'):
         raise ValueError('context exceeds fixed header region')
     # Synthetic numeric strings use only the explicit authored FORMAT_POOL alphabet.
@@ -383,6 +416,7 @@ def encode_catalogue(catalogue, language, encode, widths):
                   title_y=4, context_y=20, viewport_y=list(VIEWPORT_Y), footer_y=156,
                   header_regions={name: list(region) for name, region in HEADER_REGIONS.items()},
                   body_width=232, font_height=16, selected_band_height=20,
+                  action_bar_right_px=action_bar_right,
                   title_version_px=title, context_ordinal_px=context,
                   authored_entries=len(authored), authored_text_bytes=sum(2 * len(v) for v in authored.values()),
                   authored_directory_bytes=8 * len(authored),
@@ -400,7 +434,7 @@ def c_header(catalogue):
     lines += ['};', '/* SettingsRow order; native logical values index each domain. */']
     layouts = []
     for name, languages in catalogue['footer_runs'].items():
-        for language in LANGUAGES:
+        for language in _catalogue_languages(catalogue):
             runs = languages[language]; offset = 0; fields = []
             for index, run in enumerate(runs):
                 if index: offset += 1 if runs[index-1]['key'] else 2
@@ -413,6 +447,7 @@ def c_header(catalogue):
         padded = bytes(row + [0])
         values = [int.from_bytes(padded[k:k+4], 'little') for k in range(0,28,4)]
         cases.append('case %d: '%index + ''.join('p[%d]=0x%08xu;'%(i,v) for i,v in enumerate(values)) + 'return 1;')
+    lines.append('#define SGP_UI_FOOTER_LAYOUT_COUNT ' + str(len(layouts)))
     lines.append('#define SGP_UI_FOOTER_LAYOUT_CASES ' + ' '.join(cases))
     def macro(name, names):
         lines.append('#define SGP_UI_' + name + ' { ' + ', '.join('SGP_UI_' + n for n in names) + ' }')

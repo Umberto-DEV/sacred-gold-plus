@@ -1,41 +1,33 @@
 # What changed
 
-## 1.3.2 source work (unreleased)
+## 1.3.2
 
-Multilingual build preparation now identifies exact French, Spanish and German
-retail HeartGold donors alongside EN/IT and inventories modified messages and
-resource conflicts. ROM-free checks reject changed input bytes, incompatible
-headers and unsafe donor selection. This checkpoint does not yet certify
-translated game outputs or a multilingual player package.
+- Added French, Spanish and German alongside English and Italian. Official
+  retail presentation is combined with explicit Sacred Gold/Plus translations;
+  shared gameplay code and save layouts remain stable.
+- Added separate locale sources, native accent rows, Fairy labels, onboarding,
+  Summary help and German FP/DV terminology. Ordinary field dialogue uses
+  native-font layout checks; menu footers and action bars use the C planner's
+  actual width bounds.
+- Added one five-language package with 150 direct routes from 30 recognized
+  original/historical bases, nine translated PDFs per language and six optional
+  project cheats admitted against each exact revision. The unverified money
+  pointer and historical third-party cheat database are omitted.
+- Player references derive names and numerical facts from the final candidates.
+  PDF/cheat hashes and sizes are authenticated before packaging. Original author
+  references and credits remain shared and unchanged.
+- Fixed the New Game reset after Mom's first conversation: empty event-bank
+  initialization now precedes the first story-variable access. Existing HF02
+  banks remain unchanged; Continue migrations preserve the older owned state.
+- Added a repeatable [update procedure](source/docs/update-workflow.md), explicit
+  locale/readback tests and candidate-bound [validation](source/docs/validation/localization-1.3.2.md).
+  The earlier [diagnosis](source/docs/validation/new-game-reset-1.3.2.md) retains
+  its predecessor/probe identities. The intermittent Latios report remains open.
 
-New Game could return to the opening screen after Mom's first conversation in
-both languages. A story-gate SetVar ran before the `HF02` event bank existed;
-the 1.3.1 handler requested an SDK reset despite the valid empty New Game
-reservation. High-flag and family-variable access now share one guarded
-initialization path. The save layout and identifiers remain unchanged. Mac
-before/after replay, a native reset breakpoint, a failing-then-passing ARM
-regression and a bounded Latios control are recorded in the
-[1.3.2 validation report](source/docs/validation/new-game-reset-1.3.2.md).
-The Latios freeze remains unisolated. No 1.3.2 package, Android acceptance or
-release-ROM identity is claimed at this source checkpoint.
-
-The source tree now has a contributor-facing [repository map](source/docs/architecture/README.md),
-[feature ownership index](source/features/README.md) and
-[validation index](source/docs/validation/README.md). Version labels in the
-next build sources are V1.3.2; published 1.3.1 download contracts and evidence
-remain versioned as 1.3.1 until a future player release is verified.
-The Ubuntu public-file job now uses its preinstalled Python 3: its standard
-library check does not need a separately downloaded interpreter. This removes
-the setup download that failed with HTTP 504 on the source-only CI retry;
-Class A and its native-toolchain requirements are unchanged.
-
-The public [contribution guide](CONTRIBUTING.md), issue forms and PR template
-now give independent contributors a fork-to-review path with exact Class A,
-private build, runtime and raw-save evidence. The runner includes 25 previously
-unregistered ROM-free assertions across the 1.3.1 successor modules, records
-skip reasons in CI output and rejects an entirely skipped Class A suite. A
-module inventory flags new unclassified successor tests. This is source and CI
-coverage, not acceptance of a 1.3.2 player release.
+Public files and hosted CI continue to distinguish ROM-free code tests from
+private game/save acceptance. The package includes only the five 1.3.2 targets.
+Historical contract/checksum records, tags and reports retain their identities;
+source-route coverage does not mean every possible older save was played.
 
 ## 1.3.1 package revision 2
 

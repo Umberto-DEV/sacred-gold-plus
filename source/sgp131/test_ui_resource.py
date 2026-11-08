@@ -65,6 +65,15 @@ def manual_resource(authored=AUTHORED):
 
 
 class ResourceCompilerTests(unittest.TestCase):
+    def test_five_locale_ids_are_encoded_and_independently_read_back(self):
+        for locale, identity in [('EN', 0), ('IT', 1), ('FR', 2), ('ES', 3), ('DE', 4)]:
+            with self.subTest(locale=locale):
+                member = compiler._pack_member(locale, ASSETS, NAMES, AUTHORED, WIDTHS_CRC)
+                replacement = compiler._append_member(old_archive(), member)
+                receipt = readback._verify_parts(old_archive(), replacement, locale, ASSETS, NAMES, AUTHORED, WIDTHS_CRC)
+                self.assertEqual(receipt['config_fields']['language'], identity)
+                self.assertEqual(struct.unpack_from('<I', member, 12)[0], identity)
+
     def test_foreign_input_rejected_without_writes(self):
         with tempfile.TemporaryDirectory() as directory:
             with patch('builtins.open', side_effect=AssertionError('compiler wrote/read a file')):
@@ -135,7 +144,7 @@ class ResourceCompilerTests(unittest.TestCase):
                         {**NAMES, 1: (0xE000, 65535)}):
             with self.subTest(species=len(species)), self.assertRaises(ValueError):
                 compiler._pack_member('EN', ASSETS, species, {}, WIDTHS_CRC)
-        for lang, assets in (('FR', ASSETS), ('EN', ASSETS[:-1])):
+        for lang, assets in (('JP', ASSETS), ('EN', ASSETS[:-1])):
             with self.assertRaises(ValueError):
                 compiler._pack_member(lang, assets, NAMES, {}, WIDTHS_CRC)
         for at, value in ((8, 35371), (20, 419), (24, 50), (28, 0xFFFFFFFF)):

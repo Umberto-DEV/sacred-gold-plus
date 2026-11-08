@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "language": "DE",
+  "strings": {
+    "category": "Entwicklungen",
+    "target": "Entwickelt sich zu: {species}",
+    "level": "Mindestens Level {p} erreichen.",
+    "friendship": "Levelaufstieg mit hoher Freundschaft.",
+    "friendship_day": "Tagsüber mit hoher Freundschaft aufsteigen.",
+    "friendship_night": "Nachts mit hoher Freundschaft aufsteigen.",
+    "trade": "Dieses Pokémon tauschen.",
+    "trade_item": "Mit getragenem Item {item} tauschen.",
+    "use_item": "{item} einsetzen.",
+    "male": "Nur männlich.",
+    "female": "Nur weiblich.",
+    "attack_gt": "Mindestens Level {p}; Angriff höher als Verteidigung.",
+    "attack_eq": "Mindestens Level {p}; Angriff gleich Verteidigung.",
+    "attack_lt": "Mindestens Level {p}; Angriff niedriger als Verteidigung.",
+    "branch": "Der Zweig hängt vom Pokémon ab; Statuswerte ändern ihn nicht.",
+    "shedinja": "Wenn Nincada Level {p} erreicht: einen Teamplatz frei halten und einen normalen Pokéball im Beutel haben.",
+    "beauty": "Mit mindestens {p} Schönheit aufsteigen.",
+    "level_any": "Einen Level aufsteigen.",
+    "hold_day": "Tagsüber mit getragenem Item {item} aufsteigen.",
+    "hold_night": "Nachts mit getragenem Item {item} aufsteigen.",
+    "known_move": "Mit der Attacke {move} im Moveset aufsteigen.",
+    "party_species": "Mit {species} im Team aufsteigen."
+  }
+}

@@ -1,0 +1,758 @@
+{
+  "schema": 2,
+  "version": "1.3.2",
+  "sources": [
+    {
+      "id": "clean-us",
+      "label": "Pokemon HeartGold (USA)",
+      "sha256": "65f02a56842b75aa92d775d56d657a56fe3fa993550b04dc20704ab82d760105",
+      "bytes": 134217728
+    },
+    {
+      "id": "clean-it",
+      "label": "Pokemon HeartGold (Italy)",
+      "sha256": "013d04f5512b01ad98735a5f850dc039f0ee80bc57035b3a10e8b650be690ce1",
+      "bytes": 134217728
+    },
+    {
+      "id": "plus-1.01",
+      "label": "Sacred Gold Plus 1.01 English",
+      "sha256": "f19b87321dbe8c8013894afe155d01b8e0cf0cf0951a9ed08cc323373015e4a6",
+      "bytes": 126978016
+    },
+    {
+      "id": "plus-1.02",
+      "label": "Sacred Gold Plus 1.02 English",
+      "sha256": "020791e06c87cfd7aee9d2d24c2b2d460ac1aea9545f8540375d6c875499a66b",
+      "bytes": 126976992
+    },
+    {
+      "id": "plus-1.03",
+      "label": "Sacred Gold Plus 1.03 English",
+      "sha256": "78b198fbad961970ef8563587fb2278ee957e6297589a847dbe78f73d12cc0c1",
+      "bytes": 126979552
+    },
+    {
+      "id": "plus-1.04-en-plus",
+      "label": "Sacred Gold Plus 1.04 US New Angle",
+      "sha256": "3ed4ea0291092d46def2f71454821bbde7832014ec020680468af7bfca686248",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-en-classic",
+      "label": "Sacred Gold Plus 1.04 US Normal Angle",
+      "sha256": "ef0e61bbcad07d732054a19a0b4ee64563bb2d7503ee9fd62348643fcb630760",
+      "bytes": 127038608
+    },
+    {
+      "id": "plus-1.04-it-plus",
+      "label": "Sacred Gold Plus 1.04 IT New Angle",
+      "sha256": "217daa45f4945abd3feda6f583f5163db029d1aa361c33c18f12b32ad4eca4a4",
+      "bytes": 131840584
+    },
+    {
+      "id": "plus-1.04-it-classic",
+      "label": "Sacred Gold Plus 1.04 IT Normal Angle",
+      "sha256": "9dd0c98eb96b91037592bc30574210b191e9f2c2fca45f466733eeb5b9a12d0a",
+      "bytes": 131840584
+    },
+    {
+      "id": "plus-1.1-en",
+      "label": "Sacred Gold Plus 1.1 English",
+      "sha256": "281c2d68e442479e679d8b7e36566ade614d236151c65c9684bad6985461827d",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.1-it",
+      "label": "Sacred Gold Plus 1.1 Italian",
+      "sha256": "7b61646c627eb67cd991dbc33d68519edd69395468ea8b326e867fe98e62d077",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.1-en",
+      "label": "Sacred Gold Plus 1.2.1 English",
+      "sha256": "09528bd920609b14484bdf6d12fc9fe1c3239934dfdb92a3816a38fac6579d0b",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.1-it",
+      "label": "Sacred Gold Plus 1.2.1 Italian",
+      "sha256": "8a28781bcd8debab4a0bfe8c7f8c6b50361733f5a6cce2ffdf8835ab7d8ebe9a",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.2-en-prima",
+      "label": "Sacred Gold Plus 1.2.2 English (19 September build)",
+      "sha256": "03e32bc9aed7aa53188145ab802c0ab0567abc8e3d97f8607464aacc21146762",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.2-it-prima",
+      "label": "Sacred Gold Plus 1.2.2 Italian (19 September build)",
+      "sha256": "d862fe4d7b6cb8aea027fa5c700aa7146ce9b361488a310df25db5c00b812122",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.2-en",
+      "label": "Sacred Gold Plus 1.2.2 English (second edition)",
+      "sha256": "37f061de4110514bafae94957d88299fe098726aba4146756d54af1ce5c40150",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.2-it",
+      "label": "Sacred Gold Plus 1.2.2 Italian (second edition)",
+      "sha256": "c135add29ef463cc13ff2ca84ef6529e9b3e119ff54cd707fbe00554b1201d0a",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.3-en",
+      "label": "Sacred Gold Plus 1.2.3 EN",
+      "sha256": "05518fbab1d27b87a6ef7081b3d16661e4e163e44eca1546a632370b21f1d4b9",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.3-it",
+      "label": "Sacred Gold Plus 1.2.3 IT",
+      "sha256": "12112fdbdbaa4a9686bdc66f89eec6d49755973a607547d8a48d02d98ae14be0",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.4-en",
+      "label": "Sacred Gold Plus 1.2.4 EN",
+      "sha256": "d5b20e8f3e4c273a529533a327ada7d5ac4c7847328af3bd5f4db8f95de7d548",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.4-it",
+      "label": "Sacred Gold Plus 1.2.4 IT",
+      "sha256": "d76b7afe6c0f515c96492bd0cffbb3e88e5d8a827b7abc32dc510be5161c0cd0",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.2.5-en",
+      "label": "Sacred Gold Plus 1.2.5 EN",
+      "sha256": "a821961fc1a90e4adaa118c4a09fce5445d25d567130d0c9edb20dfb0520050e",
+      "bytes": 127104144
+    },
+    {
+      "id": "plus-1.2.5-it",
+      "label": "Sacred Gold Plus 1.2.5 IT",
+      "sha256": "bdf50a4f327f8ea0d8a2ef312e1491d78460d34e978d9b15d160eaf140b313d4",
+      "bytes": 131906120
+    },
+    {
+      "id": "plus-1.3-en",
+      "label": "Sacred Gold Plus V1.3 EN (device v4)",
+      "sha256": "179edfb1ca331503f438e98f3afccfb0ab85759bf9ab88fb86c735f5fcefbf90",
+      "bytes": 147345256
+    },
+    {
+      "id": "plus-1.3-it",
+      "label": "Sacred Gold Plus V1.3 IT (device v4)",
+      "sha256": "2a2f0b437fca524c18b71b20feb01a1f51351e61c7c897ce73d9b3be1ee3a156",
+      "bytes": 153228136
+    },
+    {
+      "id": "plus-1.3.1-en",
+      "label": "Sacred Gold Plus 1.3.1 English",
+      "sha256": "185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08",
+      "bytes": 152786376
+    },
+    {
+      "id": "plus-1.3.1-it",
+      "label": "Sacred Gold Plus 1.3.1 Italiano",
+      "sha256": "b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce",
+      "bytes": 159029292
+    },
+    {
+      "id": "clean-fr",
+      "label": "Pokemon HeartGold - Français",
+      "sha256": "ee540ea4eff5268e8b7a85bc63db654c627dd82c25ebe921211870646b25356a",
+      "bytes": 134217728
+    },
+    {
+      "id": "clean-es",
+      "label": "Pokemon HeartGold - Español",
+      "sha256": "c1c6ecfbb602cc7676b277e1c533a1ef0d80af238fca237e6d34ad83d230660a",
+      "bytes": 134217728
+    },
+    {
+      "id": "clean-de",
+      "label": "Pokemon HeartGold - Deutsch",
+      "sha256": "cd31f3185db0cba00c388ae67b575f9af5c9a79ec134e7a2a55102e80b12fb68",
+      "bytes": 134217728
+    }
+  ],
+  "targets": {
+    "EN": {
+      "name": "Sacred Gold Plus 1.3.2 EN.nds",
+      "sha256": "65d6d42a59543a499858ce43c5c4652ab5323fe290124daddfaf842ead1034f3",
+      "bytes": 152786800
+    },
+    "IT": {
+      "name": "Sacred Gold Plus 1.3.2 IT.nds",
+      "sha256": "e884761c8141042bc64eff62564c3e2a0c707379851eb0790e70f09bd4f4019e",
+      "bytes": 159029716
+    },
+    "FR": {
+      "name": "Sacred Gold Plus 1.3.2 FR.nds",
+      "sha256": "0366cc3d7909cc0e5996a78486a547dced3d7809a2243627828f74877ccaefa9",
+      "bytes": 162560728
+    },
+    "ES": {
+      "name": "Sacred Gold Plus 1.3.2 ES.nds",
+      "sha256": "ae593192321095f936b10e0ad444e238b2fcc12d471ee7b0f05896fde8e0745f",
+      "bytes": 162490072
+    },
+    "DE": {
+      "name": "Sacred Gold Plus 1.3.2 DE.nds",
+      "sha256": "225f21a9752a2e2388980f98186de6aa89aabcd68c0ef8c76d3fd99f4539fa25",
+      "bytes": 162932492
+    }
+  },
+  "routes_by_target": {
+    "EN": [
+      "clean-us",
+      "clean-it",
+      "plus-1.01",
+      "plus-1.02",
+      "plus-1.03",
+      "plus-1.04-en-plus",
+      "plus-1.04-en-classic",
+      "plus-1.04-it-plus",
+      "plus-1.04-it-classic",
+      "plus-1.1-en",
+      "plus-1.1-it",
+      "plus-1.2.1-en",
+      "plus-1.2.1-it",
+      "plus-1.2.2-en-prima",
+      "plus-1.2.2-it-prima",
+      "plus-1.2.2-en",
+      "plus-1.2.2-it",
+      "plus-1.2.3-en",
+      "plus-1.2.3-it",
+      "plus-1.2.4-en",
+      "plus-1.2.4-it",
+      "plus-1.2.5-en",
+      "plus-1.2.5-it",
+      "plus-1.3-en",
+      "plus-1.3-it",
+      "plus-1.3.1-en",
+      "plus-1.3.1-it",
+      "clean-fr",
+      "clean-es",
+      "clean-de"
+    ],
+    "IT": [
+      "clean-us",
+      "clean-it",
+      "plus-1.01",
+      "plus-1.02",
+      "plus-1.03",
+      "plus-1.04-en-plus",
+      "plus-1.04-en-classic",
+      "plus-1.04-it-plus",
+      "plus-1.04-it-classic",
+      "plus-1.1-en",
+      "plus-1.1-it",
+      "plus-1.2.1-en",
+      "plus-1.2.1-it",
+      "plus-1.2.2-en-prima",
+      "plus-1.2.2-it-prima",
+      "plus-1.2.2-en",
+      "plus-1.2.2-it",
+      "plus-1.2.3-en",
+      "plus-1.2.3-it",
+      "plus-1.2.4-en",
+      "plus-1.2.4-it",
+      "plus-1.2.5-en",
+      "plus-1.2.5-it",
+      "plus-1.3-en",
+      "plus-1.3-it",
+      "plus-1.3.1-en",
+      "plus-1.3.1-it",
+      "clean-fr",
+      "clean-es",
+      "clean-de"
+    ],
+    "FR": [
+      "clean-us",
+      "clean-it",
+      "plus-1.01",
+      "plus-1.02",
+      "plus-1.03",
+      "plus-1.04-en-plus",
+      "plus-1.04-en-classic",
+      "plus-1.04-it-plus",
+      "plus-1.04-it-classic",
+      "plus-1.1-en",
+      "plus-1.1-it",
+      "plus-1.2.1-en",
+      "plus-1.2.1-it",
+      "plus-1.2.2-en-prima",
+      "plus-1.2.2-it-prima",
+      "plus-1.2.2-en",
+      "plus-1.2.2-it",
+      "plus-1.2.3-en",
+      "plus-1.2.3-it",
+      "plus-1.2.4-en",
+      "plus-1.2.4-it",
+      "plus-1.2.5-en",
+      "plus-1.2.5-it",
+      "plus-1.3-en",
+      "plus-1.3-it",
+      "plus-1.3.1-en",
+      "plus-1.3.1-it",
+      "clean-fr",
+      "clean-es",
+      "clean-de"
+    ],
+    "ES": [
+      "clean-us",
+      "clean-it",
+      "plus-1.01",
+      "plus-1.02",
+      "plus-1.03",
+      "plus-1.04-en-plus",
+      "plus-1.04-en-classic",
+      "plus-1.04-it-plus",
+      "plus-1.04-it-classic",
+      "plus-1.1-en",
+      "plus-1.1-it",
+      "plus-1.2.1-en",
+      "plus-1.2.1-it",
+      "plus-1.2.2-en-prima",
+      "plus-1.2.2-it-prima",
+      "plus-1.2.2-en",
+      "plus-1.2.2-it",
+      "plus-1.2.3-en",
+      "plus-1.2.3-it",
+      "plus-1.2.4-en",
+      "plus-1.2.4-it",
+      "plus-1.2.5-en",
+      "plus-1.2.5-it",
+      "plus-1.3-en",
+      "plus-1.3-it",
+      "plus-1.3.1-en",
+      "plus-1.3.1-it",
+      "clean-fr",
+      "clean-es",
+      "clean-de"
+    ],
+    "DE": [
+      "clean-us",
+      "clean-it",
+      "plus-1.01",
+      "plus-1.02",
+      "plus-1.03",
+      "plus-1.04-en-plus",
+      "plus-1.04-en-classic",
+      "plus-1.04-it-plus",
+      "plus-1.04-it-classic",
+      "plus-1.1-en",
+      "plus-1.1-it",
+      "plus-1.2.1-en",
+      "plus-1.2.1-it",
+      "plus-1.2.2-en-prima",
+      "plus-1.2.2-it-prima",
+      "plus-1.2.2-en",
+      "plus-1.2.2-it",
+      "plus-1.2.3-en",
+      "plus-1.2.3-it",
+      "plus-1.2.4-en",
+      "plus-1.2.4-it",
+      "plus-1.2.5-en",
+      "plus-1.2.5-it",
+      "plus-1.3-en",
+      "plus-1.3-it",
+      "plus-1.3.1-en",
+      "plus-1.3.1-it",
+      "clean-fr",
+      "clean-es",
+      "clean-de"
+    ]
+  },
+  "locales": {
+    "EN": {
+      "folder": "EN-English",
+      "documents": [
+        {
+          "name": "Installation-1.3.2-EN.pdf",
+          "sha256": "8fde732b10ec065daaca4f93c5e3c26540d8dc63fc012382e3c980ea48ae9627",
+          "bytes": 49215
+        },
+        {
+          "name": "Whats-New-1.3.2-EN.pdf",
+          "sha256": "5602ccf01cfed1439e53c8bfeaee3f399c4a8d340a467998db397b03cb3bde0d",
+          "bytes": 51847
+        },
+        {
+          "name": "Special-Events-1.3.2-EN.pdf",
+          "sha256": "f01385b37a44e49494fe6d326858b5bdc0ce9a979b2ae698a09d4eae0dc44ab0",
+          "bytes": 64769
+        },
+        {
+          "name": "Pokemon-Changes-1.3.2-EN.pdf",
+          "sha256": "32330e25f5009b6502ea339035fa3c009f3f7e6dc2470134ec6df8b128000cb4",
+          "bytes": 480909
+        },
+        {
+          "name": "Pokemon-Locations-1.3.2-EN.pdf",
+          "sha256": "d9bc2ad7eb7379312156b30b2dbd37df71fab1e99153f8ba4cc9ed5283f0487e",
+          "bytes": 703339
+        },
+        {
+          "name": "Evolutions-1.3.2-EN.pdf",
+          "sha256": "b92f3ed2c27cbdc63146f74157f6cdac78db22575385c0c7175990a2ef3b84d5",
+          "bytes": 59241
+        },
+        {
+          "name": "Items-TMs-1.3.2-EN.pdf",
+          "sha256": "7f53ec296cbdaedf0686e418e7e88cd6d6359e31344235a83c6d47b1e675a421",
+          "bytes": 65132
+        },
+        {
+          "name": "Trainers-1.3.2-EN.pdf",
+          "sha256": "f7afa8974563d4da33a98488467a5cc8c6ba21906c435e79cbb0c1e17d16b495",
+          "bytes": 273026
+        },
+        {
+          "name": "Game-Guide-1.3.2-EN.pdf",
+          "sha256": "00604dd6f2184c3020c47a83be8fa69386d84b46a46246acd1801fe3a597f595",
+          "bytes": 116533
+        }
+      ],
+      "cheats": [
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-EN.xml",
+          "sha256": "c9ec8197ae5f9fda47d7226f81008f23832ca447d8a5ca53bd85bcff848c8134",
+          "bytes": 5211
+        },
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-EN.mch",
+          "sha256": "5f5ff7d6483070e99bc324a06207bc008f78519bd127cd402ccee4de3f249ee5",
+          "bytes": 3480
+        },
+        {
+          "name": "README.txt",
+          "sha256": "bb261e466bfd92cc2aa425bed23074e4adecf556d5e647438afb3d42dd6f0679",
+          "bytes": 5378
+        }
+      ]
+    },
+    "IT": {
+      "folder": "IT-Italiano",
+      "documents": [
+        {
+          "name": "Installation-1.3.2-IT.pdf",
+          "sha256": "597ae3230efed1ec11fed96d0dedfcc29c1e28d01c96ae788eb730f3728343d0",
+          "bytes": 49610
+        },
+        {
+          "name": "Whats-New-1.3.2-IT.pdf",
+          "sha256": "3aef1caef51085dababab056c687da0d149bee49919412d196077bbb19e748aa",
+          "bytes": 53603
+        },
+        {
+          "name": "Special-Events-1.3.2-IT.pdf",
+          "sha256": "d12027cc1623ef77ccb0d5507ac4f0d580111e33394cd6d811b943dfba921e83",
+          "bytes": 65922
+        },
+        {
+          "name": "Pokemon-Changes-1.3.2-IT.pdf",
+          "sha256": "d3fc844f7f6b1a5dedbfe5d27c0e7ce1d5f37a00aef623be82ebedcf5712f91f",
+          "bytes": 484601
+        },
+        {
+          "name": "Pokemon-Locations-1.3.2-IT.pdf",
+          "sha256": "82dd6cda95466a11e351e6c8280040f22e3c9cf12450d0e2c4acd6dcf13cfc16",
+          "bytes": 706210
+        },
+        {
+          "name": "Evolutions-1.3.2-IT.pdf",
+          "sha256": "9e7918ff778e8e58fcc050359535d31febc7910367532638ea6fd37955edb70a",
+          "bytes": 59636
+        },
+        {
+          "name": "Items-TMs-1.3.2-IT.pdf",
+          "sha256": "e8a42ced95af777cfc9cf295671ede7be04c2dd5a1f3ad786d6198a2073a5c97",
+          "bytes": 65973
+        },
+        {
+          "name": "Trainers-1.3.2-IT.pdf",
+          "sha256": "172fcddd847aea65af914dd8fcac6c360bcc6a63856048383afcfd9b45809255",
+          "bytes": 275656
+        },
+        {
+          "name": "Game-Guide-1.3.2-IT.pdf",
+          "sha256": "a0e26548b40515c4b0d682832e70af371d887ca50615264cb4b623586e052e18",
+          "bytes": 118772
+        }
+      ],
+      "cheats": [
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-IT.xml",
+          "sha256": "3f9a9fad35cdf9ca1a19c648075c3d90394bdbf73b7dfa2218833f48cdb23238",
+          "bytes": 5946
+        },
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-IT.mch",
+          "sha256": "95adad3dc6da72d4caef9664207ebd7dd8f2453fdbf5dbb4331507fbaf30f834",
+          "bytes": 3791
+        },
+        {
+          "name": "README.txt",
+          "sha256": "166679b76201245a756af97478e76618cf6fd43b91dda937c310d42b06660a68",
+          "bytes": 6128
+        }
+      ]
+    },
+    "FR": {
+      "folder": "FR-Francais",
+      "documents": [
+        {
+          "name": "Installation-1.3.2-FR.pdf",
+          "sha256": "5968ad42668c8e6ae4eda58f0f82044107d5214c810a82f9ce6ebc7a1461c2db",
+          "bytes": 49956
+        },
+        {
+          "name": "Whats-New-1.3.2-FR.pdf",
+          "sha256": "b5164a5d9b9014344299467f15d1bcc298db6372047b1d6b0fcd1575bd127428",
+          "bytes": 54968
+        },
+        {
+          "name": "Special-Events-1.3.2-FR.pdf",
+          "sha256": "a80f56ca8b564754864bb711a68880a1b4e0d47211e7ce8662eaf3b8b418ecca",
+          "bytes": 68594
+        },
+        {
+          "name": "Pokemon-Changes-1.3.2-FR.pdf",
+          "sha256": "bab9c8dde991193b9c8e5310346f3f4d51136b939de37747723cddf2f2b7c8d2",
+          "bytes": 490453
+        },
+        {
+          "name": "Pokemon-Locations-1.3.2-FR.pdf",
+          "sha256": "b7dc7e408ceeef3035a6c2c58217e6258275371a598a0555e95019f2bd8a9931",
+          "bytes": 709455
+        },
+        {
+          "name": "Evolutions-1.3.2-FR.pdf",
+          "sha256": "d458386e1c7e6f22098a1eb455bfc8c6f41b44da57e85bb1c6c70f8301e8863b",
+          "bytes": 60387
+        },
+        {
+          "name": "Items-TMs-1.3.2-FR.pdf",
+          "sha256": "f5995ae1ef4954369c347a3cd6452919b32e9382693ded65434bfaa1eff55e17",
+          "bytes": 68753
+        },
+        {
+          "name": "Trainers-1.3.2-FR.pdf",
+          "sha256": "3fd5b4ed4c40c2c694ce1af98f7437a6978ef0411285b2af2637c58c33721ff9",
+          "bytes": 299753
+        },
+        {
+          "name": "Game-Guide-1.3.2-FR.pdf",
+          "sha256": "e41d32980b83a22216c088f5c29a73023afd6643b26208afde7213abcaee82e6",
+          "bytes": 123142
+        }
+      ],
+      "cheats": [
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-FR.xml",
+          "sha256": "39a4a06679817cd23f8cdf67672728796686f4f453ef1aed6b1db36ccc50d772",
+          "bytes": 6333
+        },
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-FR.mch",
+          "sha256": "76fb7a8421e3c007e612abc091142049ca94214e837f25cad7d635bb31bafd30",
+          "bytes": 3995
+        },
+        {
+          "name": "README.txt",
+          "sha256": "d898d638effdebfcac215d81054c75f808512d15e63d16691e718a3b26979855",
+          "bytes": 6458
+        }
+      ]
+    },
+    "ES": {
+      "folder": "ES-Espanol",
+      "documents": [
+        {
+          "name": "Installation-1.3.2-ES.pdf",
+          "sha256": "545e7f97fba6b642800242ede5738a2f0de3b6cc7065c662d32fec5ac3c928cc",
+          "bytes": 49648
+        },
+        {
+          "name": "Whats-New-1.3.2-ES.pdf",
+          "sha256": "e7e7496bf18597758d804fb1a3f5d59e091cd9183ec74663035b2b8c0fe39d6e",
+          "bytes": 54022
+        },
+        {
+          "name": "Special-Events-1.3.2-ES.pdf",
+          "sha256": "9584941bd435e1070d14d307bc603e56f80c63e61118533c8477726fab83f3f0",
+          "bytes": 66942
+        },
+        {
+          "name": "Pokemon-Changes-1.3.2-ES.pdf",
+          "sha256": "28bdbc7c5087e5d638a856042f93caafd0b7e4b98b167cd53033a8f03960847e",
+          "bytes": 489319
+        },
+        {
+          "name": "Pokemon-Locations-1.3.2-ES.pdf",
+          "sha256": "f5e08f42d95d5e39f05cef0a9abb8f20d49c7b2f95a7228657f97766f4b4aa81",
+          "bytes": 710583
+        },
+        {
+          "name": "Evolutions-1.3.2-ES.pdf",
+          "sha256": "7eea285b5a92e7b16b23cb19732c8950ce6b3328312b0dcfcc9f66bdf7ab2852",
+          "bytes": 59963
+        },
+        {
+          "name": "Items-TMs-1.3.2-ES.pdf",
+          "sha256": "4a1cb99e1762e25b29acf34d52698acbf4078d70006b4ef0277879f418d336bf",
+          "bytes": 67323
+        },
+        {
+          "name": "Trainers-1.3.2-ES.pdf",
+          "sha256": "8c33110941a528e7ee2cdf30c3a89929c7fbf77e3d90f1542991ae9dce3a7abb",
+          "bytes": 279320
+        },
+        {
+          "name": "Game-Guide-1.3.2-ES.pdf",
+          "sha256": "78ed01443dbcf5fc08dbc24835c2a61350a3735b9b38507b29e941c0c85cf430",
+          "bytes": 119352
+        }
+      ],
+      "cheats": [
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-ES.xml",
+          "sha256": "9250a97815b4fc4eab1663e35f254a802eac36f673e1e6a5acb60b30d74b4051",
+          "bytes": 6148
+        },
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-ES.mch",
+          "sha256": "2fe2cf09f744cc73baeee404a28777a5cc5ff87c0910b69a30a956cb38b03e4c",
+          "bytes": 3972
+        },
+        {
+          "name": "README.txt",
+          "sha256": "38b0d1daa5ac3a6653ba657bc01aca54c3303c77c28f2e84f28acd15be23b7fb",
+          "bytes": 6302
+        }
+      ]
+    },
+    "DE": {
+      "folder": "DE-Deutsch",
+      "documents": [
+        {
+          "name": "Installation-1.3.2-DE.pdf",
+          "sha256": "380254c20db1ba8e5e4be09149d9ced28981120f6d20a7139c2bb68569fa52b1",
+          "bytes": 50303
+        },
+        {
+          "name": "Whats-New-1.3.2-DE.pdf",
+          "sha256": "69e50276de8a84460d5fe40f8661d28957077f273ddc471827cf94ac13b97cf8",
+          "bytes": 54207
+        },
+        {
+          "name": "Special-Events-1.3.2-DE.pdf",
+          "sha256": "7d139353c5057ebec663cb06b3d97df4a680521eb4627c004b2250007c087364",
+          "bytes": 67489
+        },
+        {
+          "name": "Pokemon-Changes-1.3.2-DE.pdf",
+          "sha256": "2e0f9975658cc3437a1acd97ea616d87c4415d259761d75612ffe7382fa5d5b0",
+          "bytes": 490079
+        },
+        {
+          "name": "Pokemon-Locations-1.3.2-DE.pdf",
+          "sha256": "147d0c4726c110aebdce8db3bf25fc456467730988e9341ea2141fb5cdf575e2",
+          "bytes": 706285
+        },
+        {
+          "name": "Evolutions-1.3.2-DE.pdf",
+          "sha256": "0fa4d2cce7599b6e3af665ec1d32c92cd7850704c8efa14227b7d2d248027502",
+          "bytes": 60024
+        },
+        {
+          "name": "Items-TMs-1.3.2-DE.pdf",
+          "sha256": "0f92c030fad53a5bc5a49d259d0042ba6d9b38324241d684a46fc2f414a09aad",
+          "bytes": 66739
+        },
+        {
+          "name": "Trainers-1.3.2-DE.pdf",
+          "sha256": "0d37b54e7b7d69df935a09b748dfec88b5d7f3b8ca9b840a508effa75aa8e663",
+          "bytes": 276715
+        },
+        {
+          "name": "Game-Guide-1.3.2-DE.pdf",
+          "sha256": "52ef296a1612f3dab1f03befd082c2ea7d68cbc4ee096a6f6708a6f731a46f66",
+          "bytes": 120295
+        }
+      ],
+      "cheats": [
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-DE.xml",
+          "sha256": "7111a7a9420d541152351a8f3298ab9e64d586fe070cb0351da0557e869cc4a6",
+          "bytes": 6268
+        },
+        {
+          "name": "Sacred-Gold-Plus-1.3.2-DE.mch",
+          "sha256": "2498839c98ab34ea0681185284baf49ec34af7a4c4075f358c69c8b452ccc554",
+          "bytes": 3990
+        },
+        {
+          "name": "README.txt",
+          "sha256": "de1bcc2132fd1fe5d432d79140712351a60426fd71d2eaa7705064232c69ad66",
+          "bytes": 6437
+        }
+      ]
+    }
+  },
+  "references": {
+    "EN": {
+      "name": "SGP-Source-References-EN.zip",
+      "sha256": "dae462265bd0bd6f0cb7e703cd5029fe25e78c35115f6939bf61841c449e9053",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/SGP-Source-References-EN.zip"
+    },
+    "IT": {
+      "name": "SGP-Source-References-IT.zip",
+      "sha256": "4ef686035cd65b89db79dd8738743f4c4bf305b90d8c267eaffc7f6779f96674",
+      "url": "https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/v1.3.1-r2/SGP-Source-References-IT.zip"
+    }
+  },
+  "original_documents": {
+    "Evolution Changes.pdf": {
+      "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf",
+      "bytes": 87217,
+      "language": "EN"
+    },
+    "Important Item Locations.pdf": {
+      "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a",
+      "bytes": 154315,
+      "language": "EN"
+    },
+    "Pokemon Changes.pdf": {
+      "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb",
+      "bytes": 309462,
+      "language": "EN"
+    },
+    "Pokemon Locations.pdf": {
+      "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477",
+      "bytes": 1510542,
+      "language": "EN"
+    },
+    "Special Event Guide.pdf": {
+      "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd",
+      "bytes": 674044,
+      "language": "EN"
+    },
+    "SS_SG Trainer Pokemon by @JD48096761.txt": {
+      "sha256": "bc6bef8b1009bfb93a565e0e95ee5296925efd883bee2a110fe588ebdef70d05",
+      "bytes": 98420,
+      "language": "EN"
+    }
+  },
+  "rompatcher_commit": "3183884086825c3a57c72026234debcef1e2240c",
+  "cheats_policy": "verified-localized"
+}

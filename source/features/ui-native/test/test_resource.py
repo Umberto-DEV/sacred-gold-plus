@@ -6,6 +6,21 @@ class ResourceTests(unittest.TestCase):
     def setUpClass(cls):
         cls.temp=tempfile.TemporaryDirectory(prefix='resource-a-');cls.addClassCleanup(cls.temp.cleanup)
         cls.compiled=compile_resource(Path(cls.temp.name))
+    def test_supported_locale_ids_load_and_unknown_ids_refuse_before_io(self):
+        for locale in range(5):
+            with self.subTest(locale=locale):
+                raw,cfg=synthetic();raw=bytearray(raw);cfg=bytearray(cfg)
+                struct.pack_into('<I',raw,35380+12,locale)
+                struct.pack_into('<I',cfg,8,locale)
+                struct.pack_into('<I',cfg,40,zlib.crc32(raw[35380:]))
+                b=ResourceBench(self.compiled,bytes(raw),bytes(cfg))
+                self.assertEqual(b.start(),MORE)
+                self.assertEqual(b.finish(),OK)
+        for locale in (5,0xffffffff):
+            raw,cfg=synthetic();cfg=bytearray(cfg);struct.pack_into('<I',cfg,8,locale)
+            b=ResourceBench(self.compiled,raw,bytes(cfg))
+            self.assertEqual(b.start(),ERROR)
+            self.assertEqual(b.fs_calls,[])
     def test_verify_pump_preserves_output_and_stops_on_failed_close_or_deferral(self):
         self.assertIn('ui_res_pump',self.compiled[1])
         results=[]

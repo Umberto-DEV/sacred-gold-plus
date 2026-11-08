@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "language": "DE",
+  "strings": {
+    "s:0": "Dein Team",
+    "s:1": "FP und DV siehst du im Bericht eines",
+    "s:2": "Pokémon auf der Seite mit den Werten.",
+    "s:3": "",
+    "s:4": "Zweierlei Werte",
+    "s:5": "DV liegen zwischen 0 und 31.",
+    "s:6": "FP steigen beim Training. Beide",
+    "s:7": "beeinflussen die Pokémon-Werte.",
+    "s:8": "Steuerung",
+    "s:9": "L zeigt FP, R zeigt DV. SELECT zeigt",
+    "s:10": "die Werte. Das geht auch im PC.",
+    "s:11": "",
+    "s:12": "L=A sperrt L/R. Wähle Normal unter",
+    "s:13": "OPTIONEN, um FP und DV zu sehen.",
+    "s:14": "SELECT zeigt wieder die Werte.",
+    "s:15": "START Hilfe",
+    "s:16": "← Zurück",
+    "s:17": "A Weiter",
+    "s:18": "A Fertig",
+    "s:19": "B Ende",
+    "s:20": "Nochmals: START",
+    "s:21": "1/3",
+    "s:22": "2/3",
+    "s:23": "3/3"
+  }
+}

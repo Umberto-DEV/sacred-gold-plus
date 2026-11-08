@@ -28,7 +28,7 @@ ASSET_FORMAT_FLAGS = 7  # 2bpp storage, 2x2 tiles, 16x16 cell; variable advance.
 MAX_MEMBER_BYTES = 69632
 MAX_TEXT_ENTRIES = 1024
 MAX_UNITS_PER_ENTRY = 2048
-LANGUAGE_IDS = {'EN': 0, 'IT': 1}
+LANGUAGE_IDS = {'EN': 0, 'IT': 1, 'FR': 2, 'ES': 3, 'DE': 4}
 AuthoredText = Dict[int, Tuple[int, ...]]
 
 _SOURCE_HASHES = {

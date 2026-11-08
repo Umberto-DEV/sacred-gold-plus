@@ -1,10 +1,12 @@
 # Build and verify the 1.3 composition line
 
-**Source status, 8 November 2026:** this directory now contains the unreleased
-V1.3.2 title/Options text and the New Game event-bank correction. The 1.3.1
-output hashes and package contract below describe the published release, not
-an output expected from this development source. No 1.3.2 player package has
-been built or accepted. See the [specific validation](../docs/validation/new-game-reset-1.3.2.md).
+**Source status, 8 November 2026:** this directory builds the shared 1.3.2
+composition, including the New Game correction and five-language native UI.
+Current identities and bounded acceptance belong to the
+[1.3.2 contract](../distribution/release-1.3.2.json) and
+[validation report](../docs/validation/localization-1.3.2.md). The 1.3.1 tables
+below remain historical, rather than expected outputs of this source revision.
+Regional presentation uses the [localization layer](../docs/localization.md).
 
 The build path is **your retail HeartGold → 1.2.5 → historical V1.3 V4 →
 current source composition**. The legacy V4 step is reconstructed from authenticated,
@@ -16,7 +18,19 @@ The current player profile activates **portable storage only**. The additional
 Summary controls and configurable rematch owners remain inert. The existing
 EV/IV summary tools are retained from earlier versions.
 
-## Exact identities
+For 1.3.2, build the EN/IT player cores, then compose FR/ES/DE presentation
+from the exact English core and matching retail donors. Shared code, locale
+copy, generated C descriptors and production source pins form one checkpoint.
+Footer admission includes native button caps and gaps; exit/Apply bars check
+combined labels and spacing. Plain text width alone does not establish fit.
+
+The current release has five target identities and all 30 recognized
+original/historical sources for every target: **150 direct routes**. Historical
+ROMs are inputs, not additional output versions. Follow the
+[update procedure](../docs/update-workflow.md) for bounded host/save checks and
+packaging. The historical tables below are not expected current output hashes.
+
+## Pinned V4 inputs and historical 1.3.1 outputs
 
 | Language | Historical V1.3 V4 input SHA-256 | Bytes |
 | --- | --- | ---: |
@@ -28,15 +42,16 @@ EV/IV summary tools are retained from earlier versions.
 | EN | `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` | 152786376 |
 | IT | `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce` | 159029292 |
 
-The [player-package contract](../distribution/release-1.3.1.json) pins the
-second table. A version label or filename does not establish byte identity.
+The historical [1.3.1 contract](../distribution/release-1.3.1.json) pins the
+second table. Reproducing those outputs requires their published source
+revision. A version label or filename does not establish byte identity.
 The composer admits only the first table; do not relax `baseline.py` to accept
 a similar ROM.
 
 ## Toolchain and external data
 
 Follow the [source setup](../README.md) for dependencies and the retail-to-1.2.5
-build. Production 1.3.1 compilation additionally authenticates:
+build. The current production compiler additionally authenticates:
 
 - Python **3.14.7**, executable SHA-256
   `87d4df53fd91304be5bac391fb204643c36b7df2023c04a0953bcbc7d4fdf634`;
@@ -99,8 +114,8 @@ inputs; all 208 source fingerprints matched, with no extra dependencies.
 The original 1.2.5 and canonical V4 files remained unchanged. The retail-to-1.2.5
 step was not rerun as part of that specific bootstrap check.
 
-HF01 is used **only as a compatibility build intermediate**. The current
-1.3.1 chain upgrades it to HF02 before producing the player profile. Do not
+HF01 is used **only as a compatibility build intermediate**. The shared
+composition upgrades it to HF02 before producing the player profile. Do not
 install the intermediate V4 as an update, replace a personal save or claim
 new runtime acceptance from the bootstrap's file comparison.
 
@@ -175,16 +190,19 @@ PYTHONPATH=source .venv/bin/python -B -m sgp131.workbench inspect \
 
 Repeat the build with IT and its own mechanics file/digest. The resulting
 `managed/<language>/pending.nds` and `pending.json` describe an all-inert
-composition, distinct from the player-profile outputs:
+composition, distinct from the player-profile outputs. The following hashes
+are historical 1.3.1 all-inert projections. Current source changes produce new
+identities; preserve each new receipt rather than comparing a 1.3.2 build with
+this old table.
 
 | Language | All-inert projection SHA-256 |
 | --- | --- |
 | EN | `949aafe759ab110a16d3d1fe17246bb7817c66c5b1257a20a69f9e50183d404e` |
 | IT | `e74f2368656010c420596ab222fd4cea4cffa217bd55d36c8968425ee31e4372` |
 
-## Native menu input correction and static lineage
+## Historical 1.3.1 menu-input correction and static lineage
 
-The current outputs also correct Guide/Options input sampling: `System+0x48`
+The 1.3.1 repair retained in current source corrects input sampling: `System+0x48`
 is newKeys, and `System+0x4C` is newAndRepeatedKeys. The predecessor read heldKeys
 as a new press, bypassing the native initial hold delay. Native start/continue
 repeat timers and button remapping are retained; no fixed delay is introduced.
@@ -192,7 +210,7 @@ repeat timers and button remapping are retained; no fixed delay is introduced.
 The prior measured all-inert roots remain EN
 `d2101c0e812802e03caa2fe9013d0bfbf947d19698b9cbc0bf62e36121d1b068`
 and IT `fd347c3887fee90cd817cb3634cc120ce40ff3418dfa2d538ac9044800ae6da5`.
-They are not captures of the new outputs. For these two exact player profiles,
+They are not captures of successor outputs. For these two exact 1.3.1 profiles,
 [input_lineage.py](input_lineage.py) admits a **static** derivation: exactly two
 LDR immediate bytes and two Module96 CRC32 words change. Restoring only those
 four closed byte windows must reproduce the whole measured inert predecessor.
@@ -201,8 +219,8 @@ options digest, Portable-only profile and scene source pin. Unknown mutations
 still fail. The schema-2 receipt says `runtime_acceptance: not-run`; the original
 schema-1 identity gate and measured capture files remain unchanged.
 
-No new gameplay/input timing or SAVE/cold campaign was run for this small
-successor at the maintainer's request. Earlier runtime evidence below keeps its
+At that 1.3.1 checkpoint, no new gameplay/input timing or SAVE/cold campaign
+was run for the small successor. Earlier runtime evidence below keeps its
 original identity and scope. Reproducing this exact static successor uses the
 same old measured Portable configuration and proof, without changing its root.
 Other candidates require their own measured evidence; this is not a generic
@@ -250,7 +268,8 @@ PYTHONPATH=source .venv/bin/python -B -m sgp131.workbench build \
 
 Repeat with IT and its active mechanics file/digest. The gate checks the common
 inert projection and independent owner readbacks. Compare the full active output
-with the player-profile table. A manual edit of descriptor words is not an
+with the current version's contract; the 1.3.1 table applies only to its published
+source revision. A manual edit of descriptor words is not an
 accepted build receipt. A `pending` receipt is not runtime acceptance;
 workbench promotion requires separately reviewed candidate-bound evidence.
 
@@ -264,7 +283,7 @@ exercise the full function, and readback rejects the stale branch.
 [AI investigation](../docs/ai-scoring-1.3.1.md) preserves the causal trace,
 caller coverage and limits of natural battle/device checks.
 
-Fresh host headless checks on the two exact player-profile hashes completed
+Historical 1.3.1 host checks on the two published player-profile hashes completed
 four Continue/field/native SAVE/process-exit/cold Continue cycles: the same
 early no-Plus save and authentic 1.2.2 save were each loaded by EN and IT.
 The latter retained five party Pokemon, 113 boxed Pokemon, non-default Plus

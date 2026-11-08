@@ -106,7 +106,7 @@ static unsigned sp_foreground(const SettingsRenderPlan *d,const SettingsDrawOp *
 static unsigned sp_footer_run(const SettingsPainter *p,const SettingsDrawOp *o,unsigned run,
  UiTextSlice *slice,unsigned *x,unsigned *fg,unsigned *bg) {
  unsigned storage[7],variant,units,total,offset=o->offset,pos=0,at=0,advance=0;
- if(o->a>=12 || !sr_footer_descriptor(o->a,storage) ||
+ if(o->a>=SGP_UI_FOOTER_LAYOUT_COUNT || !sr_footer_descriptor(o->a,storage) ||
  !sr_footer_match(p->catalog,o->id,&variant,&units,&total))return 0;
  const unsigned char *d=(const unsigned char *)storage;
  if(o->b!=d[2] || o->id!=d[0] || o->units!=units || run>=o->b ||

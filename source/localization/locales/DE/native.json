@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "language": "DE",
+  "strings": {
+    "p_aiuto_a": "A: Speichern",
+    "p_aiuto_b": "B: Abbrechen",
+    "p_bloccato": "Noch nicht verfügbar.",
+    "p_rifiutato": "Daten unlesbar. Modus 1.1.",
+    "p_suggerimento": "SELECT → Plus",
+    "n_fluido": "Flüssig",
+    "c_riga1": "Noch keine Plus-Einstellungen.",
+    "c_riga2": "Wähle jetzt deine Einstellungen.",
+    "c_riga1n": "Ein neues Abenteuer beginnt.",
+    "c_riga2n": "Wähle jetzt deine Einstellungen.",
+    "c_nota": "Ändern unter OPTIONEN.",
+    "c_aiuto": "A: Bestätigen    B: Später",
+    "v0_nome": "Schwierigkeit",
+    "v1_nome": "Wilde Level",
+    "v2_nome": "Pokémon-Bewegung",
+    "v3_nome": "Figuren",
+    "v4_nome": "Online-Server",
+    "x_off": "Aus",
+    "x_on": "Ein",
+    "x_normale": "Normal",
+    "x_plus": "Plus",
+    "n_norm": "Normal",
+    "w_0": "Original",
+    "w_1": "Verb. 2",
+    "w_2": "Verb. 3",
+    "p_titolo": "Sacred Gold Plus V1.3.2",
+    "c_titolo": "Sacred Gold Plus V1.3.2"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "language": "ES",
+  "strings": {
+    "category": "Evoluciones",
+    "target": "Evoluciona a: {species}",
+    "level": "Alcanzar al menos el nivel {p}.",
+    "friendship": "Subir de nivel con amistad alta.",
+    "friendship_day": "Subir de nivel de día con amistad alta.",
+    "friendship_night": "Subir de nivel de noche con amistad alta.",
+    "trade": "Intercambiar este Pokémon.",
+    "trade_item": "Intercambiar mientras lleva {item}.",
+    "use_item": "Usar {item}.",
+    "male": "Solo macho.",
+    "female": "Solo hembra.",
+    "attack_gt": "Nivel {p} mínimo; Ataque mayor que Defensa.",
+    "attack_eq": "Nivel {p} mínimo; Ataque igual que Defensa.",
+    "attack_lt": "Nivel {p} mínimo; Ataque menor que Defensa.",
+    "branch": "La rama depende del Pokémon; cambiar sus estadísticas no la elige.",
+    "shedinja": "Cuando Nincada evolucione al nivel {p}, dejar un hueco en el equipo y llevar una Poké Ball normal en la Mochila.",
+    "beauty": "Subir de nivel con al menos {p} de Belleza.",
+    "level_any": "Subir de nivel.",
+    "hold_day": "Subir de nivel de día mientras lleva {item}.",
+    "hold_night": "Subir de nivel de noche mientras lleva {item}.",
+    "known_move": "Subir de nivel conociendo {move}.",
+    "party_species": "Subir de nivel con {species} en el equipo."
+  }
+}

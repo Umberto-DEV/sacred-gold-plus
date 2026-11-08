@@ -7,6 +7,10 @@ class PainterTests(unittest.TestCase):
   cls.tmp=tempfile.TemporaryDirectory(prefix='settings-painter-a-');cls.compiled,cls.detail=compile_painter(Path(cls.tmp.name))
  @classmethod
  def tearDownClass(cls):cls.tmp.cleanup()
+ def test_search_footer_with_extended_layout_id_paints(self):
+  b=PainterBench(self.compiled);b.s.view=3;b.s.draft.shiny.target=0;p=b.build()
+  self.assertGreaterEqual(ops(p,11)[0].a,12)
+  self.assertEqual(b.finish_paint(),PREPARED)
  def test_hgss_focus_chosen_surfaces_and_command_rail(self):
   # Wrong materials/old18px focus lose native glyph containment and contrast.
   b=PainterBench(self.compiled);p=b.build()

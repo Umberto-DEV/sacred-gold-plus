@@ -20,6 +20,9 @@ STAMP = (2026, 10, 27, 0, 0, 0)
 MAX_REFERENCE_ZIP_BYTES = 256 * 1024 * 1024
 MAX_REFERENCE_MEMBER_BYTES = 8 * 1024 * 1024
 MAX_REFERENCE_TOTAL_BYTES = 32 * 1024 * 1024
+MULTILINGUAL_LOCALES = ('EN', 'IT', 'FR', 'ES', 'DE')
+MULTILINGUAL_PDFS = ('Installation', 'Whats-New', 'Special-Events', 'Pokemon-Changes',
+                    'Pokemon-Locations', 'Evolutions', 'Items-TMs', 'Trainers', 'Game-Guide')
 
 
 def path_token(value):
@@ -71,9 +74,15 @@ def config(path=None):
     ids = [path_token(row['id']) for row in cfg['sources']]
     if len(ids) != len(set(ids)):
         raise ValueError('Duplicate release source ID')
-    if cfg.get('cheats_policy', 'inherit-reference') not in ('inherit-reference', 'omit-unverified'):
+    policies = ('inherit-reference', 'omit-unverified', 'verified-localized') if cfg.get('schema') == 2 else ('inherit-reference', 'omit-unverified')
+    if cfg.get('cheats_policy', 'inherit-reference') not in policies:
         raise ValueError('Unknown cheats policy')
-    documents_dir(cfg)
+    if cfg.get('schema', 1) == 2:
+        validate_multilingual_contract(cfg)
+    elif cfg.get('schema', 1) != 1:
+        raise ValueError('Unknown release contract schema')
+    if cfg.get('schema', 1) == 1:
+        documents_dir(cfg)
     for name in cfg.get('title_images', {}).values():
         image_file_bytes(name)
     for language in cfg.get('feature_images', {}).values():
@@ -81,6 +90,104 @@ def config(path=None):
             for name, _caption in pictures:
                 image_file_bytes(name)
     return cfg
+
+
+def language_metadata():
+    return json.loads((HERE.parent / 'localization/languages.json').read_text())['languages']
+
+
+def _content_pin(row):
+    return (isinstance(row, dict) and isinstance(row.get('sha256'), str)
+            and re.fullmatch('[0-9a-f]{64}', row['sha256'])
+            and type(row.get('bytes')) is int and 0 < row['bytes'] <= 512 * 1024 * 1024)
+
+
+def multilingual_source_registry():
+    """Recognized historical bytes, independent of the successor contract."""
+    legacy = json.loads((HERE / 'release-1.3.1.json').read_text())
+    registry = {row['id']: {key: row[key] for key in ('sha256', 'bytes')}
+                for row in legacy['sources']}
+    for locale in ('EN', 'IT'):
+        registry['plus-1.3.1-' + locale.lower()] = {
+            key: legacy['targets'][locale][key] for key in ('sha256', 'bytes')}
+    metadata = language_metadata()
+    for locale in ('FR', 'ES', 'DE'):
+        registry['clean-' + locale.lower()] = {
+            key: metadata[locale]['retail'][key] for key in ('sha256', 'bytes')}
+    return registry
+
+
+def validate_multilingual_contract(cfg):
+    """Require every recognized base explicitly for each latest target."""
+    locales = set(MULTILINGUAL_LOCALES)
+    if cfg['version'] != '1.3.2' or set(cfg.get('targets', {})) != locales:
+        raise ValueError('Schema 2 requires the five 1.3.2 target locales')
+    registry = multilingual_source_registry()
+    source_ids = {row['id'] for row in cfg['sources']}
+    if source_ids != set(registry):
+        raise ValueError('Missing or extra recognized schema-2 source')
+    for row in cfg['sources']:
+        if (set(row) != {'id', 'label', 'sha256', 'bytes'} or not _content_pin(row)
+                or not isinstance(row['label'], str) or not row['label'].strip()):
+            raise ValueError('Invalid schema-2 source identity')
+        if any(row[key] != registry[row['id']][key] for key in ('sha256', 'bytes')):
+            raise ValueError('Schema-2 source pin differs from recognized base: ' + row['id'])
+    for row in cfg['targets'].values():
+        if not _content_pin(row) or set(row) - {'sha256', 'bytes', 'name'}:
+            raise ValueError('Invalid target identity')
+        if 'name' in row:
+            member_names([row['name']])
+            if Path(row['name']).name != row['name']:
+                raise ValueError('Target name must be a basename')
+    routes = cfg.get('routes_by_target', {})
+    if set(routes) != locales:
+        raise ValueError('Missing or extra route locale')
+    for locale in MULTILINGUAL_LOCALES:
+        actual = routes[locale]
+        if (not isinstance(actual, list) or not all(isinstance(s, str) for s in actual)
+                or len(actual) != len(set(actual)) or set(actual) != source_ids):
+            raise ValueError('Missing, extra or duplicate universal source route: ' + locale)
+    metadata = language_metadata()
+    if set(cfg.get('locales', {})) != locales:
+        raise ValueError('Missing or extra locale metadata')
+    for locale, row in cfg['locales'].items():
+        expected_documents = [f'{name}-{cfg["version"]}-{locale}.pdf' for name in MULTILINGUAL_PDFS]
+        if set(row) != {'folder', 'documents', 'cheats'} or row.get('folder') != metadata[locale]['folder']:
+            raise ValueError('Wrong locale folder: ' + locale)
+        documents = row.get('documents')
+        if (not isinstance(documents, list)
+                or any(not isinstance(pin, dict) or set(pin) != {'name', 'sha256', 'bytes'}
+                       or not _content_pin(pin) for pin in documents)
+                or [pin['name'] for pin in documents] != expected_documents):
+            raise ValueError('Missing or wrong localized documents: ' + locale)
+        cheats = row['cheats']
+        if not isinstance(cheats, list) or not cheats:
+            raise ValueError('Missing localized Cheats file contract: ' + locale)
+        names = []
+        for pin in cheats:
+            if (not isinstance(pin, dict) or set(pin) != {'name', 'sha256', 'bytes'}
+                    or not _content_pin(pin) or pin['bytes'] > MAX_REFERENCE_MEMBER_BYTES
+                    or not isinstance(pin['name'], str) or Path(pin['name']).name != pin['name']
+                    or Path(pin['name']).suffix not in ('.txt', '.xml', '.mch', '.cht')):
+                raise ValueError('Invalid localized Cheats file pin: ' + locale)
+            names.append(pin['name'])
+        member_names(names)
+    member_names([row['folder'] + '/' for row in cfg['locales'].values()])
+    for name, row in cfg.get('original_documents', {}).items():
+        member_names([name])
+        if Path(name).name != name or not name.endswith(('.pdf', '.txt')) or not _content_pin(row) or row.get('language') not in locales:
+            raise ValueError('Invalid shared original document identity/language')
+    if set(cfg.get('references', {})) != {'EN', 'IT'}:
+        raise ValueError('Schema 2 requires both historical reference locales')
+    for row in cfg['references'].values():
+        name = row.get('name', '')
+        member_names([name])
+        if Path(name).name != name or not name.endswith('.zip') or not re.fullmatch('[0-9a-f]{64}', row.get('sha256', '')):
+            raise ValueError('Invalid historical reference pin')
+    if cfg.get('cheats_policy') not in ('omit-unverified', 'verified-localized'):
+        raise ValueError('Schema 2 omits unverified cheat catalogues')
+    if not re.fullmatch('[0-9a-f]{40}', cfg.get('rompatcher_commit', '')):
+        raise ValueError('Invalid independent decoder commit')
 
 
 def documents_dir(cfg):
@@ -544,8 +651,212 @@ def reference_members(lang, reference_dir, guide_dir, cfg):
     return members
 
 
+def _localized_notice(locale, key):
+    path = HERE.parent / 'localization/locales' / locale / 'documents.json'
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError) as exc:
+        raise ValueError('Missing localized package notices: ' + locale) from exc
+    value = data.get('strings', {}).get('d:label:' + key)
+    if data.get('language') != locale or not isinstance(value, str) or not value.strip():
+        raise ValueError('Missing localized package notice: ' + locale + '/' + key)
+    return value
+
+
+def multilingual_documents(guides, cfg):
+    """Retain no-follow snapshots of every required locale PDF and Cheats file."""
+    members = {}
+    for locale in MULTILINGUAL_LOCALES:
+        folder = cfg['locales'][locale]['folder']
+        with guide_directory_descriptor(guides / locale) as directory:
+            for pin in cfg['locales'][locale]['documents']:
+                name = pin['name']
+                raw = guide_file_bytes(directory, name)
+                verify_bytes(raw, pin)
+                if not raw.startswith(b'%PDF-'):
+                    raise ValueError('Invalid localized PDF: ' + locale + '/' + name)
+                add_member(members, folder + '/Documents/' + name, raw)
+        with guide_directory_descriptor(guides / locale / 'Cheats') as directory:
+            for pin in cfg['locales'][locale]['cheats']:
+                raw = guide_file_bytes(directory, pin['name'])
+                verify_bytes(raw, pin)
+                add_member(members, folder + '/Cheats/' + pin['name'], raw)
+    return members
+
+
+def multilingual_originals(references, cfg):
+    """Preserve shared originals once and separate historical languages/credits."""
+    members, origins = {}, {}
+    for locale in ('EN', 'IT'):
+        ref = cfg['references'][locale]
+        raw = pinned_reference_bytes(references / ref['name'], ref)
+        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+            member_names(archive.namelist())
+            consumed = 0
+
+            def read(name):
+                nonlocal consumed
+                info = archive.getinfo(name)
+                if info.compress_type not in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED):
+                    raise ValueError('Unsupported reference compression method')
+                remaining = min(MAX_REFERENCE_MEMBER_BYTES, MAX_REFERENCE_TOTAL_BYTES - consumed)
+                if info.file_size > remaining:
+                    raise ValueError('Reference decompression byte limit')
+                with archive.open(info) as stream:
+                    content = stream.read(remaining + 1)
+                if len(content) > remaining:
+                    raise ValueError('Reference decompression byte limit')
+                consumed += len(content)
+                return content
+
+            for name, pin in cfg['original_documents'].items():
+                try:
+                    content = read('Manual/' + name)
+                except KeyError as exc:
+                    raise ValueError('Missing shared original: ' + name) from exc
+                verify_bytes(content, pin)
+                key = 'Originals/' + name
+                if key in members:
+                    if members[key] != content:
+                        raise ValueError('Historical references disagree on shared original')
+                else:
+                    add_member(members, key, content)
+                    origins[key] = dict(language=pin['language'], bytes=len(content),
+                                        sha256=hashlib.sha256(content).hexdigest())
+            folder = cfg['locales'][locale]['folder']
+            license_name = 'LICENSE.txt' if locale == 'EN' else 'LICENZA.txt'
+            for source, destination in (
+                ('Manual/Game Guide.txt', 'Originals/' + folder + '/Game Guide.txt'),
+                (license_name, 'Credits-and-Licenses/' + folder + '/' + license_name),
+            ):
+                try:
+                    content = read(source)
+                except KeyError as exc:
+                    raise ValueError('Missing historical reference: ' + source) from exc
+                add_member(members, destination, content)
+                origins[destination] = dict(language=locale, bytes=len(content),
+                                             sha256=hashlib.sha256(content).hexdigest())
+    add_member(members, 'Originals/CONTENTS.json',
+               (json.dumps({'schema': 1, 'files': origins}, indent=2) + '\n').encode())
+    selector = ['Sacred Gold Plus ' + cfg['version'], '']
+    metadata = language_metadata()
+    for locale in MULTILINGUAL_LOCALES:
+        folder = cfg['locales'][locale]['folder']
+        selector.extend([metadata[locale]['name'] + ' - ' + folder + '/',
+                         _localized_notice(locale, 'language_selector'), ''])
+        notice = '\n\n'.join(_localized_notice(locale, key)
+                             for key in ('originals', 'credits_note', 'cheats_note')) + '\n'
+        add_member(members, 'Credits-and-Licenses/' + folder + '/ABOUT.txt', notice.encode())
+    add_member(members, 'START-HERE.txt', ('\n'.join(selector) + '\n').encode())
+    return members
+
+
+def _verified_route(source, target, paths, locale, work, rpjs, node, xdelta):
+    patch, decoded = work / 'route.xdelta', work / 'decoded.nds'
+    try:
+        run([xdelta, '-e', '-A', '-S', 'none', '-D', '-s', paths[source['id']],
+             paths['target-' + locale], patch])
+        raw = patch.read_bytes()
+        if raw[:5] != bytes.fromhex('d6c3c40000'):
+            raise ValueError('Unexpected VCDIFF header')
+        run([xdelta, '-d', '-D', '-R', '-s', paths[source['id']], patch, decoded])
+        verify_file(decoded, target)
+        decoded.unlink()
+        result = json.loads(run([node, HERE / 'verify-rompatcher.cjs', rpjs,
+                                 paths[source['id']], patch, source['sha256'], target['sha256'], decoded]))
+        verify_file(decoded, target)
+        if result.get('result') != 'PASS' or result.get('patch_sha256') != hashlib.sha256(raw).hexdigest():
+            raise ValueError('Independent decoder failed')
+        return raw
+    finally:
+        for path in (patch, decoded):
+            if path.exists():
+                path.unlink()
+
+
+def build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdelta, contract):
+    if output.exists():
+        raise FileExistsError('Use a new output directory')
+    paths = {key: Path(value) for key, value in json.loads(inputs.read_text()).items()}
+    required = {row['id'] for row in cfg['sources']} | {'target-' + locale for locale in MULTILINGUAL_LOCALES}
+    if set(paths) != required:
+        raise ValueError('Missing or extra release input source/target')
+    for source in cfg['sources']:
+        verify_file(paths[source['id']], source)
+    for locale, target in cfg['targets'].items():
+        verify_file(paths['target-' + locale], target)
+    # Authenticate all documents before any output or temporary decoded ROM.
+    members = multilingual_documents(guides, cfg)
+    for name, content in multilingual_originals(references, cfg).items():
+        add_member(members, name, content)
+    sources = {row['id']: row for row in cfg['sources']}
+    manifests = {}
+    with pinned_git_snapshot(rpjs, cfg['rompatcher_commit']) as snapshot:
+        output.mkdir(parents=True)
+        with tempfile.TemporaryDirectory(prefix='sgp-package-', dir=output) as temporary:
+            work = Path(temporary)
+            for locale in MULTILINGUAL_LOCALES:
+                folder = cfg['locales'][locale]['folder']
+                rows = []
+                for source_id in cfg['routes_by_target'][locale]:
+                    source = sources[source_id]
+                    raw = _verified_route(source, cfg['targets'][locale], paths, locale,
+                                          work, snapshot, node, xdelta)
+                    name = 'Patch/' + source_id + '.xdelta'
+                    add_member(members, folder + '/' + name, raw)
+                    rows.append(dict(file=name, source=source, bytes=len(raw),
+                                     sha256=hashlib.sha256(raw).hexdigest()))
+                    print(f'{locale}: {len(rows)}/{len(cfg["routes_by_target"][locale])} routes verified', flush=True)
+                manifest = dict(schema=2, version=cfg['version'], language=locale,
+                                target=cfg['targets'][locale], patches=rows,
+                                cheats=cfg['locales'][locale]['cheats'],
+                                decoders=['xdelta3', 'RomPatcher.js'], rompatcher_commit=cfg['rompatcher_commit'])
+                if 'status' in cfg:
+                    manifest.update(status=cfg['status'], open_gates=cfg.get('open_gates', []),
+                                    cheats_policy=cfg['cheats_policy'])
+                manifests[locale] = manifest
+                add_member(members, folder + '/Patch/manifest.json',
+                           (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode())
+                inventory = {name[len(folder) + 1:]: dict(bytes=len(content), sha256=hashlib.sha256(content).hexdigest())
+                             for name, content in sorted(members.items()) if name.startswith(folder + '/')}
+                add_member(members, folder + '/Patch/CONTENTS.json',
+                           (json.dumps(dict(version=cfg['version'], language=locale, files=inventory), indent=2) + '\n').encode())
+        for source in cfg['sources']:
+            verify_file(paths[source['id']], source)
+        for locale, target in cfg['targets'].items():
+            verify_file(paths['target-' + locale], target)
+        manifest = dict(schema=2, version=cfg['version'], targets=cfg['targets'],
+                        locales=cfg['locales'], routes_by_target=cfg['routes_by_target'],
+                        routes=sum(len(m['patches']) for m in manifests.values()),
+                        decoders=['xdelta3', 'RomPatcher.js'], rompatcher_commit=cfg['rompatcher_commit'])
+        if 'status' in cfg:
+            manifest.update(status=cfg['status'], open_gates=cfg.get('open_gates', []),
+                            cheats_policy=cfg['cheats_policy'])
+        add_member(members, 'manifest.json', (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode())
+        inventory = {name: dict(bytes=len(content), sha256=hashlib.sha256(content).hexdigest())
+                     for name, content in sorted(members.items())}
+        add_member(members, 'CONTENTS.json', (json.dumps(dict(schema=2, version=cfg['version'], files=inventory,
+                   excluded_self_files=['CONTENTS.json', 'SHA256SUMS']), indent=2) + '\n').encode())
+        add_member(members, 'SHA256SUMS', ''.join(hashlib.sha256(content).hexdigest() + '  ' + name + '\n'
+                   for name, content in sorted(members.items())).encode())
+        root = 'Sacred Gold Plus ' + cfg['version'] + '/'
+        members = {root + name: content for name, content in members.items()}
+        archive = output / ('Sacred-Gold-Plus-' + cfg['version'] + '-Multilingual.zip')
+        write_zip(archive, members)
+        results = [dict(file=archive.name, bytes=archive.stat().st_size, sha256=digest(archive),
+                        members=len(members), routes=manifest['routes'])]
+    (output / 'SHA256SUMS').write_text(results[0]['sha256'] + '  ' + archive.name + '\n')
+    (output / 'verification.json').write_text(json.dumps(dict(version=cfg['version'], assets=results,
+        status=cfg.get('status', 'file-reconstruction-verified'), open_gates=cfg.get('open_gates', []),
+        contract_sha256=digest(contract),
+        scope='File reconstruction with two decoders; no game runtime or save compatibility test.'), indent=2) + '\n')
+    return results
+
+
 def build(inputs, references, guides, output, rpjs, node='node', xdelta='xdelta3', contract=None):
     cfg = config(contract)
+    if cfg.get('schema', 1) == 2:
+        return build_multilingual(cfg, inputs, references, guides, output, rpjs, node, xdelta, contract)
     if output.exists(): raise FileExistsError('Use a new output directory')
     paths = {k: Path(v) for k,v in json.loads(inputs.read_text()).items()}
     for row in cfg['sources']: verify_file(paths[row['id']], row)

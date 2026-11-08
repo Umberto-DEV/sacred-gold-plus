@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "language": "FR",
+  "strings": {
+    "category": "Évolutions",
+    "target": "Évolue en : {species}",
+    "level": "Atteindre au moins le niveau {p}.",
+    "friendship": "Monter de niveau avec un bonheur élevé.",
+    "friendship_day": "Monter de niveau le jour avec un bonheur élevé.",
+    "friendship_night": "Monter de niveau la nuit avec un bonheur élevé.",
+    "trade": "Échanger ce Pokémon.",
+    "trade_item": "Échanger en tenant {item}.",
+    "use_item": "Utiliser {item}.",
+    "male": "Mâle uniquement.",
+    "female": "Femelle uniquement.",
+    "attack_gt": "Niveau {p} minimum ; Attaque supérieure à la Défense.",
+    "attack_eq": "Niveau {p} minimum ; Attaque égale à la Défense.",
+    "attack_lt": "Niveau {p} minimum ; Attaque inférieure à la Défense.",
+    "branch": "La branche dépend du Pokémon ; changer ses stats ne la choisit pas.",
+    "shedinja": "Quand Ningale évolue au niveau {p}, garder une place libre dans l’équipe et une Poké Ball normale dans le Sac.",
+    "beauty": "Monter de niveau avec au moins {p} en Beauté.",
+    "level_any": "Monter de niveau.",
+    "hold_day": "Monter de niveau le jour en tenant {item}.",
+    "hold_night": "Monter de niveau la nuit en tenant {item}.",
+    "known_move": "Monter de niveau en connaissant {move}.",
+    "party_species": "Monter de niveau avec {species} dans l’équipe."
+  }
+}

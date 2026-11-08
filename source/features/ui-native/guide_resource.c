@@ -29,7 +29,7 @@ static unsigned ggr_container(const UiGuideReader *r,const UiHeap *h,unsigned *r
  return 0;
 }
 static unsigned ggr_config(const UiGuideConfig *c) {
- return c->magic==0x31435247&&c->abi==1&&c->language<=1&&c->generation&&c->file_id<513&&
+ return c->magic==0x31435247&&c->abi==1&&c->language<=4&&c->generation&&c->file_id<513&&
  c->rom_bytes>=512&&c->rom_bytes<=0x20000000&&c->file_top>=512&&c->file_top<=c->rom_bytes&&
  c->file_bottom>=c->file_top&&c->file_bottom<=c->rom_bytes&&c->file_bytes==c->file_bottom-c->file_top&&
  c->member_offset<=c->file_bytes&&c->member_bytes>=40&&c->member_bytes<=131072&&!(c->member_bytes&1)&&

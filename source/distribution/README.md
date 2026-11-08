@@ -1,11 +1,10 @@
-# Reproduce the current 1.3.1 player downloads
+# Reproduce player downloads
 
-This directory documents the **published 1.3.1** package. The development
-source now contains a V1.3.2 game identity, but there is no 1.3.2 package
-contract, player ZIP or release. Reproduce the published 1.3.1 output from its
-published source revision; do not relabel this contract or treat a development
-ROM as the 1.3.1 target. A later player release needs its own versioned
-contract, exact ROM acceptance and fresh documents.
+This directory retains the **published 1.3.1** package contract and supports
+an explicit multilingual schema-2 contract for 1.3.2. Reproduce published 1.3.1
+outputs from their published source revision; do not relabel that contract or
+treat a development ROM as its historical target. A successor package needs its
+own versioned contract, exact accepted ROM hashes and freshly generated documents.
 
 `release-1.3.1.json` is the current default contract for `pack.py` and `guide.py`.
 It authenticates 25 input routes per output language, the two output ROMs,
@@ -13,7 +12,111 @@ original reference documents and the independent patch decoder. Unverified
 legacy cheat catalogues are omitted. Build the target ROMs with the
 [current source workflow](../README.md).
 
-## Player-document sources
+## Multilingual 1.3.2 contract support
+
+`pack.py` also accepts an explicit **schema 2** contract for the five-language
+1.3.2 successor. The default remains the immutable schema-1 1.3.1 contract.
+Schema-2 packaging support does not accept a ROM, runtime result or release by
+itself: the supplied versioned contract must pin the exact accepted candidates.
+Do not reuse published 1.3.1 target hashes as 1.3.2 identities.
+
+The schema-2 contract contains:
+
+- `version: "1.3.2"`, five `targets` keyed by EN, IT, FR, ES and DE, each with
+  complete `sha256` and `bytes` (an optional `name` must be a basename).
+- `sources`: all 30 recognized bases: the immutable 1.3.1 contract's 25
+  sources, its two published target ROMs under `plus-1.3.1-en` and
+  `plus-1.3.1-it`, and `clean-fr`, `clean-es` and `clean-de` from the retail
+  language registry. Every source hash and size must match this independent
+  registry; unknown bases and repinned known IDs are rejected. Each row contains
+  exactly `id`, `label`, `sha256` and `bytes`; local paths belong only in the
+  separate private input mapping.
+- `routes_by_target`: five explicit lists, each containing all 30 source IDs
+  exactly once, for 150 routes. Every recognized historical base can produce
+  any of the five latest language targets. The output folder and target hash
+  identify the chosen language; the starting ROM's language does not constrain
+  that choice. Missing historical routes, unknown IDs, duplicate IDs and extra
+  target locales are rejected. The packager uses these declared lists directly
+  and never silently expands them. The schema-1 25-by-two contract is unchanged.
+- `locales`: one row per locale, with its exact `folder` from
+  `source/localization/languages.json` and a `documents` list containing all
+  nine `{name, sha256, bytes}` PDF pins, in renderer order. The names are
+  `Installation`, `Whats-New`, `Special-Events`, `Pokemon-Changes`,
+  `Pokemon-Locations`, `Evolutions`, `Items-TMs`, `Trainers` and `Game-Guide`,
+  each followed by `-1.3.2-<locale>.pdf`. Each locale also requires a nonempty
+  `cheats` list of `{name, sha256, bytes}` pins. These are portable basenames
+  ending in `.txt`, `.xml`, `.mch` or `.cht`; duplicate names, path aliases, ROM
+  filenames and files larger than 8 MiB are rejected. A translated notice may be
+  the sole file until a revision-verified catalogue is available.
+- The existing pinned EN/IT `references`, `original_documents` and
+  `rompatcher_commit`. Each shared original document pin also declares its
+  actual `language` (EN for the original shared Drayano manuals). The cheat
+  policy is `omit-unverified` or `verified-localized`. No old cheat catalogue
+  is inherited from a reference ZIP.
+
+The private `--inputs` mapping supplies exactly the declared source IDs and all
+five `target-<locale>` paths. Supply generated PDFs under `--guides/<locale>/`
+and the contract-listed cheat files under `--guides/<locale>/Cheats/`. Only
+listed files are packaged. Missing, stale, altered or wrong-language PDFs,
+missing/changed cheat files and wrong source/target bytes fail before an output
+folder is created. Every PDF's complete bytes and size must match its contract
+pin; a filename or PDF signature alone is insufficient. The existing no-follow guide readers, authenticated
+reference snapshots, archive-name checks and pinned decoder snapshot remain
+in use. Schema 2 reads current authored package notices from the separate
+locale document catalogues; there is no English fallback or dependency on
+`SGP_PLAYER_DOCUMENTS_DIR` authoring text.
+
+The result is one `Sacred-Gold-Plus-1.3.2-Multilingual.zip`. Its only output
+games are the five 1.3.2 targets; older versions appear solely as authenticated
+patch input identities. Choose the desired output language explicitly, then
+follow the installation guide to retain the installed ROM filename/path and
+its raw-save association. The ZIP has this layout:
+
+```text
+Sacred Gold Plus 1.3.2/
+  START-HERE.txt
+  manifest.json
+  CONTENTS.json
+  SHA256SUMS
+  EN-English/                  # also IT-Italiano, FR-Francais, ES-Espanol, DE-Deutsch
+    Patch/<source-id>.xdelta
+    Patch/manifest.json
+    Patch/CONTENTS.json
+    Documents/<nine localized PDFs>
+    Cheats/<contract-pinned localized files>
+  Originals/<unchanged shared manuals, once each>
+  Originals/EN-English/Game Guide.txt
+  Originals/IT-Italiano/Game Guide.txt
+  Originals/CONTENTS.json      # original language and fingerprints
+  Credits-and-Licenses/<locale>/ABOUT.txt
+  Credits-and-Licenses/EN-English/LICENSE.txt
+  Credits-and-Licenses/IT-Italiano/LICENZA.txt
+```
+
+All 150 routes are encoded and decoded sequentially with xdelta3, independently
+decoded with the pinned RomPatcher.js snapshot, and checked against its entire
+exact target hash. Temporary reconstructed ROMs and patches are removed even
+on decoder failure. Every input is rechecked before the ZIP is finalized.
+The ZIP is reopened and compared with the complete member map. Root
+`SHA256SUMS` covers all members except itself; `CONTENTS.json` lists all
+other members except those two root inventory files, naming the exclusions
+explicitly. An external checksum and verification report identify the finished
+ZIP. These are file-reconstruction results; Continue/native SAVE/cold restart
+acceptance remains separate.
+
+Focused checks, including the unchanged published schema-1 behavior:
+
+```sh
+cd source/distribution
+PYTHONPATH=.. ../../.venv/bin/python -B -m unittest test_multilingual_pack test_pack test_release131 test_document_sources -v
+```
+
+## Historical 1.3.1 player-document sources
+
+The following authoring and two-ZIP instructions describe schema 1 and the
+published 1.3.1 revision only. Current 1.3.2 uses the explicit schema-2 contract
+above and public `localization/locales/<locale>/documents.json` sources for all
+five languages; it does not use the private Italian-only authoring arrangement.
 
 Public documentation and bundled authoring texts are English. Italian player
 PDFs and notices remain available in the Italian download package. Their
@@ -45,7 +148,7 @@ checksums or tags: corrected player assets require a new release. Existing
 published 1.3.1 assets are immutable and retain the hashes recorded in their
 release manifest.
 
-## Required inputs
+## Historical 1.3.1 required inputs
 
 - The two current 1.3.1 target ROMs and 25 supported source ROMs that you own,
   matching the complete contract hashes. No ROM or personal save is committed.
@@ -99,7 +202,7 @@ and retained descriptors. Player authoring text and nested notices use the same
 regular-file/no-symlink reader, including an explicit private document bundle.
 No source-directory path is added to the release manifest.
 
-## Current output and validation
+## Historical 1.3.1 output and validation
 
 Each language ZIP has one `Sacred Gold Plus 1.3.1/` root with its two current
 PDFs and `Patch/`, `Manual/` and `Cheats/`. The ZIP selects the final language;
@@ -119,9 +222,9 @@ and pinned decoder execution. Synthetic localized fixture text is English;
 Italian authoring content is not required by public CI. Actual translated
 release PDFs keep their separate human/visual review requirement.
 
-## Package revision 2
+## Historical 1.3.1 package revision 2
 
-The current release tag is `v1.3.1-r2`, while the game and player-guide version
+That release tag is `v1.3.1-r2`, while the game and player-guide version
 remain 1.3.1. The revision updates public source documentation and download
 locations. Native target ROM and input fingerprints are unchanged. Stage-zero
 base deltas remain required current build inputs; their bytes and pins are

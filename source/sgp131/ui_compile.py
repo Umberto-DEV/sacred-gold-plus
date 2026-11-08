@@ -73,13 +73,13 @@ SOURCE_PINS = {
     "features/plus-ui/navigation.c": "7ea31bcea8d22ca60b350bbe91125e6f5461989db3b4ccd45cc1beb523f9e7e2",
     "features/plus-ui/ui_blob.c": "5af3ff60e0511ffd4b44f16e742ca2418d3ee5f209950881b0bb813867a83a5b",
     "features/plus-ui/ui_common.c": "c3f3c28643afb4ea9b22bb0b3744df6476eea71effd6b37006adc29db3331a6f",
-    "features/settings-ui/catalog.h": "61f6a7b79ab363650b63788394e7e64cd526614c55fd74a2e7c54028add28364",
+    "features/settings-ui/catalog.h": "716ad2eca0d45f86affd6d0d1d34af821451ceb72022149576db8a8a8edd6f8e",
     "features/settings-ui/controller.h": "26ea9fabcc759dfaaab059ca5cc27b0c42ccf7bf09032b66d505d288e731bc8f",
     "features/settings-ui/owners.c": "7e0916a34912114db5e1fde40a8fa0de2e5f5ffb5d89d48c48ba5c77f16bb456",
     "features/settings-ui/owners.h": "713fc10402763f45f71e6461327f6a4487b0c63298084895e81b239d9928366a",
-    "features/settings-ui/painter.c": "fb2f20938d151f97c07176650d23d26ea352a51b20d755697896380b189dd19f",
+    "features/settings-ui/painter.c": "6c5f0944106aa87111a60d262c913d79eb33d14e1bd21072b88c7fd2d0ca24bc",
     "features/settings-ui/painter.h": "9f92a69d524f78b358561c650dce194ed8907f8787a9e6787dcd3ef0b2a4b368",
-    "features/settings-ui/render.c": "a840b656a525e4cedbd9168deb2d99ccc6d0f1f726d30afab038c19cd3b8848a",
+    "features/settings-ui/render.c": "68021ca7a847fae11967401db3aef98a127e22711832f05f2fc2f3a71ebca84a",
     "features/settings-ui/render.h": "55b7f00274376de65dbcd97c33f91e10df9357c52832c5b52dd842db3f6c5744",
     "features/settings-ui/scene.c": "e90ee1f3276c97182fa4a96926e6444f562b96ead3f6a46064e9b3139ccae3e2",
     "features/settings-ui/state.c": "9f9c5cc0dd7b243c4ffa7b9a724ccfa90e567282d874f0c65cfd6388fd9d4181",
@@ -107,7 +107,7 @@ SOURCE_PINS = {
     "features/ui-native/fieldbook.h": "7097f9629839654de31d94821fd2362b36323bd462fa7527030ac80f2ead2cbb",
     "features/ui-native/font.c": "96f7d33ad1923586ed8f6234a42ffa3acd86c99993618b3ba9a62a66dcc69646",
     "features/ui-native/font.h": "b7669616d7e074dff9cc568275bc4d1e7ac276258859f1a45d707181e610032d",
-    "features/ui-native/guide_resource.c": "71bfb5fd370f7e361757e215cadeec2bbfa9b62c0bd5e92966da09a16842ba62",
+    "features/ui-native/guide_resource.c": "c3eaa856162b24ab7813f01b62874f4b917aea9dfa0a83339073de1750ac7be9",
     "features/ui-native/guide_resource.h": "08c818a5fddfcfc96c6205ffc97c56e7133b164266253d6f5b85a926ee150957",
     "features/ui-native/heap.c": "0462b443978b5db1dba759bc33389eff98f0ede189e39463259f4e82aaf1f219",
     "features/ui-native/heap.h": "36258d9da70e43a534b126338ae0dcc4bd11180063d79f246355175c7085ee07",
@@ -119,7 +119,7 @@ SOURCE_PINS = {
     "features/ui-native/persistent.h": "de3f432b5b7fafffb05d3bfa428d9b9242942834d7afed72a76fa100e82233f9",
     "features/ui-native/physical.c": "3d8a31166d48ecbee392d05180a63a0ad15109bcbfbbcf86e7f5cb12d095b2ae",
     "features/ui-native/physical.h": "9c609c01e6dd01f185ff68aad3a828b0d239e43b353c8168f084d80282b0c16a",
-    "features/ui-native/resource.c": "1cc3baab34166d3272b8f8a5234e583b8df9f301b7a5d40325d58c241fa98abb",
+    "features/ui-native/resource.c": "4358ce9227b253c94f9b0b3d9b5e59f54c7e35376d83e9dcb3c8b4ea0d03c9c6",
     "features/ui-native/resource.h": "1ca2edf7a8f2d5e2f4cc4778ec79ad7a0f8741b52c97eea8754e7bf52ec34f18",
     "features/ui-native/scene.c": "2559f576012335564fb8ac18f4496d12228160de7ef4030791394dbd8f542b8d",
     "features/ui-native/scene.h": "fcfc70053708bab23089e493f67788f8d2a119e2eade2ec22a240c4b04fe870b",
@@ -137,10 +137,15 @@ SOURCE_PINS = {
     "sgp131/data/ui-copy.json": "6fe891c7252ffffdfb3fa10f25f25251e961b869b728a86ece33e516c49cad30",
     "sgp131/guide_content.py": "b61119db09bc149081128a24c8e89be8e9e62526c904a7db84542a3fabfe9647",
     "sgp131/reserve.py": "d677827f7dbbfa422a56257860f6bcdad360e01da4b83803af243b74b033fb2a",
-    "sgp131/ui_copy.py": "8948dab12e3434c7fa9d51435419657db59df918b056db6826b068f827804c9a",
-    "sgp131/ui_resource.py": "b63d8681317c538da5d037868333dfe9ea5f8a0908826f70ec2e62c7569e1427",
-    "sgp131/ui_resource_verify.py": "afd5f5f88594d5c58330f147755212458b465f731cdd191409bc30e1cc627ff0",
-    "translation/message_codec.py": "61de1dd4a7995ee5b6c1e20b45556c414c2fbdb55c9acd56707783cc6863891f"
+    "sgp131/ui_copy.py": "0f7f27da938bda8df2c89712155df23abc935f0b2eb2ce3d6a19f574afde7cb9",
+    "sgp131/ui_resource.py": "1d5b372dc88259a2b40ed5cd25cbc31af1ca6a757b1c184e686b30217771445c",
+    "sgp131/ui_resource_verify.py": "2ef7aacb48d6f349b4612cc6ed2ac4175f5ec54954bfd2ba8710ece4306489d9",
+    "translation/message_codec.py": "61de1dd4a7995ee5b6c1e20b45556c414c2fbdb55c9acd56707783cc6863891f",
+    "localization/__init__.py": "e2a09065507debf68d6f85c471c7cf86ad7243a6620728416f093018e5f2c621",
+    "localization/catalogue.py": "1eeba353949e14809a45f68efcd4952338d91603c4d20408f429416ce51e5704",
+    "localization/locales/FR/ui.json": "19f8d01459f1e4a5c6cb3b979768e5551240e97d42efbd111c81e439ed98f842",
+    "localization/locales/ES/ui.json": "f4ff39a8ed720f83961e582756a27e74d8720ce9ffbb7504259062843c2c8906",
+    "localization/locales/DE/ui.json": "f5e22900ae2b1e89e5e3a884da1f1514cc312b2f976b17d926fd8c8b287d7c1d",
 }
 
 
@@ -442,7 +447,8 @@ def resources(data, language, charmap, archive_deltas=()):
     guide = guide_content.build_content(categories, encode, measure)
     graph = guide_content.encoded_graph(categories, encode)
     guide_content.verify_content(guide, graph)
-    catalog = ui_copy.load_catalogue((SOURCE/'sgp131/data/ui-copy.json').read_text())
+    from localization.catalogue import ui_catalogue
+    catalog = ui_catalogue()
     # UIR copy contract uses the native codec verbatim (Guide normalizes apostrophes).
     authored, geometry = ui_copy.encode_catalogue(catalog, language, lambda t: codec.codifica(t, table), ui_widths)
     require(ui_copy.c_header(catalog) == (SOURCE/'features/settings-ui/catalog.h').read_text(), 'catalog C identity')

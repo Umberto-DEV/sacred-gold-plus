@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "language": "IT",
+  "kind": "existing-common-player-core",
+  "builder": "sgp131.workbench",
+  "through": "identity",
+  "mechanics": {
+    "controls": "inert",
+    "portable": "active",
+    "rematches": "inert"
+  },
+  "authored_ui": "sgp131/data/ui-copy.json#IT",
+  "authored_guide": "sgp131/data/guide.json#IT",
+  "player_documents": "documents.json",
+  "retail_identity": "../../languages.json#languages.IT.retail"
+}

@@ -1,5 +1,9 @@
 # What is new in Sacred Gold Plus 1.3.1
 
+The shared features below continue in 1.3.2. See the [current change log](../../CHANGELOG.md)
+and [five-language validation](validation/localization-1.3.2.md) for localization
+and the New Game correction. The 1.3.1 hashes below retain their historical scope.
+
 Version 1.3.1 combines the implemented1.3 feature line with the current Guide/settings redesign, portable Box and targeted bug repairs. Current released ROMs are EN `185dc5c53a75652c021ced65157e1c3388cd661ebe90775e5b49314aee753b08` and IT `b68ddd5691538c3895b75f3f20db5a163b2bd8376629f59d2a9d55dc05935bce`. The [composition guide](../sgp131/README.md) gives exact inputs/toolchains; [UI validation](ui-1.3.1-validation.md) and [Android evidence](android-validation.md) retain candidate-specific results. Earlier tests are not silently relabeled as current-ROM acceptance.
 
 ## Guide and settings

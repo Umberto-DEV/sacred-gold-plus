@@ -30,6 +30,21 @@ class AuthoredCatalogueTests(unittest.TestCase):
     def texts(self, language):
         return {e['name']: e['text'][language] for e in self.catalogue['entries']}
 
+    def test_extended_locale_catalogue_keeps_ids_and_compiles_footer_domains(self):
+        catalogue = copy.deepcopy(self.catalogue)
+        for entry in catalogue['entries']:
+            for locale in ('FR', 'ES', 'DE'):
+                entry['text'][locale] = entry['text']['EN']
+        for localized in catalogue['footer_runs'].values():
+            for locale in ('FR', 'ES', 'DE'):
+                localized[locale] = copy.deepcopy(localized['EN'])
+        result = self.ui.load_catalogue(json.dumps(catalogue))
+        for locale in ('FR', 'ES', 'DE'):
+            authored, receipt = self.ui.encode_catalogue(result, locale, self.encode, self.widths)
+            self.assertEqual(len(authored), 144)
+            self.assertEqual(receipt['language'], locale)
+        self.assertIn('#define SGP_UI_FOOTER_LAYOUT_COUNT 30', self.ui.c_header(result))
+
     def test_footer_layout_metadata_reconstructs_copy_and_rejects_corruption(self):
         for change in ('missing','key','label','count'):
             c=copy.deepcopy(self.catalogue)
@@ -38,6 +53,37 @@ class AuthoredCatalogueTests(unittest.TestCase):
             elif change=='label':c['footer_runs']['FOOTER_ROOT']['EN'][1]['text']='Different'
             else:c['footer_runs']['FOOTER_ROOT']['EN']*=2
             with self.subTest(change=change),self.assertRaises(ValueError):self.ui.load_catalogue(json.dumps(c))
+
+    def test_footer_caps_and_run_gaps_can_overflow_a_plain_line_that_fits(self):
+        candidate = copy.deepcopy(self.catalogue)
+        runs = []
+        for key in ('A', 'B', 'X', 'Y'):
+            runs.extend([dict(key=key, text=key), dict(key='', text='a' * 10)])
+        text = '  '.join(key + ' ' + 'a' * 10 for key in ('A', 'B', 'X', 'Y'))
+        candidate['footer_runs']['FOOTER_ROOT']['EN'] = runs
+        next(e for e in candidate['entries'] if e['name'] == 'FOOTER_ROOT')['text']['EN'] = text
+        self.assertEqual(len(text) * 4, 216)  # Ordinary text fits the232px line.
+        self.assertEqual(44 * 4 + 4 * 13 + 3 * 9, 255)  # Native caps/gaps do not.
+        with self.assertRaisesRegex(ValueError, 'footer exceeds rendered geometry: FOOTER_ROOT'):
+            self.ui.encode_catalogue(candidate, 'EN', self.encode, self.widths)
+
+    def test_action_bars_admit_combined_labels_and_native_spacing(self):
+        cases = {
+            'exit': {'ACTION_APPLY': 'a' * 17, 'ACTION_DISCARD': 'a' * 17,
+                     'ACTION_CONTINUE': 'a' * 17},
+            'apply': {'ACTION_APPLY': 'a' * 27, 'ACTION_CANCEL': 'a' * 27,
+                      'ACTION_DISCARD': 'a', 'ACTION_CONTINUE': 'a'},
+        }
+        for name, labels in cases.items():
+            candidate = copy.deepcopy(self.catalogue)
+            for entry in candidate['entries']:
+                if entry['name'] in labels:
+                    entry['text']['EN'] = labels[entry['name']]
+            self.assertLessEqual(max(map(len, labels.values())) * 4, 232)
+            # Exit reaches x248; Apply reaches x244, despite short individual labels.
+            with self.subTest(bar=name), self.assertRaisesRegex(
+                    ValueError, 'action bar exceeds geometry: ' + name):
+                self.ui.encode_catalogue(candidate, 'EN', self.encode, self.widths)
     def test_x_is_explicit_apply_and_y_is_info_in_persistent_controls(self):
         for language, apply in (('EN', 'X Apply'), ('IT', 'X Applica')):
             text = self.texts(language)
@@ -197,7 +243,8 @@ class AuthoredCatalogueTests(unittest.TestCase):
         self.assertEqual(italian[version_id], tuple(self.encode('V1.3.2')))
         pool = self.texts('EN')['FORMAT_POOL']
         self.assertTrue(set('0123456789/:% ').issubset(pool))
-        self.assertEqual(self.ui.c_header(self.catalogue), (MODULE.parents[1] / 'features/settings-ui/catalog.h').read_text())
+        from localization.catalogue import ui_catalogue
+        self.assertEqual(self.ui.c_header(ui_catalogue()), (MODULE.parents[1] / 'features/settings-ui/catalog.h').read_text())
 
 
 if __name__ == '__main__':
