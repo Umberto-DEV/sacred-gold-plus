@@ -43,6 +43,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 SOURCE = Path(__file__).resolve().parent
@@ -52,6 +53,7 @@ ROOT = SOURCE.parent
 SUITE = [
     ("maintenance synthetic wrappers and release stage", SOURCE / "features/manutenzione", ["-m", "unittest", "discover", "-p", "test_*.py"]),
     ("distribution archive contracts", SOURCE / "distribution", ["-m", "unittest", "discover", "-p", "test*.py"]),
+    ("Class A runner contracts", SOURCE, ["-m", "unittest", "test_run_tests"]),
     ("cheat selector catalogue", SOURCE / "cheats", ["-m", "unittest", "test_selector", "test_catalogue", "test_gender"]),
     ("sgp12 library",          SOURCE, ["-m", "unittest", "sgp12.test_lib", "sgp12.test_versione", "sgp12.test_titolo_versione", "sgp12.test_publication"]),
     ("stage 0 (original ROM)", SOURCE, ["-m", "unittest", "sgp12.test_base11"]),
@@ -288,8 +290,10 @@ def esegui(nome, cwd, argv, env=None, classe_b=False):
             raise ValueError('host native contract requires the unchanged unittest entry point')
         owners = NONPRODUCTION_NATIVE_SUITES[nome]
         argv = ['-c', NONPRODUCTION_NATIVE_COMMAND, str(SOURCE), ','.join(owners), *argv[2:]]
+    started = time.perf_counter()
     r = subprocess.run([sys.executable, *argv], cwd=str(cwd), env=amb,
                        text=True, capture_output=True)
+    elapsed_seconds = round(time.perf_counter() - started, 3)
     uscita = r.stdout + r.stderr
     m = CONTA.search(uscita)
     n = int(m.group(1)) if m else 0
@@ -307,11 +311,11 @@ def esegui(nome, cwd, argv, env=None, classe_b=False):
         # that collects nothing is not a suite that passes.
         ok = False
         print("  %-26s   no test collected — the suite is empty or was not found" % nome)
-    print("  %-26s %3d run, %2d skipped   %s" % (nome, n - saltati, saltati,
-                                                 "ok" if ok else "FAILED"))
+    print("  %-26s %3d run, %2d skipped   %s   %.3fs" %
+          (nome, n - saltati, saltati, "ok" if ok else "FAILED", elapsed_seconds))
     if not ok:
         print(uscita[-4000:])
-    return ok, n, saltati
+    return ok, n, saltati, elapsed_seconds
 
 
 def compila_opzioni(tmp: Path):
@@ -374,42 +378,51 @@ def main() -> int:
     ambiente_riserva = {"SGP_RISERVA_COMPLETA": "1"} if os.environ.get("SGP_RISERVA_ROM") else None
 
     for nome, cwd, argv, *propri in SUITE:
-        ok, n, s = esegui(nome, cwd, argv,
-                          env=propri[0] if propri else ambiente_riserva if nome == "ARM9 reserve register" else None)
+        ok, n, s, elapsed = esegui(nome, cwd, argv,
+                                   env=propri[0] if propri else ambiente_riserva if nome == "ARM9 reserve register" else None)
         classe_a_ok &= ok
         totale += n
         saltati_tot += s
-        dettaglio.append({"suite": nome, "collected": n, "skipped": s, "ok": ok})
+        dettaglio.append({"suite": nome, "collected": n, "skipped": s,
+                          "ok": ok, "elapsed_seconds": elapsed})
 
     with tempfile.TemporaryDirectory(prefix="sgp-class-a-") as d:
         tmp = Path(d)
-        ok, n, s = esegui("native code (Unicorn)", SOURCE / "features/native-core/test",
-                          ["-m", "unittest", "discover", "-p", "test_*.py"])
+        ok, n, s, elapsed = esegui("native code (Unicorn)", SOURCE / "features/native-core/test",
+                                   ["-m", "unittest", "discover", "-p", "test_*.py"])
         classe_a_ok &= ok
         totale += n
         saltati_tot += s
-        dettaglio.append({"suite": "native code (Unicorn)", "collected": n, "skipped": s, "ok": ok})
+        dettaglio.append({"suite": "native code (Unicorn)", "collected": n,
+                          "skipped": s, "ok": ok, "elapsed_seconds": elapsed})
 
+        compile_started = time.perf_counter()
         build, motivo, compilatore_assente = compila_opzioni(tmp)
+        compile_seconds = round(time.perf_counter() - compile_started, 3)
+        print("  options payload compilation: %.3fs" % compile_seconds)
         if build is not None:
-            ok, n, s = esegui("options page (Unicorn)", SOURCE / "features/options/test",
-                              ["-m", "unittest", "discover", "-p", "test_*.py"],
-                              env={"SGP_UI_BUILD": str(build)})
+            ok, n, s, elapsed = esegui("options page (Unicorn)", SOURCE / "features/options/test",
+                                       ["-m", "unittest", "discover", "-p", "test_*.py"],
+                                       env={"SGP_UI_BUILD": str(build)})
             classe_a_ok &= ok
             totale += n
             saltati_tot += s
             dettaglio.append({"suite": "options page (Unicorn)", "collected": n,
-                              "skipped": s, "ok": ok})
+                              "skipped": s, "ok": ok, "elapsed_seconds": elapsed,
+                              "compile_seconds": compile_seconds})
         else:
             # The suite still has a line, a count and a JSON entry: it used to
             # disappear from all three, and the run said PASS with 95 tests gone.
+            collection_started = time.perf_counter()
             n = conta_soltanto("options page (Unicorn)", SOURCE / "features/options/test")
+            collection_seconds = round(time.perf_counter() - collection_started, 3)
             # A missing compiler is a skip (a failure only where CI says every
             # machine must have one). A build that *fails* is never a skip: the
             # shipped sources not compiling is a defect on any machine.
             ok = compilatore_assente and not esigi_compilatore
-            print("  %-26s %3d run, %2d skipped   %s"
-                  % ("options page (Unicorn)", 0, n, "skipped" if ok else "FAILED"))
+            print("  %-26s %3d run, %2d skipped   %s   0.000s (collection %.3fs)"
+                  % ("options page (Unicorn)", 0, n, "skipped" if ok else "FAILED",
+                     collection_seconds))
             print("    " + motivo)
             if not ok and compilatore_assente:
                 print("    --richiedi-compilatore / SGP_CI=1: a missing compiler is a failure here")
@@ -420,7 +433,9 @@ def main() -> int:
             saltati_tot += n
             dettaglio.append({"suite": "options page (Unicorn)", "collected": n,
                               "skipped": n, "ok": ok, "motivo": motivo,
-                              "compilatore_assente": compilatore_assente})
+                              "compilatore_assente": compilatore_assente,
+                              "elapsed_seconds": 0.0, "compile_seconds": compile_seconds,
+                              "collection_seconds": collection_seconds})
 
     print("\nClass A: %d tests collected, %d ran, %d skipped — %s"
           % (totale, totale - saltati_tot, saltati_tot,
@@ -431,11 +446,13 @@ def main() -> int:
     classe_b_ok = True
     totale_b = saltati_b = 0
     for nome, cwd, argv, *propri in SUITE_CLASSE_B:
-        ok, n, s = esegui(nome, cwd, argv, env=propri[0] if propri else None, classe_b=True)
+        ok, n, s, elapsed = esegui(nome, cwd, argv,
+                                   env=propri[0] if propri else None, classe_b=True)
         classe_b_ok &= ok
         totale_b += n
         saltati_b += s
-        dettaglio_b.append({"suite": nome, "collected": n, "skipped": s, "ok": ok})
+        dettaglio_b.append({"suite": nome, "collected": n, "skipped": s,
+                            "ok": ok, "elapsed_seconds": elapsed})
     print("  Class B: %d tests collected, %d ran, %d skipped — %s"
           % (totale_b, totale_b - saltati_b, saltati_b, "pass" if classe_b_ok else "FAIL"))
     print("  (not counted as Class A coverage: set SGP_ROM_DIR to run them)")

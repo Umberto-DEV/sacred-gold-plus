@@ -178,6 +178,9 @@ The runner also probes Class B, reporting missing private inputs as explicit
 skips. Its historical summary counts skip events, including separate skipped
 subtests; the displayed collected/run totals are not a census of distinct test
 methods. Compare suite results and their skip reasons across environments.
+Each suite prints its elapsed time; `--json /path/to/private/report.json`
+records `elapsed_seconds` per suite and separates Options payload compilation
+time. Use those measurements before changing CI scheduling or reducing a test.
 All executed assertions must pass; a larger aggregate count does not establish
 broader coverage. Historical validation totals retain their original scope.
 

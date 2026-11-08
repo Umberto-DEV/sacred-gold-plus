@@ -1036,6 +1036,7 @@
   "source/sgp131/waterfall_facing.py",
   "source/sgp131/wonder_card.py",
   "source/sgp131/workbench.py",
+  "source/test_run_tests.py",
   "source/translation/audit_localization.py",
   "source/translation/build_release.py",
   "source/translation/message_codec.py",

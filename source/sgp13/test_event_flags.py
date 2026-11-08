@@ -135,6 +135,11 @@ class EventFlags(unittest.TestCase):
                 if first == 'set':
                     bit = FAMILY_FLAGS[FAMILY_IDS.index(0x6130)] - 0x3F00
                     expected[bit // 8] |= 1 << (bit & 7)
+                    self.assertEqual(m.writes[-2], (STATE + 0x2BC, 4, 0x32304648))
+                    self.assertEqual(m.writes[-1],
+                                     (STATE + 0x2C0 + bit // 8, 1, expected[bit // 8]))
+                else:
+                    self.assertEqual(m.writes[-1], (STATE + 0x2BC, 4, 0x32304648))
                 self.assertEqual(after[0x2C0:0x2E0], expected)
                 self.assertEqual(after[0xAC0:0xAE0], state[0xAC0:0xAE0])
                 self.assertEqual(m.call('sgp_event_vars_get', STATE, 0x6130),

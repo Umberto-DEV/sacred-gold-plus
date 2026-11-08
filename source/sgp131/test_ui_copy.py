@@ -191,7 +191,10 @@ class AuthoredCatalogueTests(unittest.TestCase):
         authored, report = self.ui.encode_catalogue(self.catalogue, 'EN', self.encode, self.widths)
         for row in report['rows']:
             self.assertLessEqual(row['required_px'], 240)
-        self.assertEqual(authored[self.ui.ids(self.catalogue)['VERSION']][-1], 65535)
+        version_id = self.ui.ids(self.catalogue)['VERSION']
+        self.assertEqual(authored[version_id], tuple(self.encode('V1.3.2')))
+        italian, _ = self.ui.encode_catalogue(self.catalogue, 'IT', self.encode, self.widths)
+        self.assertEqual(italian[version_id], tuple(self.encode('V1.3.2')))
         pool = self.texts('EN')['FORMAT_POOL']
         self.assertTrue(set('0123456789/:% ').issubset(pool))
         self.assertEqual(self.ui.c_header(self.catalogue), (MODULE.parents[1] / 'features/settings-ui/catalog.h').read_text())
