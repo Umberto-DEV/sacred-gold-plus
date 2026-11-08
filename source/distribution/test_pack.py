@@ -458,6 +458,31 @@ class PackageTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 check(root)
 
+    def test_public_device_notice_is_scoped_without_hiding_other_private_text(self):
+        check = runpy.run_path(str(pack.HERE.parents[1] / '.github/check_public.py'))['check']
+        device = 'Th' + 'or'
+        approved = f'AYN {device} (12 GB RAM, 256 GB storage). {device} results cover earlier builds.'
+        for name in ('README.md', 'source/distribution/RELEASE-NOTES-TEMPLATE.md',
+                     'source/docs/unapproved-device.md'):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp).resolve()
+                (root / '.github').mkdir()
+                files = ['.github/public-files.json', name]
+                (root / '.github/public-files.json').write_text(json.dumps(files))
+                target = root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(approved)
+                if name.endswith('unapproved-device.md'):
+                    with self.assertRaisesRegex(ValueError, 'private information'):
+                        check(root)
+                    continue
+                self.assertEqual(check(root), 2)
+                for extra in (f' {device} serial: synthetic-private-value',
+                              ' /' + 'home/' + 'synthetic-user/file'):
+                    target.write_text(approved + extra)
+                    with self.assertRaisesRegex(ValueError, 'private information'):
+                        check(root)
+
     def test_public_gate_rejects_tracked_xdelta_release_assets(self):
         check = runpy.run_path(str(pack.HERE.parents[1] / '.github/check_public.py'))['check']
         payload = bytes.fromhex('d6c3c40000') + b'controlled-patch-payload'

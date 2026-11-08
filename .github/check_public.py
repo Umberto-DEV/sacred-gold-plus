@@ -47,10 +47,18 @@ PRIVATE_TEXT = re.compile(
     r'|\bUmberto\b',                                       # a personal name
     re.I)
 
-# Two deliberate exemptions, so the rule above stays strict elsewhere.
+# Explicit public-text exemptions keep the rule above strict elsewhere.
 # The maintainer's GitHub account is public by definition and is the only
 # correct way to write CODEOWNERS and the links to issues and releases.
 GITHUB_ACCOUNT = re.compile(r'(?:@|github\.com/)Umberto-DEV\b')
+# Exact device wording explicitly approved by the maintainer for this public note.
+# Keep the device/private-path guard intact in every other file and context.
+PUBLIC_DEVICE_NOTICES = {
+    'README.md': ('AYN Thor (12 GB RAM, 256 GB storage)',
+                  'Thor results cover earlier builds.'),
+    'source/distribution/RELEASE-NOTES-TEMPLATE.md':
+        ('AYN Thor (12 GB RAM, 256 GB storage)', 'Thor results cover earlier builds.'),
+}
 # This file spells the forbidden patterns out, so it cannot scan itself.
 SELF = '.github/check_public.py'
 
@@ -153,7 +161,10 @@ def check(root=ROOT):
             if PRIVATE_TEXT.search(GITHUB_ACCOUNT.sub('', data.decode('latin-1'))):
                 raise ValueError('Possible private information inside a binary: ' + name) from None
             continue
-        if name != SELF and PRIVATE_TEXT.search(GITHUB_ACCOUNT.sub('', text)):
+        privacy_text = GITHUB_ACCOUNT.sub('', text)
+        for approved in PUBLIC_DEVICE_NOTICES.get(name, ()):
+            privacy_text = privacy_text.replace(approved, '')
+        if name != SELF and PRIVATE_TEXT.search(privacy_text):
             raise ValueError('Possible private information: review locally before publication: ' + name)
         corsa = longest_base64_run(text)
         if corsa > B64_RUN_LIMIT:

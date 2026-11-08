@@ -81,6 +81,18 @@ Further repairs address Sacred Gold/Plus behaviour and this continuation's own r
 
 Earlier fixes such as Garchomp's Rough Skin, Claydol's Fly and Scizor's Night Slash remain included. Current scope is in the [1.3.2 bug list](BUG-FIXES-1.3.2.md) and [validation report](source/docs/validation/localization-1.3.2.md). The [1.3.1 bug list](BUG-FIXES-1.3.1.md), [hack research](source/docs/legacy-bugs-1.3.1.md) and [earlier validation](source/docs/ui-1.3.1-validation.md) preserve historical evidence; the [changelog](CHANGELOG.md) separates the versions.
 
+## Development and testing
+
+I’m a junior developer at a software company, with a solid working knowledge of programming. For about a year, I’ve used Claude Code and Codex daily, supported by custom private skills.
+They assist with coding, exploratory and structural audits, debugging, testing and security work across this project and my melonDS forks.
+The ideas for my additions came from me; I guided implementation, defined most tests and measurements before, during and after changes, and retained the final say.
+
+Testing has used native melonDS and Mac-hosted melonDS Android environments, plus my AYN Thor (12 GB RAM, 256 GB storage). The final 1.3.2 checks ran on Mac; Thor results cover earlier builds.
+My current Android fork is [UD Nightly 2.1, versionCode 53](https://github.com/Umberto-DEV/melonDS-android/releases/tag/ud-nightly-2.1).
+I have not tested this project on MSI Claw, Steam Deck, other devices or original Nintendo DS hardware. Community reports are welcome, especially from original hardware.
+
+Version 1.3.2 adds French, German and Spanish alongside English and Italian, with localized patches, installation instructions and guides.
+
 ## Screenshots
 
 Actual game frames. Title, Guide and Options captures use the published 1.3.1 ROMs; storage captures retain their earlier 1.3.1 build identities. Location captures are from 1.2.5, and the wild battle is from 1.2.4. The galleries record their original build identities: [1.3.1 captures](images/1.3.1/captures.json) · [location captures](images/captures.json).
@@ -135,11 +147,6 @@ Contributions to code, translations, artwork, testing and documentation are welc
 
 Thanks to **Drayano**, **mikelan / Mikelan98**, **NefariousnessNo3436**, **@JD48096761** and the original contributors. The original Plus author's [announcement and permission](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/) remain the reference for the project's foundation. The original gameplay manuals and trainer reference retain their authors' credits. This is an independent fan continuation, not an official handover.
 
-Some patch features, bug diagnosis and security checks were developed with
-AI-assisted tools, including Codex and Claude Code. The maintainer has 2–3 years
-of development experience and uses these tools daily; changes are reviewed
-against the game code and measured with focused tests. This describes the
-actual review process, not a claim of formal penetration-test certification.
 Development uses [pret/pokeheartgold](https://github.com/pret/pokeheartgold), [ndspy](https://github.com/RoadrunnerWMC/ndspy), [Unicorn](https://www.unicorn-engine.org/), [Capstone](https://www.capstone-engine.org/) and the [melonDS core](https://melonds.kuribo64.net/); dependencies and external inputs are documented in the source guide.
 
 This project's own tools and sources use [GPL-3.0-or-later](LICENSE). Pokémon, the original game and third-party contributions remain under their owners' rights. No game code, text, graphics, ROM, BIOS or save is distributed in this source tree.

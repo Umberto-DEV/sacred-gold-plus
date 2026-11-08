@@ -39,6 +39,18 @@ Use the multilingual player ZIP link above. GitHub's automatic **Source code (zi
 - **Selected species and trainer improvements:** targeted stat and learnset changes across the roster, purposeful Plus trainer moves, 85-accuracy Will-O-Wisp and the Keen Eye evasion rule. These are specific changes rather than a complete later-generation ruleset.
 - **Portable Pokémon storage:** press R in the ordinary field party menu to open the native PC interface in permitted contexts.
 
+## Development and testing
+
+I’m a junior developer at a software company, with a solid working knowledge of programming. For about a year, I’ve used Claude Code and Codex daily, supported by custom private skills.
+They assist with coding, exploratory and structural audits, debugging, testing and security work across this project and my melonDS forks.
+The ideas for my additions came from me; I guided implementation, defined most tests and measurements before, during and after changes, and retained the final say.
+
+Testing has used native melonDS and Mac-hosted melonDS Android environments, plus my AYN Thor (12 GB RAM, 256 GB storage). The final 1.3.2 checks ran on Mac; Thor results cover earlier builds.
+My current Android fork is [UD Nightly 2.1, versionCode 53](https://github.com/Umberto-DEV/melonDS-android/releases/tag/ud-nightly-2.1).
+I have not tested this project on MSI Claw, Steam Deck, other devices or original Nintendo DS hardware. Community reports are welcome, especially from original hardware.
+
+Version 1.3.2 adds French, German and Spanish alongside English and Italian, with localized patches, installation instructions and guides.
+
 ## Screenshots
 
 Historical game captures illustrating the existing world and features. The titles are from published 1.3.1; party and storage images retain their earlier 1.3.1 build identities. Location captures are from 1.2.5, and the wild battle is from 1.2.4. Exact capture identities are recorded in the [1.3.1 gallery](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/images/1.3.1/captures.json) and [location gallery](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/images/captures.json).
@@ -75,7 +87,7 @@ I'd like the community to help carry this project forward. Contributions to code
 
 [Source code and contributions](https://github.com/Umberto-DEV/sacred-gold-plus) · [Report a bug or propose a change](https://github.com/Umberto-DEV/sacred-gold-plus/issues)
 
-Thanks to **NefariousnessNo3436, Drayano, mikelan / Mikelan98**, and the original contributors. Fairy typing, the additional Fairy moves and the wider camera come from the original Plus project. AI-assisted tools, including Codex, are used for development, debugging and documentation.
+Thanks to **NefariousnessNo3436, Drayano, mikelan / Mikelan98**, and the original contributors. Fairy typing, the additional Fairy moves and the wider camera come from the original Plus project.
 
 [Original Sacred Gold Plus announcement](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
 
