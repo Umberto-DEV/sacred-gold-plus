@@ -18,6 +18,10 @@ The source tree now has a contributor-facing [repository map](source/docs/archit
 [validation index](source/docs/validation/README.md). Version labels in the
 next build sources are V1.3.2; published 1.3.1 download contracts and evidence
 remain versioned as 1.3.1 until a future player release is verified.
+The Ubuntu public-file job now uses its preinstalled Python 3: its standard
+library check does not need a separately downloaded interpreter. This removes
+the setup download that failed with HTTP 504 on the source-only CI retry;
+Class A and its native-toolchain requirements are unchanged.
 
 ## 1.3.1 package revision 2
 

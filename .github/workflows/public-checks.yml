@@ -28,13 +28,12 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.12.14'
-
       - name: Check public files
-        run: python .github/check_public.py
+        # This checker uses only the standard library. ubuntu-24.04 ships
+        # /usr/bin/python3; avoid a network download for a second interpreter.
+        run: |
+          python3 --version
+          python3 .github/check_public.py
 
   class-a-tests:
     name: Class A tests (no game file)
