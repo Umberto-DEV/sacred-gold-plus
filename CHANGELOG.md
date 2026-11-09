@@ -1,5 +1,24 @@
 # What changed
 
+## 1.3.2 - Illustrated documentation refresh
+
+- Restored the original manuals' embedded lettering, cover artwork and compact
+  lists. Preserved the five original PDFs exactly in source. Current Pokemon,
+  evolution and item guides use verified current data; event and location guides
+  retain the original illustrated pages with current instructions first.
+- Added a complete Move Changes guide for all 52 altered moves, including
+  Magical Leaf's Grass-to-Ice typing, accuracy, power, PP, priority and effects.
+  All 471 records match across the five exact released game candidates.
+- Corrected inherited fishing percentages and named distinct cave floors.
+  Updated evolution and event instructions, including Beauty, gender/party
+  conditions, SquirtBottle and Champion prerequisites.
+- Added the complete editable package workspace, one-command verified ZIP
+  composition and a file index for guides, release-page assets and source.
+  Reused every game patch, cheat, updater and developer input unchanged.
+- See the [documentation validation](source/docs/validation/illustrated-guides-1.3.2.md)
+  and [exact current package identity](source/distribution/documentation-1.3.2.json).
+  This changes documentation and packaging, without a new ROM or save format.
+
 ## 1.3.2 — Guide opening correction
 
 - Corrected intermittent Guide refusal after native font managers are reused.

@@ -5,3 +5,4 @@ unicorn==2.1.4      # ARM946E-S emulation: the Class A tests run our compiled bl
 capstone==5.0.9     # disassembly in the readers and in the blob tests
 Pillow==11.3.0      # frame comparison in the Class B image checks
 reportlab==4.4.9    # player PDF renderer and distribution preflight tests
+pypdf==6.21.4      # preserve original illustrated pages and embedded guide fonts

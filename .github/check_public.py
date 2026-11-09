@@ -20,9 +20,9 @@ SIZE_EXCEPTIONS = {
 
 # Extensions that only a game file, a save or a memory dump would carry. They
 # are refused outright: this repository ships tools and our own compiled code,
-# never game bytes. The player packages (patches, manuals) live only on the
-# GitHub release page; our own small payloads live under source/ with an
-# explicit .bin allowance below.
+# never game bytes. Assembled player packages and patches live on the release
+# page. Individually reviewed manuals under guides/ have exact catalogue pins;
+# our own small payloads have the explicit .bin allowance below.
 FORBIDDEN_SUFFIXES = ('.nds', '.sav', '.sav2', '.srm', '.dump', '.dsv', '.bak',
                       '.state', '.ml0', '.ml1', '.nds.gz', '.xdelta')
 
@@ -107,6 +107,21 @@ def looks_like_game_bytes(data):
     return None
 
 
+def reviewed_guide_pdf(root, name, data):
+    """Admit the exact reviewed manuals, without permitting arbitrary binaries."""
+    if (not name.startswith(('guides/originals/', 'guides/current/'))
+            or not name.endswith('.pdf') or not data.startswith(b'%PDF-')
+            or not data.rstrip().endswith(b'%%EOF')):
+        return False
+    catalogue = root / 'guides/catalogue.json'
+    if not catalogue.is_file() or catalogue.is_symlink():
+        return False
+    reviewed = json.loads(catalogue.read_text())
+    return (reviewed.get('schema') == 1
+            and reviewed.get('files', {}).get(name) == {
+                'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+
+
 def check(root=ROOT):
     allowed = set(json.loads((root/'.github/public-files.json').read_text()))
     r = subprocess.run(['git', '-C', str(root), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
@@ -141,14 +156,17 @@ def check(root=ROOT):
         data = p.read_bytes()
         if len(data) > SIZE_LIMIT and name not in SIZE_EXCEPTIONS:
             raise ValueError('Tracked file over the size limit; declare it or keep it out: ' + name)
+        if name.endswith('.pdf') and not reviewed_guide_pdf(root, name, data):
+            raise ValueError('Unreviewed or changed public PDF document: ' + name)
         try:
             text = data.decode('utf-8')
         except UnicodeDecodeError:
-            # Binary files are only expected in the screenshot gallery or as
-            # one of our own small compiled blobs under source/.
+            # Binaries are limited to screenshots, our small compiled blobs,
+            # and the exact reviewed PDF manuals admitted above.
             ours = (name.startswith(OUR_BLOBS_PREFIXES) and name.endswith(OUR_BLOBS_SUFFIXES)
                     and len(data) <= OUR_BLOB_MAX)
-            if not name.startswith('images/') and not ours:
+            document = reviewed_guide_pdf(root, name, data)
+            if not name.startswith('images/') and not ours and not document:
                 raise ValueError('Unexpected binary public file: ' + name) from None
             # Being small and living under source/ was the whole allowance: an
             # 8 KiB slice of a cartridge satisfied it. Now the bytes are read.

@@ -1,6 +1,21 @@
 # Reproduce player downloads
 
-## Current corrected 1.3.2 package
+## Current illustrated documentation package
+
+The complete editable player tree is `package/contents/Sacred Gold Plus 1.3.2/`.
+See the [package workspace commands](../../package/README.md) to prepare it once,
+edit its documents and produce a new validated ZIP with one command.
+The eight [current illustrated guides](../../guides/README.md) use the original
+embedded lettering and artwork. Authoring lives in `illustrated_guides.py`;
+`legacy_style.py` recovers embedded font mappings in memory and `move_changes.py`
+compares every move parameter against authenticated retail data.
+
+The refresh preserves all game patch, cheat, updater and developer input bytes.
+Root inventories are regenerated. Historical source contracts stay unchanged;
+`build-input-delivery.json` pins the current ZIP containing the same four
+developer inputs.
+
+## Corrected game package: frozen documentation baseline
 
 The current schema-3 contract is `release-1.3.2-r4.json`; its internal revision
 identifies the corrected game targets and leaves the frozen r2/r3 contracts

@@ -15,6 +15,8 @@ versioned build inputs, while persistent player data is the game's raw `.sav`.
 | Game data and translation | `source/sgp13/data/`, `source/sgp131/data/`, `source/translation/` | Authored tables and transforms. Cartridge NARC contents are read from a private input ROM. |
 | Emulator measurements | [`source/runtime`](../../runtime/README.md), `source/features/debug/` | Headless melonDS and native field instrumentation; no ROM or save belongs in Git. |
 | Player packages | [`source/distribution`](../../distribution/README.md) | Versioned contracts, source documents, patch generation and verification. |
+| Illustrated manuals | [`guides/`](../../../guides/README.md) | Exact original PDF inputs, current outputs and original font/layout helpers. |
+| Complete editable ZIP tree | [`package/`](../../../package/README.md) | Real local package contents and one-command document-only recomposition. |
 | Tests and audits | `source/run_tests.py`, `source/verifiche/`, `source/quality-audit/`, feature-local `test/` folders | ROM-free CI and explicitly identified private-ROM checks. |
 | Cheats | `source/cheats/` | Catalogue and revision checks; do not carry unverified codes to a new ROM. |
 

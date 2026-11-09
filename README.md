@@ -29,7 +29,8 @@ illustrated Windows/macOS walkthrough, links and file checks.
 HeartGold ROM of the same language, localized `Cheats` and complete credits/licenses.
 Apply the patch to a separate file with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/),
 leave **Fix ROM checksum** off, and verify the full source/target SHA-256 from
-the installation PDF. `Originals` contains the seven current English gameplay guides.
+the installation PDF. `Originals` contains eight current English gameplay guides,
+including the complete move-change reference. [Read the illustrated guides on GitHub](guides/README.md).
 
 **Updating an existing Plus ROM?** The same ZIP includes `Optional-Updaters`.
 Its localized `README-Updater.txt` tables identify all 35 recognized sources,

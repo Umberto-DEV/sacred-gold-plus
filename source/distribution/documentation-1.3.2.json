@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "documentation-only",
+  "version": "1.3.2",
+  "documentation_revision": "illustrated-2026-11-09",
+  "game_contract": "game-1.3.2-r4.json",
+  "baseline": {
+    "schema": 1,
+    "version": "1.3.2",
+    "description": "Frozen corrected package used to seed the editable documentation workspace. This identity remains historical when the current delivery pin changes.",
+    "bytes": 1186672021,
+    "sha256": "037a35d4d48118ef5fbca273de3caf97cfdfff2e58ea4328e0e5ac78095fd78e"
+  },
+  "archive": {
+    "bytes": 1188633471,
+    "sha256": "5aa9bbbc233b0acc5cb5745a6b3feb23fa65f95063dc90253465ff48816569e8",
+    "members": 256,
+    "immutable_members": 235
+  },
+  "documents": [
+    {
+      "file": "guides/current/Evolutions-1.3.2-EN.pdf",
+      "bytes": 136003,
+      "sha256": "64e34a08967dfdfbc20de6a833aea3143a4f8f3457853b0cd73d55289bb349bb",
+      "pages": 3,
+      "image_references": 1
+    },
+    {
+      "file": "guides/current/Game-Guide-1.3.2-EN.pdf",
+      "bytes": 228820,
+      "sha256": "26f2bc3844895c914401a517ee8e046dc5e068ff90e4e915bcc6d38ec3902bde",
+      "pages": 4,
+      "image_references": 2
+    },
+    {
+      "file": "guides/current/Items-TMs-1.3.2-EN.pdf",
+      "bytes": 211968,
+      "sha256": "3f8c83749cbcd5ba844f882384a78328b6901a04fd8d045547d954e988ddf0dc",
+      "pages": 13,
+      "image_references": 1
+    },
+    {
+      "file": "guides/current/Move-Changes-1.3.2-EN.pdf",
+      "bytes": 218789,
+      "sha256": "9284a8bf409a8d46467115b60d9042143293f933ab9342437762989bf4f53ba0",
+      "pages": 6,
+      "image_references": 1
+    },
+    {
+      "file": "guides/current/Pokemon-Changes-1.3.2-EN.pdf",
+      "bytes": 303861,
+      "sha256": "1b05afafe383ae310d4ace02b4d2e961849ee85e0d318d17c62f486dce5b0c79",
+      "pages": 40,
+      "image_references": 1
+    },
+    {
+      "file": "guides/current/Pokemon-Locations-1.3.2-EN.pdf",
+      "bytes": 1559695,
+      "sha256": "f48731f2f112d30a6ce04aea734d22c0f7da8f70eee2524f67f721422c44046f",
+      "pages": 72,
+      "image_references": 96
+    },
+    {
+      "file": "guides/current/Special-Events-1.3.2-EN.pdf",
+      "bytes": 761704,
+      "sha256": "ed764943ada07b647504867d8278222f7859d3d6f98fe04fcb384c2690447eab",
+      "pages": 28,
+      "image_references": 43
+    },
+    {
+      "file": "guides/current/Trainers-1.3.2-EN.pdf",
+      "bytes": 332508,
+      "sha256": "a45f6ec8a20706007c95179781bf00e1ba2f645663b40a63e97841b484c98d96",
+      "pages": 70,
+      "image_references": 1
+    }
+  ],
+  "originals": {
+    "guides/originals/Evolution Changes.pdf": {
+      "bytes": 87217,
+      "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+    },
+    "guides/originals/Important Item Locations.pdf": {
+      "bytes": 154315,
+      "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+    },
+    "guides/originals/Pokemon Changes.pdf": {
+      "bytes": 309462,
+      "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+    },
+    "guides/originals/Pokemon Locations.pdf": {
+      "bytes": 1510542,
+      "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+    },
+    "guides/originals/Special Event Guide.pdf": {
+      "bytes": 674044,
+      "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+    }
+  },
+  "move_table": {
+    "records": 471,
+    "changed_playable": 52,
+    "changed_dummy": 0,
+    "shared_five_locale_record_sha256": "3c84f5684b3d7c7e652b6126b33832c5f1c7146486560e60b04fde4d7aadda87"
+  },
+  "scope": "Documentation-only recomposition. All original patch, cheat, updater and developer input bytes are unchanged. No new game or save acceptance claimed.",
+  "location_notes": [
+    "The illustrated area pages retained below are the original Sacred Gold / Storm Silver reference. This package targets Sacred Gold Plus based on HeartGold. Storm Silver-specific alternatives on historical pages do not describe another included variant.",
+    "The current fishing tables before the original pages supersede all Old Rod, Good Rod and Super Rod percentage rows in the historical manual. For example, New Bark Town is now correctly reported as Old Rod: Magikarp 40%, Shellder 45%, Chinchou 15%; Good Rod: Shellder 40%, Chinchou 60%; Super Rod: Shellder 40%, Lanturn 30%, Gyarados 30%. The original paper percentages were inaccurate even for the archived 1.2.3 game.",
+    "These are ordinary native slot probabilities: fishing slots 40/30/15/10/5, walking slots 20/20/10/10/10/10/5/5/4/4/1/1, Surf slots 60/30/5/4/1 and Rock Smash slots 80/20. A species occupying several eligible slots receives their combined chance. Lead abilities and other encounter-generation modifiers may change actual outcomes.",
+    "Fishing swarm records are now complete. The affected daily fishing outbreaks are Whiscash in Violet City, Qwilfish on Route 32, Remoraid on Route 44 and Relicanth on Route 12. These require their native daily outbreak conditions; they are not ordinary always-present additions.",
+    "Wednesday radio uses Meridian Sound and Thursday radio uses Pastoral Sound. Retain the original eligibility/time-of-day caveats and distinguish an outbreak or radio substitution from an ordinary encounter.",
+    "Printed levels are base levels. Optional wild-level scaling can raise levels during play, up to level 100."
+  ]
+}

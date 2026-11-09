@@ -14,6 +14,10 @@ instructions live under [`source/distribution`](../distribution/README.md).
 The current source guide is [`source/README.md`](../README.md). Private saves,
 ROMs, dumps and developer handoffs are not part of the public documentation.
 
+Player-facing illustrated guides live in [`guides/`](../../guides/README.md).
+The [file index](../../REPOSITORY.md) and [package workspace](../../package/README.md)
+identify the editable guide, page and ZIP inputs.
+
 For current language sources, use [localization](localization.md). The
 [repeatable update procedure](update-workflow.md) identifies the documents,
 source owners and bounded release gates to revisit for each successor.

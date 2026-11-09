@@ -6,7 +6,8 @@ request to `main`. A local Git worktree is optional and does not itself run
 GitHub CI. Keep each proposal focused on one behavior or closely related set of
 files. The [repository map](source/docs/architecture/README.md) identifies the
 owning subsystem; [source/README.md](source/README.md) is the detailed build and
-test reference.
+test reference. The [file index](REPOSITORY.md) locates player guides, release-page
+assets and the complete editable ZIP workspace.
 
 For a reproducible problem, use the [bug report form](https://github.com/Umberto-DEV/sacred-gold-plus/issues/new/choose): give the exact version or candidate hash if known, language, emulator, expected and observed result, ordered steps and repeat count. Mark comparisons you have not tried as untested. For an early source proposal, use the optional change form; an issue is not a prerequisite for a PR. Use [Discussions](https://github.com/Umberto-DEV/sacred-gold-plus/discussions) for questions and ideas that do not yet have a reproducible failure. Do not upload private files or raw logs to any of these channels.
 

@@ -43,6 +43,14 @@ Game-dependent tools read **your own** game files. No game file is distributed, 
 
 ## Five-language 1.3.2
 
+For current illustrated player documents, start in [`guides/`](../guides/README.md).
+The [file index](../REPOSITORY.md) separates guide sources, release-page assets,
+game code and the [complete editable package tree](../package/README.md).
+This documentation refresh reuses the exact accepted game patches. Frozen
+schema-3 contracts below retain their original document hashes; document-only
+recomposition uses `distribution/package_workspace.py` and records a separate
+current package identity.
+
 The current localization layer adds FR/ES/DE to EN/IT using exact retail donors
 and one guarded gameplay core. Per-language sources, the composition command,
 native presentation ownership and input hashes are documented in
@@ -50,7 +58,9 @@ native presentation ownership and input hashes are documented in
 separates bounded game/save acceptance from ROM-free tests. The corrected download uses [the explicit schema-3 contract](distribution/release-1.3.2-r4.json).
 One `Sacred-Gold-Plus-1.3.2.zip` contains five clean-ROM patches, all 175 optional
 updaters from 35 recognized sources, ten localized installation/news PDFs,
-seven shared English gameplay guides and the four authenticated developer inputs.
+seven shared English gameplay guides and the four authenticated developer inputs
+in that frozen baseline. The current illustrated documentation refresh adds the
+eighth, complete Move Changes guide through the package workspace.
 The [Guide correction report](docs/validation/guide-opening-1.3.2.md) records all
 five successor identities and their separate tests. See [package validation](docs/validation/package-1.3.2-corrected.md),
 [candidate-derived PDFs](distribution/reference_docs.py) and the

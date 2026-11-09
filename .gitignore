@@ -35,6 +35,7 @@
 !/README.md
 !/CHANGELOG.md
 !/CONTRIBUTING.md
+!/REPOSITORY.md
 !/BUG-FIXES-1.3.1.md
 !/BUG-FIXES-1.3.2.md
 # Public product/design contracts used by the UI workflow.
@@ -44,6 +45,11 @@
 /release/
 /dist/
 *.zip
+
+# Complete editable release tree and its private payload lock.
+/package/contents/
+/package/.workspace-lock.json
+/package/.seed-*/
 
 # images/: reviewed gallery screenshots and installation illustrations.
 !/images/*.png

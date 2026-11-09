@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "files": {
+    "guides/originals/Evolution Changes.pdf": {
+      "bytes": 87217,
+      "sha256": "ec7e4b621de769639eee2363f09919e14e8ceec31b5f172d52e49008c878a5bf"
+    },
+    "guides/originals/Important Item Locations.pdf": {
+      "bytes": 154315,
+      "sha256": "85597de371b2b41e0071d7a9db38c9274298a04c40f87dae8e156e0e7f89056a"
+    },
+    "guides/originals/Pokemon Changes.pdf": {
+      "bytes": 309462,
+      "sha256": "ca556989399a76f4cd99896d79ea5142a13a34cf862f9898a7e7787a04e25dfb"
+    },
+    "guides/originals/Pokemon Locations.pdf": {
+      "bytes": 1510542,
+      "sha256": "61fe3cc6cd975454855ccc9bb33fc23484919fbc1bc7a41c9200a595cfd0d477"
+    },
+    "guides/originals/Special Event Guide.pdf": {
+      "bytes": 674044,
+      "sha256": "b672fb8d46a4bdc92bf3fe89b6d08f4a45ba6f370b8a8bb3cd095695c8ca58fd"
+    },
+    "guides/current/Evolutions-1.3.2-EN.pdf": {
+      "bytes": 136003,
+      "sha256": "64e34a08967dfdfbc20de6a833aea3143a4f8f3457853b0cd73d55289bb349bb"
+    },
+    "guides/current/Game-Guide-1.3.2-EN.pdf": {
+      "bytes": 228820,
+      "sha256": "26f2bc3844895c914401a517ee8e046dc5e068ff90e4e915bcc6d38ec3902bde"
+    },
+    "guides/current/Items-TMs-1.3.2-EN.pdf": {
+      "bytes": 211968,
+      "sha256": "3f8c83749cbcd5ba844f882384a78328b6901a04fd8d045547d954e988ddf0dc"
+    },
+    "guides/current/Move-Changes-1.3.2-EN.pdf": {
+      "bytes": 218789,
+      "sha256": "9284a8bf409a8d46467115b60d9042143293f933ab9342437762989bf4f53ba0"
+    },
+    "guides/current/Pokemon-Changes-1.3.2-EN.pdf": {
+      "bytes": 303861,
+      "sha256": "1b05afafe383ae310d4ace02b4d2e961849ee85e0d318d17c62f486dce5b0c79"
+    },
+    "guides/current/Pokemon-Locations-1.3.2-EN.pdf": {
+      "bytes": 1559695,
+      "sha256": "f48731f2f112d30a6ce04aea734d22c0f7da8f70eee2524f67f721422c44046f"
+    },
+    "guides/current/Special-Events-1.3.2-EN.pdf": {
+      "bytes": 761704,
+      "sha256": "ed764943ada07b647504867d8278222f7859d3d6f98fe04fcb384c2690447eab"
+    },
+    "guides/current/Trainers-1.3.2-EN.pdf": {
+      "bytes": 332508,
+      "sha256": "a45f6ec8a20706007c95179781bf00e1ba2f645663b40a63e97841b484c98d96"
+    }
+  }
+}
