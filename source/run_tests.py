@@ -438,6 +438,23 @@ def compila_opzioni(tmp: Path):
     return uscita, None, False
 
 
+def scrivi_report(percorso: Path, dati: dict) -> None:
+    """Replace the report only after a complete same-directory write."""
+    contenuto = json.dumps(dati, indent=2) + "\n"
+    temporaneo = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8",
+                                         dir=percorso.parent,
+                                         prefix="." + percorso.name + ".",
+                                         suffix=".tmp", delete=False) as f:
+            temporaneo = Path(f.name)
+            f.write(contenuto)
+        os.replace(temporaneo, percorso)
+    finally:
+        if temporaneo is not None:
+            temporaneo.unlink(missing_ok=True)
+
+
 def main() -> int:
     sys.stdout.reconfigure(line_buffering=True)
     ap = argparse.ArgumentParser(description=__doc__,
@@ -454,6 +471,25 @@ def main() -> int:
     totale = saltati_tot = metodi_tot = 0
     classe_a_ok = True
     dettaglio = []
+    dettaglio_b = []
+    classe_b_ok = True
+    totale_b = saltati_b = metodi_b = 0
+
+    def checkpoint(active_suite=None, *, complete=False):
+        if a.json:
+            scrivi_report(a.json, {"suites": dettaglio, "classe_b": dettaglio_b,
+                                  "collected": totale, "skipped": saltati_tot,
+                                  "executed_methods": metodi_tot,
+                                  "classe_a_ok": classe_a_ok,
+                                  "collected_classe_b": totale_b,
+                                  "skipped_classe_b": saltati_b,
+                                  "executed_methods_classe_b": metodi_b,
+                                  "classe_b_ok": classe_b_ok,
+                                  "ok": complete and classe_a_ok and classe_b_ok,
+                                  "complete": complete, "active_suite": active_suite})
+
+    # Invalidate a previous complete PASS before starting any suite.
+    checkpoint()
 
     # If a game file is available, the reserve suite must not be allowed to skip
     # T2-T5 quietly: arming SGP_RISERVA_COMPLETA turns a missing ROM into a
@@ -461,6 +497,7 @@ def main() -> int:
     ambiente_riserva = {"SGP_RISERVA_COMPLETA": "1"} if os.environ.get("SGP_RISERVA_ROM") else None
 
     for nome, cwd, argv, *propri in SUITE:
+        checkpoint(nome)
         ok, n, s, elapsed, methods = esegui(nome, cwd, argv,
                                    env=propri[0] if propri else ambiente_riserva if nome == "ARM9 reserve register" else None)
         classe_a_ok &= ok
@@ -470,9 +507,11 @@ def main() -> int:
         dettaglio.append({"suite": nome, "collected": n, "skipped": s,
                           "executed_methods": methods, "ok": ok,
                           "elapsed_seconds": elapsed})
+        checkpoint()
 
     with tempfile.TemporaryDirectory(prefix="sgp-class-a-") as d:
         tmp = Path(d)
+        checkpoint("native code (Unicorn)")
         ok, n, s, elapsed, methods = esegui("native code (Unicorn)", SOURCE / "features/native-core/test",
                                    ["-m", "unittest", "discover", "-p", "test_*.py"])
         classe_a_ok &= ok
@@ -482,11 +521,14 @@ def main() -> int:
         dettaglio.append({"suite": "native code (Unicorn)", "collected": n,
                           "skipped": s, "executed_methods": methods,
                           "ok": ok, "elapsed_seconds": elapsed})
+        checkpoint()
 
+        checkpoint("options payload compilation")
         compile_started = time.perf_counter()
         build, motivo, compilatore_assente = compila_opzioni(tmp)
         compile_seconds = round(time.perf_counter() - compile_started, 3)
         print("  options payload compilation: %.3fs" % compile_seconds)
+        checkpoint("options page (Unicorn)")
         if build is not None:
             ok, n, s, elapsed, methods = esegui("options page (Unicorn)", SOURCE / "features/options/test",
                                        ["-m", "unittest", "discover", "-p", "test_*.py"],
@@ -526,16 +568,15 @@ def main() -> int:
                               "compilatore_assente": compilatore_assente,
                               "elapsed_seconds": 0.0, "compile_seconds": compile_seconds,
                               "collection_seconds": collection_seconds})
+        checkpoint()
 
     print("\nClass A: %d legacy collected, %d methods executed, %d skip events — %s"
           % (totale, metodi_tot, saltati_tot,
              "pass" if classe_a_ok else "FAIL"))
 
     print("\nClass B suites (need a game file: they skip here and in CI)\n")
-    dettaglio_b = []
-    classe_b_ok = True
-    totale_b = saltati_b = metodi_b = 0
     for nome, cwd, argv, *propri in SUITE_CLASSE_B:
+        checkpoint(nome)
         ok, n, s, elapsed, methods = esegui(nome, cwd, argv,
                                    env=propri[0] if propri else None, classe_b=True)
         classe_b_ok &= ok
@@ -545,6 +586,7 @@ def main() -> int:
         dettaglio_b.append({"suite": nome, "collected": n, "skipped": s,
                             "executed_methods": methods, "ok": ok,
                             "elapsed_seconds": elapsed})
+        checkpoint()
     print("  Class B: %d legacy collected, %d methods executed, %d skip events — %s"
           % (totale_b, metodi_b, saltati_b, "pass" if classe_b_ok else "FAIL"))
     print("  (not counted as Class A coverage: set SGP_ROM_DIR to run them)")
@@ -555,19 +597,9 @@ def main() -> int:
     # but the run still ended on the word PASS. Whoever read the output instead
     # of the exit code read the wrong answer.
     tutto_ok = classe_a_ok and classe_b_ok
+    checkpoint(complete=True)
     print("\n%d tests collected in all (Class A %d + Class B %d) — %s"
           % (totale + totale_b, totale, totale_b, "PASS" if tutto_ok else "FAIL"))
-
-    if a.json:
-        a.json.write_text(json.dumps({"suites": dettaglio, "classe_b": dettaglio_b,
-                                      "collected": totale, "skipped": saltati_tot,
-                                      "executed_methods": metodi_tot,
-                                      "classe_a_ok": classe_a_ok,
-                                      "collected_classe_b": totale_b,
-                                      "skipped_classe_b": saltati_b,
-                                      "executed_methods_classe_b": metodi_b,
-                                      "classe_b_ok": classe_b_ok,
-                                      "ok": tutto_ok}, indent=2) + "\n")
     return 0 if tutto_ok else 1
 
 

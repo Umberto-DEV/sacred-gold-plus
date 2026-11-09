@@ -59,3 +59,32 @@ explains why importable code belongs below a clear source root. [OWASP SAMM](htt
 supports documented design and verification practice. [OWASP ASVS 5.0](https://asvs.owasp.org/)
 defines requirements for web applications and services; it is not a directory
 layout specification or a certification of this ROM patch.
+
+## External references and integration boundary
+
+These primary sources can answer a specific ABI, resource or tool question.
+They remain external references, not integrated engines or new build dependencies.
+Keep the production compiler and pret pin in the [source guide](../../README.md);
+a newer upstream revision does not replace an authenticated input.
+
+| Reference | Useful question and boundary |
+| --- | --- |
+| [pret HGSS](https://github.com/pret/pokeheartgold/tree/0985e8718df4f25e64d6507d89c0c97c0d288981) / [ctrl fork](https://github.com/ctrl-cheeb-del/pokeheartgold/tree/cb614ad23449d5852b40321dc409c4143872b35c) | Compare a function/structure against the exact Plus bytes. The fork's US matching claim is not reproduced here or a five-language Plus build. Its [build rules](https://github.com/ctrl-cheeb-del/pokeheartgold/blob/cb614ad23449d5852b40321dc409c4143872b35c/common.mk) still select MW/Nitro tools; C coverage does not establish portability. |
+| [hg-engine configuration](https://github.com/BluRosie/hg-engine/blob/dbb321327c59b821507f9fc4cb6c41d45a9d2698/CONFIG.md) | Inspect one requested mechanic. Save/Bag options and PKHeX compatibility do not demonstrate preservation of Plus settings or extensions; persistent layouts and identifiers need independent reconciliation. |
+| [DSPRE](https://github.com/DS-Pokemon-Rom-Editor/DSPRE/blob/e751187b45d6ddf237a24dab8407a5a6cf0d36dd/README.md) | Inspect map/event/model resources on a private copy. Turn a useful export into a deterministic owner transform with preimage, allowed-byte diff and independent readback; editor support alone does not certify a safe Plus roundtrip. |
+| [BlocksDS FAQ](https://blocksds.skylyrac.net/docs/guides/faq/) / [libnds source](https://codeberg.org/blocksds/libnds/src/commit/2690aa06ea58a2e30f6626ebbdfbef6a42086dd0) | Study homebrew startup, memory and hardware APIs. This is a different runtime, not a replacement HGSS toolchain. Check [licenses per component](https://blocksds.skylyrac.net/docs/guides/licenses/). |
+| [Nitro Engine, current Codeberg source](https://codeberg.org/SkyLyrac/nitro-engine/src/commit/a89917d908e49ab6df1c6762101c240a536bd308/readme.rst) | Study a confined rendering question. Its libnds/BlocksDS and OBJ/DSMA pipeline does not directly replace HGSS rendering or DS 2D hardware handling. The code is MIT and examples CC0; inspect the exact component before reuse. |
+
+Before copying code or data, record exact revision/component provenance, applicable
+license and contribution policy, ABI/preimage, memory/resource ownership and
+save effects. A tool's license does not cover retail assets or its whole input
+tree. Prove the proposed behavior against the exact candidate with independent
+readback and [runtime/hardware evidence](../native-hardware-validation.md).
+
+The [pret contribution policy](https://github.com/pret/pokeheartgold/blob/6bf138d6035aa6b43d6f8f4132a12df70f86dcec/CONTRIBUTING.md)
+prohibits LLM-generated contributions, with narrow disclosed exceptions; human
+review or rewriting does not make generated creative work admissible. The ctrl
+fork also asks that its work not be submitted to pret. No upstream defect is
+reproduced or submission authorized by this reference table. A separate upstream
+report needs a failure on that project's exact target/revision, a redistributable
+reproducer and compliance with its current policy.

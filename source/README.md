@@ -26,8 +26,12 @@ The [change register](docs/whats-new-1.3.1.md),
 [published validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
 The [1.3.2 source correction](../BUG-FIXES-1.3.2.md) and its
-[measured New Game regression](docs/validation/new-game-reset-1.3.2.md) retain the original diagnosis and probe identities. Current acceptance is in
-[the five-language 1.3.2 report](docs/validation/localization-1.3.2.md).
+[measured New Game regression](docs/validation/new-game-reset-1.3.2.md) retain
+the original diagnosis and probe identities. Current game identities and
+bounded acceptance are in the [game contract](distribution/game-1.3.2-r4.json)
+and [Guide correction report](docs/validation/guide-opening-1.3.2.md); the
+[original five-language report](docs/validation/localization-1.3.2.md) retains
+its predecessor scope.
 The [base-stage evidence](docs/base-stage-validation.md),
 [Android campaign of 29 October](docs/android-validation.md),
 [earlier device campaign](docs/device-validation.md),
@@ -55,12 +59,16 @@ The current localization layer adds FR/ES/DE to EN/IT using exact retail donors
 and one guarded gameplay core. Per-language sources, the composition command,
 native presentation ownership and input hashes are documented in
 [localization.md](docs/localization.md). The [1.3.2 validation report](docs/validation/localization-1.3.2.md)
-separates bounded game/save acceptance from ROM-free tests. The corrected download uses [the explicit schema-3 contract](distribution/release-1.3.2-r4.json).
-One `Sacred-Gold-Plus-1.3.2.zip` contains five clean-ROM patches, all 175 optional
+retains its original bounded game/save scope. The
+[explicit schema-3 contract](distribution/release-1.3.2-r4.json) freezes the
+corrected package baseline. One `Sacred-Gold-Plus-1.3.2.zip` contains five
+clean-ROM patches, all 175 optional
 updaters from 35 recognized sources, ten localized installation/news PDFs,
 seven shared English gameplay guides and the four authenticated developer inputs
 in that frozen baseline. The current illustrated documentation refresh adds the
-eighth, complete Move Changes guide through the package workspace.
+eighth, complete Move Changes guide through the package workspace; its
+[documentation contract](distribution/documentation-1.3.2.json) identifies the
+current archive separately from that frozen baseline.
 The [Guide correction report](docs/validation/guide-opening-1.3.2.md) records all
 five successor identities and their separate tests. See [package validation](docs/validation/package-1.3.2-corrected.md),
 [candidate-derived PDFs](distribution/reference_docs.py) and the
@@ -145,7 +153,18 @@ Keep it in a private folder and point `SGP_ROM_DIR` at that folder. Never copy a
 cd source && ../.venv/bin/python3 -m sgp12.scarica_base --destinazione "$SGP_ROM_DIR"
 ```
 
-That command is the only place in this repository that opens a network connection, and nothing calls it for you. It requires the destination to belong to the current user and not be group/world-writable. It downloads the patches named in `sgp12/base11.json` from the `base-1.1` release, limits the checksum listing to 64 KiB and every patch to its pinned size, and gives the complete transfer a 30-minute deadline. It checks each patch against the pinned SHA-256 and atomically publishes only verified files without following output symlinks. Anything that does not match is deleted rather than left in the folder. You can equally download the two files by hand from the release page and drop them in `$SGP_ROM_DIR` under the same names, or pass one with `--delta`.
+This is an explicit download step; the build does not invoke it automatically.
+The current command obtains the single player ZIP identified by
+[`distribution/build-input-delivery.json`](distribution/build-input-delivery.json),
+authenticates the complete archive and extracts only the requested stage-zero
+patches. Their hashes and sizes must also match `sgp12/base11.json`; the historical
+patch bytes are unchanged. Reuse an existing exact ZIP with `--container /path/to/archive.zip`
+to avoid another download. The destination must belong to the current user and
+not be group/world-writable. Transfers are bounded by the pinned archive size
+and a 30-minute deadline; only verified members are published, without following
+output symlinks. See the [input downloader](distribution/download_inputs.py) for
+the current container checks. An already authenticated stage-zero patch can
+also be supplied to the builder with `--delta`.
 
 If you already have a 1.1 ROM, `--base` still takes it: stage 0 is skipped with a warning. Any other ROM is refused by SHA-256, with the accepted ones listed.
 
@@ -205,7 +224,15 @@ the new `executed_methods` count distinguishes methods that actually ran from
 skip events. Compare suite results and their skip reasons across environments.
 Each suite prints its elapsed time; `--json /path/to/private/report.json`
 records `elapsed_seconds` per suite and separates Options payload compilation
-time. Use those measurements before changing CI scheduling or reducing a test.
+time. The JSON is atomically replaced at startup, before each suite or compilation
+phase, and after each accounted suite result. An interrupted run retains the last
+checkpoint with `complete: false`, `ok: false` and `active_suite` naming the active
+suite or compilation phase (`null` between phases). Only normal completion of
+both classes sets `complete: true`; `ok` then contains their combined verdict.
+A failed report write propagates before the final PASS, leaving the previous
+report intact if atomic replacement fails. Without `--json`, no report is written.
+These checkpoints report suite progress, not per-suite timeouts or game/hardware
+acceptance. Use the timings before changing CI scheduling or reducing a test.
 The runner explicitly registers ROM-free successor regressions and checks that
 new `sgp131/test_*.py` modules are either registered or classified as local-only.
 A local-only classification means CI has **not** executed those tests: they need
@@ -335,5 +362,8 @@ For 1.3.1 use the explicit [versioned contract](distribution/release-1.3.1.json)
 and [distribution instructions](distribution/README.md), with 25 direct input
 routes per language. The default distribution contract is `release-1.3.1.json`. Package reconstruction and game/save acceptance are separate;
 [package validation](docs/package-1.3.1-validation.md) retains exact receipts
-and the limitations of each checkpoint. The current ROM fingerprints and
+and the limitations of each checkpoint. Those historical ROM fingerprints and
 battle-loop regression are in the [1.3.1 composition guide](sgp131/README.md).
+For current 1.3.2 game, frozen package and document-only identities, use the
+[authorities above](#five-language-132); the current package requires its explicit
+contract rather than the historical packager default.

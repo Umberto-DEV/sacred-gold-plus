@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import ExitStack, contextmanager
 from pathlib import Path
 from unittest.mock import patch
 
@@ -137,6 +138,8 @@ class RunnerTimingTests(unittest.TestCase):
         self.assertEqual((data['collected_classe_b'], data['classe_b_ok'], data['ok']),
                          (1, False, False))
         self.assertEqual(data['executed_methods_classe_b'], 1)
+        self.assertIs(data.get('complete'), True)
+        self.assertIsNone(data['active_suite'])
         self.assertTrue(child.call_args.kwargs['classe_b'])
         self.assertIn('Class A 9 + Class B 1) — FAIL', output.getvalue())
 
@@ -162,6 +165,184 @@ class RunnerTimingTests(unittest.TestCase):
         self.assertEqual((options['elapsed_seconds'], options['compile_seconds'],
                           options['collection_seconds']), (0.0, 1, 1))
         self.assertFalse(data['ok'])
+        self.assertIs(data.get('complete'), True)
+        self.assertIsNone(data['active_suite'])
+
+
+class RunnerCheckpointTests(unittest.TestCase):
+    @contextmanager
+    def small_run(self, folder, *, json_report=True):
+        """Run real tiny child suites instead of the repository's full matrix."""
+        root = Path(folder)
+        source = root / 'source'
+        fixture = ("import unittest\n"
+                   "class Case(unittest.TestCase):\n"
+                   "    def test_pass(self): pass\n"
+                   "    @unittest.skip('fixture skip')\n"
+                   "    def test_skip(self): pass\n")
+        for cwd in (source, source / 'features/native-core/test',
+                    source / 'features/options/test'):
+            cwd.mkdir(parents=True, exist_ok=True)
+            (cwd / 'test_fixture.py').write_text(fixture)
+        report = root / 'result.json'
+        command = ['-m', 'unittest', 'test_fixture']
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(run_tests, 'SOURCE', source))
+            stack.enter_context(patch.object(run_tests, 'SUITE', [
+                ('first', source, command), ('second', source, command)]))
+            stack.enter_context(patch.object(run_tests, 'SUITE_CLASSE_B', [
+                ('synthetic B', source, command)]))
+            stack.enter_context(patch.object(run_tests, 'compila_opzioni',
+                return_value=(source / 'features/options/test', None, False)))
+            stack.enter_context(patch.object(sys, 'argv', ['run_tests.py'] +
+                (['--json', str(report)] if json_report else [])))
+            output = stack.enter_context(patch.object(sys, 'stdout', _CapturedOutput()))
+            yield report, output
+
+    def test_new_run_invalidates_stale_pass_before_first_suite(self):
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                report.write_text('{"complete": true, "ok": true}\n')
+                with patch.object(run_tests, 'esegui', side_effect=KeyboardInterrupt), \
+                        self.assertRaises(KeyboardInterrupt):
+                    run_tests.main()
+                data = json.loads(report.read_text())
+            self.assertEqual((data.get('complete'), data.get('ok')), (False, False))
+            self.assertEqual(data['active_suite'], 'first')
+            self.assertEqual((data['suites'], data['classe_b']), ([], []))
+            self.assertEqual((data['collected'], data['collected_classe_b']), (0, 0))
+            self.assertNotIn('— PASS', output.getvalue())
+
+    def test_interruption_retains_finished_suites_and_identifies_active_phase(self):
+        phases = [
+            ('second', ['first']),
+            ('native code (Unicorn)', ['first', 'second']),
+            ('options payload compilation', ['first', 'second', 'native code (Unicorn)']),
+            ('options page (Unicorn)', ['first', 'second', 'native code (Unicorn)']),
+            ('synthetic B', ['first', 'second', 'native code (Unicorn)', 'options page (Unicorn)']),
+        ]
+        real_execute = run_tests.esegui
+        for phase, finished in phases:
+            with self.subTest(phase=phase), \
+                    tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+                with self.small_run(folder) as (report, output):
+                    def execute(name, *args, **kwargs):
+                        if name == phase:
+                            raise KeyboardInterrupt
+                        return real_execute(name, *args, **kwargs)
+                    with ExitStack() as stack:
+                        stack.enter_context(patch.object(run_tests, 'esegui', side_effect=execute))
+                        if phase == 'options payload compilation':
+                            stack.enter_context(patch.object(run_tests, 'compila_opzioni',
+                                                             side_effect=KeyboardInterrupt))
+                        with self.assertRaises(KeyboardInterrupt):
+                            run_tests.main()
+                    self.assertTrue(report.is_file(), 'interruption must leave a checkpoint')
+                    data = json.loads(report.read_text())
+                self.assertEqual((data['complete'], data['ok']), (False, False))
+                self.assertEqual(data['active_suite'], phase)
+                self.assertEqual([row['suite'] for row in data['suites']], finished)
+                self.assertEqual((data['collected'], data['skipped'], data['executed_methods']),
+                                 (2 * len(finished), len(finished), len(finished)))
+                self.assertEqual((data['classe_b'], data['collected_classe_b']), ([], 0))
+                self.assertNotIn('— PASS', output.getvalue())
+
+    def test_interrupted_missing_compiler_collection_keeps_prior_counts(self):
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                with patch.object(run_tests, 'compila_opzioni',
+                                  return_value=(None, 'compiler missing', True)), \
+                        patch.object(run_tests, 'conta_soltanto', side_effect=KeyboardInterrupt), \
+                        self.assertRaises(KeyboardInterrupt):
+                    run_tests.main()
+                self.assertTrue(report.is_file(), 'collection must leave a checkpoint')
+                data = json.loads(report.read_text())
+            self.assertEqual((data['complete'], data['ok']), (False, False))
+            self.assertEqual(data['active_suite'], 'options page (Unicorn)')
+            self.assertEqual((data['collected'], data['skipped'], data['executed_methods']),
+                             (6, 3, 3))
+            self.assertEqual(len(data['suites']), 3)
+            self.assertNotIn('— PASS', output.getvalue())
+
+    def test_complete_pass_preserves_counts_and_clears_active_suite(self):
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                self.assertEqual(run_tests.main(), 0)
+                data = json.loads(report.read_text())
+            self.assertEqual((data.get('complete'), data['ok']), (True, True))
+            self.assertIsNone(data['active_suite'])
+            self.assertEqual((data['collected'], data['skipped'], data['executed_methods']),
+                             (8, 4, 4))
+            self.assertEqual((data['collected_classe_b'], data['skipped_classe_b'],
+                              data['executed_methods_classe_b']), (2, 1, 1))
+            self.assertTrue(data['classe_a_ok'])
+            self.assertTrue(data['classe_b_ok'])
+            self.assertIn('Class A 8 + Class B 2) — PASS', output.getvalue())
+            self.assertEqual(sorted(p.name for p in Path(folder).iterdir()),
+                             ['result.json', 'source'])
+
+    def test_failed_initial_replace_preserves_stale_report_and_cleans_temporary(self):
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                previous = '{"complete": true, "ok": true}\n'
+                report.write_text(previous)
+                with patch.object(run_tests.os, 'replace', side_effect=OSError('replace denied')), \
+                        self.assertRaisesRegex(OSError, 'replace denied'):
+                    run_tests.main()
+                self.assertEqual(report.read_text(), previous)
+            self.assertNotIn('— PASS', output.getvalue())
+            self.assertEqual(sorted(p.name for p in Path(folder).iterdir()),
+                             ['result.json', 'source'])
+
+    def test_failed_later_replace_preserves_last_readable_checkpoint(self):
+        real_replace = run_tests.os.replace
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                def replace(source, destination):
+                    pending = json.loads(Path(source).read_text())
+                    if pending['active_suite'] == 'second':
+                        raise OSError('replace denied')
+                    return real_replace(source, destination)
+                with patch.object(run_tests.os, 'replace', side_effect=replace), \
+                        self.assertRaisesRegex(OSError, 'replace denied'):
+                    run_tests.main()
+                data = json.loads(report.read_text())
+            self.assertEqual((data['complete'], data['ok'], data['active_suite']),
+                             (False, False, None))
+            self.assertEqual([row['suite'] for row in data['suites']], ['first'])
+            self.assertEqual((data['collected'], data['skipped'], data['executed_methods']),
+                             (2, 1, 1))
+            self.assertNotIn('— PASS', output.getvalue())
+            self.assertEqual(sorted(p.name for p in Path(folder).iterdir()),
+                             ['result.json', 'source'])
+
+    def test_failed_final_replace_never_prints_pass(self):
+        real_replace = run_tests.os.replace
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder) as (report, output):
+                def replace(source, destination):
+                    if json.loads(Path(source).read_text())['complete']:
+                        raise OSError('final replace denied')
+                    return real_replace(source, destination)
+                with patch.object(run_tests.os, 'replace', side_effect=replace), \
+                        self.assertRaisesRegex(OSError, 'final replace denied'):
+                    run_tests.main()
+                data = json.loads(report.read_text())
+            self.assertEqual((data['complete'], data['ok'], data['active_suite']),
+                             (False, False, None))
+            self.assertEqual((data['collected'], data['collected_classe_b']), (8, 2))
+            self.assertNotIn('— PASS', output.getvalue())
+            self.assertEqual(sorted(p.name for p in Path(folder).iterdir()),
+                             ['result.json', 'source'])
+
+    def test_without_json_keeps_verdict_and_creates_no_report_files(self):
+        with tempfile.TemporaryDirectory(prefix='runner-checkpoint-test-') as folder:
+            with self.small_run(folder, json_report=False) as (report, output):
+                before = {p.relative_to(folder) for p in Path(folder).rglob('*')}
+                self.assertEqual(run_tests.main(), 0)
+                self.assertFalse(report.exists())
+                self.assertEqual({p.relative_to(folder) for p in Path(folder).rglob('*')}, before)
+            self.assertIn('Class A 8 + Class B 2) — PASS', output.getvalue())
 
 
 class RunnerInventoryTests(unittest.TestCase):

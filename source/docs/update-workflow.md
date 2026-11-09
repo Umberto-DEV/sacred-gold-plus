@@ -5,13 +5,17 @@ candidate identities; add new evidence rather than relabelling an older test.
 Proprietary inputs and private validation evidence remain outside the public
 source tree.
 
-The 1.3.2 contract defines one latest target for each of EN, IT, FR, ES and DE.
-Every target accepts the same 30 recognized original/historical sources,
-giving **150 direct routes**. Older target versions are not included in the
-current player package. Unknown hashes and missing routes fail admission.
-In package revision r3, the main ZIP contains five same-language clean-ROM
-routes; the optional updater ZIP contains all 150 routes. Both produce the
-unchanged accepted 1.3.2 targets.
+Current game identities belong to [game-1.3.2-r4.json](../distribution/game-1.3.2-r4.json).
+The [r4 package contract](../distribution/release-1.3.2-r4.json) freezes the
+corrected single-ZIP baseline: five targets, 35 recognized original/historical
+sources and 175 direct updater routes. The five primary clean-ROM patches and
+all optional updaters are inside the same download. Unknown hashes and missing
+routes fail admission; older targets are source inputs, not destination versions.
+The [documentation contract](../distribution/documentation-1.3.2.json) identifies
+the current illustrated delivery, which reuses the game patches unchanged. See
+[its validation report](validation/illustrated-guides-1.3.2.md) and the
+[editable package workspace](../../package/README.md). Frozen package hashes and
+historical reports must retain their original identities.
 
 | Change or evidence | Read and update |
 | --- | --- |
@@ -19,10 +23,10 @@ unchanged accepted 1.3.2 targets.
 | Locale ownership, original inputs and native presentation | `localization.md`, `localization/languages.json`, `localization/locales/<locale>/` |
 | Shared core, compiler/input pins and activation | `source/README.md`, `sgp131/README.md`, actual workbench receipts |
 | Save layout, migration and preserved fields | repository save requirements, event-bank/Plus/Bag owner sources, existing raw-save comparisons |
-| Exact candidate acceptance | a new dated/versioned report under `docs/validation/` |
-| Player PDFs and notices | each locale's `documents.json` (`p:r2:*` for current installation/news); `distribution/reference_docs.py`, `player_notices.py` and the clean-retail baseline |
+| Exact candidate acceptance | a new dated/versioned report under `docs/validation/`; [physical test method](native-hardware-validation.md) |
+| Player PDFs and notices | each locale's `documents.json` for installation/news; `guides/catalogue.json`, `distribution/package_workspace.py`, original guide helpers and the clean-retail baseline |
 | Cheat compatibility | each locale's `cheats.json`; `localization/cheats.py`, exact target identity and native preimages |
-| Source routes and package identity | a new `distribution/release-<version>.json`; `distribution/README.md` |
+| Source routes and package identity | game/package contracts under `distribution/`; documentation-only identity in `documentation-1.3.2.json`; `distribution/README.md` |
 | Player release page | `distribution/RELEASE-NOTES-TEMPLATE.md`; maintenance notes stay “Some bugs fixed.” |
 | Public admission and CI | `.github/public-files.json`, `.github/check_public.py`, `source/run_tests.py` |
 
@@ -58,32 +62,36 @@ unchanged accepted 1.3.2 targets.
    baseline. Verify numerical parity between languages and inspect representative
    rendered pages. Authenticate every PDF and cheat file by size/hash in the new
    contract. Recheck installation hashes whenever a target changes.
-   Current package revision r3 outputs ten localized installation/news PDFs and
-   seven shared English gameplay PDFs, plus each language's revision-bound cheat
-   files. The older 45-PDF schema-2 renderer remains reproducible. Regenerate
-   target-bound material after a target-hash change; use `render_player_documents`
-   and `render_shared_guides` for the current layout.
+   Current delivery has ten localized installation/news PDFs and eight shared
+   English gameplay guides, plus each language's revision-bound cheat files.
+   Use the package workspace for document-only recomposition; its contract and
+   independent member verification distinguish it from the frozen r4 baseline.
+   Historical renderers remain reproducible. Regenerate target-bound material
+   after a target-hash change, updating the corresponding document authorities.
    Admit cheat instructions only after complete target/native preimage checks;
    unresolved runtime pointers stay omitted with localized explanations.
 6. Review the diff; explicitly admit new public files, run `git diff --check`,
    the public-file checker and relevant code tests. Inspect the entire outgoing
    history against `origin/main` for private artifacts before pushing. Wait for
    hosted CI, which does not build or accept commercial ROMs.
-7. For 1.3.2, require all 30 source IDs exactly once in each of the five target
-   lists. Encode all 150 routes and decode each with both xdelta3 and the pinned
-   independent Rom Patcher JS implementation. Check full target hashes, ZIP
-   members, per-language documents, manifests and all checksums. Publish a new
-   version/tag/assets; preserve previously published assets and tags.
-   For package-only corrections, pin the existing accepted game targets in a
-   new package-revision contract. Verify both ZIPs: the main download has one
-   patch per language, two visible localized PDFs, three cheat files, consistent
-   notices/licenses, `START-HERE.txt` and exactly seven English PDFs in `Originals`.
-   It has no JSON inventories or `Documents` folders. The separate optional ZIP
-   keeps all 150 updaters, localized readable hash tables and technical manifests.
+7. Require every recognized source ID from the applicable package contract
+   exactly once in each target's route list. Encode all routes and decode each
+   with both xdelta3 and the pinned independent Rom Patcher JS implementation.
+   Check complete target hashes, ZIP members, per-language documents, manifests
+   and checksums. Verify the single ZIP against its applicable authority: the
+   frozen r4 baseline and current documentation-only delivery are different
+   archive identities. The [workspace procedure](../../package/README.md)
+   verifies document changes while protecting the non-document members,
+   including the existing patches, cheats, updaters and developer inputs.
+   A package-only successor pins the accepted game identities; a changed game
+   needs its own candidate acceptance. Publication is a separate authorized step:
+   use a new release for corrections and preserve published assets and tags.
 
-This release's game acceptance uses bounded host/native-save checks. Physical
-device tests are a separate evidence class, not implied by those results or
-green CI. Preparing or publishing a package does not install it on a device.
+The [Guide correction report](validation/guide-opening-1.3.2.md) separates
+bounded host/native-save results from the reported Android UI check. Nintendo
+hardware tests use the [native-hardware procedure](native-hardware-validation.md)
+and are a separate evidence class, not implied by those results or green CI.
+Preparing or publishing a package does not install it on a device.
 
 Universal routing means all explicitly recognized bases, not arbitrary damaged
 or modified ROMs. Unknown inputs fail admission. Choose the destination language

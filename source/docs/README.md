@@ -4,7 +4,8 @@ Start with the [repository map](architecture/README.md) to find the owner of a
 game change, the build path and the data boundary. The
 [feature directory](../features/README.md) groups native and script changes by
 game subsystem. The [validation index](validation/README.md) explains where new
-candidate evidence belongs.
+candidate evidence belongs. The [native-hardware procedure](native-hardware-validation.md)
+sets out candidate/save identification, physical test cells and timing comparisons.
 
 Historical versioned reports in this directory keep their original names and
 claims. New release evidence goes into `validation/`; a new report must name the

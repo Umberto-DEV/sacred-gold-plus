@@ -67,7 +67,7 @@ Use your own legally obtained HeartGold file, the exact pinned external inputs,
 and a private directory outside the checkout. Follow the current
 [1.3 composition guide](source/sgp131/README.md) for a pending candidate and
 its independent readback. The 1.2.5 example in the general source guide builds
-a predecessor, not the current 1.3.2 development source. A successful build or
+a predecessor, not the current 1.3.2 source. A successful build or
 readback is a file-level result; it is not runtime or release acceptance. If
 you cannot meet the pinned production toolchain, report that limitation instead
 of bypassing an identity check.
@@ -87,8 +87,9 @@ Continue again. Cover English and Italian, saves without Plus data and saves
 with Plus settings/Bag extensions when those fixtures are available. Keep the
 original saves untouched. A savestate cannot replace this check. Record which
 matrix cells you could not test; the maintainer completes missing acceptance
-checks before any release. See the [validation evidence format](source/docs/validation/README.md)
-and [runtime bench](source/docs/test-bench.md).
+checks before any release. See the [validation evidence format](source/docs/validation/README.md),
+[runtime bench](source/docs/test-bench.md) and
+[native-hardware procedure](source/docs/native-hardware-validation.md).
 
 ## 4. Prepare a public, reviewable proposal
 
@@ -132,11 +133,14 @@ material AI assistance. The maintainer reviews the source, security-sensitive
 workflow/dependency changes and CI result, then independently builds and tests
 a candidate before accepting gameplay or release claims.
 
-Do not upload a player release ZIP as a substitute for review. The current
-packager targets the published 1.3.1 release; the 1.3.2 source has no accepted
-player package. If a maintainer asks for an extra handoff, provide a text-only
-manifest of source paths and SHA-256s, exact input fingerprints, tool versions,
-candidate hash and redacted test results. Hashes identify bytes; they do not
-certify an attachment as safe. Official release files are built only after
-independent reconstruction and runtime/save acceptance and are never replaced
-in place.
+Do not upload a player release ZIP as a substitute for review. Current accepted
+1.3.2 game identities are in the [game contract](source/distribution/game-1.3.2-r4.json).
+The [r4 package contract](source/distribution/release-1.3.2-r4.json) is the frozen
+single-ZIP baseline; the [documentation contract](source/distribution/documentation-1.3.2.json)
+and [editable package workspace](package/README.md) identify the current
+documentation-only delivery. Historical contracts retain their original scope.
+If a maintainer asks for an extra handoff, provide a text-only manifest of source
+paths and SHA-256s, exact input fingerprints, tool versions, candidate hash and
+redacted test results. Hashes identify bytes; they do not certify an attachment
+as safe. Changed game candidates need independent reconstruction and runtime/save
+acceptance. Published release files and tags must not be replaced in place.

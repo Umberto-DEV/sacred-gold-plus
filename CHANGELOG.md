@@ -1,5 +1,15 @@
 # What changed
 
+## Development tools and documentation — 9 November 2026
+
+- Preserve recoverable JSON checkpoints in the existing test runner, with explicit
+  incomplete status when an execution stops. This reports source-test progress,
+  without extending game or hardware acceptance.
+- Align contributor and validation navigation with the accepted 1.3.2 game,
+  frozen package baseline and current documentation-only delivery. Add the
+  native-hardware validation method and external-reference boundaries.
+- No game-version, gameplay or save-format change.
+
 ## 1.3.2 - Illustrated documentation refresh
 
 - Restored the original manuals' embedded lettering, cover artwork and compact
