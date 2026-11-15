@@ -306,3 +306,8 @@ and the project's canonical BLZ encoding, derived from ROM bytes and the
 original FAT limit. Focused data/receipt, native, caller and mutant suites
 passed without skips; the footer negative covers EN and IT. These are the
 recorded suite results, not new runs performed for this English revision.
+
+The later [exact-r4 post-KO attribution](validation/postko-source-rom-1.3.2.md)
+reconstructs the final selector and executes its current Fairy/scalar dependencies.
+It records separate bounded scenes and stronger intermediate oracles; the
+historical V4 counts and natural-scene limits above retain their own identities.

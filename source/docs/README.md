@@ -1,5 +1,11 @@
 # Technical documentation
 
+The current **1.3.3 development candidate** is described by its
+[fix list](../../BUG-FIXES-1.3.3.md), [game identities](../distribution/game-1.3.3.json)
+and [validation report](validation/uturn-fix-1.3.3.md). Evidence is scoped to
+the documented components and checks; natural battle and device coverage remain
+pending. Published 1.3.2 reports retain their original scope.
+
 Start with the [repository map](architecture/README.md) to find the owner of a
 game change, the build path and the data boundary. The
 [feature directory](../features/README.md) groups native and script changes by

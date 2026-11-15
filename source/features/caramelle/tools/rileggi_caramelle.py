@@ -3,8 +3,9 @@
 
 Regola del progetto (`source/sgp12/README.md` §3, `02-COME-LAVORARE.md` §2.3):
 l'applicatore e il rilettore non condividono costanti né decodificatori. Questo
-file non importa `sgp12.rom` e non importa `applica_caramelle.py`: rilegge
-l'header della cartuccia da sé con `struct`, cammina i module params da sé,
+file non importa `applica_caramelle.py`: rilegge l'header e usa una vista
+propria, condividendo `valida_layout_arm9` con sgp12. Il reader finale
+`attribuisci.py` confronta questa mappa anche con ndspy; qui
 decodifica la `BL` Thumb con capstone (non con l'aritmetica dell'applicatore) e
 ridichiara ogni indirizzo che gli serve. Se una costante dell'applicatore fosse
 sbagliata, questo file NON la eredita: la contraddice.
@@ -100,8 +101,7 @@ def pretendi(c, m):
 
 
 class VistaArm9:
-    """Vista minima e propria sull'ARM9 di una .nds: nessun import dal
-    laboratorio, solo `struct`."""
+    """Vista ARM9 propria, con validazione del layout condivisa dal progetto."""
 
     def __init__(self, path):
         self.dati = Path(path).read_bytes()

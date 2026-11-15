@@ -22,6 +22,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import shutil
 import sys
 from pathlib import Path
 
@@ -124,6 +125,9 @@ def main():
         "compilatore": subprocess.run([a.cc, "--version"], text=True,
                                       capture_output=True).stdout.splitlines()[0],
         "avvisi_compilatore": avvisi,
+        "compilatore_eseguibile_sha256": sha(Path(shutil.which(a.cc) or a.cc).resolve().read_bytes()),
+        "builder_sha256": sha(Path(__file__).read_bytes()),
+        "loader_sha256": sha(Path(load_text.__code__.co_filename).read_bytes()),
         "sorgente": {"file": SORGENTE.name, "sha256": sha(SORGENTE.read_bytes())},
         "intestazione": {"file": INTESTAZIONE.name,
                          "sha256": sha(INTESTAZIONE.read_bytes())},

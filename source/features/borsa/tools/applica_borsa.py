@@ -325,8 +325,13 @@ def censisci_rom(percorso_rom, scrcmd_json):
     """Rilegge `a/0/1/2` dalla ROM e rifa' il censimento con gli strumenti
     firmati del pacchetto 01. Rende (permissivi, tutti_i_siti_ganciati,
     membri, byte_archivio)."""
-    cmds = SD.Comandi(Path(scrcmd_json))
     files, dim = SD.carica_narc(str(percorso_rom))
+    return censisci_archivio(files, dim, scrcmd_json)
+
+
+def censisci_archivio(files, dim, scrcmd_json):
+    """Same census from already read archive members; avoids reloading a whole ROM."""
+    cmds = SD.Comandi(Path(scrcmd_json))
     membri = SD.disassembla_tutto(files, cmds)
     siti = SD.censisci(membri, raggio=0)
 
@@ -367,10 +372,13 @@ def _nome(v):
                                             v.get("ordinale", -1), v["offset"])
 
 
-def genera_tabella(percorso_rom, scrcmd_json, firmato, log):
+def genera_tabella(percorso_rom, scrcmd_json, firmato, log, *, archive=None):
     """B5. Rende (voci_tabella, diagnostica). Ogni voce e' un dict con la
     chiave u32 che finira' in ROM."""
-    permissivi, ganciati, membri, dim_archivio = censisci_rom(percorso_rom, scrcmd_json)
+    if archive is None:
+        permissivi, ganciati, membri, dim_archivio = censisci_rom(percorso_rom, scrcmd_json)
+    else:
+        permissivi, ganciati, membri, dim_archivio = censisci_archivio(archive[0], archive[1], scrcmd_json)
     diag = {"archivio_byte": dim_archivio,
             "siti_ganciati": len(ganciati),
             "permissivi_grezzi": len(permissivi),

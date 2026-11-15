@@ -74,8 +74,13 @@ def _module(path, name):
     return module
 
 
-def compile_native(work_dir: Path):
-    """Compile and authenticate the exact 340-byte function replacement."""
+def compile_native(work_dir: Path, *, retain_object=False):
+    """Compile the exact replacement; optionally retain its verified own ELF.
+
+    The production default keeps its receipt and leaves no object. A differing
+    retained artifact is preserved and rejected.
+    """
+    _need(type(retain_object) is bool, 'retain_object must be boolean')
     compiler = compiler_path(COMPILER_SHA256)
     _need(compiler is not None, 'pinned clang unavailable')
     work_dir = Path(work_dir)
@@ -116,7 +121,7 @@ def compile_native(work_dir: Path):
           == (GET_PARTY_MON | 1), 'GetPartyMon target differs')
     _need(struct.unpack_from('<I', payload, PAYLOAD_DATA_TARGET_OFFSET)[0]
           == (GET_MON_DATA | 1), 'GetMonData target differs')
-    return payload, {
+    receipt = {
         'bytes': len(payload), 'payload_sha256': _sha(payload),
         'object_sha256': _sha(raw), 'source_sha256': _sha(source),
         'entry': symbols['reload_mon_data'],
@@ -124,6 +129,15 @@ def compile_native(work_dir: Path):
         'compiler': {'version': version, 'executable_sha256': COMPILER_SHA256,
                      'flags': list(FLAGS)},
     }
+    if retain_object:
+        retained = work_dir / 'reload_transform.o'
+        _need(not retained.is_symlink() and (not retained.exists()
+              or retained.is_file() and retained.read_bytes() == raw),
+              'retained object differs; preserve the existing artifact')
+        if not retained.exists():
+            retained.write_bytes(raw)
+        receipt['retained_object'] = retained.name
+    return payload, receipt
 
 
 def edits(payload):

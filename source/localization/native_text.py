@@ -36,6 +36,9 @@ def onboarding_strings(locale):
             or data['language'] != locale or set(data['strings']) != set(ONBOARDING_IDS[:-2])
             or any(not isinstance(v,str) for v in data['strings'].values())):
         raise ValueError('native onboarding catalogue')
+    from sgp131.onboarding_version import TITLE
+    if data['strings']['c_titolo'] != TITLE:
+        raise ValueError('native onboarding active title')
     return {k:unicodedata.normalize('NFC',v) for k,v in data['strings'].items()} | {'@cursore':'→','@vuoto':''}
 
 

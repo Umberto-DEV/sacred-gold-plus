@@ -8,6 +8,10 @@ permissiva di prova, si fabbrica in memoria emulata un **membro di script vero**
 dal trampolino — cioe' dall'indirizzo che l'applicatore scrivera' in
 `gScriptCmdTable[125]`/`[127]`.
 
+`installed=True` instead preserves the owner and table already in the ROM,
+checks immutable bytes and follows the installed command-table entries. The
+historical default is a synthetic unit fixture, not final-image attribution.
+
 Tre cose girano PER DAVVERO, e sono quelle su cui il disegno si gioca:
 
 1. `ScriptReadHalfword` (0x0203FE2C), che e' pura aritmetica su `ctx->script_ptr`:
@@ -37,7 +41,7 @@ from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_PROT_ALL
 from unicorn.arm_const import (
     UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2, UC_ARM_REG_R3, UC_ARM_REG_R4,
     UC_ARM_REG_R5, UC_ARM_REG_R6, UC_ARM_REG_R7, UC_ARM_REG_R8, UC_ARM_REG_R9,
-    UC_ARM_REG_R10, UC_ARM_REG_R11, UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_PC)
+    UC_ARM_REG_R10, UC_ARM_REG_R11, UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_CPSR)
 
 PAC = Path(__file__).resolve().parent.parent      # .../source/features/borsa
 # Il blob spedito. `tools/mutanti.py` punta SGP_BORSA_BUILD su una copia mutata:
@@ -131,9 +135,9 @@ def fnv16(dati):
 
 
 def segmenti_arm9(path):
-    """Segmenti (ram, bytes) dell'ARM9 di una .nds. Lettore proprio: il banco non
-    dipende da `sgp12.rom`, cosi' una prova verde non puo' venire da un errore
-    condiviso col laboratorio."""
+    """Read header and ARM9 segments, sharing the pipeline's bounded layout
+    validator. The final attribution CLI additionally compares raw mappings
+    with ndspy; this bench alone is not an unrelated address decoder."""
     d = Path(path).read_bytes()
     o9 = struct.unpack_from("<I", d, 0x20)[0]
     r9 = struct.unpack_from("<I", d, 0x28)[0]
@@ -168,23 +172,32 @@ class Membro:
 
 
 class Banco:
-    def __init__(self, rom_path, tabella=(), orig_da_blocco=True):
+    def __init__(self, rom_path, tabella=(), orig_da_blocco=True, *, installed=False):
         self.uc = Uc(UC_ARCH_ARM, UC_MODE_THUMB)
         self.uc.mem_map(RAM, RAM_N, UC_PROT_ALL)
         for ram, dati in segmenti_arm9(rom_path):
             if RAM <= ram and ram + len(dati) <= RAM + RAM_N:
                 self.uc.mem_write(ram, dati)
 
-        # il blocco: blob + puntatori agli originali + tabella + canarino
         blob = (BUILD / "blob.bin").read_bytes()
         can = (BUILD / "canarino.bin").read_bytes()
-        self.uc.mem_write(BLOCCO, bytes(BLOCCO_N))
-        self.uc.mem_write(BLOCCO, blob)
-        self.uc.mem_write(BLOCCO + OFF_CANARINO, can)
-        if orig_da_blocco:
-            self.uc.mem_write(BLOCCO + OFF_ORIG,
-                              struct.pack("<2I", VAN127 | 1, VAN125 | 1))
-        self.scrivi_tabella(tabella)
+        self._installed = None
+        if installed:
+            assert not tabella and orig_da_blocco, 'installed mode forbids synthetic table/original pointers'
+            actual=bytes(self.uc.mem_read(BLOCCO,BLOCCO_N))
+            assert actual[:len(blob)]==blob, 'installed code differs from supplied build'
+            assert actual[OFF_CANARINO:OFF_CANARINO+16]==can, 'installed canary differs'
+            assert actual[OFF_ORIG:OFF_ORIG+8]==struct.pack('<2I',VAN127|1,VAN125|1), 'installed original pointers'
+            self._installed=actual
+            self._check_installed()
+        else:
+            # Historical unit mode intentionally inserts project code and a synthetic table.
+            self.uc.mem_write(BLOCCO, bytes(BLOCCO_N))
+            self.uc.mem_write(BLOCCO, blob)
+            self.uc.mem_write(BLOCCO + OFF_CANARINO, can)
+            if orig_da_blocco:
+                self.uc.mem_write(BLOCCO + OFF_ORIG, struct.pack("<2I", VAN127 | 1, VAN125 | 1))
+            self.scrivi_tabella(tabella)
 
         self.chiamate = []
         # risposte programmabili degli stub
@@ -195,6 +208,15 @@ class Banco:
         self.vars = {}
         for a in NATIVE:
             self.uc.hook_add(UC_HOOK_CODE, self._stub, begin=a, end=a)
+
+    def _check_installed(self):
+        if self._installed is None:return
+        actual=bytes(self.uc.mem_read(BLOCCO,BLOCCO_N))
+        immutable=lambda b:b[:OFF_STAFFETTA]+b[OFF_STAFFETTA+8:]
+        assert immutable(actual)==immutable(self._installed), 'installed immutable owner changed'
+        for command,entry in ((127,CMD127),(125,CMD125)):
+            got=struct.unpack('<I',self.uc.mem_read(0x020FAD00+4*command,4))[0]
+            assert got==entry|1, 'installed command table changed'
 
     # -------------------------------------------------------------- blocco ---
     def scrivi_tabella(self, chiavi):
@@ -281,6 +303,7 @@ class Banco:
     def esegui(self, quale):
         """Parte dal TRAMPOLINO — l'indirizzo che finira' in gScriptCmdTable —
         con `ctx` in r0, come fa `RunScriptCommand` (`ctx->cmdTable[cmd](ctx)`)."""
+        self._check_installed()
         u = self.uc
         self.chiamate = []
         sp = PILA - 64
@@ -292,6 +315,10 @@ class Banco:
             u.reg_write(reg, 0xDEADBEEF)
         u.reg_write(UC_ARM_REG_LR, FINE | 1)
         u.emu_start((CMD127 if quale == 127 else CMD125) | 1, FINE, count=200000)
+        assert u.reg_read(UC_ARM_REG_PC)==FINE, 'ARM did not return before instruction budget'
+        assert u.reg_read(UC_ARM_REG_SP)==sp and u.reg_read(UC_ARM_REG_CPSR)&32, 'return SP/Thumb mismatch'
+        assert all(u.reg_read(r)==v for r,v in CALLEE.items()), 'return callee-saved mismatch'
+        self._check_installed()
         pc_dopo = struct.unpack("<I", bytes(
             u.mem_read(CTX + CTX_SCRIPT_PTR, 4)))[0]
         return {

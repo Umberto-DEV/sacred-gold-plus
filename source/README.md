@@ -5,12 +5,28 @@ and [repository map](docs/architecture/README.md),
 [feature ownership index](features/README.md) and
 [documentation index](docs/README.md) to find the relevant source and checks.
 
-This tree contains the five-language **1.3.2** sources, native payloads,
-build tools, tests and technical documentation. Published 1.3.1 identities remain
-historical contracts; reproduce them from their published source revision.
+This tree contains the five-language **1.3.3 development candidate**, native
+payloads, build tools, tests and technical documentation. Published 1.3.2 and
+1.3.1 identities remain historical contracts; reproduce those releases from their
+published source revisions.
 Start with the [localization guide](docs/localization.md) and
 [shared composition guide](sgp131/README.md). The `sgp12` commands below rebuild
 the **1.2.5** predecessor from your own retail HeartGold.
+
+**What is rebuilt:** the Plus build produces a complete ROM file by compiling
+project-owned additions and composing them with authenticated retail and
+inherited stages. It does not compile every original HGSS function from C.
+
+| Task | Entry point and evidence |
+| --- | --- |
+| Build the complete Plus file from owned retail inputs | [Current composition recipe](sgp131/README.md) and [stage map](docs/test-bench.md#from-the-source-tree-to-the-complete-rom) |
+| Connect a particular source function to installed bytes and execution | [Attribution method](docs/test-bench.md#linking-source-to-an-exact-rom) and [case catalog](docs/validation/README.md); coverage is per component |
+| Rebuild the original retail game from PRET sources | [PRET scope and requirements](docs/test-bench.md#using-newer-pret-references); the inspected upstream targets are USA, and this project has not demonstrated a fresh whole-ROM PRET rebuild |
+
+Localized Plus IT shares the USA internal core while retaining Italian
+presentation. An exact Italian retail rebuild is a separate regional target.
+An executable-component inventory is not a map of every function or a measure
+of decompilation completeness.
 
 The [1.3 builder guide](sgp13/README.md) describes the earlier feature line.
 The 1.3.1 composer accepts only the two historical V1.3 V4 inputs. The current
@@ -25,9 +41,13 @@ The [change register](docs/whats-new-1.3.1.md),
 [bug list](../BUG-FIXES-1.3.1.md) and
 [published validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
+The [1.3.3 candidate fix](../BUG-FIXES-1.3.3.md) has bounded source and
+counterfactual evidence. Five [candidate identities](distribution/game-1.3.3.json)
+have passed scoped readback and seven bounded raw-save cycles on five original
+fixtures; natural battle/pivot and physical-device validation remain pending.
 The [1.3.2 source correction](../BUG-FIXES-1.3.2.md) and its
 [measured New Game regression](docs/validation/new-game-reset-1.3.2.md) retain
-the original diagnosis and probe identities. Current game identities and
+the original diagnosis and probe identities. The published 1.3.2 baseline identities and
 bounded acceptance are in the [game contract](distribution/game-1.3.2-r4.json)
 and [Guide correction report](docs/validation/guide-opening-1.3.2.md); the
 [original five-language report](docs/validation/localization-1.3.2.md) retains
@@ -40,6 +60,118 @@ The [base-stage evidence](docs/base-stage-validation.md),
 candidate scope. Their results do not automatically accept the 1.3.1 successor.
 The [stability investigation](docs/stability-investigation-1.3.1.md) and
 [test-bench guide](docs/test-bench.md) document the older defects and runtime method.
+
+The [source-to-ROM attribution method](docs/test-bench.md#linking-source-to-an-exact-rom)
+explains how to connect source, compilation, installed bytes and execution using
+locally supplied ROMs.
+Its [complete-ROM stage map](docs/test-bench.md#from-the-source-tree-to-the-complete-rom) connects retail/bootstrap, component compilation, owner composition, localization and exact output/readback receipts.
+The [newer PRET reference method](docs/test-bench.md#using-newer-pret-references)
+shows how to recover source knowledge and compare command metadata with a
+ROM-free JSON tool while preserving the qualified production inputs.
+The [continuous native ExecuteSync example](docs/validation/native-fs-exec-sync-native-callees-source-rom-1.3.2.md)
+shows how to join qualified caller/callee checks without importing their future
+RAM states, while retaining an explicit remaining model and counterexamples.
+The [complete native Send case](docs/validation/native-fs-send-native-callees-source-rom-1.3.2.md)
+adds actual caller preparation and the original return POP, preserving captured
+predecessor guard bytes and separating source consistency from exact-input identity.
+The [native Translate case](docs/validation/native-fs-translate-source-rom-1.3.2.md)
+adds code/data separation, a concrete Italian retail literal relocation and a
+writer control whose final CPU and entire RAM are unchanged.
+The [combined native Send/Translate case](docs/validation/native-fs-send-translate-native-source-rom-1.3.2.md)
+joins those checks with complete frozen fields and actual whole-RAM boundary
+agreement, leaving only the default handler explicitly modeled.
+The [default FindPath prefix](docs/validation/native-fs-default-findpath-source-rom-1.3.2.md)
+shows a zero-model native prefix with explicit deeper-stack provenance and
+controls that distinguish identical final bytes from their writer.
+The [nested SEEKDIR dispatch](docs/validation/native-fs-nested-seekdir-source-rom-1.3.2.md)
+separates actual parent input from a declared flag projection with identical
+final CPU/RAM, while checking the new table target and deeper stack provenance.
+The [complete cached SeekDir case](docs/validation/native-fs-cached-seekdir-source-rom-1.3.2.md) runs the full native
+callee with authenticated filesystem resources, bounded overlap checks and a
+ROM-derived input mode reproducible without private captures. Its independent
+PRET metadata check recovers the root-directory layout; full caller activation
+and original C rebuilding remain separate.
+The [complete cached pathname lookup](docs/validation/native-fs-cached-findpath-source-rom-1.3.2.md)
+continues through eight native functions to a real FNT file ID. It adds a finite
+independent ARM arithmetic oracle, byte/halfword neighbor checks and standard
+Python verification of saved evidence without starting the CPU or compiler.
+The [public report catalog](attribution_cases.py) provides standard-library-only
+`list`, `show` and `check` JSON for developers and automation. Start with
+`python3 -I -S -B source/attribution_cases.py show native-fs-release --json`;
+its command descriptions and navigation checks are separate from game validation.
+The [complete Read/Wait caller](docs/validation/native-fs-read-caller-source-rom-1.3.2.md)
+and [relative Find wrapper](docs/validation/native-fs-find-source-rom-1.3.2.md)
+show how full caller and isolated copied-context evidence retain different limits.
+The [complete native Find caller](docs/validation/native-fs-find-caller-source-rom-1.3.2.md)
+adds one-time BSS input, typed replay and matched final RAM verification.
+
+The [complete cached Convert API](docs/validation/native-fs-cached-convert-source-rom-1.3.2.md)
+connects18 native components to the real move-archive path and fileID140, with
+owned-ROM reproduction, BSS provenance and finite IRQ checks. The input's archive
+procedure projection and missing natural card protocol remain explicit.
+
+The [complete cached Open API](docs/validation/native-fs-cached-open-source-rom-1.3.2.md)
+continues to the real FAT140 record and live file handle, including a finite
+bounds failure and temporary-stack lifetime checks. Payload I/O and natural
+card protocol retain their separate limits.
+
+The [memory-archive Read chain](docs/validation/native-fs-memory-read-source-rom-1.3.2.md)
+follows Open/Read/Seek/Read/Close to exact owned NARC bytes. Original SDK code,
+a compiled test caller and explicit memory-archive input projections retain
+separate provenance; natural CARD protocol remains unqualified.
+
+The [original NARC caller](docs/validation/native-fs-memory-narc-source-rom-1.3.2.md)
+now traverses its own Thumb parser and all native SDK bodies without a test
+caller or service models. Source/byte identity, mixed ISA, stack ownership and
+the exact selected member are checked; natural CARD delivery remains open.
+
+The [complete PP getter](docs/validation/native-pp-memory-getter-source-rom-1.3.2.md)
+then reads its native stack buffer and returns the PP scalar. A separately
+declared source-memory counterfactual changes the actual returned value,
+checking the causal data link through the full chain without register shadows.
+
+The [complete native MaxPP path](docs/validation/native-maxpp-memory-source-rom-1.3.2.md) now joins the PP getter to its
+actual clamp, multiplication, signed division and u8 return. A recovered MSL
+assembly recipe compiles to the exact 524 installed division bytes. Declared
+PP-Up and source-PP inputs exercise causal native results, with source-bound
+raw verification; original Thumb compilation and natural CARD remain open.
+
+The [native Mon segment cipher](docs/validation/native-mon-cipher-source-rom-1.3.2.md) follows the original wrapper,
+core and private LCG on 128 synthetic bytes. Two API seeds and neutral observer
+OFF qualify native data/seed writes, stack lifetime and full ABI without player
+records or global RNG access. The reusable fixture, frontend and verifier keep
+C provenance, installed byte identity and finite semantics distinct from the
+missing original C compiler.
+
+The [native Mon checksum](docs/validation/native-mon-checksum-source-rom-1.3.2.md) checks the next prerequisite on owned
+storage: normal/odd sizes, 16-bit overflow and zero. Exact halfword access,
+per-step truncation, final flags and full ABI are verified with the existing
+frontend, without new ISA kernels or an original-compiler claim.
+
+The [native Mon substructure selector](docs/validation/native-mon-substructure-source-rom-1.3.2.md) covers all32PID rows and
+four logical blocks, with exact table-byte reads, full ABI and an ignored-PID
+counterfactual. Its eight-image reader finds the retail Italian table-pointer
+difference. A source-only PRET adapter reuses four unchanged HGSS functions and
+compares Platinum's mapping while recording its declared type differences.
+
+The [complete encrypted Box PP-Up getter](docs/validation/native-box-ppup-source-rom-1.3.2.md) now composes decrypt,
+checksum, four header-PID selectors and re-encryption on owned synthetic
+records. A checksum-preserving field counterfactual changes the actual native
+return while each record is restored exactly. Full transient access/stack
+proofs and CPU-free raw verification keep this isolated API coverage separate
+from original C compilation, natural callers and save validation.
+
+The [complete encrypted Box PP setter](docs/validation/native-box-pp-setter-source-rom-1.3.2.md) follows the write lifecycle:
+old-key decrypt, native field store, second checksum, header update and new-key
+encryption. A separate Value-byte counterfactual and full transient replay
+verify the field's effect. Static MaxPP/caller attribution remains distinct
+from executing that caller or rebuilding the original C binary.
+
+The [complete encrypted Box move setter](docs/validation/native-box-move-setter-source-rom-1.3.2.md) verifies halfword load/store,
+post-ADDSP lifetime and both idempotent field/header writes. A move310→311
+counter keeps the high byte unchanged, so the proof requires exact width2
+transcripts and independent instruction kernels, alongside full state/replay.
+The complete higher move caller remains a separate bounded context.
 
 This folder is for developers. To play, use the [download and install instructions](../README.md#download).
 
@@ -80,7 +212,7 @@ five successor identities and their separate tests. See [package validation](doc
 | --- | --- |
 | `sgp12/` | The library. One command builds 1.2.5 from an unmodified HeartGold ROM, one command checks the result. `base11.json` pins stage 0 (the public xdelta that turns that ROM into the 1.1 base) and `scarica_base.py` fetches it. `blocchi/` has one module per feature, each with an `applica()` and a read-back written independently of it. `build/` holds the validated payloads each block writes — code we compiled from the C sources in `native-*/` and `features/*/sorgenti*/`. |
 | `sgp13/` | Earlier 1.3 feature builder from exact 1.2.5. Current HF02 sources are distinct from the historical HF01 V4 input required by 1.3.1. |
-| `sgp131/` | Version-composition code, independent readbacks, owner activation, workbench and regressions, including the battle type-loop fix. Development sources now select V1.3.2 identity. See its [build guide](sgp131/README.md). |
+| `sgp131/` | Version-composition code, independent readbacks, owner activation, workbench and regressions, including the battle type-loop fix. Development sources now select V1.3.3 candidate identity. See its [build guide](sgp131/README.md). |
 | `features/<name>/` | One self-contained folder per feature: `sorgenti/` (our C), `tools/` (the applier, the read-back, the compiler, the mutants) and `test/`. The folders are deliberately self-contained, including their copy of the shared ARM9 helper: an applier and its read-back must not be able to share a wrong constant. |
 | `verifiche/` | The ARM9 reserve checks T1–T5 and the automatic runtime gates (`rileva_crash.py`, `collauda_repellente.py`, `riserva_arm9.py`). |
 | `native-guide/`, `native-eviv/` | The in-game EV/IV guide and reader, from 1.1. |
@@ -367,3 +499,58 @@ battle-loop regression are in the [1.3.1 composition guide](sgp131/README.md).
 For current 1.3.2 game, frozen package and document-only identities, use the
 [authorities above](#five-language-132); the current package requires its explicit
 contract rather than the historical packager default.
+
+The [complete native Box move caller](docs/validation/native-box-move-caller-source-rom-1.3.2.md) now joins move54, PP-Up62,
+MaxPP/NARC/30SDK/DIV and PP58 in one uninterrupted context. Three original
+EN calls pass with51565 instructions total,26 mapped pages and32 rejected
+forgeries; the native caller stack carries the PP value. Independent1242-byte
+lineage matches eight exact EN/IT images, with null plaintext physical offsets
+for compressed owners. Original C compilation, natural gameplay/CARD, other
+slots and physical save validation remain outside this scope.
+
+The [native trainer first-move prefix](docs/validation/native-trainer-first-move-prefix-source-rom-1.3.2.md) follows an exact108-byte
+trainer record through the Mon veneer and complete Box caller, then advances
+cursor/index once. Three original runs pass with51613 instructions,26 mapped
+pages,45 raw falsifiers and three complete cached-data input controls. Entry
+is an explicit owned fixture inside the type3 constructor; the stop is before
+the first loop branch, with no full-trainer, lost-checkpoint, natural gameplay
+or save claim. The pinned C-definition comparator also corrects two previously
+mislabeled callsite hashes while preserving earlier native evidence.
+
+The [complete native Mon PP-Up setter](docs/validation/native-mon-ppup-setter-source-rom-1.3.2.md) verifies the separate party100/PID
+and Box128/checksum transaction in one context. Three original calls pass with
+17481 instructions total,8 mapped pages,24 transcript falsifiers and eight-image
+bounded lineage. Same-count convergent inputs and party roundtrip false greens
+require transient evidence; OFF retains endpoints without a native trace. An
+owned50-halfword qualifier and CPU-free verifier are reusable. Original C
+compilation, other attributes, natural activation and physical SAVE remain outside
+this proof; no gameplay or installed ROM changed.
+
+The [complete native move/PP-Up Reset](docs/validation/native-mon-reset-source-rom-1.3.2.md) connects its four actual child
+calls, two MaxPP/NARC transactions and live guest Value words in one context.
+Three first-attempt Reset runs pass with105568 instructions,26 pages,32 raw
+falsifiers and three cached-input controls;20 ROM-free tests and six owned64k
+limit cells cover the new bounds. Contextual checks preserve stack residues
+and keys02B4→02B1→02A8. Original C compilation, natural gameplay and physical
+SAVE remain outside this proof; no game or installed ROM changed.
+
+The [original Reset C compilation experiment](docs/validation/native-reset-c-codegen-source-rom-1.3.2.md) authenticates an unchanged
+PRET definition, minimal ABI projection, one LLVM object, four internal BL
+relocations and three guest linkage thunks. ELF/ABI readback, owned frame
+ON/OFF checks and three compiled guest cells pass (105586 instructions). It
+reuses the executed native baseline and separates full per-build verification
+from scoped cross-build semantic equality. No ROM build or speedup is claimed.
+
+The [pivot/Shell Bell order case](docs/validation/uturn-shellbell-order-source-rom-1.3.2.md) identifies the installed command213
+handler and prefix boundaries. It rejects a late-consumer premise using source
+and exact EN/IT bytes, without inventing healing-loss evidence or launching a
+new CPU campaign. The existing U-turn compatibility failures remain separate.
+
+For the ordinary after-move item path, the [Shell Bell static reader](docs/validation/ordinary-shellbell-source-rom-1.3.2.md)
+connects source aliases, controller37, code/data boundaries and actual item253
+mapping. It is a compiler-free readback, with no new healing execution claim.
+
+The [owned continuous dispatcher experiment](docs/validation/ordinary-shellbell-source-rom-1.3.2.md#owned-continuous-dispatcher-qualification)
+adds an authenticated44-byte ASM fixture and compiler-free raw reverification.
+Its two passing owned cells qualify the loop/BLX/frame, with no ROM or original
+API execution. The native ordinary Shell Bell caller proof remains separate.

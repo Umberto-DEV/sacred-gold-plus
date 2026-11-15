@@ -20,6 +20,9 @@ ARM_PRISTINE = """\
 void first()
 {
                 // actually execute
+                u32 icode = (CurInstr >> 6) & 0x3FF;
+                ARMInterpreter::THUMBInstrTable[icode](this);
+                // actually execute
                 if (CheckCondition(CurInstr >> 28))
                     DoThing();
                 else
@@ -30,6 +33,9 @@ void first()
 }
 void second()
 {
+                // actually execute
+                u32 icode = (CurInstr >> 6);
+                ARMInterpreter::THUMBInstrTable[icode](this);
                 // actually execute
                 if (CheckCondition(CurInstr >> 28))
                     DoThing();
@@ -137,6 +143,95 @@ class PatchCoreCheckoutTests(unittest.TestCase):
         self.assertEqual(second.returncode, 0, second.stderr)
         self.assertEqual((self.source / "src" / "ARM.cpp").read_bytes(), arm_once)
         self.assertEqual((self.source / "src" / "NDS.cpp").read_bytes(), nds_once)
+
+    def prepare_model_fixture(self):
+        early = """        else
+        {
+            NDS.ARM9Timestamp = NDS.ARM9Target;
+            return;
+        }
+                if (Halted == 1 && NDS.ARM9Timestamp < NDS.ARM9Target)
+                {
+                    NDS.ARM9Timestamp = NDS.ARM9Target;
+                }
+"""
+        arm=ARM_PRISTINE.replace("void first()\n{", "template <CPUExecuteMode mode>\nvoid ARMv5::Execute()\n{\n"+early).replace("void second()", "template <CPUExecuteMode mode>\nvoid ARMv4::Execute()")
+        nds=NDS_PRISTINE+"""
+void NDS::RunFrameFixture()
+{
+            // we are running in sleep mode
+                CurCPU = 0;
+
+                if (CPUStop & CPUStop_GXStall)
+                {
+                    RunGX();
+                }
+                else if (CPUStop & CPUStop_DMA9)
+                {
+                    RunDMA();
+                }
+                else
+                {
+                    ARM9.Execute<cpuMode>();
+                }
+
+                RunTimers(0);
+}
+"""
+        for name,data in (("ARM.cpp",arm),("NDS.cpp",nds)):
+            (self.source/"src"/name).write_text(data)
+            (self.pristine/name).write_text(data)
+
+    def test_exact_model_upgrade_and_variant_isolation(self):
+        self.prepare_model_fixture()
+        self.assertEqual(self.run_patch("--work-observer").returncode,0)
+        upgrade=self.run_patch("--work-observer","--model-budget")
+        self.assertEqual(upgrade.returncode,0,upgrade.stderr)
+        before={n:(self.source/"src"/n).read_bytes() for n in ("ARM.cpp","NDS.cpp")}
+        self.assertEqual(before["ARM.cpp"].count(b"Timing.haltSkip"),2)
+        self.assertEqual(before["NDS.cpp"].count(b"Timing.begin"),1)
+        self.assertEqual(before["NDS.cpp"].count(b"Timing.end"),1)
+        self.assertEqual(before["NDS.cpp"].count(b"Timing.fail"),1)
+        for arguments in (("--verify-only",),("--verify-only","--work-observer")):
+            self.assertNotEqual(self.run_patch(*arguments).returncode,0)
+        exact=self.run_patch("--verify-only","--work-observer","--model-budget")
+        self.assertEqual(exact.returncode,0,exact.stderr)
+        again=self.run_patch("--work-observer","--model-budget")
+        self.assertEqual(again.returncode,0,again.stderr)
+        for n,data in before.items():self.assertEqual((self.source/"src"/n).read_bytes(),data)
+        # A marker-like comment cannot make a modified derivative admissible.
+        path=self.source/"src/ARM.cpp";path.write_bytes(before["ARM.cpp"]+b"\n// Timing.haltSkip spoof\n")
+        self.assertNotEqual(self.run_patch("--verify-only","--work-observer","--model-budget").returncode,0)
+
+    def test_model_upgrade_rejects_foreign_tree_before_any_mutation(self):
+        self.prepare_model_fixture()
+        self.assertEqual(self.run_patch("--work-observer").returncode,0)
+        before={n:(self.source/"src"/n).read_bytes() for n in ("ARM.cpp","NDS.cpp")}
+        (self.source/"CMakeLists.txt").write_text("# foreign build logic\n")
+        result=self.run_patch("--work-observer","--model-budget")
+        self.assertNotEqual(result.returncode,0)
+        for n,data in before.items():self.assertEqual((self.source/"src"/n).read_bytes(),data)
+
+    def test_model_budget_requires_explicit_work_before_any_mutation(self):
+        result=self.run_patch("--model-budget")
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn("requires --work-observer",result.stderr)
+        self.assert_pristine()
+
+    def test_explicit_work_variant_cannot_pass_default_verification(self):
+        self.assertEqual(self.run_patch().returncode, 0)
+        upgrade=self.run_patch("--work-observer")
+        self.assertEqual(upgrade.returncode, 0, upgrade.stderr)
+        self.assertEqual(self.run_patch("--work-observer", "--verify-only").returncode, 0)
+        self.assertNotEqual(self.run_patch("--verify-only").returncode, 0)
+        self.assertNotEqual(self.run_patch().returncode, 0)
+
+    def test_work_upgrade_rejects_modified_legacy_tree_before_mutation(self):
+        self.assertEqual(self.run_patch().returncode, 0)
+        before=(self.source / "src/ARM.cpp").read_bytes()
+        (self.source / "CMakeLists.txt").write_text("injected")
+        self.assertNotEqual(self.run_patch("--work-observer").returncode, 0)
+        self.assertEqual((self.source / "src/ARM.cpp").read_bytes(), before)
 
     def test_tracked_build_logic_is_rejected_before_source_mutation(self):
         (self.source / "CMakeLists.txt").write_text("message(FATAL_ERROR injected)\n")

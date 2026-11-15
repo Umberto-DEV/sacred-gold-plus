@@ -1,5 +1,214 @@
 # Headless runtime for game validation
 
+The optional frame sampler described below adds developer observations only.
+Current accepted game identities remain in
+[the r4 contract](../distribution/game-1.3.2-r4.json); newer natural-battle
+evidence is in [animation cadence validation](../docs/validation/animation-cadence-1.3.2.md).
+The older campaigns and executable identities below retain their own scope.
+
+## Optional r4 Battle Party attribution
+
+`work on party` selects eight pinned System/Thumb entry sites in the same
+explicit `HG_WORK_OBSERVER` build. It records the Party constructor, two shims,
+two cache getters, record lookup and native fallbacks with register arguments,
+returns, SP/LR, CPSR, order and parents. It adds no guest memory or clock reads.
+Stop refuses pending spans; opcode/ISA, bounded buffer/depth and counter failures
+invalidate the trace. It is disabled by default and isolated from older profiles.
+The exact ROM and live overlay lifetime must be authenticated externally.
+
+The [source-to-ROM case](../docs/validation/party-source-rom-1.3.2.md)
+provides final-image and execution verifiers, portable commands, counterexamples,
+EN runtime results and distinct EN/IT isolated-code coverage. A trace proves only
+its exercised inputs. Entry r4–r7 samples are not a runtime callee-save proof;
+that ABI check is performed separately on installed ARM code under Unicorn.
+
+## Optional r4 battle Bag work observer
+
+Build the explicit derived patch with `patch_core.py --work-observer --source
+/path/to/core`, then configure with `-DHG_WORK_OBSERVER=ON`. The default
+verifier still rejects this derivative. Both modes authenticate the complete
+pinned core tree; the upgrade accepts only the exact previous observation patch.
+
+Within an externally authenticated r4 battle window, `work on` begins a bounded
+ARM9 interpreter observation and `work off` writes `work-events.csv`. Normal
+exit with an active or failed observation is rejected and attempts a diagnostic
+flush. The live helper signature and per-site instruction checks add guards;
+they do not authenticate a full ROM or the active overlay. Use exact image,
+scene and binary hashes in the run manifest. `work on h4` selects only the
+separately admitted private 166-byte helper layout; its image hash and hook
+readback must also be supplied by the external manifest. That166-byte prototype
+was rejected by its game fallback control; the later192-byte private successor
+keeps the r4 prologue/shim and uses plain `work on`, with its own full image
+identity. Neither profile grants game acceptance. This is a fixed Bag investigation,
+not a general field or other-ROM profiler.
+
+The observer copies entry registers, return values, PC/SP/mode and guest-frame
+indices. It never reads guest memory or MMIO and never changes the guest. OFF
+performs no observer reads or clock calls. At most 16,384 events and 64 nested
+spans are retained; layout, counter, nesting or buffer failure invalidates the
+observation. Incomplete calls remain marked, not assigned invented returns.
+
+A dispatch is one interpreter step: a Thumb BL has two steps, and a failed ARM
+condition still counts. `inclusive_dispatch` counts same-CPSR-mode steps between
+entry and matched return; `exclusive_dispatch` assigns steps to the top observed
+span only. Unobserved threads in the same mode can contribute during scheduling.
+These are not CPU busy time, Nintendo cycles, cache misses or instruction-set
+instruction counts. IRQ modes are counted separately. Compare synchronous pure
+paths with an independent isolated ARM execution before attributing work.
+The RunFrame host timer includes this observer; it does not isolate its total
+host cost or the CSV write at `work off`.
+
+## Optional native heap transaction profile
+
+The same explicit work-observer build accepts `work on heap`. It selects six
+native ARM ExpHeap API entries and two common heap lifecycle entries, while
+leaving the fourteen Thumb Bag sites to their existing profiles. Full ARM
+opcodes, return PC/SP/mode/ISA, bounded event order and parent records are checked.
+SDK mutating ranges require a matching API kind and mode, with aligned SP in
+its authenticated 128-byte entry window. This is a guard for these SDK paths,
+not a game-wide stack bound or a generic thread profiler.
+
+The native CSV adds `entry_order,exit_order,parent,entry_cpsr,exit_cpsr` to the
+existing columns; parent `4294967295` means no parent, while zero is a valid
+parent event. Free/Destroy `result` is an opaque register value because those
+APIs return void. Native `status` adds `HEAP_TRACE_STATE` with validity, active
+native/common spans, root count, frame/order and ARM9 registers. `safe=1`
+requires an enabled, valid profile with no open spans. An incomplete native
+stop permanently invalidates the observation and emits its diagnostic once.
+Older profiles retain their CSV schema and explicit incomplete-call records.
+
+Trace admission alone does not prove heap lifetime or peaks. The private pilot
+binds heap5 from captured tables, checks the fixed thread/stack boundary, rejects
+unknown heaps, overlap, reentrancy and lifecycle, and replays completed native
+transactions against independent metadata and allocator models. Sampled graphics
+bank capacity is separate from live VRAM allocation. Arbitrary memory writers,
+DMA/ARM7, physical display/audio and global transient peaks remain outside that
+contract. See the [scoped host evidence](../docs/validation/development-host-1.3.2.md).
+
+## Optional queued graphics profile
+
+`work on graphics` selects nine enqueue, drain, dispatch, Init and SubOBJ copy
+sites plus six existing Bag context sites. It requires the explicit observer
+build and externally authenticated pilot. Graphics CSV has the native five
+order/parent/CPSR fields followed by `aux_r4,aux_r5,aux_r6,aux_r7` (24 columns).
+`GRAPHICS_TRACE_STATE` reports collector validity and open spans; `safe=1` is
+collector quiescence, not queue emptiness or DMA completion.
+
+Three pre-call sites use explicit post-call return PCs while preserving the
+captured raw LR. The SubOBJ call-edge LR holds a destination offset and cannot
+identify its caller. Opcode/ISA, return PC/SP/mode, bounds and incomplete stop
+are checked. Collection makes no guest memory reads/writes or clock calls.
+Semantic admission still requires live code/table pins, thread/queue boundaries,
+FIFO task/target/argument matching and qualified source completion. Overlapping
+enqueue/drain and Init are outside the first replay contract. Old profiles keep
+their schemas; the larger event record does increase static host storage.
+
+The first EN control qualifies queued type35 and observed SubOBJ copy routes,
+with byte-identical guest controls. It does not cover all direct BG/palette/OAM,
+GPU lifetime, DMA busy cycles or physical display timing. See the
+[scoped graphics evidence](../docs/validation/development-host-1.3.2.md#queued-graphics-pilot--10-november-2026).
+
+## Optional model-clock and direct-transfer observer
+
+Configure `-DHG_WORK_OBSERVER=ON -DHG_MODEL_BUDGET=ON` against the exact
+`patch_core.py --work-observer --model-budget` derivative. Its five guarded
+call sites affect the same two pinned core files. Legacy and work-only
+verification reject this variant; complete tree authentication remains required.
+`work on pilot` is restricted to the externally authenticated r4/H4B battle
+route. It does not authenticate arbitrary ROMs or scenes.
+
+The raw ARM9 timestamp partition is GX branch, DMA9 branch, Execute residual
+and Halt1 skips. Gaps, overlap, changed clocks, sleep mode and arithmetic errors
+invalidate it. Residual is not CPU busy time; DMA covers the whole selected
+scheduler branch, rather than only graphic copies. Sum raw ticks before any
+normalization. GPU stages, ARM7 work, cache hit rate and physical display time
+are outside this partition.
+
+The Pilot profile includes checked copy/clear ABI counters, bounded OAM
+aggregation and an independent store-site oracle, 17 separately named
+predicates, four-owner WaitIrq tracking with boundary censoring, and bounded
+callback classification. Its 70-column `model-timing.csv` contains 12 clock
+fields and 58 cumulative observations. OAM stores overlap copy traffic. OS
+SleepCall positive is not busy time, and wait latency is not an exclusive clock
+bucket. Detailed mode/owner/range/censor diagnostics remain at command boundaries.
+Pilot permits 65,536 events; legacy profiles retain their 16,384-event limit.
+
+Exact E6 `cd806fce161899ea61f632943fd6d58a81253d0d37c59bca413df5cf73452d34`
+qualifies the declared EN/IT r4/H4B pilot. Each ON/OFF pair preserves 8,478
+frame rows, 2,466 samples, 10 RGB captures, SRAM and 11 MainRAM checkpoints.
+Requests total 5,309,376 bytes EN and 5,309,952 IT, including the overlapping
+2,405,088-byte CPU16/OAM store oracle in each cell. Within each language, the
+candidate preserves final and phase counts while two request frames move one
+frame earlier. That is not identical lifetime or ordering at every frame.
+
+All 11,930 observed bank sessions use NONE0 and cover four roles; the two texture
+roles remain static/synthetic cases. All 5,965 async submissions have size zero.
+There is no observed nonzero async-completion or reclaimed-VRAM claim. A separate
+68-call/4,352-byte RAM-copy source gap remains explicit; primary graphic rows
+are known, without implying complete global coverage or universal source-free
+safety. Require successful exit and complete data: exporter failure can reject
+a run while individual collector flags still read valid.
+
+Independent semantic replay, negative cases, source/archive pins and
+[the scoped transfer report](../docs/validation/development-host-1.3.2.md#direct-transfer-and-waiting-pilot--10-november-2026)
+retain these limits. The new tool is not a game repair or hardware speed claim.
+The separate endpoint reconciliation found no change in the observed Bag
+poll or reference-image samples. E6's archived build-source receipt is immutable.
+
+## Optional native asset observer
+
+`work on assets` uses the existing opt-in `HG_WORK_OBSERVER` interpreter
+hook and must be the first guest action after DS direct boot. Use `work off`
+after the final checkpoint. It shares the one-session work gate and rejects
+savestate loads. It does not read guest memory or change the ROM, clock, or
+interpreter. `asset-events.csv` is bounded to 98,304 records and 24 concurrent
+call spans. Return matching uses SP, processor mode and ARM/Thumb return
+address. `ASSET_TRACE_STATE` reports structural validity; also require a
+successful exit and replay the pending archive and file transactions.
+
+The trace separates signed FS return values from accepted async requests,
+native ROM and CARD submissions, completion notifications, overlay start and
+unload, and output from two pinned decoders. The decoder count is dispatch
+inside the pinned body, not active hardware time. Direct-boot copies made by
+the emulator before frame 1, physical bus/cache behavior and host disk I/O are
+outside the trace. Use an authenticated ROM and route; the native addresses
+are not a general SDK profiler.
+
+Exact E7b
+`bd061f3bb5bfb8d70090a43f994c99edb07f273b72f2f612575e2685852cba11`
+qualified the EN r4 control on the same pilot. See the
+[asset I/O report](../docs/validation/development-host-1.3.2.md#native-asset-io-pilot--10-november-2026)
+for controls, results and limitations.
+
+## Optional guest-frame sampler
+
+`sample on X Y WIDTH HEIGHT` starts a bounded read-only sample after each
+subsequent `RunFrame`; `sample off` disables it. The rectangle is within the
+top 256×192 screen. The no-replace `frame-samples.csv` records RGB FNV-1a64
+hashes of both completed screens and that rectangle, plus current ANIM2 fields.
+No frame images or savestates are written by the sampler. Sparse `capture`
+commands provide independently checkable RGB checkpoints. Hashes are compact
+change indicators, not collision-free proof of image equality.
+
+For the qualified 1.3.2 r4 layout, the sample follows the four current slots,
+Pokepic channels, private LCGs and the native BattleSystem RNG at offset `0x2448`.
+Indirect accesses are confined to main RAM; reads do not call guest functions
+or MMIO. Slot admission, pointer ranges and active bits do not prove arbitrary
+allocation lifetime or compatibility with another ROM. Use the documented
+candidate/layout; IPKE alone is not an ANIM2 identity check.
+
+`host_sample_ns` covers framebuffer hashing and raw RAM observation. It excludes
+CSV formatting/writing and audio draining; existing `host_runframe_ns` still
+covers only `RunFrame`. Sampling is OFF by default and does not call its reader
+or clock while OFF. Output accounting and existing process/time/frame limits
+apply; rows are buffered and flushed per run block. The command log supplies
+enable/disable times and rectangle changes.
+
+The software renderer supplies the completed guest framebuffer. These samples
+measure emulated image succession, not a GUI presentation, physical refresh,
+input-to-photon latency or Nintendo CPU cycles. Static/quantized pictures can
+repeat while game logic advances; a repeated hash alone is not stutter.
+
 This harness is a developer tool. The source tree now contains an unreleased
 **1.3.2** correction; the older campaigns below retain their original ROM
 identities. The [New Game reset report](../docs/validation/new-game-reset-1.3.2.md)

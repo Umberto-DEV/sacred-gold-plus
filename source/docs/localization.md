@@ -1,8 +1,19 @@
 # Five-language build
 
-Sacred Gold Plus 1.3.2 supports English (USA), Italian, French, Spanish (Spain)
-and German. The public README and technical documentation are English. Player
+The published Sacred Gold Plus 1.3.2 release and the 1.3.3 development
+candidate support English (USA), Italian, French, Spanish (Spain) and German. The public README and technical documentation are English. Player
 manuals, authored dialogue and interface copy belong to their own locale.
+
+## 1.3.3 candidate validation
+
+Five [candidate identities](../distribution/game-1.3.3.json) have passed
+scoped logical-file and mapped-ARM9 readback. Seven raw-save cycles passed on
+five original fixtures: legacy and advanced fixtures each exercised EN and IT,
+and one separate fixture exercised each regional language. Native Options and
+Guide screens in all five languages received host visual review. This finite
+coverage is not native-speaker certification or universal save compatibility;
+physical-device validation remains pending. The full scope and limits are in
+the [candidate report](validation/uturn-fix-1.3.3.md).
 
 ## Source ownership
 
@@ -41,7 +52,7 @@ PYTHONPATH=source .venv/bin/python -m localization.build \
   --language FR --core /private/player-core-EN.nds \
   --reference /private/retail-US.nds --donor /private/retail-FR.nds \
   --charmap /private/pokeheartgold/charmap.txt \
-  --output /private/SGP-1.3.2-FR.nds --receipt /private/SGP-1.3.2-FR.json
+  --output /private/SGP-1.3.3-FR.nds --receipt /private/SGP-1.3.3-FR.json
 ```
 
 Use ES or DE and its matching donor for the other outputs. Input hashes and

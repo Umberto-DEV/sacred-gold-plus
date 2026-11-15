@@ -1180,3 +1180,25 @@ class QVincoli(unittest.TestCase):
         for nome in ("plus", "salva", "npc", "wifi"):
             self.assertEqual(nuovo(nome)["manifesto"]["avvisi"], [],
                              "%s: il compilatore ha avvisi" % nome)
+
+class QNativeMoveConsumerAttribution(unittest.TestCase):
+    def test_native_pairs_reject_wrong_parent_caller_attr_or_value(self):
+        import copy
+        path = PACCHETTO / 'tools/attribuisci_getter_mosse.py'
+        self.assertTrue(path.is_file(), 'native move consumer verifier is missing')
+        import attribuisci_getter_mosse as reader
+        table = bytearray(7488); table[16+4]=10; table[16+6]=20
+        base = dict(complete=1,mode=31,entry_cpsr=63,exit_cpsr=63,arg0=1,first_frame=1,last_frame=1)
+        rows = [dict(base,event=0,site=0x0207332C,lr=0x0224EF7D,parent=0xFFFFFFFF,
+                     arg1=3,result=32,entry_order=1,exit_order=4),
+                dict(base,event=1,site=0x02073314,lr=0x0207333D,parent=0,
+                     arg1=5,result=20,entry_order=2,exit_order=3),
+                dict(base,event=2,site=0x02073314,lr=0x022688DD,parent=0xFFFFFFFF,
+                     arg1=3,result=10,entry_order=5,exit_order=6)]
+        self.assertEqual(reader.classify(rows,table)['native_spans'],3)
+        for index,key,value in ((0,'lr',0x023DBEAB),(1,'parent',2),(1,'arg1',3),
+                                (1,'arg0',2),(0,'result',20),(1,'complete',0),
+                                (2,'arg1',5),(1,'exit_order',5)):
+            bad=copy.deepcopy(rows);bad[index][key]=value
+            with self.subTest(index=index,key=key),self.assertRaises(ValueError):
+                reader.classify(bad,table)

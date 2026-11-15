@@ -2,11 +2,21 @@
 
 **Explore Johto and Kanto with new ways to train, hunt and manage your Pokémon.**
 
-**Version 1.3.2** · **English, Italian, French, Spanish and German** · [GPL-3.0-or-later](LICENSE) for this project's own tools and sources
+**Published release 1.3.2** · **English, Italian, French, Spanish and German** · [GPL-3.0-or-later](LICENSE) for this project's own tools and sources
 
 An independent fan continuation of **Drayano's Sacred Gold** and **NefariousnessNo3436's Sacred Gold Plus** for Nintendo DS. Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Plus project. This continuation adds native game tools, Italian/French/Spanish/German localization, adjustable settings and targeted repairs.
 
 This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS or emulator is included.
+
+**Development candidate 1.3.3:** the current source fixes two U-turn/flinch
+helper defects involving fallback arguments and negative damage. Five candidate
+ROMs have passed scoped host readback and seven save/cold-restart cycles on five
+fixtures. Natural battle and pivot coverage and physical-device validation remain
+pending. Host evidence uses an interpreter/software renderer and FreeBIOS; it
+does not qualify device behavior or firmware. See the [candidate identities](source/distribution/game-1.3.3.json),
+[fixes](BUG-FIXES-1.3.3.md) and [validation report](source/docs/validation/uturn-fix-1.3.3.md).
+The download below remains the published 1.3.2 release.
+The feature overview describes the game; component validation coverage is detailed in the report above.
 
 ## Download
 
@@ -46,7 +56,7 @@ personal save in its original location. The clean-ROM patch also reconstructs
 the same successor without using an older installed ROM as input.
 
 [Release page](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/1.3.2).
-The game remains version **1.3.2**. This download includes the Guide opening
+This download is version **1.3.2**. It includes the Guide opening
 correction; use the complete target hashes to distinguish it from the original
 1.3.2 images. [Exact validation and coverage](source/docs/validation/guide-opening-1.3.2.md).
 `Developer-Inputs` preserves the source tools' four authenticated historical
@@ -144,7 +154,7 @@ Actual game frames. Title, Guide and Options captures use the published 1.3.1 RO
 ## Install or update
 
 1. **Extract the multilingual ZIP**, open your language folder and read its installation PDF. Match your own supported `.nds` against the complete source SHA-256.
-2. **Choose one patch** under that folder's `Patch` matching your exact source hash. Each output language supports the same 30 recognized original/historical bases; keep your current language for an ordinary update.
+2. **Choose one patch** under that folder's `Patch` matching your exact source hash. Each output language supports the same 35 recognized original/historical bases; keep your current language for an ordinary update.
 3. Open [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/), select the checked `.nds` as **ROM file** and the matching `.xdelta` as **Patch file**. Leave **Fix ROM checksum** off, apply to a new file and verify the target SHA-256 in the installation PDF before installing it.
 
 **Updating an existing adventure:** save in-game, close the emulator completely and find its actual current save folder. Back up both the installed ROM and current raw `.sav`. Keep the same language, ROM filename/path and emulator association. First test the verified successor with a separate copy of your save: **Continue → check progress, Pokémon, Bag and Plus settings → in-game SAVE → close fully → cold start → Continue**. Then replace only the installed ROM; retain your current personal save and its original location. A temporary test save must never replace it.

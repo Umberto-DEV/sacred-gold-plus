@@ -11,6 +11,15 @@ The animations byte at `0x023D8716` in the Plus save chunk is **off by default**
 options chunk. OFF always selects native getters; the 33→20 improvement applies
 only with animations enabled.
 
+## Exact 1.3.2 attribution
+
+The [r4 source-to-ROM case](../../docs/validation/party-source-rom-1.3.2.md)
+records the reconstructed payload, final-image offsets, five callers, native
+equivalence and counterexamples. Its [read-only tool](tools/attribuisci.py)
+accepts exact EN/IT r4 images and checks the installed owner without modifying
+them. The native-data test now executes installed code rather than replacing it
+with a test blob. Historical timings below keep their original scope.
+
 ## Native cause and contract
 
 `ov08_0221D184` prepares six Pokémon. Each occupied move invokes `GetMoveMaxPP`

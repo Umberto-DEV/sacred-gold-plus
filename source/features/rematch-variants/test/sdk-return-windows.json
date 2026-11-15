@@ -1,0 +1,455 @@
+{
+  "schema": 1,
+  "scope": "Only four modeled void services during six-mon construction/teardown; loader/reader prefix excluded; no native SDK FS internals",
+  "windows": [
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x20263a0",
+      "steps": [
+        {
+          "ram": "0x20263a0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206f4c6",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "206b0912d0d0a7b2cfd877ad4d606e695a3b87ace904ad0444dd517331dde1ba"
+        },
+        {
+          "ram": "0x206f4c8",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "0d4542e69834fdd98d546c52551d295d1465ce1e0870def994e76e97d60d4736"
+        },
+        {
+          "ram": "0x206edc4",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "1ac05f801a88eeee004363500643df91c12328cccd0ed78af26dd3c4211bfbdc"
+        }
+      ],
+      "overwrite_pc": "0x206edc4",
+      "post_instruction_pc": "0x206edc6",
+      "return_bindings": [
+        {
+          "pop": "0x20263a0",
+          "caller_return": "0x206f4c6",
+          "caller_bl": "0x206f4c2",
+          "function_entry": "0x2026380"
+        },
+        {
+          "pop": "0x206f4c8",
+          "caller_return": "0x206edc4",
+          "caller_bl": "0x206edc0",
+          "function_entry": "0x206ede8"
+        }
+      ]
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x206faa2",
+      "steps": [
+        {
+          "ram": "0x206faa2",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x206faa2",
+      "post_instruction_pc": "0x206faa4",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206fbc0",
+      "steps": [
+        {
+          "ram": "0x206fbc0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206fc02",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x206fc02",
+      "post_instruction_pc": "0x206fc04",
+      "return_bindings": [
+        {
+          "pop": "0x206fbc0",
+          "caller_return": "0x206fc02",
+          "caller_bl": "0x206fbfe",
+          "function_entry": "0x206fbb0"
+        }
+      ]
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x206fd2c",
+      "steps": [
+        {
+          "ram": "0x206fd2c",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "fe8b73f75f108b960a1647d396163afe8e353235d59f03ae972482703f689556"
+        },
+        {
+          "ram": "0x206fd5a",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "8094903f94ffaa75bc82243f7de1f907cc2005bac5f8ee0a55e9f20fc9ffd7e7"
+        }
+      ],
+      "overwrite_pc": "0x206fd5a",
+      "post_instruction_pc": "0x206fd5c",
+      "return_bindings": [
+        {
+          "pop": "0x206fd2c",
+          "caller_return": "0x206fd5a",
+          "caller_bl": "0x206fd56",
+          "function_entry": "0x206fd14"
+        }
+      ]
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206fd64",
+      "steps": [
+        {
+          "ram": "0x206fd64",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "8d67cc42f3f83c9411fc6df4cb1362acfc47d4bf190d58c8dbef442a395c9c76"
+        }
+      ],
+      "overwrite_pc": "0x206fd64",
+      "post_instruction_pc": "0x206fd66",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206fbc0",
+      "steps": [
+        {
+          "ram": "0x206fbc0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206ffe6",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x206ffe6",
+      "post_instruction_pc": "0x206ffe8",
+      "return_bindings": [
+        {
+          "pop": "0x206fbc0",
+          "caller_return": "0x206ffe6",
+          "caller_bl": "0x206ffe2",
+          "function_entry": "0x206fbb0"
+        }
+      ]
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x206fd2c",
+      "steps": [
+        {
+          "ram": "0x206fd2c",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "fe8b73f75f108b960a1647d396163afe8e353235d59f03ae972482703f689556"
+        },
+        {
+          "ram": "0x206fddc",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "234072b7e754ae5e6db0d30160f75c1d909eaa795a6d24ea00cf1d0409e3686e"
+        },
+        {
+          "ram": "0x206fdde",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "c846f87c9d6bdfaa33038ac78269cfd5a08aa89a0918e99c4c4ae2e804a4f9a3"
+        },
+        {
+          "ram": "0x206fde0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51067252bc4afc8b7d5aa5f8bc5bee8ccf5bb4716abd36e893d06df6940ef20e"
+        }
+      ],
+      "overwrite_pc": "0x206fde0",
+      "post_instruction_pc": "0x206fde2",
+      "return_bindings": [
+        {
+          "pop": "0x206fd2c",
+          "caller_return": "0x206fddc",
+          "caller_bl": "0x206fdd8",
+          "function_entry": "0x206fd14"
+        }
+      ]
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206fbc0",
+      "steps": [
+        {
+          "ram": "0x206fbc0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206fdc6",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x206fdc6",
+      "post_instruction_pc": "0x206fdc8",
+      "return_bindings": [
+        {
+          "pop": "0x206fbc0",
+          "caller_return": "0x206fdc6",
+          "caller_bl": "0x206fdc2",
+          "function_entry": "0x206fbb0"
+        }
+      ]
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x2071fda",
+      "steps": [
+        {
+          "ram": "0x2071fda",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x207131e",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "672d13cb5d3858e576016b27050dfcd5b379ef4f1ce063ad9d2cbc86b172d4d2"
+        }
+      ],
+      "overwrite_pc": "0x207131e",
+      "post_instruction_pc": "0x2071320",
+      "return_bindings": [
+        {
+          "pop": "0x2071fda",
+          "caller_return": "0x207131e",
+          "caller_bl": "0x207131a",
+          "function_entry": "0x2071fc8"
+        }
+      ]
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x2073320",
+      "steps": [
+        {
+          "ram": "0x2073320",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "530e9489c8fc9528fa892c7c5251fdf46874f0abc923c1c11d7255e16e5a9252"
+        }
+      ],
+      "overwrite_pc": "0x2073320",
+      "post_instruction_pc": "0x2073322",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x2071366",
+      "steps": [
+        {
+          "ram": "0x2071366",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "90f72b37d2c0fbcb2347436cdbdc25801d22bafed9bed5233d119a7ce983a5e0"
+        },
+        {
+          "ram": "0x2071368",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "8d67cc42f3f83c9411fc6df4cb1362acfc47d4bf190d58c8dbef442a395c9c76"
+        }
+      ],
+      "overwrite_pc": "0x2071368",
+      "post_instruction_pc": "0x207136a",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206de9e",
+      "steps": [
+        {
+          "ram": "0x206de9e",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "474f2af47544e9c7ce4338cabd43c5ca1c26432b7300ce387406157ea433891f"
+        }
+      ],
+      "overwrite_pc": "0x206de9e",
+      "post_instruction_pc": "0x206dea0",
+      "return_bindings": []
+    },
+    {
+      "service": "ReadWholeNarcMemberByIdPair",
+      "return_pc": "0x20725c6",
+      "steps": [
+        {
+          "ram": "0x20725c6",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206e368",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "4da488b69b7aca6c8ef35f68ae38651f119e7bff3c71ddaa40702f02a36377e9"
+        }
+      ],
+      "overwrite_pc": "0x206e368",
+      "post_instruction_pc": "0x206e36a",
+      "return_bindings": [
+        {
+          "pop": "0x20725c6",
+          "caller_return": "0x206e368",
+          "caller_bl": "0x206e364",
+          "function_entry": "0x20725b4"
+        }
+      ]
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206e4e8",
+      "steps": [
+        {
+          "ram": "0x206e4e8",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "bb8289d5d646d6ccd1164d2fcd9449e4558313d6f78a42d5db743fad6b985b9d"
+        }
+      ],
+      "overwrite_pc": "0x206e4e8",
+      "post_instruction_pc": "0x206e4ea",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x206fbc0",
+      "steps": [
+        {
+          "ram": "0x206fbc0",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "d61f3ece088ca2fb6ebd3f47479ea5514bdbc39d0decd1f678f629b107878331"
+        },
+        {
+          "ram": "0x206fbe2",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x206fbe2",
+      "post_instruction_pc": "0x206fbe4",
+      "return_bindings": [
+        {
+          "pop": "0x206fbc0",
+          "caller_return": "0x206fbe2",
+          "caller_bl": "0x206fbde",
+          "function_entry": "0x206fbb0"
+        }
+      ]
+    },
+    {
+      "service": "NARC_ReadFromMember",
+      "return_pc": "0x2072a76",
+      "steps": [
+        {
+          "ram": "0x2072a76",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "51855451620c11a743f2ab624c3fd39586f5cfeb83635ca26ecb6cd163d6c6fb"
+        }
+      ],
+      "overwrite_pc": "0x2072a76",
+      "post_instruction_pc": "0x2072a78",
+      "return_bindings": []
+    },
+    {
+      "service": "NARC_Delete",
+      "return_pc": "0x2072a90",
+      "steps": [
+        {
+          "ram": "0x2072a90",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "3145e7a95720a1db303f2198e796ea848f52b6079b5bf4f47d32fad69c2bce77"
+        }
+      ],
+      "overwrite_pc": "0x2072a90",
+      "post_instruction_pc": "0x2072a92",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x2073a88",
+      "steps": [
+        {
+          "ram": "0x2073a88",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "992f2a17335ad021d8be2f9fd70eb73868b183ff2df883f975c5ba9f6f415e29"
+        }
+      ],
+      "overwrite_pc": "0x2073a88",
+      "post_instruction_pc": "0x2073a8a",
+      "return_bindings": []
+    },
+    {
+      "service": "Heap_Free",
+      "return_pc": "0x2073a8e",
+      "steps": [
+        {
+          "ram": "0x2073a8e",
+          "bytes": 2,
+          "thumb": true,
+          "sha256": "ff28d14e6ec67c7a8a30028374df9e478df6fda7d2b8254e1d69a744ba910e97"
+        }
+      ],
+      "overwrite_pc": "0x2073a8e",
+      "post_instruction_pc": "0x2073a90",
+      "return_bindings": []
+    }
+  ],
+  "diagnostic": {
+    "steps": [
+      {
+        "ram": "0x206de38",
+        "bytes": 2,
+        "thumb": true,
+        "sha256": "2415b6a563c07b6eb98078061a8f0fa159c7dab78c6c537f6f9648f50c648411"
+      }
+    ],
+    "read_pc": "0x206de38"
+  }
+}

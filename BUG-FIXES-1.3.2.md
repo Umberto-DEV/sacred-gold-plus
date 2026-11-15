@@ -37,3 +37,20 @@ device run or a full playthrough.
 
 The published [1.3.1 bug list](BUG-FIXES-1.3.1.md) remains historical evidence.
 The intermittent Latios report has not been reproduced or declared fixed.
+
+## Unresolved findings in the current code
+
+Two compatibility defects in the shared U-turn/item-flinch helper are
+[documented against exact 1.3.2 r4 EN/IT bytes](source/docs/validation/uturn-source-rom-1.3.2.md):
+the unmarked modifier fallback passes incorrect arguments, and a marker bit
+collides with native signed damage data. Controlled native continuations
+demonstrate [false item flinch](source/docs/validation/hp-flinch-source-rom-1.3.2.md)
+and [action cancellation](source/docs/validation/flinch-consumer-source-rom-1.3.2.md)
+within their stated boundaries. These findings are **not repaired** by the
+changes listed above. Full natural-battle coverage remains open.
+
+The [ordinary Shell Bell investigation](source/docs/validation/ordinary-shellbell-source-rom-1.3.2.md)
+has not established lost healing in an observed game path. Its controlled input
+and source predictions must not be reported as an additional confirmed gameplay
+failure. No measured performance gain or reclaimable game RAM is established
+by these attribution cases.

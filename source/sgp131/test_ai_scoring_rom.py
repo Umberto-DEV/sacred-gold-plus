@@ -1289,5 +1289,80 @@ class MutantTests(unittest.TestCase):
             self.assertEqual(diff(mine_first, both_ab) - set(window), set())
 
 
+@unittest.skipUnless(os.environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT through SGP_R4_ROM_DIR')
+class CurrentCompositePostKO(unittest.TestCase):
+    def module(self):
+        import importlib.util
+        path=ROOT/'source/features/fairy-ai/tools/attribuisci_postko.py'
+        self.assertTrue(path.is_file(),'current post-KO attribution tool missing')
+        spec=importlib.util.spec_from_file_location('current_postko',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        pattern=os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')
+        return module.S.SHARED.read_current(Path(os.environ['SGP_R4_ROM_DIR'])/(pattern%language),language)
+
+    def test_current_sum_scratch_and_native_calls(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x=self.current(module,language);cpu=module.PostKOCPU(x['segments'],x['overlay'])
+            result=cpu.observe(module.overflow_scenario())
+            self.assertEqual(result['choice'],4)
+            self.assertEqual([c[1] for c in result['compares']],[180,320])
+            self.assertEqual(result['stored'],[180,64])
+            self.assertEqual(len(result['scalar_calls']),4)
+            self.assertTrue(result['math_entries'])
+            del cpu,x;gc.collect()
+
+    def test_superseded_wide_scratch_counterexample(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x=self.current(module,language);b=module.mutant_overlay(x['overlay'],'wide_scratch')
+            cpu=module.PostKOCPU(x['segments'],b,attested=False)
+            result=cpu.observe(both_320(),require_narrow=False)
+            self.assertEqual(result['choice'],2)
+            self.assertEqual(result['stored'],[320,320,320])
+            with self.assertRaisesRegex(ValueError,'scratch'):
+                module.require_narrow_scratch(result)
+            del cpu,x;gc.collect()
+
+
+    def test_current_flags_are_called_from_selection(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x=self.current(module,language)
+            cpu=module.PostKOCPU(x['segments'],x['overlay'],execute_effectiveness=True)
+            for name,scenario,expected in module.native_flags_scenarios():
+                result=cpu.observe(scenario)
+                self.assertEqual(result['choice'],expected)
+                module.require_native_flags_case(name,result)
+                self.assertGreater(result['native_flags_entries'],0)
+                self.assertEqual(result['flags_helper_entries'],result['native_flags_entries'])
+                self.assertFalse(any(call['name']=='CheckSuperEffective' for call in result['modeled_calls']))
+            del cpu,x;gc.collect()
+
+
+    def test_same_choice_does_not_hide_wrong_native_flags(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x=self.current(module,language);mutant=bytearray(x['overlay'])
+            at=0x02252202-BASE;self.assertEqual(mutant[at],12);mutant[at]=4
+            with self.assertRaisesRegex(ValueError,'flags dependency'):
+                module.PostKOCPU(x['segments'],bytes(mutant),execute_effectiveness=True)
+            cpu=module.PostKOCPU(x['segments'],bytes(mutant),execute_effectiveness=True,attested_flags=False)
+            result=cpu.observe(module.native_flags_scenarios()[1][1])
+            self.assertEqual(result['choice'],1)
+            self.assertEqual([(c['move_type'],c['flags']) for c in result['flag_calls']],[(16,10)])
+            with self.assertRaisesRegex(ValueError,'flags sequence'):
+                module.require_native_flags_case('immune_move_then_ice',result)
+            del cpu,x;gc.collect()
+
+
 if __name__ == '__main__':
     unittest.main()

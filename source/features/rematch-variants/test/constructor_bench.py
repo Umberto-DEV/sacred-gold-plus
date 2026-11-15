@@ -52,6 +52,20 @@ FS_INFO, FS_IMAGE, FS_START, FS_UNLOAD, GF_ASSERT, WFC_HOOK = 0x020D88C0, 0x020D
 POISON = 0xDD
 
 
+def pack_species_string(words):
+    """Model String_New/CopyU16ArrayToStringN for a decoded species name.
+
+    Capacity includes EOS; logical size excludes it. String_New also reserves
+    one spare u16 after the capacity. That spare is never part of the name.
+    """
+    if (not isinstance(words, (list, tuple)) or not 1 <= len(words) <= 11
+            or any(type(word) is not int or not 0 <= word <= 0xFFFF for word in words)
+            or words[-1] != 0xFFFF or 0xFFFF in words[:-1]):
+        raise ValueError('species string needs at most ten characters and one final EOS')
+    return (struct.pack('<HHI', len(words), len(words) - 1, 0xB6F8D2EC)
+            + struct.pack('<%dH' % len(words), *words) + bytes(2))
+
+
 class Archives:
     """Lazy access to ROM archives by path (shared between a ROM and its patched copies)."""
 
@@ -204,10 +218,12 @@ class Bench:
         def species_name(uc):
             species, heap = reg(uc, 0), reg(uc, 1)
             words = self.species_name(species)
+            image = pack_species_string(words)
             pointer = state['arena']
-            state['arena'] += (8 + 2 * len(words) + 0x17) & ~7
-            uc.mem_write(pointer, struct.pack('<HHI', len(words), len(words), 0xB6F8D2EC) +
-                         struct.pack('<%dH' % len(words), *words))
+            state['arena'] += (len(image) + 0x17) & ~7
+            if state['arena'] > ARENA_END:
+                raise ValueError('species string model arena exhausted')
+            uc.mem_write(pointer, image)
             uc.reg_write(UC_ARM_REG_R0, pointer)
             log(uc, 'name', species, heap, pointer)
 

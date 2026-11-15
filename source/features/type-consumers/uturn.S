@@ -7,7 +7,7 @@
      *
      * The pivot script saves one per-battle-context word in the outgoing
      * battler's SelfTurnData.shellBellDamage after Shell Bell/Life Orb have
-     * already been processed. Bit 16 marks the snapshot; byte 0 is the
+     * already been processed. The upper halfword equals 1 for a snapshot; byte 0 is the
      * effective hold effect and byte 1 its modifier. The modifier wrapper
      * consumes the word. With no marker both wrappers pass through the exact
      * retail getters, preserving the ordinary call and RNG order.
@@ -23,8 +23,9 @@ uturn_snapshot_effect:
     movs    r3, #0xbb
     lsls    r3, r3, #2
     ldr     r2, [r2, r3]
-    lsls    r3, r2, #15
-    bpl     .Leffect_live
+    lsrs    r3, r2, #16
+    cmp     r3, #1
+    bne     .Leffect_live
     movs    r0, #0xff
     ands    r0, r2
     pop     {pc}
@@ -43,16 +44,19 @@ uturn_snapshot_modifier:
     movs    r3, #0x1c
     muls    r3, r1, r3
     adds    r3, r0, r3
-    movs    r2, #0xbb
-    lsls    r2, r2, #2
-    ldr     r1, [r3, r2]
-    lsls    r4, r1, #15
-    bpl     .Lmodifier_live
-    movs    r4, #0
-    str     r4, [r3, r2]
-    lsrs    r0, r1, #8
+    movs    r4, #0xbb
+    lsls    r4, r4, #2
+    adds    r3, r3, r4
+    ldr     r4, [r3]
+    lsrs    r4, r4, #16
+    cmp     r4, #1
+    bne     .Lmodifier_live
+    ldr     r0, [r3]
+    lsrs    r0, r0, #8
     lsls    r0, r0, #24
     lsrs    r0, r0, #24
+    movs    r4, #0
+    str     r4, [r3]
     pop     {r4, pc}
 .Lmodifier_live:
     .global uturn_modifier_live_call

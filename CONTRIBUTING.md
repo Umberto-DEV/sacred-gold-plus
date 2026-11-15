@@ -67,7 +67,7 @@ Use your own legally obtained HeartGold file, the exact pinned external inputs,
 and a private directory outside the checkout. Follow the current
 [1.3 composition guide](source/sgp131/README.md) for a pending candidate and
 its independent readback. The 1.2.5 example in the general source guide builds
-a predecessor, not the current 1.3.2 source. A successful build or
+a predecessor, not the current 1.3.3 development candidate source. A successful build or
 readback is a file-level result; it is not runtime or release acceptance. If
 you cannot meet the pinned production toolchain, report that limitation instead
 of bypassing an identity check.
@@ -133,8 +133,11 @@ material AI assistance. The maintainer reviews the source, security-sensitive
 workflow/dependency changes and CI result, then independently builds and tests
 a candidate before accepting gameplay or release claims.
 
-Do not upload a player release ZIP as a substitute for review. Current accepted
-1.3.2 game identities are in the [game contract](source/distribution/game-1.3.2-r4.json).
+Do not upload a player release ZIP as a substitute for review. Published 1.3.2
+baseline identities are in the [game contract](source/distribution/game-1.3.2-r4.json).
+The current [1.3.3 candidate contract](source/distribution/game-1.3.3.json) and
+[validation report](source/docs/validation/uturn-fix-1.3.3.md) describe its scoped
+host evidence and pending natural battle and device coverage.
 The [r4 package contract](source/distribution/release-1.3.2-r4.json) is the frozen
 single-ZIP baseline; the [documentation contract](source/distribution/documentation-1.3.2.json)
 and [editable package workspace](package/README.md) identify the current

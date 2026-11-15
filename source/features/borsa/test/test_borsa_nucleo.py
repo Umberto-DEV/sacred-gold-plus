@@ -571,5 +571,31 @@ class ProveBorsa(unittest.TestCase):
         self.assertEqual(int(g["originale_127"], 16), 0x0204EA89)
 
 
+@unittest.skipUnless(rom_presenti(), MOTIVO)
+class ProveBancoFinale(unittest.TestCase):
+    def test_result_matching_loop_requires_a_real_return(self):
+        for language in LINGUE:
+            with self.subTest(language=language):
+                b=Banco(rom(language));b.prepara(membro(OFF_DONO,127));b.spazio=0
+                # pop r4; add sp,4; loop: result/SP/callee all match old assertions.
+                b.uc.mem_write(BLOCCO+6,bytes.fromhex('10bc01b0fee7'))
+                with self.assertRaisesRegex(AssertionError,'return'):
+                    b.esegui(127)
+
+    def test_installed_mode_keeps_owner_and_rejects_code_drift(self):
+        from banco import segmenti_arm9
+        for language in LINGUE:
+            with self.subTest(language=language):
+                original=next(bytes(data[BLOCCO-address:BLOCCO-address+2048])
+                    for address,data in segmenti_arm9(rom(language))
+                    if address<=BLOCCO and BLOCCO+2048<=address+len(data))
+                b=Banco(rom(language),installed=True)
+                self.assertEqual(bytes(b.uc.mem_read(BLOCCO,2048)),original)
+                b.prepara(membro(OFF_DONO,127))
+                b.uc.mem_write(BLOCCO,bytes.fromhex('c046'))
+                with self.assertRaisesRegex(AssertionError,'installed'):
+                    b.esegui(127)
+
+
 if __name__ == "__main__":
     unittest.main()

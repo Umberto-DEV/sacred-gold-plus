@@ -1,7 +1,373 @@
 # What changed
 
+## 1.3.3 candidate — in development
+
+- Correct the active Continue/New Game onboarding title to V1.3.3 within its existing text bank. Five successor images passed readback and differ from the first candidate only within that bank; EN/FR Continue prompts received host visual review, while New Game's shared title path is statically linked.
+- Correct two U-turn/flinch helper defects; bounded EN/IT counterfactual evidence retains its original scope. The unchanged code outside the onboarding bank supports that evidence for the successor, without establishing a natural battle or pivot.
+- Validate seven successor Continue/SAVE/cold cycles on five original fixtures and five private same-language r4-to-successor deltas with xdelta3 and pinned RomPatcher.js. These are bounded host checks, not release packaging, installation or universal compatibility. Physical-device validation remains pending. See the [candidate report](source/docs/validation/uturn-fix-1.3.3.md).
+- Bound host mechanical-chain verification memory using two passes. Earlier RSS stops and host measurements remain documented separately. Source-only maintenance removed two final LF bytes and updated six dependent pins; seven owned native text bodies matched prior authenticated bytes. No original retail full-C build or new game behavior is claimed.
+- The first, pre-onboarding candidate's five identities, seven save cycles, public readback repeat and private updater results remain historical evidence for those exact bytes.
+
+## Development attribution tools — 14 November 2026
+
+- Add [controlled pre-HpCalc input preparation](source/docs/validation/ordinary-shellbell-source-rom-1.3.2.md#controlled-input-before-the-damage-writer)
+  and finite source-arithmetic tests for the ordinary Shell Bell investigation.
+  Generated code/resource JSON stays private; no new original-game execution,
+  healing-loss result or gameplay fix is claimed.
+
+- Qualify an [owned continuous callback driver](source/docs/validation/ordinary-shellbell-source-rom-1.3.2.md#owned-continuous-dispatcher-qualification):
+  one authenticated ASM object, independent ELF readback and two32-instruction
+  ON/OFF cells with typed raw binding and CPU-free reverification. No original
+  game controller, ROM, save or gameplay behavior is changed or certified.
+
+- Add [ordinary Shell Bell static readback](source/docs/validation/ordinary-shellbell-source-rom-1.3.2.md):
+  controller37, source aliases, selected code/data profile and actual EN/IT item
+  mapping, with owned address-parser counterexamples. Successful activation and
+  healing loss remain unproved; no game change.
+  Optional dependency readback separates the item0/88 path from a neighboring
+  function and records neutral-path state/RNG limits; no new guest execution.
+
+- Document the [pivot/Shell Bell static order](source/docs/validation/uturn-shellbell-order-source-rom-1.3.2.md):
+  exact EN/IT dispatch and prefix checks reject an unsupported healing-loss
+  premise. Add owned parser counterexamples; no new guest run or game fix.
+
+- Verify the [original Reset C compilation experiment](source/docs/validation/native-reset-c-codegen-source-rom-1.3.2.md):
+  authenticated PRET body and ABI projection, one LLVM object, independent ELF
+  readback, owned frame ON/OFF tests and three compiled guest cells (105586
+  instructions), with CPU-free revalidation and scoped native equivalence. No
+  ROM build, game change or speedup is claimed.
+
+- Qualify the [complete native move/PP-Up Reset](source/docs/validation/native-mon-reset-source-rom-1.3.2.md):
+  four native child calls per Reset, two MaxPP/NARC transactions and guest
+  Value words; three first-attempt runs/105568 instructions,32 raw falsifiers,
+  three cached-input controls and bounded64k qualification. No game, ROM or save change.
+
+- Qualify the [complete native Mon PP-Up setter](source/docs/validation/native-mon-ppup-setter-source-rom-1.3.2.md):
+  party100/PID and Box128/checksum in one native transaction; three original
+  calls/17481 instructions,24 transcript falsifiers,8 pages and eight-image
+  bounded lineage. Add owned50-halfword qualification and CPU-free replay;
+  no gameplay, ROM or save change.
+- Make the three existing PRET source comparators directly discoverable from
+  the general source-to-ROM guide, with exact inputs, pins and limits.
+
+- Qualify the [native trainer first-move prefix](source/docs/validation/native-trainer-first-move-prefix-source-rom-1.3.2.md):
+  exact type3 record→Mon veneer→full Box caller→cursor/index/CMP before BLT;
+  three original runs/51613 instructions,26 pages,45 raw falsifiers and three
+  cached-input controls. No gameplay, installed-ROM or save change.
+- Correct two source-definition hashes in the native Box move caller guide;
+  add a pinned source-only comparator with eight lexical counterexample tests.
+  Earlier callsite fragments and the corrected function definitions are
+  distinguished; native byte and execution evidence are unchanged.
+- Qualify the [complete native Box move caller](source/docs/validation/native-box-move-caller-source-rom-1.3.2.md):
+  move→PP-Up→MaxPP→PP setter in one CPU context, native stack Value,
+  three original calls/51565 instructions,26 mapped pages,32 evidence falsifiers
+  and eight-image bounded lineage. Original C build and physical SAVE remain
+  outside this host proof; no gameplay or installed ROM changes.
+- Qualify the [complete encrypted Box move setter](source/docs/validation/native-box-move-setter-source-rom-1.3.2.md),
+  including halfword width, idempotent field/header writes, post-ADDSP state
+  and causal checksum/key changes. Add owned STRH-register qualification
+  and source-bound full-state replay. No gameplay changes.
+
+- Qualify the [complete encrypted Box PP setter](source/docs/validation/native-box-pp-setter-source-rom-1.3.2.md),
+  including the byte write, two native checksums, header update, new-key
+  encryption and Value counterfactual. Add owned STRB qualification and full
+  state/stack/raw verification. No gameplay changes.
+
+- Qualify the [complete encrypted Box PP-Up getter](source/docs/validation/native-box-ppup-source-rom-1.3.2.md),
+  including native decrypt/checksum/header-PID selection/re-encryption, a
+  checksum-preserving field counterfactual and transient stack/write proofs.
+  Add owned ISA qualification and CPU-free raw verification. No gameplay changes.
+
+- Qualify the [native Mon substructure selector](source/docs/validation/native-mon-substructure-source-rom-1.3.2.md)
+  over every table row/block, with owned instruction qualification, full ABI and
+  source-bound raw checks. Locate the retail Italian pointer difference and add
+  a pinned HGSS/Platinum source-alignment adapter. No gameplay changes.
+
+- Qualify the [native Mon checksum](source/docs/validation/native-mon-checksum-source-rom-1.3.2.md)
+  for normal/odd sizes, 16-bit overflow and zero, with exact read ownership,
+  native truncation and full ABI. Reuse the qualified frontend. No gameplay changes.
+
+- Qualify the [native Mon segment cipher](source/docs/validation/native-mon-cipher-source-rom-1.3.2.md)
+  on owned synthetic data, with local seed/output causality, full ABI/replay,
+  neutral observation and a CPU-free completed-receipt verifier. No gameplay changes.
+
+- Qualify the [complete native MaxPP path](source/docs/validation/native-maxpp-memory-source-rom-1.3.2.md),
+  including a byte-identical recovered signed-division recipe, PP-Up clamp,
+  arithmetic, source-memory counterfactual and CPU-free raw checks. No gameplay changes.
+
+- Qualify the [complete native PP getter](source/docs/validation/native-pp-memory-getter-source-rom-1.3.2.md)
+  above the original NARC/filesystem chain. A declared input-memory byte change
+  produces the native scalar change, with full ABI, replay and forgery checks.
+  No gameplay changes.
+
+- Qualify the [original NARC caller and native SDK chain](source/docs/validation/native-fs-memory-narc-source-rom-1.3.2.md),
+  including ARM/Thumb returns, source-selected metadata, exact payload and causal
+  writer checks. Add reusable interworking kernels and ownership tests. No gameplay changes.
+
+## Development attribution tools — 13 November 2026
+
+- Qualify the [memory-archive Read chain](source/docs/validation/native-fs-memory-read-source-rom-1.3.2.md)
+  through Open/Read/Seek/Read/Close, with separate ROM/test-caller provenance,
+  owned NARC byte checks and native buffer-writer counterproofs. No gameplay changes.
+
+- Qualify [complete cached Open](source/docs/validation/native-fs-cached-open-source-rom-1.3.2.md)
+  through22 native functions to the move archive handle, with FAT bounds,
+  temporary-stack lifetime and native property-writer counterchecks. No gameplay
+  changes.
+
+- Qualify [complete cached Convert](source/docs/validation/native-fs-cached-convert-source-rom-1.3.2.md)
+  through18 native functions to the actual move-archive file ID, with explicit
+  BSS/procedure-state provenance, finite IRQ regression checks and CPU-free raw
+  verification. No gameplay changes.
+
+- Qualify [complete cached pathname lookup](source/docs/validation/native-fs-cached-findpath-source-rom-1.3.2.md)
+  through eight native functions, with independent source/arithmetic checks,
+  byte/halfword neighbor preservation and CPU-free verification of saved raw
+  evidence. No gameplay changes.
+
+- Qualify [complete cached SeekDir](source/docs/validation/native-fs-cached-seekdir-source-rom-1.3.2.md)
+  with zero service models, recovered filesystem resources, a portable owned-ROM
+  fixture, independent PRET metadata and causal writer checks. No gameplay changes.
+
+## Development attribution tools — 12 November 2026
+
+- Verify first-write R0 paths after modeled void SDK services with raw caller
+  readback, zero/ones controls and a live-pointer calibration. Keep native SDK
+  internals outside the qualified execution scope.
+- Qualify all seven trainer-strategy configurations at the type3 hook boundary:
+  once-only buffer edits, Normal fallback, atomic late-delta rejection and the
+  inherited level/caller ABI.
+- Follow trainer21 move/PP setters from the real edited buffer, with an explicit
+  copied-Mon boundary, PP-Up preservation and identical-output missing-call
+  counterproof. This case does not claim complete trainer construction.
+- Close the copied-Mon gap for trainer21 with the actual six-Pokémon native
+  constructor, one-time strategy application, IV24/31, final seed/frees and
+  whole-packet comparison against declared old-hook RAM recipe preimages.
+  Other trainer IDs and natural encounters remain separate validation.
+- Extend that constructor verifier to a separately qualified trainer31 profile:
+  class72, IV31/PID88, capsule14, exact last-move/PP delta and preservation of a
+  duplicate move in another party member. Keep trainer21 as the default.
+- Qualify trainer32's second-member move/PP edit through the native constructor,
+  with its own class/PID/capsule resources. Reject incomplete packet vectors
+  and widths in the standalone strategy comparator.
+- Qualify trainer33's three move/PP edits and native gender/ability PID override,
+  including raw ratio getter, intermediate stores and one counterproof per edit.
+- Qualify trainer34's first-member edit and male-only branch; require new
+  profile-specific instructions in executed receipts as well as static maps.
+- Qualify trainer244's zero-capsule native path and move1 edit, with explicit
+  absence checks and resource summaries derived from actual accesses.
+- Qualify trainer245's move change with PP unchanged, completing the seven
+  finite configured constructor profiles within their initialized API scope.
+- Trace packed trainer-name resources through two native String copies and
+  reject a capacity hypothesis based on expanded text rather than packed words.
+- Follow native trainer31 preparation, preserving20B raw-header and52B native
+  structure-copy provenance, packed names and explicit message lifetime.
+- Compose that caller through six native Pokémon and return in one context,
+  checking actual nested ABI, seed restoration, final OR and resource closure.
+  Add an authenticated bench adapter and reject missing metadata/call evidence.
+- Add opt-in native caller lineage while preserving the default reader schema;
+  keep retail IT address and original compiler limitations explicit.
+- Execute native lazy-message production, decryption, packed copy and destruction
+  under explicit heap/NARC models; verify ordered writes, spare bytes and lifetime
+  with repeatable exact-input checks. Full caller composition remains separate.
+- Compose those native message APIs with the complete trainer31 caller in one
+  context, preserving original constructor back-ends and checking resource
+  ownership across all six Pokémon. Keep native SDK and natural activation limits.
+- Verify native species-name production and borrowed String lifetime for the six
+  trainer31 species; qualify the existing model's returned bytes under its zero
+  heap policy, with nonzero-spare controls and an OS peak-RSS budget guard.
+- Add a verifier for the six native species-name chains inside the complete
+  trainer caller, preserving real frames and separate heap ownership; require
+  complete counter evidence as well as unchanged party output.
+- Verify native NARC header/party selection through explicit whole-file FS
+  services, including regional pointer differences, closure and partial-read
+  counterexamples; retain native SDK and caller-composition limits.
+- Compose native trainer-header parsing with the complete caller while retaining
+  original constructor read models; verify shared-entry ownership, real frames,
+  contextual RNG and source-derived prefix/counter checkpoints.
+- Prepare reusable checks and reproduction instructions for developer-owned
+  exact inputs. Game code, ROMs, saves and defaults remain unchanged.
+
+- Trace native initial friendship through a transient Pokémon and a separately
+  owned Plus override, with exact50-byte recipe emission/historical readback and
+  a counter whose final party stays identical. Keep native SDK and natural
+  execution limits explicit in the [reproducible case](source/docs/validation/native-friendship-caller-source-rom-1.3.2.md).
+
+- Follow a custom move's PP through a native stack-buffer read,arithmetic and
+  setter,with exact guard readback and a one-field packet counter. Distinguish
+  the earlier default-learnset caller and preserve raw archive verification in
+  the [repeatable case](source/docs/validation/native-pp-caller-source-rom-1.3.2.md).
+
+- Reconstruct the native SDK Init leaf and compile its ARM32 file layout from
+  original reference headers. Follow selective initialization through the PP
+  caller, retaining explicit remaining FS models and counterproofs with correct
+  final party output in the [repeatable case](source/docs/validation/native-fs-init-source-rom-1.3.2.md).
+
+- Trace the native Open wrapper's by-value file identity and boolean return
+  through the PP caller. Reproduce its72-byte recipe and distinguish conditional
+  hooks from effects,retaining explicit lower FS models in the
+  [repeatable case](source/docs/validation/native-fs-open-source-rom-1.3.2.md).
+- Added a [native Convert attribution case](source/docs/validation/native-fs-convert-source-rom-1.3.2.md) with recovered64-byte recipe, two Init lifetimes and a directory-command counter; no gameplay changes.
+- Added a [native OpenFast attribution case](source/docs/validation/native-fs-fast-source-rom-1.3.2.md) for aggregate spills, native file fields and a status counter; no gameplay changes.
+- Added a [native Close attribution case](source/docs/validation/native-fs-close-source-rom-1.3.2.md) for cleanup, return ABI and an archive counter; no gameplay changes.
+- Added a [native Seek attribution case](source/docs/validation/native-fs-seek-source-rom-1.3.2.md) with FAT-backed property inputs and native position/read linkage; no gameplay changes.
+
+## Development attribution tools — 11 November 2026
+
+- Verify [nested SEEKDIR dispatch](source/docs/validation/native-fs-nested-seekdir-source-rom-1.3.2.md), separating actual inputs from explicit projections despite equal final CPU/RAM. The selected handler remains unexecuted; no gameplay changes.
+
+- Verify [the native default FindPath prefix](source/docs/validation/native-fs-default-findpath-source-rom-1.3.2.md), with zero service models, preserved deeper-stack provenance and separate native-writer/fill controls. No gameplay changes.
+
+- Verify [Send and native Translate in one context](source/docs/validation/native-fs-send-translate-native-source-rom-1.3.2.md), matching prior actual whole-RAM boundaries and full final fields while retaining a declared default model. No gameplay changes.
+
+- Verify [native Translate and its error writer](source/docs/validation/native-fs-translate-source-rom-1.3.2.md), separating a retail Italian literal relocation and an early host write from identical final outputs. The default handler remains modeled; no gameplay changes.
+
+- Verify [native Send with ExecuteSync and callees in one context](source/docs/validation/native-fs-send-native-callees-source-rom-1.3.2.md), preserving original input/guard provenance and saved-register return. Translate remains explicitly modeled; no gameplay changes.
+
+- Verify [one ExecuteSync context with native callees](source/docs/validation/native-fs-exec-sync-native-callees-source-rom-1.3.2.md), frozen historical checkpoints and same-code bypass controls. Translate remains an explicit field model; no gameplay changes.
+
+- Reconstruct and independently read back the exact Battle Party helper in r4
+  EN/IT; execute installed bytes against native getters and reject a test that
+  silently substituted a bundle for ROM code. Add final-image/data and execution
+  verifiers with counterexamples.
+- Qualify an opt-in Party register trace on the normal EN battle route, with
+  OFF/ON guest-output checks. Document source, composition, byte and caller links
+  in the [repeatable case](source/docs/validation/party-source-rom-1.3.2.md).
+  No game, save format, default or performance change.
+
+- Attribute the remaining native move-getter spans to their inherited switch
+  and type-icon consumers; add portable installed-code checks and preserve the
+  missing original-toolchain distinction. Reuse the same trace, with no new game run.
+
+- Reconstruct resident ANIM v4 and verify its two retired roots. Preserve state
+  dependencies and false ISA candidates in a bounded reference scan; no legacy
+  allocation is declared removable or reclaimed.
+
+- Recover the inherited camera assembly recipe and reproduce both final layouts.
+  Verify native callers and isolated bounds/ABI; reject an invalid-ID false
+  success in the oracle. No camera policy, geometry or save change.
+
+- Attribute the Summary hint's 96-byte recipe, inherited wrapper and return.
+  Verify resource gates and the first START/touch transition in isolated EN/IT
+  execution; preserve the unauthenticated original-compiler and rendering gaps.
+
+- Reconstruct the installed inactive Summary-controls payload with the protected
+  compiler; derive all three wrappers from final ROM bytes and qualify cold OFF
+  forwarding versus matching-owner cleanup. No feature activation.
+
+- Attribute the Rare Candy helper and native tail in exact EN/IT images. Bind
+  fresh source/header/compiler metadata, reject false hook/return successes,
+  and retain the separate legacy expanded-Bag fixture admission failure.
+
+- Reconstruct the expanded-Bag successor from a fresh compilation and both later
+  source recipes. Verify real Medicine slots through native quantity/consume
+  and the Rare Candy caller, retaining strict byte identity and save limits.
+
+- Attribute the gift/pickup helper, native command dispatch and generated keys.
+  Preserve the finding that eight inherited keys became obsolete after later
+  script repairs; verify their recipes and strict fallback without changing the
+  table. Reject a loop that previously passed result/register checks.
+
+- Attribute Fairy flags in the exact final shared overlay. Retain the own-project
+  ELF on request, verify regional literal relocations and distinguish the
+  HG-B13 combiner dependency with new immunity counterexamples. No game change.
+
+- Attribute the complete Fairy scalar parent/tail with actual ARM division,
+  reused own-project ELF, exhaustive monotypes and a duplicate-defender
+  counterexample. Record inherited sparse/dense policy differences without
+  changing the game.
+
+- Attribute the exact post-KO caller and its scalar/flags integration; verify
+  wide best and narrow scratch, and reject a same-slot immunity false success
+  through intermediate outputs and call order. Verification-only change.
+
+- Attribute the exact Conversion2 replacement through a retained own ELF,
+  exhaustive direct rows and actual RNG/divmod. Reject a missing seed write
+  even when returned bytes match; preserve the compiler default and game code.
+
+- Attribute Grounding column pointers through current native damage, multiplier
+  and signed arithmetic. Verify state/power branches and legitimate incoming
+  stack-word reuse; reject same-index wrong-column results without game changes.
+
+- Follow the flinch-script request through native ability gates and the target
+  status setter; verify exact bit application and blocking controls,with turn
+  behavior still separate and no game repair.
+- Execute the earlier AfterDamage states and required critical/Shaymin script
+  paths before the existing erroneous flinch-script request; verify native
+  continuation without injecting the late state, with no game repair.
+- Execute U-turn snapshot production through native script handlers; verify
+  real variable lookup, nonzero CalcTemp preservation and a same-flinch packing
+  counterexample, while retaining known compatibility failures.
+- Follow native HP damage through the installed script and explicit state6
+  item-flinch caller; reproduce the existing marker collision and an ineligible
+  move's RNG transition, with earlier controller states kept unqualified.
+- Attribute the current U-turn snapshot helper/script and identify two existing
+  compatibility defects: fallback getter arguments and a marker collision with
+  native signed damage. Add detection tools/tests; no game repair applied.
+- Attribute the existing Transform reload replacement through its own ELF and
+  current native body; add optional object retention and checks for stat/common
+  fields, Mimic and protected artifact outputs. No gameplay changes.
+- Follow the preserved Transform state through current native packet emission
+  and PartyMon write decisions; add an explicit transport boundary and a
+  same-output state counterexample. No game or save behavior changes.
+- Attribute the existing Rage repair through the complete current pre-turn
+  controller and native selected-move/RNG calls; add bit-preservation checks
+  and counterexamples without changing game behavior.
+- Attribute the existing Wonder Guard effect-gate repair through current move
+  records and both native consumers. Verify charge/impact counterexamples and
+  reject literal-pool execution in the bench; game bytes remain unchanged.
+
+## Development tools — 10 November 2026
+
+- Qualify an opt-in direct-transfer/model-clock/wait profile on the same EN/IT
+  r4/private-candidate pilot. Preserve transient request shifts, censoring and
+  source/coverage limits; no reclaimed memory, UI or hardware speed claim.
+  The separate endpoint check found no change in the observed Bag poll or
+  reference image within either language.
+- Add an opt-in native asset observer. Qualify file reads, decompression and
+  overlay transitions on the EN r4 pilot without changing game bytes.
+
+- Add an opt-in queued graphics observer with explicit call-edge returns and
+  qualify an EN queue/SubOBJ slice. Keep its scope separate from the later
+  direct-transfer/wait follow-up; no game or hardware improvement is claimed.
+
+- Add a separate native heap transaction profile and qualify a scoped EN/IT host
+  pilot with allocator replay, thread/checkpoint guards and graphics bank budgets.
+  Preserve failed probes and limits; no game or hardware improvement is claimed.
+
+- Add an opt-in bounded battle Bag dispatch observer with strict core selection,
+  return/overflow checks and explicit source/CLI contracts. Record scoped
+  helper attribution and rejected/private experiments; no accepted game or
+  hardware performance change. See the
+  [work-observer evidence](source/docs/validation/development-host-1.3.2.md#battle-bag-work-observer--10-november-2026).
+- Extend that evidence with host sanitizer controls, a corrected native Party
+  input/display witness and separate Android accounting/Surface observations.
+  Preserve rejected attempts and measurement limits; no causal hardware benefit
+  or general successor-ROM acceptance is claimed.
+
+- Reject Repel visual checks with fewer than two retained captures instead of
+  reporting success without a comparison. Add CLI regressions to the existing
+  runtime-gate suite. This repairs a test tool; no game, save or ROM change.
+- Record a read-only EN/IT source/receipt and native-component inventory; separate
+  regional differences from Plus modifications. See the
+  [host follow-up](source/docs/validation/development-host-1.3.2.md#source-and-native-component-follow-up--10-november-2026).
+
 ## Development tools and documentation — 9 November 2026
 
+- Add an opt-in guest-frame sampler and qualify a natural battle route,
+  animation cadence and observer controls on unchanged r4 EN/IT images.
+  Physical display pacing and hardware remain unverified; see the
+  [cadence report](source/docs/validation/animation-cadence-1.3.2.md).
+- Rebuild and qualify the host measurement bench; record scoped font/topology,
+  save-boundary, borrowed-context and animation results. Add an opt-in Cap-art
+  palette recipe with stable defaults and a private EN/IT roundtrip/render/save
+  demonstration. This changes no released game or performance acceptance. See
+  [host development evidence](source/docs/validation/development-host-1.3.2.md).
+- Qualify Options and Guide lifecycle/loading on the unchanged accepted 1.3.2
+  EN/IT images, with a native Bag comparison and fresh raw-save-copy checks.
+  The selected Guide reload hypothesis is contradicted in the exercised cases;
+  no game patch or speed improvement is claimed. See the
+  [scoped investigation](source/docs/validation/ui-lifecycle-1.3.2.md).
 - Preserve recoverable JSON checkpoints in the existing test runner, with explicit
   incomplete status when an execution stops. This reports source-test progress,
   without extending game or hardware acceptance.
@@ -1408,3 +1774,29 @@ Fairy typing, the additional Fairy moves and the 1.03 battle changes come from t
 - The optional battle motion moves existing sprites; it does not add per-species animation frames. Full-story and hardware coverage remain incomplete.
 - The Wi-Fi slot fallback is fully demonstrated for three of its five cases on the test bench; the two that need a live online trigger were checked under emulation only. Official online services for this game are long discontinued.
 - Cheats: the codes shipped in the package have bounded checks on the real game core. This is not full-game cheat coverage or a promise about every emulator.
+
+Developer attribution: added recovered native Read veneer/core recipes, independent readback and an isolated input-replay verifier with explicit SDK boundaries. Game behavior is unchanged.
+
+Developer attribution: added native nonbusy Wait/IRQ recipes, independent readback and declared completion-field replay checks. Game behavior is unchanged.
+
+Developer attribution: composed native Read/Wait/IRQ in the [complete initialized trainer caller](source/docs/validation/native-fs-read-caller-source-rom-1.3.2.md), with chronological frame/ABI checks and unchanged game behavior.
+
+Developer attribution: added a [relative Find wrapper case](source/docs/validation/native-fs-find-source-rom-1.3.2.md), separating BSS inputs, instruction/pool lineage and isolated execution from native filesystem completion. Game behavior is unchanged.
+
+Developer attribution: composed [native Find in the initialized trainer caller](source/docs/validation/native-fs-find-caller-source-rom-1.3.2.md), retaining explicit Send boundaries, unchanged RAM projections and independently replayable source/ABI/RAM evidence. Game behavior is unchanged.
+
+Developer attribution: added [native Send source/byte and isolated queue-preparation verification](source/docs/validation/native-fs-send-source-rom-1.3.2.md), with explicit archive and completion limits. Game behavior is unchanged.
+
+Developer attribution: added [native ExecuteSync source/byte and finite stored-error verification](source/docs/validation/native-fs-exec-sync-source-rom-1.3.2.md), with three explicit incomplete callee projections and unchanged game behavior.
+
+Developer attribution: added [native Release source/byte and isolated unlink/error verification](source/docs/validation/native-fs-release-source-rom-1.3.2.md), with an explicit empty-Wakeup boundary and unchanged game behavior.
+
+Developer reproducibility: added a standard-library-only [public report catalog](source/attribution_cases.py), clearer [source-to-ROM entry routes](source/docs/test-bench.md#choose-the-question-and-find-its-owner), and an [independent comparison of frozen Release predictions with native receipts](source/docs/validation/native-fs-release-source-rom-1.3.2.md#independent-comparison-with-the-earlier-frozen-contract). Game behavior is unchanged.
+
+Developer attribution: added [empty-queue WakeupThread source/byte/ABI verification](source/docs/validation/native-os-wakeup-source-rom-1.3.2.md), an earlier-field contract exporter and literal complete CPU-image grouping. Game behavior is unchanged.
+
+Developer attribution: added [single-context native Release/Wakeup verification](source/docs/validation/native-fs-release-wakeup-source-rom-1.3.2.md), with earlier caller-output contracts, same-code bypass controls and raw-bound replay. Game behavior is unchanged.
+
+Developer attribution: added [native empty NextCommand verification](source/docs/validation/native-fs-next-source-rom-1.3.2.md), original-bridge checkpoint reuse, reconstructed-image provenance and conditional-store controls with identical final outputs. Game behavior is unchanged.
+
+Developer verification: added [native ExecuteSync join verification](source/docs/validation/native-fs-exec-sync-join-source-rom-1.3.2.md), preserving actual callee volatile registers, stored-error BOOL and original POP with literal-image grouping and guard-bound replay. Game behavior is unchanged.

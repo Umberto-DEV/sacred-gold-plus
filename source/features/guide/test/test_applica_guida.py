@@ -129,5 +129,23 @@ class _patched:
         setattr(self.modulo, self.nome, self.precedente)
 
 
+class TestAttributionWindow(unittest.TestCase):
+    def test_exact_patch_and_control_flow_reject_individual_mutants(self):
+        import importlib.util
+        path=QUI.parent/'tools/attribuisci.py'
+        self.assertTrue(path.is_file(),'final-image attribution reader is missing')
+        spec=importlib.util.spec_from_file_location('summary_hint_attribution',path)
+        tool=importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+        tail=bytes.fromhex('17e7')  # B 01FF8B18 -> 01FF894A
+        epilogue=bytes.fromhex('280009b0f0bd')
+        tool.inspect_patch(ag.SPENTA_BYTES,tail,epilogue)
+        for offset in (0,2,4,6,8,95):
+            mutant=bytearray(ag.SPENTA_BYTES);mutant[offset]^=1
+            with self.subTest(offset=offset),self.assertRaises(ValueError):
+                tool.inspect_patch(bytes(mutant),tail,epilogue)
+        with self.assertRaises(ValueError):tool.inspect_patch(ag.SPENTA_BYTES,b'\x00\xe0',epilogue)
+        with self.assertRaises(ValueError):tool.inspect_patch(ag.SPENTA_BYTES,tail,b'\x00'*6)
+
+
 if __name__ == "__main__":
     unittest.main()

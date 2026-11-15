@@ -18,6 +18,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import shutil
 import sys
 from pathlib import Path
 
@@ -61,8 +62,9 @@ def main():
     codice = a.base + OFF_CODICE
     canarino = a.base + OFF_CANARINO
 
+    compiler = Path(shutil.which(a.cc) or a.cc).resolve()
     comando = [
-        a.cc, "--target=armv5te-none-eabi", "-mcpu=arm946e-s", "-mthumb", a.opt,
+        str(compiler), "--target=armv5te-none-eabi", "-mcpu=arm946e-s", "-mthumb", a.opt,
         "-ffreestanding", "-fno-builtin", "-fno-stack-protector",
         "-fno-unwind-tables", "-fno-asynchronous-unwind-tables",
         "-fno-jump-tables", "-Wall", "-Wextra",
@@ -99,9 +101,13 @@ def main():
         "funzione": "Caramella Rara riutilizzabile dal menu squadra (opzione (a) "
                     "di M-borsa-riuso-caramelle.md)",
         "comando": comando,
-        "compilatore": subprocess.run([a.cc, "--version"], text=True,
+        "compilatore": subprocess.run([str(compiler), "--version"], text=True,
                                       capture_output=True).stdout.splitlines()[0],
         "avvisi_compilatore": avvisi,
+        "compilatore_eseguibile_sha256": sha(compiler.read_bytes()),
+        "header_sha256": sha((SORGENTE.parent / "sgp_caramelle.h").read_bytes()),
+        "loader_sha256": sha((PAC / "tools/carica_text.py").read_bytes()),
+        "builder_sha256": sha(Path(__file__).read_bytes()),
         "sorgente": {"file": SORGENTE.name, "sha256": sha(SORGENTE.read_bytes())},
         "indirizzi": {
             "base": hex(a.base),

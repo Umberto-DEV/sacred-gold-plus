@@ -338,5 +338,62 @@ class ModernDamageChart(unittest.TestCase):
                     self.assertEqual(observed[name][:2], damage_oracle(scenarios[name]))
 
 
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT through SGP_R4_ROM_DIR')
+class CurrentCompositeGrounding(unittest.TestCase):
+    def module(self):
+        import importlib.util
+        path=__import__('pathlib').Path(__file__).resolve().parents[1]/'features/type-consumers/tools/attribuisci_grounding.py'
+        self.assertTrue(path.is_file(),'current Grounding attribution tool missing')
+        spec=importlib.util.spec_from_file_location('current_grounding',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        import os
+        from pathlib import Path
+        path=Path(os.environ['SGP_R4_ROM_DIR'])/(os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')%language)
+        x=module.G.S.SHARED.read_current(path,language)
+        dense,_,_=module.G.S.engine_chart(path,language,'r4')
+        return x,dense
+
+    def test_current_grounding_and_real_native_division(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);cpu=module.GroundingCPU(x['segments'],x['overlay'],dense)
+            for scenario,expected in [(DamageScenario(4,2),(0,8)),
+                    (DamageScenario(4,2,item=IRON_BALL_EFFECT),(100,0)),
+                    (DamageScenario(4,2,gravity=True),(100,0)),(DamageScenario(4,3),(200,0))]:
+                result=cpu.observe(scenario);self.assertEqual((result['damage'],result['flags']),expected)
+            self.assertTrue(result['math_calls'])
+            self.assertFalse(any(call['name']=='damage_divide' for call in result['models']))
+            del cpu,x,dense;gc.collect()
+
+    def test_old_columns_counterexample_has_the_same_row_index(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);mutant=module.old_columns(x['overlay'])
+            cpu=module.GroundingCPU(x['segments'],mutant,dense,attested=False)
+            result=cpu.observe(DamageScenario(4,2,item=IRON_BALL_EFFECT))
+            self.assertEqual(result['damage'],0);self.assertEqual(result['flags'],8)
+            self.assertEqual([call['index'] for call in result['grounding_calls']],[72])
+            with self.assertRaisesRegex(ValueError,'grounded damage/status'):
+                module.expect_grounded(result,100,0)
+            del cpu,x,dense;gc.collect()
+
+    def test_native_state_conditions_use_the_current_columns(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);cpu=module.GroundingCPU(x['segments'],x['overlay'],dense)
+            for scenario,state in [(DamageScenario(4,2),dict(ingrain=True)),
+                    (DamageScenario(13,2),dict(roost=True)),(DamageScenario(14,17),dict(miracle=True))]:
+                result=cpu.observe(scenario,**state)
+                self.assertEqual((result['damage'],result['flags']),(100,0))
+            del cpu,x,dense;gc.collect()
+
+
 if __name__ == '__main__':
     unittest.main()

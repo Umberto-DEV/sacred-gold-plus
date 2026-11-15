@@ -40,7 +40,68 @@ def _git(source: Path, *args: str) -> bytes:
         raise CheckoutError(f"Cannot inspect melonDS checkout: {exc}") from exc
 
 
-def _instrument_nds(pristine: str) -> str:
+def _instrument_model_arm(source: str) -> str:
+    start = "template <CPUExecuteMode mode>\nvoid ARMv5::Execute()"
+    end = "template <CPUExecuteMode mode>\nvoid ARMv4::Execute()"
+    if source.count(start) != 1 or source.count(end) != 1:
+        raise CheckoutError("Pinned ARMv5 model-budget scope changed")
+    before, body = source.split(start)
+    body, after = body.split(end)
+    early = """        else
+        {
+            NDS.ARM9Timestamp = NDS.ARM9Target;
+            return;
+        }"""
+    loop = """                if (Halted == 1 && NDS.ARM9Timestamp < NDS.ARM9Target)
+                {
+                    NDS.ARM9Timestamp = NDS.ARM9Target;
+                }"""
+    for anchor, spaces in ((early, 12), (loop, 20)):
+        if body.count(anchor) != 1:
+            raise CheckoutError("Pinned ARMv5 Halt1 model-budget anchor changed")
+        assignment = " " * spaces + "NDS.ARM9Timestamp = NDS.ARM9Target;"
+        hook = ("#ifdef HG_RUNTIME_TRACE\n" + " " * spaces +
+                "if (HGTrace::Timing.enabled) HGTrace::Timing.haltSkip(NDS.ARM9Timestamp, NDS.ARM9Target, Halted);\n" +
+                "#endif\n" + assignment)
+        body = body.replace(anchor, anchor.replace(assignment, hook))
+    return before + start + body + end + after
+
+
+def _instrument_model_nds(source: str) -> str:
+    begin = """                CurCPU = 0;
+
+                if (CPUStop & CPUStop_GXStall)"""
+    finish = """                    ARM9.Execute<cpuMode>();
+                }
+
+                RunTimers(0);"""
+    sleep = "            // we are running in sleep mode"
+    if any(source.count(anchor) != 1 for anchor in (begin, finish, sleep)):
+        raise CheckoutError("Pinned NDS model-budget scheduler anchors changed")
+    source = source.replace(begin, """                CurCPU = 0;
+#ifdef HG_RUNTIME_TRACE
+                const bool hgBudget = HGTrace::Timing.enabled;
+                if (hgBudget) HGTrace::Timing.begin(
+                    (CPUStop & CPUStop_GXStall) ? HGTrace::ModelBranch::GX :
+                    (CPUStop & CPUStop_DMA9) ? HGTrace::ModelBranch::DMA : HGTrace::ModelBranch::Execute,
+                    ARM9Timestamp, ARM9ClockShift);
+#endif
+
+                if (CPUStop & CPUStop_GXStall)""")
+    source = source.replace(finish, """                    ARM9.Execute<cpuMode>();
+                }
+#ifdef HG_RUNTIME_TRACE
+                if (hgBudget) HGTrace::Timing.end(ARM9Timestamp, ARM9ClockShift, ARM9.Cycles);
+#endif
+
+                RunTimers(0);""")
+    return source.replace(sleep, """#ifdef HG_RUNTIME_TRACE
+            if (HGTrace::Timing.enabled) HGTrace::Timing.fail();
+#endif
+""" + sleep)
+
+
+def _instrument_nds(pristine: str, *, model_budget: bool = False) -> str:
     include = '#include "ARMJIT_Memory.h"'
     hook = "void NDS::MonitorARM9Jump(u32 addr)\n{"
     if pristine.count(include) != 1 or pristine.count(hook) != 1:
@@ -49,7 +110,7 @@ def _instrument_nds(pristine: str) -> str:
         include,
         include + '\n#ifdef HG_RUNTIME_TRACE\n#include "hg_trace.h"\n#endif',
     )
-    return result.replace(
+    result = result.replace(
         hook,
         hook
         + "\n#ifdef HG_RUNTIME_TRACE"
@@ -57,9 +118,10 @@ def _instrument_nds(pristine: str) -> str:
         + " ++HGTrace::MainLoopJumps;"
         + "\n#endif",
     )
+    return _instrument_model_nds(result) if model_budget else result
 
 
-def _instrument_arm(pristine: str) -> str:
+def _instrument_arm(pristine: str, *, work_observer: bool = False, model_budget: bool = False) -> str:
     include = '#include "ARMJIT_Memory.h"'
     execute = """                // actually execute
                 if (CheckCondition(CurInstr >> 28))"""
@@ -95,7 +157,19 @@ def _instrument_arm(pristine: str) -> str:
         include + '\n#ifdef HG_RUNTIME_TRACE\n#include "hg_trace.h"\n#endif',
     )
     result = result.replace(execute, execute_instrumented, 1)
-    return result.replace(end, end_instrumented, 1)
+    result = result.replace(end, end_instrumented, 1)
+    if work_observer:
+        thumb = "                u32 icode = (CurInstr >> 6) & 0x3FF;"
+        if pristine.count(thumb) != 1:
+            raise CheckoutError("Pinned ARM.cpp Thumb interpreter anchors changed")
+        result = result.replace(thumb,
+            "#ifdef HG_RUNTIME_TRACE\n"
+            "                if (HGTrace::Work.enabled) HGTrace::Work.step(R[15]-4, CurInstr, R, CPSR);\n"
+            "#endif\n" + thumb, 1)
+        result = result.replace("                const u32 hgAddress = R[15] - 8;",
+            "                if (HGTrace::Work.enabled) HGTrace::Work.step(R[15]-8, CurInstr, R, CPSR);\n"
+            "                const u32 hgAddress = R[15] - 8;", 1)
+    return _instrument_model_arm(result) if model_budget else result
 
 
 def _tree_manifest(source: Path) -> dict[str, tuple[str, str]]:
@@ -126,6 +200,7 @@ def _tree_manifest(source: Path) -> dict[str, tuple[str, str]]:
 def _expected_sources(
     source: Path,
     manifest: dict[str, tuple[str, str]],
+    *, work_observer: bool = False, model_budget: bool = False,
 ) -> tuple[dict[str, bytes], dict[str, bytes]]:
     missing = [name for name in PATCHED_PATHS if name not in manifest]
     if missing:
@@ -136,8 +211,8 @@ def _expected_sources(
     }
     try:
         patched = {
-            "src/ARM.cpp": _instrument_arm(pristine["src/ARM.cpp"].decode("utf-8")).encode("utf-8"),
-            "src/NDS.cpp": _instrument_nds(pristine["src/NDS.cpp"].decode("utf-8")).encode("utf-8"),
+            "src/ARM.cpp": _instrument_arm(pristine["src/ARM.cpp"].decode("utf-8"), work_observer=work_observer, model_budget=model_budget).encode("utf-8"),
+            "src/NDS.cpp": _instrument_nds(pristine["src/NDS.cpp"].decode("utf-8"), model_budget=model_budget).encode("utf-8"),
         }
     except UnicodeDecodeError as exc:
         raise CheckoutError("Pinned melonDS sources are not UTF-8") from exc
@@ -278,7 +353,9 @@ def _verify_manifest(
             raise CheckoutError(f"Checkout file differs from the pinned tree: {name}")
 
 
-def verify_checkout(source: Path, *, require_patched: bool) -> dict[str, bytes]:
+def verify_checkout(source: Path, *, require_patched: bool, work_observer: bool = False, model_budget: bool = False) -> dict[str, bytes]:
+    if model_budget and not work_observer:
+        raise CheckoutError("Model budget requires --work-observer")
     source = source.resolve()
     revision = _git(source, "rev-parse", "HEAD").decode("ascii").strip()
     if revision != EXPECTED_REVISION:
@@ -288,7 +365,7 @@ def verify_checkout(source: Path, *, require_patched: bool) -> dict[str, bytes]:
         raise CheckoutError(f"Checkout source must be its repository root: {top}")
 
     manifest = _tree_manifest(source)
-    pristine, patched = _expected_sources(source, manifest)
+    pristine, patched = _expected_sources(source, manifest, work_observer=work_observer, model_budget=model_budget)
     _verify_manifest(
         source,
         manifest,
@@ -299,8 +376,22 @@ def verify_checkout(source: Path, *, require_patched: bool) -> dict[str, bytes]:
     return patched
 
 
-def patch_core(source: Path) -> None:
-    patched = verify_checkout(source, require_patched=False)
+def patch_core(source: Path, *, work_observer: bool = False, model_budget: bool = False) -> None:
+    try:
+        patched = verify_checkout(source, require_patched=False, work_observer=work_observer, model_budget=model_budget)
+    except CheckoutError:
+        if not work_observer:
+            raise
+        # Explicit E2 -> E3 migration only. Reauthenticate the complete legacy
+        # tree; this does not admit arbitrary edits or weaken verify-only.
+        if model_budget:
+            try:
+                verify_checkout(source, require_patched=True, work_observer=True)
+            except CheckoutError:
+                verify_checkout(source, require_patched=True)
+        else:
+            verify_checkout(source, require_patched=True)
+        _, patched = _expected_sources(source, _tree_manifest(source), work_observer=True, model_budget=model_budget)
     source = source.resolve()
     for name in ("src/NDS.cpp", "src/ARM.cpp"):
         path = source / name
@@ -310,7 +401,7 @@ def patch_core(source: Path) -> None:
             continue
         _replace_regular_file(path, patched[name])
         print(f"Patched {name} with observation-only hooks")
-    verify_checkout(source, require_patched=True)
+    verify_checkout(source, require_patched=True, work_observer=work_observer, model_budget=model_budget)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -326,13 +417,19 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Require the exact pinned checkout plus the exact observation patch",
     )
+    parser.add_argument("--work-observer", action="store_true",
+                        help="Require the exact derived ARM9 dispatch observation patch")
+    parser.add_argument("--model-budget", action="store_true",
+                        help="Require the exact derived ARM9 model-clock budget patch (with --work-observer)")
     args = parser.parse_args(argv)
     try:
+        if args.model_budget and not args.work_observer:
+            raise CheckoutError("Model budget requires --work-observer")
         if args.verify_only:
-            verify_checkout(args.source, require_patched=True)
+            verify_checkout(args.source, require_patched=True, work_observer=args.work_observer, model_budget=args.model_budget)
             print("Pinned melonDS checkout and observation patch verified")
         else:
-            patch_core(args.source)
+            patch_core(args.source, work_observer=args.work_observer, model_budget=args.model_budget)
     except CheckoutError as exc:
         print(f"Rejected melonDS checkout: {exc}", file=sys.stderr)
         return 1

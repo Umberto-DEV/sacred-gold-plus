@@ -162,5 +162,39 @@ class TeardownSite(Flow):
             self.assertEqual(controls.decode_bl(controls.hex_int(site), raw), symbols[name], site)
 
 
+class FinalImageRecord(unittest.TestCase):
+    def test_initial_inert_record_requires_zero_ownership_not_only_flag(self):
+        import importlib.util
+        path=Path(__file__).resolve().parents[1]/'tools/attribuisci.py'
+        self.assertTrue(path.is_file(),'final-image attribution tool missing')
+        spec=importlib.util.spec_from_file_location('summary_controls_attribution_test',path)
+        tool=importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+        tool.inspect_cold_record(bytes(32))
+        for offset in (0,8,16,31):
+            mutant=bytearray(32);mutant[offset]=1
+            with self.subTest(offset=offset),self.assertRaises(ValueError):
+                tool.inspect_cold_record(bytes(mutant))
+        with self.assertRaises(ValueError):tool.inspect_cold_record(bytes(31))
+
+    def test_derived_wrappers_reject_outside_targets_and_malformed_entries(self):
+        import importlib.util
+        path=Path(__file__).resolve().parents[1]/'tools/attribuisci.py'
+        spec=importlib.util.spec_from_file_location('summary_controls_attribution_edges',path)
+        tool=importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+        image=bytearray(tool.SIZE);sites={}
+        for offset,callee in ((64,129),(96,145)):
+            image[offset:offset+4]=controls.WRAPPER_PROLOGUE
+            image[offset+4:offset+8]=controls.encode_bl(tool.BASE+offset+4,tool.BASE+callee)
+        for site,name,native in controls.SITES:
+            sites[site]=controls.encode_bl(controls.hex_int(site),tool.BASE+(65 if name=='sgp_sc_redraw' else 97))
+        got=tool.derive(bytes(image),sites)
+        self.assertEqual(got['sgp_summary_controls_update'],tool.BASE+129)
+        outside=dict(sites);outside['0x0208CC5A']=controls.encode_bl(0x0208CC5A,tool.BASE+tool.SIZE+1)
+        with self.assertRaises(ValueError):tool.derive(bytes(image),outside)
+        for offset in (64,68):
+            mutant=bytearray(image);mutant[offset:offset+4]=bytes(4)
+            with self.subTest(offset=offset),self.assertRaises(ValueError):tool.derive(bytes(mutant),sites)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -18,7 +18,7 @@ from sgp13.compiler import compiler_path, compiler_environment
 import sys
 import tempfile
 
-from . import baseline, guide_content, ui_copy, ui_resource, ui_resource_verify
+from . import baseline, guide_content, ui_copy, ui_resource, ui_resource_verify, onboarding_version
 
 SOURCE = Path(__file__).resolve().parents[1]
 FLAGS = ['--target=armv5te-none-eabi', '-mcpu=arm946e-s', '-mthumb', '-Oz',
@@ -47,6 +47,7 @@ SCENE_UNITS = ['ui-native/heap.c', 'ui-native/resource.c', 'ui-native/guide_reso
 # Reviewed source identities, generated once for this implementation, not learned
 # from input, receipts, environment, or candidate configuration.
 SOURCE_PINS = {
+    "sgp131/onboarding_version.py": "b5874b8d65d307816dbda3cd0a56903adf7c9cc73353b10010f2d29c13b848b0",
     "sgp13/compiler.py": "eb1a45aa39df25ebb342e4a447dbf569e22feb90ed126d364f7db6326d0085c6",
     "sgp131/guide_incoming.py": "b55535de0452edd128e781ffae41cd727446ceabd4224a4d4c4cab0bdbecf32c",
     "sgp131/guide_retirement.py": "a2e5abd850f1835f3418a34e2b4bd3653ed11c365f49870f67f107cebdb58abc",
@@ -134,7 +135,7 @@ SOURCE_PINS = {
     "sgp131/data/guide-subjects.json": "3cdb55ba7fb73071e2ccdac852d5786f063f7287432c927dcde9fe80af6ac91e",
     "sgp131/data/guide.json": "8c59d185bb65cecf87cbdca1d037799b271a9c5c4edf2fecc7b09fa1aef2afc3",
     "sgp131/data/reserve-map.json": "7b201a7ea5abe3b611ac12dd1391496817d134874af87360935c97db8cfa4f6a",
-    "sgp131/data/ui-copy.json": "6fe891c7252ffffdfb3fa10f25f25251e961b869b728a86ece33e516c49cad30",
+    "sgp131/data/ui-copy.json": "b580e1f68e58a81f0797d1e296d481b0626a62ff5e0b24d96582f4a746347462",
     "sgp131/guide_content.py": "b61119db09bc149081128a24c8e89be8e9e62526c904a7db84542a3fabfe9647",
     "sgp131/reserve.py": "d677827f7dbbfa422a56257860f6bcdad360e01da4b83803af243b74b033fb2a",
     "sgp131/ui_copy.py": "0f7f27da938bda8df2c89712155df23abc935f0b2eb2ce3d6a19f574afde7cb9",
@@ -143,9 +144,9 @@ SOURCE_PINS = {
     "translation/message_codec.py": "61de1dd4a7995ee5b6c1e20b45556c414c2fbdb55c9acd56707783cc6863891f",
     "localization/__init__.py": "e2a09065507debf68d6f85c471c7cf86ad7243a6620728416f093018e5f2c621",
     "localization/catalogue.py": "1eeba353949e14809a45f68efcd4952338d91603c4d20408f429416ce51e5704",
-    "localization/locales/FR/ui.json": "19f8d01459f1e4a5c6cb3b979768e5551240e97d42efbd111c81e439ed98f842",
-    "localization/locales/ES/ui.json": "f4ff39a8ed720f83961e582756a27e74d8720ce9ffbb7504259062843c2c8906",
-    "localization/locales/DE/ui.json": "f5e22900ae2b1e89e5e3a884da1f1514cc312b2f976b17d926fd8c8b287d7c1d",
+    "localization/locales/FR/ui.json": "1973bb27dc11ee50f2d111b2b4d47a3146a026d7faa51a7991f6690d5ef7ee71",
+    "localization/locales/ES/ui.json": "96193cb44e7cd25edbe2dfe915cf6fff9760e34efccc95bee7b0bc2b5563b44c",
+    "localization/locales/DE/ui.json": "4428db9931f87ffabd51e90d5b8428b4bdf027ac40c6702ff2d817e5901be5d4",
 }
 
 
@@ -438,6 +439,17 @@ def resources(data, language, charmap, archive_deltas=()):
         measured = font.measure(widths, encode(value), limit_px=224)
         require(not any(line['unknown_codes'] for line in measured['lines']), 'unknown native glyph')
         return max(line['width_px'] for line in measured['lines'])
+    def onboarding_measure(words):
+        measured = font.measure(widths, words, limit_px=204)
+        require(len(measured['lines']) == 1 and not measured['lines'][0]['unknown_codes'],
+                'onboarding title glyphs/lines')
+        return measured['lines'][0]['width_px']
+    onboarding_encode = lambda value: codec.codifica(value, table)
+    onboarding = onboarding_version.transform(
+        read(onboarding_version.ADDRESS, onboarding_version.SIZE),
+        onboarding_encode, onboarding_measure)
+    onboarding_titles = (onboarding_version._encoded(onboarding_version.OLD_CORE_TITLE, onboarding_encode),
+                         onboarding_version._encoded(onboarding_version.TITLE, onboarding_encode))
     records = evolution_records(rom, archive_deltas)
     prose = json.loads(guide_content.PROSE.read_text())
     categories = guide_content.make_categories(records, names, language, measure, prose)
@@ -454,5 +466,6 @@ def resources(data, language, charmap, archive_deltas=()):
     require(ui_copy.c_header(catalog) == (SOURCE/'features/settings-ui/catalog.h').read_text(), 'catalog C identity')
     resource, receipt = ui_resource.compile_resource(data, authored)
     require(ui_resource_verify.verify_resource(data, resource, authored) == receipt, 'UIR independent readback')
-    return dict(guide=guide, guide_graph=graph, uir=resource, uir_receipt=receipt,
+    return dict(onboarding_bank=onboarding, onboarding_titles=onboarding_titles,
+                guide=guide, guide_graph=graph, uir=resource, uir_receipt=receipt,
                 authored=authored, geometry=geometry)

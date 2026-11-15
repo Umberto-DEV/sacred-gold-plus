@@ -122,8 +122,13 @@ def _check_slot(slot):
     _require(slot == expected, 'Fairy AI reserve slot must carry the exact zero preimage')
 
 
-def compile_native(work_dir: Path, owned_address: int) -> tuple[bytes, dict]:
-    """Compile and relocate the exact 148-byte helper for ``owned_address``."""
+def compile_native(work_dir: Path, owned_address: int, *, retain_object=False) -> tuple[bytes, dict]:
+    """Compile and relocate the exact helper; optionally retain its verified ELF.
+
+    Production keeps the historical no-artifact default. Attribution may retain
+    the own-project object, without replacing a different existing artifact.
+    """
+    _require(type(retain_object) is bool, 'retain_object must be boolean')
     _check_address(owned_address)
     _require(owned_address == DEFAULT_SLOT,
              'Fairy AI payload identity is pinned to the reviewed fixed slot')
@@ -171,7 +176,7 @@ def compile_native(work_dir: Path, owned_address: int) -> tuple[bytes, dict]:
     _require(len(payload) == PAYLOAD_BYTES, 'Fairy AI payload must fill 148 bytes')
     _require(_sha(payload) == PAYLOAD_SHA256, 'Fairy AI payload drift: ' + _sha(payload))
     semantics = _payload_semantics(payload)
-    return payload, {
+    receipt = {
         'address': owned_address, 'bytes': len(payload), 'budget': PAYLOAD_BYTES,
         'payload_sha256': _sha(payload), 'object_sha256': _sha(raw),
         'source_sha256': _sha(source),
@@ -183,6 +188,15 @@ def compile_native(work_dir: Path, owned_address: int) -> tuple[bytes, dict]:
                      'flags': list(FLAGS)},
         'semantics': semantics,
     }
+    if retain_object:
+        retained = work_dir / 'fairy-native.o'
+        _require(not retained.is_symlink() and (not retained.exists()
+                 or retained.is_file() and retained.read_bytes() == raw),
+                 'retained object differs; preserve the existing artifact')
+        if not retained.exists():
+            retained.write_bytes(raw)
+        receipt['retained_object'] = retained.name
+    return payload, receipt
 
 
 def seam_bytes(owned_address):
@@ -337,8 +351,8 @@ def _payload_semantics(payload):
     targets = [bl_decode(DEFAULT_SLOT + offset,
                          payload[offset:offset + 4])
                for offset in APPLY_CALL_OFFSETS]
-    # The payload bytes are position-independent: decoding them at DEFAULT_SLOT
-    # must reach the one native flag combiner twice.
+    # Internal calls and the packed-table address are relative, but the two
+    # external BLs are fixed for DEFAULT_SLOT and must reach this combiner.
     _require(targets == [NATIVE_APPLY, NATIVE_APPLY],
              'native flag-combiner calls differ')
     return {'bytes': PAYLOAD_BYTES, 'fairy_pairs': 12,

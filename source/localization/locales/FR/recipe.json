@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "language": "FR",
-  "core_sha256": "2e30d6960bb059615fca7527700d86f8282e82ccbe99bf62e22f027453dc3d3d",
+  "core_sha256": "d6fbdf8bd0aec528a336713b497847da36b467001b2f550c9cc583679c3e5c7d",
   "core_bytes": 152786844,
   "graphics": [
     {
@@ -1086,7 +1086,7 @@
     "a/0/6/8:123": "6901b931bffe2a4b36d3149bc4a9dfeeba27151d3a2557752406bbd3ac9b4def"
   },
   "identity_policy": "Keep English internal game/save identity; locale changes presentation only.",
-  "native_bank_sha256": "4a58a94259087bcfecdce633af3c85eb8ca5ace1769eb61a40e8ae058e77824f",
+  "native_bank_sha256": "13cc09af09e0e62fe3b4255fce24f02a2c944282a4d021564492a716eabaa25b",
   "summary_bank_sha256": "7ae7f5337c842e4b3276c3d2b8c0d3fe1c8aa7a364f04f43a7925d09f97301a7",
   "kind": "localized-presentation-v1",
   "ui_config": {

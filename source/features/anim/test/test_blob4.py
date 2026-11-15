@@ -25,6 +25,7 @@ Esempio:
 GPL-3.0-or-later.
 """
 import atexit
+import struct
 import os
 import shutil
 import sys
@@ -578,6 +579,41 @@ class NonRegressione(Base):
                              "sovrapprezzo %.1f istruzioni > 250: %s" % (acc - van_i, fuori))
         self.assertLessEqual(spe - van_i, 40, str(fuori))
         self.assertTrue(van)
+
+
+
+
+class AttributionScanTest(unittest.TestCase):
+    def test_detects_external_code_and_data_candidates_without_claiming_reachability(self):
+        import importlib.util
+        path = Path(__file__).resolve().parents[1] / 'tools/attribuisci.py'
+        self.assertTrue(path.is_file(), 'final-image ANIM attribution reader is missing')
+        spec = importlib.util.spec_from_file_location('anim_attribution',path)
+        reader = importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
+        # Authored direct BL, data pointer and A32 BL. A numeric candidate is
+        # reported even if the test supplies it as data; reachability is separate.
+        thumb=reader.references('fixture-thumb',0x023D0000,bytes.fromhex('08f0f0fd'))
+        self.assertTrue(any(r['kind']=='thumb_bl' and r['target']==0x023D8BE4 for r in thumb))
+        pointer=reader.references('fixture-data',0x023C0000,struct.pack('<I',0x023D8E41))
+        self.assertEqual([(r['kind'],r['target'],r['domain']) for r in pointer],
+                         [('aligned_u32',0x023D8E41,'state')])
+        arm=reader.references('fixture-arm',0x023C0000,bytes.fromhex('f76200eb'))
+        self.assertTrue(any(r['kind']=='arm_branch_candidate' and r['target']==0x023D8BE4 for r in arm))
+        self.assertEqual(reader.references('fixture',0x02200000,bytes(64)),[])
+
+    def test_block_readback_rejects_code_canary_tables_and_state(self):
+        import importlib.util
+        path = Path(__file__).resolve().parents[1] / 'tools/attribuisci.py'
+        self.assertTrue(path.is_file(), 'final-image ANIM attribution reader is missing')
+        spec = importlib.util.spec_from_file_location('anim_attribution_block',path)
+        reader = importlib.util.module_from_spec(spec);spec.loader.exec_module(reader)
+        build=Path(__file__).resolve().parents[4] / 'source/sgp12/build/anim'
+        state=bytearray(64);state[1]=0x5a
+        block=b''.join((build/n).read_bytes() for n in ('blob.bin','canarino.bin','tab_u.bin','par.bin'))+state+bytes(128)
+        self.assertEqual(reader.check_block(block,build)['bytes'],1024)
+        for at in (0,751,752,768,800,833,896):
+            bad=bytearray(block);bad[at]^=1
+            with self.subTest(at=at),self.assertRaises(ValueError):reader.check_block(bad,build)
 
 
 if __name__ == "__main__":

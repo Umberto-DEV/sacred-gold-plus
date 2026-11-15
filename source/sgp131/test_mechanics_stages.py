@@ -862,5 +862,277 @@ class ReserveRows(unittest.TestCase):
         self.assertEqual(ms.required_producers(['abilities', 'x'], extra), ('b', 'keen-eye-text'))
 
 
+
+# Frozen pre-change reference for small synthetic compatibility checks.
+_LEGACY_SOURCE = r'''
+def _legacy_intermediate_images(before, final, stages, declared):
+    """The n+1 images of a chain: the UI image, the output of each stage, `final`; rebuilt from `final` alone.
+
+    Going backwards, a stage that can peel is taken out of its output; any other stage has its declared regions restored from
+    the pristine input. The bottom must then be exactly `final` with every declared region restored, so a peel can neither
+    leave bytes behind nor touch what is not declared.
+    """
+    check_sharing(stages, declared)
+    overrides = {}
+    by_stage = []
+    for stage, regions in zip(stages, declared):
+        callback = getattr(stage, 'cold_preimages', None)
+        local = guarded(stage.name + ' cold preimages', callback, before, final, regions) if callback else {}
+        if (type(local) is not dict or any(key not in {_span(r) for r in regions}
+                or type(value) is not bytes or len(value) != key[1] - key[0]
+                for key, value in local.items())):
+            _fail('invalid fixed cold preimages for ' + stage.name)
+        for key, value in local.items():
+            if key in overrides and overrides[key] != value:
+                _fail('inconsistent fixed cold preimages')
+            overrides[key] = value
+        by_stage.append(local)
+    images = [None] * len(stages) + [final]
+    for index in range(len(stages), 0, -1):
+        stage, regions = stages[index - 1], declared[index - 1]
+        peel = getattr(stage, 'peel', None)
+        if peel is None:
+            images[index - 1] = _restore(images[index], before, regions, by_stage[index-1])
+            continue
+        peeled = guarded(stage.name + ' peel', peel, images[index], before, regions)
+        if type(peeled) is not bytes or len(peeled) != len(final):
+            _fail('%s peel returned a mutable, non-bytes or resized ROM' % stage.name)
+        images[index - 1] = peeled
+    if images[0] != _restore(final, before, [r for regions in declared for r in regions], overrides):
+        _fail('the chain does not peel back to the cold UI: a stage left bytes behind or touched undeclared ones')
+    return images
+
+
+
+def _legacy_verify_chain(before, final, names, receipts, verify_ui, *, invariants=None, registry=None,
+                 allocation=None, charmap=None, stage_options=None, overlay_deltas=()):
+    """Independent admission of `final` = UI(before) + the named mechanical stages, in order.
+
+    `verify_ui(ui_image)` must be the existing independent UI verifier (it raises on any byte
+    outside the UI policy); it receives the image rebuilt by restoring every declared region
+    from `before`, so a stage can only have touched what it declared. Every external reader is
+    fail-closed: an unexpected exception type is a refusal, never a crash or a pass.
+    """
+    caller_invariants = invariants
+    names = list(names)
+    if len(set(names)) != len(names):
+        raise ValueError('duplicate mechanical stage')
+    stages = [require_stage(n, registry) for n in names]
+    if any(getattr(stage, 'archive_only', False) for stage in stages):
+        _fail('an archive-only stage has no post-UI writer to replay: pass mechanics_stages.writers(names)')
+    if not isinstance(receipts, list) or len(receipts) != len(stages):
+        _fail('mechanics receipt count %s does not match %d stages'
+              % (len(receipts) if isinstance(receipts, list) else '?', len(stages)))
+    from . import baseline
+    try:
+        expected_language = baseline.identify(before)
+    except ValueError:
+        expected_language = None  # synthetic unit fixtures have no cartridge identity
+    for receipt, name in zip(receipts, names):
+        validate_receipt(receipt, name, expected_language)
+    for stage in stages:
+        if getattr(stage, 'contextual', False) and not isinstance(allocation, dict):
+            _fail('%s requires the full reserve allocation receipt' % stage.name)
+        if getattr(stage, 'slot_payload', 0) > 0:
+            assigned_row(stage, allocation)       # an unproven reserve condition is refused before any ROM work
+    declared = [list(guarded(stage.name + ' declaration', stage.regions, final if getattr(stage, 'regions_from_final', False) else before)) for stage in stages]
+    for stage, regions in zip(stages, declared):
+        _check_regions(regions, len(final) if getattr(stage, 'regions_from_final', False) else len(before))
+    images = _legacy_intermediate_images(before, final, stages, declared)
+    ui_image = images[0]
+    ui_result = guarded('UI verifier', verify_ui, ui_image)
+    previous, hashes = ui_image, []
+    for index, (stage, regions, receipt) in enumerate(zip(stages, declared, receipts)):
+        step = images[index + 1]
+        if receipt['input_sha256'] != _sha(previous) or receipt['output_sha256'] != _sha(step):
+            _fail('receipt for %s does not describe this step of the final ROM' % stage.name)
+        if [dict(start=r.start, end=r.end, label=r.label) for r in regions] != receipt['regions']:
+            _fail('receipt regions for %s differ from the stage declaration' % stage.name)
+        if list(guarded(stage.name + ' declaration', stage.regions, previous)) != regions:
+            _fail('%s declaration moved between the input and the intermediate image' % stage.name)
+        if step == previous:
+            _fail('%s left its declared region unchanged' % stage.name)
+        if receipt['changed_ranges'] != [list(pair) for pair in changed_ranges(previous, step)]:
+            _fail('receipt changed_ranges for %s differ from the bytes actually changed' % stage.name)
+        policy = (getattr(stage, 'invariants', None) or check_ui_invariants) if caller_invariants is None else caller_invariants
+        _run_invariants(policy, previous, step, regions, _grants(stage, previous, allocation))
+        check_confined(previous, step, regions, stage.name)
+        raw = receipt['stage_receipt']
+        if getattr(stage, 'contextual', False):
+            if raw.get('allocation') != allocation:
+                _fail('%s owner receipt allocation differs from the granted receipt' % stage.name)
+            verify_kwargs = {'charmap': charmap, 'stage_options': stage_options}
+            if stage.name == 'rematches':
+                verify_kwargs['overlay_deltas'] = overlay_deltas
+            guarded(stage.name + ' reader', lambda a, b, r: stage.verify(a, b, r, **verify_kwargs), previous, step, raw)
+        else:
+            guarded(stage.name + ' reader', stage.verify, previous, step, raw)
+        hashes.append(receipt['stage_receipt_sha256'])
+        previous = step
+    if previous != final:
+        _fail('final ROM differs from the chain reconstruction outside the declared regions')
+    return {'stages': names, 'ui': ui_result, 'stage_receipt_sha256': hashes,
+            'ui_image_sha256': _sha(ui_image), 'output_sha256': _sha(final)}
+
+'''
+_legacy_namespace = dict(ms.__dict__)
+exec(_LEGACY_SOURCE, _legacy_namespace)
+legacy_images = _legacy_namespace["_legacy_intermediate_images"]
+legacy_verify = _legacy_namespace["_legacy_verify_chain"]
+
+
+class BoundedChain(unittest.TestCase):
+    def test_reference_and_compatibility_for_disjoint_shared_empty_and_single(self):
+        for registry, names in ((REGISTRY, []), (REGISTRY, ['one']),
+                                (REGISTRY, ['one', 'two']),
+                                (shared_registry(), ['one', 'two'])):
+            data, receipts = BEFORE, []
+            for name in names:
+                data, receipt = ms.run_stage(name, data, 'EN', invariants=no_structure, registry=registry)
+                receipts.append(receipt)
+            stages = [registry[n] for n in names]
+            declared = [list(stage.regions(BEFORE)) for stage in stages]
+            expected = legacy_images(BEFORE, data, stages, declared)
+            self.assertEqual(ms.intermediate_images(BEFORE, data, stages, declared), expected)
+            self.assertEqual(ms.cold_ui_image(BEFORE, data, stages, declared), expected[0])
+            ui = lambda image: {'hash': sha(image)}
+            old = legacy_verify(BEFORE, data, names, receipts, ui, invariants=no_structure, registry=registry)
+            with patch.object(ms, 'intermediate_images', side_effect=AssertionError('list allocation')):
+                actual = ms.verify_chain(BEFORE, data, names, receipts, ui, invariants=no_structure, registry=registry)
+                self.assertEqual(ms.cold_ui_image(BEFORE, data, stages, declared), expected[0])
+            self.assertEqual(actual, old)
+
+    def test_appended_fixed_preimages_match_reference(self):
+        before, final = bytes(8), bytes(8) + b'XY'
+        stage = FakeStage('append', 8, 10, 88)
+        stage.regions_from_final = True
+        stage.cold_preimages = lambda b, f, r: {(8, 10): b'AB'}
+        regions = [stage.regions(final)]
+        self.assertEqual(ms.intermediate_images(before, final, [stage], regions),
+                         legacy_images(before, final, [stage], regions))
+        self.assertEqual(ms.cold_ui_image(before, final, [stage], regions), before + b'AB')
+        cold = before + b'AB'
+        receipt = ms._wrap('append', 'EN', cold, final, regions[0],
+                           {'offset': 8, 'value': 88})
+        args = (before, final, ['append'], [receipt], lambda x: {'hash': sha(x)})
+        self.assertEqual(ms.verify_chain(*args, invariants=no_structure, registry={'append': stage}),
+                         legacy_verify(*args, invariants=no_structure, registry={'append': stage}))
+
+    def test_both_passes_enforce_global_bottom(self):
+        final, receipts = chain(['one', 'two'])
+        original = ms._restore; global_checks = []
+        def restore(rom, before, regions, overrides=None):
+            if len(regions) == 2: global_checks.append(1)
+            return original(rom, before, regions, overrides)
+        with patch.object(ms, '_restore', side_effect=restore):
+            ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, lambda x: {},
+                            invariants=no_structure, registry=REGISTRY)
+        self.assertEqual(len(global_checks), 2)
+
+    def test_nonrepeatable_peel_is_refused_before_readers(self):
+        registry = shared_registry(); final, receipts = SharedRegions().run_chain(registry)
+        good = registry['two'].peel; calls = []
+        def changing(after, before, regions):
+            calls.append(1); image = bytearray(good(after, before, regions))
+            if len(calls) == 2: image[10] ^= 1
+            return bytes(image)
+        registry['two'].peel = changing
+        with self.assertRaisesRegex(ms.CompositionError, 'boundary|reconstruction'):
+            ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, lambda x: {},
+                            invariants=no_structure, registry=registry)
+        self.assertEqual(len(calls), 2)
+
+    def test_ui_gate_and_reverse_reader_order(self):
+        registry = shared_registry(); final, receipts = SharedRegions().run_chain(registry)
+        events = []
+        for name in ('one', 'two'):
+            stage = registry[name]; original = stage.verify
+            def reader(a, b, r, name=name, original=original):
+                events.append('reader-' + name); return original(a, b, r)
+            stage.verify = reader
+        original_peel = registry['two'].peel
+        def peel(a, b, r):
+            events.append('peel'); return original_peel(a, b, r)
+        registry['two'].peel = peel
+        def ui(image): events.append('ui'); return {}
+        ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, ui,
+                        invariants=no_structure, registry=registry)
+        self.assertEqual(events, ['peel', 'ui', 'peel', 'reader-two', 'reader-one'])
+        events.clear()
+        def bad_ui(image): events.append('ui'); raise ValueError('refuse UI')
+        with self.assertRaisesRegex(ValueError, 'refuse UI'):
+            ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, bad_ui,
+                            invariants=no_structure, registry=registry)
+        self.assertEqual(events, ['peel', 'ui'])
+
+    def test_fixed_plan_is_once_and_global_bottom_precedes_ui(self):
+        registry = shared_registry(); final, receipts = SharedRegions().run_chain(registry)
+        events = []
+        for name in ('one', 'two'):
+            stage = registry[name]
+            def cold(b, f, r, name=name): events.append('cold-' + name); return {}
+            stage.cold_preimages = cold
+            stage.apply = lambda *args: (_ for _ in ()).throw(AssertionError('writer called'))
+        original = registry['two'].peel
+        def peel(a, b, r): events.append('peel'); return original(a, b, r)
+        registry['two'].peel = peel
+        def ui(image): events.append('ui'); return {}
+        ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, ui,
+                        invariants=no_structure, registry=registry)
+        self.assertEqual(events, ['cold-one', 'cold-two', 'peel', 'ui', 'peel'])
+        events.clear()
+        def corrupt(a, b, r):
+            out = bytearray(original(a, b, r)); out[50] = 1; return bytes(out)
+        registry['two'].peel = corrupt
+        with self.assertRaises(ms.CompositionError):
+            ms.verify_chain(BEFORE, final, ['one', 'two'], receipts, ui,
+                            invariants=no_structure, registry=registry)
+        self.assertNotIn('ui', events)
+
+    def test_single_invalid_inputs_fail_in_reference_and_bounded(self):
+        import copy
+        for case in ('receipt-hash', 'changed-ranges', 'reader', 'invariant',
+                     'ui', 'sharing', 'peel', 'preimages'):
+            for verifier in (legacy_verify, ms.verify_chain):
+                with self.subTest(case=case, verifier=verifier.__name__):
+                    registry = shared_registry(); final, receipts = SharedRegions().run_chain(registry)
+                    receipts = copy.deepcopy(receipts); ui = lambda x: {}; invariant = no_structure
+                    if case == 'receipt-hash': receipts[1]['input_sha256'] = 'f' * 64
+                    if case == 'changed-ranges': receipts[1]['changed_ranges'] = [[0, 1]]
+                    if case == 'reader': registry['two'].verify = lambda *a: (_ for _ in ()).throw(ValueError('reader'))
+                    if case == 'invariant': invariant = lambda *a: (_ for _ in ()).throw(ValueError('invariant'))
+                    if case == 'ui': ui = lambda x: (_ for _ in ()).throw(ValueError('ui'))
+                    if case == 'sharing': registry['two'].peel = None
+                    if case == 'peel': registry['two'].peel = lambda *a: bytearray(100)
+                    if case == 'preimages': registry['one'].cold_preimages = lambda *a: {(10, 20): b'x'}
+                    with self.assertRaises(ValueError):
+                        verifier(BEFORE, final, ['one', 'two'], receipts, ui,
+                                 invariants=invariant, registry=registry)
+
+    def test_bounded_peak_against_legacy_image_retention(self):
+        import tracemalloc
+        size = 256 * 1024
+        def fixture(count):
+            before = bytes(size); data = before; registry = {}; receipts = []
+            for i in range(count):
+                name = 's%d' % i; registry[name] = FakeStage(name, i, i + 1, 1)
+                data, receipt = ms.run_stage(name, data, 'EN', invariants=no_structure, registry=registry)
+                receipts.append(receipt)
+            return before, data, list(registry), receipts, registry
+        short, long = fixture(3), fixture(24)
+        def peak(fn, fixture):
+            before, final, names, receipts, registry = fixture
+            tracemalloc.start()
+            try:
+                fn(before, final, names, receipts, lambda x: {}, invariants=no_structure, registry=registry)
+                return tracemalloc.get_traced_memory()[1]
+            finally: tracemalloc.stop()
+        small = peak(ms.verify_chain, short)
+        new = peak(ms.verify_chain, long)
+        old = peak(legacy_verify, long)
+        print("\ntracemalloc peak bytes: short=%d bounded=%d legacy=%d" % (small, new, old))
+        self.assertLess(new, old * 0.7, (small, new, old))
+        self.assertLess(new, small + size * 4, (small, new, old))
+
 if __name__ == '__main__':
     unittest.main()

@@ -208,3 +208,8 @@ credited Kalalokki's account of artists' Black/White-style sprite work in the
 practice, not a Nintendo engine specification. Species profiles, more poses
 and a new rendering pipeline remain unimplemented research ideas; they are not
 features of the 1.3.1 release.
+
+The [legacy v4 attribution](../../docs/validation/anim-v4-source-rom-1.3.2.md)
+verifies its resident bytes, the two retired roots and the copy-barrier
+replacement. Its state guard remains a separate dependency; no old allocation
+is declared reclaimable.

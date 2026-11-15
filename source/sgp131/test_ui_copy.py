@@ -238,9 +238,9 @@ class AuthoredCatalogueTests(unittest.TestCase):
         for row in report['rows']:
             self.assertLessEqual(row['required_px'], 240)
         version_id = self.ui.ids(self.catalogue)['VERSION']
-        self.assertEqual(authored[version_id], tuple(self.encode('V1.3.2')))
+        self.assertEqual(authored[version_id], tuple(self.encode('V1.3.3')))
         italian, _ = self.ui.encode_catalogue(self.catalogue, 'IT', self.encode, self.widths)
-        self.assertEqual(italian[version_id], tuple(self.encode('V1.3.2')))
+        self.assertEqual(italian[version_id], tuple(self.encode('V1.3.3')))
         pool = self.texts('EN')['FORMAT_POOL']
         self.assertTrue(set('0123456789/:% ').issubset(pool))
         from localization.catalogue import ui_catalogue

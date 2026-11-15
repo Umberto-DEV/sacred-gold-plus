@@ -120,6 +120,25 @@ class TransformReloadCompiler(unittest.TestCase):
         self.assertEqual(receipt['party_target'], T.GET_PARTY_MON | 1)
         self.assertEqual(receipt['data_target'], T.GET_MON_DATA | 1)
 
+    def test_opt_in_object_retention_preserves_default_receipt(self):
+        with tempfile.TemporaryDirectory() as work:
+            root=Path(work)
+            payload,default=T.compile_native(root)
+            self.assertEqual(list(root.iterdir()),[])
+            retained,receipt=T.compile_native(root,retain_object=True)
+            self.assertEqual(payload,retained)
+            self.assertEqual(default,{k:v for k,v in receipt.items() if k!='retained_object'})
+            self.assertEqual(hashlib.sha256((root/receipt['retained_object']).read_bytes()).hexdigest(),receipt['object_sha256'])
+
+    def test_retention_refuses_nonboolean_and_preserves_conflicting_artifact(self):
+        with tempfile.TemporaryDirectory() as work:
+            root=Path(work);target=root/'reload_transform.o';target.write_bytes(b'keep existing artifact')
+            with self.assertRaisesRegex(ValueError,'retained object differs'):
+                T.compile_native(root,retain_object=True)
+            self.assertEqual(target.read_bytes(),b'keep existing artifact')
+            with self.assertRaisesRegex(ValueError,'boolean'):
+                T.compile_native(root,retain_object=1)
+
 
 class TransformReloadOverlay(unittest.TestCase):
     @classmethod
@@ -168,6 +187,79 @@ class TransformReloadOverlay(unittest.TestCase):
         self.assertNotIn(56, row['fields'])
         self.assertNotIn(60, row['fields'])
         self.assertNotIn(64, row['fields'])
+
+
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT through SGP_R4_ROM_DIR')
+class CurrentCompositeReload(unittest.TestCase):
+    @staticmethod
+    def load(language):
+        import importlib.util,os
+        p=Path(__file__).resolve().parents[1]/'features/type-consumers/tools/attribuisci_reload.py'
+        spec=importlib.util.spec_from_file_location('current_reload',p)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        path=Path(os.environ['SGP_R4_ROM_DIR'])/(os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')%language)
+        return module,module.G.S.SHARED.read_current(path,language)
+
+    def test_transform_preserves_copied_fields_and_queries_only_common_data(self):
+        for language in ('EN','IT'):
+            m,x=self.load(language);cpu=m.ReloadCPU(x['segments'],x['overlay'])
+            result=cpu.observe(True,mimic=15,battler=3,party_slot=5)
+            self.assertEqual(result['fields'],[161,9,163,164])
+            self.assertEqual(result['state']['stats'],[301,302,303,304,305])
+            self.assertEqual(result['state']['level_friendship'],[50,101])
+            self.assertEqual(result['state']['hp_max'],[83,166])
+            self.assertEqual(result['state']['exp'],123456)
+
+    def test_all_mimic_masks_match_the_native_ordinary_preimage(self):
+        for language in ('EN','IT'):
+            m,x=self.load(language);current=m.ReloadCPU(x['segments'],x['overlay'])
+            original=m.ReloadCPU(x['segments'],m.counter_image(x['overlay'],'native_old'),variant='native_old')
+            for mask in range(16):
+                new=current.observe(False,mimic=mask,battler=mask%4,party_slot=mask%6)
+                old=original.observe(False,mimic=mask,battler=mask%4,party_slot=mask%6)
+                self.assertEqual(new['state'],old['state']);self.assertEqual(new['fields'],old['fields'])
+                self.assertEqual(new['state']['moves'],[401+i if mask&(1<<i) else 501+i for i in range(4)])
+
+    def test_equal_stats_cannot_hide_the_missing_first_guard(self):
+        for language in ('EN','IT'):
+            m,x=self.load(language)
+            right=m.ReloadCPU(x['segments'],x['overlay']).observe(True,equal_stats=True)
+            wrong_image=m.counter_image(x['overlay'],'first_guard')
+            with self.assertRaises(ValueError):m.ReloadCPU(x['segments'],wrong_image)
+            wrong=m.ReloadCPU(x['segments'],wrong_image,variant='first_guard').observe(True,equal_stats=True)
+            self.assertEqual(right['state'],wrong['state'])
+            with self.assertRaises(ValueError):m.require_common_only(wrong)
+
+    def test_current_literal_padding_and_preserved_pool_cannot_execute(self):
+        m,x=self.load('EN');cpu=m.ReloadCPU(x['segments'],x['overlay']);cpu.observe(True)
+        for address in (m.T.RELOAD_ADDRESS+0x10E,m.T.RELOAD_ADDRESS+0x110,m.T.RELOAD_ADDRESS+0x11C,m.T.LITERAL_ADDRESS):
+            cpu.current=dict(instructions=0,stack_depth=0)
+            try:
+                with self.assertRaises(ValueError):cpu.uc.emu_start(address|1,m.STOP,count=1)
+            finally:cpu.current=None
+
+
+class TransformReloadAttributionCLI(unittest.TestCase):
+    def test_json_cannot_replace_a_retained_artifact_or_alias(self):
+        import importlib.util,sys
+        from unittest.mock import patch
+        p=Path(__file__).resolve().parents[1]/'features/type-consumers/tools/attribuisci_reload.py'
+        spec=importlib.util.spec_from_file_location('reload_cli_guard',p)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as work:
+            root=Path(work)
+            for name in ('native.bin','reload_transform.o','compile-retained.json'):
+                artifact=root/name;artifact.write_bytes(b'preserve artifact')
+                alias=root/('alias-'+name);alias.symlink_to(artifact)
+                hardlink=root/('hard-'+name);hardlink.hardlink_to(artifact)
+                for mode in ('--build','--work'):
+                    for output in (artifact,alias,hardlink):
+                        argv=['reload','--rom',str(root/'rom.nds'),'--v4',str(root/'v4.nds'),'--base',str(root/'base.nds'),'--retail',str(root/'retail.nds'),'--language','EN',mode,str(root),'--json',str(output)]
+                        with self.subTest(name=name,mode=mode,alias=output==alias),patch.object(sys,'argv',argv),patch.object(module,'compile_object',return_value=(bytes(340),dict(performed=False))),patch.object(module,'verify_build',return_value=(bytes(340),dict(performed=False))),patch.object(module,'analyze',return_value=dict(ok=True,runs=[])):
+                            with self.assertRaises(SystemExit) as caught:module.main()
+                            self.assertEqual(caught.exception.code,2)
+                            self.assertEqual(artifact.read_bytes(),b'preserve artifact')
 
 
 if __name__ == '__main__':

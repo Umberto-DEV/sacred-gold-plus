@@ -117,6 +117,18 @@ class Compiler(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'fixed slot'):
                 stage.compile_native(Path(work), ADDRESSES[1])
 
+    def test_opt_in_object_retention_matches_receipt_and_refuses_collision(self):
+        with tempfile.TemporaryDirectory() as work:
+            payload,receipt=stage.compile_native(Path(work),stage.DEFAULT_SLOT,retain_object=True)
+            obj=Path(work)/'fairy-native.o'
+            self.assertEqual(hashlib.sha256(obj.read_bytes()).hexdigest(),receipt['object_sha256'])
+            self.assertEqual(receipt['retained_object'],'fairy-native.o')
+            self.assertEqual(hashlib.sha256(payload).hexdigest(),stage.PAYLOAD_SHA256)
+            obj.write_bytes(b'foreign existing artifact')
+            with self.assertRaisesRegex(ValueError,'retained object differs'):
+                stage.compile_native(Path(work),stage.DEFAULT_SLOT,retain_object=True)
+            self.assertEqual(obj.read_bytes(),b'foreign existing artifact')
+
     def test_payload_reader_rejects_table_and_call_mutants(self):
         with tempfile.TemporaryDirectory() as work:
             payload, receipt = stage.compile_native(Path(work), ADDRESSES[0])

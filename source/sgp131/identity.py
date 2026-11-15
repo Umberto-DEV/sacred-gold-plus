@@ -1,4 +1,4 @@
-"""Final V1.3.2 title in the existing project-owned 48x16 pixel slot.
+"""Final V1.3.3 title in the existing project-owned 48x16 pixel slot.
 
 No archive growth, executable, header, library icon or persistent data changes.
 The previous V1.3 pixels and exact title map are required before replacement.
@@ -7,8 +7,8 @@ import hashlib
 from sgp12 import titolo_versione as container
 from sgp13 import title as previous
 
-LABEL = 'V1.3.2'
-LABEL_SHA256 = 'eb340a9c119115296bb308c23c30bd9ff77ffb49877e7d0e83f306d8c0b8ba99'
+LABEL = 'V1.3.3'
+LABEL_SHA256 = '8dc3639ecb62410ba1af62370e8632df298f328f1b48ffbcd9124a70bff7ea1b'
 GLYPHS = dict(previous.GLYPHS, **{
     '2': ('11110', '00001', '00001', '11110', '10000', '10000', '11111'),
 })

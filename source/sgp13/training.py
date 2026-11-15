@@ -44,9 +44,14 @@ def append_npc(member,script_id,x,z,sprite=324):
     if result[off+4:end]!=member[off+4:end]:raise ValueError('old NPC data changed')
     return result
 
-def cap_graphics(character,palette,gold=False):
-    """Original 32x32 bottle-cap sprite inside a native build-time container."""
+def cap_graphics(character,palette,gold=False,*,silver_mid_color=0x4E73):
+    """Original cap art; optional BGR555 silver color for build-time previews.
+
+    The default recipe and native container sizes remain unchanged. Gold uses
+    its own palette; this option does not select an installed game variant.
+    """
     if character[:4]!=b'RGCN' or len(character)!=560 or palette[:4]!=b'RLCN' or len(palette)!=552:raise ValueError('native item graphic container')
+    if type(silver_mid_color) is not int or not 0<=silver_mid_color<=0x7FFF:raise ValueError('silver color must be BGR555')
     pixels=[[0]*32 for _ in range(32)]
     for y in range(10,23):
         for x in range(7,25):
@@ -61,7 +66,7 @@ def cap_graphics(character,palette,gold=False):
         for tx in range(4):
             for y in range(8):
                 for x in range(0,8,2):packed.append(pixels[ty*8+y][tx*8+x]|pixels[ty*8+y][tx*8+x+1]<<4)
-    colors=(0,0x18C6,0x4E73,0x7FFF) if not gold else (0,0x08EA,0x16DB,0x3BDF)
+    colors=(0,0x18C6,silver_mid_color,0x7FFF) if not gold else (0,0x08EA,0x16DB,0x3BDF)
     return character[:48]+packed,palette[:40]+struct.pack('<4H',*colors)+bytes(504)
 
 def install(rom_path,output_path,language,charmap,work_dir):

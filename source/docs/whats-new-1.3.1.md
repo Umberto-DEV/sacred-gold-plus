@@ -3,6 +3,26 @@
 The shared features below continue in 1.3.2. See the [current change log](../../CHANGELOG.md)
 and [five-language validation](validation/localization-1.3.2.md) for localization
 and the New Game correction. The 1.3.1 hashes below retain their historical scope.
+The [1.3.2 lifecycle investigation](validation/ui-lifecycle-1.3.2.md) adds
+Options/Guide loading and ownership evidence on unchanged EN/IT images; it
+changes no feature, save format or performance acceptance on hardware.
+The later [host development report](validation/development-host-1.3.2.md)
+adds a reproducible bench and focused contracts, plus an opt-in build-time
+palette demonstration; it does not change the released game's default art.
+The subsequent [natural battle cadence](validation/animation-cadence-1.3.2.md)
+evidence concerns the host's emulated images and tasks, not physical display
+pacing or a game animation repair.
+The [Bag work-observer follow-up](validation/development-host-1.3.2.md#battle-bag-work-observer--10-november-2026)
+adds developer dispatch observations and scoped private experiments; it changes
+no accepted game feature, save format or hardware performance status.
+Its continuation also distinguishes sampled native input, displayed focus,
+Android accounting and virtual frontend presentation, with explicit rejected
+attempts and physical-target limitations.
+The later [transfer/wait qualification](validation/development-host-1.3.2.md#direct-transfer-and-waiting-pilot--10-november-2026)
+is developer evidence for a fixed host pilot. It recovers no game memory and
+adds no released feature or hardware performance acceptance.
+The [native asset I/O follow-up](validation/development-host-1.3.2.md#native-asset-io-pilot--10-november-2026)
+records file completions and overlay lifecycle for the EN r4 control.
 The [Guide opening correction](validation/guide-opening-1.3.2.md) has separate
 candidate-bound evidence. The historical [1.3.2 package revision](validation/package-1.3.2-r3.md) separates the
 five clean-ROM patches from optional historical updaters and places translated
@@ -172,3 +192,45 @@ Derived from [personal changes](../sgp13/data/species-changes.json), [learnsets]
 | 457 | Lumineon | Yes | — | U-turn L31 |
 | 470 | Leafeon | — | — | Leaf Blade L33 |
 | 477 | Dusknoir | Yes | — | — |
+
+Developer attribution (11 November 2026): the [Battle Party case](validation/party-source-rom-1.3.2.md) connects current source, rebuilt/installed bytes and a bounded normal EN execution witness. Verification-tool changes only; no new game release or performance claim.
+
+The [camera attribution case](validation/camera-source-rom-1.3.2.md) reconstructs the inherited assembly and current table pointers, with stronger bounds/ABI checks. Developer evidence only; no new visual or gameplay behavior.
+
+The [Summary hint attribution](validation/summary-hint-source-rom-1.3.2.md) records exact installed bytes and bounded resource/input checks. It adds developer verification without changing the badge or viewer.
+
+The [Summary controls source/ROM case](validation/summary-controls-source-rom-1.3.2.md) verifies the initially inactive configuration and its ownership conditions. The legend remains inactive in the published game.
+
+The [Rare Candy attribution case](validation/candy-source-rom-1.3.2.md) adds source/byte/caller verification and stricter bench checks. Repeat-use gameplay and save behavior are unchanged.
+
+The [expanded-Bag attribution case](validation/bag-quantity-source-rom-1.3.2.md) verifies the current composition and real Medicine dependency of Rare Candy. It adds developer verification; inventory, consumption, save layout and gameplay remain unchanged.
+
+The [gift-script attribution case](validation/gift-source-rom-1.3.2.md) documents exact helper bytes and the limited current coverage of the inherited key table. It adds verification and records a possible future policy review; no gift, item or save behavior was changed.
+
+The [Fairy-flags source/ROM case](validation/fairy-flags-source-rom-1.3.2.md) links the exact final overlay to both contributing source owners and stronger immunity/ABI checks. It changes verification tooling only.
+
+The [Fairy scalar case](validation/fairy-scalar-source-rom-1.3.2.md) adds exact mixed-ISA execution and build reuse, with exhaustive monotypes and an explicit duplicate-defender falsifier. It records policy differences without changing the game.
+
+The [post-KO caller case](validation/postko-source-rom-1.3.2.md) adds exact caller composition and per-move intermediate checks. Its immunity counterexample distinguishes equal final choices; no game behavior changes.
+
+The [Conversion2 source/ROM case](validation/conversion2-source-rom-1.3.2.md) verifies the current compiled row reader and native RNG state, including a same-output falsifier. It adds tools/tests only.
+
+The [Grounding source/ROM case](validation/grounding-source-rom-1.3.2.md) verifies pointer provenance, finite native damage states and ABI-aware write rules. This changes verification tooling only.
+
+The [Wonder Guard attribution](validation/wonder-guard-source-rom-1.3.2.md) verifies the current effect gate and two status contracts using actual move data. It adds verification tools and a literal-pool admission regression only.
+
+The [Rage attribution](validation/rage-source-rom-1.3.2.md) reconstructs the existing status repair and executes its current controller and native leaf calls. It adds verification tools and tests without changing gameplay.
+
+The [Transform transport attribution](validation/transform-transport-source-rom-1.3.2.md) adds current native packet/consumer checks and recording-only PartyMon requests. It extends the existing Rage evidence without claiming save persistence or changing gameplay.
+
+The [Transform reload attribution](validation/transform-reload-source-rom-1.3.2.md) adds exact source/ELF/readback and guarded-field checks for the existing repair. Optional object retention preserves the default builder behavior; no game or save changes.
+
+The [U-turn attribution](validation/uturn-source-rom-1.3.2.md) identifies current fallback-argument and native-field marker defects and tightens their verification. Reports deliberately retain failed compatibility gates. The game ASM, ROMs and saves remain unchanged; a game repair is pending a separate maintainer decision.
+
+The [native HP continuation](validation/hp-flinch-source-rom-1.3.2.md) reproduces the signed-word collision after the real damage writer and HP script. Earlier controller states and natural battle activation remain unqualified; this adds verification evidence, with no game repair.
+
+The [native U-turn producer](validation/uturn-producer-source-rom-1.3.2.md) qualifies actual script command execution and intermediate packing in a bounded fixture. The existing game compatibility failures remain open; no game repair is included.
+
+The [AfterDamage continuation](validation/afterdamage-source-rom-1.3.2.md) now reaches the erroneous flinch-script request through native states0..6 and their neutral scripts. Applying that effect and natural turn behavior remain separate; no game repair is included.
+
+The [native flinch effect](validation/flinch-effect-source-rom-1.3.2.md) executes script14,ability gates and the target status setter in initialized EN/IT paths. This proves bit application,with lost action/natural battle still separate and no game repair.

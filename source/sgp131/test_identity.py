@@ -9,10 +9,10 @@ class FinalIdentity(unittest.TestCase):
         self.assertEqual(ms.ORDER[-1], 'identity')
 
     def test_reviewed_label_fits_existing_tiles(self):
-        self.assertEqual(identity.LABEL, 'V1.3.2')
+        self.assertEqual(identity.LABEL, 'V1.3.3')
         self.assertEqual(len(identity.pixels()), 384)
         self.assertEqual(hashlib.sha256(identity.pixels()).hexdigest(),
-                         'eb340a9c119115296bb308c23c30bd9ff77ffb49877e7d0e83f306d8c0b8ba99')
+                         '8dc3639ecb62410ba1af62370e8632df298f328f1b48ffbcd9124a70bff7ea1b')
         self.assertTrue(all((b & 15) in (0, 4, 14) and b >> 4 in (0, 4, 14) for b in identity.pixels()))
 
 if __name__ == '__main__':

@@ -121,6 +121,7 @@ def install(data: bytes, language: str, charmap: Path, work_dir: Path,
     for name in ('bridge', 'physical', 'training', 'fieldbook'):
         part = compiled[name]
         arm(part['base'], _bounded_image(part['data'], part['capacity']))
+    arm(0x023DA800, resources['onboarding_bank'])
     arm(0x023D4C00, bytes(3776))  # verified cold retirement before conditional grants
     template = lambda role: struct.pack('<4I', symbols['bridge']['ui_bridge_' + role + '_init'],
                                        symbols['bridge']['ui_bridge_main'], symbols['bridge']['ui_bridge_exit'], 0xFFFFFFFF)

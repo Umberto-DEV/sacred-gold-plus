@@ -10,7 +10,7 @@
   "old_bytes": "fff7d5ff",
   "old_target": "0x020735E8",
   "resume": "0x0207363E",
-  "note": "BL to TrainerData_ReadTrPoke: after the archive member is loaded into the transient buffer and before the first species/override is interpreted (type-3 loop starts at 0x02073694)"
+  "note": "BL to TrainerData_ReadTrPoke: before the archive member is loaded into the allocated transient buffer; the member has been loaded on return at 0x0207363E, before the first species/override is interpreted (type-3 loop starts at 0x02073694)"
  },
  "loader": {
   "address": "0x020735E8",
@@ -18,7 +18,7 @@
   "sha256": "41ad2d1b6c9e7ffb8ef5077db2a6163886507b42f1bc039cdf3444a01696f5e2",
   "tail_target": "0x02007508",
   "narc_id": 56,
-  "note": "thunk: r0=trainer id, r1=buffer; tail-calls the archive reader with (buffer, 0x38, trainer id)"
+  "note": "28-byte pin: party-reader thunk is 16 bytes (10 code, 2 alignment, 4 literal), followed by the adjacent 12-byte trainer-header thunk. Party reader: r0=trainer id, r1=buffer; tail-calls the archive reader with (buffer, 0x38, trainer id)"
  },
  "constructor": {
   "start": "0x02073604",
@@ -148,6 +148,6 @@
   "max_bytes": 64,
   "stack_bytes": 16,
   "native_reader": "0x020735E9",
-  "note": "push {r0,r1,r4,lr}: the module is entered with the host's r0/r1 and an extra 16-byte frame, which the hook adds to its host-SP offset."
+  "note": "push {r0,r1,r2,lr}: the module is entered with the host's r0/r1 and an extra 16-byte frame, which the hook adds to its host-SP offset."
  }
 }

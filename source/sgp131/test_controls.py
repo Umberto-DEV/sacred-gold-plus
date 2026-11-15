@@ -393,7 +393,7 @@ class Intervals(unittest.TestCase):
     # re-reads ui.py / ui_compile.py and fails if a write is added that this list does not know.
     UI_DIRECT_WRITES = (
         ('bridge payload', 0x023CB800, 12272), ('physical payload', 0x023D6E10, 1024),
-        ('training payload', 0x023D6800, 1536), ('fieldbook payload', 0x023D4000, 3072),
+        ('onboarding text', 0x023DA800, 1008), ('training payload', 0x023D6800, 1536), ('fieldbook payload', 0x023D4000, 3072),
         ('settings template', 0x020FA354, 16), ('guide template', 0x023D7B10, 16),
         ('bootstrap clear', 0x023D7B20, 40), ('control clear', 0x023D7B48, 16),
         ('physical slot clear', 0x023D7210, 48), ('shiny generation clear', 0x023CB1F0, 16),
@@ -436,6 +436,9 @@ class Intervals(unittest.TestCase):
             r"_compile\(directory, '(physical|bridge|training|fieldbook)',[^()]*?[,\s]\s*(0x0[0-9A-Fa-f]{7}), (\d+),", compiled, re.S)}
         self.assertEqual(bases, {('physical', 0x023D6E10, 1024), ('bridge', 0x023CB800, 12272),
                                  ('training', 0x023D6800, 1536), ('fieldbook', 0x023D4000, 3072)})
+
+    def test_onboarding_text_is_protected(self):
+        self.assertIn(('onboarding.text', 0x023DA800, 1008), mechanics_stages.UI_RESERVE_SPANS)
 
     def test_delegated_event_flag_writes_are_complete_and_protected(self):
         self.assertEqual((event_flags.BASE, event_flags.SIZE, event_flags.CONFIG),

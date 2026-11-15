@@ -72,8 +72,8 @@ class CapacityCandyBench:
     SUPPORT = (0x0207463C, 0x02074640, 0x0200E9BC, 0x0207DAC4,
                0x0200DD08, 0x02077CE8, 0x02077DAC, 0x0206E540, 0x0201AB0C)
 
-    def __init__(self, path):
-        self.b = capacity_bench_class()(path, CAPACITY_BUILD)
+    def __init__(self, path, capacity_build=None):
+        self.b = capacity_bench_class()(path, CAPACITY_BUILD if capacity_build is None else capacity_build)
         self.b.pockets[self.ITEM] = self.POCKET
         self.level = 99
         self.support_calls = []
@@ -332,9 +332,25 @@ class ProveCaramelle(unittest.TestCase):
 
     def test_il_gancio_e_una_bl_verso_il_blocco(self):
         """Il blob in ROM è quello del manifesto e il gancio ci punta."""
+        from banco import BUILD, BLOCCO, GANCIO
+        from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB
         m = manifesto()
-        self.assertEqual(int(m["simboli"]["sgp_caramelle_gancio"], 16), 0x023DAC01)
-        self.assertLessEqual(m["blob"]["byte"], 240)
+        self.assertEqual(int(m["simboli"]["sgp_caramelle_gancio"], 16), BLOCCO | 1)
+        blob = (BUILD / 'blob.bin').read_bytes()
+        canary = (BUILD / 'canarino.bin').read_bytes()
+        self.assertLessEqual(len(blob), 240)
+        expected = blob + bytes(240-len(blob)) + canary
+        self.assertEqual(len(expected),256)
+        for language in LINGUE:
+            with self.subTest(lingua=language):
+                machine = self.banco(language)
+                encoded = bytes(machine.uc.mem_read(GANCIO,6))
+                instructions = list(Cs(CS_ARCH_ARM,CS_MODE_THUMB).disasm(encoded,GANCIO))
+                self.assertEqual(len(instructions),2)
+                self.assertEqual(instructions[0].mnemonic,'bl')
+                self.assertEqual(int(instructions[0].op_str.lstrip('#'),0),BLOCCO)
+                self.assertEqual(encoded[4:],bytes.fromhex('38bd'))
+                self.assertEqual(bytes(machine.uc.mem_read(BLOCCO,256)),expected)
 
 
 @unittest.skipUnless(rom_presenti() and (CAPACITY_BUILD / 'manifesto.json').is_file(),
@@ -385,6 +401,32 @@ class ProveCaramellaBorsaIntegrate(unittest.TestCase):
                 levels = [r1 for address, unused, r1 in x.support_calls
                           if address == 0x0206E540]
                 self.assertIn(0xA1, levels, 'the real MON_DATA_LEVEL read was not reached')
+
+
+@unittest.skipUnless(rom_presenti(), MOTIVO)
+class ProveBancoContratto(unittest.TestCase):
+    def test_manifesto_non_basta_se_il_gancio_caricato_e_sbagliato(self):
+        from unittest import mock
+        from banco import GANCIO
+        for language in LINGUE:
+            with self.subTest(lingua=language):
+                case=ProveCaramelle('test_il_gancio_e_una_bl_verso_il_blocco')
+                def changed(lang):
+                    machine=Banco(rom(lang))
+                    machine.uc.mem_write(GANCIO,bytes.fromhex('c046')*3)
+                    return machine
+                case.banco=changed
+                with mock.patch.dict(globals(),LINGUE=(language,)),self.assertRaises(AssertionError):
+                    case.test_il_gancio_e_una_bl_verso_il_blocco()
+
+    def test_effetti_corretti_non_bastano_se_il_pop_non_ritorna(self):
+        from banco import GANCIO
+        for language in LINGUE:
+            with self.subTest(lingua=language):
+                machine=Banco(rom(language));machine.prepara()
+                machine.uc.mem_write(GANCIO+4,bytes.fromhex('fee7'))
+                with self.assertRaisesRegex(AssertionError,'did not return'):
+                    machine.esegui()
 
 
 if __name__ == "__main__":

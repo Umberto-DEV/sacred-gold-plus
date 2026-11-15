@@ -36,12 +36,12 @@ STUB_BYTES = 64
 SLOT_PAYLOAD_BYTES = 192
 HELPER_ADDRESS = SLOT_START + STUB_BYTES
 HELPER_CAPACITY = 128
-HELPER_BYTES = 68
-HELPER_SHA256 = '8dfc3389b012ba046fd81df9c4a79119d1ffa4bf044b2462720a1868e0ea7f02'
+HELPER_BYTES = 74
+HELPER_SHA256 = 'fd3e38715bd40098080f7375f3d16a96044d359dda4c5c1436cb9bbbf55f478c'
 EFFECT_ENTRY = HELPER_ADDRESS | 1
 MODIFIER_ENTRY = (HELPER_ADDRESS + 0x20) | 1
-EFFECT_LIVE_CALL = 24
-MODIFIER_LIVE_CALL = 62
+EFFECT_LIVE_CALL = 26
+MODIFIER_LIVE_CALL = 68
 GET_EFFECT = 0x02255830
 GET_MODIFIER = 0x02255844
 
@@ -108,8 +108,21 @@ def _assignment(allocation):
     return row
 
 
-def compile_native(work_dir: Path):
-    """Compile, relocate and authenticate both wrappers at their fixed owner."""
+def compile_native(work_dir: Path, *, retain_object=False):
+    return _compile_native(work_dir, retain_object=retain_object, source_path=NATIVE,
+                           helper_bytes=HELPER_BYTES, helper_sha256=HELPER_SHA256,
+                           effect_live_call=EFFECT_LIVE_CALL,
+                           modifier_live_call=MODIFIER_LIVE_CALL)
+
+
+def _compile_native(work_dir: Path, *, retain_object, source_path, helper_bytes,
+                    helper_sha256, effect_live_call, modifier_live_call):
+    """Build both wrappers; optionally retain the verified own-project ELF.
+
+    Default receipt and artifact behavior are unchanged. A differing retained
+    object is preserved and rejected.
+    """
+    _need(type(retain_object) is bool, 'retain_object must be boolean')
     compiler = compiler_path(COMPILER_SHA256)
     _need(compiler is not None, 'pinned clang unavailable')
     work_dir = Path(work_dir)
@@ -121,7 +134,7 @@ def compile_native(work_dir: Path):
     _need(version == COMPILER_VERSION, 'compiler version drift: ' + version)
     _need(_sha(Path(compiler).resolve().read_bytes()) == COMPILER_SHA256,
           'compiler binary drift')
-    source = NATIVE.read_bytes()
+    source = source_path.read_bytes()
     loader = _module(SOURCE / 'features/options/tools/carica_text.py',
                      'uturn_snapshot_object_loader')
     with tempfile.TemporaryDirectory(prefix='uturn-snapshot-', dir=work_dir) as scratch:
@@ -130,7 +143,7 @@ def compile_native(work_dir: Path):
         environment = dict(compiler_environment())
         environment['TMPDIR'] = str(scratch)
         done = subprocess.run(
-            [compiler, *FLAGS, '-c', str(NATIVE), '-o', str(obj)],
+            [compiler, *FLAGS, '-c', str(source_path), '-o', str(obj)],
             cwd=scratch, env=environment, capture_output=True, text=True,
             timeout=60)
         _need(done.returncode == 0 and not done.stderr,
@@ -145,8 +158,8 @@ def compile_native(work_dir: Path):
           'U-turn wrapper entry geometry')
     payload = bytearray(payload)
     for name, offset, target in (
-            ('uturn_effect_live_call', EFFECT_LIVE_CALL, GET_EFFECT),
-            ('uturn_modifier_live_call', MODIFIER_LIVE_CALL, GET_MODIFIER)):
+            ('uturn_effect_live_call', effect_live_call, GET_EFFECT),
+            ('uturn_modifier_live_call', modifier_live_call, GET_MODIFIER)):
         actual = (symbols[name] & ~1) - HELPER_ADDRESS
         _need(actual == offset, name + ' geometry')
         payload[offset:offset + 4] = bl_thumb(HELPER_ADDRESS + offset,
@@ -154,9 +167,9 @@ def compile_native(work_dir: Path):
         _need(bl_decode(HELPER_ADDRESS + offset, payload[offset:offset + 4])
               == target, name + ' target')
     payload = bytes(payload)
-    _need(len(payload) == HELPER_BYTES and _sha(payload) == HELPER_SHA256,
+    _need(len(payload) == helper_bytes and _sha(payload) == helper_sha256,
           'U-turn helper payload drift: ' + _sha(payload))
-    return payload, {
+    receipt = {
         'bytes': len(payload), 'payload_sha256': _sha(payload),
         'object_sha256': _sha(raw), 'source_sha256': _sha(source),
         'entries': {'effect': symbols['uturn_snapshot_effect'],
@@ -165,6 +178,15 @@ def compile_native(work_dir: Path):
         'compiler': {'version': version, 'executable_sha256': COMPILER_SHA256,
                      'flags': list(FLAGS)},
     }
+    if retain_object:
+        retained = work_dir / 'uturn.o'
+        _need(not retained.is_symlink() and (not retained.exists()
+              or retained.is_file() and retained.read_bytes() == raw),
+              'retained object differs; preserve the existing artifact')
+        if not retained.exists():
+            retained.write_bytes(raw)
+        receipt['retained_object'] = retained.name
+    return payload, receipt
 
 
 def edits():

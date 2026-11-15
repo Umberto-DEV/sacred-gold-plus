@@ -474,7 +474,7 @@ Whole-byte identity proves ARM7, file IDs, every hook, reserve guard, FAT file,
         # Receipt contents cannot authorize slots: the exact reconstructed cold UI is independently verified.
         stages = [mechanics_stages.require_stage(name) for name in runs]
         declared = [list(stage.regions(after if getattr(stage, 'regions_from_final', False) else before)) for stage in stages]
-        cold_ui = mechanics_stages.intermediate_images(before, after, stages, declared)[0] if runs else after
+        cold_ui = mechanics_stages.cold_ui_image(before, after, stages, declared) if runs else after
         with ui_workspace(scratch, ui_inputs, scratch_fd) as owned_charmap:
             recorded = receipts[0].get('archive_deltas', []) if isinstance(receipts[0], dict) else None
             named = {name for record in recorded or () if isinstance(record, dict)
@@ -495,6 +495,7 @@ Whole-byte identity proves ARM7, file IDs, every hook, reserve guard, FAT file,
             rows, _ = mechanics_stages.resolve_allocation(
                 before, names, allocation, installed_ui=cold_ui, charmap=owned_charmap,
                 work_dir=scratch, archive_deltas=deltas, overlay_deltas=overlays)
+            del cold_ui
 
             def independent_ui(image):
                 return ui_verify.verify(before, image, language, owned_charmap, scratch,

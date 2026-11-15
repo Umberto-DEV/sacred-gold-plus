@@ -438,6 +438,26 @@ class TestTabellaCamera(unittest.TestCase):
         self.assertGreater(len(bloc_camera.CANONICA) * 2, bloc_camera.ECC11_NUOVA_N)
 
 
+class TestSorgenteCameraRecuperata(unittest.TestCase):
+    def test_due_layout_ricostruiscono_corpo_e_delta_dei_soli_literal(self):
+        import importlib.util
+        source = Path(__file__).resolve().parents[1]
+        compiler = source / 'features/camera/tools/compila.py'
+        self.assertTrue(compiler.is_file(), 'recovered camera compiler is missing')
+        spec = importlib.util.spec_from_file_location('camera_recovered_compiler',compiler)
+        tool = importlib.util.module_from_spec(spec);spec.loader.exec_module(tool)
+        with tempfile.TemporaryDirectory() as tmp:
+            base,final=Path(tmp)/'base',Path(tmp)/'final'
+            tool.compila(base,'base11');tool.compila(final,'r4')
+            before=(base/'camera.bin').read_bytes();after=(final/'camera.bin').read_bytes()
+            self.assertEqual(len(before),84);self.assertEqual(len(after),84)
+            self.assertEqual(hashlib.sha256(before).hexdigest(),
+                '0832f466100bf990210485f7d43a64d908985802b548709099a0d80d3f7cdd95')
+            self.assertEqual({i for i,(a,b) in enumerate(zip(before,after)) if a!=b},
+                             {0x48,0x49,0x4C,0x4D})
+            self.assertEqual(struct.unpack_from('<II',after,0x48),(0x023D8A10,0x023D8A98))
+
+
 class TestRegistroCamera(unittest.TestCase):
     """Classe A: il registro della riserva deve DESCRIVERE la tabella nuova.
     R3 dell'analisi del gancio: un registro non aggiornato non rompe la ROM

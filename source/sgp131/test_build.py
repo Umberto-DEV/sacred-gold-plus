@@ -429,6 +429,16 @@ class MechanicsBuildTests(unittest.TestCase):
             replay(data, receipts, through='moves')
         self.assertFalse((self.top / 'verify').exists())
 
+    def test_chain_admission_does_not_materialize_intermediate_list(self):
+        from . import mechanics_stages
+        data, report = self.mechanics('ai')
+        inputs = build.snapshot_ui_inputs(self.charmap, self.config)
+        with patch.object(mechanics_stages, 'intermediate_images',
+                          side_effect=AssertionError('unbounded list')):
+            actual = build.verify_composition(EN, data, report['receipts'], through='ai',
+                                              ui_inputs=inputs, scratch=self.top / 'verify')
+        self.assertEqual(actual, report['composition'])
+
     def test_chain_provenance_and_acceptance_require_every_mechanical_receipt_and_case(self):
         import copy
         from . import evidence

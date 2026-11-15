@@ -140,6 +140,25 @@ def _legacy(old):
             'old_objects': [{'address':a,'bytes':n,'sha256':h} for a,n,h in pins]}
 
 
+def _verify_onboarding_bank(before, after, old_title, new_title):
+    """Independently read each indexed string; preserve every non-title ID."""
+    def strings(bank):
+        _need(type(bank) is bytes and len(bank) == 1008, 'onboarding bank size')
+        result = []
+        for i in range(29):
+            pos = struct.unpack_from('<H', bank, 2*i)[0]
+            _need(58 <= pos < 1008 and pos % 2 == 0, 'onboarding offset')
+            end = pos
+            while end < 1008 and bank[end:end+2] != b'\xff\xff':
+                end += 2
+            _need(end < 1008, 'onboarding terminator')
+            result.append(bank[pos:end+2])
+        return result
+    old, new = strings(before), strings(after)
+    _need(old[20] == old_title and new[20] == new_title, 'onboarding title')
+    _need(all(old[i] == new[i] for i in range(29) if i != 20), 'onboarding foreign text')
+
+
 def _retirement(old, new, compiled):
     evidence = _legacy(old)
     # Explicit retained root/context/Continue/NewGame state envelope. No native
@@ -230,6 +249,10 @@ def verify(before: bytes, after: bytes, language: str, charmap: Path, work_dir: 
         arm(base,part['data']+bytes(cap-len(part['data'])),name)
     for address,count in ((0x023D7B20,40),(0x023D7B48,16),(0x023D7210,48),(0x023CB1F0,16)):
         arm(address,bytes(count),'cold zero '+hex(address))
+    _verify_onboarding_bank(old.arm(0x023DA800,1008), new.arm(0x023DA800,1008),
+                            *resource['onboarding_titles'])
+    _need(old.arm(0x023DABF0,16) == new.arm(0x023DABF0,16), 'onboarding canary')
+    arm(0x023DA800,resource['onboarding_bank'],'onboarding title bank')
     arm(0x023D4C00,bytes(3776),'retired Guide suffix')
     bridge=compiled['bridge'];training=compiled['training'];shiny=compiled['shiny']
     for address,role in [(0x020FA354,'settings'),(0x023D7B10,'guide')]:

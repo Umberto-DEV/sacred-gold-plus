@@ -79,13 +79,17 @@ leaving all other bytes intact. A later native save can claim these destinations
 This is a diagnostic repair procedure, not the normal update route; preserve an
 unaltered backup before any manual save editing.
 
-Native saving always runs and returns its own result. This hook never invents
-`WRITE_STATUS_TOTAL_FAIL`: the touch-save caller historically discarded it and
-showed success, silently losing the session. If the extension cannot be written,
-the native save can still advance generation; the old extension becomes stale
-and the next load falls back to 486 slots. Overlay 15 retains its original FAT slot
-and compressed length, independently checked by in-place decompression. Readback
-does not call the installer.
+The historical standalone writer forwarded native saving and its result even
+when the extension failed; it did not invent `WRITE_STATUS_TOTAL_FAIL`, which the
+touch-save caller historically discarded. That behavior must not be generalized
+to the current installation: the [Training coordinator](../../sgp13/training.py)
+and [foreign-save guard](../../sgp131/bag_foreign.py) can reject the commit before
+native saving. The current source/ROM case below identifies that successor hook
+without requalifying its complete SAVE behavior. In the standalone path, native
+generation could advance after an extension failure, making the old extension
+stale and causing the next load to fall back to 486 slots. Overlay 15 retains its
+original FAT slot and compressed length, independently checked by in-place
+decompression. Readback does not call the installer.
 
 The [save contract](../../docs/contracts.md#expanded-bag-121) defines recovery and
 compatibility. **Saving with an older ROM can make the extra slots unavailable on
@@ -118,3 +122,13 @@ The re-exported SRAM matched the saved bytes exactly. This bounded fixture is
 not universal save compatibility or fresh acceptance of the 1.3.1 ROM. See
 [current validation](../../docs/ui-1.3.1-validation.md). ROMs, SRAM, dumps,
 savestates and captures remain private.
+
+## Linking the current core to an exact ROM
+
+The [current source/ROM case](../../docs/validation/bag-quantity-source-rom-1.3.2.md)
+reconstructs the historical compilation plus allocation and Training hook
+successors, checks the complete initial owner and exercises native quantity/
+consume through real Medicine slots and the Rare Candy caller. Run
+`tools/attribuisci.py --help` for the exact-input CLI. Its bridge is an
+attribution artifact rejected by the production installer; it does not relax
+the strict bench or substitute historical bytes into a ROM.

@@ -115,8 +115,13 @@ def _module(path, name):
     return module
 
 
-def compile_native(work_dir: Path):
-    """Build and authenticate the exact in-place Conversion2 helper."""
+def compile_native(work_dir: Path, *, retain_object=False):
+    """Build the exact helper; optionally retain its verified own-project ELF.
+
+    The production default keeps its existing receipt and no retained object.
+    A differing artifact is preserved and rejected.
+    """
+    _need(type(retain_object) is bool, 'retain_object must be boolean')
     compiler = compiler_path(COMPILER_SHA256)
     _need(compiler is not None, 'pinned clang unavailable')
     work_dir = Path(work_dir)
@@ -161,7 +166,7 @@ def compile_native(work_dir: Path):
     _need(bl_decode(CONVERSION_SITE + call_offset,
                     payload[call_offset:call_offset + 4]) == RANDOM,
           'Conversion2 RNG target differs')
-    return payload, {
+    receipt = {
         'bytes': len(payload), 'payload_sha256': _sha(payload),
         'object_sha256': _sha(raw), 'source_sha256': _sha(source),
         'entry': symbols['conversion2_type_row'],
@@ -170,6 +175,16 @@ def compile_native(work_dir: Path):
         'compiler': {'version': version, 'executable_sha256': COMPILER_SHA256,
                      'flags': list(FLAGS)},
     }
+
+    if retain_object:
+        retained = work_dir / 'type-consumers.o'
+        _need(not retained.is_symlink() and (not retained.exists()
+              or retained.is_file() and retained.read_bytes() == raw),
+              'retained object differs; preserve the existing artifact')
+        if not retained.exists():
+            retained.write_bytes(raw)
+        receipt['retained_object'] = retained.name
+    return payload, receipt
 
 
 def edits(payload):

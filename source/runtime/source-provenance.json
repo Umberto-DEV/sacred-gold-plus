@@ -2,7 +2,6 @@
   "source_core_revision": "906e9ebb27da8c6a715cd7abab4abfe8a8d29427",
   "unchanged_runtime_sources": {
     "platform.cpp": "5f03432ec4641b832369f492fc9be6267a0537bc4753ea68d5bc245b0b874090",
-    "hg_trace.h": "3ca2817773026d7110835eaf280d0b0f8aadf29db7031ab8db76582cfe56539f",
     "melonds-observation-hooks.patch": "f99dc0723803ccf93dc777cf3b67a027705c74fb691be8c4fb86d2f1aab24885"
   },
   "portability_changes": {
@@ -78,6 +77,173 @@
       "change": "RunFrame-only host timing plus read-only IPKE map, position and active-object fields; session metadata records observer and initial trace state while commands.log records later trace changes; CSV file writes are buffered until each run block ends and formed rows are flushed best-effort before a run failure is rethrown.",
       "validation_scope": "The current hash has ROM-free C++ timing/scene/buffering tests and a clean rebuild. The sequential tracing-off/on Cianwood pair and final tracing-on replay used the immediately preceding main.cpp hash 33da230285e09d06e46213d52869cb562285757f409226fa193c389d205aff32, before exception-safe diagnostic flushing and the TracePCInitial label; those replays produced byte-identical route RAM dumps, captures and roundtrip saves, but are not attributed to the current hash. The single ordered pair is not a performance conclusion.",
       "historical_reports": "Earlier CSV schemas, route replays and executable/source identities remain historical and are not silently reinterpreted or attributed to the current executable."
+    },
+    "2026-11-09": {
+      "main.cpp": {
+        "before_sha256": "2309eb6f7e7a1f060be1d9c650fc8998f232746a5861e6ab2463ff61d757e52f",
+        "after_sha256": "170ebe6164a08b01873ba9845a9b4d61f2f39faf0e6be9aba52094b338901054"
+      },
+      "frame_sampler_header": {
+        "path": "frame_sampler.h",
+        "sha256": "e869683aa98f15328b86416cdecc4c3f68c29bb235315fd688d4ac5d6fd98ec0"
+      },
+      "change": "Optional post-RunFrame RGB/ROI hashes and bounded raw ANIM2/BattleSystem observations with separate host timing, secure budgeted per-block CSV; OFF default has no sample reader/clock. Core and guest code remain unchanged.",
+      "validation_scope": "16 runtime test methods including expanded C++ sampler contracts. Natural r4 EN E1 comparison plus E2 OFF/ON/ON/OFF; IT OFF/ON. Same guest columns, sparse pixels, final4MiB RAM and rawSRAM per language. Separate encounters by language, one populated fixture. Guest image succession/cadence, not physical display pacing, hardware CPU or input-to-photon latency.",
+      "historical_reports": "E1 and previous reports retain their original executable identities. See docs/validation/animation-cadence-1.3.2.md."
+    },
+    "2026-11-10": {
+      "hg_trace.h": {
+        "before_sha256": "3ca2817773026d7110835eaf280d0b0f8aadf29db7031ab8db76582cfe56539f",
+        "after_sha256": "7dec78f0c2c964463f2f106d395aace990b84735a8984beae0e12ae38ac77f88"
+      },
+      "main.cpp": {
+        "before_sha256": "170ebe6164a08b01873ba9845a9b4d61f2f39faf0e6be9aba52094b338901054",
+        "after_sha256": "e8c384bc4bc5a9533ccaf11297d271cf95ea9743b75cf8b26553e45c42952252"
+      },
+      "change": "Opt-in bounded fixed-site r4 battle Bag ARM9 dispatch observer and explicit private H4 layout; strict separately selected core derivative. Register copies only, return PC/SP/mode admission, finite stack/events/counters, explicit incomplete returns, failure/unfinished-session rejection with diagnostic flush. No guest memory reads/writes or clock in observer. Private prototype, not a released game change.",
+      "validation_scope": "18 runtime methods in explicit source/CLI checks; preliminary old E3 AA and exact E3b EN/IT OFF/ON route confirm guest images/state; each executable retains its own identity. Exact E3c confirms register-only observation and EN/IT OFF/ON on the private192-byte successor, plus2420 per-frame RGB/ANIM/RNG samples per language equal to r4 controls. Ten balanced EN pairs (20 fresh processes), plus separate IT controls, retain pixel/SRAM/event-frame equivalence and independently reconstructed4MiB RAM outside the exact256-byte owner. These are developer observations, not game/hardware acceptance; the166-byte prototype was rejected by its fallback pixel guard. Same-mode span/top-of-observed-stack dispatches, not active CPU cycles or per-thread work; overlay sites only in qualified battle window.",
+      "historical_reports": "Previous E1/E2 and E3/E3b reports are not relabelled to the new executable."
+    },
+    "2026-11-10-E4": {
+      "hg_trace.h": {
+        "before_sha256": "7dec78f0c2c964463f2f106d395aace990b84735a8984beae0e12ae38ac77f88",
+        "after_sha256": "a747b22016caa3fe17fe1d955b5cbf18e93e7a9c61544dac4716b96de929595c"
+      },
+      "main.cpp": {
+        "before_sha256": "e8c384bc4bc5a9533ccaf11297d271cf95ea9743b75cf8b26553e45c42952252",
+        "after_sha256": "2f9e6c4888128abbd5dcc150a2c5abbcd07265ae927fc71509e538583e8befc3"
+      },
+      "change": "Separate opt-in native ExpHeap transaction profile with full ARM opcode checks, mode/SP context gate, entry/exit ordering, parent/CPSR and quiescent architecture status; incomplete native stop stays invalid and diagnostic output is emitted once. Same strict core derivative, no new guest reads/writes or clock in interpreter observer.",
+      "validation_scope": "Exact E4d 09e12c130a222a3ff8c2d43098697e89ff05066a30cc942465b093be6959ccf7. Nine accepted host acquisitions include EN r4 E3cOFF/E4OFF/NativeON and EN/IT r4/H4B OFF/ON,8478frames/2466samples each. Same-candidate observer controls preserve all guest columns,10RGB captures, start/endMainRAM and SRAM. Independent per-language allocator models reproduce all native transaction states and11checkpoints per ON run; C/B RAM outside the exact256byte owner and resource-state sequences agree. Fifteen runtime tests, three binary CLI tests and full C++ ASan/UBSan pass. Two rejected acquisitions retain diagnostic/unknown receipts; not benchmark replicas, global transient peak, physical hardware timing, universal save proof or game improvement.",
+      "historical_reports": "E3c sources/binary and earlier campaigns retain their exact identities; rejected driver/budget attempts and metadata RTC erratum remain explicit."
+    },
+    "2026-11-10-E5": {
+      "hg_trace.h": {
+        "before_sha256": "a747b22016caa3fe17fe1d955b5cbf18e93e7a9c61544dac4716b96de929595c",
+        "after_sha256": "656de0ec94c9c4b3ec3b0bc0146e546b5686401c36c4b6bff48a90a6b431d9a0"
+      },
+      "main.cpp": {
+        "before_sha256": "2f9e6c4888128abbd5dcc150a2c5abbcd07265ae927fc71509e538583e8befc3",
+        "after_sha256": "ed202302c5b23755ce8fe3dc1df5f81215b5123cc15d6fa5032965e78780b05c"
+      },
+      "change": "Opt-in Graphics profile: nine new sites plus six Bag context sites, auxR4..R7, explicit call-edge return PCs preserving raw LR, closed-stop requirement, ordered24-column diagnostics and quiescent architecture status. Same core derivative, no observer guest reads/writes or clock.",
+      "validation_scope": "Exact E5 11225bcbd851b9fbb0be711775c1df9ee63c1c779fcde907fa03558d2bfe1f84. EN E4OFF/E5OFF/GraphicsON neutral guest controls and11 MainRAM checkpoints. Scoped FIFO/model replay:6queued type35 requests3072B and85 extra observed SubOBJ copies34336B, all DMAchannel3. Source completion only; direct BG/palette/OAM, DMA busy, VBlank/FIFO waiting, liveVRAM and physical targets remain open.15unit plus3CLI and nested ASan/UBSan pass;32semantic and15route falsifiers.",
+      "historical_reports": "E4/E3 and rejected qualifiers retain exact identities and source archives; no game improvement or successor/global graphics acceptance."
+    },
+    "2026-11-10-G05-P0": {
+      "sources": {
+        "hg_trace.h": "aa7b3416c4dbab0dd4684a118e78ce0bba587b3ff130b8c11b415b7ea18d0ea2",
+        "patch_core.py": "5434c6c91855b461c9d03dd6946153c18f8e2bfa381310fa31084930315d9c41",
+        "test/frame_observation_test.cpp": "fdc32e35095fa723e1dba656bdd744d3105df54ddf728dfdf349e3c26e3ba28c",
+        "test/test_patch_core.py": "f23dd4912a0ba25b5c1859dc200e13cf8b1de8f059e9d13a455e1d0dd9b12b34"
+      },
+      "change": "Inert raw ARM9 model-clock budget class and explicit separately authenticated --model-budget core derivative, five guarded callsites in ARM.cpp/NDS.cpp. Current vendor checkout remains E5; CMake/frontend/output/direct-wait profile not yet wired.",
+      "validation_scope": "18 source-unit methods PASS (binary CLI group excluded); raw partition,25 invalid lambdas, OFF/zero/multiskip/rounding and sanitizer cases.10 synthetic cases execute the exact generated NDS scheduling block, not guest instructions; derivative pin/upgrade/isolation/idempotence/tampered-tree tests. No E6 executable or gameplay measurement exists.",
+      "historical_reports": "E5 is still the current verified scoped runtime and E4 fallback; their binary and archived sources are unchanged. P0 is a tool prototype, not an accepted game change."
+    },
+    "2026-11-10-G05-WIRING": {
+      "sources": {
+        "CMakeLists.txt": "a48bf1a2c93a7cfa8dbbf6259c71beded003fe29478d64beed20929016aeab3e",
+        "main.cpp": "65605497f3994e19a2f6716f5fcb388cd661afe7e3b3d82f8f7d54f33104570b",
+        "hg_trace.h": "bb1176808b3c38575ec106c0de70d0709498aea13a9c05296b1d5a030a46dd80",
+        "test/frame_observation_test.cpp": "7fc8dd4cfae0ecc738e2dc823253a4a4c693bfc94cb4cbb32faa79a02353d0f5"
+      },
+      "change": "Initial separate Pilot selection and opt-in model-clock frontend/CSV plus strict CMake capability flag. This is unfinished source wiring: direct transfer filters and bounded wait collection are pending. Vendor checkout still E5; no E6 executable.",
+      "validation_scope": "Pilot admission RED then source C++ frame tests GREEN; main syntax-only checked with and without model capability. No new guest run or executable qualification; full integration/review/neutrality remains required.",
+      "historical_reports": "G05P0 unit sources preserved exactly in a small archive; E5 exact runtime and archive remain current verified scope."
+    },
+    "2026-11-10-G05-INTEGRATED-SOURCE": {
+      "sources": {
+        "CMakeLists.txt": "a48bf1a2c93a7cfa8dbbf6259c71beded003fe29478d64beed20929016aeab3e",
+        "main.cpp": "d50945b28a421587427b0c27c102589d344ea9bfa57ca49737b6f76932c1541b",
+        "hg_trace.h": "1a3a8f4a8abe7fd1b03e58f0ad5d47df347b9fbe275eb50f571a8b95abac5ae7",
+        "patch_core.py": "5434c6c91855b461c9d03dd6946153c18f8e2bfa381310fa31084930315d9c41",
+        "test/frame_observation_test.cpp": "0e4117d2355165a0fb53c788ffe7f31f2c9c4dffb2376fdffa7d757e42688150",
+        "test/test_patch_core.py": "f23dd4912a0ba25b5c1859dc200e13cf8b1de8f059e9d13a455e1d0dd9b12b34"
+      },
+      "change": "Separate opt-in Pilot source profile with checked Copy/OAM/Poll/Wait/callback collectors and 58 compact cumulative counters per frame. Exact model core variant not yet applied; E6 binary absent.",
+      "validation_scope": "Independent source reviews, synthetic integrated collector sanitizer tests and final frame-export overflow tests; no new guest measurement or executable acceptance.",
+      "historical_reports": "E5/E4 immutable exact binaries and archived sources retain their own scoped qualification."
+    },
+    "2026-11-10-G05-E6-MATRIX": {
+      "runtime_sha256": "cd806fce161899ea61f632943fd6d58a81253d0d37c59bca413df5cf73452d34",
+      "archived_build_sources": {
+        "CMakeLists.txt": "a48bf1a2c93a7cfa8dbbf6259c71beded003fe29478d64beed20929016aeab3e",
+        "LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+        "README.md": "8d94ec24d0908a60ce466ad2e73a551a3785c7c8813c8d7bc499e6bccab511e8",
+        "SHA256SUMS": "6b6dc91a51debe55c558f268c5fb6627d9009fc2b0f4f17f8cd440e5ec3d35fe",
+        "buffered_rows.h": "eb273907c69675859c81f712312243e45055427c282679f907268ee162fec2be",
+        "csv_output.h": "ca10b58ab72701ae41c0273f368e8c4ad1ee477aa5351faf427160e3f6b8858f",
+        "frame_sampler.h": "e869683aa98f15328b86416cdecc4c3f68c29bb235315fd688d4ac5d6fd98ec0",
+        "frame_timing.h": "b14da39dcf7240c4469645e4b36965392e5f7ec72585dd52a64a45f9b782c87a",
+        "hg_trace.h": "1a3a8f4a8abe7fd1b03e58f0ad5d47df347b9fbe275eb50f571a8b95abac5ae7",
+        "inputs/boot-save.script": "306e9124871e4435808bbe7438cb42b1b2bdd5cf134d650476e9d969813c5320",
+        "inputs/boot-smoke.script": "cadadb0d180ba02a4f62cd038b5555675618aafc86ec13adb3943fbf510f02b7",
+        "inputs/cold-reload.script": "afe17d0736a00a30b778a777ecc453964ccd0bf1a756ff4e27a50d60e8f799d8",
+        "inputs/newgame-keyboard.script": "f8258ebb9ad39ee52322a9497a455909e59e48a3647e794081e3f11e5491f0c4",
+        "inputs/pokedex-cold-ui.script": "f5f74cb979ac99362a70fddc101a0d548a5c5ace0709aa015fe8d47b8f2248e4",
+        "inputs/town-house-roundtrip.script": "3bd80378d503d542b14e14782f64295fedfc128b3619e1b3692c798b767a900c",
+        "main.cpp": "d50945b28a421587427b0c27c102589d344ea9bfa57ca49737b6f76932c1541b",
+        "melonds-observation-hooks.patch": "f99dc0723803ccf93dc777cf3b67a027705c74fb691be8c4fb86d2f1aab24885",
+        "patch_core.py": "5434c6c91855b461c9d03dd6946153c18f8e2bfa381310fa31084930315d9c41",
+        "platform.cpp": "5f03432ec4641b832369f492fc9be6267a0537bc4753ea68d5bc245b0b874090",
+        "rtc_config.h": "aaff3f213f0e764791baf0f2599458033b58a8aab0cc90bddba4964a8e257f72",
+        "runtime_limits.h": "3dcd35503297190b649bcfb7cc37d38fcdb9748e905ce1c4d37122bd35dee9d5",
+        "scene_observer.h": "4714679504dec4c7152dd9cc564fbe0370694496f3bf3a36ac43f40c0b634d29",
+        "secure_output.h": "ef5aa2f4e6232e761e4c68e127dffb3797cc19c2eb2ecef9082288b396f77dba",
+        "source-provenance.json": "502db6e94692f17f573947c45d4f2ea0731ae54aa3bfd5e39a72386f2ec62cb6",
+        "test/frame_observation_test.cpp": "0e4117d2355165a0fb53c788ffe7f31f2c9c4dffb2376fdffa7d757e42688150",
+        "test/rtc_config_test.cpp": "625fc557bd5f775a3732497f38b68274738317c4f39a4ff060eea422d55fb835",
+        "test/run_rtc_tests.py": "19ea97b8b0c371a7ab68949fc63f5481e08b25e31b4a6a823544ee0e8572e001",
+        "test/test_frame_observation.py": "68ac5101baa489d3ee82277faa8c78f8f63c0b7f468a8856c92792de5cc5c42c",
+        "test/test_patch_core.py": "f23dd4912a0ba25b5c1859dc200e13cf8b1de8f059e9d13a455e1d0dd9b12b34",
+        "test/test_rtc_cli.py": "38aa45ff682f81066691ca91a917475f5480254979cf30db9f03a6ca1ff101b3",
+        "test/test_rtc_parser.py": "5314a0a6305ffab62addf5a3c1df11833c6893a5227ca2edbc9170957a96466c",
+        "test/test_runtime_limits.cpp": "9a7a34bf1a36a0068249eed94222565c15934de2790bd728dbc2e0812bcf14c8",
+        "test/test_runtime_limits.py": "a45789cf474472794a5d6c1b44681c6ae5fdfb7f8cf65cb534c9abf9a2a5bb21"
+      },
+      "archive_sha256": "1c9e7f5c81dc11395ede8f96b089b42e72f4b16718656edaa871e277019cf31f",
+      "change": "Opt-in Pilot model-clock/direct/Wait/Copy/OAM/Poll/callback frontend and exact separate five-hook core variant; legacy logical cap retained. This entry documents the existing E6 executable, not a rebuild after documentation edits.",
+      "validation_scope": "Fixed EN/IT r4/H4B pilot: four ON/OFF pairs, same-ROM prior controls,8478frames/2466samples/10RGB/11RAM and SRAM. Within-language C/B controls plus semantic/negative/source/live-boundary replay.29ClockWait,26graphic groups+4type35,8context,6registry,15route. Modeled Execute residual decreases52800EN/45070IT raw ticks and HaltSkip increases equivalently; no CPUbusy/UI/hardware speed claim. No reassignable memory recovered.",
+      "limitations": "Six transient cumulative frames per language and two request frames one frame earlier; global interleaving differs.68RAM source-unknown calls4352B; bank roles4/NONE0 and allasynczero. UI endpoint and assetIO/decode reconciliation, global lifetime and physical targets remain separate.",
+      "historical_reports": "E6 exact33-file build archive remains immutable, including its build-time pending metadata and earlier documentation. The current README/provenance/checksum edits are documentation-only; older E5/E4 evidence retains its own scope."
+    },
+    "2026-11-10-G06-E7B": {
+      "runtime_sha256": "bd061f3bb5bfb8d70090a43f994c99edb07f273b72f2f612575e2685852cba11",
+      "archive_sha256": "1394968b01f4e2eb5cd9f6e12359da83006e26831a73a3b6575bc1eeee1e7071",
+      "changed_build_sources": {
+        "hg_trace.h": "3594709eed60610fdf0306b5ca3ceaaf2caef2aaf71ad1e81ff06c2a0da75225",
+        "main.cpp": "5c9096c60d88cf97886ab417828236f90dc33aba8970784f26184c8c80fbb321",
+        "test/frame_observation_test.cpp": "9b53575c95ec776c4e375e238f2f5eb8010dbbd7b72c42ee046f89ff7806b961"
+      },
+      "core_files": {
+        "src/ARM.cpp": "ceeeb673545f6f74f11e205cf000006bf900d624d5f63ed7d216efbf336e586e",
+        "src/NDS.cpp": "feb546f18ebb7264363665614ef9a895e8f04db97a7bb4de529b9dcbc80ad16d"
+      },
+      "change": "Opt-in native asset profile on the existing Work interpreter hook, with bounded per-call returns and decoder-body store/dispatch witnesses.",
+      "validation_scope": "EN r4 exact OFF/ON and prior same-ROM OFF control: 8478 guest frames, 2466 samples, ten RGB, eleven RAM and SRAM unchanged. 80611 events; 11390 full logical SDK completions/4310836 bytes, 34 loads and 30 unloads, two no-op unload requests. Independent native-site, decoder-footer and replay falsification checks. Prior 65536-record candidate rejected at cap.",
+      "limitations": "One EN control route beginning at first guest frame after emulator direct boot. No physical ROM/bus, exclusive FS time, global game or performance acceptance. Archive contains the exact build-time files; this documentation was updated afterward."
+    }
+  },
+  "party_attribution_observer": {
+    "schema": 1,
+    "layout": "work on party",
+    "scope": "Exact r4 EN/IT battle Party scan, register-only opt-in; runtime acceptance recorded separately",
+    "sites": [
+      "0x221d184",
+      "0x23dbeb4",
+      "0x23dbebe",
+      "0x23dbe2c",
+      "0x23dbe00",
+      "0x23dbe7c",
+      "0x2073314",
+      "0x207332c"
+    ],
+    "limits": "Requires external exact image and route authentication; isolated probe tests are not gameplay qualification",
+    "source_sha256": {
+      "hg_trace.h": "974cafdfa8e0b2d752aedbe6b39c4e4790d23b157e11447120070d50a4745a5d",
+      "main.cpp": "39cf32cacebe5a33383c9b2002ec974f8207a147cd013705cd89be8fd9c84191",
+      "test/frame_observation_test.cpp": "c00cd4234e5fddbf6ef53bfe2d35babe9508d02e49236901c693d4c8b17ff4a1"
     }
   }
 }

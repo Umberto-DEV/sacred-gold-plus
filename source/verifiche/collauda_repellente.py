@@ -87,8 +87,11 @@ def main():
 
     # C3 -- qualcosa compare a schermo
     ppm = sorted(f for f in os.listdir(d) if f.endswith(".ppm") and f != "latest.ppm")
+    if len(ppm) < 2:
+        print(f"CADUTO  C3  servono almeno due catture: trovate {len(ppm)}")
+        return 1
     distinti = {sha(os.path.join(d, f)) for f in ppm}
-    if len(ppm) >= 2 and len(distinti) == 1:
+    if len(distinti) == 1:
         print(f"CADUTO  C3  tutti i {len(ppm)} fotogrammi sono byte-identici: "
               f"a schermo non e' comparso nulla")
         return 1

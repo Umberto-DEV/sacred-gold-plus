@@ -7,8 +7,12 @@ notice. Shops, paid rewards, trades and sites outside the audited census keep
 the original behavior.
 
 Stack limits are 999, or 99 for TMs/HMs. Mail and Key Items always retain native
-behavior. The table identifies 110 permissive sites from the final script bytes;
-106 keys remain unchanged and four are regenerated after the REWARD-01 reversal.
+behavior. The historical table was generated for 110 permissive sites: 106 unchanged
+keys and four regenerated after the REWARD-01 reversal. In exact r4 EN/IT,
+later script repairs leave 102 matching keys and eight obsolete keys. See the
+[current attribution case](../../docs/validation/gift-source-rom-1.3.2.md)
+for the source replay, fallback coverage and remaining policy decision; the
+table has not been changed.
 
 The public composed API is `source/sgp12/blocchi/borsa.py`:
 
@@ -25,6 +29,23 @@ Individual tools remain available for diagnosis; the builder uses the composed A
 Set `SGP_PRET_SOURCE` to `pret/pokeheartgold` revision
 `0985e8718df4f25e64d6507d89c0c97c0d288981`. The module reads `charmap.txt` and
 tracked `tools/py_scripts/scrcmd.json`; it needs neither a 1.03 ROM nor `local/` files.
+
+Newer PRET sources can supply additional names and explanations without replacing
+these production inputs. The [reference comparison method](../../docs/test-bench.md#using-newer-pret-references)
+records the moved, byte-identical charmap and three recovered script-command names.
+Compare your own metadata with the standard-library-only reader:
+
+```sh
+python3 -I -S -B source/features/borsa/tools/confronta_metadata_pret.py \
+  --before /path/to/old/tools/py_scripts/scrcmd.json \
+  --after /path/to/new/tools/py_scripts/scrcmd.json
+python3 -I -S -B -m unittest discover -s source/features/borsa/test -p test_pret_metadata.py
+```
+
+Exit 0 means identical parsed metadata or changes confined to command names;
+1 means other metadata differs; 2 means an input error. The JSON reports hashes
+and all renames by numeric ID. This is reference triage, not production admission
+or proof that the corresponding ROM functions execute identically.
 
 ```sh
 python3 source/features/borsa/tools/compila_borsa.py --uscita DIR
@@ -49,3 +70,13 @@ This exercises the shared ground-Ball flow, rather than every one of the 110
 sites or every NPC gift, trade or purchase. Those other paths have census,
 readback and ARM coverage. Historical evidence does not by itself accept a
 newer ROM; see [current validation](../../docs/ui-1.3.1-validation.md).
+
+
+## Current source-to-ROM verification
+
+`tools/attribuisci.py --help` checks the current compilation, complete owner,
+historical table generation, later script drift and installed command paths.
+The bench's explicit `installed=True` mode preserves ROM code and table;
+the default remains the historical synthetic unit fixture. Both modes require
+an actual return before the instruction budget. The current case is bounded
+host evidence, not fresh acceptance of every gift, script lifetime or save.

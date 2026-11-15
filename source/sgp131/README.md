@@ -1,11 +1,16 @@
 # Build and verify the 1.3 composition line
 
-**Source status, 8 November 2026:** this directory builds the shared 1.3.2
-composition, including the New Game correction and five-language native UI.
-Current identities and bounded acceptance belong to the
-[1.3.2 contract](../distribution/release-1.3.2.json) and
-[validation report](../docs/validation/localization-1.3.2.md). The 1.3.1 tables
-below remain historical, rather than expected outputs of this source revision.
+**Source status, 15 November 2026:** this directory builds the five-language
+**1.3.3 development candidate**. Its two U-turn/flinch fixes preserve fallback
+arguments and distinguish snapshots from negative native damage. Five
+[candidate identities](../distribution/game-1.3.3.json) have passed scoped
+host readback and seven raw-save/cold cycles on five fixtures. Natural battle,
+complete pivot and physical-device validation remain pending. Host evidence uses
+an interpreter/software renderer and FreeBIOS; it does not qualify device
+behavior or firmware. This is not a published release. The [candidate validation report](../docs/validation/uturn-fix-1.3.3.md)
+describes the bounded evidence. The [published 1.3.2 baseline](../distribution/game-1.3.2-r4.json)
+and its [validation report](../docs/validation/localization-1.3.2.md) retain
+their historical scope, as do the 1.3.1 tables below.
 Regional presentation uses the [localization layer](../docs/localization.md).
 
 The build path is **your retail HeartGold → 1.2.5 → historical V1.3 V4 →
@@ -18,17 +23,19 @@ The current player profile activates **portable storage only**. The additional
 Summary controls and configurable rematch owners remain inert. The existing
 EV/IV summary tools are retained from earlier versions.
 
-For 1.3.2, build the EN/IT player cores, then compose FR/ES/DE presentation
+For the 1.3.3 candidate, build the EN/IT player cores, then compose FR/ES/DE presentation
 from the exact English core and matching retail donors. Shared code, locale
 copy, generated C descriptors and production source pins form one checkpoint.
 Footer admission includes native button caps and gaps; exit/Apply bars check
 combined labels and spacing. Plain text width alone does not establish fit.
 
-The current release has five target identities and all 30 recognized
-original/historical sources for every target: **150 direct routes**. Historical
-ROMs are inputs, not additional output versions. Follow the
-[update procedure](../docs/update-workflow.md) for bounded host/save checks and
-packaging. The historical tables below are not expected current output hashes.
+The published 1.3.2 r4 package contract has 35 recognized sources for each
+of five targets: **175 optional updater routes**. Historical ROMs are inputs,
+not additional output versions. Five private same-language r4-to-1.3.3 candidate
+patches passed two decoder roundtrips; they are not approved release packaging or
+an installation. Follow the [update procedure](../docs/update-workflow.md) for
+bounded host/save checks. The historical tables below are not expected current
+output hashes.
 
 ## Pinned V4 inputs and historical 1.3.1 outputs
 
@@ -47,6 +54,25 @@ second table. Reproducing those outputs requires their published source
 revision. A version label or filename does not establish byte identity.
 The composer admits only the first table; do not relax `baseline.py` to accept
 a similar ROM.
+
+
+## Mechanical chain verification
+
+The host verifier reconstructs the chain in two reverse passes, retaining
+boundary hashes instead of a complete image for every stage. It checks the
+cold UI between passes, compares actual boundary hashes across them, and keeps
+receipt, grant, invariant, confinement and owner-reader checks. Admission
+reconstructs the cold UI without collecting the full image list. The explicit
+`intermediate_images` compatibility API still returns that list and uses
+memory proportional to the number of stages. Reconstruction takes a linear
+number of steps in the stage count; image size and other host allocations also
+matter.
+
+Stage readers run in reverse order, so a chain with multiple invalid stages
+may report a later stage first. A 104-test synthetic suite compared the new and
+previous algorithms and exercised refusal cases. Its allocation measurements
+are documented in the [candidate validation report](../docs/validation/uturn-fix-1.3.3.md);
+they are not a whole-process RSS measurement or a claim about game performance.
 
 ## Toolchain and external data
 
@@ -192,8 +218,7 @@ Repeat the build with IT and its own mechanics file/digest. The resulting
 `managed/<language>/pending.nds` and `pending.json` describe an all-inert
 composition, distinct from the player-profile outputs. The following hashes
 are historical 1.3.1 all-inert projections. Current source changes produce new
-identities; preserve each new receipt rather than comparing a 1.3.2 build with
-this old table.
+identities; preserve each new receipt rather than comparing a candidate build with this old table.
 
 | Language | All-inert projection SHA-256 |
 | --- | --- |

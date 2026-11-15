@@ -467,5 +467,245 @@ class Conversion2Native(unittest.TestCase):
         self.assertEqual(logical[0], logical[1], 'Conversion2 retail table differs EN/IT')
 
 
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT images through SGP_R4_ROM_DIR')
+class CurrentCompositeFlags(unittest.TestCase):
+    """Final-image proof, separate from the historical V4 apply_code fixture."""
+    def module(self):
+        import importlib.util
+        path=ROOT/'source/features/fairy-ai/tools/attribuisci.py'
+        self.assertTrue(path.is_file(),'final Fairy flags attribution tool missing')
+        spec=importlib.util.spec_from_file_location('final_fairy_flags',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        import os
+        pattern=os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')
+        return module.read_current(Path(os.environ['SGP_R4_ROM_DIR'])/(pattern%language),language)
+
+    def test_final_composition_immunity_and_unrelated_flags(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            model=self.current(module,language)
+            cpu=module.FlagsCPU(model['segments'],model['overlay'])
+            for type1,type2 in ((9,16),(16,9)):
+                for initial in (0,0xA5000000):
+                    with self.subTest(language=language,types=(type1,type2),initial=initial):
+                        result=cpu.run(16,type1,type2,initial)
+                        module.expect_flags(result,initial|8)
+                        self.assertEqual(result['helper_entries'],1)
+                        self.assertEqual(result['split_entries'],0)
+            del cpu,model;gc.collect()
+
+    def test_old_combiner_mask_is_a_semantic_counterexample(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            model=self.current(module,language);mutant=bytearray(model['overlay'])
+            offset=0x02252202-0x022378C0
+            self.assertEqual(mutant[offset:offset+2],bytes.fromhex('0c20'))
+            mutant[offset]=4
+            cpu=module.FlagsCPU(model['segments'],bytes(mutant))
+            for type1,type2 in ((9,16),(16,9)):
+                result=cpu.run(16,type1,type2,0)
+                self.assertEqual(result['flags'],10)
+                with self.assertRaisesRegex(ValueError,'flags'):
+                    module.expect_flags(result,8)
+            del cpu,model;gc.collect()
+
+
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT images through SGP_R4_ROM_DIR')
+class CurrentCompositeScalar(unittest.TestCase):
+    def module(self):
+        import importlib.util
+        path=ROOT/'source/features/fairy-ai/tools/attribuisci_scalare.py'
+        self.assertTrue(path.is_file(),'full scalar attribution tool missing')
+        spec=importlib.util.spec_from_file_location('final_fairy_scalar',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        import os
+        pattern=os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')
+        return module.SHARED.read_current(Path(os.environ['SGP_R4_ROM_DIR'])/(pattern%language),language)
+
+    def test_native_parent_scalar_tail_and_real_arm_division(self):
+        import gc
+        module=self.module()
+        cases=((9,16,16,80),(9,17,1,160),(16,9,16,0),(9,3,8,10),(0,0,0,40),(10,15,15,80))
+        for language in ('EN','IT'):
+            model=self.current(module,language);cpu=module.ScalarCPU(model['segments'],model['overlay'])
+            for attack,type1,type2,expected in cases:
+                with self.subTest(language=language,types=(attack,type1,type2)):
+                    result=cpu.run(attack,type1,type2);module.expect_score(result,expected)
+                    self.assertEqual(result['scalar_entries'],1)
+                    self.assertEqual(result['post_bl_entries'],0)
+                    if attack==10:
+                        self.assertTrue(result['division_calls'])
+                        self.assertTrue(all(c['entry_isa']=='ARM' and c['denominator']==10 for c in result['division_calls']))
+            del cpu,model;gc.collect()
+
+    def test_equal_defender_guard_prevents_double_fairy_multiplier(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            model=self.current(module,language);segments=[]
+            for address,data in model['segments']:
+                if address<=0x023D746C+76<address+len(data):
+                    data=bytearray(data);offset=0x023D746C+76-address
+                    self.assertEqual(module.SHARED.branch(bytes(data[offset:offset+2]),0x023D746C+76,'beq'),0x023D746C+90)
+                    data[offset:offset+2]=bytes.fromhex('c046');data=bytes(data)
+                segments.append((address,data))
+            cpu=module.ScalarCPU(segments,model['overlay'])
+            result=cpu.run(9,16,16)
+            self.assertEqual(result['score'],160)
+            self.assertEqual(result['decoder_entries'],2)
+            with self.assertRaisesRegex(ValueError,'score'):
+                module.expect_score(result,80)
+            del cpu,model;gc.collect()
+
+
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT through SGP_R4_ROM_DIR')
+class CurrentCompositeConversion(unittest.TestCase):
+    def module(self):
+        import importlib.util
+        path=ROOT/'source/features/type-consumers/tools/attribuisci.py'
+        self.assertTrue(path.is_file(),'Conversion2 attribution tool missing')
+        spec=importlib.util.spec_from_file_location('current_conversion',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        import os
+        pattern=os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')
+        path=Path(os.environ['SGP_R4_ROM_DIR'])/(pattern%language)
+        model=module.S.SHARED.read_current(path,language)
+        dense,_,_=module.S.engine_chart(path,language,'r4')
+        return model,dense
+
+    def test_current_row_boundaries_and_real_rng(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);cpu=module.ConversionCPU(x['segments'],x['overlay'],dense)
+            matrix,trailer=module.type_chart.rows(dense);rows=matrix+trailer
+            for index in (0,111,112,322,323,324,325,0xFFFFFFFF):
+                result=cpu.observe(index=index,seed=0)
+                row=index if index<325 else (module.next_seed(0)>>16)%325
+                self.assertEqual(result['row'],list(rows[row]))
+                self.assertEqual(result['result'],int(index<325))
+                self.assertEqual(len(result['rng_calls']),int(index>=325))
+            del cpu,x,dense;gc.collect()
+
+    def test_current_command_can_select_fairy_resistance(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);cpu=module.ConversionCPU(x['segments'],x['overlay'],dense)
+            matrix,trailer=module.type_chart.rows(dense);row=(matrix+trailer).index((9,8,5))
+            result=cpu.observe(seed=module.command_seed_for_row(row),last_move_type=9)
+            self.assertEqual(result['types'],[8,8]);self.assertEqual(result['snapshot_type'],8)
+            self.assertEqual(len(result['rng_calls']),1)
+            del cpu,x,dense;gc.collect()
+
+    def test_same_row_does_not_hide_a_missing_rng_state_write(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense=self.current(module,language);mutant=bytearray(x['overlay'])
+            at=0x0223BDA8-module.T.OVERLAY_BASE
+            self.assertEqual(mutant[at:at+2],bytes.fromhex('8150'));mutant[at:at+2]=bytes.fromhex('c046')
+            with self.assertRaisesRegex(ValueError,'native RNG'):
+                module.ConversionCPU(x['segments'],bytes(mutant),dense)
+            cpu=module.ConversionCPU(x['segments'],bytes(mutant),dense,attested=False)
+            result=cpu.observe(index=325,seed=0,require_rng=False)
+            self.assertEqual(result['row'],[0,0,10]);self.assertEqual(result['result'],0)
+            self.assertEqual(result['seed_after'],0)
+            with self.assertRaisesRegex(ValueError,'RNG seed transition'):
+                module.require_rng_progress(result)
+            del cpu,x,dense;gc.collect()
+
+
+@unittest.skipUnless(__import__('os').environ.get('SGP_R4_ROM_DIR'),
+                     'requires exact r4 EN/IT through SGP_R4_ROM_DIR')
+class CurrentCompositeWonderGuard(unittest.TestCase):
+    def module(self):
+        import importlib.util
+        path=ROOT/'source/features/type-consumers/tools/attribuisci_wonder_guard.py'
+        self.assertTrue(path.is_file(),'current Wonder Guard attribution tool missing')
+        spec=importlib.util.spec_from_file_location('current_wonder',path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module
+
+    def current(self,module,language):
+        import os
+        path=Path(os.environ['SGP_R4_ROM_DIR'])/(os.environ.get('SGP_R4_ROM_NOME','r4-%s.nds')%language)
+        model=module.H.G.S.SHARED.read_current(path,language)
+        dense,_,_=module.H.G.S.engine_chart(path,language,'r4')
+        moves,_=module.read_moves(path)
+        return model,dense,moves
+
+    def test_actual_effects_and_charge_gate_in_both_consumers(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense,moves=self.current(module,language)
+            cpu=module.WonderCPU(x['segments'],x['overlay'],dense,moves)
+            for mode in ('damage','flags'):
+                for move,target,charged,immune,gate in ((424,0,False,True,1),
+                        (467,11,False,False,0),(467,11,True,True,512)):
+                    result=cpu.observe(mode,move,target,charged=charged)
+                    self.assertEqual(result['immune'],immune)
+                    self.assertEqual([call['result'] for call in result['gate_calls']],[gate])
+            del cpu,x,dense,moves;gc.collect()
+
+    def test_fire_fang_alone_cannot_qualify_the_shortcut_branch(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense,moves=self.current(module,language)
+            cpu=module.WonderCPU(x['segments'],module.counter_image(x['overlay'],'shortcut'),dense,moves,variant='shortcut')
+            for mode in ('damage','flags'):
+                fire=cpu.observe(mode,424,0)
+                self.assertTrue(fire['immune'])
+                shadow=cpu.observe(mode,467,11)
+                self.assertTrue(shadow['immune'])
+                with self.assertRaisesRegex(ValueError,'Wonder Guard immunity'):
+                    module.expect_immune(shadow,False)
+            del cpu,x,dense,moves;gc.collect()
+
+    def test_old_effect_literal_reproduces_the_fire_fang_bypass(self):
+        import gc
+        module=self.module()
+        for language in ('EN','IT'):
+            x,dense,moves=self.current(module,language)
+            cpu=module.WonderCPU(x['segments'],module.counter_image(x['overlay'],'old'),dense,moves,variant='old')
+            for mode in ('damage','flags'):
+                result=cpu.observe(mode,424,0)
+                self.assertFalse(result['immune'])
+                with self.assertRaisesRegex(ValueError,'Wonder Guard immunity'):
+                    module.expect_immune(result,True)
+            del cpu,x,dense,moves;gc.collect()
+
+
+    def test_flags_rejects_literal_pool_execution(self):
+        import gc
+        module=self.module()
+        x,dense,moves=self.current(module,'EN')
+        cpu=module.WonderCPU(x['segments'],x['overlay'],dense,moves)
+        cpu.observe('flags',424,0)
+        cpu.current=dict(mode='flags',instructions=0,stack_depth=0)
+        try:
+            with self.assertRaisesRegex(ValueError,'flags code'):
+                cpu.uc.emu_start(0x02252171,module.STOP,count=1)
+        finally:
+            cpu.current=None
+        del cpu,x,dense,moves;gc.collect()
+
+
 if __name__ == '__main__':
     unittest.main()

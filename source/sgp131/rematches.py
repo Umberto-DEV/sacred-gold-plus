@@ -345,10 +345,14 @@ def _loader():
     return loader
 
 
-def compile_native(work_dir, base, config_address, config_bytes):
+def compile_native(work_dir, base, config_address, config_bytes, *, retain_object=False):
     """Compile native.c for ARM946E-S Thumb; code is relocated to `base`, the config is at `config_address`
     and its allocation (the bound the core enforces at runtime) is `config_bytes`. The module is entered from the
-    resident stub, whose frame (STUB_STACK bytes) the hook adds to its host-SP offset."""
+    resident stub, whose frame (STUB_STACK bytes) the hook adds to its host-SP offset.
+    Set retain_object=True to keep the ELF object; default output/cleanup stay unchanged.
+    """
+    if type(retain_object) is not bool:
+        raise ValueError('retain_object must be a boolean')
     work = Path(work_dir)
     work.mkdir(parents=True, exist_ok=True)
     obj = work / 'rematch-variants.o'
@@ -360,12 +364,18 @@ def compile_native(work_dir, base, config_address, config_bytes):
                     f'-DREMATCH_HOST_SP_OFFSET={32 + load_abi()["stub"]["stack_bytes"]}', '-c', str(FEATURE / 'native.c'),
                     '-o', str(obj)], check=True, env=compiler_environment_for(work), capture_output=True)
     blob, symbols = _loader().load_text(obj.read_bytes(), base, ('rematch_hook', 'rematch_native'))
-    obj.unlink()
+    if not retain_object:
+        obj.unlink()
     return blob, symbols
 
 
-def compile_stub(work_dir, base, entry):
-    """Assemble stub.S for the resident slot at `base`; `entry` is the module's Thumb entry (bit 0 set)."""
+def compile_stub(work_dir, base, entry, *, retain_object=False):
+    """Assemble stub.S at `base`; optionally retain its ELF object for attribution.
+
+    `entry` is the module Thumb entry (bit0 set). Default output and cleanup stay unchanged.
+    """
+    if type(retain_object) is not bool:
+        raise ValueError('retain_object must be a boolean')
     abi = load_abi()
     work = Path(work_dir)
     work.mkdir(parents=True, exist_ok=True)
@@ -377,7 +387,8 @@ def compile_stub(work_dir, base, entry):
                     *[f'-D{k}=0x{v:08X}' for k, v in defines.items()], '-c', str(FEATURE / 'stub.S'), '-o', str(obj)],
                    check=True, env=compiler_environment_for(work), capture_output=True)
     blob, symbols = _loader().load_text(obj.read_bytes(), base, ('c8_stub',))
-    obj.unlink()
+    if not retain_object:
+        obj.unlink()
     if len(blob) > abi['stub']['max_bytes']:
         raise ValueError(f'stub overflow: {len(blob)} > {abi["stub"]["max_bytes"]}')
     return blob, symbols

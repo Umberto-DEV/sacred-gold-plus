@@ -7,7 +7,7 @@ class CatalogueTests(unittest.TestCase):
   self.assertEqual([e['name'] for e in obj['entries'][133:]],['GUIDE_'+s for s in ('TITLE','OPEN','BACK','UP','DOWN','PREVIOUS','NEXT','LINK','CLOSE','SELECT','PAGING')])
   original=json.loads(json.dumps(obj['entries'][:133]))
   version=next(e for e in original if e['name']=='VERSION')
-  self.assertEqual(version['text'],{'EN':'V1.3.2','IT':'V1.3.2'})
+  self.assertEqual(version['text'],{'EN':'V1.3.3','IT':'V1.3.3'})
   version['text']={'EN':'V1.3.1','IT':'V1.3.1'}
   self.assertEqual(hashlib.sha256(json.dumps(original,sort_keys=True,ensure_ascii=False).encode()).hexdigest(),'07c4894f22a2a0082429c185b2dda5704644160ec8717cb0d3d1af02d8d238aa')
  def test_exact_context_labels_follow_approved_bilingual_copy(self):

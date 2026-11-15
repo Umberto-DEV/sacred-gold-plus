@@ -21,11 +21,11 @@ import struct
 import sys
 from pathlib import Path
 
-from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_PROT_ALL
+from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_HOOK_MEM_WRITE, UC_PROT_ALL
 from unicorn.arm_const import (
     UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2, UC_ARM_REG_R3, UC_ARM_REG_R4,
     UC_ARM_REG_R5, UC_ARM_REG_R6, UC_ARM_REG_R7, UC_ARM_REG_R8, UC_ARM_REG_R9,
-    UC_ARM_REG_R10, UC_ARM_REG_R11, UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_PC)
+    UC_ARM_REG_R10, UC_ARM_REG_R11, UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_CPSR)
 
 PAC = Path(__file__).resolve().parent.parent          # source/features/caramelle
 sys.path.insert(0, str(PAC.parents[1]))
@@ -97,9 +97,8 @@ def rom_presenti():
 
 
 def segmenti_arm9(path):
-    """Segmenti (ram, bytes) dell'ARM9 di una .nds. Lettore proprio: il banco
-    non dipende da sgp12.rom, così una prova verde non può venire da un bug
-    condiviso col laboratorio."""
+    """Segmenti (ram, bytes) ARM9; condivide valida_layout_arm9 col progetto.
+    Il rilettore finale lo confronta separatamente con ndspy."""
     d = Path(path).read_bytes()
     o9 = struct.unpack_from("<I", d, 0x20)[0]
     r9 = struct.unpack_from("<I", d, 0x28)[0]
@@ -122,6 +121,30 @@ class Banco:
         self.capienza = 6
         for a in NATIVE:
             self.uc.hook_add(UC_HOOK_CODE, self._stub, begin=a, end=a)
+
+    def _execute(self, entry, expected_sp):
+        """Bound execution and reject value-only success without a real return."""
+        self.last_writes = []
+        self.last_stack_depth = 0
+        def write(cpu,access,address,size,value,unused):
+            stack = PILA-256 <= address and address+size <= PILA
+            state = (address,size) in ((ARGS+A_ACTION,1),(ARGS+A_SEARCH,4))
+            if not (stack or state):
+                raise AssertionError('unexpected Candy write-set: %#x+%d' % (address,size))
+            self.last_writes.append((address,size))
+        def code(cpu,address,size,unused):
+            if not (GANCIO <= address < GANCIO+6 or BLOCCO <= address < BLOCCO+240
+                    or address in NATIVE):
+                raise AssertionError('undeclared Candy execution: %#x' % address)
+            self.last_stack_depth = max(self.last_stack_depth, expected_sp-cpu.reg_read(UC_ARM_REG_SP))
+        hooks=[self.uc.hook_add(UC_HOOK_MEM_WRITE,write),self.uc.hook_add(UC_HOOK_CODE,code)]
+        try:
+            self.uc.emu_start(entry | 1,FINE,count=20000)
+        finally:
+            for hook in hooks:self.uc.hook_del(hook)
+        if not (self.uc.reg_read(UC_ARM_REG_PC)==FINE and self.uc.reg_read(UC_ARM_REG_SP)==expected_sp
+                and self.uc.reg_read(UC_ARM_REG_CPSR)&32):
+            raise AssertionError('Candy did not return with the expected SP/Thumb state')
 
     # ------------------------------------------------------------- stub ---
     def _stub(self, uc, address, size, _):
@@ -177,7 +200,7 @@ class Banco:
             u.reg_write(reg, val)
         u.reg_write(UC_ARM_REG_R4, 0 if self.pm_nullo else PM)
         u.reg_write(UC_ARM_REG_LR, 0xFFFFFFFF)
-        u.emu_start(GANCIO | 1, FINE, count=20000)
+        self._execute(GANCIO,PILA)
         return {
             "stato": u.reg_read(UC_ARM_REG_R0),
             "azione": u.mem_read(ARGS + A_ACTION, 1)[0],
@@ -205,7 +228,7 @@ class Banco:
             u.reg_write(reg, val)
         u.reg_write(UC_ARM_REG_R4, 0 if self.pm_nullo else PM)
         u.reg_write(UC_ARM_REG_LR, FINE | 1)
-        u.emu_start(BLOCCO | 1, FINE, count=20000)
+        self._execute(BLOCCO,PILA-64)
         callee = {r: u.reg_read(r) for r in CALLEE}
         callee[UC_ARM_REG_R4] = u.reg_read(UC_ARM_REG_R4)
         return {

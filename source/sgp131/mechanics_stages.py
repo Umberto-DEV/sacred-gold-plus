@@ -88,7 +88,7 @@ UI_HOOKS = (('Options template', 0x020FA354, 16), ('physical hook', 0x0201A556, 
             ('event flags loader hook', 0x02027AD4, 8),
             ('event variable getter hook', 0x020403AC, 8),
             ('event SetVar hook', 0x02040F14, 8))
-UI_RESERVE_SPANS = (('ui.bridge', 0x023CB800, 12272), ('fieldbook.code', 0x023D4000, 3072),
+UI_RESERVE_SPANS = (('onboarding.text', 0x023DA800, 1008), ('ui.bridge', 0x023CB800, 12272), ('fieldbook.code', 0x023D4000, 3072),
                     ('training.ui', 0x023D6800, 1536), ('physical.code', 0x023D6E10, 1024),
                     ('event-flags.runtime', 0x023CF900, 1536),
                     ('physical.slot', 0x023D7210, 48), ('settings.descriptor', 0x023CB1A0, 80),
@@ -257,13 +257,8 @@ def check_sharing(stages, declared):
     require_disjoint([unique])
 
 
-def intermediate_images(before, final, stages, declared):
-    """The n+1 images of a chain: the UI image, the output of each stage, `final`; rebuilt from `final` alone.
-
-    Going backwards, a stage that can peel is taken out of its output; any other stage has its declared regions restored from
-    the pristine input. The bottom must then be exactly `final` with every declared region restored, so a peel can neither
-    leave bytes behind nor touch what is not declared.
-    """
+def _cold_plan(before, final, stages, declared):
+    """Validate sharing and fixed source preimages once in forward order."""
     check_sharing(stages, declared)
     overrides = {}
     by_stage = []
@@ -279,20 +274,46 @@ def intermediate_images(before, final, stages, declared):
                 _fail('inconsistent fixed cold preimages')
             overrides[key] = value
         by_stage.append(local)
-    images = [None] * len(stages) + [final]
-    for index in range(len(stages), 0, -1):
-        stage, regions = stages[index - 1], declared[index - 1]
+    return by_stage, overrides
+
+
+def _walk_reverse(before, final, stages, declared, plan, visitor=None):
+    """Reconstruct adjacent pairs without retaining prior images."""
+    by_stage, overrides = plan
+    current = final
+    for index in range(len(stages) - 1, -1, -1):
+        stage, regions = stages[index], declared[index]
+        step = current
         peel = getattr(stage, 'peel', None)
         if peel is None:
-            images[index - 1] = _restore(images[index], before, regions, by_stage[index-1])
-            continue
-        peeled = guarded(stage.name + ' peel', peel, images[index], before, regions)
-        if type(peeled) is not bytes or len(peeled) != len(final):
-            _fail('%s peel returned a mutable, non-bytes or resized ROM' % stage.name)
-        images[index - 1] = peeled
-    if images[0] != _restore(final, before, [r for regions in declared for r in regions], overrides):
+            previous = _restore(step, before, regions, by_stage[index])
+        else:
+            previous = guarded(stage.name + ' peel', peel, step, before, regions)
+            if type(previous) is not bytes or len(previous) != len(final):
+                _fail('%s peel returned a mutable, non-bytes or resized ROM' % stage.name)
+        if visitor is not None:
+            visitor(index, previous, step)
+        current = previous
+        del previous, step
+    if current != _restore(final, before, [r for regions in declared for r in regions], overrides):
         _fail('the chain does not peel back to the cold UI: a stage left bytes behind or touched undeclared ones')
+    return current
+
+
+def intermediate_images(before, final, stages, declared):
+    """Compatibility API returning all n+1 reconstructed images (O(n) images)."""
+    plan = _cold_plan(before, final, stages, declared)
+    images = [None] * len(stages) + [final]
+    def collect(index, previous, step):
+        images[index] = previous
+    _walk_reverse(before, final, stages, declared, plan, collect)
     return images
+
+
+def cold_ui_image(before, final, stages, declared):
+    """Reconstruct and validate only the cold UI image with bounded lifetime."""
+    plan = _cold_plan(before, final, stages, declared)
+    return _walk_reverse(before, final, stages, declared, plan)
 
 
 def check_confined(prev, nxt, regions, label='stage'):
@@ -1823,12 +1844,21 @@ def verify_chain(before, final, names, receipts, verify_ui, *, invariants=None, 
     declared = [list(guarded(stage.name + ' declaration', stage.regions, final if getattr(stage, 'regions_from_final', False) else before)) for stage in stages]
     for stage, regions in zip(stages, declared):
         _check_regions(regions, len(final) if getattr(stage, 'regions_from_final', False) else len(before))
-    images = intermediate_images(before, final, stages, declared)
-    ui_image = images[0]
+    plan = _cold_plan(before, final, stages, declared)
+    boundaries = [None] * (len(stages) + 1)
+    boundaries[-1] = _sha(final)
+    def remember(index, previous, step):
+        boundaries[index] = _sha(previous)
+        boundaries[index + 1] = _sha(step)
+    ui_image = _walk_reverse(before, final, stages, declared, plan, remember)
     ui_result = guarded('UI verifier', verify_ui, ui_image)
-    previous, hashes = ui_image, []
-    for index, (stage, regions, receipt) in enumerate(zip(stages, declared, receipts)):
-        step = images[index + 1]
+    ui_hash = _sha(ui_image)
+    del ui_image
+    hashes = [None] * len(stages)
+    def validate(index, previous, step):
+        stage, regions, receipt = stages[index], declared[index], receipts[index]
+        if _sha(previous) != boundaries[index] or _sha(step) != boundaries[index + 1]:
+            _fail('chain reconstruction boundary changed between passes for ' + stage.name)
         if receipt['input_sha256'] != _sha(previous) or receipt['output_sha256'] != _sha(step):
             _fail('receipt for %s does not describe this step of the final ROM' % stage.name)
         if [dict(start=r.start, end=r.end, label=r.label) for r in regions] != receipt['regions']:
@@ -1852,9 +1882,8 @@ def verify_chain(before, final, names, receipts, verify_ui, *, invariants=None, 
             guarded(stage.name + ' reader', lambda a, b, r: stage.verify(a, b, r, **verify_kwargs), previous, step, raw)
         else:
             guarded(stage.name + ' reader', stage.verify, previous, step, raw)
-        hashes.append(receipt['stage_receipt_sha256'])
-        previous = step
-    if previous != final:
-        _fail('final ROM differs from the chain reconstruction outside the declared regions')
+        hashes[index] = receipt['stage_receipt_sha256']
+    cold = _walk_reverse(before, final, stages, declared, plan, validate)
+    del cold
     return {'stages': names, 'ui': ui_result, 'stage_receipt_sha256': hashes,
-            'ui_image_sha256': _sha(ui_image), 'output_sha256': _sha(final)}
+            'ui_image_sha256': ui_hash, 'output_sha256': _sha(final)}

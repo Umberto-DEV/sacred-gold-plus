@@ -43,6 +43,17 @@ class RunnerTimingTests(unittest.TestCase):
             self.assertEqual(run_tests.esegui('failed', run_tests.SOURCE, ['-m', 'unittest']),
                              (False, 2, 0, 0.75, 2))
 
+    def test_long_failure_retains_early_error_and_summary(self):
+        failure = 'ERROR: early diagnostic\n' + 'x' * 5000 + '\nRan 2 tests in 0.1s\nFAILED (errors=1)\n'
+        result = subprocess.CompletedProcess([], 1, '', failure)
+        with patch.object(run_tests.subprocess, 'run', return_value=result), \
+                patch.object(run_tests.time, 'perf_counter', side_effect=[3.0, 3.75]), \
+                patch.object(sys, 'stdout', _CapturedOutput()) as output:
+            self.assertEqual(run_tests.esegui('failed', run_tests.SOURCE, ['-m', 'unittest']),
+                             (False, 2, 0, 0.75, 2))
+        self.assertIn('ERROR: early diagnostic', output.getvalue())
+        self.assertIn('FAILED (errors=1)', output.getvalue())
+
     def test_empty_class_a_still_fails_while_class_b_can_skip(self):
         result = subprocess.CompletedProcess([], 0, '', 'Ran 0 tests in 0.0s\n\nOK\n')
         with patch.object(run_tests.subprocess, 'run', return_value=result), \
