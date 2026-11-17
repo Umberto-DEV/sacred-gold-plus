@@ -5,7 +5,7 @@ and [repository map](docs/architecture/README.md),
 [feature ownership index](features/README.md) and
 [documentation index](docs/README.md) to find the relevant source and checks.
 
-This tree contains the five-language **1.3.3 development candidate**, native
+This tree contains the five-language **1.3.3 targets**, native
 payloads, build tools, tests and technical documentation. Published 1.3.2 and
 1.3.1 identities remain historical contracts; reproduce those releases from their
 published source revisions.
@@ -41,10 +41,13 @@ The [change register](docs/whats-new-1.3.1.md),
 [bug list](../BUG-FIXES-1.3.1.md) and
 [published validation report](docs/ui-1.3.1-validation.md) distinguish source
 repairs, exact ROM identities, played scenarios and open coverage.
-The [1.3.3 candidate fix](../BUG-FIXES-1.3.3.md) has bounded source and
-counterfactual evidence. Five [candidate identities](distribution/game-1.3.3.json)
-have passed scoped readback and seven bounded raw-save cycles on five original
-fixtures; natural battle/pivot and physical-device validation remain pending.
+The [1.3.3 corrections](docs/validation/fixes-1.3.3.md) have bounded source,
+counterfactual and exact-target readback evidence. The report separates the
+historical seven-cycle onboarding checks from subsequent DE/FR Training menu
+and raw-save/cold checks. Natural battle/pivot and physical-device validation
+remain pending. The [1.3.3 distribution contract](distribution/release-1.3.3.json)
+selects five targets, 40 recognized sources and 200 direct updater routes,
+with 18 player PDFs and the four unchanged historical builder inputs.
 The [1.3.2 source correction](../BUG-FIXES-1.3.2.md) and its
 [measured New Game regression](docs/validation/new-game-reset-1.3.2.md) retain
 the original diagnosis and probe identities. The published 1.3.2 baseline identities and

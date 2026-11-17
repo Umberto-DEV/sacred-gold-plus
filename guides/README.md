@@ -1,19 +1,19 @@
 # Illustrated player guides
 
-Current English gameplay guides use the original manuals' embedded lettering
+Current 1.3.3 English gameplay guides use the original manuals' embedded lettering
 and illustrations. Original files remain separately available for future edits.
 Installation and news PDFs stay inside each language folder of the player ZIP.
 
 | Current guide | Contents |
 | --- | --- |
-| [Pokemon Changes](current/Pokemon-Changes-1.3.2-EN.pdf) | Compact type, ability, stat and level-up changes |
-| [Pokemon Locations](current/Pokemon-Locations-1.3.2-EN.pdf) | Original illustrated area lists with current fishing corrections |
-| [Evolution Changes](current/Evolutions-1.3.2-EN.pdf) | Current altered evolution methods and conditions |
-| [Important Item Locations](current/Items-TMs-1.3.2-EN.pdf) | Current TMs, evolution items and other important items |
-| [Special Event Guide](current/Special-Events-1.3.2-EN.pdf) | Current instructions and the original illustrated walkthrough |
-| [Move Changes](current/Move-Changes-1.3.2-EN.pdf) | All 52 changed moves, including types, power, accuracy, PP and effects |
-| [Trainer Teams](current/Trainers-1.3.2-EN.pdf) | Base and optional Plus levels, items and moves |
-| [Game Guide](current/Game-Guide-1.3.2-EN.pdf) | Current controls, settings and training features |
+| [Pokemon Changes](current/Pokemon-Changes-1.3.3-EN.pdf) | Compact type, ability, stat and level-up changes |
+| [Pokemon Locations](current/Pokemon-Locations-1.3.3-EN.pdf) | Original illustrated area lists with current fishing corrections |
+| [Evolution Changes](current/Evolutions-1.3.3-EN.pdf) | Current altered evolution methods and conditions |
+| [Important Item Locations](current/Items-TMs-1.3.3-EN.pdf) | Current TMs, evolution items and other important items |
+| [Special Event Guide](current/Special-Events-1.3.3-EN.pdf) | Current instructions and the original illustrated walkthrough |
+| [Move Changes](current/Move-Changes-1.3.3-EN.pdf) | All 52 changed moves, including types, power, accuracy, PP and effects |
+| [Trainer Teams](current/Trainers-1.3.3-EN.pdf) | Base and optional Plus levels, items and moves |
+| [Game Guide](current/Game-Guide-1.3.3-EN.pdf) | Current controls, settings and training features |
 
 Magical Leaf is Ice-type in the actual game. The move guide explains this and
 other inherited and later changes. It reports the actual values, including
@@ -44,8 +44,10 @@ current generated PDFs are versioned here for direct reading on GitHub.
 [`catalogue.json`](catalogue.json) pins each admitted PDF by size and SHA-256;
 the public-file check still refuses arbitrary binary files.
 
-After reviewing new PDFs, update the catalogue, copy the guides to the complete
-[package workspace](../package/README.md), and compose a new ZIP. Technical
+After reviewing new PDFs, update the catalogue and the explicit
+[1.3.3 package contract](../source/distribution/release-1.3.3.json), then use the
+[versioned packager](../source/distribution/README.md#133-single-download) to
+compose the single ZIP. The seeded 1.3.2 workspace remains historical. Technical
 validation records exact candidate identities and coverage separately.
 
 Regenerate into a new directory from your own exact current English game and
@@ -55,10 +57,13 @@ unmodified retail baseline:
 PYTHONPATH=source .venv/bin/python source/distribution/illustrated_guides.py \
   --candidate /path/to/current-EN.nds --retail /path/to/retail-EN.nds \
   --charmap /path/to/pokeheartgold/charmap.txt \
+  --contract source/distribution/release-1.3.3.json \
   --location-notes source/distribution/documentation-1.3.2.json \
   --output /path/to/new-guide-candidate
 ```
 
 The command authenticates the game and all five original PDFs before writing.
-The [current document contract](../source/distribution/documentation-1.3.2.json)
-records the selected game contract and output identities.
+The [1.3.3 package contract](../source/distribution/release-1.3.3.json) records
+the exact game and output identities. The location notes remain the unchanged
+content from the historical illustrated-document contract. Older versioned PDFs
+retain their original catalogue pins; the links above select the current edition.

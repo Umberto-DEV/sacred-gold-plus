@@ -63,6 +63,105 @@ class PlayerPackageTests(unittest.TestCase):
                 for name,pin in inventory.items():
                     self.assertEqual(fixtures.pin(archive.read(prefix+name)),pin)
 
+    def fixture_133(self, root):
+        cfg, refs, guides, inputs, contract = self.fixtures(root)
+        cfg.update(version='1.3.3', package_revision='r1')
+        paths = json.loads(inputs.read_text())
+        previous, corrected = {}, {}
+        for locale in fixtures.LOCALES:
+            for suffix, pins in (('', previous), ('-r4', corrected)):
+                source_id = 'plus-1.3.2' + suffix + '-' + locale.lower()
+                raw = ('previous' + suffix + ' ' + locale).encode()
+                pins[locale] = fixtures.pin(raw)
+                cfg['sources'].append(dict(id=source_id, label=source_id, **pins[locale]))
+                path = root / (source_id + '.input'); path.write_bytes(raw)
+                paths[source_id] = str(path)
+                for routes in cfg['routes_by_target'].values(): routes.append(source_id)
+            for row in cfg['locales'][locale]['documents']:
+                old = guides / locale / row['name']
+                row['name'] = row['name'].replace('1.3.2', '1.3.3')
+                old.rename(guides / locale / row['name'])
+        for row in cfg['shared_documents']:
+            old = guides / 'EN' / row['name']
+            row['name'] = row['name'].replace('1.3.2', '1.3.3')
+            old.rename(guides / 'EN' / row['name'])
+        raw = b'%PDF-Move-Changes'
+        name = 'Move-Changes-1.3.3-EN.pdf'
+        (guides / 'EN' / name).write_bytes(raw)
+        cfg['shared_documents'].append(dict(name=name, **fixtures.pin(raw)))
+        developer = []
+        for name in ('base-1.1-EN.xdelta', 'base-1.1-IT.xdelta',
+                     'SGP-Source-References-EN.zip', 'SGP-Source-References-IT.zip'):
+            raw = ('developer input ' + name).encode(); (refs / name).write_bytes(raw)
+            developer.append(dict(name=name, **fixtures.pin(raw)))
+        cfg['developer_inputs'] = developer
+        inputs.write_text(json.dumps(paths)); contract.write_text(json.dumps(cfg))
+        return cfg, refs, guides, inputs, contract, previous, corrected, developer
+
+    def test_133_combined_package_accepts_40_sources_and_200_routes(self):
+        import player_package
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            cfg, refs, guides, inputs, contract, previous, corrected, developer = self.fixture_133(root)
+            with self.decoders(root, cfg), mock.patch.object(player_package, 'previous_game_targets', return_value=previous), \
+                 mock.patch.object(player_package, 'corrected_game_targets', return_value=corrected, create=True), \
+                 mock.patch.object(player_package, 'developer_input_pins', return_value=developer):
+                results = pack.build(inputs, refs, guides, root/'out', root/'unused', contract=contract)
+            self.assertEqual([(r['file'], r['routes']) for r in results], [('Sacred-Gold-Plus-1.3.3.zip', 200)])
+            with zipfile.ZipFile(root/'out'/results[0]['file']) as archive:
+                names = archive.namelist()
+                self.assertEqual(sum(name.endswith('.pdf') for name in names), 18)
+                self.assertEqual(sum(name.endswith('.xdelta') and '/Optional-Updaters/' in name for name in names), 200)
+                self.assertEqual(sum(name.endswith('.xdelta') and '/Patch/' in name and '/Optional-Updaters/' not in name for name in names), 5)
+                for locale in fixtures.LOCALES:
+                    folder = 'Sacred Gold Plus 1.3.3/Optional-Updaters/' + fixtures.FOLDERS[locale] + '/'
+                    manifest = json.loads(archive.read(folder + 'manifest.json'))
+                    self.assertEqual(len(manifest['patches']), 40)
+                    self.assertEqual(manifest['target'], cfg['targets'][locale])
+
+    def test_133_rejects_wrong_pins_missing_r4_and_unrecognized_versions(self):
+        import player_package
+        mutations = (lambda c: c['targets']['DE'].update(sha256='0'*64),
+                     lambda c: c['sources'][0].update(sha256='0'*64),
+                     lambda c: c['sources'][30].update(sha256='0'*64),
+                     lambda c: c['sources'][31].update(sha256='0'*64),
+                     lambda c: c['sources'].pop(),
+                     lambda c: c['routes_by_target']['FR'].pop(),
+                     lambda c: c.update(version='1.3.4'),
+                     lambda c: c.update(package_revision='r4'))
+        for mutate in mutations:
+            with self.subTest(mutate=mutate), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                cfg, refs, guides, inputs, contract, previous, corrected, developer = self.fixture_133(root)
+                expected_targets = copy.deepcopy(cfg['targets'])
+                registry = {row['id']: fixtures.pin(row['id'].encode()) for row in cfg['sources'][:30]}
+                mutate(cfg)
+                with mock.patch.object(pack, 'multilingual_source_registry', return_value=registry), \
+                     mock.patch.object(player_package, 'published_targets', return_value=expected_targets), \
+                     mock.patch.object(player_package, 'previous_game_targets', return_value=previous), \
+                     mock.patch.object(player_package, 'corrected_game_targets', return_value=corrected, create=True), \
+                     mock.patch.object(player_package, 'developer_input_pins', return_value=developer):
+                    with self.assertRaises(ValueError): player_package.validate_contract(cfg)
+
+    def test_target_authorities_and_combined_layout_are_explicit(self):
+        import player_package
+        with tempfile.TemporaryDirectory() as td:
+            here = Path(td)
+            for name, marker in (('release-1.3.2.json', 'original'),
+                                 ('game-1.3.2-r4.json', 'corrected'),
+                                 ('game-1.3.3.json', 'successor')):
+                (here / name).write_text(json.dumps({'targets': {'EN': marker}}))
+            with mock.patch.object(pack, 'HERE', here):
+                self.assertEqual(player_package.published_targets('r2')['EN'], 'original')
+                self.assertEqual(player_package.published_targets('r3')['EN'], 'original')
+                self.assertEqual(player_package.published_targets('r4')['EN'], 'corrected')
+                self.assertEqual(player_package.published_targets('r1')['EN'], 'successor')
+                with self.assertRaises(ValueError): player_package.published_targets('r5')
+        for version, revision, expected in (('1.3.2', 'r4', True), ('1.3.3', 'r1', True),
+                                            ('1.3.2', 'r1', False), ('1.3.3', 'r4', False),
+                                            ('1.3.4', 'r1', False)):
+            self.assertEqual(player_package.combined_layout(dict(version=version, package_revision=revision)), expected)
+
     def fixtures(self, root):
         cfg, refs, guides, inputs, contract = fixtures.MultilingualPackageTests().fixtures(root)
         cfg.update(schema=3, package_revision='r2')

@@ -147,3 +147,27 @@ A test fixture may be positioned with the game's native warp before a normal
 save; this is documented test setup, not an unmodified legacy compatibility run.
 The final release validation records the independent older-save matrix and the
 bounded service campaigns. Original save fixtures are never mutated.
+
+## One legacy PLAY course — 16 November 2026
+
+A bounded host case prepared a real course using normal inputs and native SAVE
+on r4 EN `2e30d6960bb059615fca7527700d86f8282e82ccbe99bf62e22f027453dc3d3d`, then upgraded a raw-save copy to the exact 1.3.3 EN
+`d6fbdf8bd0aec528a336713b497847da36b467001b2f550c9cc583679c3e5c7d`. The v2 journal contained one level-only Blastoise course,
+level 54→100, Legacy policy, PLAY clock and 22 seconds of partial credit.
+The successor's native SAVE changed generation 117→118 and bank 1→0;
+credit rose 22→57 seconds, with the same 35-second increase in native IGT,
+PLAY and anchor. Identity, baselines, ledger, policy, defaults, shiny state,
+lastRTC, the inactive second slot, Pokémon, Bag and Plus settings were preserved.
+
+Fresh cold Continue retained the saved bytes and the live Training Status
+recognized the course. The comparison uses the existing protected-field checks
+and native bookkeeping rules, adding strict full-journal progression and the
+existing IGT/PLAY equality rule. Owned counterexamples reject lost credit,
+lost jobs and synchronized fabricated progress without matching native IGT.
+The preparation's policy/clock activation and historical reward queue are
+explicit setup changes, separate from the update-preservation comparison.
+
+This is one EN, v2, one-slot, level-only PLAY case before its first 7200-second
+quantum. It does not establish v1 migration, EV courses, two active jobs,
+RTC/clock switching, level completion, withdrawal, other-language or hardware
+coverage. No save layout or game code was changed for this validation.

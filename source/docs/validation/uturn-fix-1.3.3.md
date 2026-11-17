@@ -1,7 +1,8 @@
 # U-turn and flinch-item fix — 1.3.3 candidate
 
 This report separates source and counterfactual evidence from actual candidate
-ROM validation. It does not establish a release, device acceptance or universal
+ROM validation. Final delivery identities and subsequent localized corrections
+are consolidated in the [1.3.3 correction report](fixes-1.3.3.md). It does not establish a release, device acceptance or universal
 save compatibility.
 
 ## Defects and implementation
@@ -69,7 +70,7 @@ resumable starting case remains documented privately, pending a normal-input
 continuation that produces the specified non-KO damage condition and makes its
 causal state observable. This review adds no natural-battle acceptance.
 
-## Active onboarding title and current successor images
+## Active onboarding title and historical onboarding successors
 
 The existing UI-owned 1008-byte bank at `0x023DA800` contains 29 indexed
 strings. Active onboarding title entry 20 now reads `Sacred Gold Plus V1.3.3`;
@@ -77,7 +78,9 @@ the other 28 raw strings and the adjacent 16-byte canary are preserved. Retired
 entry 0 remains inactive and historical. The DS header/banner is unversioned;
 this is not a global replacement of historical version strings.
 
-Five-image readback passed on these current successors. An additional whole-file
+Five-image readback passed on these exact onboarding successors. The later
+[final delivery report](fixes-1.3.3.md) identifies DE/FR Training successors;
+the table and save cycles here retain their historical identities. An additional whole-file
 comparison against each corresponding first, pre-onboarding candidate found no
 changes outside the bank, including unindexed gaps. The unchanged battle helper
 and other code bytes support retaining the EN/IT 53-case counterfactual results

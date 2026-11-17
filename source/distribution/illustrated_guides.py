@@ -283,11 +283,11 @@ def _trainer_blocks(facts):
                 blocks.append(('p', 'Plus moves: ' + ' / '.join(names('move', move) for move in mon['plus_moves'] if move)))
     return blocks
 
-def build_guide_texts(facts, baseline, move_audit, *, location_notes):
+def build_guide_texts(facts, baseline, move_audit, *, location_notes, version='1.3.2'):
     """Build inspectable plain-text blocks before any PDF is created."""
     _need([r['id'] for r in facts['species']] == list(range(1, 494)) and
           [r['id'] for r in baseline['species']] == list(range(1, 494)), 'all 493 species required')
-    texts = {name: [('h1', TITLES[name]), ('p', 'Sacred Gold Plus 1.3.2 - current English reference.')] for name in TITLES}
+    texts = {name: [('h1', TITLES[name]), ('p', f'Sacred Gold Plus {version} - current English reference.')] for name in TITLES}
     names = lambda kind, number: _name(facts, kind, number)
     texts['Pokemon-Changes'].extend([
         ('p', 'Differences from unmodified HeartGold, including inherited Sacred Gold and early Plus changes. All 493 species were checked. Only changed type, ability, base-stat and level-up entries are listed. Move definitions are covered separately in Move Changes.'),
@@ -353,7 +353,7 @@ def _font_text(text, face):
     face.require(text)
     return text
 
-def _body_pdf(blocks, title, body, hand):
+def _body_pdf(blocks, title, body, hand, *, version='1.3.2'):
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
@@ -383,16 +383,16 @@ def _body_pdf(blocks, title, body, hand):
                 spaceBefore=12 if role == 'h1' else 7, spaceAfter=4, keepWithNext=True)
         story.append(Paragraph(escape(text).replace('\n', '<br/>'), style))
     def footer(canvas, document):
-        text = _font_text(f'Sacred Gold Plus 1.3.2 - {title} - {document.page + 1}', body)
+        text = _font_text(f'Sacred Gold Plus {version} - {title} - {document.page + 1}', body)
         canvas.setFont(bodyname, 8); canvas.setFillColorRGB(0, 0, 0)
         canvas.drawCentredString(A4[0]/2, 28, text)
     document = SimpleDocTemplate(output, pagesize=A4, leftMargin=49, rightMargin=49,
-        topMargin=42, bottomMargin=43, title='Sacred Gold Plus 1.3.2 - ' + title,
+        topMargin=42, bottomMargin=43, title='Sacred Gold Plus ' + version + ' - ' + title,
         author='Sacred Gold Plus contributors', invariant=1, pageCompression=1)
     document.build(story, onFirstPage=footer, onLaterPages=footer)
     return output.getvalue()
 
-def _new_cover(title, originals, body, hand):
+def _new_cover(title, originals, body, hand, *, version='1.3.2'):
     from reportlab.pdfgen import canvas
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.utils import ImageReader
@@ -401,7 +401,7 @@ def _new_cover(title, originals, body, hand):
     reader = ImageReader(BytesIO(art)); width, height = reader.getSize()
     ratio = min(340/width, 300/height); width *= ratio; height *= ratio
     page.drawImage(reader, (A4[0]-width)/2, 370-height/2, width=width, height=height, mask='auto')
-    for face, size, y, text in [(hand, 23, 748, 'Sacred Gold Plus 1.3.2'),
+    for face, size, y, text in [(hand, 23, 748, 'Sacred Gold Plus ' + version),
         (hand, 27, 660, title), (body, 12, 160, 'Current English reference'),
         (body, 10, 140, 'Original guide artwork and contributor credits retained')]:
         value = _font_text(text, face); page.setFont(face.register(), size)
@@ -409,11 +409,11 @@ def _new_cover(title, originals, body, hand):
     page.showPage(); page.save()
     return output.getvalue()
 
-def _cover_annotation(name, body, size):
+def _cover_annotation(name, body, size, *, version='1.3.2'):
     from reportlab.pdfgen import canvas
     from reportlab.lib.styles import ParagraphStyle
     from reportlab.platypus import Paragraph
-    text = 'Sacred Gold Plus 1.3.2 - current instructions follow. The historical introduction above is superseded by the current guide.'
+    text = f'Sacred Gold Plus {version} - current instructions follow. The historical introduction above is superseded by the current guide.'
     if name == 'Special-Events':
         text += ' Save before Latios, Celebi, Jirachi and the Tohjo choice: these are one-opportunity routes. The older endless-retry wording is superseded.'
     elif name == 'Pokemon-Changes':
@@ -441,7 +441,8 @@ def render_current_guides(candidate, retail, charmap, contract, originals, outpu
     from ndspy.rom import NintendoDSRom
     from pypdf import PdfReader, PdfWriter
     reference_docs.validate_inputs('EN', candidate, retail, contract)
-    _need(contract['version'] == '1.3.2', 'illustrated guide version must be 1.3.2')
+    version = contract['version']
+    _need(version in ('1.3.2', '1.3.3'), 'unsupported illustrated guide version')
     destination = Path(output)
     if destination.exists() or destination.is_symlink(): raise FileExistsError(destination)
     paths = _original_paths(originals)
@@ -449,7 +450,7 @@ def render_current_guides(candidate, retail, charmap, contract, originals, outpu
     baseline = reference_docs.read_facts(retail, charmap, include_guide=False)
     baseline['evolutions'] = parse_evolution_records(NARC(NintendoDSRom(retail).getFileByName('a/0/3/4')).files)
     move_audit = move_changes.audit_moves(candidate, retail, charmap, contract, 'EN')
-    texts = build_guide_texts(facts, baseline, move_audit, location_notes=location_notes)
+    texts = build_guide_texts(facts, baseline, move_audit, location_notes=location_notes, version=version)
     body = legacy_style.load_face(paths['Pokemon Changes.pdf'], 'Calibri')
     hand = legacy_style.load_face(paths['Special Event Guide.pdf'], 'SegoePrint')
     for blocks in texts.values():
@@ -461,17 +462,17 @@ def render_current_guides(candidate, retail, charmap, contract, originals, outpu
         if name in COVERS:
             cover = PdfReader(paths[COVERS[name]]).pages[0]
             size = (float(cover.mediabox.width), float(cover.mediabox.height))
-            cover.merge_page(PdfReader(BytesIO(_cover_annotation(name, body, size))).pages[0])
+            cover.merge_page(PdfReader(BytesIO(_cover_annotation(name, body, size, version=version))).pages[0])
             writer.add_page(cover)
         else:
-            writer.add_page(PdfReader(BytesIO(_new_cover(TITLES[name], paths, body, hand))).pages[0])
-        for page in PdfReader(BytesIO(_body_pdf(blocks, TITLES[name], body, hand))).pages: writer.add_page(page)
+            writer.add_page(PdfReader(BytesIO(_new_cover(TITLES[name], paths, body, hand, version=version))).pages[0])
+        for page in PdfReader(BytesIO(_body_pdf(blocks, TITLES[name], body, hand, version=version))).pages: writer.add_page(page)
         if name in ('Special-Events', 'Pokemon-Locations'):
             for page in PdfReader(paths[COVERS[name]]).pages[1:]: writer.add_page(page)
-        writer.add_metadata({'/Title': 'Sacred Gold Plus 1.3.2 - ' + TITLES[name],
+        writer.add_metadata({'/Title': 'Sacred Gold Plus ' + version + ' - ' + TITLES[name],
             '/Author': 'Sacred Gold Plus contributors', '/Producer': 'Sacred Gold Plus illustrated reference generator'})
         stream = BytesIO(); writer.write(stream)
-        outputs[name + '-1.3.2-EN.pdf'] = stream.getvalue()
+        outputs[name + '-' + version + '-EN.pdf'] = stream.getvalue()
     destination.mkdir(parents=True, exist_ok=False)
     for name, data in outputs.items():
         with (destination/name).open('xb') as stream: stream.write(data)

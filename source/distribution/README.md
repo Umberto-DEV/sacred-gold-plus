@@ -1,6 +1,55 @@
 # Reproduce player downloads
 
-## Current illustrated documentation package
+## 1.3.3 single download
+
+The explicit schema-3 contract is [release-1.3.3.json](release-1.3.3.json),
+version 1.3.3, package revision r1. The public tag is **1.3.3** and the single
+asset is **Sacred-Gold-Plus-1.3.3.zip**, rooted at `Sacred Gold Plus 1.3.3/`.
+Its [five game targets](game-1.3.3.json) and
+[before/after validation](../docs/validation/fixes-1.3.3.md) are separate from
+package reconstruction. Source is available on GitHub; no source ZIP is attached.
+
+The current layout retains five language folders, each with localized
+Installation/Whats-New PDFs, one matching clean-ROM patch, three cheat files
+and credits/license files. `Originals/` contains eight illustrated English
+PDFs, including Move Changes, and its explanatory index. `Optional-Updaters/`
+contains **200** direct routes from **40** explicit sources to the five targets.
+The original 35 source IDs keep their immutable hashes; five distinct
+`plus-1.3.2-r4-<locale>` IDs cover corrected 1.3.2 installations. Private
+prototypes are not public updater inputs. `Developer-Inputs/` retains the
+four historical builder files byte for byte. Root and nested inventories and
+checksums cover the selected members; no ROM, save, BIOS or emulator is included.
+
+```sh
+PYTHONPATH=source:source/distribution python source/distribution/pack.py \
+  --contract source/distribution/release-1.3.3.json \
+  --inputs /path/to/private-inputs.json --references /path/to/developer-inputs \
+  --guides /path/to/reviewed-guides --rompatcher /path/to/pinned-RomPatcher.js \
+  --output /path/to/new-output
+```
+
+The private mapping names all 40 source IDs and `target-EN/IT/FR/ES/DE`.
+Generate ten localized PDFs with `reference_docs.render_player_documents`
+and eight shared PDFs with `illustrated_guides.render_current_guides`, using
+this contract and exact targets/retail baselines. The new 1.3.3 presentation
+selects version 1.3.3, 40/200 routes and eight guides while preserving historical
+catalogue bytes and the default 1.3.2 renderer. Generate all 15 cheat files with
+`localization.cheats.generate`: exact whole-target admission, affected-byte
+contexts and original equality guards are required. Unproved money codes stay
+omitted; this static qualification does not claim new runtime cheat acceptance.
+Pin every output document/cheat before packaging. Preserve original guide art,
+fonts and credits, and review rendered pages.
+
+Each route is encoded once and decoded with xdelta3 and the authenticated
+RomPatcher.js commit, checking complete target hashes. Primary patches reuse
+the verified matching clean routes. A retained receipt and independently
+reopened member map qualify the one ZIP. Freeze that ZIP before updating the
+external `build-input-delivery.json` URL, size/hash and four member paths;
+the delivery pin remains excluded from its own container. Preserve installed
+language, ROM filename/path, raw save, progress and settings when updating.
+Physical-device acceptance remains a separate, currently pending evidence class.
+
+## Historical 1.3.2 illustrated documentation package
 
 The complete editable player tree is `package/contents/Sacred Gold Plus 1.3.2/`.
 See the [package workspace commands](../../package/README.md) to prepare it once,

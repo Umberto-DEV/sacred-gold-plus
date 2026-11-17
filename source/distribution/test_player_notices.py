@@ -12,6 +12,15 @@ UPDATER = 'Sacred-Gold-Plus-1.3.2-r2-Optional-Updaters.zip'
 
 
 class PlayerNoticesTests(unittest.TestCase):
+    def test_133_credits_count_changes_without_altering_license_or_historical_notice(self):
+        original = (Path(__file__).resolve().parents[2] / 'LICENSE').read_bytes()
+        for locale, word in zip(notices.LOCALES, ('eight', 'otto', 'huit', 'ocho', 'acht')):
+            before = notices.localized_notice(locale)
+            members = notices.license_members(locale, original, version='1.3.3')
+            self.assertIn(word, members['Credits-and-Licenses/ABOUT.txt'].decode())
+            self.assertEqual(members['Credits-and-Licenses/LICENSE.txt'], original)
+            self.assertEqual(notices.localized_notice(locale), before)
+
     def test_every_locale_has_same_complete_unchanged_english_license(self):
         original = (Path(__file__).resolve().parents[2] / 'LICENSE').read_bytes()
         explanations = []

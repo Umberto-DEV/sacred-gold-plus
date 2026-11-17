@@ -5,7 +5,21 @@ language folders, guides, patches, optional updaters and historical developer
 inputs. It is local and ignored by Git. This README and the composition tool
 are public; ROMs, saves and private build inputs never belong in this folder.
 
-## Prepare the editable tree once
+## Current 1.3.3 game delivery
+
+Prepare a new 1.3.3 game package with the explicit
+[release contract and packager](../source/distribution/README.md#133-single-download).
+It selects five final targets, 40 recognized inputs, 200 optional direct updater
+routes, five primary patches and 18 PDFs in one `Sacred-Gold-Plus-1.3.3.zip`.
+The source inputs, generated documents and output directory are explicit private
+CLI arguments. Preserve the current installed language, ROM filename/path and
+raw save when using an updater.
+
+The existing seeded `contents/Sacred Gold Plus 1.3.2/` tree and lock retain the
+historical document-only workflow below. That lock preserves its exact patches,
+cheats and builder inputs; it is not changed by the new versioned delivery.
+
+## Historical 1.3.2: prepare the editable tree once
 
 From the repository root, use the verified corrected package you already have:
 
@@ -23,11 +37,11 @@ checks safe archive paths and available disk space, then extracts into
 `package/.workspace-lock.json`. Keep this private, read-only lock beside the
 tree. Existing contents and locks are preserved and refused.
 
-The default pin deliberately stays fixed when a newer documentation package
-changes the download hash. To initialize a *different, empty workspace* from
-the current published package, supply
-`--delivery source/distribution/build-input-delivery.json` and its matching ZIP.
-An existing editable tree needs no new seed or original ZIP for normal builds.
+The default seed pin stays fixed to the historical 1.3.2 baseline. Initialize
+a different, empty historical workspace only from that exact pinned 1.3.2 ZIP.
+The current delivery pointer selects 1.3.3; use the versioned packager above
+for that game delivery. An existing 1.3.2 editable tree needs no new seed or
+original ZIP for its document-only builds.
 
 ## Edit documents and compose
 

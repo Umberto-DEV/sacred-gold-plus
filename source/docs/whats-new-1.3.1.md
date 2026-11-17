@@ -1,8 +1,11 @@
 # What is new in Sacred Gold Plus 1.3.1
 
-The shared features below continue in 1.3.2. See the [current change log](../../CHANGELOG.md)
+The shared features below continue in 1.3.2 and 1.3.3. See the [current change log](../../CHANGELOG.md)
 and [five-language validation](validation/localization-1.3.2.md) for localization
 and the New Game correction. The 1.3.1 hashes below retain their historical scope.
+The 1.3.3 targets also correct bounded German and
+French Training menu overflows; [regional validation](localization.md#french-training-menu-correction-and-regional-coverage)
+records exact identities, two menu profiles and host save-test limits.
 The [1.3.2 lifecycle investigation](validation/ui-lifecycle-1.3.2.md) adds
 Options/Guide loading and ownership evidence on unchanged EN/IT images; it
 changes no feature, save format or performance acceptance on hardware.

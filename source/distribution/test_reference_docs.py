@@ -41,6 +41,25 @@ class ReferenceDocumentTests(unittest.TestCase):
     def setUp(self):
         self.assertIsNotNone(docs, 'candidate-derived manual renderer is missing')
 
+    def test_133_player_copy_uses_current_routes_and_eight_guides_without_changing_132(self):
+        for locale in ('EN', 'IT', 'FR', 'ES', 'DE'):
+            old = docs.load_player_documents(locale, combined=True)
+            current = docs.load_player_documents(locale, combined=True, version='1.3.3')
+            self.assertEqual(old, docs.load_player_documents(locale, combined=True))
+            self.assertIn('1.3.3', current['d:walk:download'])
+            self.assertIn('200', current['d:walk:download'])
+            self.assertIn('40', current['d:label:updater_intro'])
+            self.assertNotIn('1.3.2', ' '.join(current.values()))
+            if locale == 'EN':
+                for key in ('d:label:credits_note', 'd:label:new_languages'):
+                    self.assertIn('eight', current[key])
+                    self.assertIn('seven', old[key])
+            self.assertIn('175', old['d:walk:download'])
+            self.assertIn('35', old['d:label:updater_intro'])
+        self.assertIn('eight', docs.load_player_documents('EN', combined=True, version='1.3.3')['d:install:10'])
+        with self.assertRaises(ValueError):
+            docs.load_player_documents('EN', combined=True, version='1.3.4')
+
     def test_evolution_rows_preserve_parameters_and_reject_unknown_methods(self):
         records = [bytes(44) for _ in range(494)]
         records[64] = struct.pack('<HHH', 6, 467, 65) + bytes(38)

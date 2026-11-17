@@ -15,12 +15,19 @@ def previous_game_targets():
     return json.loads((pack.HERE / 'release-1.3.2.json').read_text())['targets']
 
 
+def corrected_game_targets():
+    """Immutable corrected 1.3.2 identities are successor updater inputs."""
+    return json.loads((pack.HERE / 'game-1.3.2-r4.json').read_text())['targets']
+
+
 def published_targets(revision='r3'):
     """Package revisions select a separately reviewed game identity set."""
     if revision in ('r2','r3'):
         return previous_game_targets()
     if revision=='r4':
-        return json.loads((pack.HERE / 'game-1.3.2-r4.json').read_text())['targets']
+        return corrected_game_targets()
+    if revision=='r1':
+        return json.loads((pack.HERE / 'game-1.3.3.json').read_text())['targets']
     raise ValueError('Unknown accepted game revision')
 
 
@@ -37,8 +44,13 @@ def updater_patch_name(locale, source_id, version='1.3.2'):
             + '-from-' + pack.path_token(source_id) + '.xdelta')
 
 
+def combined_layout(cfg):
+    """Select the explicitly accepted single-archive layouts."""
+    return (cfg.get('version'), cfg.get('package_revision')) in (('1.3.2', 'r4'), ('1.3.3', 'r1'))
+
+
 def asset_names(cfg):
-    if cfg['package_revision'] == 'r4':
+    if combined_layout(cfg):
         return ('Sacred-Gold-Plus-' + cfg['version'] + '.zip',)
     stem = 'Sacred-Gold-Plus-' + cfg['version'] + '-' + cfg['package_revision']
     return stem + '-Multilingual.zip', stem + '-Optional-Updaters.zip'
@@ -61,8 +73,8 @@ def _document_pins(rows, names, label):
 def validate_contract(cfg):
     """Require accepted game identities and an explicit selection of player files."""
     locales = set(pack.MULTILINGUAL_LOCALES)
-    if cfg.get('schema') != 3 or cfg.get('version') != '1.3.2' or cfg.get('package_revision') not in ('r2', 'r3', 'r4'):
-        raise ValueError('Schema 3 requires the five-language 1.3.2 package revision r2, r3 or r4')
+    if cfg.get('schema') != 3 or (cfg.get('version'), cfg.get('package_revision')) not in (('1.3.2', 'r2'), ('1.3.2', 'r3'), ('1.3.2', 'r4'), ('1.3.3', 'r1')):
+        raise ValueError('Unknown schema 3 game and package revision')
     if 'references' in cfg or 'original_documents' in cfg:
         raise ValueError('Schema 3 does not import historical reference documents')
     targets = cfg.get('targets', {})
@@ -72,14 +84,14 @@ def validate_contract(cfg):
     for locale, row in targets.items():
         if (not pack._content_pin(row) or set(row) - {'sha256', 'bytes', 'name'}
                 or any(row[key] != accepted[locale][key] for key in ('sha256', 'bytes'))):
-            raise ValueError('Player target differs from the accepted 1.3.2 game: ' + locale)
+            raise ValueError('Player target differs from the accepted game: ' + locale)
         if 'name' in row:
             pack.member_names([row['name']])
             if Path(row['name']).name != row['name']:
                 raise ValueError('Target name must be a basename')
     _validate_sources(cfg, locales)
     _validate_documents(cfg, locales)
-    if cfg['package_revision'] == 'r4' and cfg.get('developer_inputs') != developer_input_pins():
+    if combined_layout(cfg) and cfg.get('developer_inputs') != developer_input_pins():
         raise ValueError('Developer inputs differ from the preserved build inputs')
     if cfg.get('cheats_policy') not in ('omit-unverified', 'verified-localized'):
         raise ValueError('Schema 3 omits unverified cheat catalogues')
@@ -93,10 +105,13 @@ def _validate_sources(cfg, locales):
     if not isinstance(sources, list):
         raise ValueError('Missing recognized player sources')
     registry, ids = pack.multilingual_source_registry(), []
-    if cfg['package_revision']=='r4':
+    if combined_layout(cfg):
         registry=dict(registry)
         for locale,target in previous_game_targets().items():
             registry['plus-1.3.2-'+locale.lower()]={key:target[key] for key in ('sha256','bytes')}
+        if cfg['version'] == '1.3.3':
+            for locale,target in corrected_game_targets().items():
+                registry['plus-1.3.2-r4-'+locale.lower()]={key:target[key] for key in ('sha256','bytes')}
     for row in sources:
         if (not isinstance(row, dict) or set(row) != {'id', 'label', 'sha256', 'bytes'}
                 or not pack._content_pin(row) or not isinstance(row['label'], str)
@@ -125,7 +140,7 @@ def _validate_documents(cfg, locales):
         if (not isinstance(row, dict) or set(row) != {'folder', 'documents', 'cheats'}
                 or row['folder'] != metadata[locale]['folder']):
             raise ValueError('Wrong player locale folder: ' + locale)
-        _document_pins(row['documents'], [f'{name}-1.3.2-{locale}.pdf'
+        _document_pins(row['documents'], [f'{name}-{cfg["version"]}-{locale}.pdf'
                                         for name in pack.MULTILINGUAL_PDFS[:2]], locale)
         cheats = row['cheats']
         if not isinstance(cheats, list) or not cheats:
@@ -139,8 +154,8 @@ def _validate_documents(cfg, locales):
                 raise ValueError('Invalid localized Cheats pin: ' + locale)
             names.append(pin['name'])
         pack.member_names(names)
-    _document_pins(cfg.get('shared_documents'), [f'{name}-1.3.2-EN.pdf'
-                                              for name in pack.MULTILINGUAL_PDFS[2:]], 'shared EN guides')
+    _document_pins(cfg.get('shared_documents'), [f'{name}-{cfg["version"]}-EN.pdf'
+                                              for name in (pack.MULTILINGUAL_PDFS[2:] + (('Move-Changes',) if cfg['version'] == '1.3.3' else ()))], 'shared EN guides')
     license_pin = cfg.get('license', {})
     if (not isinstance(license_pin, dict) or set(license_pin) != {'name', 'sha256', 'bytes'}
             or license_pin.get('name') != 'LICENSE.txt' or not pack._content_pin(license_pin)
@@ -172,6 +187,13 @@ def document_members(guides, cfg):
                 raw = pack.guide_file_bytes(directory, pin['name'])
                 pack.verify_bytes(raw, pin)
                 pack.add_member(members, folder + '/Cheats/' + pin['name'], raw)
+    if cfg['version'] == '1.3.3':
+        pack.add_member(members, 'Originals/ABOUT-THESE-GUIDES.txt', (
+            'Sacred Gold Plus 1.3.3 - eight current English gameplay guides\n\n'
+            + '\n'.join(row['name'] for row in cfg['shared_documents'])
+            + '\n\nCurrent instructions and tables precede retained historical illustrations.\n'
+              'Original artwork, embedded fonts and contributor credits are preserved.\n'
+              'Installation and news PDFs are localized in each language folder.\n').encode())
     return members
 
 
@@ -183,9 +205,9 @@ def notice_members(cfg):
     members = {}
     folders = {locale: cfg['locales'][locale]['folder'] for locale in pack.MULTILINGUAL_LOCALES}
     for locale, folder in folders.items():
-        for name, raw in license_members(locale, license_bytes).items():
+        for name, raw in license_members(locale, license_bytes, version=cfg['version']).items():
             pack.add_member(members, folder + '/' + name, raw)
-    entry = (start_here_combined(cfg['version'], folders) if cfg['package_revision'] == 'r4'
+    entry = (start_here_combined(cfg['version'], folders) if combined_layout(cfg)
              else start_here(cfg['version'], cfg['package_revision'], folders, asset_names(cfg)[1]))
     pack.add_member(members, 'START-HERE.txt', entry)
     return members
@@ -245,7 +267,7 @@ def build(cfg, inputs, references, guides, output, rpjs, node='node', xdelta='xd
 
     verify_inputs()
     primary = document_members(guides, cfg)
-    if cfg['package_revision'] == 'r4':
+    if combined_layout(cfg):
         for name, raw in developer_members(references, cfg).items():
             pack.add_member(primary, name, raw)
     notices = notice_members(cfg)
@@ -260,7 +282,7 @@ def build(cfg, inputs, references, guides, output, rpjs, node='node', xdelta='xd
         names = {row['id']: 'Patch/' + updater_patch_name(locale, row['id'], cfg['version']) for row in rows}
         pack.add_member(updaters, folder + '/README-Updater.txt',
                         updater_readme(locale, cfg['version'], cfg['targets'][locale], rows, names,
-                                       combined=cfg['package_revision']=='r4'))
+                                       combined=combined_layout(cfg)))
     with pack.pinned_git_snapshot(rpjs, cfg['rompatcher_commit']) as snapshot:
         output.mkdir(parents=True)
         with tempfile.TemporaryDirectory(prefix='sgp-package-', dir=output) as temporary:
@@ -296,7 +318,7 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
                     decoders=['xdelta3', 'RomPatcher.js'], rompatcher_commit=cfg['rompatcher_commit'])
     pack.add_member(updaters, 'manifest.json', _json_bytes(manifest))
     ending = ('this ZIP. Optional-Updaters/ contains all recognized updater routes.\n'
-              if cfg['package_revision'] == 'r4' else 'the main download: ' + asset_names(cfg)[0] + '\n')
+              if combined_layout(cfg) else 'the main download: ' + asset_names(cfg)[0] + '\n')
     pack.add_member(updaters, 'README.txt', (
         'Sacred Gold Plus ' + cfg['version'] + ' optional updater patches\n\n'
         'Choose the desired output language, then the patch matching the exact source ROM\n'
@@ -311,7 +333,7 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
     if (len([name for name in primary if '/Patch/' in name and name.endswith('.xdelta')]) != 5
             or any('/Documents/' in name for name in primary)):
         raise ValueError('Invalid primary player package layout')
-    if cfg['package_revision'] == 'r4':
+    if combined_layout(cfg):
         for name, raw in updaters.items():
             pack.add_member(primary, 'Optional-Updaters/' + name, raw)
         _inventoried(primary, cfg)
@@ -336,6 +358,6 @@ def _write_outputs(cfg, output, primary, updaters, manifests, contract):
         contract_sha256=pack.digest(contract), verified_routes=verified_routes, primary_routes=5,
         primary_sources=PRIMARY_SOURCES, targets=cfg['targets'],
         scope=('File reconstruction with two decoders; game runtime and save compatibility are separate acceptance evidence.'
-               if cfg['package_revision'] == 'r4' else
+               if combined_layout(cfg) else
                'File reconstruction with two decoders; unchanged 1.3.2 targets. No new ROM build, game runtime or save compatibility test.'))))
     return results

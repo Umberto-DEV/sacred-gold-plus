@@ -180,6 +180,26 @@ qualified the EN r4 control on the same pilot. See the
 [asset I/O report](../docs/validation/development-host-1.3.2.md#native-asset-io-pilot--10-november-2026)
 for controls, results and limitations.
 
+## Scheduler observation profile
+
+`work on scheduler` selects ten qualified Thumb sites for the r4 main-loop
+gate, overlay manager, task queue, callback dispatch, copy wrapper/barrier and
+ANIM2 helper. It reuses the WorkObserver instruction checks, 16,384-event and
+64-span bounds, return/SP/mode matching and register capture. `work off` rejects
+open spans. The callback's pre-BLX observation uses return `0x0201F8AD`, rather
+than the LR value that precedes BLX. It adds no guest writes or core hooks.
+
+Use an authenticated ROM and verify every site before admission. Compare the
+probe OFF/ON with the frame sampler identically enabled, including non-host
+CSV columns, all 4 MiB of main RAM, RGB and SRAM checkpoints. A neutral trace alone is not
+causal coverage: establish the actual queue identity and healthy callback,
+wrapper and helper chains before interpreting a missing event. The conditional
+option getter is unobserved when the barrier is zero. The
+[bounded cadence case](../docs/validation/animation-cadence-1.3.2.md#one-native-queue-delay--16-november-2026)
+identifies one enclosing Bag callback, without attributing its internal callee
+or asserting expected physical timing. ROM-free observer tests include 39
+owned scheduler cases and the existing frame-observation suite.
+
 ## Optional guest-frame sampler
 
 `sample on X Y WIDTH HEIGHT` starts a bounded read-only sample after each
@@ -196,6 +216,25 @@ Indirect accesses are confined to main RAM; reads do not call guest functions
 or MMIO. Slot admission, pointer ranges and active bits do not prove arbitrary
 allocation lifetime or compatibility with another ROM. Use the documented
 candidate/layout; IPKE alone is not an ANIM2 identity check.
+
+For ANIM2 v5d, `hits` counts helper entries before its guards and `on` counts
+successful motion writes at the end of that helper. `busy` is a cumulative
+guarded-suspension count, not an instantaneous CPU or DMA busy flag. The legacy
+CSV name `copies` reads state offset `0x20`. Although the helper header calls
+that word reserved, the installed `sgp_idle_copie` wrapper reads it as a copy
+ownership barrier before calling the helper. A zero after a frame does not
+exclude a transient barrier within that frame. A flat `hits` count does not
+distinguish a skipped native queue dispatch from a wrapper that returned early.
+Preserve the CSV schema and authenticate both helper and wrapper when reading
+historical runs. A zero
+`main_loop_jumps` with PC tracing disabled does not establish absence of native
+main-loop work.
+
+When investigating menu transitions, include entry/cancel/restore frames and
+phase gaps crossing window boundaries. Steady windows alone can hide pauses.
+Flat entry/completion counters distinguish an interval without observed ANIM2
+invocations from phase updates lost within delivered invocations; they do not
+identify the exact upstream native caller or establish physical responsiveness.
 
 `host_sample_ns` covers framebuffer hashing and raw RAM observation. It excludes
 CSV formatting/writing and audio draining; existing `host_runframe_ns` still

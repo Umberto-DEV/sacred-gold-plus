@@ -5,17 +5,20 @@ candidate identities; add new evidence rather than relabelling an older test.
 Proprietary inputs and private validation evidence remain outside the public
 source tree.
 
-Current game identities belong to [game-1.3.2-r4.json](../distribution/game-1.3.2-r4.json).
-The [r4 package contract](../distribution/release-1.3.2-r4.json) freezes the
-corrected single-ZIP baseline: five targets, 35 recognized original/historical
-sources and 175 direct updater routes. The five primary clean-ROM patches and
-all optional updaters are inside the same download. Unknown hashes and missing
-routes fail admission; older targets are source inputs, not destination versions.
-The [documentation contract](../distribution/documentation-1.3.2.json) identifies
-the current illustrated delivery, which reuses the game patches unchanged. See
-[its validation report](validation/illustrated-guides-1.3.2.md) and the
-[editable package workspace](../../package/README.md). Frozen package hashes and
-historical reports must retain their original identities.
+Current game identities belong to [game-1.3.3.json](../distribution/game-1.3.3.json).
+The [1.3.3 package contract](../distribution/release-1.3.3.json) selects five
+targets, 40 recognized sources and 200 direct updater routes in one ZIP, with
+five primary clean-ROM patches, ten localized PDFs, eight shared English
+guides, 15 cheat files and four preserved builder inputs. The original 35 source
+IDs retain their hashes; five distinct IDs cover corrected 1.3.2 installations.
+Unknown hashes and missing routes fail admission. Older targets are source
+inputs, not additional destination versions. See the
+[correction and acceptance report](validation/fixes-1.3.3.md).
+
+The [r4 package contract](../distribution/release-1.3.2-r4.json),
+[documentation-only contract](../distribution/documentation-1.3.2.json) and
+[editable workspace](../../package/README.md) retain the historical 1.3.2
+identities and document-only workflow. Preserve their frozen hashes and reports.
 
 | Change or evidence | Read and update |
 | --- | --- |
@@ -64,8 +67,8 @@ historical reports must retain their original identities.
    contract. Recheck installation hashes whenever a target changes.
    Current delivery has ten localized installation/news PDFs and eight shared
    English gameplay guides, plus each language's revision-bound cheat files.
-   Use the package workspace for document-only recomposition; its contract and
-   independent member verification distinguish it from the frozen r4 baseline.
+   Use the explicit versioned packager for 1.3.3; the seeded package workspace
+   retains the historical 1.3.2 document-only recomposition workflow.
    Historical renderers remain reproducible. Regenerate target-bound material
    after a target-hash change, updating the corresponding document authorities.
    Admit cheat instructions only after complete target/native preimage checks;
@@ -79,8 +82,8 @@ historical reports must retain their original identities.
    with both xdelta3 and the pinned independent Rom Patcher JS implementation.
    Check complete target hashes, ZIP members, per-language documents, manifests
    and checksums. Verify the single ZIP against its applicable authority: the
-   frozen r4 baseline and current documentation-only delivery are different
-   archive identities. The [workspace procedure](../../package/README.md)
+   1.3.3 package, frozen r4 baseline and historical documentation-only delivery
+   are different archive identities. The [workspace procedure](../../package/README.md)
    verifies document changes while protecting the non-document members,
    including the existing patches, cheats, updaters and developer inputs.
    A package-only successor pins the accepted game identities; a changed game

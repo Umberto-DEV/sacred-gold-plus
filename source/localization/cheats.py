@@ -174,7 +174,7 @@ def emit(locale, identity, accepted, omitted, output):
 def generate(locale: str, rom: bytes, output: Path, *, contract: dict) -> list[Path]:
     """Admit an exact current target, verify every preimage, and emit no legacy DB."""
     target = contract.get('targets', {}).get(locale, {})
-    if (locale not in LOCALES or contract.get('version') != VERSION or type(rom) is not bytes
+    if (locale not in LOCALES or contract.get('version') not in (VERSION, '1.3.3') or type(rom) is not bytes
             or len(rom) != target.get('bytes') or hashlib.sha256(rom).hexdigest() != target.get('sha256')):
         raise ValueError('current cheat target identity mismatch')
     native = NintendoDSRom(rom)
@@ -183,5 +183,5 @@ def generate(locale: str, rom: bytes, output: Path, *, contract: dict) -> list[P
     sections += [('overlay:' + str(i), s.ramAddress, bytes(s.data))
                  for i, s in ndspy_load_overlays_sicuri(native).items()]
     accepted, omitted = select_codes(sections)
-    identity = dict(version=VERSION, locale=locale, gameid=game_id(rom), sha256=target['sha256'])
+    identity = dict(version=contract['version'], locale=locale, gameid=game_id(rom), sha256=target['sha256'])
     return emit(locale, identity, accepted, omitted, output)

@@ -16,6 +16,22 @@ class ProjectCheatTests(unittest.TestCase):
     def setUp(self):
         self.assertIsNotNone(cheats, 'current localized project cheat generator missing')
 
+    def test_133_identity_is_admitted_before_parser_and_unknown_versions_are_rejected(self):
+        raw = bytes(512)
+        import hashlib
+        cfg = dict(version='1.3.3', targets={'EN': dict(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())})
+        class ParserReached(Exception): pass
+        with tempfile.TemporaryDirectory() as work, patch.object(cheats, 'NintendoDSRom', side_effect=ParserReached) as parser:
+            with self.assertRaises(ParserReached):
+                cheats.generate('EN', raw, Path(work)/'out', contract=cfg)
+            parser.assert_called_once_with(raw)
+            parser.reset_mock()
+            cfg['version'] = '1.3.4'
+            with self.assertRaisesRegex(ValueError, 'identity'):
+                cheats.generate('EN', raw, Path(work)/'unknown', contract=cfg)
+            parser.assert_not_called()
+            self.assertEqual(list(Path(work).iterdir()), [])
+
     def test_all_five_catalogues_have_every_required_localized_field(self):
         for locale in ('EN', 'IT', 'FR', 'ES', 'DE'):
             words = cheats.load_words(locale)

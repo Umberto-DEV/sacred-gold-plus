@@ -119,18 +119,25 @@ _SOURCE_SIZE_LABELS = {'EN': 'Size (bytes)', 'IT': 'Dimensione (byte)',
                        'DE': 'Größe (Bytes)'}
 
 
-def localized_notice(locale: str) -> bytes:
+def localized_notice(locale: str, *, version="1.3.2") -> bytes:
     """Return the explicitly authored notice without a fallback language."""
     try:
         text = _NOTICES[locale]
     except KeyError as exc:
         raise ValueError('Unsupported player-notice locale: ' + str(locale)) from exc
+    if version not in ('1.3.2', '1.3.3'):
+        raise ValueError('Unsupported player-notice version')
+    if version == '1.3.3':
+        before, after = {'EN': ('seven', 'eight'), 'IT': ('sette', 'otto'),
+                         'FR': ('sept', 'huit'), 'ES': ('siete', 'ocho'),
+                         'DE': ('sieben', 'acht')}[locale]
+        text = text.replace(before, after)
     return text.format(project=PROJECT_URL, original=ORIGINAL_PLUS_URL).encode('utf-8')
 
 
-def license_members(locale: str, license_bytes: bytes) -> dict[str, bytes]:
+def license_members(locale: str, license_bytes: bytes, *, version="1.3.2") -> dict[str, bytes]:
     """Return locale-relative notices after authenticating the English license."""
-    notice = localized_notice(locale)
+    notice = localized_notice(locale, version=version)
     if (not isinstance(license_bytes, bytes) or len(license_bytes) != LICENSE_BYTES
             or hashlib.sha256(license_bytes).hexdigest() != LICENSE_SHA256):
         raise ValueError('Player package requires the unchanged English GNU GPLv3 text')
@@ -196,7 +203,7 @@ def updater_readme(locale: str, version: str, target: Mapping, sources,
 
     localized_notice(locale)  # Reject unsupported locales before loading documents.
     version = _basename(version, 'version')
-    docs = load_player_documents(locale, combined=combined)
+    docs = load_player_documents(locale, combined=combined, version=version)
     sha, size = target.get('sha256', ''), target.get('bytes')
     if not re.fullmatch('[0-9a-f]{64}', sha) or not isinstance(size, int) or size <= 0:
         raise ValueError('Invalid updater target identity')

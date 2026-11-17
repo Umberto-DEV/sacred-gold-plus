@@ -78,8 +78,9 @@ def load_documents(locale):
                                if key not in PLAYER_REQUIRED | COMBINED_REQUIRED})
 
 
-def load_player_documents(locale, *, combined=False):
+def load_player_documents(locale, *, combined=False, version="1.3.2"):
     """Require all explicitly localized r2 overlays without altering old copy."""
+    _need(version in ("1.3.2", "1.3.3"), "unsupported player document version")
     values=load_strings(locale,'documents')
     words=validate_documents({key:value for key,value in values.items()
                               if key not in PLAYER_REQUIRED | COMBINED_REQUIRED})
@@ -98,6 +99,19 @@ def load_player_documents(locale, *, combined=False):
         for key,value in overlays.items():
             _need(not re.findall(r'\{([^{}]+)\}',value),'unified document placeholder '+key)
             words['d:'+key.removeprefix('p:unified:')]=value
+    if version == '1.3.3':
+        _need(combined, '1.3.3 requires the combined player layout')
+        # Derive only the new presentation; historical catalogue bytes and the
+        # default 1.3.2 rendering remain unchanged.
+        words = {key: value.replace('1.3.2', version) for key, value in words.items()}
+        for key in ('d:install:2', 'd:label:updater_intro', 'd:walk:download'):
+            words[key] = re.sub(r'\b175\b', '200', re.sub(r'\b35\b', '40', words[key]))
+        before, after = {'EN': ('seven', 'eight'), 'IT': ('sette', 'otto'),
+                         'FR': ('sept', 'huit'), 'ES': ('siete', 'ocho'),
+                         'DE': ('sieben', 'acht')}[locale]
+        for key in ('d:install:1', 'd:install:10', 'd:news:44',
+                    'd:label:credits_note', 'd:label:new_languages'):
+            words[key] = words[key].replace(before, after)
     return words
 
 
@@ -438,7 +452,7 @@ def render_facts(locale,facts,baseline,contract,output,*,_player_package=False,_
     from reportlab.platypus import SimpleDocTemplate,Paragraph,Spacer,Table,TableStyle,PageBreak,Image
     from io import BytesIO
     _need(reportlab.Version=='4.4.9','ReportLab 4.4.9 required')
-    words=(load_player_documents(locale,combined=contract.get('package_revision')=='r4')
+    words=(load_player_documents(locale,combined=(contract.get('version'), contract.get('package_revision')) in (('1.3.2', 'r4'), ('1.3.3', 'r1')), version=contract['version'])
            if (_player_package or _shared_guides) else load_documents(locale));label=lambda key:words['d:label:'+key];output=Path(output)
     if output.exists() or output.is_symlink():raise FileExistsError(output)
     fontroot=Path(reportlab.__file__).parent/'fonts'
@@ -688,7 +702,7 @@ def render_player_documents(locale: str,candidate: bytes,reference: bytes,charma
     _need(isinstance(name,str) and re.fullmatch(r'[^/\\\x00-\x1f]+\.nds',name)
           and name not in ('.','..') and contract['version'] in name,'player target filename')
     _need(CLEAN_IDS[locale] in contract['routes_by_target'][locale],'player clean source route')
-    load_player_documents(locale,combined=contract.get('package_revision')=='r4')
+    load_player_documents(locale,combined=(contract.get('version'), contract.get('package_revision')) in (('1.3.2', 'r4'), ('1.3.3', 'r1')), version=contract['version'])
     return render_facts(locale,None,None,contract,output,_player_package=True)
 
 
@@ -697,6 +711,6 @@ def render_shared_guides(locale: str,candidate: bytes,reference: bytes,charmap: 
                          contract: dict,output: Path) -> list[Path]:
     """Create only the seven shared English guides with current r2 notices."""
     _need(locale=='EN','shared guides must use English')
-    validate_inputs(locale,candidate,reference,contract);load_player_documents(locale)
+    validate_inputs(locale,candidate,reference,contract);load_player_documents(locale, combined=contract.get('version')=='1.3.3', version=contract['version'])
     facts=read_facts(candidate,charmap);baseline=read_facts(reference,charmap,include_guide=False)
     return render_facts(locale,facts,baseline,contract,output,_shared_guides=True)

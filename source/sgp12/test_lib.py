@@ -117,6 +117,61 @@ class TestBLZ(unittest.TestCase):
         allocator.assert_not_called()
         self.assertEqual(blz.blz_decomprimi(compresso, len(dati)), dati)
 
+    @staticmethod
+    def _decoder_a_del_bordo_coppia():
+        decoders = [("sgp12.blz", blz.blz_decomprimi, romlib.Rifiuto)]
+        source = Path(__file__).resolve().parents[1]
+        for feature in ("overlay", "npc", "anim"):
+            path = source / "features" / feature / "tools/overlay_patch.py"
+            module = runpy.run_path(str(path), run_name="blz_pair_" + feature)
+            decoders.append((feature, module["blz_decomprimi"], module["Rifiuto"]))
+        return decoders
+
+    def test_coppia_troncata_non_legge_il_prefisso_grezzo(self):
+        reader = runpy.run_path(str(Path(__file__).resolve().parents[1]
+                                    / "features/overlay/tools/overlay_rileggi.py"),
+                                run_name="blz_truncated_pair_test")
+        # All four streams pass size admission. The final token has only its
+        # first byte: its missing second byte belongs to the raw prefix.
+        # The latter two also vary the borrowed byte itself (distance 4).
+        cases = (
+            ("00000080434241100d00000801000000", (8, 13, 1, 3, 17)),
+            ("5a5a0080434241100d00000801000000", (8, 13, 1, 3, 17)),
+            ("5a018044434241080e00000801000000", (8, 14, 1, 2, 17)),
+            ("a5018044434241080e00000801000000", (8, 14, 1, 2, 17)),
+        )
+        for encoded, admitted in cases:
+            stream = bytes.fromhex(encoded)
+            with self.subTest(stream=encoded):
+                self.assertEqual(blz.blz_verifica_dimensione(stream), admitted)
+                with self.assertRaises(reader["Rosso"]):
+                    reader["srotola_blz"](stream)
+                for label, decoder, refusal in self._decoder_a_del_bordo_coppia():
+                    with self.subTest(decoder=label):
+                        with self.assertRaises(refusal):
+                            decoder(stream)
+
+    def test_coppia_completa_con_prefisso_e_roundtrip_restano_validi(self):
+        reader = runpy.run_path(str(Path(__file__).resolve().parents[1]
+                                    / "features/overlay/tools/overlay_rileggi.py"),
+                                run_name="blz_complete_pair_test")
+        # Same token bytes as the regression, but 00 belongs to the encoded
+        # zone (enc_len14), not to the prefix; the complete image is 16 bytes.
+        stream = bytes.fromhex("5a5a0080434241100e00000800000000")
+        expected = b"ZZBACBACBACBACBA"
+        for label, decoder, _refusal in self._decoder_a_del_bordo_coppia():
+            with self.subTest(decoder=label):
+                self.assertEqual(decoder(stream), expected)
+        self.assertEqual(reader["srotola_blz"](stream)[0], expected)
+        raw = b"ABC" * 32
+        for compressor in (blz.blz_comprimi, blz.blz_comprimi_ottimo):
+            with self.subTest(compressor=compressor.__name__):
+                packed = compressor(raw)
+                for label, decoder, _refusal in self._decoder_a_del_bordo_coppia():
+                    with self.subTest(decoder=label):
+                        self.assertEqual(decoder(packed), raw)
+                self.assertEqual(reader["srotola_blz"](packed)[0], raw)
+
     def test_rom_passa_la_dimensione_y9_al_decodificatore(self):
         candidate = romlib.Rom.__new__(romlib.Rom)
         candidate.voce_overlay = lambda _oid: {

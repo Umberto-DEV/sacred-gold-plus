@@ -52,6 +52,38 @@
     "guides/current/Trainers-1.3.2-EN.pdf": {
       "bytes": 332508,
       "sha256": "a45f6ec8a20706007c95179781bf00e1ba2f645663b40a63e97841b484c98d96"
+    },
+    "guides/current/Special-Events-1.3.3-EN.pdf": {
+      "bytes": 761704,
+      "sha256": "d462a306e734b907efb89649a22e5de1ca004dbc215eefd784b7dd72bc3acbe7"
+    },
+    "guides/current/Pokemon-Changes-1.3.3-EN.pdf": {
+      "bytes": 303855,
+      "sha256": "1aaf469271b9841488917502fb461607e1efcab7021819ce72fce731c883d696"
+    },
+    "guides/current/Pokemon-Locations-1.3.3-EN.pdf": {
+      "bytes": 1559695,
+      "sha256": "844448093e84d351c05f64839220f95ec09fc8abd0a1e11f0d89243f564c5dda"
+    },
+    "guides/current/Evolutions-1.3.3-EN.pdf": {
+      "bytes": 136003,
+      "sha256": "b389250076451e885d8de762220514e5d2ab3302b79f8ce1e1cc05515dcdb65a"
+    },
+    "guides/current/Items-TMs-1.3.3-EN.pdf": {
+      "bytes": 211965,
+      "sha256": "910da87f7b88929a295d923ad71a6e710605dcc809c8b25e11270a76a6df38e8"
+    },
+    "guides/current/Trainers-1.3.3-EN.pdf": {
+      "bytes": 332464,
+      "sha256": "27687e411397b18832fe1a75e870cdf5701fcaa84e3c6ab3d20876fd95e64eb5"
+    },
+    "guides/current/Game-Guide-1.3.3-EN.pdf": {
+      "bytes": 228814,
+      "sha256": "b10077027ad1b83ef15077354e72f546bcdaead68e3056f6c1c19bfc8e4f90cb"
+    },
+    "guides/current/Move-Changes-1.3.3-EN.pdf": {
+      "bytes": 218787,
+      "sha256": "ad8fcc4da270e25369a0928a4ff99e996fa627874cdcb93710a9a3b57e010148"
     }
   }
 }

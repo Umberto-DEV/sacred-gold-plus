@@ -5,6 +5,51 @@ scope. The maintainer excluded the new-area prototype; no new map or converter
 is required. Android/Nintendo execution and physical display pacing remain
 unverified. No animation repair or speed improvement was justified by this case.
 
+## Counter interpretation correction — 16 November 2026
+
+The historical `copies` CSV label reads ANIM2 state offset `0x20`. The helper
+header calls it reserved, but a later readback of the actual installed
+`sgp_idle_copie` wrapper shows that it uses this word as a copy ownership barrier
+before entering the helper. Seven settled raw snapshots contain two such wrapper
+tasks and a zero barrier; they do not observe transient barriers inside a pause.
+Likewise `busy` counts guarded helper entries cumulatively. Flat `hits` measures
+absence of helper entry, not necessarily absence of native queue dispatch. The
+original data and identities are preserved. That offline analysis alone did not
+identify the upstream cause. See the
+[sampler field contract](../../runtime/README.md#optional-guest-frame-sampler).
+
+A separate offline analysis of retained r4 EN samples from the native Bag
+category/cancel/restore sequence found steady phase-change gaps of 2 guest
+frames but transition gaps of 4, 9, 10 and 12 frames. Those pauses must not be
+omitted by reporting only steady windows. Both battlers and the battle RNG
+remain stable; ANIM2 entry and completion counters stay flat within the pauses.
+This analysis distinguishes missing observed helper invocations from phase updates
+lost within delivered helper invocations. It does not prove an exact upstream native
+blocking cause, a new current-candidate replay or normal physical pacing.
+
+## One native queue delay — 16 November 2026
+
+A qualified scheduler probe observed only frames 7011–7108 of the retained r4
+EN Bag-entry route. Probe OFF/ON preserved every non-host frame/sample column
+against the historical input, and matched 4 MiB main-RAM, RGB and SRAM checkpoints.
+The bounded trace contains 3,324 complete events and 92 healthy wrapper/barrier/
+helper chains; all observed barriers were zero. The conditional getter branch
+was not exercised. Synthetic tests separately cover bad instructions, return
+context, open spans and event/depth/order/counter overflow.
+
+For the first phase gap, 7015→7024, the actual main queue `0x023BC814` entered
+at frame 7017 and stayed inside the preceding native Bag callback `0x02222671`
+until frame 7024. Its callback bytes and registration match the exact loaded
+r4 overlay 8. The gate permitted the main queue, the overlay-manager span had
+already returned, and seven IRQ queue children continued while that callback
+remained open. Both idle wrapper/helper chains ran only after its return at
+7024. This establishes an enclosing native serial-queue delay for that gap,
+rather than a callback offered to the idle wrapper and lost there.
+
+The internal blocking callee, intended duration, four other transition gaps,
+current-candidate natural replay and physical pacing remain unqualified. No
+animation, scheduling or performance correction follows from this observation.
+
 ## Exact identities and route
 
 The unchanged [r4 game contract](../../distribution/game-1.3.2-r4.json) applies:

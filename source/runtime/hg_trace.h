@@ -130,7 +130,7 @@ template<std::size_t Capacity, std::size_t Pending=24> struct AssetObserver {
 };
 inline AssetObserver<98304> Assets;
 
-inline constexpr std::array<WorkSite,64> WorkSites{{
+inline constexpr std::array<WorkSite,74> WorkSites{{
     {0x02223BF4,0xB5F0,true}, {0x023DBD00,0xB5FE,true},
     {0x02077D88,0xB570,true}, {0x02257E74,0xB538,true},
     {0x02007524,0xB510,true}, {0x0200757C,0xB510,true},
@@ -180,7 +180,13 @@ inline constexpr std::array<WorkSite,64> WorkSites{{
     {0x0221D184,0xB5F8,true}, {0x023DBEB4,0xB508,true},
     {0x023DBEBE,0xB508,true}, {0x023DBE2C,0xB5B0,true},
     {0x023DBE00,0xB5B0,true}, {0x023DBE7C,0xB5B0,true},
-    {0x02073314,0xB510,true}, {0x0207332C,0xB538,true}
+    {0x02073314,0xB510,true}, {0x0207332C,0xB538,true},
+    // L5: scheduler/copy-barrier causal boundary only. All sites Thumb.
+    {0x02000DD4,0x2800,false}, {0x02000E84,0xB508,true},
+    {0x0201F880,0xB570,true}, {0x0201F886,0x2800,false},
+    {0x0201F89E,0x2900,false}, {0x0201F8AA,0x4790,true,true,false,0x0201F8AD},
+    {0x023DBC9A,0xB513,true}, {0x023DBCA0,0x2C00,false},
+    {0x023DBCA8,0x2800,false}, {0x023DB72C,0xB5F0,true}
 }};
 inline int workSiteIndex(std::uint32_t pc) {
     switch(pc) {
@@ -229,10 +235,15 @@ inline int workSiteIndex(std::uint32_t pc) {
         case 0x023DBEBE:return 58;case 0x023DBE2C:return 59;
         case 0x023DBE00:return 60;case 0x023DBE7C:return 61;
         case 0x02073314:return 62;case 0x0207332C:return 63;
+        case 0x02000DD4:return 64;case 0x02000E84:return 65;
+        case 0x0201F880:return 66;case 0x0201F886:return 67;
+        case 0x0201F89E:return 68;case 0x0201F8AA:return 69;
+        case 0x023DBC9A:return 70;case 0x023DBCA0:return 71;
+        case 0x023DBCA8:return 72;case 0x023DB72C:return 73;
         default:return -1;
     }
 }
-enum class WorkLayout { R4, H4, NativeHeap, Graphics, Pilot, Assets, Party };
+enum class WorkLayout { R4, H4, NativeHeap, Graphics, Pilot, Assets, Party, Scheduler };
 struct WorkEvent {
     std::uint64_t first_frame=0,last_frame=0,start_tick=0,inclusive=0,exclusive=0;
     std::uint64_t entry_order=0,exit_order=0;
@@ -254,7 +265,7 @@ struct CallbackSample {
 };
 template<std::size_t Capacity=16384,std::size_t MaxDepth=64> struct WorkObserver {
     bool enabled=false,ok=true;
-    bool nativeHeap=false,graphics=false,pilot=false,assets=false,party=false;
+    bool nativeHeap=false,graphics=false,pilot=false,assets=false,party=false,scheduler=false;
     std::uint16_t helperInstruction=0xB5FE;
     std::uint64_t frame=0,order=0;
     std::array<std::uint64_t,32> ticks{};
@@ -285,12 +296,12 @@ template<std::size_t Capacity=16384,std::size_t MaxDepth=64> struct WorkObserver
     void fail() { ok=false;enabled=false; }
     void start(bool layout_admitted, WorkLayout layout=WorkLayout::R4) {
         if(!layout_admitted)throw std::invalid_argument("Work observer requires the r4 Bag layout");
-        if(layout!=WorkLayout::R4 && layout!=WorkLayout::H4 && layout!=WorkLayout::NativeHeap && layout!=WorkLayout::Graphics && layout!=WorkLayout::Pilot && layout!=WorkLayout::Assets && layout!=WorkLayout::Party)
+        if(layout!=WorkLayout::R4 && layout!=WorkLayout::H4 && layout!=WorkLayout::NativeHeap && layout!=WorkLayout::Graphics && layout!=WorkLayout::Pilot && layout!=WorkLayout::Assets && layout!=WorkLayout::Party && layout!=WorkLayout::Scheduler)
             throw std::invalid_argument("Unknown work observation layout");
         helperInstruction=layout==WorkLayout::H4?0xB5F0:0xB5FE;
         nativeHeap=layout==WorkLayout::NativeHeap;pilot=layout==WorkLayout::Pilot;graphics=layout==WorkLayout::Graphics || pilot;
         assets=layout==WorkLayout::Assets;
-        party=layout==WorkLayout::Party;
+        party=layout==WorkLayout::Party;scheduler=layout==WorkLayout::Scheduler;
         if(assets)Assets.start();
         enabled=true;ok=true;frame=0;ticks.fill(0);count=0;depth=0;order=0;
         callbackKnown.fill(0);callbackUnknown={};callbackUnknownCalls=0;callbackError=0;
@@ -299,7 +310,7 @@ template<std::size_t Capacity=16384,std::size_t MaxDepth=64> struct WorkObserver
     }
     void stop() {
         if(assets){Assets.stop(static_cast<std::uint32_t>(frame));if(!Assets.ok)fail();}
-        if((nativeHeap || graphics || party) && depth)fail();else enabled=false;
+        if((nativeHeap || graphics || party || scheduler) && depth)fail();else enabled=false;
     }
     void requireStopped() const {
         if(enabled || !ok)throw std::runtime_error("Unclosed or invalid work trace");
@@ -370,7 +381,7 @@ template<std::size_t Capacity=16384,std::size_t MaxDepth=64> struct WorkObserver
         int index=workSiteIndex(pc);
         if(index>=0) {
             const bool context=index==0 || (index>=9 && index<14);
-            const bool selected=party?index>=56:nativeHeap?(index>=14 && index<22):
+            const bool selected=scheduler?index>=64:party?(index>=56 && index<64):nativeHeap?(index>=14 && index<22):
                 pilot?((index>=22 && index<=28) || (index>=31 && index<56) || context):
                 graphics?((index>=22 && index<=30) || context):index<14;
             if(!selected)index=-1;
@@ -389,7 +400,7 @@ template<std::size_t Capacity=16384,std::size_t MaxDepth=64> struct WorkObserver
                 e.parent=depth?std::uint32_t(stack[depth-1]):0xFFFFFFFFu;e.site=std::uint8_t(index);e.mode=std::uint8_t(mode);
                 e.first_frame=e.last_frame=frame;e.start_tick=ticks[mode];e.lr=r[14];e.sp=r[13];
                 for(std::size_t i=0;i<4;++i)e.args[i]=r[i];
-                if(graphics || party)for(std::size_t i=0;i<4;++i)e.aux[i]=r[i+4];
+                if(graphics || party || scheduler)for(std::size_t i=0;i<4;++i)e.aux[i]=r[i+4];
                 if(site.span)stack[depth++]=count;
                 else { e.result=r[0];e.complete=true;e.exit_order=e.entry_order;e.exit_cpsr=cpsr; }
                 ++count;

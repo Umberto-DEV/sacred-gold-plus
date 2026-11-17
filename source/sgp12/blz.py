@@ -164,6 +164,7 @@ def blz_decomprimi(flusso, atteso=None):
             if src <= stop:
                 break
             if flag & 0x80:
+                esigi(src - stop >= 2, "BLZ: coppia troncata")
                 src -= 1
                 b1 = buf[src]
                 src -= 1

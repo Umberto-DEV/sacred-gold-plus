@@ -1,10 +1,13 @@
 # Sacred Gold Plus 1.3.3 — candidate fixes
 
-This describes a candidate, not a published release. Five current candidate
-identities passed scoped readback and seven bounded raw-save/cold cycles on five
-original fixtures. Natural battle/pivot and physical-device validation remain
-pending. Two earlier EN composition attempts stopped at resource guards before
-the revised verifier was used.
+This describes the prepared 1.3.3 targets and their bounded host evidence.
+The [technical correction report](source/docs/validation/fixes-1.3.3.md)
+consolidates exact identities and before/after results: two U-turn/flinch
+helper decisions, four German and three French Training labels, and the host
+BLZ parser guard in four decoder copies. The Training corrections preserve
+native code, menu values and save layouts. The BLZ correction affects build
+tools rather than installed game code. Natural battle/pivot and physical-device
+validation remain pending; historical save cycles retain their own identities.
 
 ## Onboarding version title
 

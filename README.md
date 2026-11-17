@@ -2,25 +2,22 @@
 
 **Explore Johto and Kanto with new ways to train, hunt and manage your Pokémon.**
 
-**Published release 1.3.2** · **English, Italian, French, Spanish and German** · [GPL-3.0-or-later](LICENSE) for this project's own tools and sources
+**Release 1.3.3** · **English, Italian, French, Spanish and German** · [GPL-3.0-or-later](LICENSE) for this project's own tools and sources
 
 An independent fan continuation of **Drayano's Sacred Gold** and **NefariousnessNo3436's Sacred Gold Plus** for Nintendo DS. Fairy typing, additional Fairy moves and the wider outdoor camera come from the original Plus project. This continuation adds native game tools, Italian/French/Spanish/German localization, adjustable settings and targeted repairs.
 
 This is a **patch** for your own HeartGold cartridge backup. No ROM, save, BIOS or emulator is included.
 
-**Development candidate 1.3.3:** the current source fixes two U-turn/flinch
-helper defects involving fallback arguments and negative damage. Five candidate
-ROMs have passed scoped host readback and seven save/cold-restart cycles on five
-fixtures. Natural battle and pivot coverage and physical-device validation remain
-pending. Host evidence uses an interpreter/software renderer and FreeBIOS; it
-does not qualify device behavior or firmware. See the [candidate identities](source/distribution/game-1.3.3.json),
-[fixes](BUG-FIXES-1.3.3.md) and [validation report](source/docs/validation/uturn-fix-1.3.3.md).
-The download below remains the published 1.3.2 release.
-The feature overview describes the game; component validation coverage is detailed in the report above.
+Version 1.3.3 corrects two U-turn/flinch helper decisions and localized Training
+menu overflows. [Exact targets and before/after validation](source/docs/validation/fixes-1.3.3.md)
+separate scoped host checks, candidate-bound raw-save/cold cycles and their limits.
+Natural battle/pivot and physical-device validation remain pending. Host evidence
+uses an interpreter/software renderer and FreeBIOS; it does not qualify device
+behavior or firmware. The feature overview below describes the game as a whole.
 
 ## Download
 
-[**Download Sacred Gold Plus 1.3.2 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/1.3.2/Sacred-Gold-Plus-1.3.2.zip)
+[**Download Sacred Gold Plus 1.3.3 — all five languages**](https://github.com/Umberto-DEV/sacred-gold-plus/releases/download/1.3.3/Sacred-Gold-Plus-1.3.3.zip)
 
 Extract the single ZIP and read `START-HERE.txt`. Choose your language folder:
 
@@ -32,10 +29,10 @@ Extract the single ZIP and read `START-HERE.txt`. Choose your language folder:
 | Español (España) | `ES-Espanol` |
 | Deutsch | `DE-Deutsch` |
 
-Open `Installation-1.3.2-<language>.pdf` directly inside that folder for the
+Open `Installation-1.3.3-<language>.pdf` directly inside that folder for the
 illustrated Windows/macOS walkthrough, links and file checks.
-`Whats-New-1.3.2-<language>.pdf` is beside it. Each folder contains one
-`Patch/Sacred-Gold-Plus-1.3.2-<language>.xdelta` for the supported original
+`Whats-New-1.3.3-<language>.pdf` is beside it. Each folder contains one
+`Patch/Sacred-Gold-Plus-1.3.3-<language>.xdelta` for the supported original
 HeartGold ROM of the same language, localized `Cheats` and complete credits/licenses.
 Apply the patch to a separate file with [Rom Patcher JS](https://www.marcrobledo.com/RomPatcher.js/),
 leave **Fix ROM checksum** off, and verify the full source/target SHA-256 from
@@ -43,10 +40,11 @@ the installation PDF. `Originals` contains eight current English gameplay guides
 including the complete move-change reference. [Read the illustrated guides on GitHub](guides/README.md).
 
 **Updating an existing Plus ROM?** The same ZIP includes `Optional-Updaters`.
-Its localized `README-Updater.txt` tables identify all 35 recognized sources,
-including original Plus 1.03 and the original 1.3.2 builds. Choose your current
-language and one patch matching the complete input hash. All 175 routes produce
-the same five corrected 1.3.2 targets. Unknown or altered ROMs are not admitted.
+Its localized `README-Updater.txt` tables identify all 40 recognized sources,
+including original Plus 1.03, the original 1.3.2 builds and the corrected
+1.3.2 targets. Choose your current
+language and one patch matching the complete input hash. All 200 routes produce
+the same five 1.3.3 targets. Unknown or altered ROMs are not admitted.
 
 Before updating, SAVE in-game, close the emulator, locate and back up the actual
 raw `.sav` and installed ROM. Validate the successor on a separate save copy
@@ -55,10 +53,10 @@ retaining its language, filename/path and emulator association. Keep the current
 personal save in its original location. The clean-ROM patch also reconstructs
 the same successor without using an older installed ROM as input.
 
-[Release page](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/1.3.2).
-This download is version **1.3.2**. It includes the Guide opening
-correction; use the complete target hashes to distinguish it from the original
-1.3.2 images. [Exact validation and coverage](source/docs/validation/guide-opening-1.3.2.md).
+[Release page](https://github.com/Umberto-DEV/sacred-gold-plus/releases/tag/1.3.3).
+This download is version **1.3.3**. Its [exact targets and correction coverage](source/docs/validation/fixes-1.3.3.md)
+include the subsequent German and French Training fixes. The inherited Guide
+opening correction retains its [historical 1.3.2 validation](source/docs/validation/guide-opening-1.3.2.md).
 `Developer-Inputs` preserves the source tools' four authenticated historical
 inputs inside this same ZIP. Project source is on GitHub; its automatic source
 archives are for developers. No ROM, save, BIOS or emulator is included.

@@ -12,7 +12,7 @@ and read **START-HERE.txt**. Choose **EN-English**, **IT-Italiano**, **FR-Franca
 **Installation-{{VERSION}}-<language>.pdf** in that folder; the localized
 **Whats-New** PDF is beside it. Each language keeps one clean-ROM patch,
 localized optional cheats and complete credits/licenses. **Originals** contains
-the seven shared English gameplay guides, including one Game Guide.
+the eight shared English gameplay guides, including one Game Guide and Move Changes.
 
 **New installation:** use your own supported original HeartGold ROM of the same
 language. Check its complete SHA-256 against the PDF, apply
@@ -21,8 +21,9 @@ language. Check its complete SHA-256 against the PDF, apply
 off and verify the target SHA-256.
 
 **Updating Plus:** **Optional-Updaters** is inside this same ZIP. Its localized
-**README-Updater.txt** tables cover all **175 direct routes from 35 recognized
-sources**, including original Plus 1.03 and the original 1.3.2 builds. Use one
+**README-Updater.txt** tables cover all **200 direct routes from 40 recognized
+sources**, including original Plus 1.03, the original 1.3.2 builds and the
+corrected 1.3.2 installations. Use one
 patch matching your full source hash and current language. Older games are
 input identities; every route produces a current {{VERSION}} target.
 
@@ -109,7 +110,7 @@ Thanks to **NefariousnessNo3436, Drayano, mikelan / Mikelan98**, and the origina
 
 [Original Sacred Gold Plus announcement](https://www.reddit.com/r/PokemonROMhacks/comments/1m69jrj/sacred_gold_plus_fairy_type_full_implementation/)
 
-[Detailed bug and fix list](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/BUG-FIXES-1.3.2.md) · [Changelog and validation](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md)
+[Detailed bug and fix list](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/BUG-FIXES-1.3.3.md) · [Changelog and validation](https://github.com/Umberto-DEV/sacred-gold-plus/blob/main/CHANGELOG.md)
 
 ## Latest update
 

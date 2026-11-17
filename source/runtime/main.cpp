@@ -450,9 +450,15 @@ public:
             const bool native=layout==HGTrace::WorkLayout::NativeHeap || layout==HGTrace::WorkLayout::Graphics || pilot;
             const bool h4=layout==HGTrace::WorkLayout::H4 || (native && word(0x023DBD00)==0xB5F0);
             const bool party=layout==HGTrace::WorkLayout::Party;
-            const bool admitted=hgScene && (party?
+            const bool scheduler=layout==HGTrace::WorkLayout::Scheduler;
+            bool schedulerSignature=true;
+            if(scheduler)for(std::size_t i=64;i<HGTrace::WorkSites.size();++i) {
+                const auto& site=HGTrace::WorkSites[i];
+                if(word(site.pc)!=site.instruction)schedulerSignature=false;
+            }
+            const bool admitted=hgScene && (scheduler?schedulerSignature:(party?
                 (word(0x023DBE00)==0xB5B0 && word(0x023DBEB4)==0xB508 && word(0x023DBEBE)==0xB508):
-                (word(0x023DBD00)==(h4?0xB5F0:0xB5FE) && word(h4?0x023DBD9C:0x023DBD98)==0xB508));
+                (word(0x023DBD00)==(h4?0xB5F0:0xB5FE) && word(h4?0x023DBD9C:0x023DBD98)==0xB508)));
             if(!admitted)throw std::runtime_error("Missing admitted work helper signature");
             if(pilot) {
                 pilotOwners=configurePilotOwners();
@@ -487,16 +493,16 @@ public:
             }
             std::ostringstream text;
             text<<"event,site,first_frame,last_frame,mode,lr,sp,arg0,arg1,arg2,arg3,result,complete,inclusive_dispatch,exclusive_dispatch";
-            if(HGTrace::Work.nativeHeap || HGTrace::Work.graphics || HGTrace::Work.party)text<<",entry_order,exit_order,parent,entry_cpsr,exit_cpsr";
-            if(HGTrace::Work.graphics || HGTrace::Work.party)text<<",aux_r4,aux_r5,aux_r6,aux_r7";
+            if(HGTrace::Work.nativeHeap || HGTrace::Work.graphics || HGTrace::Work.party || HGTrace::Work.scheduler)text<<",entry_order,exit_order,parent,entry_cpsr,exit_cpsr";
+            if(HGTrace::Work.graphics || HGTrace::Work.party || HGTrace::Work.scheduler)text<<",aux_r4,aux_r5,aux_r6,aux_r7";
             text<<'\n';
             for(std::size_t i=0;i<HGTrace::Work.count;++i) {
                 const auto& e=HGTrace::Work.events[i];
                 text<<i<<','<<HGTrace::WorkSites[e.site].pc<<','<<e.first_frame<<','<<e.last_frame<<','<<unsigned(e.mode)<<','<<e.lr<<','<<e.sp;
                 for(const auto a:e.args)text<<','<<a;
                 text<<','<<e.result<<','<<e.complete<<','<<e.inclusive<<','<<e.exclusive;
-                if(HGTrace::Work.nativeHeap || HGTrace::Work.graphics || HGTrace::Work.party)text<<','<<e.entry_order<<','<<e.exit_order<<','<<e.parent<<','<<e.entry_cpsr<<','<<e.exit_cpsr;
-                if(HGTrace::Work.graphics || HGTrace::Work.party)for(const auto a:e.aux)text<<','<<a;
+                if(HGTrace::Work.nativeHeap || HGTrace::Work.graphics || HGTrace::Work.party || HGTrace::Work.scheduler)text<<','<<e.entry_order<<','<<e.exit_order<<','<<e.parent<<','<<e.entry_cpsr<<','<<e.exit_cpsr;
+                if(HGTrace::Work.graphics || HGTrace::Work.party || HGTrace::Work.scheduler)for(const auto a:e.aux)text<<','<<a;
                 text<<'\n';
             }
             const auto bytes=text.str();limits.output(bytes.size());workReported=true;workFile.write(bytes);workFile.flush();
@@ -578,7 +584,7 @@ public:
         else if(c=="tap"){require(2);nds->SetKeyMask(keyMask(t[1]));run(t.size()>2?n(2):2);nds->SetKeyMask(0xfff);run(t.size()>3?n(3):30);}
         else if(c=="touch"){require(3);nds->TouchScreen(n(1),n(2));if(t.size()>3){run(n(3));nds->ReleaseScreen();}}
         else if(c=="release")nds->ReleaseScreen();
-        else if(c=="work"){require(2);if(t[1]=="on"){if(t.size()>3 || (t.size()==3 && t[2]!="h4" && t[2]!="heap" && t[2]!="graphics" && t[2]!="pilot" && t[2]!="assets" && t[2]!="party"))throw std::runtime_error("work on expects optional h4, heap, graphics, pilot, assets or party layout");workTrace(true,t.size()==2?HGTrace::WorkLayout::R4:t[2]=="h4"?HGTrace::WorkLayout::H4:t[2]=="heap"?HGTrace::WorkLayout::NativeHeap:t[2]=="graphics"?HGTrace::WorkLayout::Graphics:t[2]=="pilot"?HGTrace::WorkLayout::Pilot:t[2]=="party"?HGTrace::WorkLayout::Party:HGTrace::WorkLayout::Assets);}else if(t[1]=="off")workTrace(false);else throw std::runtime_error("work expects on or off");}
+        else if(c=="work"){require(2);if(t[1]=="on"){if(t.size()>3 || (t.size()==3 && t[2]!="h4" && t[2]!="heap" && t[2]!="graphics" && t[2]!="pilot" && t[2]!="assets" && t[2]!="party" && t[2]!="scheduler"))throw std::runtime_error("work on expects optional h4, heap, graphics, pilot, assets, party or scheduler layout");workTrace(true,t.size()==2?HGTrace::WorkLayout::R4:t[2]=="h4"?HGTrace::WorkLayout::H4:t[2]=="heap"?HGTrace::WorkLayout::NativeHeap:t[2]=="graphics"?HGTrace::WorkLayout::Graphics:t[2]=="pilot"?HGTrace::WorkLayout::Pilot:t[2]=="party"?HGTrace::WorkLayout::Party:t[2]=="scheduler"?HGTrace::WorkLayout::Scheduler:HGTrace::WorkLayout::Assets);}else if(t[1]=="off")workTrace(false);else throw std::runtime_error("work expects on or off");}
         else if(c=="sample"){require(2);if(t[1]=="off")sampling(false,sampleRect);else if(t[1]=="on"){require(6);sampling(true,{n(2),n(3),n(4),n(5)});}else throw std::runtime_error("sample expects on or off");}
         else if(c=="capture"){require(2);capture(t[1]);}
         else if(c=="save"){require(2);save(t[1]);}
@@ -593,7 +599,7 @@ public:
         else if(c=="clearwatches"){watches.clear();csvHeader=false;}
         else if(c=="cheat"){require(2);fs::path p=t[1];if(p.is_relative())p=out/p;auto data=readFile(p,hg_runtime::RuntimeLimits::MaxCheatBytes,"cheat file");std::string text(reinterpret_cast<const char*>(data.data()),data.size());std::istringstream f(text);ARCode code{};code.Name=p.filename().string();code.Enabled=true;std::string l;while(boundedLine(f,l,hg_runtime::RuntimeLimits::MaxCommandBytes)){auto comment=l.find('#');if(comment!=std::string::npos)l.resize(comment);std::istringstream words(l);std::string w;while(words>>w){if(code.Code.size()>=hg_runtime::RuntimeLimits::MaxCheatWords)throw std::runtime_error("Cheat exceeds 8192 words");code.Code.push_back(std::stoul(w,nullptr,16));}}if(code.Code.size()%2)throw std::runtime_error("Cheat words must be paired");limits.cheat(data.size(),code.Code.size());nds->AREngine.Cheats.push_back(std::move(code));}
         else if(c=="clearcheats")nds->AREngine.Cheats.clear();
-        else if(c=="help")std::cout<<"run FRAMES [KEYS] | tap KEYS [HOLD=2] [WAIT=30] | key KEYS | touch X Y [FRAMES] | release | work on [h4|heap|graphics|pilot|assets|party] / work off | sample on X Y W H | sample off | capture FILE.ppm | save FILE.state | load FILE | dump FILE.bin | sram FILE.sav | read ADDRESS [WIDTH=4] [COUNT=1] | write ADDRESS VALUE [WIDTH=4] | freeze ADDRESS VALUE [WIDTH=4] | unfreeze | watch LABEL ADDRESS [WIDTH=4] | clearwatches | cheat FILE | clearcheats | status | quit\n";
+        else if(c=="help")std::cout<<"run FRAMES [KEYS] | tap KEYS [HOLD=2] [WAIT=30] | key KEYS | touch X Y [FRAMES] | release | work on [h4|heap|graphics|pilot|assets|party|scheduler] / work off | sample on X Y W H | sample off | capture FILE.ppm | save FILE.state | load FILE | dump FILE.bin | sram FILE.sav | read ADDRESS [WIDTH=4] [COUNT=1] | write ADDRESS VALUE [WIDTH=4] | freeze ADDRESS VALUE [WIDTH=4] | unfreeze | watch LABEL ADDRESS [WIDTH=4] | clearwatches | cheat FILE | clearcheats | status | quit\n";
         else throw std::runtime_error("Unknown command: "+c);
         return true;
     }

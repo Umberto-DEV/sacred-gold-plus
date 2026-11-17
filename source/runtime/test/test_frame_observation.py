@@ -23,6 +23,20 @@ class FrameObservationTests(unittest.TestCase):
             run = subprocess.run([str(binary)], text=True, capture_output=True)
             self.assertEqual(run.returncode, 0, run.stderr)
 
+    def test_cpp_scheduler_observation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            binary = Path(temp) / "scheduler-observation"
+            compiler = os.environ.get("CXX", "c++")
+            build = subprocess.run(
+                [compiler, "-std=c++17", "-Wall", "-Wextra", "-Werror",
+                 "-I", str(RUNTIME), str(Path(__file__).with_name("scheduler_observation_test.cpp")),
+                 "-o", str(binary)],
+                text=True, capture_output=True,
+            )
+            self.assertEqual(build.returncode, 0, build.stderr)
+            run = subprocess.run([str(binary)], text=True, capture_output=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+
     def test_session_labels_trace_state_as_initial(self):
         source = (RUNTIME / "main.cpp").read_text()
         self.assertIn("TracePCInitial=", source)
